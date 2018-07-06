@@ -2,9 +2,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 ///SharedPreferences 本地存储
 class LocalStorage {
+
   static save(String key, value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt(key, value);
+    prefs.setString(key, value);
   }
 
   static get(String key) async {

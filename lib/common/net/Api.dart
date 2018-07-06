@@ -1,4 +1,4 @@
-import 'dart:_http';
+
 
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/net/Code.dart';
@@ -25,7 +25,7 @@ class HttpManager {
   ///[ header] 外加头
   ///[ text] 是否text返回
   ///[ option] 配置
-  static netFetch(url, params, Map<String, String> header, text, Options option) async {
+  static netFetch(url, params, Map<String, String> header, Options option) async {
 
     //todo 没有网络
     /*var isConnected = await NetInfo.isConnected.fetch().done;
@@ -68,7 +68,7 @@ class HttpManager {
     }
 
     try {
-      if (option.contentType != null && option.contentType == ContentType.TEXT) {
+      if (option.contentType != null && option.contentType.primaryType == "text") {
         return new ResultData(response.data, true, Code.SUCCESS);
       } else {
         var responseJson = await response.data;
