@@ -10,8 +10,10 @@ class LoginPage extends StatelessWidget {
         color: Color(GSYColors.primaryValue),
         child: new Center(
             child: new Card(
+                elevation: 5.0,
+                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 color: Color(GSYColors.cardWhite),
-                margin: const EdgeInsets.all(20.0),
+                margin: const EdgeInsets.all(30.0),
                 child: new Padding(
                     padding: new EdgeInsets.only(left: 30.0, top: 60.0, right: 30.0, bottom: 80.0),
                     child: new Column(
