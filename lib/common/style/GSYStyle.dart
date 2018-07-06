@@ -3,25 +3,34 @@ import 'package:flutter/material.dart';
 class GSYColors {
   static const String welcomeMessage = "Welcome To Flutter";
 
-  static const int _PrimaryValue = 0xFF24292E;
-  static const int _PrimaryLightValue = 0xFF42464b;
-  static const int _PrimaryDarkValue = 0xFF121917;
+  static const int primaryValue = 0xFF24292E;
+  static const int primaryLightValue = 0xFF42464b;
+  static const int primaryDarkValue = 0xFF121917;
+
+  static const int cardWhite = 0xFFFFFFFF;
+
+  static const int textWhite = 0xFFFFFFFF;
 
   static const MaterialColor primarySwatch = const MaterialColor(
-    _PrimaryValue,
+    primaryValue,
     const <int, Color>{
-      50: const Color(_PrimaryLightValue),
-      100: const Color(_PrimaryLightValue),
-      200: const Color(_PrimaryLightValue),
-      300: const Color(_PrimaryLightValue),
-      400: const Color(_PrimaryLightValue),
-      500: const Color(_PrimaryValue),
-      600: const Color(_PrimaryDarkValue),
-      700: const Color(_PrimaryDarkValue),
-      800: const Color(_PrimaryDarkValue),
-      900: const Color(_PrimaryDarkValue),
+      50: const Color(primaryLightValue),
+      100: const Color(primaryLightValue),
+      200: const Color(primaryLightValue),
+      300: const Color(primaryLightValue),
+      400: const Color(primaryLightValue),
+      500: const Color(primaryValue),
+      600: const Color(primaryDarkValue),
+      700: const Color(primaryDarkValue),
+      800: const Color(primaryDarkValue),
+      900: const Color(primaryDarkValue),
     },
   );
 }
 
 class GSYConstant {}
+
+
+class GSYStrings {
+  static const String login_text = "登录";
+}

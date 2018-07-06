@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
+import 'package:gsy_github_app_flutter/page/LoginPage.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class WelcomePage extends StatelessWidget {
       Navigator
           .of(context)
           .pushReplacement(new MaterialPageRoute(builder: (context) {
-        return new HomePage();
+        return new LoginPage();
       }));
     });
     return new Container(
