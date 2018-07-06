@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 
 class HomePage extends StatelessWidget {
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
           new Icon(Icons.directions_transit),
           new Icon(Icons.directions_bike),
         ],
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
         title: "Title");
   }
