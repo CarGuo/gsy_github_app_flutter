@@ -13,3 +13,5 @@ build/
 .idea/
 
 .gradle/
+
+ignoreConfig.dart
