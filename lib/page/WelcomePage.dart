@@ -9,16 +9,14 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 一秒以后将任务添加至event队列
     new Future.delayed(const Duration(seconds: 2), () {
-      Navigator
-          .of(context)
-          .pushReplacement(new MaterialPageRoute(builder: (context) {
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context) {
         return new LoginPage();
       }));
     });
     return new Container(
       color: Colors.white,
       child: new Center(
-        child: new Text("李彦宏传闻辟谣", style: new TextStyle(color: Colors.black, fontSize:22.0)),
+        child: new Text("李彦宏传闻辟谣", style: new TextStyle(color: Colors.black, fontSize: 22.0)),
       ),
     );
   }

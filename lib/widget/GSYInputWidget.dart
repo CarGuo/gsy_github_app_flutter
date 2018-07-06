@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /// 带图标的输入框
 class GSYInputWidget extends StatefulWidget {
-
   final String hintText;
 
   final IconData iconData;
@@ -15,7 +14,6 @@ class GSYInputWidget extends StatefulWidget {
 
 /// State for [GSYInputWidget] widgets.
 class _GSYInputWidgetState extends State<GSYInputWidget> {
-
   final String hintText;
 
   final IconData iconData;
@@ -27,11 +25,11 @@ class _GSYInputWidgetState extends State<GSYInputWidget> {
   @override
   Widget build(BuildContext context) {
     return new TextField(
-        controller: _controller,
-        decoration: new InputDecoration(
-          hintText: hintText,
-          icon: new Icon(iconData),
-        ),
-      );
+      controller: _controller,
+      decoration: new InputDecoration(
+        hintText: hintText,
+        icon: new Icon(iconData),
+      ),
+    );
   }
 }

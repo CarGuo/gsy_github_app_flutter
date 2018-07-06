@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 ///支持顶部和顶部的TabBar控件
 class GSYTabBarWidget extends StatefulWidget {
-
   ///底部模式type
   static const int BOTTOM_TAB = 1;
 
@@ -21,23 +20,13 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final String title;
 
-  GSYTabBarWidget(
-      {Key key,
-      this.type,
-      this.tabItems,
-      this.tabViews,
-      this.backgroundColor,
-      this.indicatorColor,
-      this.title})
-      : super(key: key);
+  GSYTabBarWidget({Key key, this.type, this.tabItems, this.tabViews, this.backgroundColor, this.indicatorColor, this.title}) : super(key: key);
 
   @override
-  _GSYTabBarState createState() => new _GSYTabBarState(
-      type, tabItems, tabViews, backgroundColor, indicatorColor, title);
+  _GSYTabBarState createState() => new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title);
 }
 
-class _GSYTabBarState extends State<GSYTabBarWidget>
-    with SingleTickerProviderStateMixin {
+class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderStateMixin {
   final int _type;
 
   final List<Widget> _tabItems;
@@ -50,9 +39,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
 
   final String _title;
 
-  _GSYTabBarState(this._type, this._tabItems, this._tabViews,
-      this._backgroundColor, this._indicatorColor, this._title)
-      : super();
+  _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title) : super();
 
   TabController _tabController;
 

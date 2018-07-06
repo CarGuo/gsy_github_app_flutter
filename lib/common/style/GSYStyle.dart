@@ -30,7 +30,6 @@ class GSYColors {
 
 class GSYConstant {}
 
-
 class GSYStrings {
   static const String login_text = "登录";
 }
