@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/net/Code.dart';
 
@@ -26,7 +24,6 @@ class HttpManager {
   ///[ text] 是否text返回
   ///[ option] 配置
   static netFetch(url, params, Map<String, String> header, Options option) async {
-
     //todo 没有网络
     /*var isConnected = await NetInfo.isConnected.fetch().done;
       if (!isConnected) {
@@ -55,7 +52,24 @@ class HttpManager {
     option.headers = headers;
 
     Dio dio = new Dio();
-    Response response = await dio.get(url, data: params, options: option);
+    Response response;
+    try {
+      response = await dio.get(url, data: params, options: option);
+    } on DioError catch (e) {
+      Response errorResponse;
+      if (e.response != null) {
+        errorResponse = e.response;
+      } else {
+        errorResponse = new Response(statusCode: 666);
+      }
+      if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+        errorResponse.statusCode = Code.NETWORK_TIMEOUT;
+      }
+      if (Config.DEBUG) {
+        print('请求异常: ' + e.toString());
+      }
+      return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message), false, errorResponse.statusCode);
+    }
 
     if (Config.DEBUG) {
       print('请求url: ' + url);
@@ -84,7 +98,7 @@ class HttpManager {
       print(e.toString() + url);
       return new ResultData(response.data, false, response.statusCode, headers: response.headers);
     }
-    return new ResultData(Code.errorHandleFunction(response.statusCode), false, response.statusCode);
+    return new ResultData(Code.errorHandleFunction(response.statusCode, ""), false, response.statusCode);
   }
 
   ///清除授权

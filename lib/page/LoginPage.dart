@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
@@ -67,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: GSYStrings.login_password_hint_text,
                   iconData: Icons.access_alarm,
                   onChanged: (String value) {
-                    print(value);
                     _password = value;
                   },
                   controller: pwController,
@@ -84,7 +84,11 @@ class _LoginPageState extends State<LoginPage> {
                     if (_password == null || _password.length == 0) {
                       return;
                     }
-                    UserDao.login(_userName, _password, (data) {});
+                    UserDao.login(_userName, _password, (data) {
+                      if (data != null && data.result == true) {
+                        Fluttertoast.showToast(msg: GSYStrings.login_success);
+                      }
+                    });
                   },
                 )
               ],
