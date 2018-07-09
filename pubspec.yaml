@@ -11,8 +11,11 @@ dependencies:
   dio: ^0.0.14
   shared_preferences: ^0.4.2
   fluttertoast: ^2.0.4
+  json_annotation: ^0.2.2
 
 dev_dependencies:
+  build_runner: ^0.7.6
+  json_serializable: ^0.3.2
   flutter_test:
     sdk: flutter
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/net/Code.dart';
 
@@ -49,12 +51,17 @@ class HttpManager {
 
     headers["Authorization"] = optionParams["authorizationCode"];
 
-    option.headers = headers;
+    if (option != null) {
+      option.headers = headers;
+    } else{
+      option = new Options(method: "get");
+      option.headers = headers;
+    }
 
     Dio dio = new Dio();
     Response response;
     try {
-      response = await dio.get(url, data: params, options: option);
+      response = await dio.request(url, data: params, options: option);
     } on DioError catch (e) {
       Response errorResponse;
       if (e.response != null) {
@@ -85,9 +92,9 @@ class HttpManager {
       if (option.contentType != null && option.contentType.primaryType == "text") {
         return new ResultData(response.data, true, Code.SUCCESS);
       } else {
-        var responseJson = await response.data;
-        if (response.statusCode == 201 && responseJson.token != null) {
-          optionParams["authorizationCode"] = 'token ' + responseJson.token;
+        var responseJson = response.data;
+        if (response.statusCode == 201 && responseJson["token"] != null) {
+          optionParams["authorizationCode"] = 'token ' + responseJson["token"];
           await LocalStorage.save(Config.TOKEN_KEY, optionParams["authorizationCode"]);
         }
       }
