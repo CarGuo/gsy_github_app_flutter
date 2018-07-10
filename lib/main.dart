@@ -15,7 +15,7 @@ void main() {
 
 class FlutterReduxApp extends StatelessWidget {
 
-  final store = new Store<GSYState>(counterReducer, initialState: new GSYState(userInfo: User.empty()));
+  final store = new Store<GSYState>(appReducer, initialState: new GSYState(userInfo: User.empty()));
 
   FlutterReduxApp({Key key}) : super(key: key);
 
