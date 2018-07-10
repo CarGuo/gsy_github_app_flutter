@@ -87,4 +87,8 @@ class User extends Object with _$UserSerializerMixin {
   /// from a map. We pass the map to the generated _$UserFromJson constructor.
   /// The constructor is named after the source class, in this case User.
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  // 命名构造函数
+  User.empty();
+
 }

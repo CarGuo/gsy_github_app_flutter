@@ -26,6 +26,7 @@ class GSYTabBarWidget extends StatefulWidget {
   _GSYTabBarState createState() => new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title);
 }
 
+// ignore: mixin_inherits_from_not_object
 class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderStateMixin {
   final int _type;
 
