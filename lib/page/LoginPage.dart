@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/GSYInputWidget.dart';
 
 class LoginPage extends StatefulWidget {
+
+  static final String sName  = "login";
+
   @override
   State createState() {
     return new _LoginPageState();
@@ -33,8 +36,12 @@ class _LoginPageState extends State<LoginPage> {
   initParams() async {
     _userName = await LocalStorage.get(Config.USER_NAME_KEY);
     _password = await LocalStorage.get(Config.PW_KEY);
-    userController.value = new TextEditingValue(text: _userName);
-    pwController.value = new TextEditingValue(text: _password);
+    if(_userName != null) {
+      userController.value = new TextEditingValue(text: _userName);
+    }
+    if(_password != null) {
+      pwController.value = new TextEditingValue(text: _password);
+    }
   }
 
   @override
@@ -87,7 +94,8 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     UserDao.login(_userName, _password, (data) {
                       if (data != null && data.result == true) {
-                        Fluttertoast.showToast(msg: GSYStrings.login_success);
+                        NavigatorUtils.goHome(context);
+                        //Fluttertoast.showToast(msg: GSYStrings.login_success);
                       }
                     });
                   },

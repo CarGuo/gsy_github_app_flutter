@@ -8,14 +8,13 @@ import 'package:gsy_github_app_flutter/page/WelcomePage.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-
 void main() {
   runApp(new FlutterReduxApp());
 }
 
 class FlutterReduxApp extends StatelessWidget {
-
-  final store = new Store<GSYState>(appReducer, initialState: new GSYState(userInfo: User.empty()));
+  final store = new Store<GSYState>(appReducer,
+      initialState: new GSYState(userInfo: User.empty()));
 
   FlutterReduxApp({Key key}) : super(key: key);
 
@@ -29,13 +28,13 @@ class FlutterReduxApp extends StatelessWidget {
             primarySwatch: GSYColors.primarySwatch,
           ),
           routes: {
-            "/": (context) {
+            WelcomePage.sName: (context) {
               return WelcomePage();
             },
-            "home": (context) {
+            HomePage.sName: (context) {
               return HomePage();
             },
-            "login": (context) {
+            LoginPage.sName: (context) {
               return LoginPage();
             },
           }),
