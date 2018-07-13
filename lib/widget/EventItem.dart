@@ -24,7 +24,13 @@ class EventItem extends StatelessWidget {
                   children: <Widget>[
                     new Row(
                       children: <Widget>[
-                        new Image(image: new NetworkImage(eventViewModel.actionUserPic), width: 30.0, height: 30.0),
+                        new ClipOval(
+                          child: new FadeInImage.assetNetwork(
+                            placeholder: "static/images/logo.png",//预览图
+                            fit: BoxFit.fitWidth,
+                            image: eventViewModel.actionUserPic,width: 30.0, height: 30.0,
+                          ),
+                        ),
                         new Padding(padding: EdgeInsets.all(10.0)),
                         new Expanded(child: new Text(eventViewModel.actionUser)),
                         new Text("ffffffffffffff"),
