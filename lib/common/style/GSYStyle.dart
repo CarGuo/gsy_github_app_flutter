@@ -31,7 +31,10 @@ class GSYColors {
 class GSYConstant {}
 
 class GSYStrings {
+  static const String app_name = "GSYGithubAppFlutter";
+
   static const String login_text = "登录";
+
   static const String login_username_hint_text = "请输入github用户名";
   static const String login_password_hint_text = "请输入密码";
   static const String login_success = "登录成功";

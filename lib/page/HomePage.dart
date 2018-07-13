@@ -26,6 +26,6 @@ class HomePage extends StatelessWidget {
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
-        title: "Title");
+        title: GSYStrings.app_name);
   }
 }
