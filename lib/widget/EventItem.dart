@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
+import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
 class EventItem extends StatelessWidget {
   final EventViewModel eventViewModel;
@@ -16,11 +17,7 @@ class EventItem extends StatelessWidget {
             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
             alignment: Alignment.topLeft);
     return new Container(
-      child: new Card(
-          elevation: 5.0,
-          shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
-          color: Color(GSYColors.cardWhite),
-          margin: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+      child: new GSYCardItem(
           child: new FlatButton(
               onPressed: () => {},
               child: new Padding(
