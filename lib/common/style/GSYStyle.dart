@@ -45,5 +45,9 @@ class GSYStrings {
   static const String network_error_timeout = "请求超时";
   static const String network_error_unknown = "其他异常";
 
+  static const String load_more_not = "没有更多数据";
+
+
+
 
 }

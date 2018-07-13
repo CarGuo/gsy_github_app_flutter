@@ -5,61 +5,80 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 
 class GSYPullLoadWidget extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
 
-  final NotificationListenerCallback<Notification> onNotification;
+  final RefreshCallback onLoadMore;
 
   final RefreshCallback onRefresh;
 
   final GSYPullLoadWidgetControl control;
 
-  GSYPullLoadWidget(
-      this.control, this.itemBuilder, this.onRefresh, this.onNotification);
+  GSYPullLoadWidget(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
 
   @override
-  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(
-      this.control, this.itemBuilder, this.onRefresh, this.onNotification);
+  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   final IndexedWidgetBuilder itemBuilder;
 
-  final NotificationListenerCallback<Notification> onNotification;
+  final RefreshCallback onLoadMore;
 
   final RefreshCallback onRefresh;
 
   GSYPullLoadWidgetControl control;
 
-  _GSYPullLoadWidgetState(
-      this.control, this.itemBuilder, this.onRefresh, this.onNotification);
+  _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
+
+  final ScrollController _scrollController = new ScrollController();
+
+  @override
+  void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        if (this.onLoadMore != null && this.control.needLoadMore) {
+          this.onLoadMore();
+        }
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new StoreBuilder<GSYState>(
-      builder: (context, store) {
-        new Future.delayed(const Duration(seconds: 2), () {
-          User user = store.state.userInfo;
-          user.login = "new login";
-          user.name = "new name";
-          store.dispatch(new UpdateUserAction(user));
-        });
-        return new NotificationListener(
-            onNotification: onNotification,
-            child: new RefreshIndicator(
-              onRefresh: onRefresh,
-              child: new ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemBuilder: itemBuilder,
-                itemCount: control.count,
-              ),
-            ));
-      },
+    return new RefreshIndicator(
+      onRefresh: onRefresh,
+      child: new ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          if (index == control.dataList.length && control.dataList.length != 0) {
+            return _buildProgressIndicator();
+          } else {
+            return itemBuilder(context, index);
+          }
+        },
+        itemCount: (control.dataList.length > 0) ? control.dataList.length + 1 : control.dataList.length,
+        controller: _scrollController,
+      ),
+    );
+  }
+
+  Widget _buildProgressIndicator() {
+    Widget bottomWidget = (control.needLoadMore) ? new CircularProgressIndicator() : new Text(GSYStrings.load_more_not);
+    print(bottomWidget);
+    return new Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: new Center(
+        child: bottomWidget,
+      ),
     );
   }
 }
 
 class GSYPullLoadWidgetControl {
-  int count = 5;
+  List dataList = new List();
+  bool needLoadMore = true;
 }

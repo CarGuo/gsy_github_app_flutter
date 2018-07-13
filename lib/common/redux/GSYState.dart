@@ -1,11 +1,15 @@
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:gsy_github_app_flutter/common/redux/EventRedux.dart';
+import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 
 class GSYState {
 
   User userInfo;
 
-  GSYState({this.userInfo});
+  List<EventViewModel> eventList = new List();
+
+  GSYState({this.userInfo, this.eventList});
 
 }
 
@@ -13,6 +17,7 @@ class GSYState {
 GSYState appReducer(GSYState state, action) {
   return GSYState(
     userInfo: UserReducer(state.userInfo, action),
+    eventList: EventReducer(state.eventList, action),
   );
 }
 
