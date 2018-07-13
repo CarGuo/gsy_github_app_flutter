@@ -9,6 +9,13 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget des = (eventViewModel.actionDes == null || eventViewModel.actionDes.length == 0)
+        ? new Container()
+        : new Container(
+            child: new Text(eventViewModel.actionDes,
+                style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, height: 1.3, color: Colors.black)),
+            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+            alignment: Alignment.topLeft);
     return new Container(
       child: new Card(
           elevation: 5.0,
@@ -26,9 +33,12 @@ class EventItem extends StatelessWidget {
                       children: <Widget>[
                         new ClipOval(
                           child: new FadeInImage.assetNetwork(
-                            placeholder: "static/images/logo.png",//预览图
+                            placeholder: "static/images/logo.png",
+                            //预览图
                             fit: BoxFit.fitWidth,
-                            image: eventViewModel.actionUserPic,width: 30.0, height: 30.0,
+                            image: eventViewModel.actionUserPic,
+                            width: 30.0,
+                            height: 30.0,
                           ),
                         ),
                         new Padding(padding: EdgeInsets.all(10.0)),
@@ -41,11 +51,7 @@ class EventItem extends StatelessWidget {
                             style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, height: 1.3, color: Colors.lightBlue)),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
-                    new Container(
-                        child: new Text(eventViewModel.actionDes,
-                            style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, height: 1.3, color: Colors.black)),
-                        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-                        alignment: Alignment.topLeft)
+                    des,
                   ],
                 ),
               ))),
