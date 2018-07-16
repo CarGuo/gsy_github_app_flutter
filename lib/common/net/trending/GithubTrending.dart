@@ -1,7 +1,8 @@
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/common/config/Config.dart';
+import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/Code.dart';
 import 'package:gsy_github_app_flutter/common/net/ResultData.dart';
 
@@ -12,27 +13,8 @@ import 'package:gsy_github_app_flutter/common/net/ResultData.dart';
 
 class GitHubTrending {
   fetchTrending(url) async {
-    Dio dio = new Dio();
-    Response res;
-    try {
-      res = await dio.request(url, data: null, options: new Options(contentType: ContentType.parse("application/x-www-form-urlencoded")));
-    } on DioError catch (e) {
-      Response errorResponse;
-      if (e.response != null) {
-        errorResponse = e.response;
-      } else {
-        errorResponse = new Response(statusCode: 666);
-      }
-      if (e.type == DioErrorType.CONNECT_TIMEOUT) {
-        errorResponse.statusCode = Code.NETWORK_TIMEOUT;
-      }
-      if (Config.DEBUG) {
-        print('请求异常: ' + e.toString());
-        print('请求异常url: ' + url);
-      }
-      return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message), false, errorResponse.statusCode);
-    }
-    if (res != null && res.statusCode == 200) {
+    var res = await HttpManager.netFetch(url, null, null, new Options(contentType: ContentType.TEXT));
+    if (res != null && res.result && res.data != null) {
       return new ResultData(TrendingUtil.htmlToRepo(res.data), true, Code.SUCCESS);
     } else {
       return res;

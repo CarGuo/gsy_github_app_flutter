@@ -18,6 +18,7 @@ class DynamicPage extends StatefulWidget {
 }
 
 class _DynamicPageState extends State<DynamicPage> {
+
   bool isLoading = false;
 
   int page = 1;
@@ -70,7 +71,9 @@ class _DynamicPageState extends State<DynamicPage> {
   @override
   void didChangeDependencies() {
     pullLoadWidgetControl.dataList = _getStore().state.eventList;
-    _handleRefresh();
+    if (pullLoadWidgetControl.dataList.length == 0) {
+      _handleRefresh();
+    }
     super.didChangeDependencies();
   }
 
