@@ -43,7 +43,7 @@ class TrendingUtil {
 
       parseRepoBaseInfo(repo, html);
 
-      var metaNoteContent = parseContentWithNote(html, 'class="f6 text-gray mt-2">', '</li>');
+      var metaNoteContent = parseContentWithNote(html, 'class="f6 text-gray mt-2">', '<\/li>');
       repo.meta = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["meta"]);
       repo.starCount = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["starCount"]);
       repo.forkCount = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["forkCount"]);
@@ -100,8 +100,8 @@ class TrendingUtil {
   }
 
   static parseRepoContributors(repo, htmlContributors) {
-    htmlContributors = parseContentWithNote(htmlContributors, 'Built by', '</a>');
-    var splitWitSemicolon = htmlContributors.split('"');
+    htmlContributors = parseContentWithNote(htmlContributors, 'Built by', '<\/a>');
+    var splitWitSemicolon = htmlContributors.split('\"');
     repo.contributorsUrl = splitWitSemicolon[1];
     var contributors = new List<String>();
     for (var i = 0; i < splitWitSemicolon.length; i++) {
