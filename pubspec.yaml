@@ -65,3 +65,8 @@ flutter:
 
   assets:
     - static/images/logo.png
+
+  fonts:
+    - family: wxcIconFont
+      fonts:
+        - asset: static/font/iconfont.ttf

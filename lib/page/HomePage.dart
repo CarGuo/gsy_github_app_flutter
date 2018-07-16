@@ -6,8 +6,7 @@ import 'package:gsy_github_app_flutter/page/TrendPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 
 class HomePage extends StatelessWidget {
-
-  static final String sName  = "home";
+  static final String sName = "home";
 
   // This widget is the root of your application.
   @override
@@ -15,9 +14,9 @@ class HomePage extends StatelessWidget {
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.BOTTOM_TAB,
         tabItems: [
-          new Tab(icon: new Icon(Icons.directions_car)),
-          new Tab(icon: new Icon(Icons.directions_transit)),
-          new Tab(icon: new Icon(Icons.directions_bike)),
+          new Tab(icon: new Icon(GSYICons.MAIN_DT)),
+          new Tab(icon: new Icon(GSYICons.MAIN_QS)),
+          new Tab(icon: new Icon(GSYICons.MAIN_MY)),
         ],
         tabViews: [
           new DynamicPage(),

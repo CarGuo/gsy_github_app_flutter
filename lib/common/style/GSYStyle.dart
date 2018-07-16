@@ -37,7 +37,6 @@ class GSYColors {
   static const tabSelectedColor = primaryValue;
   static const tabUnSelectColor = 0xffa6aaaf;
 
-
   static const MaterialColor primarySwatch = const MaterialColor(
     primaryValue,
     const <int, Color>{
@@ -96,7 +95,6 @@ class GSYConstant {
     color: Color(GSYColors.mainTextColor),
     fontSize: smallTextSize,
   );
-
 
   static const smallTextBold = TextStyle(
     color: Color(GSYColors.mainTextColor),
@@ -181,4 +179,14 @@ class GSYStrings {
   static const String network_error_unknown = "其他异常";
 
   static const String load_more_not = "没有更多数据";
+}
+
+class GSYICons {
+  static String FONT_FAMILY = 'wxcIconFont';
+
+  static IconData MAIN_DT = new IconData(0xe684, fontFamily: GSYICons.FONT_FAMILY);
+
+  static IconData MAIN_QS = new IconData(0xe818, fontFamily: GSYICons.FONT_FAMILY);
+
+  static IconData MAIN_MY = new IconData(0xe6d0, fontFamily: GSYICons.FONT_FAMILY);
 }
