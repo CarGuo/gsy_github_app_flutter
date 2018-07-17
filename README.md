@@ -25,3 +25,6 @@ welcome -> login
 
 生成序列化模板
 flutter packages pub run build_runner build
+
+
+### 配合AutomaticKeepAliveClientMixin可以keep住tab
