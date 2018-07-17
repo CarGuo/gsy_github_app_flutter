@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 ///支持顶部和顶部的TabBar控件
+///配合AutomaticKeepAliveClientMixin可以keep住
 class GSYTabBarWidget extends StatefulWidget {
   ///底部模式type
   static const int BOTTOM_TAB = 1;

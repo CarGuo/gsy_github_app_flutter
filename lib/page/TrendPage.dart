@@ -10,7 +10,8 @@ class TrendPage extends StatefulWidget {
   _TrendPageState createState() => _TrendPageState();
 }
 
-class _TrendPageState extends State<TrendPage> {
+// ignore: mixin_inherits_from_not_object
+class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin {
   bool isLoading = false;
 
   int page = 1;
@@ -45,6 +46,9 @@ class _TrendPageState extends State<TrendPage> {
   _renderItem(ReposViewModel e) {
     return new ReposItem(e);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
