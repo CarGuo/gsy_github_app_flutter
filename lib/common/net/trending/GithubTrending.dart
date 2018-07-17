@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -32,8 +31,7 @@ class TrendingUtil {
   static htmlToRepo(String responseData) {
     try {
       responseData = responseData.replaceAll(new RegExp('\n'), '');
-    } catch (e) {
-    }
+    } catch (e) {}
     var repos = new List();
     var splitWithH3 = responseData.split('<h3');
     splitWithH3.removeAt(0);
@@ -78,7 +76,16 @@ class TrendingUtil {
       repo.reposName = repo.fullName.split('/')[1];
     }
 
-    var description = parseContentWithNote(htmlBaseInfo, '<p class="col-9 d-inline-block text-gray m-0 pr-4">', '</p>');
+    String description = parseContentWithNote(htmlBaseInfo, '<p class="col-9 d-inline-block text-gray m-0 pr-4">', '</p>');
+    if (description != null) {
+      String reg = "<g-emoji.*?>.+?</g-emoji>";
+      RegExp tag = new RegExp(reg);
+      Iterable<Match> tags = tag.allMatches(description);
+      for (Match m in tags) {
+        String match = m.group(0).replaceAll(new RegExp("<g-emoji.*?>"), "").replaceAll(new RegExp("</g-emoji>"), "");
+        description = description.replaceAll(new RegExp(m.group(0)), match);
+      }
+    }
     repo.description = description;
   }
 

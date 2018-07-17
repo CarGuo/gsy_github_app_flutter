@@ -90,6 +90,7 @@ class ReposItem extends StatelessWidget {
                           ),
                         ),
                         new Expanded(
+                          flex: 2,
                           child: new Center(
                             child: new GSYIConText(
                               GSYICons.REPOS_ITEM_ISSUE,
