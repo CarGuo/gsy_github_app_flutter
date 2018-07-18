@@ -193,7 +193,7 @@ class GSYStrings {
   static const String login_password_hint_text = "请输入密码";
   static const String login_success = "登录成功";
 
-  static const String network_error_401 = "未授权或授权登录失败";
+  static const String network_error_401 = "[401错误可能: 未授权 \\ 授权登录失败 \\ 登录过期]";
   static const String network_error_403 = "403权限错误";
   static const String network_error_404 = "404错误";
   static const String network_error_timeout = "请求超时";
