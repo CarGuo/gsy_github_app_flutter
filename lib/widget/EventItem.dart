@@ -6,10 +6,18 @@ import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
+/**
+ * 事件Item
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
 class EventItem extends StatelessWidget {
+
   final EventViewModel eventViewModel;
 
-  EventItem(this.eventViewModel) : super();
+  final VoidCallback onPressed;
+
+  EventItem(this.eventViewModel, {this.onPressed}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +30,9 @@ class EventItem extends StatelessWidget {
     return new Container(
       child: new GSYCardItem(
           child: new FlatButton(
-              onPressed: () => {},
+              onPressed: onPressed,
               child: new Padding(
-                padding: new EdgeInsets.only(left: 5.0, top: 10.0, right: 10.0, bottom: 10.0),
+                padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+///颜色
 class GSYColors {
-  static const String welcomeMessage = "Welcome To Flutter";
 
   static const int primaryValue = 0xFF24292E;
   static const int primaryLightValue = 0xFF42464b;
@@ -54,6 +54,7 @@ class GSYColors {
   );
 }
 
+///文本样式
 class GSYConstant {
   // navbar 高度
   static const iosnavHeaderHeight = 70.0;
@@ -175,7 +176,11 @@ class GSYConstant {
   );
 }
 
+///字符文本
 class GSYStrings {
+
+  static const String welcomeMessage = "Welcome To Flutter";
+
   static const String app_name = "GSYGithubAppFlutter";
 
   static const String nothing_now = "目前什么都没有。";
@@ -193,6 +198,7 @@ class GSYStrings {
   static const String network_error_404 = "404错误";
   static const String network_error_timeout = "请求超时";
   static const String network_error_unknown = "其他异常";
+  static const String network_error = "网络错误";
 
   static const String load_more_not = "没有更多数据";
 

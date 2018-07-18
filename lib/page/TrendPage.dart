@@ -5,6 +5,11 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 
+/**
+ * 主页趋势tab页
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
 class TrendPage extends StatefulWidget {
   @override
   _TrendPageState createState() => _TrendPageState();

@@ -6,10 +6,10 @@ import 'package:gsy_github_app_flutter/common/net/Code.dart';
 import 'package:gsy_github_app_flutter/common/net/ResultData.dart';
 
 /**
+ * 趋势数据解析
  * Created with guoshuyu
  * Date: 2018-07-16
  */
-
 class GitHubTrending {
   fetchTrending(url) async {
     var res = await HttpManager.netFetch(url, null, null, new Options(contentType: ContentType.TEXT));

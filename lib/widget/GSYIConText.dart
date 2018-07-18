@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 /**
+ * 带图标Icon的文本，可调节
  * Created by guoshuyu
  * Date: 2018-07-16
  */
-
 class GSYIConText extends StatelessWidget {
   final String iconText;
 

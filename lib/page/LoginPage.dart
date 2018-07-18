@@ -7,6 +7,11 @@ import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/GSYInputWidget.dart';
 
+/**
+ * 登录页
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
 class LoginPage extends StatefulWidget {
 
   static final String sName  = "login";

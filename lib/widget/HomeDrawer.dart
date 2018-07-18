@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 
 /**
+ * 主页drawer
  * Created by guoshuyu
  * Date: 2018-07-18
  */

@@ -7,6 +7,11 @@ import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:redux/redux.dart';
 
+/**
+ * 欢迎页
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
 class WelcomePage extends StatelessWidget {
   static final String sName = "/";
 

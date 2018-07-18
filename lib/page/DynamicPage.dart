@@ -10,7 +10,9 @@ import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:redux/redux.dart';
 
 /**
- * 动态
+ * 主页动态tab页
+ * Created by guoshuyu
+ * Date: 2018-07-16
  */
 class DynamicPage extends StatefulWidget {
   @override

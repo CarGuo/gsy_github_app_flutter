@@ -4,21 +4,23 @@ import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 
 /**
+ * 仓库Item
  * Created by guoshuyu
  * Date: 2018-07-16
  */
-
 class ReposItem extends StatelessWidget {
   final ReposViewModel reposViewModel;
 
-  ReposItem(this.reposViewModel) : super();
+  final VoidCallback onPressed;
+
+  ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
   @override
   Widget build(BuildContext context) {
     return new Container(
       child: new GSYCardItem(
           child: new FlatButton(
-              onPressed: () => {},
+              onPressed: onPressed,
               child: new Padding(
                 padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
                 child: new Column(
@@ -58,7 +60,12 @@ class ReposItem extends StatelessWidget {
                       ],
                     ),
                     new Container(
-                        child: new Text(reposViewModel.repositoryDes, style: GSYConstant.subSmallText, maxLines: 3, overflow: TextOverflow.ellipsis,),
+                        child: new Text(
+                          reposViewModel.repositoryDes,
+                          style: GSYConstant.subSmallText,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
                     new Padding(padding: EdgeInsets.all(10.0)),

@@ -1,6 +1,12 @@
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:redux/redux.dart';
 
+/**
+ * 事件Redux
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
+
 final EventReducer = combineReducers<List<EventViewModel>>([
   TypedReducer<List<EventViewModel>, RefreshEventAction>(_refresh),
   TypedReducer<List<EventViewModel>, LoadMoreEventAction>(_loadMore),

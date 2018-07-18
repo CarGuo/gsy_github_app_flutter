@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/net/Code.dart';
 
@@ -8,6 +6,7 @@ import 'dart:collection';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
 import 'package:gsy_github_app_flutter/common/net/ResultData.dart';
+import 'package:connectivity/connectivity.dart';
 
 ///http请求
 class HttpManager {
@@ -23,18 +22,14 @@ class HttpManager {
   ///[ url] 请求url
   ///[ params] 请求参数
   ///[ header] 外加头
-  ///[ text] 是否text返回
   ///[ option] 配置
   static netFetch(url, params, Map<String, String> header, Options option) async {
-    //todo 没有网络
-    /*var isConnected = await NetInfo.isConnected.fetch().done;
-      if (!isConnected) {
-      return {
-      result: false,
-      code: Code.NETWORK_ERROR,
-      msg: I18n('netError')
-      }
-      }*/
+
+    //没有网络
+    var connectivityResult = await (new Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return new ResultData(Code.errorHandleFunction(Code.NETWORK_ERROR, ""), false, Code.NETWORK_ERROR);
+    }
 
     Map<String, String> headers = new HashMap();
     if (header != null) {

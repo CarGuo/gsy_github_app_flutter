@@ -11,6 +11,11 @@ import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
 import 'package:redux/redux.dart';
 
+/**
+ * 主页我的tab页
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
 class MyPage extends StatefulWidget {
   @override
   _MyPageState createState() => _MyPageState();

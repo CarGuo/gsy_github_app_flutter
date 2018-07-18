@@ -1,4 +1,11 @@
+/**
+ * 事件逻辑
+ * Created by guoshuyu
+ * Date: 2018-07-16
+ */
 class EventUtils {
+
+  ///事件描述与动作
   static getActionAndDes(event) {
     String actionStr;
     String des;
@@ -32,11 +39,13 @@ class EventUtils {
         actionStr = event["payload"]["action"] + " repository from an installation ";
         break;
       case "IssueCommentEvent":
-        actionStr = event["payload"]["action"] + " comment on issue " + event["payload"]["issue"]["number"].toString() + " in " + event["repo"]["name"];
+        actionStr =
+            event["payload"]["action"] + " comment on issue " + event["payload"]["issue"]["number"].toString() + " in " + event["repo"]["name"];
         des = event["payload"]["comment"]["body"];
         break;
       case "IssuesEvent":
-        actionStr = event["payload"]["action"] + " issue " + event["payload"]["issue"]["number"].toString().toString() + " in " + event["repo"]["name"];
+        actionStr =
+            event["payload"]["action"] + " issue " + event["payload"]["issue"]["number"].toString().toString() + " in " + event["repo"]["name"];
         des = event["payload"]["issue"]["title"];
         break;
 
@@ -81,7 +90,7 @@ class EventUtils {
         String descSpan = '';
 
         int count = event["comments"];
-        if(count != null) {
+        if (count != null) {
           int maxLines = 4;
           int max = (count != null && count > maxLines) ? maxLines - 1 : count;
 

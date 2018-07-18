@@ -7,14 +7,21 @@ import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 
+///通用下上刷新控件
 class GSYPullLoadWidget extends StatefulWidget {
+
+  ///item渲染
   final IndexedWidgetBuilder itemBuilder;
 
+  ///加载更多回调
   final RefreshCallback onLoadMore;
 
+  ///下拉刷新回调
   final RefreshCallback onRefresh;
 
+  ///控制器，比如数据和一些配置
   final GSYPullLoadWidgetControl control;
+
 
   GSYPullLoadWidget(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
 
@@ -89,7 +96,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 }
 
 class GSYPullLoadWidgetControl {
+  ///数据，对齐增减，不能替换
   List dataList = new List();
+  ///是否需要加载更多
   bool needLoadMore = true;
+  ///是否需要头部
   bool needHeader = false;
 }
