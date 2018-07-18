@@ -36,7 +36,7 @@ class NavigatorUtils {
   }
 
   ///仓库详情
-  static goReposDetail(BuildContext context, String reposName, String userName) {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(reposName, userName)));
+  static goReposDetail(BuildContext context, String userName, String reposName) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(userName, reposName)));
   }
 }

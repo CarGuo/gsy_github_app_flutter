@@ -1,6 +1,8 @@
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
+import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
+import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 
 /**
@@ -39,6 +41,24 @@ class ReposDao {
         list.add(reposViewModel);
       }
       return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * 仓库的详情数据
+   */
+  static getRepositoryDetailDao(userName, reposName) async {
+    String url = Address.getReposDetail(userName, reposName);
+    var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
+    if (res != null && res.result && res.data.length > 0) {
+      List<ReposHeaderViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      return new DataResult(ReposHeaderViewModel.fromHttpMap(reposName, userName, data), true);
     } else {
       return new DataResult(null, false);
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 
@@ -9,10 +10,20 @@ import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
  * Date: 2018-07-18
  */
 class ReposHeaderItem extends StatelessWidget {
-  ReposHeaderItem() : super();
+  final ReposHeaderViewModel reposHeaderViewModel;
+
+  ReposHeaderItem(this.reposHeaderViewModel) : super();
 
   @override
   Widget build(BuildContext context) {
+    String createStr = reposHeaderViewModel.repositoryIsFork
+        ? "frok at " + " " + reposHeaderViewModel.repositoryParentName + '\n'
+        : "create at " + " " + reposHeaderViewModel.created_at + "\n";
+
+    String updateStr = "last commit at " + reposHeaderViewModel.push_at;
+
+    String infoText = createStr + ((reposHeaderViewModel.push_at != null) ? updateStr : '');
+
     return new Container(
       child: new GSYCardItem(
           color: new Color(GSYColors.primaryValue),
@@ -27,27 +38,29 @@ class ReposHeaderItem extends StatelessWidget {
                       constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
                       padding: new EdgeInsets.all(0.0),
                       onPressed: () {},
-                      child: new Text("carguo", style: GSYConstant.normalTextMitWhite),
+                      child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextMitWhite),
                     ),
-                    new Text(" /  ", style: GSYConstant.normalTextMitWhite),
-                    new Text("22222", style: GSYConstant.normalTextMitWhite),
+                    new Text(" / ", style: GSYConstant.normalTextMitWhite),
+                    new Text(reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhite),
                   ],
                 ),
                 new Padding(padding: new EdgeInsets.all(5.0)),
                 new Row(
                   children: <Widget>[
-                    new Text("JAVA ", style: GSYConstant.smallTextWhite),
-                    new Text(" 1112M  ", style: GSYConstant.smallTextWhite),
-                    new Text(" MIT ", style: GSYConstant.smallTextWhite),
+                    new Text(reposHeaderViewModel.repositoryType, style: GSYConstant.smallTextWhite),
+                    new Container(width: 5.3, height: 1.0),
+                    new Text(reposHeaderViewModel.repositorySize, style: GSYConstant.smallTextWhite),
+                    new Container(width: 5.3, height: 1.0),
+                    new Text(reposHeaderViewModel.license, style: GSYConstant.smallTextWhite),
                   ],
                 ),
                 new Padding(padding: new EdgeInsets.all(5.0)),
                 new Container(
-                    child: new Text("ffffffffffffffffffffffffffffffffff", style: GSYConstant.middleTextWhite),
+                    child: new Text(reposHeaderViewModel.repositoryDes, style: GSYConstant.smallTextWhite),
                     margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                     alignment: Alignment.topLeft),
                 new Container(
-                    child: new Text("fffffff", style: GSYConstant.smallTextWhite),
+                    child: new Text(infoText, style: GSYConstant.smallTextWhite),
                     margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
                     alignment: Alignment.topRight),
                 new Divider(
@@ -63,7 +76,7 @@ class ReposHeaderItem extends StatelessWidget {
                           child: new Center(
                             child: new GSYIConText(
                               GSYICons.REPOS_ITEM_STAR,
-                              "666",
+                              reposHeaderViewModel.repositoryStar,
                               GSYConstant.middleSubText,
                               Color(GSYColors.subTextColor),
                               15.0,
@@ -77,7 +90,7 @@ class ReposHeaderItem extends StatelessWidget {
                           child: new Center(
                             child: new GSYIConText(
                               GSYICons.REPOS_ITEM_FORK,
-                              "666",
+                              reposHeaderViewModel.repositoryFork,
                               GSYConstant.middleSubText,
                               Color(GSYColors.subTextColor),
                               15.0,
@@ -91,7 +104,7 @@ class ReposHeaderItem extends StatelessWidget {
                           child: new Center(
                             child: new GSYIConText(
                               GSYICons.REPOS_ITEM_ISSUE,
-                              "666",
+                              reposHeaderViewModel.repositoryWatch,
                               GSYConstant.middleSubText,
                               Color(GSYColors.subTextColor),
                               15.0,
@@ -105,7 +118,7 @@ class ReposHeaderItem extends StatelessWidget {
                           child: new Center(
                             child: new GSYIConText(
                               GSYICons.REPOS_ITEM_ISSUE,
-                              "666",
+                              reposHeaderViewModel.repositoryIssue,
                               GSYConstant.middleSubText,
                               Color(GSYColors.subTextColor),
                               15.0,
@@ -120,5 +133,51 @@ class ReposHeaderItem extends StatelessWidget {
             ),
           )),
     );
+  }
+}
+
+class ReposHeaderViewModel {
+  String ownerName = '---';
+  String ownerPic = "---";
+  String repositoryName = "---";
+  String repositorySize = "---";
+  String repositoryStar = "---";
+  String repositoryFork = "---";
+  String repositoryWatch = "---";
+  String repositoryIssue = "---";
+  String repositoryIssueClose = "";
+  String repositoryIssueAll = "";
+  String repositoryType = "---";
+  String repositoryDes = "---";
+  String repositoryLastActivity = "";
+  String repositoryParentName = "";
+  String created_at = "";
+  String push_at = "";
+  String license = "";
+  bool repositoryStared = false;
+  bool repositoryForked = false;
+  bool repositoryWatched = false;
+  bool repositoryIsFork = false;
+
+  ReposHeaderViewModel();
+
+  ReposHeaderViewModel.fromHttpMap(reposName, ownerName, map) {
+    this.ownerName = ownerName;
+    this.ownerPic = map["owner"]["avatar_url"];
+    this.repositoryName = reposName;
+    this.repositoryStar = map["watchers_count"] != null ? map["watchers_count"].toString() : "";
+    this.repositoryFork = map["forks_count"] != null ? map["forks_count"].toString() : "";
+    this.repositoryWatch = map["subscribers_count"] != null ? map["subscribers_count"].toString() : "";
+    this.repositoryIssue = map["open_issues_count"] != null ? map["open_issues_count"].toString() : "";
+    this.repositoryIssueClose = map["closed_issues_count"] != null ? map["closed_issues_count"].toString() : "";
+    this.repositoryIssueAll = map["all_issues_count"] != null ? map["all_issues_count"].toString() : "";
+    this.repositorySize = ((map["size"] / 1024.0)).toString() + "M";
+    this.repositoryType = map["language"];
+    this.repositoryDes = map["description"];
+    this.repositoryIsFork = map["fork"];
+    this.license = map["license"] != null ? map["license"]["name"] : "";
+    this.repositoryParentName = map["parent"] != null ? map["parent"]["full_name"] : null;
+    this.created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map["created_at"]));
+    this.push_at = CommonUtils.getNewsTimeStr(DateTime.parse(map["pushed_at"]));
   }
 }

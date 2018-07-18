@@ -62,7 +62,7 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
     return new EventItem(
       e,
       onPressed: () {
-        NavigatorUtils.goReposDetail(context, "", "");
+        NavigatorUtils.goReposDetail(context, "Carguo", "GSYGithubApp");
       },
     );
   }

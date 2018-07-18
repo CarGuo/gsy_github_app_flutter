@@ -11,8 +11,12 @@ import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
  * Date: 2018-07-18
  */
 class ReposDetailInfoPage extends StatefulWidget {
+  final ReposDetailInfoPageControl reposDetailInfoPageControl;
+
+  ReposDetailInfoPage(this.reposDetailInfoPageControl);
+
   @override
-  _ReposDetailInfoPageState createState() => _ReposDetailInfoPageState();
+  _ReposDetailInfoPageState createState() => _ReposDetailInfoPageState(reposDetailInfoPageControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -23,10 +27,14 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
 
   final List dataList = new List();
 
+  final ReposDetailInfoPageControl reposDetailInfoPageControl;
+
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
+  _ReposDetailInfoPageState(this.reposDetailInfoPageControl);
+
   Future<Null> _handleRefresh() async {
-   /* if (isLoading) {
+    /* if (isLoading) {
       return null;
     }
     isLoading = true;
@@ -66,7 +74,7 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new ReposHeaderItem();
+      return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel);
     }
   }
 
@@ -92,4 +100,8 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
   Widget build(BuildContext context) {
     return GSYPullLoadWidget(pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(index), _handleRefresh, _onLoadMore);
   }
+}
+
+class ReposDetailInfoPageControl {
+  ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
 }
