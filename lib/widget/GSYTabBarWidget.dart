@@ -21,10 +21,13 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final String title;
 
-  GSYTabBarWidget({Key key, this.type, this.tabItems, this.tabViews, this.backgroundColor, this.indicatorColor, this.title}) : super(key: key);
+  final Widget drawer;
+
+  GSYTabBarWidget({Key key, this.type, this.tabItems, this.tabViews, this.backgroundColor, this.indicatorColor, this.title, this.drawer})
+      : super(key: key);
 
   @override
-  _GSYTabBarState createState() => new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title);
+  _GSYTabBarState createState() => new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title, drawer);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -41,7 +44,9 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   final String _title;
 
-  _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title) : super();
+  final Widget _drawer;
+
+  _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title, this._drawer) : super();
 
   TabController _tabController;
 
@@ -89,6 +94,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
     ///底部tab bar
     return new Scaffold(
+        drawer: _drawer,
         appBar: new AppBar(
           backgroundColor: _backgroundColor,
           title: new Text(_title),

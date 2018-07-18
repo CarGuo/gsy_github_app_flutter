@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/page/DynamicPage.dart';
 import 'package:gsy_github_app_flutter/page/MyPage.dart';
 import 'package:gsy_github_app_flutter/page/TrendPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
+import 'package:gsy_github_app_flutter/widget/HomeDrawer.dart';
 
 class HomePage extends StatelessWidget {
   static final String sName = "home";
@@ -12,6 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new GSYTabBarWidget(
+        drawer: new HomeDrawer(),
         type: GSYTabBarWidget.BOTTOM_TAB,
         tabItems: [
           new Tab(icon: new Icon(GSYICons.MAIN_DT)),
