@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 ///颜色
 class GSYColors {
-
   static const int primaryValue = 0xFF24292E;
   static const int primaryLightValue = 0xFF42464b;
   static const int primaryDarkValue = 0xFF121917;
@@ -159,6 +158,11 @@ class GSYConstant {
     fontSize: middleTextWhiteSize,
   );
 
+  static const middleSubText = TextStyle(
+    color: Color(GSYColors.subTextColor),
+    fontSize: middleTextWhiteSize,
+  );
+
   static const largeText = TextStyle(
     color: Color(GSYColors.mainTextColor),
     fontSize: bigTextSize,
@@ -178,7 +182,6 @@ class GSYConstant {
 
 ///字符文本
 class GSYStrings {
-
   static const String welcomeMessage = "Welcome To Flutter";
 
   static const String app_name = "GSYGithubAppFlutter";
@@ -202,12 +205,9 @@ class GSYStrings {
 
   static const String load_more_not = "没有更多数据";
 
-
   static const String home_dynamic = "动态";
   static const String home_trend = "趋势";
   static const String home_my = "我的";
-
-
 
   static const String user_tab_repos = "仓库";
   static const String user_tab_fans = "粉丝";
@@ -215,6 +215,11 @@ class GSYStrings {
   static const String user_tab_star = "星标";
   static const String user_tab_honor = "荣耀";
   static const String user_dynamic_title = "个人动态";
+
+  static const String repos_tab_readme = "详情";
+  static const String repos_tab_info = "动态";
+  static const String repos_tab_file = "文件";
+  static const String repos_tab_issue = "ISSUE";
 }
 
 class GSYICons {
@@ -228,7 +233,6 @@ class GSYICons {
   static IconData REPOS_ITEM_STAR = new IconData(0xe643, fontFamily: GSYICons.FONT_FAMILY);
   static IconData REPOS_ITEM_FORK = new IconData(0xe67e, fontFamily: GSYICons.FONT_FAMILY);
   static IconData REPOS_ITEM_ISSUE = new IconData(0xe661, fontFamily: GSYICons.FONT_FAMILY);
-
 
   static IconData USER_ITEM_COMPANY = new IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
   static IconData USER_ITEM_LOCATION = new IconData(0xe7e6, fontFamily: GSYICons.FONT_FAMILY);
