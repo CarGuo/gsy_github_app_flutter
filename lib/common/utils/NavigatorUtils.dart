@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 
 /**
  * 导航栏
@@ -9,7 +10,6 @@ import 'package:gsy_github_app_flutter/page/PersonPage.dart';
  * Date: 2018-07-16
  */
 class NavigatorUtils {
-
   ///替换
   static pushReplacementNamed(BuildContext context, String routeName) {
     Navigator.pushReplacementNamed(context, routeName);
@@ -33,5 +33,10 @@ class NavigatorUtils {
   ///个人中心
   static goPerson(BuildContext context, String userName) {
     Navigator.push(context, new MaterialPageRoute(builder: (context) => new PersonPage(userName)));
+  }
+
+  ///仓库详情
+  static goReposDetail(BuildContext context, String reposName, String userName) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(reposName, userName)));
   }
 }

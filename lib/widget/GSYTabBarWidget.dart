@@ -75,7 +75,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
     if (this._type == GSYTabBarWidget.TOP_TAB) {
       ///顶部tab bar
       return new DefaultTabController(
-        length: 3,
+        length: _tabItems.length,
         child: new Scaffold(
           appBar: new AppBar(
             backgroundColor: _backgroundColor,

@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:redux/redux.dart';
@@ -20,8 +21,7 @@ class DynamicPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin  {
-
+class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin {
   bool isLoading = false;
 
   int page = 1;
@@ -59,7 +59,12 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   }
 
   _renderEventItem(EventViewModel e) {
-    return new EventItem(e);
+    return new EventItem(
+      e,
+      onPressed: () {
+        NavigatorUtils.goReposDetail(context, "", "");
+      },
+    );
   }
 
   Store<GSYState> _getStore() {
