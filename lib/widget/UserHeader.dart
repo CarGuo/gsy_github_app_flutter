@@ -21,7 +21,7 @@ class UserHeaderItem extends StatelessWidget {
         new GSYCardItem(
             color: Color(GSYColors.primaryValue),
             margin: EdgeInsets.all(0.0),
-            shape: new RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4.0), bottomRight: Radius.circular(4.0))),
+            shape: new RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0))),
             child: new Padding(
               padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
               child: new Column(
@@ -88,6 +88,9 @@ class UserHeaderItem extends StatelessWidget {
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),
                   new Padding(padding: EdgeInsets.all(10.0)),
+                  new Divider(
+                    color: Color(GSYColors.subLightTextColor),
+                  ),
                   new Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -96,11 +99,13 @@ class UserHeaderItem extends StatelessWidget {
                           child: new Text("仓库\n" + userInfo.public_repos.toString(), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
+                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
                           child: new Text("粉丝\n" + userInfo.followers.toString(), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
+                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
                           child: new Text(
@@ -110,11 +115,13 @@ class UserHeaderItem extends StatelessWidget {
                           ),
                         ),
                       ),
+                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
                           child: new Text("星标\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
+                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
                           child: new Text("荣耀\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
