@@ -16,9 +16,24 @@ class HomePage extends StatelessWidget {
         drawer: new HomeDrawer(),
         type: GSYTabBarWidget.BOTTOM_TAB,
         tabItems: [
-          new Tab(icon: new Icon(GSYICons.MAIN_DT)),
-          new Tab(icon: new Icon(GSYICons.MAIN_QS)),
-          new Tab(icon: new Icon(GSYICons.MAIN_MY)),
+          new Tab(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[new Icon(GSYICons.MAIN_DT, size: 16.0), new Text(GSYStrings.home_dynamic)],
+            ),
+          ),
+          new Tab(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[new Icon(GSYICons.MAIN_QS, size: 16.0), new Text(GSYStrings.home_trend)],
+            ),
+          ),
+          new Tab(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[new Icon(GSYICons.MAIN_MY, size: 16.0), new Text(GSYStrings.home_my)],
+            ),
+          ),
         ],
         tabViews: [
           new DynamicPage(),
