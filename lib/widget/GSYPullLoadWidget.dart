@@ -47,6 +47,14 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     super.initState();
   }
 
+  _getListCount() {
+    if (control.needHeader) {
+      return (control.dataList.length > 0) ? control.dataList.length + 2 : control.dataList.length + 1;
+    } else {
+      return (control.dataList.length > 0) ? control.dataList.length + 1 : control.dataList.length;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new RefreshIndicator(
@@ -60,7 +68,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
             return itemBuilder(context, index);
           }
         },
-        itemCount: (control.dataList.length > 0) ? control.dataList.length + 1 : control.dataList.length,
+        itemCount: _getListCount(),
         controller: _scrollController,
       ),
     );
@@ -81,4 +89,5 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 class GSYPullLoadWidgetControl {
   List dataList = new List();
   bool needLoadMore = true;
+  bool needHeader = false;
 }

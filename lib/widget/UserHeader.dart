@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
@@ -8,6 +9,10 @@ import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
  * Date: 2018-07-17
  */
 class UserHeaderItem extends StatelessWidget {
+  final User userInfo;
+
+  UserHeaderItem(this.userInfo);
+
   @override
   Widget build(BuildContext context) {
     return new Column(
@@ -30,7 +35,7 @@ class UserHeaderItem extends StatelessWidget {
                           placeholder: "static/images/logo.png",
                           //预览图
                           fit: BoxFit.fitWidth,
-                          image: "fffffff",
+                          image: userInfo.avatar_url,
                           width: 80.0,
                           height: 80.0,
                         ),
@@ -40,26 +45,19 @@ class UserHeaderItem extends StatelessWidget {
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            new Text("Login", style: GSYConstant.normalTextBold),
+                            new Text(userInfo.login, style: GSYConstant.largeTextWhiteBold),
+                            new Text(userInfo.name, style: GSYConstant.subLightSmallText),
                             new GSYIConText(
-                              GSYICons.REPOS_ITEM_USER,
-                              "Name ",
+                              GSYICons.USER_ITEM_COMPANY,
+                              userInfo.company == null ? GSYStrings.nothing_now : userInfo.company,
                               GSYConstant.subLightSmallText,
                               Color(GSYColors.subLightTextColor),
                               10.0,
                               padding: 3.0,
                             ),
                             new GSYIConText(
-                              GSYICons.REPOS_ITEM_USER,
-                              "company ",
-                              GSYConstant.subLightSmallText,
-                              Color(GSYColors.subLightTextColor),
-                              10.0,
-                              padding: 3.0,
-                            ),
-                            new GSYIConText(
-                              GSYICons.REPOS_ITEM_USER,
-                              "location ",
+                              GSYICons.USER_ITEM_LOCATION,
+                              userInfo.location == null ? GSYStrings.nothing_now : userInfo.location,
                               GSYConstant.subLightSmallText,
                               Color(GSYColors.subLightTextColor),
                               10.0,
@@ -71,19 +69,20 @@ class UserHeaderItem extends StatelessWidget {
                     ],
                   ),
                   new Container(
-                      child: new Text(
-                        "link",
-                        style: GSYConstant.subSmallText,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                      child: new GSYIConText(
+                        GSYICons.USER_ITEM_LINK,
+                        userInfo.blog == null ? GSYStrings.nothing_now : userInfo.blog,
+                        GSYConstant.subLightSmallText,
+                        Color(GSYColors.subLightTextColor),
+                        10.0,
+                        padding: 3.0,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),
                   new Container(
                       child: new Text(
-                        "desssssssssssss",
-                        style: GSYConstant.subSmallText,
-                        maxLines: 3,
+                        userInfo.bio == null ? GSYStrings.nothing_now : userInfo.bio,
+                        style: GSYConstant.subLightSmallText,
                         overflow: TextOverflow.ellipsis,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
@@ -94,27 +93,31 @@ class UserHeaderItem extends StatelessWidget {
                     children: <Widget>[
                       new Expanded(
                         child: new Center(
-                          child: new Text("fff\nff"),
+                          child: new Text("仓库\n" + userInfo.public_repos.toString(), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                       new Expanded(
                         child: new Center(
-                          child: new Text("fff\nff"),
+                          child: new Text("粉丝\n" + userInfo.followers.toString(), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                       new Expanded(
                         child: new Center(
-                          child: new Text("fff\nff"),
+                          child: new Text(
+                            "关注\n" + userInfo.following.toString(),
+                            textAlign: TextAlign.center,
+                            style: GSYConstant.subSmallText,
+                          ),
                         ),
                       ),
                       new Expanded(
                         child: new Center(
-                          child: new Text("fff\nff"),
+                          child: new Text("星标\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                       new Expanded(
                         child: new Center(
-                          child: new Text("fff\nff"),
+                          child: new Text("荣耀\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                     ],
