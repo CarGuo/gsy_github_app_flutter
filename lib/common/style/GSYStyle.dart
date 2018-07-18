@@ -208,6 +208,7 @@ class GSYStrings {
   static const String user_tab_focus = "关注";
   static const String user_tab_star = "星标";
   static const String user_tab_honor = "荣耀";
+  static const String user_dynamic_title = "个人动态";
 }
 
 class GSYICons {

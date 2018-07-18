@@ -34,4 +34,26 @@ class EventDao {
       return null;
     }
   }
+
+  /**
+   * 用户行为事件
+   */
+  static getEventDao(userName, {page = 0}) async {
+    String url = Address.getEvent(userName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<EventViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return null;
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(EventViewModel.fromEventMap(data[i]));
+      }
+      return list;
+    } else {
+      return null;
+    }
+  }
+
 }

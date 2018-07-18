@@ -130,7 +130,15 @@ class UserHeaderItem extends StatelessWidget {
                   ),
                 ],
               ),
-            ))
+            )),
+        new Container(
+            child: new Text(
+              GSYStrings.user_dynamic_title,
+              style: GSYConstant.normalTextBold,
+              overflow: TextOverflow.ellipsis,
+            ),
+            margin: new EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
+            alignment: Alignment.topLeft),
       ],
     );
   }

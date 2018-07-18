@@ -81,21 +81,23 @@ class EventUtils {
         String descSpan = '';
 
         int count = event["comments"];
-        int maxLines = 4;
-        int max = (count > maxLines) ? maxLines - 1 : count;
+        if(count != null) {
+          int maxLines = 4;
+          int max = (count != null && count > maxLines) ? maxLines - 1 : count;
 
-        for (int i = 0; i < max; i++) {
-          var commit = event["payload"]["comment"].get(i);
-          if (i != 0) {
-            descSpan += ("\n");
+          for (int i = 0; i < max; i++) {
+            var commit = event["payload"]["comment"].get(i);
+            if (i != 0) {
+              descSpan += ("\n");
+            }
+            String sha = commit["sha"].substring(0, 7);
+            descSpan += sha;
+            descSpan += " ";
+            descSpan += commit["message"];
           }
-          String sha = commit["sha"].substring(0, 7);
-          descSpan += sha;
-          descSpan += " ";
-          descSpan += commit["message"];
-        }
-        if (count > maxLines) {
-          descSpan = descSpan + "\n" + "...";
+          if (count > maxLines) {
+            descSpan = descSpan + "\n" + "...";
+          }
         }
         break;
       case "ReleaseEvent":
