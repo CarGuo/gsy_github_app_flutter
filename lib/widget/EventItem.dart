@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
+import 'package:gsy_github_app_flutter/page/PersonPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
 class EventItem extends StatelessWidget {
@@ -22,23 +23,29 @@ class EventItem extends StatelessWidget {
           child: new FlatButton(
               onPressed: () => {},
               child: new Padding(
-                padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+                padding: new EdgeInsets.only(left: 5.0, top: 10.0, right: 10.0, bottom: 10.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     new Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        new ClipOval(
-                          child: new FadeInImage.assetNetwork(
-                            placeholder: "static/images/logo.png",
-                            //预览图
-                            fit: BoxFit.fitWidth,
-                            image: eventViewModel.actionUserPic,
-                            width: 30.0,
-                            height: 30.0,
-                          ),
-                        ),
+                        new IconButton(
+                            icon: new ClipOval(
+                              child: new FadeInImage.assetNetwork(
+                                placeholder: "static/images/logo.png",
+                                //预览图
+                                fit: BoxFit.fitWidth,
+                                image: eventViewModel.actionUserPic,
+                                width: 30.0,
+                                height: 30.0,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(builder: (context) => new PersonPage(eventViewModel.actionUser)),
+                              );
+                            }),
                         new Padding(padding: EdgeInsets.all(5.0)),
                         new Expanded(child: new Text(eventViewModel.actionUser, style: GSYConstant.smallTextBold)),
                         new Text(eventViewModel.actionTime, style: GSYConstant.subSmallText),

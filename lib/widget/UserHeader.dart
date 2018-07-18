@@ -35,7 +35,7 @@ class UserHeaderItem extends StatelessWidget {
                           placeholder: "static/images/logo.png",
                           //预览图
                           fit: BoxFit.fitWidth,
-                          image: userInfo.avatar_url,
+                          image: userInfo.avatar_url == null ? "http://null" : userInfo.avatar_url,
                           width: 80.0,
                           height: 80.0,
                         ),
@@ -45,8 +45,8 @@ class UserHeaderItem extends StatelessWidget {
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            new Text(userInfo.login, style: GSYConstant.largeTextWhiteBold),
-                            new Text(userInfo.name, style: GSYConstant.subLightSmallText),
+                            new Text(userInfo.login == null ? "" : userInfo.login, style: GSYConstant.largeTextWhiteBold),
+                            new Text(userInfo.name == null ? "" : userInfo.name, style: GSYConstant.subLightSmallText),
                             new GSYIConText(
                               GSYICons.USER_ITEM_COMPANY,
                               userInfo.company == null ? GSYStrings.nothing_now : userInfo.company,
@@ -96,21 +96,21 @@ class UserHeaderItem extends StatelessWidget {
                     children: <Widget>[
                       new Expanded(
                         child: new Center(
-                          child: new Text(GSYStrings.user_tab_repos + "\n" + userInfo.public_repos.toString(),
+                          child: new Text(GSYStrings.user_tab_repos + "\n" + (userInfo.public_repos == null ? "" : userInfo.public_repos.toString()),
                               textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
-                          child: new Text(GSYStrings.user_tab_fans + "\n" + userInfo.followers.toString(),
+                          child: new Text(GSYStrings.user_tab_fans + "\n" + (userInfo.followers == null ? "" : userInfo.followers.toString()),
                               textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
-                          child: new Text(GSYStrings.user_tab_focus + "\n" + userInfo.following.toString(),
+                          child: new Text(GSYStrings.user_tab_focus + "\n" + (userInfo.following == null ? "" : userInfo.following.toString()),
                               textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),

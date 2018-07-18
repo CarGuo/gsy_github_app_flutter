@@ -30,7 +30,6 @@ User _$UserFromJson(Map<String, dynamic> json) => new User(
     json['blog'] as String,
     json['location'] as String,
     json['email'] as String,
-    json['hireable'] as String,
     json['starred'] as String,
     json['bio'] as String,
     json['public_repos'] as int,
@@ -74,7 +73,6 @@ abstract class _$UserSerializerMixin {
   String get blog;
   String get location;
   String get email;
-  String get hireable;
   String get starred;
   String get bio;
   int get public_repos;
@@ -113,7 +111,6 @@ abstract class _$UserSerializerMixin {
         'blog': blog,
         'location': location,
         'email': email,
-        'hireable': hireable,
         'starred': starred,
         'bio': bio,
         'public_repos': public_repos,
