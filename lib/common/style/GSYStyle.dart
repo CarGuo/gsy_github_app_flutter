@@ -200,6 +200,14 @@ class GSYStrings {
   static const String home_dynamic = "动态";
   static const String home_trend = "趋势";
   static const String home_my = "我的";
+
+
+
+  static const String user_tab_repos = "仓库";
+  static const String user_tab_fans = "粉丝";
+  static const String user_tab_focus = "关注";
+  static const String user_tab_star = "星标";
+  static const String user_tab_honor = "荣耀";
 }
 
 class GSYICons {

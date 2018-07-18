@@ -96,35 +96,34 @@ class UserHeaderItem extends StatelessWidget {
                     children: <Widget>[
                       new Expanded(
                         child: new Center(
-                          child: new Text("仓库\n" + userInfo.public_repos.toString(), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+                          child: new Text(GSYStrings.user_tab_repos + "\n" + userInfo.public_repos.toString(),
+                              textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
-                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
+                      new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
-                          child: new Text("粉丝\n" + userInfo.followers.toString(), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+                          child: new Text(GSYStrings.user_tab_fans + "\n" + userInfo.followers.toString(),
+                              textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
-                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
+                      new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
-                          child: new Text(
-                            "关注\n" + userInfo.following.toString(),
-                            textAlign: TextAlign.center,
-                            style: GSYConstant.subSmallText,
-                          ),
+                          child: new Text(GSYStrings.user_tab_focus + "\n" + userInfo.following.toString(),
+                              textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
-                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
+                      new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
-                          child: new Text("星标\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+                          child: new Text(GSYStrings.user_tab_star + "\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
-                      new Container(width: 0.3, height: 40.0, color:  Color(GSYColors.subLightTextColor)),
+                      new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       new Expanded(
                         child: new Center(
-                          child: new Text("荣耀\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+                          child: new Text(GSYStrings.user_tab_honor + "\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
                         ),
                       ),
                     ],
