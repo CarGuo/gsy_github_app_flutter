@@ -28,3 +28,6 @@ flutter packages pub run build_runner build
 
 
 ### 配合AutomaticKeepAliveClientMixin可以keep住tab
+
+
+https://github.com/flutter/flutter/issues/19030 没有webview，残念

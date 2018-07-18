@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryDetailReadmePage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 
 /**
@@ -26,7 +27,7 @@ class RepositoryDetailPage extends StatelessWidget {
           new Tab(text: "222"),
         ],
         tabViews: [
-          new Icon(GSYICons.MAIN_DT),
+          new RepositoryDetailReadmePage(),
           new Icon(GSYICons.MAIN_DT),
           new Icon(GSYICons.MAIN_DT),
           new Icon(GSYICons.MAIN_DT),
