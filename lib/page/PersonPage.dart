@@ -28,7 +28,7 @@ class PersonPage extends StatefulWidget {
 class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin {
   final String userName;
 
-  User userInfo;
+  User userInfo = User.empty();
 
   _PersonState(this.userName);
 

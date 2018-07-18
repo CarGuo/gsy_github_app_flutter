@@ -83,7 +83,6 @@ class UserHeaderItem extends StatelessWidget {
                       child: new Text(
                         userInfo.bio == null ? GSYStrings.nothing_now : userInfo.bio,
                         style: GSYConstant.subLightSmallText,
-                        overflow: TextOverflow.ellipsis,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),
