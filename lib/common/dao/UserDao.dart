@@ -94,4 +94,9 @@ class UserDao {
       return new DataResult(res.data, false);
     }
   }
+
+  static clearAll() async {
+    HttpManager.clearAuthorization();
+    LocalStorage.remove(Config.USER_INFO);
+  }
 }

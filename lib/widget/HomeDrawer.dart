@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 
 /**
  * 主页drawer
@@ -26,7 +28,7 @@ class HomeDrawer extends StatelessWidget {
                   style: GSYConstant.largeTextWhite,
                 ),
                 accountEmail: new Text(
-                  user.email != null ?  user.email: user.name,
+                  user.email != null ? user.email : user.name,
                   style: GSYConstant.subNormalText,
                 ),
                 //用户名
@@ -46,8 +48,14 @@ class HomeDrawer extends StatelessWidget {
               ),
               new ListTile(
                   //第一个功能项
-                  title: new Text(GSYStrings.Login_out, style: GSYConstant.normalText,),
-                  onTap: () {}),
+                  title: new Text(
+                    GSYStrings.Login_out,
+                    style: GSYConstant.normalText,
+                  ),
+                  onTap: () {
+                    NavigatorUtils.goLogin(context);
+                    UserDao.clearAll();
+                  }),
             ],
           ),
         );
