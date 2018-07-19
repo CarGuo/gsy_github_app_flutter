@@ -17,10 +17,10 @@ class ReposHeaderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String createStr = reposHeaderViewModel.repositoryIsFork
-        ? "frok at " + " " + reposHeaderViewModel.repositoryParentName + '\n'
-        : "create at " + " " + reposHeaderViewModel.created_at + "\n";
+        ? "Frok at " + " " + reposHeaderViewModel.repositoryParentName + '\n'
+        : "Create at " + " " + reposHeaderViewModel.created_at + "\n";
 
-    String updateStr = "last commit at " + reposHeaderViewModel.push_at;
+    String updateStr = "Last commit at " + reposHeaderViewModel.push_at;
 
     String infoText = createStr + ((reposHeaderViewModel.push_at != null) ? updateStr : '');
 
@@ -47,16 +47,16 @@ class ReposHeaderItem extends StatelessWidget {
                 new Padding(padding: new EdgeInsets.all(5.0)),
                 new Row(
                   children: <Widget>[
-                    new Text(reposHeaderViewModel.repositoryType, style: GSYConstant.smallTextWhite),
+                    new Text(reposHeaderViewModel.repositoryType, style: GSYConstant.subLightSmallText),
                     new Container(width: 5.3, height: 1.0),
-                    new Text(reposHeaderViewModel.repositorySize, style: GSYConstant.smallTextWhite),
+                    new Text(reposHeaderViewModel.repositorySize, style: GSYConstant.subLightSmallText),
                     new Container(width: 5.3, height: 1.0),
-                    new Text(reposHeaderViewModel.license, style: GSYConstant.smallTextWhite),
+                    new Text(reposHeaderViewModel.license, style: GSYConstant.subLightSmallText),
                   ],
                 ),
                 new Padding(padding: new EdgeInsets.all(5.0)),
                 new Container(
-                    child: new Text(reposHeaderViewModel.repositoryDes, style: GSYConstant.smallTextWhite),
+                    child: new Text(reposHeaderViewModel.repositoryDes, style: GSYConstant.subLightSmallText),
                     margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                     alignment: Alignment.topLeft),
                 new Container(
@@ -171,7 +171,7 @@ class ReposHeaderViewModel {
     this.repositoryIssue = map["open_issues_count"] != null ? map["open_issues_count"].toString() : "";
     this.repositoryIssueClose = map["closed_issues_count"] != null ? map["closed_issues_count"].toString() : "";
     this.repositoryIssueAll = map["all_issues_count"] != null ? map["all_issues_count"].toString() : "";
-    this.repositorySize = ((map["size"] / 1024.0)).toString() + "M";
+    this.repositorySize = ((map["size"] / 1024.0)).toString().substring(0, 3) + "M";
     this.repositoryType = map["language"];
     this.repositoryDes = map["description"];
     this.repositoryIsFork = map["fork"];

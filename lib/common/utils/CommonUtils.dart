@@ -15,7 +15,7 @@ class CommonUtils {
   static final double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
   static String getDateStr(DateTime date) {
-    return date.toString();
+    return date.toString().substring(0, 10);
   }
 
   ///日期格式转换

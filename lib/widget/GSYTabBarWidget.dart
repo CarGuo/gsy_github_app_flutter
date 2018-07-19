@@ -97,7 +97,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
         drawer: _drawer,
         appBar: new AppBar(
           backgroundColor: _backgroundColor,
-          title: new Text(_title),
+          title: new Text(_title, maxLines: 1, overflow: TextOverflow.ellipsis,),
         ),
         body: new TabBarView(
             //TabBarView呈现内容，因此放到Scaffold的body中
