@@ -23,11 +23,26 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final Widget drawer;
 
-  GSYTabBarWidget({Key key, this.type, this.tabItems, this.tabViews, this.backgroundColor, this.indicatorColor, this.title, this.drawer})
+  final Widget floatingActionButton;
+
+  final TarWidgetControl tarWidgetControl;
+
+  GSYTabBarWidget(
+      {Key key,
+      this.type,
+      this.tabItems,
+      this.tabViews,
+      this.backgroundColor,
+      this.indicatorColor,
+      this.title,
+      this.drawer,
+      this.floatingActionButton,
+      this.tarWidgetControl})
       : super(key: key);
 
   @override
-  _GSYTabBarState createState() => new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title, drawer);
+  _GSYTabBarState createState() =>
+      new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title, drawer, floatingActionButton, tarWidgetControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -46,7 +61,13 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   final Widget _drawer;
 
-  _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title, this._drawer) : super();
+  final Widget _floatingActionButton;
+
+  final TarWidgetControl tarWidgetControl;
+
+  _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title, this._drawer,
+      this._floatingActionButton, this.tarWidgetControl)
+      : super();
 
   TabController _tabController;
 
@@ -77,6 +98,8 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
       return new DefaultTabController(
         length: _tabItems.length,
         child: new Scaffold(
+          floatingActionButton: _floatingActionButton,
+          persistentFooterButtons: tarWidgetControl == null ? [] : tarWidgetControl.footerButton,
           appBar: new AppBar(
             backgroundColor: _backgroundColor,
             title: new Text(_title),
@@ -97,7 +120,11 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
         drawer: _drawer,
         appBar: new AppBar(
           backgroundColor: _backgroundColor,
-          title: new Text(_title, maxLines: 1, overflow: TextOverflow.ellipsis,),
+          title: new Text(
+            _title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         body: new TabBarView(
             //TabBarView呈现内容，因此放到Scaffold的body中
@@ -114,4 +141,8 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
           ),
         ));
   }
+}
+
+class TarWidgetControl {
+  List<Widget> footerButton = [];
 }

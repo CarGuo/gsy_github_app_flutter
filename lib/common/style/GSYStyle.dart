@@ -143,9 +143,10 @@ class GSYConstant {
     fontSize: normalTextSize,
   );
 
-  static const normalTextMitWhite = TextStyle(
+  static const normalTextMitWhiteBold = TextStyle(
     color: Color(GSYColors.miWhite),
     fontSize: normalTextSize,
+    fontWeight: FontWeight.bold
   );
 
   static const normalTextLight = TextStyle(
@@ -233,6 +234,11 @@ class GSYICons {
   static IconData REPOS_ITEM_STAR = new IconData(0xe643, fontFamily: GSYICons.FONT_FAMILY);
   static IconData REPOS_ITEM_FORK = new IconData(0xe67e, fontFamily: GSYICons.FONT_FAMILY);
   static IconData REPOS_ITEM_ISSUE = new IconData(0xe661, fontFamily: GSYICons.FONT_FAMILY);
+
+
+  static IconData REPOS_ITEM_STARED = new IconData(0xe698, fontFamily: GSYICons.FONT_FAMILY);
+  static IconData REPOS_ITEM_WATCH = new IconData(0xe681, fontFamily: GSYICons.FONT_FAMILY);
+  static IconData REPOS_ITEM_WATCHED = new IconData(0xee629, fontFamily: GSYICons.FONT_FAMILY);
 
   static IconData USER_ITEM_COMPANY = new IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
   static IconData USER_ITEM_LOCATION = new IconData(0xe7e6, fontFamily: GSYICons.FONT_FAMILY);

@@ -91,6 +91,7 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return GSYPullLoadWidget(pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(pullLoadWidgetControl.dataList[index]),

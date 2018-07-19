@@ -23,12 +23,12 @@ class HttpManager {
   ///[ params] 请求参数
   ///[ header] 外加头
   ///[ option] 配置
-  static netFetch(url, params, Map<String, String> header, Options option) async {
+  static netFetch(url, params, Map<String, String> header, Options option, {noTip = false}) async {
 
     //没有网络
     var connectivityResult = await (new Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      return new ResultData(Code.errorHandleFunction(Code.NETWORK_ERROR, ""), false, Code.NETWORK_ERROR);
+      return new ResultData(Code.errorHandleFunction(Code.NETWORK_ERROR, "", noTip), false, Code.NETWORK_ERROR);
     }
 
     Map<String, String> headers = new HashMap();
@@ -71,7 +71,7 @@ class HttpManager {
         print('请求异常: ' + e.toString());
         print('请求异常url: ' + url);
       }
-      return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message), false, errorResponse.statusCode);
+      return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message, noTip), false, errorResponse.statusCode);
     }
 
     if (Config.DEBUG) {
@@ -104,7 +104,7 @@ class HttpManager {
       print(e.toString() + url);
       return new ResultData(response.data, false, response.statusCode, headers: response.headers);
     }
-    return new ResultData(Code.errorHandleFunction(response.statusCode, ""), false, response.statusCode);
+    return new ResultData(Code.errorHandleFunction(response.statusCode, "", noTip), false, response.statusCode);
   }
 
   ///清除授权

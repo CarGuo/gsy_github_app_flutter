@@ -112,6 +112,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return GSYPullLoadWidget(

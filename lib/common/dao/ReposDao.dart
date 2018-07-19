@@ -85,4 +85,17 @@ class ReposDao {
       return new DataResult(null, false);
     }
   }
+
+  /**
+   * 获取用户对当前仓库的star、watcher状态
+   */
+  static getRepositoryStatusDao(userName, reposName) async {
+    String urls = Address.resolveStarRepos(userName, reposName);
+    String urlw = Address.resolveWatcherRepos(userName, reposName);
+    var resS = await HttpManager.netFetch(urls, null, null, null, noTip: true);
+    var resW = await HttpManager.netFetch(urlw, null, null, null, noTip: true);
+    var data = {"star": resS.result, "watch": resW.result};
+    return new DataResult(data, true);
+  }
+
 }

@@ -73,6 +73,7 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // See AutomaticKeepAliveClientMixin.
     return GSYPullLoadWidget(
         pullLoadWidgetControl, (BuildContext context, int index) => _renderItem(pullLoadWidgetControl.dataList[index]), _handleRefresh, _onLoadMore);
   }
