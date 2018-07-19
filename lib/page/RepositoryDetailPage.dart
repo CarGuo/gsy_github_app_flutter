@@ -65,12 +65,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> with Automa
         ],
         tabViews: [
           new RepositoryDetailReadmePage(),
-          new ReposDetailInfoPage(reposDetailInfoPageControl),
+          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName),
           new Icon(GSYICons.MAIN_DT),
           new Icon(GSYICons.MAIN_DT),
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
-        title: GSYStrings.app_name);
+        title: userName + "/" + reposName);
   }
 }

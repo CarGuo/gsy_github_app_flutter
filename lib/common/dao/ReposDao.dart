@@ -2,6 +2,7 @@ import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
+import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 
@@ -59,6 +60,27 @@ class ReposDao {
         return new DataResult(null, false);
       }
       return new DataResult(ReposHeaderViewModel.fromHttpMap(reposName, userName, data), true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * 仓库活动事件
+   */
+  static getRepositoryEventDao(userName, reposName, {page = 0}) async {
+    String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<EventViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(EventViewModel.fromEventMap(data[i]));
+      }
+      return new DataResult(list, true);
     } else {
       return new DataResult(null, false);
     }

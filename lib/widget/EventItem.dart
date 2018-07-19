@@ -3,7 +3,6 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
-import 'package:gsy_github_app_flutter/page/PersonPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
 /**
@@ -12,7 +11,6 @@ import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
  * Date: 2018-07-16
  */
 class EventItem extends StatelessWidget {
-
   final EventViewModel eventViewModel;
 
   final VoidCallback onPressed;
@@ -75,6 +73,7 @@ class EventViewModel {
   String actionDes;
   String actionTime;
   String actionTarget;
+  var eventMap;
 
   EventViewModel.fromEventMap(eventMap) {
     actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["created_at"]));
@@ -83,5 +82,6 @@ class EventViewModel {
     var other = EventUtils.getActionAndDes(eventMap);
     actionDes = other["des"];
     actionTarget = other["actionStr"];
+    this.eventMap = eventMap;
   }
 }

@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
+import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
+import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 
@@ -11,16 +14,23 @@ import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
  * Date: 2018-07-18
  */
 class ReposDetailInfoPage extends StatefulWidget {
+  final String userName;
+
+  final String reposName;
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
-  ReposDetailInfoPage(this.reposDetailInfoPageControl);
+  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName);
 
   @override
-  _ReposDetailInfoPageState createState() => _ReposDetailInfoPageState(reposDetailInfoPageControl);
+  _ReposDetailInfoPageState createState() => _ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName);
 }
 
 // ignore: mixin_inherits_from_not_object
 class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with AutomaticKeepAliveClientMixin {
+  final String userName;
+
+  final String reposName;
+
   bool isLoading = false;
 
   int page = 1;
@@ -31,44 +41,44 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
-  _ReposDetailInfoPageState(this.reposDetailInfoPageControl);
+  _ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName);
 
   Future<Null> _handleRefresh() async {
-    /* if (isLoading) {
+    if (isLoading) {
       return null;
     }
     isLoading = true;
     page = 1;
-    var result = await EventDao.getEventDao(_getUserName(), page: page);
-    if (result != null && result.length > 0) {
+    var res = await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
+    if (res != null && res.result) {
       pullLoadWidgetControl.dataList.clear();
       setState(() {
-        pullLoadWidgetControl.dataList.addAll(result);
+        pullLoadWidgetControl.dataList.addAll(res.data);
       });
     }
     setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null && result.length == Config.PAGE_SIZE);
+      pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
     });
-    isLoading = false;*/
+    isLoading = false;
     return null;
   }
 
   Future<Null> _onLoadMore() async {
-    /*if (isLoading) {
+    if (isLoading) {
       return null;
     }
     isLoading = true;
     page++;
-    var result = await EventDao.getEventDao(_getUserName(), page: page);
-    if (result != null && result.length > 0) {
+    var res = await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
+    if (res != null && res.result) {
       setState(() {
-        pullLoadWidgetControl.dataList.addAll(result);
+        pullLoadWidgetControl.dataList.addAll(res.data);
       });
     }
     setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null);
+      pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
     });
-    isLoading = false;*/
+    isLoading = false;
     return null;
   }
 
@@ -76,6 +86,14 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
     if (index == 0) {
       return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel);
     }
+
+    EventViewModel eventViewModel =  pullLoadWidgetControl.dataList[index - 1];
+    return new EventItem(
+      pullLoadWidgetControl.dataList[index - 1],
+      onPressed: () {
+        EventUtils.ActionUtils(context, eventViewModel.eventMap, "");
+      },
+    );
   }
 
   @override

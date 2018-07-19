@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
+
 /**
  * 事件逻辑
  * Created by guoshuyu
  * Date: 2018-07-16
  */
 class EventUtils {
-
   ///事件描述与动作
   static getActionAndDes(event) {
     String actionStr;
@@ -118,5 +120,66 @@ class EventUtils {
     }
 
     return {"actionStr": actionStr, "des": des != null ? des : ""};
+  }
+
+  ///跳转
+  static ActionUtils(BuildContext context, event, currentRepository) {
+    if (event["repo"] == null) {
+      NavigatorUtils.goPerson(context, event["actor"]["login"]);
+      return;
+    }
+    String owner = event["repo"]["name"].split("/")[0];
+    String repositoryName = event["repo"]["name"].split("/")[1];
+    String fullName = owner + '/' + repositoryName;
+    switch (event["type"]) {
+      case 'ForkEvent':
+        String forkName = event["actor"]["login"] + "/" + repositoryName;
+        if (forkName == currentRepository) {
+          return;
+        }
+        NavigatorUtils.goReposDetail(context, event["actor"]["login"], repositoryName);
+        break;
+      case 'PushEvent':
+        if (event["payload"]["commits"] == null) {
+          if (fullName == currentRepository) {
+            return;
+          }
+          NavigatorUtils.goReposDetail(context, owner, repositoryName);
+        } else if (event["payload"]["commits"].length == 1) {
+          //goToPush(repositoryName, owner, event.payload.commits[0].sha)
+        } else {
+          //Actions.OptionModal({dataList: getOptionItem(repositoryName, owner, event.payload.commits)});
+        }
+        break;
+      case 'ReleaseEvent':
+        String url = event["payload"]["release"]["html_url"];
+        //launchUrl(url);
+        break;
+      case 'IssueCommentEvent':
+      case 'IssuesEvent':
+        // 去issue
+        /*Actions.IssueDetail({
+          issue: event.payload.issue,
+          title: fullName,
+          repositoryName: repositoryName,
+          userName: owner,
+          needRightBtn: true,
+          iconType:1,
+          rightBtn: 'home',
+          rightBtnPress: () => {
+          Actions.RepositoryDetail({
+          repositoryName: repositoryName, ownerName: owner
+          , title: repositoryName
+          });
+          }
+          });*/
+        break;
+      default:
+        if (fullName == currentRepository) {
+          return;
+        }
+        NavigatorUtils.goReposDetail(context, owner, repositoryName);
+        break;
+    }
   }
 }
