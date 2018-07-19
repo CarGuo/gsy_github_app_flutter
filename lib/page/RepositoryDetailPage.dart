@@ -71,6 +71,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> with Automa
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
-        title: userName + "/" + reposName);
+        title: reposName);
   }
 }

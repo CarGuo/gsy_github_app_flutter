@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 
@@ -49,7 +50,9 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   }
 
   _renderItem(ReposViewModel e) {
-    return new ReposItem(e);
+    return new ReposItem(e, onPressed: () {
+      NavigatorUtils.goReposDetail(context, e.ownerName, e.repositoryName);
+    });
   }
 
   @override

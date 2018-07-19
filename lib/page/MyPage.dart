@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
@@ -74,7 +75,10 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     if (index == 0) {
       return new UserHeaderItem(userInfo);
     }
-    return new EventItem(pullLoadWidgetControl.dataList[index - 1]);
+    EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
+    return new EventItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
+      EventUtils.ActionUtils(context, eventViewModel.eventMap, "");
+    });
   }
 
   Store<GSYState> _getStore() {

@@ -22,7 +22,7 @@ class EventItem extends StatelessWidget {
     Widget des = (eventViewModel.actionDes == null || eventViewModel.actionDes.length == 0)
         ? new Container()
         : new Container(
-            child: new Text(eventViewModel.actionDes, style: GSYConstant.subSmallText),
+            child: new Text(eventViewModel.actionDes, style: GSYConstant.subSmallText, maxLines: 3,),
             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
             alignment: Alignment.topLeft);
     return new Container(
