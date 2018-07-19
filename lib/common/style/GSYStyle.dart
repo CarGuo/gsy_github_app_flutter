@@ -221,6 +221,7 @@ class GSYStrings {
   static const String repos_tab_info = "动态";
   static const String repos_tab_file = "文件";
   static const String repos_tab_issue = "ISSUE";
+  static const String repos_issue_search = "搜索";
 }
 
 class GSYICons {
@@ -243,4 +244,7 @@ class GSYICons {
   static IconData USER_ITEM_COMPANY = new IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
   static IconData USER_ITEM_LOCATION = new IconData(0xe7e6, fontFamily: GSYICons.FONT_FAMILY);
   static IconData USER_ITEM_LINK = new IconData(0xe670, fontFamily: GSYICons.FONT_FAMILY);
+
+  static IconData ISSUE_ITEM_ISSUE = new IconData(0xe661, fontFamily: GSYICons.FONT_FAMILY);
+  static IconData ISSUE_ITEM_COMMENT = new IconData(0xe6ba, fontFamily: GSYICons.FONT_FAMILY);
 }

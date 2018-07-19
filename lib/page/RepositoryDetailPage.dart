@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueList.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailReadmePage.dart';
 import 'package:gsy_github_app_flutter/page/RepostoryDetailInfoPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
@@ -139,7 +140,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
           new RepositoryDetailReadmePage(),
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName),
           new Icon(GSYICons.MAIN_DT),
-          new Icon(GSYICons.MAIN_DT),
+          new RepositoryDetailIssuePage(userName, reposName)
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
