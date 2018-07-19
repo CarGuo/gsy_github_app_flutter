@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
+import 'package:gsy_github_app_flutter/widget/RepositoryIssueListHeader.dart';
 
 /**
  * 仓库详情issue列表
@@ -111,51 +112,24 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage> w
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
+      backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
-        backgroundColor: Colors.white,
-        leading: new Column(
-          children: <Widget>[
-            new Container(
-              child: new TextField(
-                  autofocus: true,
-                  decoration: new InputDecoration.collapsed(
-                    hintText: GSYStrings.repos_issue_search,
-                    hintStyle: GSYConstant.subSmallText,
-                  ),
-                  style: GSYConstant.smallText,
-                  onSubmitted: (result) {}),
-            ),
-            new GSYCardItem(
-                color: Color(GSYColors.primaryValue),
-                margin: EdgeInsets.all(10.0),
-                shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                child: new Padding(
-                    padding: new EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                            child: new Text(
-                          "Ffff",
-                          style: GSYConstant.middleTextWhite,
-                        )),
-                        new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                        new Expanded(
-                            child: new Text(
-                          "Ffff",
-                          style: GSYConstant.middleTextWhite,
-                        )),
-                        new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                        new Expanded(
-                            child: new Text(
-                          "Ffff",
-                          style: GSYConstant.middleTextWhite,
-                        )),
-                      ],
-                    )))
-          ],
+        leading: new Container(),
+        flexibleSpace: new Container(
+          padding:  new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom:12.0),
+          color: Colors.white,
+          child: new TextField(
+              autofocus: true,
+              decoration: new InputDecoration.collapsed(
+                hintText: GSYStrings.repos_issue_search,
+                hintStyle: GSYConstant.subSmallText,
+              ),
+              style: GSYConstant.smallText,
+              onSubmitted: (result) {}),
         ),
+        elevation: 0.0,
+        backgroundColor: Color(GSYColors.mainBackgroundColor),
+        bottom: new RepositoryIssueListHeader(),
       ),
       body: GSYPullLoadWidget(pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(index), _handleRefresh, _onLoadMore),
     );
