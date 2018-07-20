@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
@@ -24,8 +23,6 @@ class MyPage extends StatefulWidget {
 
 // ignore: mixin_inherits_from_not_object
 class _MyPageState extends GSYListState<MyPage> {
-
-  int page = 1;
 
   _renderEventItem(userInfo, index) {
     if (index == 0) {

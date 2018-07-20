@@ -24,8 +24,6 @@ class DynamicPage extends StatefulWidget {
 // ignore: mixin_inherits_from_not_object
 class _DynamicPageState extends GSYListState<DynamicPage> {
 
-  int page = 1;
-
   @override
   Future<Null> handleRefresh() async {
     if (isLoading) {

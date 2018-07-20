@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
+import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
 
@@ -25,25 +25,16 @@ class PersonPage extends StatefulWidget {
   _PersonState createState() => _PersonState(userName);
 }
 
-// ignore: mixin_inherits_from_not_object
-class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin {
+class _PersonState extends GSYListState<PersonPage> {
+
   final String userName;
 
   User userInfo = User.empty();
 
   _PersonState(this.userName);
 
-  bool isLoading = false;
-
-  int page = 1;
-
-  final List dataList = new List();
-
-  final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
-
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
-  Future<Null> _handleRefresh() async {
+  @override
+  Future<Null> handleRefresh() async {
     if (isLoading) {
       return null;
     }
@@ -58,39 +49,18 @@ class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin 
     } else {
       return null;
     }
-
-    var result = await EventDao.getEventDao(_getUserName(), page: page);
-    if (result != null && result.length > 0) {
+    var res = await EventDao.getEventDao(_getUserName(), page: page);
+    if (res != null && res.result) {
       pullLoadWidgetControl.dataList.clear();
       setState(() {
-        pullLoadWidgetControl.dataList.addAll(result);
+        pullLoadWidgetControl.dataList.addAll(res.data);
       });
     }
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null && result.length == Config.PAGE_SIZE);
-    });
+    resolveDataResult(res);
     isLoading = false;
     return null;
   }
 
-  Future<Null> _onLoadMore() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page++;
-    var result = await EventDao.getEventDao(_getUserName(), page: page);
-    if (result != null && result.length > 0) {
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(result);
-      });
-    }
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null);
-    });
-    isLoading = false;
-    return null;
-  }
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -109,22 +79,22 @@ class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin 
   @override
   bool get wantKeepAlive => true;
 
+
   @override
-  void initState() {
-    pullLoadWidgetControl.needHeader = true;
-    super.initState();
+  requestRefresh() async {
   }
 
   @override
-  void didChangeDependencies() {
-    pullLoadWidgetControl.dataList = dataList;
-    if (pullLoadWidgetControl.dataList.length == 0) {
-      new Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState.show().then((e) {});
-      });
-    }
-    super.didChangeDependencies();
+  requestLoadMore() async {
+    return await EventDao.getEventDao(_getUserName(), page: page);
   }
+
+  @override
+  bool get isRefreshFirst => true;
+
+  @override
+  bool get needHeader => true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,10 +104,11 @@ class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin 
         ),
         body: GSYPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(index),
-          _handleRefresh,
-          _onLoadMore,
-          refreshKey: _refreshIndicatorKey,
+              (BuildContext context, int index) => _renderEventItem(index),
+          handleRefresh,
+          onLoadMore,
+          refreshKey: refreshIndicatorKey,
         ));
   }
+
 }

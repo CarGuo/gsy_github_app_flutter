@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
+import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 
@@ -26,63 +27,15 @@ class ReposDetailInfoPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with AutomaticKeepAliveClientMixin {
+class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
+
   final String userName;
 
   final String reposName;
 
-  bool isLoading = false;
-
-  int page = 1;
-
-  final List dataList = new List();
-
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
-  final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
-
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
   _ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName);
-
-  Future<Null> _handleRefresh() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page = 1;
-    var res = await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
-    if (res != null && res.result) {
-      pullLoadWidgetControl.dataList.clear();
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(res.data);
-      });
-    }
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
-    });
-    isLoading = false;
-    return null;
-  }
-
-  Future<Null> _onLoadMore() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page++;
-    var res = await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
-    if (res != null && res.result) {
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(res.data);
-      });
-    }
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
-    });
-    isLoading = false;
-    return null;
-  }
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -102,21 +55,20 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    pullLoadWidgetControl.needHeader = true;
-    pullLoadWidgetControl.dataList = dataList;
-    if (pullLoadWidgetControl.dataList.length == 0) {
-      new Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState.show().then((e) {});
-      });
-    }
+  requestRefresh() async {
+    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  requestLoadMore() async {
+    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
   }
+
+  @override
+  bool get isRefreshFirst => true;
+
+  @override
+  bool get needHeader => true;
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +76,9 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
     return GSYPullLoadWidget(
       pullLoadWidgetControl,
       (BuildContext context, int index) => _renderEventItem(index),
-      _handleRefresh,
-      _onLoadMore,
-      refreshKey: _refreshIndicatorKey,
+      handleRefresh,
+      onLoadMore,
+      refreshKey: refreshIndicatorKey,
     );
   }
 }

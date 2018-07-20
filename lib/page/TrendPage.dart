@@ -16,7 +16,6 @@ class TrendPage extends StatefulWidget {
 }
 
 class _TrendPageState extends GSYListState<TrendPage> {
-  int page = 1;
 
   _renderItem(ReposViewModel e) {
     return new ReposItem(e, onPressed: () {
