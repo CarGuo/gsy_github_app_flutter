@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -41,6 +38,22 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
       issueItemViewModel,
       onPressed: () {},
     );
+  }
+
+  _resolveSelectIndex(selectIndex) {
+    clearData();
+    switch (selectIndex) {
+      case 0:
+        issueState = null;
+        break;
+      case 1:
+        issueState = 'open';
+        break;
+      case 2:
+        issueState = "closed";
+        break;
+    }
+    showRefreshLoading();
   }
 
   @override
@@ -87,7 +100,9 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
           GSYStrings.repos_tab_issue_all,
           GSYStrings.repos_tab_issue_open,
           GSYStrings.repos_tab_issue_closed,
-        ], (selectIndex) {}),
+        ], (selectIndex) {
+          _resolveSelectIndex(selectIndex);
+        }),
       ),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,

@@ -72,6 +72,13 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
     });
   }
 
+  @protected
+  clearData() {
+    setState(() {
+      pullLoadWidgetControl.dataList.clear();
+    });
+  }
+
   ///下拉刷新数据
   @protected
   requestRefresh() async {}
