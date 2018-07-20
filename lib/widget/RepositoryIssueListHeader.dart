@@ -3,11 +3,22 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
 /**
+ * 详情issue列表头部，PreferredSizeWidget
  * Created by guoshuyu
  * Date: 2018-07-19
  */
 
-class RepositoryIssueListHeader extends StatelessWidget implements PreferredSizeWidget {
+class RepositoryIssueListHeader extends StatefulWidget implements PreferredSizeWidget {
+  @override
+  _RepositoryIssueListHeaderState createState() => _RepositoryIssueListHeaderState();
+
+  @override
+  Size get preferredSize {
+    return new Size.fromHeight(50.0);
+  }
+}
+
+class _RepositoryIssueListHeaderState extends State<RepositoryIssueListHeader> {
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
@@ -21,31 +32,34 @@ class RepositoryIssueListHeader extends StatelessWidget implements PreferredSize
             child: new Row(
               children: <Widget>[
                 new Expanded(
-                    child: new Text(
-                  "All",
-                  style: GSYConstant.middleTextWhite,
-                  textAlign: TextAlign.center,
-                )),
+                  child: new FlatButton(
+                      child: new Text(
+                        GSYStrings.repos_tab_issue_all,
+                        style: GSYConstant.middleTextWhite,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {}),
+                ),
                 new Container(width: 1.0, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                 new Expanded(
-                    child: new Text(
-                  "Open",
-                  style: GSYConstant.middleTextWhite,
-                  textAlign: TextAlign.center,
-                )),
+                  child: new FlatButton(
+                      child: new Text(
+                        GSYStrings.repos_tab_issue_open,
+                        style: GSYConstant.middleTextWhite,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {}),
+                ),
                 new Container(width: 1.0, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                 new Expanded(
-                    child: new Text(
-                  "Closed",
-                  style: GSYConstant.middleTextWhite,
-                  textAlign: TextAlign.center,
-                )),
+                    child: new FlatButton(
+                        child: new Text(
+                          GSYStrings.repos_tab_issue_closed,
+                          style: GSYConstant.middleTextWhite,
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {})),
               ],
             )));
-  }
-
-  @override
-  Size get preferredSize {
-    return new Size.fromHeight(50.0);
   }
 }
