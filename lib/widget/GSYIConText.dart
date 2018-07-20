@@ -55,6 +55,8 @@ class GSYIConText extends StatelessWidget {
         new Text(
           iconText,
           style: textStyle,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
       ],
     );
