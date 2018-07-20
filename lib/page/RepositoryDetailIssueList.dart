@@ -7,7 +7,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
-import 'package:gsy_github_app_flutter/widget/RepositoryIssueListHeader.dart';
+import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
 
 /**
  * 仓库详情issue列表
@@ -83,7 +83,11 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
         ),
         elevation: 0.0,
         backgroundColor: Color(GSYColors.mainBackgroundColor),
-        bottom: new RepositoryIssueListHeader((selectIndex) {}),
+        bottom: new GSYSelectItemWidget([
+          GSYStrings.repos_tab_issue_all,
+          GSYStrings.repos_tab_issue_open,
+          GSYStrings.repos_tab_issue_closed,
+        ], (selectIndex) {}),
       ),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,

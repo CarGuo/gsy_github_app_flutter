@@ -13,6 +13,14 @@ class UserHeaderItem extends StatelessWidget {
 
   UserHeaderItem(this.userInfo);
 
+  _getBottomItem(String title, var value) {
+    return new Expanded(
+      child: new Center(
+        child: new Text(title + "\n" + (value == null ? "" : value.toString()), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Column(
@@ -93,38 +101,15 @@ class UserHeaderItem extends StatelessWidget {
                   new Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new Expanded(
-                        child: new Center(
-                          child: new Text(GSYStrings.user_tab_repos + "\n" + (userInfo.public_repos == null ? "" : userInfo.public_repos.toString()),
-                              textAlign: TextAlign.center, style: GSYConstant.subSmallText),
-                        ),
-                      ),
+                      _getBottomItem(GSYStrings.user_tab_repos, userInfo.public_repos),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      new Expanded(
-                        child: new Center(
-                          child: new Text(GSYStrings.user_tab_fans + "\n" + (userInfo.followers == null ? "" : userInfo.followers.toString()),
-                              textAlign: TextAlign.center, style: GSYConstant.subSmallText),
-                        ),
-                      ),
+                      _getBottomItem(GSYStrings.user_tab_fans, userInfo.followers),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      new Expanded(
-                        child: new Center(
-                          child: new Text(GSYStrings.user_tab_focus + "\n" + (userInfo.following == null ? "" : userInfo.following.toString()),
-                              textAlign: TextAlign.center, style: GSYConstant.subSmallText),
-                        ),
-                      ),
+                      _getBottomItem(GSYStrings.user_tab_focus, userInfo.following),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      new Expanded(
-                        child: new Center(
-                          child: new Text(GSYStrings.user_tab_star + "\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
-                        ),
-                      ),
+                      _getBottomItem(GSYStrings.user_tab_star, "---"),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      new Expanded(
-                        child: new Center(
-                          child: new Text(GSYStrings.user_tab_honor + "\n---", textAlign: TextAlign.center, style: GSYConstant.subSmallText),
-                        ),
-                      ),
+                      _getBottomItem(GSYStrings.user_tab_honor, "---"),
                     ],
                   ),
                 ],

@@ -14,6 +14,22 @@ class ReposHeaderItem extends StatelessWidget {
 
   ReposHeaderItem(this.reposHeaderViewModel) : super();
 
+  _getBottomItem(IconData icon, String text) {
+    return new Expanded(
+      child: new Center(
+        child: new GSYIConText(
+          icon,
+          text,
+          GSYConstant.middleSubText,
+          Color(GSYColors.subTextColor),
+          15.0,
+          padding: 3.0,
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String createStr = reposHeaderViewModel.repositoryIsFork
@@ -74,61 +90,10 @@ class ReposHeaderItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Expanded(
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_STAR,
-                              reposHeaderViewModel.repositoryStar,
-                              GSYConstant.middleSubText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 3.0,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                          ),
-                        ),
-                        new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                        new Expanded(
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_FORK,
-                              reposHeaderViewModel.repositoryFork,
-                              GSYConstant.middleSubText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 3.0,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                          ),
-                        ),
-                        new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                        new Expanded(
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_ISSUE,
-                              reposHeaderViewModel.repositoryWatch,
-                              GSYConstant.middleSubText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 3.0,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                          ),
-                        ),
-                        new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                        new Expanded(
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_ISSUE,
-                              reposHeaderViewModel.repositoryIssue,
-                              GSYConstant.middleSubText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 3.0,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                          ),
-                        ),
+                        _getBottomItem(GSYICons.REPOS_ITEM_STAR, reposHeaderViewModel.repositoryStar),
+                        _getBottomItem(GSYICons.REPOS_ITEM_FORK, reposHeaderViewModel.repositoryFork),
+                        _getBottomItem(GSYICons.REPOS_ITEM_WATCH, reposHeaderViewModel.repositoryWatch),
+                        _getBottomItem(GSYICons.REPOS_ITEM_ISSUE, reposHeaderViewModel.repositoryIssue),
                       ],
                     )),
               ],

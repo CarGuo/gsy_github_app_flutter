@@ -15,6 +15,22 @@ class ReposItem extends StatelessWidget {
 
   ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
+  _getBottomItem(IconData icon, String text, {int flex = 2}) {
+    return new Expanded(
+      flex: flex,
+      child: new Center(
+        child: new GSYIConText(
+          icon,
+          text,
+          GSYConstant.subSmallText,
+          Color(GSYColors.subTextColor),
+          15.0,
+          padding: 5.0,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -72,43 +88,9 @@ class ReposItem extends StatelessWidget {
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        new Expanded(
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_STAR,
-                              reposViewModel.repositoryStar,
-                              GSYConstant.subSmallText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 5.0,
-                            ),
-                          ),
-                        ),
-                        new Expanded(
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_FORK,
-                              reposViewModel.repositoryFork,
-                              GSYConstant.subSmallText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 5.0,
-                            ),
-                          ),
-                        ),
-                        new Expanded(
-                          flex: 2,
-                          child: new Center(
-                            child: new GSYIConText(
-                              GSYICons.REPOS_ITEM_ISSUE,
-                              reposViewModel.repositoryWatch,
-                              GSYConstant.subSmallText,
-                              Color(GSYColors.subTextColor),
-                              15.0,
-                              padding: 5.0,
-                            ),
-                          ),
-                        ),
+                        _getBottomItem(GSYICons.REPOS_ITEM_STAR, reposViewModel.repositoryStar),
+                        _getBottomItem(GSYICons.REPOS_ITEM_FORK, reposViewModel.repositoryFork),
+                        _getBottomItem(GSYICons.REPOS_ITEM_ISSUE, reposViewModel.repositoryWatch, flex: 4),
                       ],
                     ),
                   ],
