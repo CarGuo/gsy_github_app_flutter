@@ -89,6 +89,13 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
+      floatingActionButton: new FloatingActionButton(
+          child: new Icon(
+            GSYICons.ISSUE_ITEM_ADD,
+            size: 55.0,
+            color: Color(GSYColors.textWhite),
+          ),
+          onPressed: () {}),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),

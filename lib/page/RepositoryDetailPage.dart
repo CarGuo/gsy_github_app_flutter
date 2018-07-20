@@ -131,16 +131,16 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
         tabItems: [
-          new Tab(text: GSYStrings.repos_tab_readme),
           new Tab(text: GSYStrings.repos_tab_info),
-          new Tab(text: GSYStrings.repos_tab_file),
           new Tab(text: GSYStrings.repos_tab_issue),
+          new Tab(text: GSYStrings.repos_tab_file),
+          new Tab(text: GSYStrings.repos_tab_readme),
         ],
         tabViews: [
-          new RepositoryDetailReadmePage(),
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName),
+          new RepositoryDetailIssuePage(userName, reposName),
           new Icon(GSYICons.MAIN_DT),
-          new RepositoryDetailIssuePage(userName, reposName)
+          new RepositoryDetailReadmePage(),
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
