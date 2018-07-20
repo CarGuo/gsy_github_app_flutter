@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 
 /**
+ * 上下拉刷新列表的通用State
  * Created by guoshuyu
  * Date: 2018-07-20
  */
@@ -71,17 +72,23 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
     });
   }
 
+  ///下拉刷新数据
   @protected
   requestRefresh() async {}
 
+  ///上拉更多请求数据
   @protected
   requestLoadMore() async {}
+
+  ///是否需要第一次进入自动刷新
   @protected
   bool get isRefreshFirst;
 
+  ///是否需要头部
   @protected
   bool get needHeader => false;
 
+  ///是否需要保持
   @override
   bool get wantKeepAlive => true;
 
