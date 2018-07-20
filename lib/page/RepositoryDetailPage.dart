@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueListPage.dart';
@@ -16,7 +19,6 @@ import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
  */
 
 class RepositoryDetailPage extends StatefulWidget {
-
   final String userName;
 
   final String reposName;
@@ -54,17 +56,24 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   _getReposStatus() async {
     var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
-    print(result.data["star"]);
-    print(result.data["watch"]);
+    if(Config.DEBUG) {
+      print(result.data["star"]);
+      print(result.data["watch"]);
+    }
     String watchText = result.data["watch"] ? "UnWatch" : "Watch";
     String starText = result.data["star"] ? "UnStar" : "Star";
     IconData watchIcon = result.data["watch"] ? GSYICons.REPOS_ITEM_WATCHED : GSYICons.REPOS_ITEM_WATCH;
     IconData starIcon = result.data["star"] ? GSYICons.REPOS_ITEM_STARED : GSYICons.REPOS_ITEM_STAR;
     BottomStatusModel model = new BottomStatusModel(watchText, starText, watchIcon, starIcon, result.data["watch"], result.data["star"]);
-    bottomStatusModel = model;
     setState(() {
+      bottomStatusModel = model;
       tarBarControl.footerButton = _getBottomWidget();
     });
+  }
+
+  _refresh() {
+    this._getReposDetail();
+    this._getReposStatus();
   }
 
   _getBottomWidget() {
@@ -72,7 +81,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         ? []
         : <Widget>[
             new FlatButton(
-                onPressed: () => {},
+                onPressed: () {
+                  _showRequestDialog();
+                  return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
+                    _refresh();
+                    Navigator.pop(context);
+                  });
+                },
                 child: new GSYIConText(
                   bottomStatusModel.starIcon,
                   bottomStatusModel.starText,
@@ -83,7 +98,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                 )),
             new FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  _showRequestDialog();
+                  return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
+                    _refresh();
+                    Navigator.pop(context);
+                  });
+                },
                 child: new GSYIConText(
                   bottomStatusModel.watchIcon,
                   bottomStatusModel.watchText,
@@ -120,11 +141,18 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return bottomWidget;
   }
 
+  Future<Null> _showRequestDialog() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(child: new CircularProgressIndicator());
+        });
+  }
+
   @override
   void initState() {
     super.initState();
-    this._getReposDetail();
-    this._getReposStatus();
+    _refresh();
   }
 
   @override
