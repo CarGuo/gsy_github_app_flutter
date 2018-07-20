@@ -184,6 +184,7 @@ class GSYStrings {
   static const String app_name = "GSYGithubAppFlutter";
 
   static const String nothing_now = "目前什么都没有。";
+  static const String loading_text = "加载中···";
 
   static const String login_text = "登录";
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailReadmePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
@@ -56,7 +57,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   _getReposStatus() async {
     var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
-    if(Config.DEBUG) {
+    if (Config.DEBUG) {
       print(result.data["star"]);
       print(result.data["watch"]);
     }
@@ -82,7 +83,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         : <Widget>[
             new FlatButton(
                 onPressed: () {
-                  _showRequestDialog();
+                  CommonUtils.showLoadingDialog(context);
                   return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
                     _refresh();
                     Navigator.pop(context);
@@ -99,7 +100,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 )),
             new FlatButton(
                 onPressed: () {
-                  _showRequestDialog();
+                  CommonUtils.showLoadingDialog(context);
                   return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
                     _refresh();
                     Navigator.pop(context);
@@ -139,14 +140,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 ))
           ];
     return bottomWidget;
-  }
-
-  Future<Null> _showRequestDialog() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Center(child: new CircularProgressIndicator());
-        });
   }
 
   @override
