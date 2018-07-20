@@ -3,6 +3,7 @@ import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYSearchInputWidget.dart';
 import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
 
@@ -82,18 +83,7 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),
-        flexibleSpace: new Container(
-          padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
-          color: Colors.white,
-          child: new TextField(
-              autofocus: false,
-              decoration: new InputDecoration.collapsed(
-                hintText: GSYStrings.repos_issue_search,
-                hintStyle: GSYConstant.subSmallText,
-              ),
-              style: GSYConstant.smallText,
-              onSubmitted: (result) {}),
-        ),
+        flexibleSpace: GSYSearchInputWidget((value){}),
         elevation: 0.0,
         backgroundColor: Color(GSYColors.mainBackgroundColor),
         bottom: new GSYSelectItemWidget([
