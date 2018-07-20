@@ -95,8 +95,11 @@ class ReposHeaderItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           _getBottomItem(GSYICons.REPOS_ITEM_STAR, reposHeaderViewModel.repositoryStar),
+                          new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                           _getBottomItem(GSYICons.REPOS_ITEM_FORK, reposHeaderViewModel.repositoryFork),
+                          new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                           _getBottomItem(GSYICons.REPOS_ITEM_WATCH, reposHeaderViewModel.repositoryWatch),
+                          new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                           _getBottomItem(GSYICons.REPOS_ITEM_ISSUE, reposHeaderViewModel.repositoryIssue),
                         ],
                       )),
