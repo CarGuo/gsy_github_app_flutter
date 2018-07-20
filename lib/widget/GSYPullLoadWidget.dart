@@ -9,7 +9,6 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 
 ///通用下上刷新控件
 class GSYPullLoadWidget extends StatefulWidget {
-
   ///item渲染
   final IndexedWidgetBuilder itemBuilder;
 
@@ -22,11 +21,12 @@ class GSYPullLoadWidget extends StatefulWidget {
   ///控制器，比如数据和一些配置
   final GSYPullLoadWidgetControl control;
 
+  final Key refreshKey;
 
-  GSYPullLoadWidget(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
+  GSYPullLoadWidget(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, {this.refreshKey});
 
   @override
-  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
+  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
@@ -36,9 +36,11 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   final RefreshCallback onRefresh;
 
+  final Key refreshKey;
+
   GSYPullLoadWidgetControl control;
 
-  _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore);
+  _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
 
   final ScrollController _scrollController = new ScrollController();
 
@@ -65,6 +67,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   @override
   Widget build(BuildContext context) {
     return new RefreshIndicator(
+      key: refreshKey,
       onRefresh: onRefresh,
       child: new ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -98,8 +101,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 class GSYPullLoadWidgetControl {
   ///数据，对齐增减，不能替换
   List dataList = new List();
+
   ///是否需要加载更多
   bool needLoadMore = true;
+
   ///是否需要头部
   bool needHeader = false;
 }

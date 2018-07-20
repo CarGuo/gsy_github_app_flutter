@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -31,6 +30,8 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   final List dataList = new List();
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
   Future<Null> _handleRefresh() async {
     if (isLoading) {
@@ -105,7 +106,9 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   void didChangeDependencies() {
     pullLoadWidgetControl.dataList = dataList;
     if (pullLoadWidgetControl.dataList.length == 0) {
-      _handleRefresh();
+      new Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState.show().then((e) {});
+      });
     }
     super.didChangeDependencies();
   }
@@ -116,7 +119,12 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return GSYPullLoadWidget(
-            pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(store.state.userInfo, index), _handleRefresh, _onLoadMore);
+          pullLoadWidgetControl,
+          (BuildContext context, int index) => _renderEventItem(store.state.userInfo, index),
+          _handleRefresh,
+          _onLoadMore,
+          refreshKey: _refreshIndicatorKey,
+        );
       },
     );
   }

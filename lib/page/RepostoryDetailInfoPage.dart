@@ -41,6 +41,8 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   _ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName);
 
   Future<Null> _handleRefresh() async {
@@ -87,7 +89,7 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
       return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel);
     }
 
-    EventViewModel eventViewModel =  pullLoadWidgetControl.dataList[index - 1];
+    EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
     return new EventItem(
       pullLoadWidgetControl.dataList[index - 1],
       onPressed: () {
@@ -105,7 +107,9 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
     pullLoadWidgetControl.needHeader = true;
     pullLoadWidgetControl.dataList = dataList;
     if (pullLoadWidgetControl.dataList.length == 0) {
-      _handleRefresh();
+      new Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState.show().then((e) {});
+      });
     }
   }
 
@@ -117,7 +121,13 @@ class _ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automati
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return GSYPullLoadWidget(pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(index), _handleRefresh, _onLoadMore);
+    return GSYPullLoadWidget(
+      pullLoadWidgetControl,
+      (BuildContext context, int index) => _renderEventItem(index),
+      _handleRefresh,
+      _onLoadMore,
+      refreshKey: _refreshIndicatorKey,
+    );
   }
 }
 

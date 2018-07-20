@@ -8,9 +8,18 @@ import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
  * Date: 2018-07-19
  */
 
+typedef void SelectItemChanged<int>(int value);
+
 class RepositoryIssueListHeader extends StatefulWidget implements PreferredSizeWidget {
+
+
+  final SelectItemChanged selectItemChanged;
+
+
+  RepositoryIssueListHeader(this.selectItemChanged);
+
   @override
-  _RepositoryIssueListHeaderState createState() => _RepositoryIssueListHeaderState();
+  _RepositoryIssueListHeaderState createState() => _RepositoryIssueListHeaderState(selectItemChanged);
 
   @override
   Size get preferredSize {
@@ -19,6 +28,32 @@ class RepositoryIssueListHeader extends StatefulWidget implements PreferredSizeW
 }
 
 class _RepositoryIssueListHeaderState extends State<RepositoryIssueListHeader> {
+
+  int selectIndex = 0;
+
+  final SelectItemChanged selectItemChanged;
+
+
+  _RepositoryIssueListHeaderState(this.selectItemChanged);
+
+  _renderItem(String name, int index) {
+    var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubText;
+    return new FlatButton(
+        child: new Text(
+          name,
+          style: style,
+          textAlign: TextAlign.center,
+        ),
+        onPressed: () {
+          setState(() {
+            selectIndex = index;
+          });
+          if (selectItemChanged != null) {
+            selectItemChanged(index);
+          }
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
@@ -32,33 +67,14 @@ class _RepositoryIssueListHeaderState extends State<RepositoryIssueListHeader> {
             child: new Row(
               children: <Widget>[
                 new Expanded(
-                  child: new FlatButton(
-                      child: new Text(
-                        GSYStrings.repos_tab_issue_all,
-                        style: GSYConstant.middleTextWhite,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: () {}),
+                  child: _renderItem(GSYStrings.repos_tab_issue_all, 0),
                 ),
                 new Container(width: 1.0, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                 new Expanded(
-                  child: new FlatButton(
-                      child: new Text(
-                        GSYStrings.repos_tab_issue_open,
-                        style: GSYConstant.middleTextWhite,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: () {}),
+                  child: _renderItem(GSYStrings.repos_tab_issue_open, 1),
                 ),
                 new Container(width: 1.0, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                new Expanded(
-                    child: new FlatButton(
-                        child: new Text(
-                          GSYStrings.repos_tab_issue_closed,
-                          style: GSYConstant.middleTextWhite,
-                          textAlign: TextAlign.center,
-                        ),
-                        onPressed: () {})),
+                new Expanded(child: _renderItem(GSYStrings.repos_tab_issue_closed, 2)),
               ],
             )));
   }

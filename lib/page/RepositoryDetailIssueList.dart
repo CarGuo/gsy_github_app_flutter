@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
-import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
 import 'package:gsy_github_app_flutter/widget/RepositoryIssueListHeader.dart';
@@ -27,6 +26,8 @@ class RepositoryDetailIssuePage extends StatefulWidget {
 
 // ignore: mixin_inherits_from_not_object
 class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage> with AutomaticKeepAliveClientMixin {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   final String userName;
 
   final String reposName;
@@ -99,7 +100,9 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage> w
     pullLoadWidgetControl.needHeader = false;
     pullLoadWidgetControl.dataList = dataList;
     if (pullLoadWidgetControl.dataList.length == 0) {
-      _handleRefresh();
+      new Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState.show().then((e) {});
+      });
     }
   }
 
@@ -116,10 +119,10 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage> w
       appBar: new AppBar(
         leading: new Container(),
         flexibleSpace: new Container(
-          padding:  new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom:12.0),
+          padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
           color: Colors.white,
           child: new TextField(
-              autofocus: true,
+              autofocus: false,
               decoration: new InputDecoration.collapsed(
                 hintText: GSYStrings.repos_issue_search,
                 hintStyle: GSYConstant.subSmallText,
@@ -129,9 +132,15 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage> w
         ),
         elevation: 0.0,
         backgroundColor: Color(GSYColors.mainBackgroundColor),
-        bottom: new RepositoryIssueListHeader(),
+        bottom: new RepositoryIssueListHeader((selectIndex) {}),
       ),
-      body: GSYPullLoadWidget(pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(index), _handleRefresh, _onLoadMore),
+      body: GSYPullLoadWidget(
+        pullLoadWidgetControl,
+        (BuildContext context, int index) => _renderEventItem(index),
+        _handleRefresh,
+        _onLoadMore,
+        refreshKey: _refreshIndicatorKey,
+      ),
     );
   }
 }

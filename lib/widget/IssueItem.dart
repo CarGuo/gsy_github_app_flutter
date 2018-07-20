@@ -21,6 +21,7 @@ class IssueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color issueStateColor = issueItemViewModel.state == "open" ? Colors.green : Colors.red;
     Widget bottomContainer = (needBottom)
         ? new Container()
         : new Row(
@@ -28,8 +29,11 @@ class IssueItem extends StatelessWidget {
               new GSYIConText(
                 GSYICons.ISSUE_ITEM_ISSUE,
                 issueItemViewModel.state,
-                GSYConstant.subSmallText,
-                issueItemViewModel.state == "open" ? Colors.green : Colors.red,
+                TextStyle(
+                  color: issueStateColor,
+                  fontSize: GSYConstant.smallTextSize,
+                ),
+                issueStateColor,
                 15.0,
                 padding: 2.0,
               ),
@@ -81,13 +85,10 @@ class IssueItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  new Padding(
-                    padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
-                  ),
                   new Container(
                       child: new Text(
                         issueItemViewModel.issueComment,
-                        style: GSYConstant.smallTextBold,
+                        style: GSYConstant.subSmallText,
                         maxLines: 2,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),

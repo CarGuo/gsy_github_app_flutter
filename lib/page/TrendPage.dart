@@ -26,6 +26,8 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   Future<Null> _handleRefresh() async {
     if (isLoading) {
       return null;
@@ -66,7 +68,9 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   @override
   void didChangeDependencies() {
     if (pullLoadWidgetControl.dataList.length == 0) {
-      _handleRefresh();
+      new Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState.show().then((e) {});
+      });
     }
     super.didChangeDependencies();
   }
@@ -75,6 +79,11 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return GSYPullLoadWidget(
-        pullLoadWidgetControl, (BuildContext context, int index) => _renderItem(pullLoadWidgetControl.dataList[index]), _handleRefresh, _onLoadMore);
+      pullLoadWidgetControl,
+      (BuildContext context, int index) => _renderItem(pullLoadWidgetControl.dataList[index]),
+      _handleRefresh,
+      _onLoadMore,
+      refreshKey: _refreshIndicatorKey,
+    );
   }
 }

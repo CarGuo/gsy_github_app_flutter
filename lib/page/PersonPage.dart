@@ -41,6 +41,8 @@ class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin 
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   Future<Null> _handleRefresh() async {
     if (isLoading) {
       return null;
@@ -117,7 +119,9 @@ class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin 
   void didChangeDependencies() {
     pullLoadWidgetControl.dataList = dataList;
     if (pullLoadWidgetControl.dataList.length == 0) {
-      _handleRefresh();
+      new Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState.show().then((e) {});
+      });
     }
     super.didChangeDependencies();
   }
@@ -128,6 +132,12 @@ class _PersonState extends State<PersonPage> with AutomaticKeepAliveClientMixin 
         appBar: new AppBar(
           title: new Text((userInfo != null && userInfo.login != null) ? userInfo.login : ""),
         ),
-        body: GSYPullLoadWidget(pullLoadWidgetControl, (BuildContext context, int index) => _renderEventItem(index), _handleRefresh, _onLoadMore));
+        body: GSYPullLoadWidget(
+          pullLoadWidgetControl,
+          (BuildContext context, int index) => _renderEventItem(index),
+          _handleRefresh,
+          _onLoadMore,
+          refreshKey: _refreshIndicatorKey,
+        ));
   }
 }
