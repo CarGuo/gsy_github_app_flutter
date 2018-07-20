@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
@@ -26,7 +25,6 @@ class ReposDetailInfoPage extends StatefulWidget {
 
 // ignore: mixin_inherits_from_not_object
 class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
-
   final String userName;
 
   final String reposName;
@@ -37,7 +35,7 @@ class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel);
+      return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel, (index) {});
     }
 
     EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];

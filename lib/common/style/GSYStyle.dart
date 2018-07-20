@@ -221,6 +221,8 @@ class GSYStrings {
   static const String repos_tab_info = "动态";
   static const String repos_tab_file = "文件";
   static const String repos_tab_issue = "ISSUE";
+  static const String repos_tab_activity = "动态";
+  static const String repos_tab_commits = "提交";
   static const String repos_tab_issue_all = "所有";
   static const String repos_tab_issue_open = "打开";
   static const String repos_tab_issue_closed = "关闭";
