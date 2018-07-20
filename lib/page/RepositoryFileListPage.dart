@@ -34,25 +34,28 @@ class _RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFi
   String searchText;
   String issueState;
 
-  List<String> headerList = ["ttttt"];
+  List<String> headerList = ["."];
 
   _RepositoryDetailFileListPageState(this.userName, this.reposName);
 
+  ///渲染文件item
   _renderEventItem(index) {
     FileItemViewModel fileItemViewModel = pullLoadWidgetControl.dataList[index];
     IconData iconData = (fileItemViewModel.type == "file") ? GSYICons.REPOS_ITEM_FILE : GSYICons.REPOS_ITEM_DIR;
+    Widget trailing = (fileItemViewModel.type == "file") ? null : new Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
     return new GSYCardItem(
       child: new ListTile(
         title: new Text(fileItemViewModel.name, style: GSYConstant.subSmallText),
         leading: new Icon(iconData),
+        onTap: () {
+          _resolveItemClick(fileItemViewModel);
+        },
+        trailing: trailing,
       ),
     );
   }
 
-  _getDataLogic(String searchString) async {
-    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: curBranch);
-  }
-
+  ///渲染头部列表
   _renderHeader() {
     return new Container(
       margin: new EdgeInsets.only(left: 3.0, right: 3.0),
@@ -62,13 +65,52 @@ class _RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFi
           return new RawMaterialButton(
             constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
             padding: new EdgeInsets.all(4.0),
-            onPressed: () {},
+            onPressed: () {
+              _resolveHeaderClick(index);
+            },
             child: new Text(headerList[index] + " > ", style: GSYConstant.smallText),
           );
         },
         itemCount: headerList.length,
       ),
     );
+  }
+
+  ///头部列表点击
+  _resolveHeaderClick(index) {
+    if (headerList[index] != ".") {
+      List<String> newHeaderList = headerList.sublist(0, index + 1);
+      String path = newHeaderList.sublist(1, newHeaderList.length).join("/");
+      this.setState(() {
+        this.path = path;
+        headerList = newHeaderList;
+      });
+      this.showRefreshLoading();
+    } else {
+      setState(() {
+        path = "";
+        headerList = ["."];
+      });
+      this.showRefreshLoading();
+    }
+  }
+
+  ///item文件列表点击
+  _resolveItemClick(FileItemViewModel fileItemViewModel) {
+    if (fileItemViewModel.type == "dir") {
+      this.setState(() {
+        headerList.add(fileItemViewModel.name);
+      });
+      String path = headerList.sublist(1, headerList.length).join("/");
+      this.setState(() {
+        this.path = path;
+      });
+      this.showRefreshLoading();
+    }
+  }
+
+  _getDataLogic(String searchString) async {
+    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: curBranch);
   }
 
   @override
@@ -103,7 +145,7 @@ class _RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFi
       ),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,
-            (BuildContext context, int index) => _renderEventItem(index),
+        (BuildContext context, int index) => _renderEventItem(index),
         handleRefresh,
         onLoadMore,
         refreshKey: refreshIndicatorKey,
