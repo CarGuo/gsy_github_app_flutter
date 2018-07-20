@@ -1,3 +1,4 @@
+import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
@@ -50,7 +51,7 @@ class EventDao {
       for (int i = 0; i < data.length; i++) {
         list.add(EventViewModel.fromEventMap(data[i]));
       }
-      return list;
+      return new DataResult(list, true);
     } else {
       return null;
     }

@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
+import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
 import 'package:redux/redux.dart';
@@ -22,55 +23,9 @@ class MyPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
-  bool isLoading = false;
+class _MyPageState extends GSYListState<MyPage> {
 
   int page = 1;
-
-  final List dataList = new List();
-
-  final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
-
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
-  Future<Null> _handleRefresh() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page = 1;
-    var result = await EventDao.getEventDao(_getUserName(), page: page);
-    if (result != null && result.length > 0) {
-      pullLoadWidgetControl.dataList.clear();
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(result);
-      });
-    }
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null && result.length == Config.PAGE_SIZE);
-    });
-    isLoading = false;
-    return null;
-  }
-
-  Future<Null> _onLoadMore() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page++;
-    var result = await EventDao.getEventDao(_getUserName(), page: page);
-    if (result != null && result.length > 0) {
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(result);
-      });
-    }
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null);
-    });
-    isLoading = false;
-    return null;
-  }
 
   _renderEventItem(userInfo, index) {
     if (index == 0) {
@@ -103,12 +58,25 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   }
 
   @override
+  requestRefresh() async {
+    return await EventDao.getEventDao(_getUserName(), page: page);
+  }
+
+  @override
+  requestLoadMore() async {
+    return await EventDao.getEventDao(_getUserName(), page: page);
+  }
+
+  @override
+  bool get isRefreshFirst => false;
+
+  @override
+  bool get needHeader => true;
+
+  @override
   void didChangeDependencies() {
-    pullLoadWidgetControl.dataList = dataList;
     if (pullLoadWidgetControl.dataList.length == 0) {
-      new Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState.show().then((e) {});
-      });
+      showRefreshLoading();
     }
     super.didChangeDependencies();
   }
@@ -121,9 +89,9 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         return GSYPullLoadWidget(
           pullLoadWidgetControl,
           (BuildContext context, int index) => _renderEventItem(store.state.userInfo, index),
-          _handleRefresh,
-          _onLoadMore,
-          refreshKey: _refreshIndicatorKey,
+          handleRefresh,
+          onLoadMore,
+          refreshKey: refreshIndicatorKey,
         );
       },
     );
