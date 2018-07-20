@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
@@ -113,6 +117,41 @@ class ReposDao {
       for (int i = 0; i < data.length; i++) {
         list.add(EventViewModel.fromCommitMap(data[i]));
       }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /***
+   * 获取仓库的文件列表
+   */
+  static getReposFileDirDao(userName, reposName, {path = '', branch, text = false}) async {
+    String url = Address.reposDataDir(userName, reposName, path, branch);
+    var res = await HttpManager.netFetch(
+      url,
+      null,
+      {"Accept": 'application/vnd.github.html'},
+      new Options(contentType: text ? ContentType.TEXT : ContentType.JSON),
+    );
+    if (res != null && res.result) {
+      List<FileItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      List<FileItemViewModel> dirs = [];
+      List<FileItemViewModel> files = [];
+      for (int i = 0; i < data.length; i++) {
+        FileItemViewModel file = FileItemViewModel.fromMap(data[i]);
+        if (file.type == 'file') {
+          files.add(file);
+        } else {
+          dirs.add(file);
+        }
+      }
+      list.addAll(dirs);
+      list.addAll(files);
       return new DataResult(list, true);
     } else {
       return new DataResult(null, false);

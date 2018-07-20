@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
-import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueList.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailReadmePage.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepostoryDetailInfoPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
@@ -15,6 +16,7 @@ import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
  */
 
 class RepositoryDetailPage extends StatefulWidget {
+
   final String userName;
 
   final String reposName;
@@ -139,7 +141,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         tabViews: [
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName),
           new RepositoryDetailIssuePage(userName, reposName),
-          new Icon(GSYICons.MAIN_DT),
+          new RepositoryDetailFileListPage(userName, reposName),
           new RepositoryDetailReadmePage(),
         ],
         backgroundColor: GSYColors.primarySwatch,
