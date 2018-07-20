@@ -29,7 +29,9 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
 
   final String reposName;
 
+  String searchText;
   String issueState;
+  int selectIndex;
 
   _RepositoryDetailIssuePageState(this.userName, this.reposName);
 
@@ -41,7 +43,7 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
     );
   }
 
-  _resolveSelectIndex(selectIndex) {
+  _resolveSelectIndex() {
     clearData();
     switch (selectIndex) {
       case 0:
@@ -57,6 +59,13 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
     showRefreshLoading();
   }
 
+  _getDataLogic(String searchString) async {
+    if (searchString == null || searchString.trim().length == 0) {
+      return await IssueDao.getRepositoryIssueDao(userName, reposName, issueState, page: page);
+    }
+    return await IssueDao.searchRepositoryIssue(searchString, userName, reposName, this.issueState, page: this.page);
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -68,12 +77,12 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
 
   @override
   requestLoadMore() async {
-    return await IssueDao.getRepositoryIssueDao(userName, reposName, issueState, page: page);
+    return await _getDataLogic(this.searchText);
   }
 
   @override
   requestRefresh() async {
-    return await IssueDao.getRepositoryIssueDao(userName, reposName, issueState, page: page);
+    return await _getDataLogic(this.searchText);
   }
 
   @override
@@ -83,7 +92,11 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),
-        flexibleSpace: GSYSearchInputWidget((value){}),
+        flexibleSpace: GSYSearchInputWidget((value) {
+          this.searchText = value;
+        }, (value) {
+          _resolveSelectIndex();
+        }),
         elevation: 0.0,
         backgroundColor: Color(GSYColors.mainBackgroundColor),
         bottom: new GSYSelectItemWidget([
@@ -91,7 +104,8 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
           GSYStrings.repos_tab_issue_open,
           GSYStrings.repos_tab_issue_closed,
         ], (selectIndex) {
-          _resolveSelectIndex(selectIndex);
+          this.selectIndex = selectIndex;
+          _resolveSelectIndex();
         }),
       ),
       body: GSYPullLoadWidget(
