@@ -134,14 +134,14 @@ class EventUtils {
     switch (event["type"]) {
       case 'ForkEvent':
         String forkName = event["actor"]["login"] + "/" + repositoryName;
-        if (forkName == currentRepository) {
+        if (forkName.toLowerCase() == currentRepository.toLowerCase()) {
           return;
         }
         NavigatorUtils.goReposDetail(context, event["actor"]["login"], repositoryName);
         break;
       case 'PushEvent':
         if (event["payload"]["commits"] == null) {
-          if (fullName == currentRepository) {
+          if (fullName.toLowerCase() == currentRepository.toLowerCase()) {
             return;
           }
           NavigatorUtils.goReposDetail(context, owner, repositoryName);
@@ -175,7 +175,7 @@ class EventUtils {
           });*/
         break;
       default:
-        if (fullName == currentRepository) {
+        if (fullName.toLowerCase() == currentRepository.toLowerCase()) {
           return;
         }
         NavigatorUtils.goReposDetail(context, owner, repositoryName);

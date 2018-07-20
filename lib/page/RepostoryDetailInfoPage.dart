@@ -58,7 +58,7 @@ class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     return new EventItem(
       pullLoadWidgetControl.dataList[index - 1],
       onPressed: () {
-        EventUtils.ActionUtils(context, eventViewModel.eventMap, "");
+        EventUtils.ActionUtils(context, eventViewModel.eventMap, userName + "/" + reposName);
       },
     );
   }
