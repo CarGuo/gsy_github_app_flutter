@@ -31,14 +31,30 @@ class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
+  int selectIndex = 0;
+
   _ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName);
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel, (index) {});
+      return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel, (index) {
+        selectIndex = index;
+        clearData();
+        showRefreshLoading();
+      });
     }
 
     EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
+
+
+    if (selectIndex == 1) {
+      return new EventItem(
+        pullLoadWidgetControl.dataList[index - 1],
+        onPressed: () {;
+        },
+        needImage: false,
+      );
+    }
     return new EventItem(
       pullLoadWidgetControl.dataList[index - 1],
       onPressed: () {
@@ -47,17 +63,24 @@ class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     );
   }
 
+  _getDataLogic() async {
+    if (selectIndex == 1) {
+      return await ReposDao.getReposCommitsDao(userName, reposName, page: page);
+    }
+    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
+  }
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   requestRefresh() async {
-    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
+    return await _getDataLogic();
   }
 
   @override
   requestLoadMore() async {
-    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
+    return await _getDataLogic();
   }
 
   @override

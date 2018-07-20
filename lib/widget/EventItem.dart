@@ -15,16 +15,40 @@ class EventItem extends StatelessWidget {
 
   final VoidCallback onPressed;
 
-  EventItem(this.eventViewModel, {this.onPressed}) : super();
+  final bool needImage;
+
+  EventItem(this.eventViewModel, {this.onPressed, this.needImage = true}) : super();
 
   @override
   Widget build(BuildContext context) {
     Widget des = (eventViewModel.actionDes == null || eventViewModel.actionDes.length == 0)
         ? new Container()
         : new Container(
-            child: new Text(eventViewModel.actionDes, style: GSYConstant.subSmallText, maxLines: 3,),
+            child: new Text(
+              eventViewModel.actionDes,
+              style: GSYConstant.subSmallText,
+              maxLines: 3,
+            ),
             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
             alignment: Alignment.topLeft);
+
+    Widget userImage = (needImage)
+        ? new IconButton(
+            padding:  EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
+            icon: new ClipOval(
+              child: new FadeInImage.assetNetwork(
+                placeholder: "static/images/logo.png",
+                //预览图
+                fit: BoxFit.fitWidth,
+                image: eventViewModel.actionUserPic,
+                width: 30.0,
+                height: 30.0,
+              ),
+            ),
+            onPressed: () {
+              NavigatorUtils.goPerson(context, eventViewModel.actionUser);
+            })
+        : Container();
     return new Container(
       child: new GSYCardItem(
           child: new FlatButton(
@@ -36,21 +60,7 @@ class EventItem extends StatelessWidget {
                   children: <Widget>[
                     new Row(
                       children: <Widget>[
-                        new IconButton(
-                            icon: new ClipOval(
-                              child: new FadeInImage.assetNetwork(
-                                placeholder: "static/images/logo.png",
-                                //预览图
-                                fit: BoxFit.fitWidth,
-                                image: eventViewModel.actionUserPic,
-                                width: 30.0,
-                                height: 30.0,
-                              ),
-                            ),
-                            onPressed: () {
-                              NavigatorUtils.goPerson(context, eventViewModel.actionUser);
-                            }),
-                        new Padding(padding: EdgeInsets.all(5.0)),
+                        userImage,
                         new Expanded(child: new Text(eventViewModel.actionUser, style: GSYConstant.smallTextBold)),
                         new Text(eventViewModel.actionTime, style: GSYConstant.subSmallText),
                       ],
@@ -82,6 +92,14 @@ class EventViewModel {
     var other = EventUtils.getActionAndDes(eventMap);
     actionDes = other["des"];
     actionTarget = other["actionStr"];
+    this.eventMap = eventMap;
+  }
+
+  EventViewModel.fromCommitMap(eventMap) {
+    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["commit"]["committer"]["date"]));
+    actionUser = eventMap["commit"]["committer"]["name"];
+    actionDes = "sha:" + eventMap["sha"];
+    actionTarget = eventMap["commit"]["message"];
     this.eventMap = eventMap;
   }
 }
