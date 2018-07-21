@@ -77,11 +77,11 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
         : <Widget>[
             new FlatButton(
                 onPressed: () {
-                  CommonUtils.showLoadingDialog(context);
                   /*return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
                   _getHeaderInfo();
                   Navigator.pop(context);
                 });*/
+                  CommonUtils.showEditDialog(context);
                 },
                 child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),

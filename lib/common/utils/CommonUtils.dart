@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
 
 /**
  * 通用逻辑
@@ -79,6 +80,16 @@ class CommonUtils {
                 ],
               ),
             ),
+          );
+        });
+  }
+
+  static Future<Null> showEditDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: new IssueEditDialog(),
           );
         });
   }

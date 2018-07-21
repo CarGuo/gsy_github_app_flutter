@@ -44,7 +44,7 @@ class _GSYInputWidgetState extends State<GSYInputWidget> {
       obscureText: obscureText,
       decoration: new InputDecoration(
         hintText: hintText,
-        icon: new Icon(iconData),
+        icon: iconData == null ? null : new Icon(iconData),
       ),
     );
   }
