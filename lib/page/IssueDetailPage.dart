@@ -72,7 +72,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
   }
 
   _getBottomWidget() {
-    List<Widget> bottomWidget = (headerStatus)
+    List<Widget> bottomWidget = (!headerStatus)
         ? []
         : <Widget>[
             new FlatButton(
