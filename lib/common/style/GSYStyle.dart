@@ -224,7 +224,16 @@ class GSYStrings {
   static const String repos_tab_issue_open = "打开";
   static const String repos_tab_issue_closed = "关闭";
 
+
   static const String repos_issue_search = "搜索";
+
+  static const String issue_reply = "回复";
+  static const String issue_edit = "编辑";
+  static const String issue_open = "打开";
+  static const String issue_close = "关闭";
+  static const String issue_lock = "锁定";
+  static const String issue_unlock = "解锁";
+
 }
 
 class GSYICons {

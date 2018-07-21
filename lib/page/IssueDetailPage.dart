@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/IssueHeaderItem.dart';
@@ -33,6 +35,8 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
 
   int selectIndex = 0;
 
+  bool headerStatus = false;
+
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
 
   _IssueDetailPageState(this.issueNum, this.userName, this.reposName);
@@ -52,14 +56,54 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
 
   _getDataLogic() async {
     if (page <= 1) {
-      var res = await IssueDao.getIssueInfoDao(userName, reposName, issueNum);
-      if (res != null && res.result) {
-        setState(() {
-          issueHeaderViewModel = res.data;
-        });
-      }
+      _getHeaderInfo();
     }
     return await IssueDao.getIssueCommentDao(userName, reposName, issueNum, page: page);
+  }
+
+  _getHeaderInfo() async {
+    var res = await IssueDao.getIssueInfoDao(userName, reposName, issueNum);
+    if (res != null && res.result) {
+      setState(() {
+        issueHeaderViewModel = res.data;
+        headerStatus = true;
+      });
+    }
+  }
+
+  _getBottomWidget() {
+    List<Widget> bottomWidget = (headerStatus)
+        ? []
+        : <Widget>[
+            new FlatButton(
+                onPressed: () {
+                  CommonUtils.showLoadingDialog(context);
+                  /*return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
+                  _getHeaderInfo();
+                  Navigator.pop(context);
+                });*/
+                },
+                child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText)),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(
+                onPressed: () {
+                  CommonUtils.showLoadingDialog(context);
+                  /*return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
+                    _refresh();
+                    Navigator.pop(context);
+                  });*/
+                },
+                child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(
+                onPressed: () {},
+                child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close, style: GSYConstant.smallText)),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(
+                onPressed: () {},
+                child: new Text((issueHeaderViewModel.locked) ? GSYStrings.issue_unlock : GSYStrings.issue_lock, style: GSYConstant.smallText)),
+          ];
+    return bottomWidget;
   }
 
   @override
@@ -85,6 +129,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
+      persistentFooterButtons: _getBottomWidget(),
       appBar: new AppBar(
           title: new Text(
         reposName,
