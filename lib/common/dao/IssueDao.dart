@@ -1,6 +1,7 @@
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
+import 'package:gsy_github_app_flutter/widget/IssueHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
 
 /**
@@ -62,6 +63,42 @@ class IssueDao {
       }
       for (int i = 0; i < data.length; i++) {
         list.add(IssueItemViewModel.fromMap(data[i]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * issue的详请
+   */
+  static getIssueInfoDao(userName, repository, number) async {
+    String url = Address.getIssueInfo(userName, repository, number);
+    //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      return new DataResult(IssueHeaderViewModel.fromMap(res.data), true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * issue的详请列表
+   */
+  static getIssueCommentDao(userName, repository, number, {page: 0}) async {
+    String url = Address.getIssueComment(userName, repository, number) + Address.getPageParams("?", page);
+    //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<IssueItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(IssueItemViewModel.fromMap(data[i], needTitle: false));
       }
       return new DataResult(list, true);
     } else {

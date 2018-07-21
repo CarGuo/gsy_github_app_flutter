@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
+import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
@@ -38,5 +39,10 @@ class NavigatorUtils {
   ///仓库详情
   static goReposDetail(BuildContext context, String userName, String reposName) {
     Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(userName, reposName)));
+  }
+
+  ///issue详情
+  static goIssueDetail(BuildContext context, String userName, String reposName, String num) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new IssueDetailPage(userName, reposName, num)));
   }
 }

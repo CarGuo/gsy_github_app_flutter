@@ -41,13 +41,11 @@ class EventUtils {
         actionStr = event["payload"]["action"] + " repository from an installation ";
         break;
       case "IssueCommentEvent":
-        actionStr =
-            event["payload"]["action"] + " comment on issue " + event["payload"]["issue"]["number"].toString() + " in " + event["repo"]["name"];
+        actionStr = event["payload"]["action"] + " comment on issue " + event["payload"]["issue"]["number"].toString() + " in " + event["repo"]["name"];
         des = event["payload"]["comment"]["body"];
         break;
       case "IssuesEvent":
-        actionStr =
-            event["payload"]["action"] + " issue " + event["payload"]["issue"]["number"].toString().toString() + " in " + event["repo"]["name"];
+        actionStr = event["payload"]["action"] + " issue " + event["payload"]["issue"]["number"].toString().toString() + " in " + event["repo"]["name"];
         des = event["payload"]["issue"]["title"];
         break;
 
@@ -173,6 +171,7 @@ class EventUtils {
           });
           }
           });*/
+        NavigatorUtils.goIssueDetail(context, owner, repositoryName, event["payload"]["issue"]["number"].toString());
         break;
       default:
         if (fullName.toLowerCase() == currentRepository.toLowerCase()) {

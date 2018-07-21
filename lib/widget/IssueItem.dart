@@ -15,14 +15,16 @@ class IssueItem extends StatelessWidget {
 
   final VoidCallback onPressed;
 
-  final bool needBottom;
+  final bool hideBottom;
 
-  IssueItem(this.issueItemViewModel, {this.onPressed, this.needBottom = false});
+  final bool limitComment;
+
+  IssueItem(this.issueItemViewModel, {this.onPressed, this.hideBottom = false, this.limitComment = true});
 
   @override
   Widget build(BuildContext context) {
     Color issueStateColor = issueItemViewModel.state == "open" ? Colors.green : Colors.red;
-    Widget bottomContainer = (needBottom)
+    Widget bottomContainer = (hideBottom)
         ? new Container()
         : new Row(
             children: <Widget>[
@@ -69,7 +71,9 @@ class IssueItem extends StatelessWidget {
                     height: 30.0,
                   ),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  NavigatorUtils.goPerson(context, issueItemViewModel.actionUser);
+                }),
             new Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -89,7 +93,7 @@ class IssueItem extends StatelessWidget {
                       child: new Text(
                         issueItemViewModel.issueComment,
                         style: GSYConstant.subSmallText,
-                        maxLines: 2,
+                        maxLines: limitComment ? 2 : 1000,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),
@@ -115,17 +119,23 @@ class IssueItemViewModel {
   String commentCount = "---";
   String state = "---";
   String issueTag = "---";
+  String number = "---";
 
   IssueItemViewModel();
 
-  IssueItemViewModel.fromMap(issueMap) {
+  IssueItemViewModel.fromMap(issueMap, {needTitle = true}) {
     String fullName = CommonUtils.getFullName(issueMap["repository_url"]);
     actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(issueMap["created_at"]));
     actionUser = issueMap["user"]["login"];
     actionUserPic = issueMap["user"]["avatar_url"];
-    issueComment = fullName + "- " + issueMap["title"];
-    commentCount = issueMap["comments"].toString();
-    state = issueMap["state"];
-    issueTag = "#" + issueMap["number"].toString();
+    if (needTitle) {
+      issueComment = fullName + "- " + issueMap["title"];
+      commentCount = issueMap["comments"].toString();
+      state = issueMap["state"];
+      issueTag = "#" + issueMap["number"].toString();
+      number = issueMap["number"].toString();
+    } else {
+      issueComment = issueMap["body"] != null ? issueMap["body"] : "";
+    }
   }
 }

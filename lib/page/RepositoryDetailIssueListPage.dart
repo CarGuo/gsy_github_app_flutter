@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSearchInputWidget.dart';
@@ -39,7 +40,9 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
     IssueItemViewModel issueItemViewModel = pullLoadWidgetControl.dataList[index];
     return new IssueItem(
       issueItemViewModel,
-      onPressed: () {},
+      onPressed: () {
+        NavigatorUtils.goIssueDetail(context, userName, reposName, issueItemViewModel.number);
+      },
     );
   }
 

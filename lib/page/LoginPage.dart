@@ -3,6 +3,7 @@ import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/GSYInputWidget.dart';
@@ -97,10 +98,11 @@ class _LoginPageState extends State<LoginPage> {
                     if (_password == null || _password.length == 0) {
                       return;
                     }
+                    CommonUtils.showLoadingDialog(context);
                     UserDao.login(_userName, _password, (data) {
+                      Navigator.pop(context);
                       if (data != null && data.result == true) {
                         NavigatorUtils.goHome(context);
-                        //Fluttertoast.showToast(msg: GSYStrings.login_success);
                       }
                     });
                   },
