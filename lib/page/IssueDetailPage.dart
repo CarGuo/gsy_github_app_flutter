@@ -85,22 +85,26 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                 },
                 child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(onPressed: () {}, child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);
-                  /*return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
-                    _refresh();
+                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then((result) {
+                    _getHeaderInfo();
                     Navigator.pop(context);
-                  });*/
+                  });
                 },
-                child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
-            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-            new FlatButton(
-                onPressed: () {},
                 child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  CommonUtils.showLoadingDialog(context);
+                  IssueDao.lockIssueDao(userName, reposName, issueNum, issueHeaderViewModel.locked).then((result) {
+                    _getHeaderInfo();
+                    Navigator.pop(context);
+                  });
+                },
                 child: new Text((issueHeaderViewModel.locked) ? GSYStrings.issue_unlock : GSYStrings.issue_lock, style: GSYConstant.smallText)),
           ];
     return bottomWidget;

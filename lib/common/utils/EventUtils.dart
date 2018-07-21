@@ -177,7 +177,7 @@ class EventUtils {
         if (fullName.toLowerCase() == currentRepository.toLowerCase()) {
           return;
         }
-        NavigatorUtils.goReposDetail(context, owner, repositoryName);
+        NavigatorUtils.goReposDetail(context, "carsmallguo", "GSYGithubApp-Weex");
         break;
     }
   }
