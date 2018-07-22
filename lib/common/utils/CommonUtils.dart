@@ -103,7 +103,7 @@ class CommonUtils {
               onTitleChanged,
               onContentChanged,
               onPressed,
-              titleController: valueController,
+              titleController: titleController,
               valueController: valueController,
               needTitle: needTitle,
             ),

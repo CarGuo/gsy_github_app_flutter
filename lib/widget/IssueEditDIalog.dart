@@ -86,6 +86,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
               child: new TextField(
                 autofocus: false,
+                maxLines: 999,
                 onChanged: onContentChanged,
                 controller: valueController,
                 decoration: new InputDecoration.collapsed(

@@ -90,12 +90,27 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
-                  String title = issueHeaderViewModel.issueDes;
+                  String title = issueHeaderViewModel.issueComment;
                   String content = issueHeaderViewModel.issueDesHtml;
-                  issueInfoTitleControl = new TextEditingController();
-                  issueInfoValueControl = new TextEditingController();
+                  issueInfoTitleControl = new TextEditingController(text: title);
+                  issueInfoValueControl = new TextEditingController(text: content);
                   //编译Issue Info
-                  CommonUtils.showEditDialog(context, GSYStrings.issue_edit_issue, (titleValue) {}, (contentValue) {}, () {}, needTitle: true);
+                  CommonUtils.showEditDialog(
+                    context,
+                    GSYStrings.issue_edit_issue,
+                    (titleValue) {
+                      title = titleValue;
+                    },
+                    (contentValue) {
+                      content = contentValue;
+                    },
+                    () {
+                      //提交
+                    },
+                    titleController: issueInfoTitleControl,
+                    valueController: issueInfoValueControl,
+                    needTitle: true,
+                  );
                 },
                 child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
