@@ -57,7 +57,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
             child: new GSYInputWidget(
               onChanged: onTitleChanged,
               controller: titleController,
-              hintText: GSYStrings.login_password_hint_text,
+              hintText: GSYStrings.issue_edit_issue_title_tip,
               obscureText: false,
             ))
         : new Container();
@@ -90,7 +90,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                 onChanged: onContentChanged,
                 controller: valueController,
                 decoration: new InputDecoration.collapsed(
-                  hintText: GSYStrings.repos_issue_search,
+                  hintText: GSYStrings.issue_edit_issue_title_tip,
                   hintStyle: GSYConstant.middleSubText,
                 ),
                 style: GSYConstant.middleText,
