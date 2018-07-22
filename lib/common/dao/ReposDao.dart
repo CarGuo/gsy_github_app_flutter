@@ -192,12 +192,46 @@ class ReposDao {
   /**
    * 获取仓库的fork分支
    */
-  static getRepositoryForksDao(userName, reposName, page) async {}
+  static getRepositoryForksDao(userName, reposName, page) async {
+    String url = Address.getReposForks(userName, reposName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data.length > 0) {
+      List<ReposViewModel> list = new List();
+      var dataList = res.data;
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < dataList.length; i++) {
+        var data = dataList[i];
+        list.add(ReposViewModel.fromMap(data));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
 
   /**
    * 获取当前仓库所有star用户
    */
-  static getStarRepositoryDao(userName, page, sort) async {}
+  static getStarRepositoryDao(userName, page, sort) async {
+    String url = Address.userStar(userName, sort) + Address.getPageParams("&", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data.length > 0) {
+      List<ReposViewModel> list = new List();
+      var dataList = res.data;
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < dataList.length; i++) {
+        var data = dataList[i];
+        list.add(ReposViewModel.fromMap(data));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
 
   /**
    * 用户的仓库
@@ -213,16 +247,7 @@ class ReposDao {
       }
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
-        ReposViewModel reposViewModel = new ReposViewModel();
-        reposViewModel.ownerName = data["owner"]["login"];
-        reposViewModel.ownerPic = data["owner"]["avatar_url"];
-        reposViewModel.repositoryName = data["name"];
-        reposViewModel.repositoryStar = data["watchers_count"].toString();
-        reposViewModel.repositoryFork = data["forks_count"].toString();
-        reposViewModel.repositoryWatch = data["open_issues"].toString();
-        reposViewModel.repositoryType = data["language"] != null ? data["language"] : '---';
-        reposViewModel.repositoryDes = data["description"] != null ? data["description"] : '---';
-        list.add(reposViewModel);
+        list.add(ReposViewModel.fromMap(data));
       }
       return new DataResult(list, true);
     } else {

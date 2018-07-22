@@ -71,13 +71,13 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
       case 'user_repos':
         return await ReposDao.getUserRepositoryDao(userName, page, null);
       case 'user_star':
-        return null;
+        return await ReposDao.getStarRepositoryDao(userName, page, null);
       case 'repo_star':
         return null;
       case 'repo_watcher':
         return null;
       case 'repo_fork':
-        return null;
+        return await ReposDao.getRepositoryForksDao(userName, reposName, page);
       case 'repo_release':
         return null;
       case 'repo_tag':

@@ -110,4 +110,17 @@ class ReposViewModel {
   String hideWatchIcon;
   String repositoryType = "";
   String repositoryDes;
+
+  ReposViewModel();
+
+  ReposViewModel.fromMap(data) {
+    ownerName = data["owner"]["login"];
+    ownerPic = data["owner"]["avatar_url"];
+    repositoryName = data["name"];
+    repositoryStar = data["watchers_count"].toString();
+    repositoryFork = data["forks_count"].toString();
+    repositoryWatch = data["open_issues"].toString();
+    repositoryType = data["language"] != null ? data["language"] : '---';
+    repositoryDes = data["description"] != null ? data["description"] : '---';
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
@@ -17,17 +18,20 @@ class ReposHeaderItem extends StatelessWidget {
 
   ReposHeaderItem(this.reposHeaderViewModel, this.selectItemChanged) : super();
 
-  _getBottomItem(IconData icon, String text) {
+  _getBottomItem(IconData icon, String text, onPressed) {
     return new Expanded(
       child: new Center(
-        child: new GSYIConText(
-          icon,
-          text,
-          GSYConstant.middleSubText,
-          Color(GSYColors.subTextColor),
-          15.0,
-          padding: 3.0,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: new FlatButton(
+          onPressed: onPressed,
+          child: new GSYIConText(
+            icon,
+            text,
+            GSYConstant.middleSubText,
+            Color(GSYColors.subTextColor),
+            15.0,
+            padding: 3.0,
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
         ),
       ),
     );
@@ -67,11 +71,9 @@ class ReposHeaderItem extends StatelessWidget {
                   new Padding(padding: new EdgeInsets.all(5.0)),
                   new Row(
                     children: <Widget>[
-                      new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--",
-                          style: GSYConstant.subLightSmallText),
+                      new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--", style: GSYConstant.subLightSmallText),
                       new Container(width: 5.3, height: 1.0),
-                      new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--",
-                          style: GSYConstant.subLightSmallText),
+                      new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--", style: GSYConstant.subLightSmallText),
                       new Container(width: 5.3, height: 1.0),
                       new Text(reposHeaderViewModel.license != null ? reposHeaderViewModel.license : "--", style: GSYConstant.subLightSmallText),
                     ],
@@ -94,13 +96,32 @@ class ReposHeaderItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          _getBottomItem(GSYICons.REPOS_ITEM_STAR, reposHeaderViewModel.repositoryStar),
+                          _getBottomItem(
+                            GSYICons.REPOS_ITEM_STAR,
+                            reposHeaderViewModel.repositoryStar,
+                            () {},
+                          ),
                           new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                          _getBottomItem(GSYICons.REPOS_ITEM_FORK, reposHeaderViewModel.repositoryFork),
+                          _getBottomItem(
+                            GSYICons.REPOS_ITEM_FORK,
+                            reposHeaderViewModel.repositoryFork,
+                            () {
+                              NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "repository", "repo_fork",
+                                  userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                            },
+                          ),
                           new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                          _getBottomItem(GSYICons.REPOS_ITEM_WATCH, reposHeaderViewModel.repositoryWatch),
+                          _getBottomItem(
+                            GSYICons.REPOS_ITEM_WATCH,
+                            reposHeaderViewModel.repositoryWatch,
+                            () {},
+                          ),
                           new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                          _getBottomItem(GSYICons.REPOS_ITEM_ISSUE, reposHeaderViewModel.repositoryIssue),
+                          _getBottomItem(
+                            GSYICons.REPOS_ITEM_ISSUE,
+                            reposHeaderViewModel.repositoryIssue,
+                            () {},
+                          ),
                         ],
                       )),
                 ],

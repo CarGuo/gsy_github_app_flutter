@@ -128,7 +128,9 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_star,
                         "---",
-                        () {},
+                        () {
+                          NavigatorUtils.gotoCommonList(context, userInfo.login, "repository", "user_star", userName: userInfo.login);
+                        },
                       ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       _getBottomItem(
