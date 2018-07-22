@@ -116,7 +116,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                 )),
             new FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  CommonUtils.showLoadingDialog(context);
+                  return ReposDao.createForkDao(userName, reposName).then((result) {
+                    _refresh();
+                    Navigator.pop(context);
+                  });
+                },
                 child: new GSYIConText(
                   GSYICons.REPOS_ITEM_FORK,
                   "fork",
