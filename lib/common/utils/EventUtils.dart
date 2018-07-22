@@ -178,7 +178,6 @@ class EventUtils {
           return;
         }
         NavigatorUtils.goReposDetail(context, owner, repositoryName);
-        NavigatorUtils.goReposDetail(context, "carsmallguo", "GSYGithubApp-Weex");
         break;
     }
   }

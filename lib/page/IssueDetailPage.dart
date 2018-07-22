@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/IssueHeaderItem.dart';
@@ -56,7 +58,39 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
       issueItemViewModel,
       hideBottom: true,
       limitComment: false,
-      onPressed: () {},
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return new Center(
+                child: new Container(
+                  decoration: new BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      color: Colors.white,
+                      border: new Border.all(color: Color(GSYColors.subTextColor), width: 0.3)),
+                  margin: EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new GSYFlexButton(
+                        color: Colors.white,
+                        text: GSYStrings.issue_edit_issue_edit_commit,
+                        onPress: () {},
+                      ),
+                      new GSYFlexButton(
+                        color: Colors.white,
+                        text: GSYStrings.issue_edit_issue_delete_commit,
+                        onPress: () {
+                          _deleteCommit(issueItemViewModel.id);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
     );
   }
 
@@ -77,6 +111,16 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     }
   }
 
+  _deleteCommit(id) {
+    Navigator.pop(context);
+    CommonUtils.showLoadingDialog(context);
+    //提交修改
+    IssueDao.deleteCommentDao(userName, reposName, issueNum, id).then()((result) {
+      showRefreshLoading();
+      Navigator.pop(context);
+    });
+  }
+
   _editIssue() {
     String title = issueHeaderViewModel.issueComment;
     String content = issueHeaderViewModel.issueDesHtml;
@@ -93,6 +137,14 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
         content = contentValue;
       },
       () {
+        if (title == null || title.trim().length == 0) {
+          Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_title_not_be_null);
+          return;
+        }
+        if (content == null || content.trim().length == 0) {
+          Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
+          return;
+        }
         CommonUtils.showLoadingDialog(context);
         //提交修改
         IssueDao.editIssueDao(userName, reposName, issueNum, {"title": title, "body": content}).then((result) {
@@ -113,6 +165,10 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     CommonUtils.showEditDialog(context, GSYStrings.issue_reply_issue, null, (replyContent) {
       content = replyContent;
     }, () {
+      if (content == null || content.trim().length == 0) {
+        Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
+        return;
+      }
       CommonUtils.showLoadingDialog(context);
       //提交评论
       IssueDao.addIssueCommentDao(userName, reposName, issueNum, content).then((result) {

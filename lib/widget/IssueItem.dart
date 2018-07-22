@@ -13,13 +13,14 @@ import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 class IssueItem extends StatelessWidget {
   final IssueItemViewModel issueItemViewModel;
 
-  final VoidCallback onPressed;
+  final GestureTapCallback onPressed;
+  final GestureTapCallback onLongPress;
 
   final bool hideBottom;
 
   final bool limitComment;
 
-  IssueItem(this.issueItemViewModel, {this.onPressed, this.hideBottom = false, this.limitComment = true});
+  IssueItem(this.issueItemViewModel, {this.onPressed, this.onLongPress, this.hideBottom = false, this.limitComment = true});
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +55,9 @@ class IssueItem extends StatelessWidget {
             ],
           );
     return new GSYCardItem(
-      child: new FlatButton(
-        padding: new EdgeInsets.all(0.0),
-        onPressed: onPressed,
+      child: new InkWell(
+        onTap: onPressed,
+        onLongPress: onLongPress,
         child: new Padding(
           padding: new EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 8.0),
           child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -120,6 +121,7 @@ class IssueItemViewModel {
   String state = "---";
   String issueTag = "---";
   String number = "---";
+  String id = "";
 
   IssueItemViewModel();
 
@@ -136,6 +138,7 @@ class IssueItemViewModel {
       number = issueMap["number"].toString();
     } else {
       issueComment = issueMap["body"] != null ? issueMap["body"] : "";
+      id = issueMap["id"].toString();
     }
   }
 }

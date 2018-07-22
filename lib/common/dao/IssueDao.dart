@@ -181,7 +181,7 @@ class IssueDao {
    */
   static deleteCommentDao(userName, repository, number, commentId) async {
     String url = Address.editComment(userName, repository, commentId);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: 'DELETE'));
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: 'DELETE', contentType: ContentType.TEXT), noTip: true);
     if (res != null && res.result) {
       return new DataResult(res.data, true);
     } else {
