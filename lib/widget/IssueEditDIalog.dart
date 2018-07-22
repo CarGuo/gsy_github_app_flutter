@@ -23,12 +23,12 @@ class IssueEditDialog extends StatefulWidget {
 
   final bool needTitle;
 
-  IssueEditDialog(this.dialogTitle, this.onContentChanged, this.onTitleChanged, this.onPressed,
+  IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed,
       {this.titleController, this.valueController, this.needTitle = true});
 
   @override
   _IssueEditDialogState createState() =>
-      _IssueEditDialogState(this.dialogTitle, this.onContentChanged, this.onTitleChanged, this.onPressed, titleController, valueController, needTitle);
+      _IssueEditDialogState(this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed, titleController, valueController, needTitle);
 }
 
 class _IssueEditDialogState extends State<IssueEditDialog> {
@@ -47,7 +47,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
   final bool needTitle;
 
   _IssueEditDialogState(
-      this.dialogTitle, this.onContentChanged, this.onTitleChanged, this.onPressed, this.titleController, this.valueController, this.needTitle);
+      this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed, this.titleController, this.valueController, this.needTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                           Navigator.pop(context);
                         })),
                 new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subTextColor)),
-                new Expanded(child: new FlatButton(child: new Text(GSYStrings.app_cancel), onPressed: () {})),
+                new Expanded(child: new FlatButton(child: new Text(GSYStrings.app_ok), onPressed: onPressed)),
               ],
             )
           ],

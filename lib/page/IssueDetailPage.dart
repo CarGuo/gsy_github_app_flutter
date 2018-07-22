@@ -77,42 +77,69 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     }
   }
 
+  _editIssue() {
+    String title = issueHeaderViewModel.issueComment;
+    String content = issueHeaderViewModel.issueDesHtml;
+    issueInfoTitleControl = new TextEditingController(text: title);
+    issueInfoValueControl = new TextEditingController(text: content);
+    //编译Issue Info
+    CommonUtils.showEditDialog(
+      context,
+      GSYStrings.issue_edit_issue,
+      (titleValue) {
+        title = titleValue;
+      },
+      (contentValue) {
+        content = contentValue;
+      },
+      () {
+        CommonUtils.showLoadingDialog(context);
+        //提交修改
+        IssueDao.editIssueDao(userName, reposName, issueNum, {"title": title, "body": content}).then((result) {
+          _getHeaderInfo();
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+      },
+      titleController: issueInfoTitleControl,
+      valueController: issueInfoValueControl,
+      needTitle: true,
+    );
+  }
+
+  _replyIssue() {
+    //回复 Info
+    String content = "";
+    CommonUtils.showEditDialog(context, GSYStrings.issue_reply_issue, null, (replyContent) {
+      content = replyContent;
+    }, () {
+      CommonUtils.showLoadingDialog(context);
+      //提交评论
+      IssueDao.addIssueCommentDao(userName, reposName, issueNum, content).then((result) {
+        showRefreshLoading();
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    }, needTitle: false);
+  }
+
   _getBottomWidget() {
     List<Widget> bottomWidget = (!headerStatus)
         ? []
         : <Widget>[
             new FlatButton(
-                onPressed: () {
-                  //回复 Info
-                  CommonUtils.showEditDialog(context, GSYStrings.issue_reply_issue, null, (replyContent) {}, () {}, needTitle: false);
-                },
-                child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText)),
+              onPressed: () {
+                _replyIssue();
+              },
+              child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText),
+            ),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
-                onPressed: () {
-                  String title = issueHeaderViewModel.issueComment;
-                  String content = issueHeaderViewModel.issueDesHtml;
-                  issueInfoTitleControl = new TextEditingController(text: title);
-                  issueInfoValueControl = new TextEditingController(text: content);
-                  //编译Issue Info
-                  CommonUtils.showEditDialog(
-                    context,
-                    GSYStrings.issue_edit_issue,
-                    (titleValue) {
-                      title = titleValue;
-                    },
-                    (contentValue) {
-                      content = contentValue;
-                    },
-                    () {
-                      //提交
-                    },
-                    titleController: issueInfoTitleControl,
-                    valueController: issueInfoValueControl,
-                    needTitle: true,
-                  );
-                },
-                child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
+              onPressed: () {
+                _editIssue();
+              },
+              child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText),
+            ),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
