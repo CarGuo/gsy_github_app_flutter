@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -69,6 +71,39 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
     return await IssueDao.searchRepositoryIssue(searchString, userName, reposName, this.issueState, page: this.page);
   }
 
+  _createIssue() {
+    String title = "";
+    String content = "";
+    CommonUtils.showEditDialog(
+      context,
+      GSYStrings.issue_edit_issue,
+      (titleValue) {
+        title = titleValue;
+      },
+      (contentValue) {
+        content = contentValue;
+      },
+      () {
+        if (title == null || title.trim().length == 0) {
+          Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_title_not_be_null);
+          return;
+        }
+        if (content == null || content.trim().length == 0) {
+          Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
+          return;
+        }
+        CommonUtils.showLoadingDialog(context);
+        //提交修改
+        IssueDao.createIssueDao(userName, reposName, {"title": title, "body": content}).then((result) {
+          showRefreshLoading();
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+      },
+      needTitle: true,
+    );
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -98,7 +133,9 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
             size: 55.0,
             color: Color(GSYColors.textWhite),
           ),
-          onPressed: () {}),
+          onPressed: () {
+            _createIssue();
+          }),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),

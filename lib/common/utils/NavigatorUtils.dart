@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/page/CommonListPage.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
 import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
@@ -44,5 +45,19 @@ class NavigatorUtils {
   ///issue详情
   static goIssueDetail(BuildContext context, String userName, String reposName, String num) {
     Navigator.push(context, new MaterialPageRoute(builder: (context) => new IssueDetailPage(userName, reposName, num)));
+  }
+
+  ///通用列表
+  static gotoCommonList(BuildContext context, String title, String showType, String dataType, {String userName, String reposName}) {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new CommonListPage(
+                  title,
+                  showType,
+                  dataType,
+                  userName: userName,
+                  reposName: reposName,
+                )));
   }
 }

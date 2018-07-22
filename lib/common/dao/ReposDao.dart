@@ -180,11 +180,67 @@ class ReposDao {
   }
 
   /**
+   * 获取当前仓库所有订阅用户
+   */
+  static getRepositoryWatcherDao(userName, reposName, page) async {}
+
+  /**
+   * 获取当前仓库所有star用户
+   */
+  static getRepositoryStarDao(userName, reposName, page) async {}
+
+  /**
+   * 获取仓库的fork分支
+   */
+  static getRepositoryForksDao(userName, reposName, page) async {}
+
+  /**
+   * 获取当前仓库所有star用户
+   */
+  static getStarRepositoryDao(userName, page, sort) async {}
+
+  /**
+   * 用户的仓库
+   */
+  static getUserRepositoryDao(userName, page, sort) async {
+    String url = Address.userRepos(userName, sort) + Address.getPageParams("&", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data.length > 0) {
+      List<ReposViewModel> list = new List();
+      var dataList = res.data;
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < dataList.length; i++) {
+        var data = dataList[i];
+        ReposViewModel reposViewModel = new ReposViewModel();
+        reposViewModel.ownerName = data["owner"]["login"];
+        reposViewModel.ownerPic = data["owner"]["avatar_url"];
+        reposViewModel.repositoryName = data["name"];
+        reposViewModel.repositoryStar = data["watchers_count"].toString();
+        reposViewModel.repositoryFork = data["forks_count"].toString();
+        reposViewModel.repositoryWatch = data["open_issues"].toString();
+        reposViewModel.repositoryType = data["language"] != null ? data["language"] : '---';
+        reposViewModel.repositoryDes = data["description"] != null ? data["description"] : '---';
+        list.add(reposViewModel);
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
    * 创建仓库的fork分支
    */
   static createForkDao(userName, reposName) async {
     String url = Address.createFork(userName, reposName);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: "POST"));
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: "POST", contentType: ContentType.TEXT));
     return new DataResult(null, res.result);
   }
+
+  /**
+   * 获取当前仓库所有分支
+   */
+  static getBranchesDao(userName, reposName) async {}
 }

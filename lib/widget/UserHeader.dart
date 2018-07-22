@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 
@@ -13,10 +14,13 @@ class UserHeaderItem extends StatelessWidget {
 
   UserHeaderItem(this.userInfo);
 
-  _getBottomItem(String title, var value) {
+  _getBottomItem(String title, var value, onPressed) {
     return new Expanded(
       child: new Center(
-        child: new Text(title + "\n" + (value == null ? "" : value.toString()), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+        child: new FlatButton(
+          onPressed: onPressed,
+          child: new Text(title + "\n" + (value == null ? "" : value.toString()), textAlign: TextAlign.center, style: GSYConstant.subSmallText),
+        ),
       ),
     );
   }
@@ -101,15 +105,37 @@ class UserHeaderItem extends StatelessWidget {
                   new Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      _getBottomItem(GSYStrings.user_tab_repos, userInfo.public_repos),
+                      _getBottomItem(
+                        GSYStrings.user_tab_repos,
+                        userInfo.public_repos,
+                        () {
+                          NavigatorUtils.gotoCommonList(context, userInfo.login, "repository", "user_repos", userName: userInfo.login);
+                        },
+                      ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      _getBottomItem(GSYStrings.user_tab_fans, userInfo.followers),
+                      _getBottomItem(
+                        GSYStrings.user_tab_fans,
+                        userInfo.followers,
+                        () {},
+                      ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      _getBottomItem(GSYStrings.user_tab_focus, userInfo.following),
+                      _getBottomItem(
+                        GSYStrings.user_tab_focus,
+                        userInfo.following,
+                        () {},
+                      ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      _getBottomItem(GSYStrings.user_tab_star, "---"),
+                      _getBottomItem(
+                        GSYStrings.user_tab_star,
+                        "---",
+                        () {},
+                      ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
-                      _getBottomItem(GSYStrings.user_tab_honor, "---"),
+                      _getBottomItem(
+                        GSYStrings.user_tab_honor,
+                        "---",
+                        () {},
+                      ),
                     ],
                   ),
                 ],
