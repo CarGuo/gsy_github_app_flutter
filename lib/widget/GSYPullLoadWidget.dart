@@ -88,7 +88,6 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   Widget _buildProgressIndicator() {
     Widget bottomWidget = (control.needLoadMore) ? new CircularProgressIndicator() : new Text(GSYStrings.load_more_not);
-    print(bottomWidget);
     return new Padding(
       padding: const EdgeInsets.all(20.0),
       child: new Center(

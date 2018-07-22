@@ -76,7 +76,9 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                       new GSYFlexButton(
                         color: Colors.white,
                         text: GSYStrings.issue_edit_issue_edit_commit,
-                        onPress: () {},
+                        onPress: () {
+                          _editCommit(issueItemViewModel.id, issueItemViewModel.issueComment);
+                        },
                       ),
                       new GSYFlexButton(
                         color: Colors.white,
@@ -111,13 +113,43 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     }
   }
 
+  _editCommit(id, content) {
+    Navigator.pop(context);
+    String contentData = content;
+    issueInfoValueControl = new TextEditingController(text: contentData);
+    //编译Issue Info
+    CommonUtils.showEditDialog(
+      context,
+      GSYStrings.issue_edit_issue,
+      null,
+      (contentValue) {
+        contentData = contentValue;
+      },
+      () {
+        if (contentData == null || contentData.trim().length == 0) {
+          Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
+          return;
+        }
+        CommonUtils.showLoadingDialog(context);
+        //提交修改
+        IssueDao.editCommentDao(userName, reposName, issueNum, id, {"body": contentData}).then((result) {
+          showRefreshLoading();
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+      },
+      valueController: issueInfoValueControl,
+      needTitle: false,
+    );
+  }
+
   _deleteCommit(id) {
     Navigator.pop(context);
     CommonUtils.showLoadingDialog(context);
     //提交修改
-    IssueDao.deleteCommentDao(userName, reposName, issueNum, id).then()((result) {
-      showRefreshLoading();
+    IssueDao.deleteCommentDao(userName, reposName, issueNum, id).then((result) {
       Navigator.pop(context);
+      showRefreshLoading();
     });
   }
 
