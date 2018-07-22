@@ -84,12 +84,29 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showEditDialog(BuildContext context) {
+  static Future<Null> showEditDialog(
+    BuildContext context,
+    String dialogTitle,
+    ValueChanged<String> onTitleChanged,
+    ValueChanged<String> onContentChanged,
+    VoidCallback onPressed, {
+    TextEditingController titleController,
+    TextEditingController valueController,
+    bool needTitle = true,
+  }) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
-            child: new IssueEditDialog(),
+            child: new IssueEditDialog(
+              dialogTitle,
+              onTitleChanged,
+              onContentChanged,
+              onPressed,
+              titleController: valueController,
+              valueController: valueController,
+              needTitle: needTitle,
+            ),
           );
         });
   }

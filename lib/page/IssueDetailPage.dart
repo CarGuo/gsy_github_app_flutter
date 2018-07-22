@@ -39,6 +39,12 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
 
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
 
+  TextEditingController issueInfoTitleControl = new TextEditingController();
+
+  TextEditingController issueInfoValueControl = new TextEditingController();
+
+  TextEditingController issueInfoCommitValueControl = new TextEditingController();
+
   _IssueDetailPageState(this.issueNum, this.userName, this.reposName);
 
   _renderEventItem(index) {
@@ -77,15 +83,21 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
         : <Widget>[
             new FlatButton(
                 onPressed: () {
-                  /*return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
-                  _getHeaderInfo();
-                  Navigator.pop(context);
-                });*/
-                  CommonUtils.showEditDialog(context);
+                  //回复 Info
+                  CommonUtils.showEditDialog(context, GSYStrings.issue_reply_issue, null, (replyContent) {}, () {}, needTitle: false);
                 },
                 child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-            new FlatButton(onPressed: () {}, child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
+            new FlatButton(
+                onPressed: () {
+                  String title = issueHeaderViewModel.issueDes;
+                  String content = issueHeaderViewModel.issueDesHtml;
+                  issueInfoTitleControl = new TextEditingController();
+                  issueInfoValueControl = new TextEditingController();
+                  //编译Issue Info
+                  CommonUtils.showEditDialog(context, GSYStrings.issue_edit_issue, (titleValue) {}, (contentValue) {}, () {}, needTitle: true);
+                },
+                child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {

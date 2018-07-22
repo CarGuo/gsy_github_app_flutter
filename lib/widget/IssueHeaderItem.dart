@@ -54,53 +54,68 @@ class IssueHeaderItem extends StatelessWidget {
         onPressed: onPressed,
         child: new Padding(
           padding: new EdgeInsets.all(10.0),
-          child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            new IconButton(
-                icon: new ClipOval(
-                  child: new FadeInImage.assetNetwork(
-                    placeholder: "static/images/logo.png",
-                    //预览图
-                    fit: BoxFit.fitWidth,
-                    image: issueHeaderViewModel.actionUserPic,
-                    width: 80.0,
-                    height: 80.0,
-                  ),
-                ),
-                onPressed: () {
-                  NavigatorUtils.goPerson(context, issueHeaderViewModel.actionUser);
-                }),
-            new Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+          child: new Column(
+            children: <Widget>[
+              new Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      new Expanded(child: new Text(issueHeaderViewModel.actionUser, style: GSYConstant.normalTextWhite)),
-                      new Text(
-                        issueHeaderViewModel.actionTime,
-                        style: GSYConstant.subSmallText,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                  new IconButton(
+                      icon: new ClipOval(
+                        child: new FadeInImage.assetNetwork(
+                          placeholder: "static/images/logo.png",
+                          //预览图
+                          fit: BoxFit.fitWidth,
+                          image: issueHeaderViewModel.actionUserPic,
+                          width: 80.0,
+                          height: 80.0,
+                        ),
                       ),
-                    ],
-                  ),
-                  new Padding(padding: new EdgeInsets.all(2.0)),
-                  bottomContainer,
-                  new Container(
-                      child: new Text(
-                        issueHeaderViewModel.issueComment,
-                        style: GSYConstant.smallTextWhite,
-                        maxLines: 2,
-                      ),
-                      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      alignment: Alignment.topLeft),
-                  new Padding(
-                    padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
+                      onPressed: () {
+                        NavigatorUtils.goPerson(context, issueHeaderViewModel.actionUser);
+                      }),
+                  new Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        new Row(
+                          children: <Widget>[
+                            new Expanded(child: new Text(issueHeaderViewModel.actionUser, style: GSYConstant.normalTextWhite)),
+                            new Text(
+                              issueHeaderViewModel.actionTime,
+                              style: GSYConstant.subSmallText,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        new Padding(padding: new EdgeInsets.all(2.0)),
+                        bottomContainer,
+                        new Container(
+                            child: new Text(
+                              issueHeaderViewModel.issueComment,
+                              style: GSYConstant.smallTextWhite,
+                              maxLines: 2,
+                            ),
+                            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            alignment: Alignment.topLeft),
+                        new Padding(
+                          padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ]),
+              new Container(
+                  child: new Text(
+                    issueHeaderViewModel.issueDesHtml,
+                    style: GSYConstant.smallTextWhite,
+                    maxLines: 2,
+                  ),
+                  margin: new EdgeInsets.all(10.0),
+                  alignment: Alignment.topLeft)
+            ],
+          ),
         ),
       ),
     );
@@ -129,7 +144,7 @@ class IssueHeaderViewModel {
     closed_by = issueMap["closed_by"] != null ? issueMap["closed_by"]["login"] : "";
     locked = issueMap["locked"];
     issueComment = issueMap["title"];
-    issueDesHtml = issueMap["body_html"] != null ? issueMap["body_html"] : "";
+    issueDesHtml = issueMap["body_html"] != null ? issueMap["body_html"] : (issueMap["body"] != null) ? issueMap["body"] : "";
     commentCount = issueMap["comments"].toString() + "";
     state = issueMap["state"];
     issueDes = issueMap["body"] != null ? ": \n" + issueMap["body"] : '';
