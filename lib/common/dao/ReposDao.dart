@@ -10,6 +10,7 @@ import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
+import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 
 /**
  * Created by guoshuyu
@@ -181,12 +182,44 @@ class ReposDao {
   /**
    * 获取当前仓库所有订阅用户
    */
-  static getRepositoryWatcherDao(userName, reposName, page) async {}
+  static getRepositoryWatcherDao(userName, reposName, page) async {
+    String url = Address.getReposWatcher(userName, reposName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<UserItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
 
   /**
    * 获取当前仓库所有star用户
    */
-  static getRepositoryStarDao(userName, reposName, page) async {}
+  static getRepositoryStarDao(userName, reposName, page) async {
+    String url = Address.getReposStar(userName, reposName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<UserItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
 
   /**
    * 获取仓库的fork分支

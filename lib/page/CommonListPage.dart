@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
+import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 
 /**
  * 通用list
@@ -43,6 +45,9 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
   _CommonListPageState(this.title, this.showType, this.dataType, this.userName, this.reposName);
 
   _renderItem(index) {
+    if(pullLoadWidgetControl.dataList == 0) {
+      return null;
+    }
     var data = pullLoadWidgetControl.dataList[index];
     switch (showType) {
       case 'repository':
@@ -50,7 +55,9 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
           NavigatorUtils.goReposDetail(context, data.ownerName, data.repositoryName);
         });
       case 'user':
-        return null;
+        return new UserItem(data, onPressed: () {
+          NavigatorUtils.goPerson(context, data.userName);
+        });
       case 'org':
         return null;
       case 'issue':
@@ -65,17 +72,17 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
   _getDataLogic() async {
     switch (dataType) {
       case 'follower':
-        return null;
+        return await UserDao.getFollowerListDao(userName, page);
       case 'followed':
-        return null;
+        return await UserDao.getFollowedListDao(userName, page);
       case 'user_repos':
         return await ReposDao.getUserRepositoryDao(userName, page, null);
       case 'user_star':
         return await ReposDao.getStarRepositoryDao(userName, page, null);
       case 'repo_star':
-        return null;
+        return await ReposDao.getRepositoryStarDao(userName, reposName, page);
       case 'repo_watcher':
-        return null;
+        return await ReposDao.getRepositoryWatcherDao(userName, reposName, page);
       case 'repo_fork':
         return await ReposDao.getRepositoryForksDao(userName, reposName, page);
       case 'repo_release':
@@ -112,7 +119,7 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
   bool get isRefreshFirst => true;
 
   @override
-  bool get needHeader => true;
+  bool get needHeader => false;
 
   @override
   Widget build(BuildContext context) {

@@ -116,13 +116,17 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_fans,
                         userInfo.followers,
-                        () {},
+                        () {
+                          NavigatorUtils.gotoCommonList(context, userInfo.login, "user", "follower", userName: userInfo.login);
+                        },
                       ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       _getBottomItem(
                         GSYStrings.user_tab_focus,
                         userInfo.following,
-                        () {},
+                        () {
+                          NavigatorUtils.gotoCommonList(context, userInfo.login, "user", "followed", userName: userInfo.login);
+                        },
                       ),
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       _getBottomItem(

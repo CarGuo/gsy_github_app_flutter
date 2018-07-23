@@ -9,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
@@ -34,7 +35,7 @@ class UserDao {
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
-      if(Config.DEBUG) {
+      if (Config.DEBUG) {
         print("user result " + resultData.result.toString());
         print(resultData.data);
         print(res.data.toString());
@@ -98,5 +99,47 @@ class UserDao {
   static clearAll() async {
     HttpManager.clearAuthorization();
     LocalStorage.remove(Config.USER_INFO);
+  }
+
+  /**
+   * 获取用户粉丝列表
+   */
+  static getFollowerListDao(userName, page) async {
+    String url = Address.getUserFollower(userName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<UserItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * 获取用户关注列表
+   */
+  static getFollowedListDao(userName, page) async {
+    String url = Address.getUserFollow(userName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<UserItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
   }
 }
