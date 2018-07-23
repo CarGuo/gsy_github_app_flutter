@@ -72,7 +72,7 @@ class ReposDao {
   /**
    * 仓库活动事件
    */
-  static getRepositoryEventDao(userName, reposName, {page = 0, branch="master"}) async {
+  static getRepositoryEventDao(userName, reposName, {page = 0, branch = "master"}) async {
     String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page) + "&ref=" + branch;
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -105,7 +105,7 @@ class ReposDao {
   /**
    * 获取仓库的提交列表
    */
-  static getReposCommitsDao(userName, reposName, {page = 0, branch="master"}) async {
+  static getReposCommitsDao(userName, reposName, {page = 0, branch = "master"}) async {
     String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page) + "&ref=" + branch;
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -315,5 +315,22 @@ class ReposDao {
     } else {
       return new DataResult(null, false);
     }
+  }
+
+  /**
+   * 用户的前100仓库
+   */
+  static getUserRepository100StatusDao(userName) async {
+    String url = Address.userRepos(userName, 'pushed') + "&page=1&per_page=100";
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data.length > 0) {
+      int stared = 0;
+      for (int i = 0; i < res.data.length; i++) {
+        var data = res.data[i];
+        stared += data["watchers_count"];
+      }
+      return new DataResult(stared, true);
+    }
+    return new DataResult(null, false);
   }
 }

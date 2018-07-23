@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
+import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
@@ -28,6 +29,8 @@ class PersonPage extends StatefulWidget {
 class _PersonState extends GSYListState<PersonPage> {
 
   final String userName;
+
+  String beStaredCount = "---";
 
   User userInfo = User.empty();
 
@@ -58,13 +61,21 @@ class _PersonState extends GSYListState<PersonPage> {
     }
     resolveDataResult(res);
     isLoading = false;
+
+    ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
+      if (res != null && res.result) {
+        setState(() {
+          beStaredCount = res.data.toString();
+        });
+      }
+    });
     return null;
   }
 
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new UserHeaderItem(userInfo);
+      return new UserHeaderItem(userInfo, beStaredCount);
     }
     return new EventItem(pullLoadWidgetControl.dataList[index - 1]);
   }

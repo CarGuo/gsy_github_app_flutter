@@ -11,8 +11,9 @@ import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
  */
 class UserHeaderItem extends StatelessWidget {
   final User userInfo;
+  final String beStaredCount;
 
-  UserHeaderItem(this.userInfo);
+  UserHeaderItem(this.userInfo, this.beStaredCount);
 
   _getBottomItem(String title, var value, onPressed) {
     return new Expanded(
@@ -139,7 +140,7 @@ class UserHeaderItem extends StatelessWidget {
                       new Container(width: 0.3, height: 40.0, color: Color(GSYColors.subLightTextColor)),
                       _getBottomItem(
                         GSYStrings.user_tab_honor,
-                        "---",
+                        beStaredCount,
                         () {},
                       ),
                     ],

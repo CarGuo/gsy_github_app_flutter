@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
+import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
@@ -23,10 +24,11 @@ class MyPage extends StatefulWidget {
 
 // ignore: mixin_inherits_from_not_object
 class _MyPageState extends GSYListState<MyPage> {
+  String beStaredCount = '---';
 
   _renderEventItem(userInfo, index) {
     if (index == 0) {
-      return new UserHeaderItem(userInfo);
+      return new UserHeaderItem(userInfo, beStaredCount);
     }
     EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
     return new EventItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
@@ -56,6 +58,13 @@ class _MyPageState extends GSYListState<MyPage> {
 
   @override
   requestRefresh() async {
+    ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
+      if (res != null && res.result) {
+        setState(() {
+          beStaredCount = res.data;
+        });
+      }
+    });
     return await EventDao.getEventDao(_getUserName(), page: page);
   }
 
