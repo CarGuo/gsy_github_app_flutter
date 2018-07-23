@@ -299,5 +299,22 @@ class ReposDao {
   /**
    * 获取当前仓库所有分支
    */
-  static getBranchesDao(userName, reposName) async {}
+  static getBranchesDao(userName, reposName) async {
+    String url = Address.getbranches(userName, reposName);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data.length > 0) {
+      List<String> list = new List();
+      var dataList = res.data;
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < dataList.length; i++) {
+        var data = dataList[i];
+        list.add(data['name']);
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
 }

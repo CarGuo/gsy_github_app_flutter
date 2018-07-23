@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
@@ -44,6 +42,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
+  String currentBranch = "master";
+
+  List<String> branchList = new List();
+
   _RepositoryDetailPageState(this.userName, this.reposName);
 
   _getReposDetail() async {
@@ -72,9 +74,58 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     });
   }
 
+  _getBranchList() async {
+    var result = await ReposDao.getBranchesDao(userName, reposName);
+    if (result != null && result.result) {
+      setState(() {
+        branchList = result.data;
+      });
+    }
+  }
+
   _refresh() {
     this._getReposDetail();
     this._getReposStatus();
+  }
+
+  _renderBranchPopItem(String data, List<String> list, onSelected) {
+    if (list == null && list.length == 0) {
+      return new Container(height: 0.0, width: 0.0);
+    }
+    return new Container(
+      height: 30.0,
+      child: new PopupMenuButton<String>(
+        child: new FlatButton(
+          onPressed: null,
+          color: Color(GSYColors.primaryValue),
+          disabledColor: Color(GSYColors.primaryValue),
+          child: new GSYIConText(
+            Icons.arrow_drop_up,
+            data,
+            GSYConstant.smallTextWhite,
+            Color(GSYColors.white),
+            30.0,
+            padding: 3.0,
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
+        onSelected: onSelected,
+        itemBuilder: (BuildContext context) {
+          return _renderHeaderPopItemChild(list);
+        },
+      ),
+    );
+  }
+
+  _renderHeaderPopItemChild(List<String> data) {
+    List<PopupMenuEntry<String>> list = new List();
+    for (String item in data) {
+      list.add(PopupMenuItem<String>(
+        value: item,
+        child: new Text(item),
+      ));
+    }
+    return list;
   }
 
   _getBottomWidget() {
@@ -132,18 +183,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                   padding: 5.0,
                   mainAxisAlignment: MainAxisAlignment.center,
                 )),
-            new FlatButton(
-                onPressed: () {},
-                color: Color(GSYColors.primaryValue),
-                child: new GSYIConText(
-                  Icons.arrow_drop_up,
-                  "master",
-                  GSYConstant.smallTextWhite,
-                  Color(GSYColors.white),
-                  30.0,
-                  padding: 3.0,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ))
+            _renderBranchPopItem(currentBranch, branchList, (value) {}),
           ];
     return bottomWidget;
   }
@@ -152,6 +192,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   void initState() {
     super.initState();
     _refresh();
+    _getBranchList();
   }
 
   @override
