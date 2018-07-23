@@ -77,16 +77,13 @@ class UserDao {
       res = await HttpManager.netFetch(Address.getUserInfo(userName), null, null, null);
     }
     if (res != null && res.result) {
-      /*
-      let countRes = await getUserStaredCountNet(res.data.login);
-      let starred = "---";
+      var countRes = await getUserStaredCountNet(res.data["login"]);
+      String starred = "---";
       if (countRes.result) {
-      starred = countRes.data;
+        starred = countRes.data;
       }
-      let totalInfo = Object.assign({}, res.data, {starred: starred});
-      */
       User user = User.fromJson(res.data);
-      user.starred = "---";
+      user.starred = starred;
       if (userName == null) {
         LocalStorage.save(Config.USER_INFO, json.encode(res.data));
       }
@@ -99,6 +96,30 @@ class UserDao {
   static clearAll() async {
     HttpManager.clearAuthorization();
     LocalStorage.remove(Config.USER_INFO);
+  }
+
+  /**
+   * 在header中提起stared count
+   */
+  static getUserStaredCountNet(userName) async {
+    String url = Address.userStar(userName, null) + "&per_page=1";
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.headers != null) {
+      try {
+        List<String> link = res.headers['link'];
+        if (link != null) {
+          int indexStart = link[0].lastIndexOf("page=") + 5;
+          int indexEnd = link[0].lastIndexOf(">");
+          if (indexStart >= 0 && indexEnd >= 0) {
+            String count = link[0].substring(indexStart, indexEnd);
+            return new DataResult(count, true);
+          }
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return new DataResult(null, false);
   }
 
   /**

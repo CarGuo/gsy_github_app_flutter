@@ -192,6 +192,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 branchControl.currentBranch = value;
               });
               _getReposDetail();
+              //TODO 判断是否存在需要刷新
               //fileListKey.currentState.showRefreshLoading();
               infoListKey.currentState.showRefreshLoading();
             }),
