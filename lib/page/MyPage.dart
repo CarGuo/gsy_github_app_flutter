@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -58,6 +60,11 @@ class _MyPageState extends GSYListState<MyPage> {
 
   @override
   requestRefresh() async {
+    UserDao.getUserInfo(null).then((res) {
+      if (res != null && res.result) {
+        _getStore().dispatch(UpdateUserAction(res.data));
+      }
+    });
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
       if (res != null && res.result) {
         setState(() {
