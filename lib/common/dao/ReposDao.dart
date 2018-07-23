@@ -55,11 +55,10 @@ class ReposDao {
   /**
    * 仓库的详情数据
    */
-  static getRepositoryDetailDao(userName, reposName) async {
-    String url = Address.getReposDetail(userName, reposName);
+  static getRepositoryDetailDao(userName, reposName, branch) async {
+    String url = Address.getReposDetail(userName, reposName) + "?ref=" + branch;
     var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<ReposHeaderViewModel> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
@@ -73,8 +72,8 @@ class ReposDao {
   /**
    * 仓库活动事件
    */
-  static getRepositoryEventDao(userName, reposName, {page = 0}) async {
-    String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
+  static getRepositoryEventDao(userName, reposName, {page = 0, branch="master"}) async {
+    String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page) + "&ref=" + branch;
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<EventViewModel> list = new List();
@@ -106,8 +105,8 @@ class ReposDao {
   /**
    * 获取仓库的提交列表
    */
-  static getReposCommitsDao(userName, reposName, {page = 0}) async {
-    String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page);
+  static getReposCommitsDao(userName, reposName, {page = 0, branch="master"}) async {
+    String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page) + "&ref=" + branch;
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<EventViewModel> list = new List();

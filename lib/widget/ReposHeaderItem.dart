@@ -23,10 +23,11 @@ class ReposHeaderItem extends StatelessWidget {
       child: new Center(
         child: new FlatButton(
           onPressed: onPressed,
+          padding:new EdgeInsets.all(0.0),
           child: new GSYIConText(
             icon,
             text,
-            GSYConstant.middleSubText,
+            GSYConstant.subSmallText,
             Color(GSYColors.subTextColor),
             15.0,
             padding: 3.0,
@@ -93,7 +94,7 @@ class ReposHeaderItem extends StatelessWidget {
                     color: Color(GSYColors.subTextColor),
                   ),
                   new Padding(
-                      padding: new EdgeInsets.all(5.0),
+                      padding: new EdgeInsets.all(0.0),
                       child: new Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,

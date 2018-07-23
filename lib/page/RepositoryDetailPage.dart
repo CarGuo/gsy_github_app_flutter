@@ -42,14 +42,18 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
-  String currentBranch = "master";
+  final BranchControl branchControl = new BranchControl("master");
+
+  final GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
+
+  final GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
 
   List<String> branchList = new List();
 
   _RepositoryDetailPageState(this.userName, this.reposName);
 
   _getReposDetail() async {
-    var result = await ReposDao.getRepositoryDetailDao(userName, reposName);
+    var result = await ReposDao.getRepositoryDetailDao(userName, reposName, branchControl.currentBranch);
     if (result != null && result.result) {
       setState(() {
         reposDetailInfoPageControl.reposHeaderViewModel = result.data;
@@ -183,7 +187,14 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                   padding: 5.0,
                   mainAxisAlignment: MainAxisAlignment.center,
                 )),
-            _renderBranchPopItem(currentBranch, branchList, (value) {}),
+            _renderBranchPopItem(branchControl.currentBranch, branchList, (value) {
+              setState(() {
+                branchControl.currentBranch = value;
+              });
+              _getReposDetail();
+              //fileListKey.currentState.showRefreshLoading();
+              infoListKey.currentState.showRefreshLoading();
+            }),
           ];
     return bottomWidget;
   }
@@ -207,9 +218,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
           new Tab(text: GSYStrings.repos_tab_readme),
         ],
         tabViews: [
-          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName),
+          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
           new RepositoryDetailIssuePage(userName, reposName),
-          new RepositoryDetailFileListPage(userName, reposName),
+          new RepositoryDetailFileListPage(userName, reposName, branchControl, key: fileListKey),
           new RepositoryDetailReadmePage(),
         ],
         backgroundColor: GSYColors.primarySwatch,
@@ -227,4 +238,10 @@ class BottomStatusModel {
   final bool watch;
 
   BottomStatusModel(this.watchText, this.starText, this.watchIcon, this.starIcon, this.watch, this.star);
+}
+
+class BranchControl {
+  String currentBranch;
+
+  BranchControl(this.currentBranch);
 }

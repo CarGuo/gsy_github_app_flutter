@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -17,23 +18,27 @@ class ReposDetailInfoPage extends StatefulWidget {
   final String reposName;
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
-  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName);
+  final BranchControl branchControl;
+
+  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName, this.branchControl, { Key key }) : super(key: key);
 
   @override
-  _ReposDetailInfoPageState createState() => _ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName);
+  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName, branchControl);
 }
 
 // ignore: mixin_inherits_from_not_object
-class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
+class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
   final String userName;
 
   final String reposName;
 
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
+  final BranchControl branchControl;
+
   int selectIndex = 0;
 
-  _ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName);
+  ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName, this.branchControl);
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -65,9 +70,9 @@ class _ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   _getDataLogic() async {
     if (selectIndex == 1) {
-      return await ReposDao.getReposCommitsDao(userName, reposName, page: page);
+      return await ReposDao.getReposCommitsDao(userName, reposName, page: page, branch: branchControl.currentBranch);
     }
-    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page);
+    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page, branch: branchControl.currentBranch);
   }
 
   @override

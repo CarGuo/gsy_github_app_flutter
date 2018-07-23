@@ -21,6 +21,13 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
+
+  showRefreshLoading() {
+    new Future.delayed(const Duration(seconds: 0), () {
+      refreshIndicatorKey.currentState.show().then((e) {});
+    });
+  }
+
   @protected
   Future<Null> handleRefresh() async {
     if (isLoading) {
@@ -62,13 +69,6 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
   resolveDataResult(res) {
     setState(() {
       pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
-    });
-  }
-
-  @protected
-  showRefreshLoading() {
-    new Future.delayed(const Duration(seconds: 0), () {
-      refreshIndicatorKey.currentState.show().then((e) {});
     });
   }
 

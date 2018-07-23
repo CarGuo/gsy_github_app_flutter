@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -16,19 +17,22 @@ class RepositoryDetailFileListPage extends StatefulWidget {
 
   final String reposName;
 
-  RepositoryDetailFileListPage(this.userName, this.reposName);
+  final BranchControl branchControl;
+
+  RepositoryDetailFileListPage(this.userName, this.reposName, this.branchControl, { Key key }) : super(key: key);
 
   @override
-  _RepositoryDetailFileListPageState createState() => _RepositoryDetailFileListPageState(userName, reposName);
+  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName, branchControl);
 }
 
 // ignore: mixin_inherits_from_not_object
-class _RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFileListPage> {
+class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFileListPage> {
   final String userName;
 
   final String reposName;
 
-  String curBranch;
+  final BranchControl branchControl;
+
   String path = '';
 
   String searchText;
@@ -36,7 +40,7 @@ class _RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFi
 
   List<String> headerList = ["."];
 
-  _RepositoryDetailFileListPageState(this.userName, this.reposName);
+  RepositoryDetailFileListPageState(this.userName, this.reposName, this.branchControl);
 
   ///渲染文件item
   _renderEventItem(index) {
@@ -110,7 +114,7 @@ class _RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFi
   }
 
   _getDataLogic(String searchString) async {
-    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: curBranch);
+    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branchControl.currentBranch);
   }
 
   @override
