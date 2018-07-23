@@ -209,6 +209,11 @@ class GSYStrings {
   static const String home_trend = "趋势";
   static const String home_my = "我的";
 
+  static const String trend_day = '今日';
+  static const String trend_week = '本周';
+  static const String trend_month = '本月';
+  static const String trend_all = '全部';
+
   static const String user_tab_repos = "仓库";
   static const String user_tab_fans = "粉丝";
   static const String user_tab_focus = "关注";

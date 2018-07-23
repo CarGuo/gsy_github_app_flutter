@@ -97,8 +97,12 @@ class TrendingUtil {
       startFlag = tag["start"];
     }
     var content = parseContentWithNote(noteContent, startFlag, tag["end"]);
-    var metaContent = content.substring(content.indexOf('</svg>') + '</svg>'.length, content.length);
-    return trim(metaContent);
+    if(content.indexOf('</svg>') != -1 && (content.indexOf('</svg>') + '</svg>'.length <= content.length)) {
+      var metaContent = content.substring(content.indexOf('</svg>') + '</svg>'.length, content.length);
+      return trim(metaContent);
+    } else {
+      return trim(content);
+    }
   }
 
   static parseRepoLang(repo, metaNoteContent) {

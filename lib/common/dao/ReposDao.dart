@@ -24,8 +24,7 @@ class ReposDao {
    * @param languageType 语言
    */
   static getTrendDao({since = 'daily', languageType, page = 0}) async {
-    String localLanguage = (languageType != null) ? languageType : "*";
-    String url = Address.trending(since, localLanguage);
+    String url = Address.trending(since, languageType);
     var res = await new GitHubTrending().fetchTrending(url);
     if (res != null && res.result && res.data.length > 0) {
       List<ReposViewModel> list = new List();

@@ -18,6 +18,9 @@ class TrendPage extends StatefulWidget {
 }
 
 class _TrendPageState extends GSYListState<TrendPage> {
+  TrendTypeModel selectTime = TrendTime[0];
+  TrendTypeModel selectType = TrendType[0];
+
   _renderItem(ReposViewModel e) {
     return new ReposItem(e, onPressed: () {
       NavigatorUtils.goReposDetail(context, e.ownerName, e.repositoryName);
@@ -35,12 +38,18 @@ class _TrendPageState extends GSYListState<TrendPage> {
         padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: new Row(
           children: <Widget>[
-            _renderHeaderPopItem("aaa", [new TrendTypeModel("fff", "fff"), new TrendTypeModel("fff", "fff")], (TrendTypeModel result) {
-              setState(() {});
+            _renderHeaderPopItem(selectTime.name, TrendTime, (TrendTypeModel result) {
+              setState(() {
+                selectTime = result;
+              });
+              showRefreshLoading();
             }),
             new Container(height: 10.0, width: 0.5, color: Colors.white),
-            _renderHeaderPopItem("bbb", [new TrendTypeModel("fff", "fff"), new TrendTypeModel("fff", "fff")], (TrendTypeModel result) {
-              setState(() {});
+            _renderHeaderPopItem(selectType.name, TrendType, (TrendTypeModel result) {
+              setState(() {
+                selectType = result;
+              });
+              showRefreshLoading();
             }),
           ],
         ),
@@ -73,7 +82,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
 
   @override
   requestRefresh() async {
-    return await ReposDao.getTrendDao(since: 'daily');
+    return await ReposDao.getTrendDao(since: selectTime.value, languageType: selectType.value);
   }
 
   @override
@@ -117,3 +126,24 @@ class TrendTypeModel {
 
   TrendTypeModel(this.name, this.value);
 }
+
+var TrendTime = [
+  TrendTypeModel(GSYStrings.trend_day, "daily"),
+  TrendTypeModel(GSYStrings.trend_week, "weekly"),
+  TrendTypeModel(GSYStrings.trend_month, "monthly"),
+];
+
+var TrendType = [
+  TrendTypeModel(GSYStrings.trend_all, null),
+  TrendTypeModel("Java", "Java"),
+  TrendTypeModel("Kotlin", "Kotlin"),
+  TrendTypeModel("Objective-C", "Objective-C"),
+  TrendTypeModel("Swift", "Swift"),
+  TrendTypeModel("JavaScript", "JavaScript"),
+  TrendTypeModel("PHP", "PHP"),
+  TrendTypeModel("Go", "Go"),
+  TrendTypeModel("C++", "C++"),
+  TrendTypeModel("C", "C"),
+  TrendTypeModel("HTML", "HTML"),
+  TrendTypeModel("CSS", "CSS"),
+];
