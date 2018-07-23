@@ -71,9 +71,11 @@ class ReposHeaderItem extends StatelessWidget {
                   new Padding(padding: new EdgeInsets.all(5.0)),
                   new Row(
                     children: <Widget>[
-                      new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--", style: GSYConstant.subLightSmallText),
+                      new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--",
+                          style: GSYConstant.subLightSmallText),
                       new Container(width: 5.3, height: 1.0),
-                      new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--", style: GSYConstant.subLightSmallText),
+                      new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--",
+                          style: GSYConstant.subLightSmallText),
                       new Container(width: 5.3, height: 1.0),
                       new Text(reposHeaderViewModel.license != null ? reposHeaderViewModel.license : "--", style: GSYConstant.subLightSmallText),
                     ],
@@ -99,7 +101,10 @@ class ReposHeaderItem extends StatelessWidget {
                           _getBottomItem(
                             GSYICons.REPOS_ITEM_STAR,
                             reposHeaderViewModel.repositoryStar,
-                            () {},
+                            () {
+                              NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_star",
+                                  userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                            },
                           ),
                           new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                           _getBottomItem(
@@ -114,7 +119,10 @@ class ReposHeaderItem extends StatelessWidget {
                           _getBottomItem(
                             GSYICons.REPOS_ITEM_WATCH,
                             reposHeaderViewModel.repositoryWatch,
-                            () {},
+                            () {
+                              NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_watcher",
+                                  userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                            },
                           ),
                           new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
                           _getBottomItem(
