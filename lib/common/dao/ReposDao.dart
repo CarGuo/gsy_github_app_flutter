@@ -73,7 +73,7 @@ class ReposDao {
    * 仓库活动事件
    */
   static getRepositoryEventDao(userName, reposName, {page = 0, branch = "master"}) async {
-    String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page) + "&ref=" + branch;
+    String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<EventViewModel> list = new List();
@@ -106,7 +106,7 @@ class ReposDao {
    * 获取仓库的提交列表
    */
   static getReposCommitsDao(userName, reposName, {page = 0, branch = "master"}) async {
-    String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page) + "&ref=" + branch;
+    String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page) + "&sha=" + branch;
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<EventViewModel> list = new List();

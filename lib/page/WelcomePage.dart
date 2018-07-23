@@ -32,7 +32,7 @@ class WelcomePage extends StatelessWidget {
         return new Container(
           color: Colors.white,
           child: new Center(
-            child: new Text("Welcome", style: new TextStyle(color: Colors.black, fontSize: 22.0)),
+            child: new Image(image: new AssetImage('static/images/logo.png'), width: 90.0, height: 90.0),
           ),
         );
       },
