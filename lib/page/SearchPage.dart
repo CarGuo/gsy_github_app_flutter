@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYSearchDrawer.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSearchInputWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
@@ -69,6 +70,7 @@ class _SearchPageState extends GSYListState<SearchPage> {
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
+      endDrawer: new GSYSearchDrawer(),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
           title: new Text(GSYStrings.search_title),
@@ -113,7 +115,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
             GSYStrings.search_tab_user,
           ],
           selectItemChanged,
-          margin: const EdgeInsets.only(top: 10.0),
+          margin: const EdgeInsets.only(top: 0.0),
         )
       ],
     );
