@@ -18,7 +18,7 @@ class GSYTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget right = (needRightIcon) ? new IconButton(icon: new Icon(iconData, size: 17.0,), onPressed: onPressed) : new Container();
+    Widget right = (needRightIcon) ? new IconButton(icon: new Icon(iconData, size: 19.0,), onPressed: onPressed) : new Container();
     return Container(
       child: new Row(
         children: <Widget>[

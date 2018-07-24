@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/DynamicPage.dart';
 import 'package:gsy_github_app_flutter/page/MyPage.dart';
 import 'package:gsy_github_app_flutter/page/TrendPage.dart';
@@ -52,7 +53,9 @@ class HomePage extends StatelessWidget {
           GSYStrings.app_name,
           iconData: GSYICons.MAIN_SEARCH,
           needRightIcon: true,
-          onPressed: () {},
+          onPressed: () {
+            NavigatorUtils.goSearchPage(context);
+          },
         ));
   }
 }

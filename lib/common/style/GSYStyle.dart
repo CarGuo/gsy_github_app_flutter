@@ -261,6 +261,10 @@ class GSYStrings {
   static const String notify_status = "状态";
   static const String notify_type = "类型";
 
+  static const String search_title = "搜索";
+  static const String search_tab_repos = "仓库";
+  static const String search_tab_user = "用户";
+
 }
 
 class GSYICons {
