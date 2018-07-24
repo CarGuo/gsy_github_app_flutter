@@ -48,6 +48,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
 
+  GlobalKey<RepositoryDetailReadmePageState> readmeKey = new GlobalKey<RepositoryDetailReadmePageState>();
+
   List<String> branchList = new List();
 
   _RepositoryDetailPageState(this.userName, this.reposName);
@@ -198,6 +200,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
               if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
                 fileListKey.currentState.showRefreshLoading();
               }
+              if (readmeKey.currentState != null && readmeKey.currentState.mounted) {
+                readmeKey.currentState.refreshReadme();
+              }
             }),
           ];
     return bottomWidget;
@@ -214,20 +219,21 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   Widget build(BuildContext context) {
     fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
     infoListKey = new GlobalKey<ReposDetailInfoPageState>();
+    readmeKey = new GlobalKey<RepositoryDetailReadmePageState>();
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
         tabItems: [
           new Tab(text: GSYStrings.repos_tab_info),
+          new Tab(text: GSYStrings.repos_tab_readme),
           new Tab(text: GSYStrings.repos_tab_issue),
           new Tab(text: GSYStrings.repos_tab_file),
-          new Tab(text: GSYStrings.repos_tab_readme),
         ],
         tabViews: [
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
+          new RepositoryDetailReadmePage(userName, reposName, branchControl, key: readmeKey),
           new RepositoryDetailIssuePage(userName, reposName),
           new RepositoryDetailFileListPage(userName, reposName, branchControl, key: fileListKey),
-          new RepositoryDetailReadmePage(),
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,

@@ -33,7 +33,7 @@ class HttpManager {
 
     Map<String, String> headers = new HashMap();
     if (header != null) {
-      headers.addAll(headers);
+      headers.addAll(header);
     }
 
     //授权码
@@ -76,6 +76,7 @@ class HttpManager {
 
     if (Config.DEBUG) {
       print('请求url: ' + url);
+      print('请求头: ' + option.headers.toString());
       if (params != null) {
         print('请求参数: ' + params.toString());
       }

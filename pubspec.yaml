@@ -15,6 +15,7 @@ dependencies:
   flutter_redux: ^0.5.2
   device_info: ^0.2.1
   connectivity: ^0.3.1
+  flutter_markdown: ^0.1.5
 
 dev_dependencies:
   build_runner: ^0.7.6
