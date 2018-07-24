@@ -131,10 +131,13 @@ class ReposDao {
     var res = await HttpManager.netFetch(
       url,
       null,
-      {"Accept": 'application/vnd.github.html'},
+      text ? {"Accept": 'application/vnd.github.VERSION.raw'} : {"Accept": 'application/vnd.github.html'},
       new Options(contentType: text ? ContentType.TEXT : ContentType.JSON),
     );
     if (res != null && res.result) {
+      if (text) {
+        return new DataResult(res.data, true);
+      }
       List<FileItemViewModel> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {

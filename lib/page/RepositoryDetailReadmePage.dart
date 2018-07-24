@@ -3,6 +3,7 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
+import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
 
 /**
  * Readme
@@ -84,9 +85,6 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
         ),
       );
     }
-    return Container(
-        child: SingleChildScrollView(
-      child: new MarkdownBody(data: markdownData),
-    ));
+    return GSYMarkdownWidget(markdownData: markdownData);
   }
 }

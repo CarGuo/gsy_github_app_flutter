@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -19,7 +21,7 @@ class RepositoryDetailFileListPage extends StatefulWidget {
 
   final BranchControl branchControl;
 
-  RepositoryDetailFileListPage(this.userName, this.reposName, this.branchControl, { Key key }) : super(key: key);
+  RepositoryDetailFileListPage(this.userName, this.reposName, this.branchControl, {Key key}) : super(key: key);
 
   @override
   RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName, branchControl);
@@ -48,10 +50,13 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
     IconData iconData = (fileItemViewModel.type == "file") ? GSYICons.REPOS_ITEM_FILE : GSYICons.REPOS_ITEM_DIR;
     Widget trailing = (fileItemViewModel.type == "file") ? null : new Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
     return new GSYCardItem(
-        margin :EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
+      margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
       child: new ListTile(
         title: new Text(fileItemViewModel.name, style: GSYConstant.subSmallText),
-        leading: new Icon(iconData, size: 15.0,),
+        leading: new Icon(
+          iconData,
+          size: 15.0,
+        ),
         onTap: () {
           _resolveItemClick(fileItemViewModel);
         },
@@ -111,6 +116,20 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
         this.path = path;
       });
       this.showRefreshLoading();
+    } else {
+      String path = headerList.sublist(1, headerList.length).join("/") + "/" + fileItemViewModel.name;
+      if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
+        //todo 图片
+      } else {
+        NavigatorUtils.gotoCodeDetailPage(
+          context,
+          title: fileItemViewModel.name,
+          reposName: reposName,
+          userName: userName,
+          path: path,
+          branch: branchControl.currentBranch,
+        );
+      }
     }
   }
 

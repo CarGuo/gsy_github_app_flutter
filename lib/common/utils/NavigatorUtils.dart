@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/page/CodeDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/CommonListPage.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
 import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
@@ -58,6 +59,21 @@ class NavigatorUtils {
                   dataType,
                   userName: userName,
                   reposName: reposName,
+                )));
+  }
+
+  ///文件代码详情
+  static gotoCodeDetailPage(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch}) {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new CodeDetailPage(
+                  title: title,
+                  userName: userName,
+                  reposName: reposName,
+                  path: path,
+                  data: data,
+                  branch: branch,
                 )));
   }
 }
