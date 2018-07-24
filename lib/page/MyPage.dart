@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -28,9 +29,18 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends GSYListState<MyPage> {
   String beStaredCount = '---';
 
+  Color notifyColor = const Color(GSYColors.subTextColor);
+
   _renderEventItem(userInfo, index) {
     if (index == 0) {
-      return new UserHeaderItem(userInfo, beStaredCount);
+      return new UserHeaderItem(
+        userInfo,
+        beStaredCount,
+        notifyColor: notifyColor,
+        refreshCallBack: () {
+          _refreshNotify();
+        },
+      );
     }
     EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
     return new EventItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
@@ -47,6 +57,16 @@ class _MyPageState extends GSYListState<MyPage> {
       return null;
     }
     return _getStore().state.userInfo.login;
+  }
+
+  _refreshNotify() {
+    UserDao.getNotifyDao(false, false, 0).then((res) {
+      if (res != null && res.result && res.data.length > 0) {
+        notifyColor = Colors.blue;
+      } else {
+        notifyColor = Color(GSYColors.subTextColor);
+      }
+    });
   }
 
   @override
@@ -72,6 +92,7 @@ class _MyPageState extends GSYListState<MyPage> {
         });
       }
     });
+    _refreshNotify();
     return await EventDao.getEventDao(_getUserName(), page: page);
   }
 

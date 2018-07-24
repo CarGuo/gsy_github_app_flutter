@@ -176,7 +176,7 @@ class UserDao {
       List<EventViewModel> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
-        return new DataResult(null, false);
+        return new DataResult([], true);
       }
       for (int i = 0; i < data.length; i++) {
         list.add(EventViewModel.fromNotify(data[i]));
@@ -185,5 +185,14 @@ class UserDao {
     } else {
       return new DataResult(null, false);
     }
+  }
+
+  /**
+   * 设置单个通知已读
+   */
+  static setNotificationAsReadDao(id) async {
+    String url = Address.setNotificationAsRead(id);
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PATCH"));
+    return res;
   }
 }

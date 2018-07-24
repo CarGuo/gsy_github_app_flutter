@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -26,7 +27,23 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
 
   _renderEventItem(index) {
     EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index];
-    return new EventItem(eventViewModel, onPressed: () {}, needImage: false);
+    return new EventItem(eventViewModel, onPressed: () {
+      var eventMap = eventViewModel.eventMap;
+      if (eventMap["unread"]) {
+        UserDao.setNotificationAsReadDao(eventMap["id"].toString());
+      }
+      print(eventMap["id"]);
+      if (eventMap["subject"]["type"] == 'Issue') {
+        String url = eventMap["subject"]["url"];
+        List<String> tmp = url.split("/");
+        String number = tmp[tmp.length - 1];
+        String userName = eventMap["repository"]["owner"]["login"];
+        String reposName = eventMap["repository"]["name"];
+        NavigatorUtils.goIssueDetail(context, userName, reposName, number).then((res) {
+          showRefreshLoading();
+        });
+      }
+    }, needImage: false);
   }
 
   _resolveSelectIndex() {
@@ -74,7 +91,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
             this.selectIndex = selectIndex;
             _resolveSelectIndex();
           },
-          margin : const EdgeInsets.all(0.0),
+          margin: const EdgeInsets.all(0.0),
           elevation: 0.0,
         ),
         elevation: 4.0,

@@ -47,8 +47,8 @@ class NavigatorUtils {
   }
 
   ///issue详情
-  static goIssueDetail(BuildContext context, String userName, String reposName, String num) {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => new IssueDetailPage(userName, reposName, num)));
+  static Future<Null> goIssueDetail(BuildContext context, String userName, String reposName, String num) {
+    return Navigator.push(context, new MaterialPageRoute(builder: (context) => new IssueDetailPage(userName, reposName, num)));
   }
 
   ///通用列表

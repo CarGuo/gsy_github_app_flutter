@@ -11,9 +11,14 @@ import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
  */
 class UserHeaderItem extends StatelessWidget {
   final User userInfo;
+
   final String beStaredCount;
 
-  UserHeaderItem(this.userInfo, this.beStaredCount);
+  final Color notifyColor;
+
+  final VoidCallback refreshCallBack;
+
+  UserHeaderItem(this.userInfo, this.beStaredCount, {this.notifyColor, this.refreshCallBack});
 
   _getBottomItem(String title, var value, onPressed) {
     return new Expanded(
@@ -24,6 +29,25 @@ class UserHeaderItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _getNotifyIcon(BuildContext context, Color color) {
+    if (notifyColor == null) {
+      return Container();
+    }
+    return new IconButton(
+        icon: new Icon(
+          GSYICons.USER_NOTIFY,
+          color: color,
+          size: 18.0,
+        ),
+        onPressed: () {
+          NavigatorUtils.goNotifyPage(context).then((res) {
+            if (refreshCallBack != null) {
+              refreshCallBack();
+            }
+          });
+        });
   }
 
   @override
@@ -61,15 +85,7 @@ class UserHeaderItem extends StatelessWidget {
                             new Row(
                               children: <Widget>[
                                 new Text(userInfo.login == null ? "" : userInfo.login, style: GSYConstant.largeTextWhiteBold),
-                                new IconButton(
-                                    icon: new Icon(
-                                      GSYICons.USER_NOTIFY,
-                                      color: Colors.blue,
-                                      size: 18.0,
-                                    ),
-                                    onPressed: () {
-                                      NavigatorUtils.goNotifyPage(context);
-                                    }),
+                                _getNotifyIcon(context, notifyColor),
                               ],
                             ),
                             new Text(userInfo.name == null ? "" : userInfo.name, style: GSYConstant.subLightSmallText),
