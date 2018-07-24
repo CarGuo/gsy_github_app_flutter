@@ -17,7 +17,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Store<GSYState> store =  StoreProvider.of(context);
+    Store<GSYState> store = StoreProvider.of(context);
     new Future.delayed(const Duration(seconds: 2), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {
@@ -32,7 +32,7 @@ class WelcomePage extends StatelessWidget {
         return new Container(
           color: Colors.white,
           child: new Center(
-            child: new Image(image: new AssetImage('static/images/logo.png'), width: 90.0, height: 90.0),
+            child: new Image(image: new AssetImage('static/images/welcome.png')),
           ),
         );
       },

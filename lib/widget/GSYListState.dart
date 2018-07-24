@@ -11,6 +11,8 @@ import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
  */
 // ignore: mixin_inherits_from_not_object
 abstract class GSYListState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin {
+  bool isShow = false;
+
   bool isLoading = false;
 
   int page = 1;
@@ -20,7 +22,6 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
 
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
@@ -38,9 +39,11 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
     var res = await requestRefresh();
     if (res != null && res.result) {
       pullLoadWidgetControl.dataList.clear();
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(res.data);
-      });
+      if (isShow) {
+        setState(() {
+          pullLoadWidgetControl.dataList.addAll(res.data);
+        });
+      }
     }
     resolveDataResult(res);
     isLoading = false;
@@ -56,9 +59,11 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
     page++;
     var res = await requestLoadMore();
     if (res != null && res.result) {
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(res.data);
-      });
+      if (isShow) {
+        setState(() {
+          pullLoadWidgetControl.dataList.addAll(res.data);
+        });
+      }
     }
     resolveDataResult(res);
     isLoading = false;
@@ -67,16 +72,20 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
 
   @protected
   resolveDataResult(res) {
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
-    });
+    if (isShow) {
+      setState(() {
+        pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
+      });
+    }
   }
 
   @protected
   clearData() {
-    setState(() {
-      pullLoadWidgetControl.dataList.clear();
-    });
+    if (isShow) {
+      setState(() {
+        pullLoadWidgetControl.dataList.clear();
+      });
+    }
   }
 
   ///下拉刷新数据
@@ -103,11 +112,18 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
 
   @override
   void initState() {
+    isShow = true;
     super.initState();
     pullLoadWidgetControl.needHeader = needHeader;
     pullLoadWidgetControl.dataList = getDataList;
     if (pullLoadWidgetControl.dataList.length == 0 && isRefreshFirst) {
       showRefreshLoading();
     }
+  }
+
+  @override
+  void dispose() {
+    isShow = false;
+    super.dispose();
   }
 }

@@ -77,7 +77,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
     if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
       _tabController = new TabController(
           vsync: this, //动画效果的异步处理，默认格式，背下来即可
-          length: 3 //需要控制的Tab页数量
+          length: _tabItems.length //需要控制的Tab页数量
           );
     }
   }

@@ -44,9 +44,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final BranchControl branchControl = new BranchControl("master");
 
-  final GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
+  GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
 
-  final GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
+  GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
 
   List<String> branchList = new List();
 
@@ -192,9 +192,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 branchControl.currentBranch = value;
               });
               _getReposDetail();
-              //TODO 判断是否存在需要刷新
-              //fileListKey.currentState.showRefreshLoading();
-              infoListKey.currentState.showRefreshLoading();
+              if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
+                infoListKey.currentState.showRefreshLoading();
+              }
+              if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
+                fileListKey.currentState.showRefreshLoading();
+              }
             }),
           ];
     return bottomWidget;
@@ -209,6 +212,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
+    infoListKey = new GlobalKey<ReposDetailInfoPageState>();
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,

@@ -28,3 +28,7 @@ flutter packages pub run build_runner build
 ### 如何主动刷新refresh，如何设置appbar上的leading和bottom，如何设置tabbar的live
 
 https://github.com/flutter/flutter/issues/19030 没有webview，残念
+
+https://github.com/flutter/flutter/issues/19030#issuecomment-406656714
+
+https://github.com/flutter/flutter/issues/11895#issuecomment-406832395
