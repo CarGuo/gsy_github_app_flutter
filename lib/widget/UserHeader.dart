@@ -58,7 +58,20 @@ class UserHeaderItem extends StatelessWidget {
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            new Text(userInfo.login == null ? "" : userInfo.login, style: GSYConstant.largeTextWhiteBold),
+                            new Row(
+                              children: <Widget>[
+                                new Text(userInfo.login == null ? "" : userInfo.login, style: GSYConstant.largeTextWhiteBold),
+                                new IconButton(
+                                    icon: new Icon(
+                                      GSYICons.USER_NOTIFY,
+                                      color: Colors.blue,
+                                      size: 18.0,
+                                    ),
+                                    onPressed: () {
+                                      NavigatorUtils.goNotifyPage(context);
+                                    }),
+                              ],
+                            ),
                             new Text(userInfo.name == null ? "" : userInfo.name, style: GSYConstant.subLightSmallText),
                             new GSYIConText(
                               GSYICons.USER_ITEM_COMPANY,

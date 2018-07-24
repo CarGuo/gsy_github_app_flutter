@@ -11,8 +11,9 @@ class GSYCardItem extends StatelessWidget {
   final EdgeInsets margin;
   final Color color;
   final RoundedRectangleBorder shape;
+  final double elevation;
 
-  GSYCardItem({@required this.child, this.margin, this.color, this.shape});
+  GSYCardItem({@required this.child, this.margin, this.color, this.shape, this.elevation = 5.0});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,6 @@ class GSYCardItem extends StatelessWidget {
     if (color == null) {
       color = new Color(GSYColors.cardWhite);
     }
-    return new Card(elevation: 5.0, shape: shape, color: color, margin: margin, child: child);
+    return new Card(elevation: elevation, shape: shape, color: color, margin: margin, child: child);
   }
 }

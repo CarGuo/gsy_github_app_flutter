@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/CodeDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/CommonListPage.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
 import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
+import 'package:gsy_github_app_flutter/page/NotifyPage.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 
@@ -39,8 +42,8 @@ class NavigatorUtils {
   }
 
   ///仓库详情
-  static goReposDetail(BuildContext context, String userName, String reposName) {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(userName, reposName)));
+  static Future<Null> goReposDetail(BuildContext context, String userName, String reposName) {
+    return Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(userName, reposName)));
   }
 
   ///issue详情
@@ -75,5 +78,10 @@ class NavigatorUtils {
                   data: data,
                   branch: branch,
                 )));
+  }
+
+  ///仓库详情通知
+  static Future<Null> goNotifyPage(BuildContext context) {
+    return Navigator.push(context, new MaterialPageRoute(builder: (context) => new NotifyPage()));
   }
 }

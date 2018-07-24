@@ -9,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:redux/redux.dart';
 
@@ -157,6 +158,28 @@ class UserDao {
       }
       for (int i = 0; i < data.length; i++) {
         list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * 获取用户相关通知
+   */
+  static getNotifyDao(bool all, bool participating, page) async {
+    String tag = (!all && !participating) ? '?' : "&";
+    String url = Address.getNotifation(all, participating) + Address.getPageParams(tag, page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<EventViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(EventViewModel.fromNotify(data[i]));
       }
       return new DataResult(list, true);
     } else {

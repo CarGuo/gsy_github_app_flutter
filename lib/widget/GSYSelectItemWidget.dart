@@ -14,11 +14,12 @@ class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget 
   final List<String> itemNames;
 
   final SelectItemChanged selectItemChanged;
+  final double elevation;
 
-  GSYSelectItemWidget(this.itemNames, this.selectItemChanged);
+  GSYSelectItemWidget(this.itemNames, this.selectItemChanged, {this.elevation = 5.0});
 
   @override
-  _GSYSelectItemWidgetState createState() => _GSYSelectItemWidgetState(selectItemChanged, itemNames);
+  _GSYSelectItemWidgetState createState() => _GSYSelectItemWidgetState(selectItemChanged, itemNames, elevation);
 
   @override
   Size get preferredSize {
@@ -33,7 +34,9 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
 
   final SelectItemChanged selectItemChanged;
 
-  _GSYSelectItemWidgetState(this.selectItemChanged, this.itemNames);
+  final double elevation;
+
+  _GSYSelectItemWidgetState(this.selectItemChanged, this.itemNames, this.elevation);
 
   _renderItem(String name, int index) {
     var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubText;
@@ -73,6 +76,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
+        elevation: elevation,
         color: Color(GSYColors.primaryValue),
         margin: EdgeInsets.all(10.0),
         shape: new RoundedRectangleBorder(

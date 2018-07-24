@@ -34,7 +34,7 @@ class EventItem extends StatelessWidget {
 
     Widget userImage = (needImage)
         ? new IconButton(
-            padding:  EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
+            padding: EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
             icon: new ClipOval(
               child: new FadeInImage.assetNetwork(
                 placeholder: "static/images/logo.png",
@@ -100,6 +100,16 @@ class EventViewModel {
     actionUser = eventMap["commit"]["committer"]["name"];
     actionDes = "sha:" + eventMap["sha"];
     actionTarget = eventMap["commit"]["message"];
+    this.eventMap = eventMap;
+  }
+
+  EventViewModel.fromNotify(eventMap) {
+    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["created_at"]));
+    actionUser = eventMap["repository"]["full_name"];
+    String type = eventMap["subject"]["type"];
+    String status = eventMap["unread"] ? GSYStrings.notify_unread : GSYStrings.notify_readed;
+    actionDes = eventMap["reason"] + "${GSYStrings.notify_type}：$type，${GSYStrings.notify_status}：$status";
+    actionTarget = eventMap["subject.title"];
     this.eventMap = eventMap;
   }
 }

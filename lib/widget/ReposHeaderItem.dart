@@ -83,7 +83,7 @@ class ReposHeaderItem extends StatelessWidget {
                   ),
                   new Padding(padding: new EdgeInsets.all(5.0)),
                   new Container(
-                      child: new Text(reposHeaderViewModel.repositoryDes, style: GSYConstant.subSmallText),
+                      child: new Text(reposHeaderViewModel.repositoryDes != null ? reposHeaderViewModel.repositoryDes : "---", style: GSYConstant.subSmallText),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),
                   new Container(

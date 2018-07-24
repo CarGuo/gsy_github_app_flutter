@@ -249,6 +249,17 @@ class GSYStrings {
   static const String issue_edit_issue_title_not_be_null = "标题不能为空";
   static const String issue_edit_issue_title_tip = "请输入标题";
   static const String issue_edit_issue_content_tip = "请输入内容";
+
+
+  static const String notify_title = "通知";
+  static const String notify_tab_all = "所有";
+  static const String notify_tab_part = "参与";
+  static const String notify_tab_unread = "未读";
+  static const String notify_unread = "未读";
+  static const String notify_readed = "已读";
+  static const String notify_status = "状态";
+  static const String notify_type = "类型";
+
 }
 
 class GSYICons {
@@ -273,8 +284,10 @@ class GSYICons {
   static const IconData USER_ITEM_COMPANY = const IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData USER_ITEM_LOCATION = const IconData(0xe7e6, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData USER_ITEM_LINK = const IconData(0xe670, fontFamily: GSYICons.FONT_FAMILY);
+  static const IconData USER_NOTIFY = const IconData(0xe600, fontFamily: GSYICons.FONT_FAMILY);
 
   static const IconData ISSUE_ITEM_ISSUE = const IconData(0xe661, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData ISSUE_ITEM_COMMENT = const IconData(0xe6ba, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData ISSUE_ITEM_ADD = const IconData(0xe662, fontFamily: GSYICons.FONT_FAMILY);
+
 }
