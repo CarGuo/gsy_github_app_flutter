@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/page/DynamicPage.dart';
 import 'package:gsy_github_app_flutter/page/MyPage.dart';
 import 'package:gsy_github_app_flutter/page/TrendPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/HomeDrawer.dart';
 
 /**
@@ -47,6 +48,11 @@ class HomePage extends StatelessWidget {
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
-        title: GSYStrings.app_name);
+        title: GSYTitleBar(
+          GSYStrings.app_name,
+          iconData: GSYICons.MAIN_SEARCH,
+          needRightIcon: true,
+          onPressed: () {},
+        ));
   }
 }

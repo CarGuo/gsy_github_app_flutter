@@ -47,8 +47,16 @@ class NavigatorUtils {
   }
 
   ///issue详情
-  static Future<Null> goIssueDetail(BuildContext context, String userName, String reposName, String num) {
-    return Navigator.push(context, new MaterialPageRoute(builder: (context) => new IssueDetailPage(userName, reposName, num)));
+  static Future<Null> goIssueDetail(BuildContext context, String userName, String reposName, String num, {bool needRightIcon = false}) {
+    return Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new IssueDetailPage(
+                  userName,
+                  reposName,
+                  num,
+                  needRightIcon: needRightIcon,
+                )));
   }
 
   ///通用列表

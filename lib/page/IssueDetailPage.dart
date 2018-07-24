@@ -3,9 +3,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/IssueHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
 
@@ -21,10 +23,12 @@ class IssueDetailPage extends StatefulWidget {
 
   final String issueNum;
 
-  IssueDetailPage(this.userName, this.reposName, this.issueNum);
+  final bool needRightIcon;
+
+  IssueDetailPage(this.userName, this.reposName, this.issueNum, {this.needRightIcon = false});
 
   @override
-  _IssueDetailPageState createState() => _IssueDetailPageState(issueNum, userName, reposName);
+  _IssueDetailPageState createState() => _IssueDetailPageState(issueNum, userName, reposName, needRightIcon);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -39,6 +43,8 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
 
   bool headerStatus = false;
 
+  bool needRightIcon = false;
+
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
 
   TextEditingController issueInfoTitleControl = new TextEditingController();
@@ -47,7 +53,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
 
   TextEditingController issueInfoCommitValueControl = new TextEditingController();
 
-  _IssueDetailPageState(this.issueNum, this.userName, this.reposName);
+  _IssueDetailPageState(this.issueNum, this.userName, this.reposName, this.needRightIcon);
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -277,11 +283,15 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     return new Scaffold(
       persistentFooterButtons: _getBottomWidget(),
       appBar: new AppBar(
-          title: new Text(
-        reposName,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      )),
+        title: GSYTitleBar(
+          reposName,
+          needRightIcon: needRightIcon,
+          iconData: GSYICons.HOME,
+          onPressed: () {
+            NavigatorUtils.goReposDetail(context, userName, reposName);
+          },
+        ),
+      ),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,
         (BuildContext context, int index) => _renderEventItem(index),

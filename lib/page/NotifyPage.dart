@@ -39,7 +39,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
         String number = tmp[tmp.length - 1];
         String userName = eventMap["repository"]["owner"]["login"];
         String reposName = eventMap["repository"]["name"];
-        NavigatorUtils.goIssueDetail(context, userName, reposName, number).then((res) {
+        NavigatorUtils.goIssueDetail(context, userName, reposName, number, needRightIcon: true).then((res) {
           showRefreshLoading();
         });
       }
