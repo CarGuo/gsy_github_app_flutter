@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
-import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 
 /**
@@ -17,13 +17,14 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
   final BranchControl branchControl;
 
-  RepositoryDetailReadmePage(this.userName, this.reposName, this.branchControl, { Key key }) : super(key: key);
+  RepositoryDetailReadmePage(this.userName, this.reposName, this.branchControl, {Key key}) : super(key: key);
 
   @override
   RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName, branchControl);
 }
 
-class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> {
+// ignore: mixin_inherits_from_not_object
+class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> with AutomaticKeepAliveClientMixin {
   final String userName;
 
   final String reposName;
@@ -32,7 +33,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
 
   bool isShow = false;
 
-  String markdownData = "";
+  String markdownData;
 
   RepositoryDetailReadmePageState(this.userName, this.reposName, this.branchControl);
 
@@ -49,6 +50,9 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     isShow = true;
     super.initState();
@@ -63,10 +67,26 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
 
   @override
   Widget build(BuildContext context) {
+    if (markdownData == null) {
+      return Center(
+        child: new Container(
+          width: 140.0,
+          height: 140.0,
+          padding: new EdgeInsets.all(4.0),
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new CircularProgressIndicator(),
+              new Container(width: 10.0),
+              new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleText)),
+            ],
+          ),
+        ),
+      );
+    }
     return Container(
         child: SingleChildScrollView(
-            child: new MarkdownBody(data: markdownData),
-        )
-    );
+      child: new MarkdownBody(data: markdownData),
+    ));
   }
 }

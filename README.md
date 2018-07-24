@@ -32,3 +32,34 @@ flutter packages pub run build_runner build
 ### 如何主动刷新refresh，如何设置appbar上的leading和bottom，如何设置tabbar的live
 
 https://github.com/flutter/flutter/issues/19030 没有webview，残念
+
+
+带right icon的titlebar
+
+markdown文件详情
+
+图片浏览
+
+搜索
+
+个人动态的图片
+
+commonList的过滤
+
+主页drawer：关于、个人信息
+
+动态页面
+
+
+仓库的： 
+    动态的背景头像
+    版本、tag
+    浏览器打开
+    下载、复制克隆间接
+    分享
+    
+个人页面的：
+    关注
+    组织
+    头像浏览
+    
