@@ -26,10 +26,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
 
   _renderEventItem(index) {
     EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index];
-    return new EventItem(
-      eventViewModel,
-      onPressed: () {},
-    );
+    return new EventItem(eventViewModel, onPressed: () {}, needImage: false);
   }
 
   _resolveSelectIndex() {
@@ -77,6 +74,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
             this.selectIndex = selectIndex;
             _resolveSelectIndex();
           },
+          margin : const EdgeInsets.all(0.0),
           elevation: 0.0,
         ),
         elevation: 4.0,

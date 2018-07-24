@@ -104,12 +104,12 @@ class EventViewModel {
   }
 
   EventViewModel.fromNotify(eventMap) {
-    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["created_at"]));
+    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["updated_at"]));
     actionUser = eventMap["repository"]["full_name"];
     String type = eventMap["subject"]["type"];
     String status = eventMap["unread"] ? GSYStrings.notify_unread : GSYStrings.notify_readed;
     actionDes = eventMap["reason"] + "${GSYStrings.notify_type}：$type，${GSYStrings.notify_status}：$status";
-    actionTarget = eventMap["subject.title"];
+    actionTarget = eventMap["subject"]["title"];
     this.eventMap = eventMap;
   }
 }

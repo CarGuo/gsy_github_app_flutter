@@ -14,16 +14,27 @@ class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget 
   final List<String> itemNames;
 
   final SelectItemChanged selectItemChanged;
+
   final double elevation;
 
-  GSYSelectItemWidget(this.itemNames, this.selectItemChanged, {this.elevation = 5.0});
+  final double height;
+
+  final EdgeInsets margin;
+
+  GSYSelectItemWidget(
+    this.itemNames,
+    this.selectItemChanged, {
+    this.elevation = 5.0,
+    this.height = 50.0,
+    this.margin = const EdgeInsets.all(10.0),
+  });
 
   @override
-  _GSYSelectItemWidgetState createState() => _GSYSelectItemWidgetState(selectItemChanged, itemNames, elevation);
+  _GSYSelectItemWidgetState createState() => _GSYSelectItemWidgetState(selectItemChanged, itemNames, elevation, margin);
 
   @override
   Size get preferredSize {
-    return new Size.fromHeight(50.0);
+    return new Size.fromHeight(height);
   }
 }
 
@@ -36,7 +47,9 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
 
   final double elevation;
 
-  _GSYSelectItemWidgetState(this.selectItemChanged, this.itemNames, this.elevation);
+  final EdgeInsets margin;
+
+  _GSYSelectItemWidgetState(this.selectItemChanged, this.itemNames, this.elevation, this.margin);
 
   _renderItem(String name, int index) {
     var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubText;
@@ -77,8 +90,8 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   Widget build(BuildContext context) {
     return new GSYCardItem(
         elevation: elevation,
+        margin: margin,
         color: Color(GSYColors.primaryValue),
-        margin: EdgeInsets.all(10.0),
         shape: new RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
