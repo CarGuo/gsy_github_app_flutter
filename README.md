@@ -1,58 +1,108 @@
-# gsy_github_app_flutter
+![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/logo.png)
 
-Github Application
+## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。
 
-## Getting Started
+### 同款Weex版本开发中 （ https://github.com/CarGuo/GSYGithubAppFlutterWeex ）
 
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+```
+基于React Native开发，适配Android与IOS。
 
+项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
 
+项目同时适合react native的练手学习，覆盖了各种框架的使用，与原生的交互等。
 
-准备：网络请求库使用dio、flutter-redux、sqflite、css_colors
+随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
+```
+-----
 
+[![GitHub stars](https://img.shields.io/github/stars/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/network)
+[![GitHub issues](https://img.shields.io/github/issues/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/issues)
+[![GitHub license](https://img.shields.io/github/license/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/LICENSE)
 
+### 编译运行流程
 
-在哪里存储字符串? 如何存储不同的语言
-目前，最好的做法是创建一个名为Strings的类
-class Strings{
-  static String welcomeMessage = "Welcome To Flutter";
-}
-然后在你的代码中，你可以像访问你的字符串一样：new Text(Strings.welcomeMessage)
+1、配置好Flutter开发环境，可参阅 [【搭建环境】](https://flutterchina.club)
 
+2、clone代码，执行`Packages get`安装第三方宝
 
-welcome -> login
+3、你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。
 
-生成序列化模板
-flutter packages pub run build_runner build
+     class NetConfig {
+       static const CLIENT_ID = "xxxx";
+     
+       static const CLIENT_SECRET = "xxxxxxxxxxx";
+     }
 
+     
+   [      注册 Github APP 传送门](https://github.com/settings/applications/new)，当然，前提是你现有一个github账号(～￣▽￣)～ 。
 
-### 配合AutomaticKeepAliveClientMixin可以keep住tab
-
-### 如何主动刷新refresh，如何设置appbar上的leading和bottom，如何设置tabbar的live
-
-https://github.com/flutter/flutter/issues/19030 没有webview，残念
-
-图片浏览
-
-搜索
-
-commonList的过滤
-
-主页drawer：关于、个人信息
-
-动态页面
+4、运行
 
 
-仓库的： 
-    动态的背景头像
-    版本、tag
-    浏览器打开
-    下载、复制克隆间接
-    分享
-    
-个人页面的：
-    关注
-    组织
-    头像浏览
+### 下载
+
+#### Apk下载链接：未发布
+
+#### Apk二维码
+
+>未发布
+
+
+### 示例图片
+
+<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/1.jpg" width="426px"/>
+
+<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/2.jpg" width="426px"/>
+
+<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/3.jpg" width="426px"/>
+
+
+### 第三方框架
+
+
+* dio(网络框架)
+* shared_preferences(本地数据缓存)
+* fluttertoast(toast)
+* flutter_redux(redux)
+* device_info(设备信息)
+* connectivity(网络链接)
+* flutter_markdown:(markdown解析)
+* json_annotation(json模板)
+* json_serializable(json模板)
+* iconfont(字库图标)
+
+
+### 进行中：
+
+* IOS未测试
+* 主页drawer：关于、个人信息
+* 仓库的： 动态的背景头像|版本|tag| 浏览器打开|下载、复制克隆间接|分享
+* commonList的过滤
+  
+### 常见问题
+
+>待发布
+
+
+<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
+
+
+### 相关文章
+
+>待发布
+
+
+### LICENSE
+```
+CarGuo/GSYGithubAppFlutter is licensed under the
+Apache License 2.0
+
+A permissive license whose main conditions require preservation of copyright and license notices. 
+Contributors provide an express grant of patent rights. 
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+```
+
+
+
     
