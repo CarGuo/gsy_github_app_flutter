@@ -24,6 +24,9 @@ class _SearchPageState extends GSYListState<SearchPage> {
   int selectIndex = 0;
 
   String searchText;
+  String type = searchFilterType[0].value;
+  String sort = sortType[0].value;
+  String language = searchLanguageType[0].value;
 
   _renderEventItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
@@ -44,7 +47,7 @@ class _SearchPageState extends GSYListState<SearchPage> {
   }
 
   _getDataLogic() async {
-    return await ReposDao.searchRepositoryDao(searchText, null, null, null, selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
+    return await ReposDao.searchRepositoryDao(searchText, language, type, sort, selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
   }
 
   @override
@@ -70,7 +73,23 @@ class _SearchPageState extends GSYListState<SearchPage> {
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
-      endDrawer: new GSYSearchDrawer(),
+      endDrawer: new GSYSearchDrawer(
+        (String type) {
+          this.type = type;
+          Navigator.pop(context);
+          _resolveSelectIndex();
+        },
+        (String sort) {
+          this.sort = sort;
+          Navigator.pop(context);
+          _resolveSelectIndex();
+        },
+        (String language) {
+          this.language = language;
+          Navigator.pop(context);
+          _resolveSelectIndex();
+        },
+      ),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
           title: new Text(GSYStrings.search_title),
@@ -96,9 +115,9 @@ class _SearchPageState extends GSYListState<SearchPage> {
 }
 
 class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
-  final ValueChanged<String> onChanged;
+  final SelectItemChanged onChanged;
 
-  final ValueChanged<String> onSubmitted;
+  final SelectItemChanged onSubmitted;
 
   final SelectItemChanged selectItemChanged;
 

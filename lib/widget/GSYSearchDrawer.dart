@@ -7,12 +7,27 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
  * Date: 2018-07-18
  */
 
+
+typedef void SearchSelectItemChanged<String>(String value);
+
 class GSYSearchDrawer extends StatefulWidget {
+  final SearchSelectItemChanged<String> typeCallback;
+  final SearchSelectItemChanged<String> sortCallback;
+  final SearchSelectItemChanged<String> languageCallback;
+
+  GSYSearchDrawer(this.typeCallback, this.sortCallback, this.languageCallback);
+
   @override
-  _GSYSearchDrawerState createState() => _GSYSearchDrawerState();
+  _GSYSearchDrawerState createState() => _GSYSearchDrawerState(this.typeCallback, this.sortCallback, this.languageCallback);
 }
 
 class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
+  final SearchSelectItemChanged<String> typeCallback;
+  final SearchSelectItemChanged<String> sortCallback;
+  final SearchSelectItemChanged<String> languageCallback;
+
+  _GSYSearchDrawerState(this.typeCallback, this.sortCallback, this.languageCallback);
+
   final double itemWidth = 200.0;
 
   @override
@@ -36,20 +51,20 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     list.add(_renderTitle("类型"));
     for (int i = 0; i < searchFilterType.length; i++) {
       FilterModel model = searchFilterType[i];
-      list.add(_renderItem(model, searchFilterType, i));
+      list.add(_renderItem(model, searchFilterType, i, this.typeCallback));
       list.add(_renderDivider());
     }
     list.add(_renderTitle("排序"));
 
     for (int i = 0; i < sortType.length; i++) {
       FilterModel model = sortType[i];
-      list.add(_renderItem(model, sortType, i));
+      list.add(_renderItem(model, sortType, i, this.sortCallback));
       list.add(_renderDivider());
     }
     list.add(_renderTitle("语言"));
     for (int i = 0; i < searchLanguageType.length; i++) {
       FilterModel model = searchLanguageType[i];
-      list.add(_renderItem(model, searchLanguageType, i));
+      list.add(_renderItem(model, searchLanguageType, i, this.languageCallback));
       list.add(_renderDivider());
     }
     return list;
@@ -78,17 +93,37 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     );
   }
 
-  _renderItem(FilterModel model, List<FilterModel> list, int index) {
+  _clearSelect(List<FilterModel> list) {
+    for (FilterModel model in list) {
+      model.select = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _clearSelect(sortType);
+    sortType[0].select = true;
+    _clearSelect(searchLanguageType);
+    searchLanguageType[0].select = true;
+    _clearSelect(searchFilterType);
+    searchFilterType[0].select = true;
+  }
+
+  _renderItem(FilterModel model, List<FilterModel> list, int index, SearchSelectItemChanged<String> select) {
     return new Container(
       height: 50.0,
       child: new FlatButton(
         onPressed: () {
           setState(() {
-            for(FilterModel model in list) {
+            for (FilterModel model in list) {
               model.select = false;
             }
             list[index].select = true;
           });
+          if (select != null) {
+            select(model.value);
+          }
         },
         child: new Container(
           width: itemWidth,
@@ -106,11 +141,10 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   }
 }
 
-
 class FilterModel {
-   String name;
-   String value;
-   bool select;
+  String name;
+  String value;
+  bool select;
 
   FilterModel({this.name, this.value, this.select});
 }
