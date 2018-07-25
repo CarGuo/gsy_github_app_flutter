@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 
@@ -45,16 +46,22 @@ class ReposItem extends StatelessWidget {
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        new ClipOval(
-                          child: new FadeInImage.assetNetwork(
-                            placeholder: "static/images/logo.png",
-                            //预览图
-                            fit: BoxFit.fitWidth,
-                            image: reposViewModel.ownerPic,
-                            width: 40.0,
-                            height: 40.0,
-                          ),
-                        ),
+                        new RawMaterialButton(
+                            constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                            padding: new EdgeInsets.all(0.0),
+                            onPressed: () {
+                              NavigatorUtils.goPerson(context, reposViewModel.ownerName);
+                            },
+                            child: new ClipOval(
+                              child: new FadeInImage.assetNetwork(
+                                placeholder: "static/images/logo.png",
+                                //预览图
+                                fit: BoxFit.fitWidth,
+                                image: reposViewModel.ownerPic,
+                                width: 40.0,
+                                height: 40.0,
+                              ),
+                            )),
                         new Padding(padding: EdgeInsets.all(10.0)),
                         new Expanded(
                           child: new Column(

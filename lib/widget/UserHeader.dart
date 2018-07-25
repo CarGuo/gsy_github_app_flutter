@@ -179,7 +179,7 @@ class UserHeaderItem extends StatelessWidget {
             )),
         new Container(
             child: new Text(
-              GSYStrings.user_dynamic_title,
+              (userInfo.type == "Organization") ? GSYStrings.user_dynamic_group : GSYStrings.user_dynamic_title,
               style: GSYConstant.normalTextBold,
               overflow: TextOverflow.ellipsis,
             ),

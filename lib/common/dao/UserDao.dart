@@ -79,10 +79,12 @@ class UserDao {
       res = await HttpManager.netFetch(Address.getUserInfo(userName), null, null, null);
     }
     if (res != null && res.result) {
-      var countRes = await getUserStaredCountNet(res.data["login"]);
       String starred = "---";
-      if (countRes.result) {
-        starred = countRes.data;
+      if(res.data["type"] !=  "Organization") {
+        var countRes = await getUserStaredCountNet(res.data["login"]);
+        if (countRes.result) {
+          starred = countRes.data;
+        }
       }
       User user = User.fromJson(res.data);
       user.starred = starred;
@@ -214,5 +216,26 @@ class UserDao {
     print(followed);
     var res = await HttpManager.netFetch(url, null, null, new Options(method: !followed ? "PUT" : "DELETE"), noTip: true);
     return new DataResult(res.data, res.result);
+  }
+
+  /**
+   * 组织成员
+   */
+  static getMemberDao(userName, page) async {
+    String url = Address.getMember(userName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<UserItemViewModel> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
   }
 }

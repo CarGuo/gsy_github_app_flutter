@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
+import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 
 /**
  * 个人详情
@@ -56,7 +60,7 @@ class _PersonState extends GSYListState<PersonPage> {
     } else {
       return null;
     }
-    var res = await EventDao.getEventDao(_getUserName(), page: page);
+    var res = await _getDataLogic();
     if (res != null && res.result) {
       pullLoadWidgetControl.dataList.clear();
       setState(() {
@@ -79,7 +83,7 @@ class _PersonState extends GSYListState<PersonPage> {
   _getFocusStatus() async {
     var focusRes = await UserDao.checkFollowDao(userName);
     setState(() {
-      focus = (focusRes != null && focusRes.result) ? "已关注" : "关注";
+      focus = (focusRes != null && focusRes.result) ? GSYStrings.user_focus : GSYStrings.user_un_focus;
       focusStatus = (focusRes != null && focusRes.result);
     });
   }
@@ -88,7 +92,13 @@ class _PersonState extends GSYListState<PersonPage> {
     if (index == 0) {
       return new UserHeaderItem(userInfo, beStaredCount);
     }
-    return new EventItem(pullLoadWidgetControl.dataList[index - 1]);
+    if (userInfo.type == "Organization") {
+      return new UserItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
+        NavigatorUtils.goPerson(context, pullLoadWidgetControl.dataList[index - 1].userName);
+      });
+    } else {
+      return new EventItem(pullLoadWidgetControl.dataList[index - 1]);
+    }
   }
 
   _getUserName() {
@@ -96,6 +106,13 @@ class _PersonState extends GSYListState<PersonPage> {
       return new User.empty();
     }
     return userInfo.login;
+  }
+
+  _getDataLogic() async {
+    if (userInfo.type == "Organization") {
+      return await UserDao.getMemberDao(_getUserName(), page);
+    }
+    return await EventDao.getEventDao(_getUserName(), page: page);
   }
 
   @override
@@ -106,7 +123,7 @@ class _PersonState extends GSYListState<PersonPage> {
 
   @override
   requestLoadMore() async {
-    return await EventDao.getEventDao(_getUserName(), page: page);
+    return await _getDataLogic();
   }
 
   @override
@@ -125,6 +142,10 @@ class _PersonState extends GSYListState<PersonPage> {
             child: new Text(focus),
             onPressed: () {
               if (focus == '') {
+                return;
+              }
+              if(userInfo.type == "Organization") {
+                Fluttertoast.showToast(msg: GSYStrings.user_focus_no_support);
                 return;
               }
               CommonUtils.showLoadingDialog(context);

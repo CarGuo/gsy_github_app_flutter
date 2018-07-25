@@ -73,7 +73,9 @@ class ReposHeaderItem extends StatelessWidget {
                         new RawMaterialButton(
                           constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
                           padding: new EdgeInsets.all(0.0),
-                          onPressed: () {},
+                          onPressed: () {
+                            NavigatorUtils.goPerson(context, reposHeaderViewModel.ownerName);
+                          },
                           child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextMitWhiteBold),
                         ),
                         new Text(" /", style: GSYConstant.normalTextMitWhiteBold),

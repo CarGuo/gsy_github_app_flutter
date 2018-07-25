@@ -220,7 +220,11 @@ class GSYStrings {
   static const String user_tab_focus = "关注";
   static const String user_tab_star = "星标";
   static const String user_tab_honor = "荣耀";
+  static const String user_dynamic_group = "组织成员";
   static const String user_dynamic_title = "个人动态";
+  static const String user_focus = "已关注";
+  static const String user_un_focus = "关注";
+  static const String user_focus_no_support = "不支持关注组织。";
 
   static const String repos_tab_readme = "详情";
   static const String repos_tab_info = "动态";
