@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 new Padding(padding: new EdgeInsets.all(10.0)),
                 new GSYInputWidget(
                   hintText: GSYStrings.login_username_hint_text,
-                  iconData: Icons.access_alarm,
+                  iconData: GSYICons.LOGIN_USER,
                   onChanged: (String value) {
                     _userName = value;
                   },
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                 new Padding(padding: new EdgeInsets.all(10.0)),
                 new GSYInputWidget(
                   hintText: GSYStrings.login_password_hint_text,
-                  iconData: Icons.access_alarm,
+                  iconData: GSYICons.LOGIN_PW,
                   obscureText: true,
                   onChanged: (String value) {
                     _password = value;

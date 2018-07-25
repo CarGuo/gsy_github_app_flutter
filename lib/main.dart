@@ -24,7 +24,6 @@ class FlutterReduxApp extends StatelessWidget {
     return new StoreProvider(
       store: store,
       child: new MaterialApp(
-          title: 'Flutter Demo',
           theme: new ThemeData(
             primarySwatch: GSYColors.primarySwatch,
           ),

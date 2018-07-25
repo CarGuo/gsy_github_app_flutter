@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 ///颜色
 class GSYColors {
+  static const String primaryValueString = "#24292E";
   static const int primaryValue = 0xFF24292E;
   static const int primaryLightValue = 0xFF42464b;
   static const int primaryDarkValue = 0xFF121917;
@@ -260,14 +261,24 @@ class GSYStrings {
   static const String notify_status = "状态";
   static const String notify_type = "类型";
 
+  static const String search_title = "搜索";
+  static const String search_tab_repos = "仓库";
+  static const String search_tab_user = "用户";
+
 }
 
 class GSYICons {
   static const String FONT_FAMILY = 'wxcIconFont';
 
+  static const IconData HOME = const IconData(0xe624, fontFamily: GSYICons.FONT_FAMILY);
+
   static const IconData MAIN_DT = const IconData(0xe684, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData MAIN_QS = const IconData(0xe818, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData MAIN_MY = const IconData(0xe6d0, fontFamily: GSYICons.FONT_FAMILY);
+  static const IconData MAIN_SEARCH = const IconData(0xe61c, fontFamily: GSYICons.FONT_FAMILY);
+
+  static const IconData LOGIN_USER = const IconData(0xe666, fontFamily: GSYICons.FONT_FAMILY);
+  static const IconData LOGIN_PW = const IconData(0xe60e, fontFamily: GSYICons.FONT_FAMILY);
 
   static const IconData REPOS_ITEM_USER = const IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData REPOS_ITEM_STAR = const IconData(0xe643, fontFamily: GSYICons.FONT_FAMILY);

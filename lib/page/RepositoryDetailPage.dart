@@ -9,6 +9,7 @@ import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepostoryDetailInfoPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 
 /**
@@ -237,7 +238,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
-        title: reposName);
+        title: new GSYTitleBar(reposName));
   }
 }
 

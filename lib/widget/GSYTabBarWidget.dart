@@ -19,7 +19,7 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final Color indicatorColor;
 
-  final String title;
+  final Widget title;
 
   final Widget drawer;
 
@@ -57,7 +57,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   final Color _indicatorColor;
 
-  final String _title;
+  final Widget _title;
 
   final Widget _drawer;
 
@@ -102,7 +102,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
           persistentFooterButtons: tarWidgetControl == null ? [] : tarWidgetControl.footerButton,
           appBar: new AppBar(
             backgroundColor: _backgroundColor,
-            title: new Text(_title),
+            title: _title,
             bottom: new TabBar(
               tabs: _tabItems,
               indicatorColor: _indicatorColor,
@@ -120,11 +120,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
         drawer: _drawer,
         appBar: new AppBar(
           backgroundColor: _backgroundColor,
-          title: new Text(
-            _title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          title: _title,
         ),
         body: new TabBarView(
             //TabBarView呈现内容，因此放到Scaffold的body中
