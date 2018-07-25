@@ -193,8 +193,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
             _renderBranchPopItem(branchControl.currentBranch, branchList, (value) {
               setState(() {
                 branchControl.currentBranch = value;
+                tarBarControl.footerButton = _getBottomWidget();
               });
-              _getReposDetail();
               if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
                 infoListKey.currentState.showRefreshLoading();
               }
@@ -218,9 +218,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
-    infoListKey = new GlobalKey<ReposDetailInfoPageState>();
-    readmeKey = new GlobalKey<RepositoryDetailReadmePageState>();
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
