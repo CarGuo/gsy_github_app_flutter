@@ -33,8 +33,6 @@ flutter packages pub run build_runner build
 
 https://github.com/flutter/flutter/issues/19030 没有webview，残念
 
-markdown文件详情
-
 图片浏览
 
 搜索

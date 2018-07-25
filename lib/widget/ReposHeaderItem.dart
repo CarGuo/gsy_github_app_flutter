@@ -23,12 +23,12 @@ class ReposHeaderItem extends StatelessWidget {
       child: new Center(
         child: new FlatButton(
           onPressed: onPressed,
-          padding:new EdgeInsets.all(0.0),
+          padding: new EdgeInsets.all(0.0),
           child: new GSYIConText(
             icon,
             text,
-            GSYConstant.subSmallText,
-            Color(GSYColors.subTextColor),
+            GSYConstant.subLightSmallText,
+            Color(GSYColors.subLightTextColor),
             15.0,
             padding: 3.0,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,91 +51,106 @@ class ReposHeaderItem extends StatelessWidget {
     return new Column(
       children: <Widget>[
         new GSYCardItem(
-            color: new Color(GSYColors.primaryValue),
-            child: new Padding(
-              padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
-              child: new Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      new RawMaterialButton(
-                        constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                        padding: new EdgeInsets.all(0.0),
-                        onPressed: () {},
-                        child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextMitWhiteBold),
-                      ),
-                      new Text(" /", style: GSYConstant.normalTextMitWhiteBold),
-                      new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
-                    ],
-                  ),
-                  new Padding(padding: new EdgeInsets.all(5.0)),
-                  new Row(
-                    children: <Widget>[
-                      new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--",
-                          style: GSYConstant.subLightSmallText),
-                      new Container(width: 5.3, height: 1.0),
-                      new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--",
-                          style: GSYConstant.subLightSmallText),
-                      new Container(width: 5.3, height: 1.0),
-                      new Text(reposHeaderViewModel.license != null ? reposHeaderViewModel.license : "--", style: GSYConstant.subLightSmallText),
-                    ],
-                  ),
-                  new Padding(padding: new EdgeInsets.all(5.0)),
-                  new Container(
-                      child: new Text(reposHeaderViewModel.repositoryDes != null ? reposHeaderViewModel.repositoryDes : "---", style: GSYConstant.subSmallText),
-                      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      alignment: Alignment.topLeft),
-                  new Container(
-                      child: new Text(infoText, style: GSYConstant.subSmallText),
-                      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
-                      alignment: Alignment.topRight),
-                  new Divider(
-                    color: Color(GSYColors.subTextColor),
-                  ),
-                  new Padding(
-                      padding: new EdgeInsets.all(0.0),
-                      child: new Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          _getBottomItem(
-                            GSYICons.REPOS_ITEM_STAR,
-                            reposHeaderViewModel.repositoryStar,
-                            () {
-                              NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_star",
-                                  userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
-                            },
-                          ),
-                          new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                          _getBottomItem(
-                            GSYICons.REPOS_ITEM_FORK,
-                            reposHeaderViewModel.repositoryFork,
-                            () {
-                              NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "repository", "repo_fork",
-                                  userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
-                            },
-                          ),
-                          new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                          _getBottomItem(
-                            GSYICons.REPOS_ITEM_WATCH,
-                            reposHeaderViewModel.repositoryWatch,
-                            () {
-                              NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_watcher",
-                                  userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
-                            },
-                          ),
-                          new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-                          _getBottomItem(
-                            GSYICons.REPOS_ITEM_ISSUE,
-                            reposHeaderViewModel.repositoryIssue,
-                            () {},
-                          ),
-                        ],
-                      )),
-                ],
+          color: new Color(GSYColors.primaryValue),
+          child: new Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new NetworkImage(reposHeaderViewModel.ownerPic),
               ),
-            )),
+            ),
+            child: new Container(
+              decoration: new BoxDecoration(
+                color: Color(0x90000000),
+              ),
+              child: new Padding(
+                padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+                child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Row(
+                      children: <Widget>[
+                        new RawMaterialButton(
+                          constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                          padding: new EdgeInsets.all(0.0),
+                          onPressed: () {},
+                          child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextMitWhiteBold),
+                        ),
+                        new Text(" /", style: GSYConstant.normalTextMitWhiteBold),
+                        new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
+                      ],
+                    ),
+                    new Padding(padding: new EdgeInsets.all(5.0)),
+                    new Row(
+                      children: <Widget>[
+                        new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--",
+                            style: GSYConstant.subLightSmallText),
+                        new Container(width: 5.3, height: 1.0),
+                        new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--",
+                            style: GSYConstant.subLightSmallText),
+                        new Container(width: 5.3, height: 1.0),
+                        new Text(reposHeaderViewModel.license != null ? reposHeaderViewModel.license : "--", style: GSYConstant.subLightSmallText),
+                      ],
+                    ),
+                    new Padding(padding: new EdgeInsets.all(5.0)),
+                    new Container(
+                        child:
+                            new Text(reposHeaderViewModel.repositoryDes != null ? reposHeaderViewModel.repositoryDes : "---", style: GSYConstant.subLightSmallText),
+                        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+                        alignment: Alignment.topLeft),
+                    new Container(
+                        child: new Text(infoText, style: GSYConstant.subLightSmallText),
+                        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
+                        alignment: Alignment.topRight),
+                    new Divider(
+                      color: Color(GSYColors.subTextColor),
+                    ),
+                    new Padding(
+                        padding: new EdgeInsets.all(0.0),
+                        child: new Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            _getBottomItem(
+                              GSYICons.REPOS_ITEM_STAR,
+                              reposHeaderViewModel.repositoryStar,
+                              () {
+                                NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_star",
+                                    userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                              },
+                            ),
+                            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+                            _getBottomItem(
+                              GSYICons.REPOS_ITEM_FORK,
+                              reposHeaderViewModel.repositoryFork,
+                              () {
+                                NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "repository", "repo_fork",
+                                    userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                              },
+                            ),
+                            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+                            _getBottomItem(
+                              GSYICons.REPOS_ITEM_WATCH,
+                              reposHeaderViewModel.repositoryWatch,
+                              () {
+                                NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_watcher",
+                                    userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                              },
+                            ),
+                            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+                            _getBottomItem(
+                              GSYICons.REPOS_ITEM_ISSUE,
+                              reposHeaderViewModel.repositoryIssue,
+                              () {},
+                            ),
+                          ],
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         new GSYSelectItemWidget([
           GSYStrings.repos_tab_activity,
           GSYStrings.repos_tab_commits,
