@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
@@ -194,5 +195,24 @@ class UserDao {
     String url = Address.setNotificationAsRead(id);
     var res = await HttpManager.netFetch(url, null, null, new Options(method: "PATCH"));
     return res;
+  }
+
+  /**
+   * 检查用户关注状态
+   */
+  static checkFollowDao(name) async {
+    String url = Address.doFollow(name);
+    var res = await HttpManager.netFetch(url, null, null, new Options(contentType: ContentType.TEXT), noTip: true);
+    return new DataResult(res.data, res.result);
+  }
+
+  /**
+   * 关注用户
+   */
+  static doFollowDao(name, bool followed) async {
+    String url = Address.doFollow(name);
+    print(followed);
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: !followed ? "PUT" : "DELETE"), noTip: true);
+    return new DataResult(res.data, res.result);
   }
 }

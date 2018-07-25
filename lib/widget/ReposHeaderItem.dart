@@ -61,7 +61,7 @@ class ReposHeaderItem extends StatelessWidget {
             ),
             child: new Container(
               decoration: new BoxDecoration(
-                color: Color(0x90000000),
+                color: Color(GSYColors.primaryDarkValue & 0xA0FFFFFF),
               ),
               child: new Padding(
                 padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),

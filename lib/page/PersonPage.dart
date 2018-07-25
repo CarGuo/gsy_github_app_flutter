@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -27,10 +28,13 @@ class PersonPage extends StatefulWidget {
 }
 
 class _PersonState extends GSYListState<PersonPage> {
-
   final String userName;
 
   String beStaredCount = "---";
+
+  bool focusStatus = false;
+
+  String focus = "";
 
   User userInfo = User.empty();
 
@@ -61,7 +65,7 @@ class _PersonState extends GSYListState<PersonPage> {
     }
     resolveDataResult(res);
     isLoading = false;
-
+    _getFocusStatus();
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
       if (res != null && res.result) {
         setState(() {
@@ -72,6 +76,13 @@ class _PersonState extends GSYListState<PersonPage> {
     return null;
   }
 
+  _getFocusStatus() async {
+    var focusRes = await UserDao.checkFollowDao(userName);
+    setState(() {
+      focus = (focusRes != null && focusRes.result) ? "已关注" : "关注";
+      focusStatus = (focusRes != null && focusRes.result);
+    });
+  }
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -90,10 +101,8 @@ class _PersonState extends GSYListState<PersonPage> {
   @override
   bool get wantKeepAlive => true;
 
-
   @override
-  requestRefresh() async {
-  }
+  requestRefresh() async {}
 
   @override
   requestLoadMore() async {
@@ -106,20 +115,30 @@ class _PersonState extends GSYListState<PersonPage> {
   @override
   bool get needHeader => true;
 
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text((userInfo != null && userInfo.login != null) ? userInfo.login : ""),
         ),
+        floatingActionButton: new FloatingActionButton(
+            child: new Text(focus),
+            onPressed: () {
+              if (focus == '') {
+                return;
+              }
+              CommonUtils.showLoadingDialog(context);
+              UserDao.doFollowDao(userName, focusStatus).then((res) {
+                Navigator.pop(context);
+                _getFocusStatus();
+              });
+            }),
         body: GSYPullLoadWidget(
           pullLoadWidgetControl,
-              (BuildContext context, int index) => _renderEventItem(index),
+          (BuildContext context, int index) => _renderEventItem(index),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIndicatorKey,
         ));
   }
-
 }
