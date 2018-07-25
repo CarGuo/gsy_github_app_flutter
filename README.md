@@ -6,11 +6,11 @@
 ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 
 ```
-基于React Native开发，适配Android与IOS。
+基于Flutter开发，适配Android与IOS。
 
 项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
 
-项目同时适合react native的练手学习，覆盖了各种框架的使用，与原生的交互等。
+项目同时适合Flutter的练手学习，覆盖了各种框架的使用，与原生的交互等。
 
 随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
 ```
@@ -63,14 +63,23 @@
 
 
 * dio(网络框架)
+
 * shared_preferences(本地数据缓存)
+
 * fluttertoast(toast)
+
 * flutter_redux(redux)
+
 * device_info(设备信息)
+
 * connectivity(网络链接)
+
 * flutter_markdown:(markdown解析)
+
 * json_annotation(json模板)
+
 * json_serializable(json模板)
+
 * iconfont(字库图标)
 
 
@@ -83,7 +92,9 @@
   
 ### 常见问题
 
+
 >待发布
+
 
 
 <img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
@@ -91,10 +102,12 @@
 
 ### 相关文章
 
+
 >待发布
 
 
 ### LICENSE
+
 ```
 CarGuo/GSYGithubAppFlutter is licensed under the
 Apache License 2.0
