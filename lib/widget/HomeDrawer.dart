@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 
 /**
@@ -46,6 +48,27 @@ class HomeDrawer extends StatelessWidget {
                   color: Color(GSYColors.primaryValue),
                 ),
               ),
+              new ListTile(
+                  //第一个功能项
+                  title: new Text(
+                    GSYStrings.home_reply,
+                    style: GSYConstant.normalText,
+                  ),
+                  onTap: () {
+                    String content = "";
+                    CommonUtils.showEditDialog(context, GSYStrings.home_reply, (title) {}, (res) {
+                      content = res;
+                    }, () {
+                      if (content == null || content.length == 0) {
+                        return;
+                      }
+                      CommonUtils.showLoadingDialog(context);
+                      IssueDao.createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": "问题反馈", "body": content}).then((result) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      });
+                    }, needTitle: false);
+                  }),
               new ListTile(
                   //第一个功能项
                   title: new Text(

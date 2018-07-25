@@ -193,6 +193,8 @@ class GSYStrings {
 
   static const String Login_out = "退出登录";
 
+  static const String home_reply = "问题反馈";
+
   static const String login_username_hint_text = "请输入github用户名";
   static const String login_password_hint_text = "请输入密码";
   static const String login_success = "登录成功";
