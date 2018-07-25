@@ -49,7 +49,6 @@ class HomeDrawer extends StatelessWidget {
                 ),
               ),
               new ListTile(
-                  //第一个功能项
                   title: new Text(
                     GSYStrings.home_reply,
                     style: GSYConstant.normalText,
@@ -70,7 +69,19 @@ class HomeDrawer extends StatelessWidget {
                     }, needTitle: false);
                   }),
               new ListTile(
-                  //第一个功能项
+                  title: new Text(
+                    GSYStrings.home_about,
+                    style: GSYConstant.normalText,
+                  ),
+                  onTap: () {
+                    showDialog(context: context, builder: (BuildContext context) => AboutDialog(
+                      applicationName :GSYStrings.app_name,
+                      applicationVersion: "1.0.0",
+                      applicationIcon: new Image(image: new AssetImage('static/images/logo.png'), width: 50.0, height: 50.0),
+                      applicationLegalese: null,
+                    ));
+                  }),
+              new ListTile(
                   title: new Text(
                     GSYStrings.Login_out,
                     style: GSYConstant.normalText,
