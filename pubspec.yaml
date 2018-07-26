@@ -17,6 +17,7 @@ dependencies:
   connectivity: ^0.3.1
   flutter_markdown: ^0.1.5
   url_launcher: ^3.0.3
+  share: ^0.5.2
 
 dev_dependencies:
   build_runner: ^0.7.6
