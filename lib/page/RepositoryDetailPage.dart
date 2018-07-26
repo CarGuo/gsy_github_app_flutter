@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -216,16 +217,20 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     _getBranchList();
   }
 
+  _showTabToast() {
+    Fluttertoast.showToast(msg: "目前手动点击会有问题，请用滑动");
+  }
+
   @override
   Widget build(BuildContext context) {
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
         tabItems: [
-          new Tab(text: GSYStrings.repos_tab_info),
-          new Tab(text: GSYStrings.repos_tab_readme),
-          new Tab(text: GSYStrings.repos_tab_issue),
-          new Tab(text: GSYStrings.repos_tab_file),
+          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_info)),
+          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_readme)),
+          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_issue)),
+          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_file)),
         ],
         tabViews: [
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
