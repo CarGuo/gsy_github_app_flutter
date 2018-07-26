@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 
 /**
  * Created by guoshuyu
@@ -80,7 +82,18 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
     return new Scaffold(
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
-        title: new Text(GSYStrings.notify_title),
+        title: GSYTitleBar(
+          GSYStrings.notify_title,
+          iconData: GSYICons.NOTIFY_ALL_READ,
+          needRightIcon: true,
+          onPressed: () {
+            CommonUtils.showLoadingDialog(context);
+            UserDao.setAllNotificationAsReadDao().then((res) {
+              Navigator.pop(context);
+              _resolveSelectIndex();
+            });
+          },
+        ),
         bottom: new GSYSelectItemWidget(
           [
             GSYStrings.notify_tab_unread,

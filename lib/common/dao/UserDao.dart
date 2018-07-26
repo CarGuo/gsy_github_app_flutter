@@ -199,6 +199,16 @@ class UserDao {
     return res;
   }
 
+
+  /**
+   * 设置所有通知已读
+   */
+  static setAllNotificationAsReadDao () async {
+    String url = Address.setAllNotificationAsRead();
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PUT", contentType: ContentType.TEXT));
+    return new DataResult(res.data, res.result);
+  }
+
   /**
    * 检查用户关注状态
    */
