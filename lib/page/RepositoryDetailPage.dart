@@ -227,10 +227,38 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
         tabItems: [
-          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_info)),
-          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_readme)),
-          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_issue)),
-          new FlatButton(onPressed: (){_showTabToast();}, child: new Tab(text: GSYStrings.repos_tab_file)),
+          new FlatButton(
+              onPressed: () {
+                _showTabToast();
+              },
+              child: new Text(
+                GSYStrings.repos_tab_info,
+                style: GSYConstant.middleTextWhite,
+              )),
+          new FlatButton(
+              onPressed: () {
+                _showTabToast();
+              },
+              child: new Text(
+                GSYStrings.repos_tab_readme,
+                style: GSYConstant.middleTextWhite,
+              )),
+          new FlatButton(
+              onPressed: () {
+                _showTabToast();
+              },
+              child: new Text(
+                GSYStrings.repos_tab_issue,
+                style: GSYConstant.middleTextWhite,
+              )),
+          new FlatButton(
+              onPressed: () {
+                _showTabToast();
+              },
+              child: new Text(
+                GSYStrings.repos_tab_file,
+                style: GSYConstant.middleTextWhite,
+              )),
         ],
         tabViews: [
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
