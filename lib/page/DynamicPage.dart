@@ -84,21 +84,6 @@ class _DynamicPageState extends GSYListState<DynamicPage> {
     super.didChangeDependencies();
   }
 
-
-  @override
-  clearData() {
-    super.clearData();
-    if( _getStore().state.eventList != null) {
-      _getStore().state.eventList.clear();
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    clearData();
-  }
-
   _renderEventItem(EventViewModel e) {
     return new EventItem(
       e,

@@ -124,6 +124,7 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
   @override
   void dispose() {
     isShow = false;
+    isLoading = false;
     super.dispose();
   }
 }
