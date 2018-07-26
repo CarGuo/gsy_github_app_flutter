@@ -75,6 +75,7 @@
 **flutter_markdown**|**markdown解析**
 **json_annotation**|**json模板**
 **json_serializable**|**json模板**
+**url_launcher**|**启动外部浏览器**
 **iconfont**|**字库图标**
 
 

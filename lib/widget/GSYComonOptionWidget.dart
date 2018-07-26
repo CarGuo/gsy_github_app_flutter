@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /**
  * Created by guoshuyu
  * Date: 2018-07-26
  */
 class GSYCommonOptionWidget extends StatelessWidget {
+
+  final List<GSYOptionModel> otherList;
+
+  final String url;
+
+  GSYCommonOptionWidget(this.url, {this.otherList});
 
   _renderHeaderPopItem(List<GSYOptionModel> list) {
     return new PopupMenuButton<GSYOptionModel>(
@@ -30,16 +38,25 @@ class GSYCommonOptionWidget extends StatelessWidget {
     return list;
   }
 
+  _launchURL() async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + url);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> list = [
-      new GSYOptionModel("浏览器打开", "浏览器打开", (model) {
-        print("浏览器打开");
+      new GSYOptionModel(GSYStrings.option_web, GSYStrings.option_web, (model) {
+        _launchURL();
       }),
-      new GSYOptionModel("复制链接", "复制链接", (model) {
+      new GSYOptionModel(GSYStrings.option_copy, GSYStrings.option_copy, (model) {
         print("复制链接");
       }),
-      new GSYOptionModel("分享", "分享", (model) {
+      new GSYOptionModel(GSYStrings.option_share, GSYStrings.option_share, (model) {
         print("分享");
       }),
     ];

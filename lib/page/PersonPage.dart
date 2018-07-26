@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -44,6 +45,9 @@ class _PersonState extends GSYListState<PersonPage> {
 
   User userInfo = User.empty();
 
+
+  String launchUrl = "";
+
   _PersonState(this.userName);
 
   @override
@@ -67,6 +71,7 @@ class _PersonState extends GSYListState<PersonPage> {
       pullLoadWidgetControl.dataList.clear();
       setState(() {
         pullLoadWidgetControl.dataList.addAll(res.data);
+        launchUrl = Address.hostWeb + userInfo.login;
       });
     }
     resolveDataResult(res);
@@ -140,7 +145,7 @@ class _PersonState extends GSYListState<PersonPage> {
         appBar: new AppBar(
             title: GSYTitleBar(
               (userInfo != null && userInfo.login != null) ? userInfo.login : "",
-              rightWidget: GSYCommonOptionWidget(),
+              rightWidget: GSYCommonOptionWidget(launchUrl),
             )
         ),
         floatingActionButton: new FloatingActionButton(
@@ -149,7 +154,7 @@ class _PersonState extends GSYListState<PersonPage> {
               if (focus == '') {
                 return;
               }
-              if(userInfo.type == "Organization") {
+              if (userInfo.type == "Organization") {
                 Fluttertoast.showToast(msg: GSYStrings.user_focus_no_support);
                 return;
               }
@@ -161,7 +166,7 @@ class _PersonState extends GSYListState<PersonPage> {
             }),
         body: GSYPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(index),
+              (BuildContext context, int index) => _renderEventItem(index),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIndicatorKey,
