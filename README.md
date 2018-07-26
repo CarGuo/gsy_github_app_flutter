@@ -68,14 +68,14 @@
 -------- | ---
 **dio**|**网络框架**
 **shared_preferences**|**本地数据缓存**
-**fluttertoast**|**(toast)**
-**flutter_redux**|**(redux)**
-**device_info**|**(设备信息)**
-**connectivity**|**(网络链接)**
-**flutter_markdown**|**(markdown解析)**
-**json_annotation**|**(json模板)**
-**json_serializable**|**(json模板)**
-**iconfont**|**(字库图标)**
+**fluttertoast**|**toast**
+**flutter_redux**|**redux**
+**device_info**|**设备信息**
+**connectivity**|**网络链接**
+**flutter_markdown**|**markdown解析**
+**json_annotation**|**json模板**
+**json_serializable**|**json模板**
+**iconfont**|**字库图标**
 
 
 ### 进行中：
