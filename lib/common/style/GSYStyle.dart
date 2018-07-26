@@ -195,6 +195,7 @@ class GSYStrings {
   static const String option_share = "分享";
   static const String option_web_launcher_error = "url异常";
   static const String option_share_title = "分享自GitHubFlutterApp： ";
+  static const String option_share_copy_success = "已经复制到粘贴板";
 
   static const String login_text = "登录";
 
