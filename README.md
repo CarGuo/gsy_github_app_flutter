@@ -24,11 +24,11 @@
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境，可参阅 [【搭建环境】](https://flutterchina.club)
+1、配置好Flutter开发环境，可参阅 [【搭建环境】](https://flutterchina.club)。
 
-2、clone代码，执行`Packages get`安装第三方宝
+2、clone代码，执行`Packages get`安装第三方包。
 
-3、你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。
+**3、重点：你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。**
 
      class NetConfig {
        static const CLIENT_ID = "xxxx";
@@ -44,7 +44,9 @@
 
 ### 下载
 
-#### Apk下载链接：未发布
+#### Apk下载链接：
+
+>未发布
 
 #### Apk二维码
 
@@ -62,17 +64,18 @@
 
 ### 第三方框架
 
-
-* dio(网络框架)
-* shared_preferences(本地数据缓存)
-* fluttertoast(toast)
-* flutter_redux(redux)
-* device_info(设备信息)
-* connectivity(网络链接)
-* flutter_markdown:(markdown解析)
-* json_annotation(json模板)
-* json_serializable(json模板)
-* iconfont(字库图标)
+库 | 功能
+-------- | ---
+**dio**|**网络框架**
+**shared_preferences**|**本地数据缓存**
+**fluttertoast**|**(toast)**
+**flutter_redux**|**(redux)**
+**device_info**|**(设备信息)**
+**connectivity**|**(网络链接)**
+**flutter_markdown**|**(markdown解析)**
+**json_annotation**|**(json模板)**
+**json_serializable**|**(json模板)**
+**iconfont**|**(字库图标)**
 
 
 ### 进行中：
