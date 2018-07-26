@@ -1,9 +1,10 @@
 ![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/logo.png)
 
-## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。
+## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。在开发学习过程中，提供丰富的同款对比：
 
-### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppFlutterWeex ）
-### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
+* ### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppFlutterWeex ）
+* ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
+
 
 ```
 基于Flutter开发，适配Android与IOS。
