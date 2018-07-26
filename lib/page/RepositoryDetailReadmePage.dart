@@ -68,6 +68,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (markdownData == null) {
       return Center(
         child: new Container(
