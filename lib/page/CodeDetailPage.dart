@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 
 /**
  * 文件代码详情
@@ -59,6 +62,8 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    String currentBranch = ((branch == null) ? "" : ("/" + branch));
+    String url = Address.hostWeb + userName + "/" + reposName  + "/blob" + currentBranch + path;
     Widget widget = (data == null)
         ? new Center(
             child: new Container(
@@ -79,10 +84,10 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(
+        title:  GSYTitleBar(
           title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          rightWidget: new GSYCommonOptionWidget(url),
+          needRightLocalIcon: false,
         ),
       ),
       body: widget,
