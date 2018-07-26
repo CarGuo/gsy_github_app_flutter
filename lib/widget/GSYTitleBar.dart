@@ -14,11 +14,23 @@ class GSYTitleBar extends StatelessWidget {
 
   final bool needRightIcon;
 
-  GSYTitleBar(this.title, {this.iconData, this.onPressed, this.needRightIcon = false});
+  final Widget rightWidget;
+
+  GSYTitleBar(this.title, {this.iconData, this.onPressed, this.needRightIcon = false, this.rightWidget});
 
   @override
   Widget build(BuildContext context) {
-    Widget right = (needRightIcon) ? new IconButton(icon: new Icon(iconData, size: 19.0,), onPressed: onPressed) : new Container();
+    Widget widget = rightWidget;
+    if (rightWidget == null) {
+      widget = (needRightIcon)
+          ? new IconButton(
+              icon: new Icon(
+                iconData,
+                size: 19.0,
+              ),
+              onPressed: onPressed)
+          : new Container();
+    }
     return Container(
       child: new Row(
         children: <Widget>[
@@ -29,7 +41,7 @@ class GSYTitleBar extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          right
+          widget
         ],
       ),
     );
