@@ -1,9 +1,10 @@
 ![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/logo.png)
 
-## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。
+## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。在开发学习过程中，提供丰富的同款对比：
 
-### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppWeex ）
-### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
+* ### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppWeex ）
+* ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
+
 
 ```
 基于Flutter开发，适配Android与IOS。
@@ -23,11 +24,11 @@
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境，可参阅 [【搭建环境】](https://flutterchina.club)
+1、配置好Flutter开发环境，可参阅 [【搭建环境】](https://flutterchina.club)。
 
-2、clone代码，执行`Packages get`安装第三方宝
+2、clone代码，执行`Packages get`安装第三方包。
 
-3、你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。
+**3、重点：你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。**
 
      class NetConfig {
        static const CLIENT_ID = "xxxx";
@@ -43,7 +44,9 @@
 
 ### 下载
 
-#### Apk下载链接：未发布
+#### Apk下载链接：
+
+>未发布
 
 #### Apk二维码
 
@@ -61,26 +64,18 @@
 
 ### 第三方框架
 
-
-* dio(网络框架)
-
-* shared_preferences(本地数据缓存)
-
-* fluttertoast(toast)
-
-* flutter_redux(redux)
-
-* device_info(设备信息)
-
-* connectivity(网络链接)
-
-* flutter_markdown:(markdown解析)
-
-* json_annotation(json模板)
-
-* json_serializable(json模板)
-
-* iconfont(字库图标)
+库 | 功能
+-------- | ---
+**dio**|**网络框架**
+**shared_preferences**|**本地数据缓存**
+**fluttertoast**|**toast**
+**flutter_redux**|**redux**
+**device_info**|**设备信息**
+**connectivity**|**网络链接**
+**flutter_markdown**|**markdown解析**
+**json_annotation**|**json模板**
+**json_serializable**|**json模板**
+**iconfont**|**字库图标**
 
 
 ### 进行中：
@@ -88,14 +83,11 @@
 * IOS未测试
 * 主页drawer：关于、个人信息
 * 仓库的： 动态的背景头像|版本|tag| 浏览器打开|下载、复制克隆间接|分享
-* 数据库缓存
-* WebView级别的Widget
+* commonList的过滤
   
 ### 常见问题
 
-
 >待发布
-
 
 
 <img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
@@ -103,12 +95,10 @@
 
 ### 相关文章
 
-
 >待发布
 
 
 ### LICENSE
-
 ```
 CarGuo/GSYGithubAppFlutter is licensed under the
 Apache License 2.0
