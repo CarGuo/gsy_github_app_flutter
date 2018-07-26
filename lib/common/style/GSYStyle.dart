@@ -189,6 +189,12 @@ class GSYStrings {
   static const String nothing_now = "目前什么都没有。";
   static const String loading_text = "加载中···";
 
+
+  static const String option_web = "浏览器打开";
+  static const String option_copy = "复制链接";
+  static const String option_share = "分享";
+  static const String option_web_launcher_error = "url异常";
+
   static const String login_text = "登录";
 
   static const String Login_out = "退出登录";
