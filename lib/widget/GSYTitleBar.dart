@@ -12,17 +12,17 @@ class GSYTitleBar extends StatelessWidget {
 
   final VoidCallback onPressed;
 
-  final bool needRightIcon;
+  final bool needRightLocalIcon;
 
   final Widget rightWidget;
 
-  GSYTitleBar(this.title, {this.iconData, this.onPressed, this.needRightIcon = false, this.rightWidget});
+  GSYTitleBar(this.title, {this.iconData, this.onPressed, this.needRightLocalIcon = false, this.rightWidget});
 
   @override
   Widget build(BuildContext context) {
     Widget widget = rightWidget;
     if (rightWidget == null) {
-      widget = (needRightIcon)
+      widget = (needRightLocalIcon)
           ? new IconButton(
               icon: new Icon(
                 iconData,
