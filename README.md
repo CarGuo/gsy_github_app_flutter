@@ -6,11 +6,11 @@
 ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 
 ```
-基于React Native开发，适配Android与IOS。
+基于Flutter开发，适配Android与IOS。
 
 项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
 
-项目同时适合react native的练手学习，覆盖了各种框架的使用，与原生的交互等。
+项目同时适合Flutter的练手学习，覆盖了各种框架的使用，与原生的交互等。
 
 随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
 ```
