@@ -24,7 +24,7 @@
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 v0.5.7)，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。
 
@@ -89,6 +89,8 @@
 * 主页drawer：关于、个人信息
 * 仓库的： 动态的背景头像|版本|tag| 浏览器打开|下载、复制克隆间接|分享
 * 本地数据库
+* 空页面
+* Tab中GlobalKey问题处理（Multiple widgets used the same GlobalKey）
   
 ### 常见问题
 
