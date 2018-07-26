@@ -10,8 +10,10 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
+import 'package:gsy_github_app_flutter/widget/GSYComonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 
@@ -136,7 +138,10 @@ class _PersonState extends GSYListState<PersonPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text((userInfo != null && userInfo.login != null) ? userInfo.login : ""),
+            title: GSYTitleBar(
+              (userInfo != null && userInfo.login != null) ? userInfo.login : "",
+              rightWidget: GSYCommonOptionWidget(),
+            )
         ),
         floatingActionButton: new FloatingActionButton(
             child: new Text(focus),
