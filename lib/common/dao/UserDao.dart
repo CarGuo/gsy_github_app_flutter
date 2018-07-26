@@ -15,7 +15,7 @@ import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
-  static login(userName, password, callback) async {
+  static login(userName, password, store) async {
     String type = userName + ":" + password;
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
@@ -34,6 +34,7 @@ class UserDao {
     HttpManager.clearAuthorization();
 
     var res = await HttpManager.netFetch(Address.getAuthorization(), json.encode(requestParams), null, new Options(method: "post"));
+    var resultData = null;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
@@ -42,10 +43,9 @@ class UserDao {
         print(resultData.data);
         print(res.data.toString());
       }
+      store.dispatch(new UpdateUserAction(resultData.data));
     }
-    if (callback != null) {
-      callback(res);
-    }
+    return new DataResult(resultData, res.result);
   }
 
   ///初始化用户信息
@@ -80,7 +80,7 @@ class UserDao {
     }
     if (res != null && res.result) {
       String starred = "---";
-      if(res.data["type"] !=  "Organization") {
+      if (res.data["type"] != "Organization") {
         var countRes = await getUserStaredCountNet(res.data["login"]);
         if (countRes.result) {
           starred = countRes.data;
@@ -97,9 +97,10 @@ class UserDao {
     }
   }
 
-  static clearAll() async {
+  static clearAll(Store store) async {
     HttpManager.clearAuthorization();
     LocalStorage.remove(Config.USER_INFO);
+    store.dispatch(new UpdateUserAction(User.empty()));
   }
 
   /**
@@ -199,11 +200,10 @@ class UserDao {
     return res;
   }
 
-
   /**
    * 设置所有通知已读
    */
-  static setAllNotificationAsReadDao () async {
+  static setAllNotificationAsReadDao() async {
     String url = Address.setAllNotificationAsRead();
     var res = await HttpManager.netFetch(url, null, null, new Options(method: "PUT", contentType: ContentType.TEXT));
     return new DataResult(res.data, res.result);

@@ -1,3 +1,4 @@
+
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
@@ -55,6 +56,11 @@ class EventDao {
     } else {
       return null;
     }
+  }
+
+  static clearEvent(Store store) {
+    store.state.eventList.clear();
+    store.dispatch(new RefreshEventAction([]));
   }
 
 }

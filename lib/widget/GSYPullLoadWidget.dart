@@ -1,10 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
-import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
-import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 
 ///通用下上刷新控件
@@ -87,7 +82,16 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   }
 
   Widget _buildProgressIndicator() {
-    Widget bottomWidget = (control.needLoadMore) ? new CircularProgressIndicator() : new Text(GSYStrings.load_more_not);
+    Widget bottomWidget = (control.needLoadMore)
+        ? new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            new SpinKitRotatingCircle(color: Color(GSYColors.primaryValue)),
+            new Container(width: 5.0,),
+            new Text(
+              GSYStrings.load_more_text,
+              style: GSYConstant.smallTextBold,
+            )
+          ])
+        : new Text(GSYStrings.load_more_not, style: GSYConstant.smallTextBold);
     return new Padding(
       padding: const EdgeInsets.all(20.0),
       child: new Center(

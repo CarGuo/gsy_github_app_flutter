@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
@@ -26,11 +27,11 @@ class HomeDrawer extends StatelessWidget {
               new UserAccountsDrawerHeader(
                 //Material内置控件
                 accountName: new Text(
-                  user.login,
+                  user.login != null ? user.login : "---",
                   style: GSYConstant.largeTextWhite,
                 ),
                 accountEmail: new Text(
-                  user.email != null ? user.email : user.name,
+                  user.email != null ? user.email : user.name != null ? user.name : "---",
                   style: GSYConstant.subNormalText,
                 ),
                 //用户名
@@ -40,7 +41,7 @@ class HomeDrawer extends StatelessWidget {
                   onTap: () {},
                   child: new CircleAvatar(
                     //圆形图标控件
-                    backgroundImage: new NetworkImage(user.avatar_url),
+                    backgroundImage: new NetworkImage(user.avatar_url != null ? user.avatar_url : "---"),
                   ),
                 ),
                 decoration: new BoxDecoration(
@@ -74,12 +75,14 @@ class HomeDrawer extends StatelessWidget {
                     style: GSYConstant.normalText,
                   ),
                   onTap: () {
-                    showDialog(context: context, builder: (BuildContext context) => AboutDialog(
-                      applicationName :GSYStrings.app_name,
-                      applicationVersion: "1.0.0",
-                      applicationIcon: new Image(image: new AssetImage('static/images/logo.png'), width: 50.0, height: 50.0),
-                      applicationLegalese: null,
-                    ));
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AboutDialog(
+                              applicationName: GSYStrings.app_name,
+                              applicationVersion: "1.0.0",
+                              applicationIcon: new Image(image: new AssetImage('static/images/logo.png'), width: 50.0, height: 50.0),
+                              applicationLegalese: null,
+                            ));
                   }),
               new ListTile(
                   title: new Text(
@@ -87,8 +90,9 @@ class HomeDrawer extends StatelessWidget {
                     style: GSYConstant.normalText,
                   ),
                   onTap: () {
+                    UserDao.clearAll(store);
+                    EventDao.clearEvent(store);
                     NavigatorUtils.goLogin(context);
-                    UserDao.clearAll();
                   }),
             ],
           ),
