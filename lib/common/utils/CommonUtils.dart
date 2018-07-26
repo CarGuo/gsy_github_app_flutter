@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 /**
  * 通用逻辑
@@ -79,16 +80,18 @@ class CommonUtils {
               height: 140.0,
               padding: new EdgeInsets.all(4.0),
               decoration: new BoxDecoration(
-                color: Colors.white,
+                color: Colors.transparent,
                 //用一个BoxDecoration装饰器提供背景图片
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
-              child: new Row(
+              child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new CircularProgressIndicator(),
+                  SpinKitCubeGrid(
+                    color: Colors.white,
+                  ),
                   new Container(width: 10.0),
-                  new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleText)),
+                  new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleTextWhite)),
                 ],
               ),
             ),
