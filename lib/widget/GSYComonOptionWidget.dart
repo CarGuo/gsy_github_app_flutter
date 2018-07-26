@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,6 +56,8 @@ class GSYCommonOptionWidget extends StatelessWidget {
       }),
       new GSYOptionModel(GSYStrings.option_copy, GSYStrings.option_copy, (model) {
         print("复制链接");
+        Clipboard.setData(new ClipboardData(text: url));
+        Fluttertoast.showToast(msg: GSYStrings.option_share_copy_success);
       }),
       new GSYOptionModel(GSYStrings.option_share, GSYStrings.option_share, (model) {
         Share.share(text);
