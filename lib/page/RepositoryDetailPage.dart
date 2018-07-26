@@ -217,9 +217,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     _getBranchList();
   }
 
-  _showTabToast() {
-    Fluttertoast.showToast(msg: "目前手动点击会有问题，请用滑动");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,44 +224,16 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
         tabItems: [
-          new FlatButton(
-              onPressed: () {
-                _showTabToast();
-              },
-              child: new Text(
-                GSYStrings.repos_tab_info,
-                style: GSYConstant.middleTextWhite,
-              )),
-          new FlatButton(
-              onPressed: () {
-                _showTabToast();
-              },
-              child: new Text(
-                GSYStrings.repos_tab_readme,
-                style: GSYConstant.middleTextWhite,
-              )),
-          new FlatButton(
-              onPressed: () {
-                _showTabToast();
-              },
-              child: new Text(
-                GSYStrings.repos_tab_issue,
-                style: GSYConstant.middleTextWhite,
-              )),
-          new FlatButton(
-              onPressed: () {
-                _showTabToast();
-              },
-              child: new Text(
-                GSYStrings.repos_tab_file,
-                style: GSYConstant.middleTextWhite,
-              )),
+          new Tab(text: GSYStrings.repos_tab_info),
+          new Tab(text: GSYStrings.repos_tab_readme),
+          new Tab(text: GSYStrings.repos_tab_issue),
+          new Tab(text: GSYStrings.repos_tab_file),
         ],
         tabViews: [
-          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
-          new RepositoryDetailReadmePage(userName, reposName, branchControl, key: readmeKey),
+          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl),
+          new RepositoryDetailReadmePage(userName, reposName, branchControl),
           new RepositoryDetailIssuePage(userName, reposName),
-          new RepositoryDetailFileListPage(userName, reposName, branchControl, key: fileListKey),
+          new RepositoryDetailFileListPage(userName, reposName, branchControl),
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
