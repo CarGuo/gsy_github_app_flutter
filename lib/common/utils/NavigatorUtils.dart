@@ -48,7 +48,7 @@ class NavigatorUtils {
   }
 
   ///issue详情
-  static Future<Null> goIssueDetail(BuildContext context, String userName, String reposName, String num, {bool needRightIcon = false}) {
+  static Future<Null> goIssueDetail(BuildContext context, String userName, String reposName, String num, {bool needRightLocalIcon = false}) {
     return Navigator.push(
         context,
         new MaterialPageRoute(
@@ -56,7 +56,7 @@ class NavigatorUtils {
                   userName,
                   reposName,
                   num,
-                  needRightIcon: needRightIcon,
+                  needHomeIcon: needRightLocalIcon,
                 )));
   }
 
@@ -98,6 +98,4 @@ class NavigatorUtils {
   static Future<Null> goSearchPage(BuildContext context) {
     return Navigator.push(context, new MaterialPageRoute(builder: (context) => new SearchPage()));
   }
-
-
 }

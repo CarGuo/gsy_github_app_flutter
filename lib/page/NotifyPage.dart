@@ -41,7 +41,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
         String number = tmp[tmp.length - 1];
         String userName = eventMap["repository"]["owner"]["login"];
         String reposName = eventMap["repository"]["name"];
-        NavigatorUtils.goIssueDetail(context, userName, reposName, number, needRightIcon: true).then((res) {
+        NavigatorUtils.goIssueDetail(context, userName, reposName, number, needRightLocalIcon: true).then((res) {
           showRefreshLoading();
         });
       }
@@ -85,7 +85,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
         title: GSYTitleBar(
           GSYStrings.notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
-          needRightIcon: true,
+          needRightLocalIcon: true,
           onPressed: () {
             CommonUtils.showLoadingDialog(context);
             UserDao.setAllNotificationAsReadDao().then((res) {

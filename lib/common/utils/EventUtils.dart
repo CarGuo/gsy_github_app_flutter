@@ -155,7 +155,7 @@ class EventUtils {
         break;
       case 'IssueCommentEvent':
       case 'IssuesEvent':
-        NavigatorUtils.goIssueDetail(context, owner, repositoryName, event["payload"]["issue"]["number"].toString(), needRightIcon: true);
+        NavigatorUtils.goIssueDetail(context, owner, repositoryName, event["payload"]["issue"]["number"].toString(), needRightLocalIcon: true);
         break;
       default:
         if (fullName.toLowerCase() == currentRepository.toLowerCase()) {

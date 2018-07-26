@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
         title: GSYTitleBar(
           GSYStrings.app_name,
           iconData: GSYICons.MAIN_SEARCH,
-          needRightIcon: true,
+          needRightLocalIcon: true,
           onPressed: () {
             NavigatorUtils.goSearchPage(context);
           },

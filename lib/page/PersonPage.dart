@@ -11,7 +11,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
-import 'package:gsy_github_app_flutter/widget/GSYComonOptionWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
