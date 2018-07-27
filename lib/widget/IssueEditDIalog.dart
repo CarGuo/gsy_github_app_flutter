@@ -63,7 +63,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
         : new Container();
 
     return new GSYCardItem(
-      margin: EdgeInsets.all(30.0),
+      margin: EdgeInsets.all(50.0),
       shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: new Padding(
         padding: new EdgeInsets.all(12.0),
@@ -73,7 +73,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
             new Padding(
                 padding: new EdgeInsets.all(5.0),
                 child: new Center(
-                  child: new Text(dialogTitle, style: GSYConstant.smallTextBold),
+                  child: new Text(dialogTitle, style: GSYConstant.normalTextBold),
                 )),
             title,
             new Container(
@@ -81,7 +81,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               decoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: Colors.white,
-                border: new Border.all(color: Color(GSYColors.subTextColor), width: 1.0),
+                border: new Border.all(color: Color(GSYColors.subTextColor), width: .3),
               ),
               padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
               child: new TextField(
@@ -102,12 +102,12 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               children: <Widget>[
                 new Expanded(
                     child: new FlatButton(
-                        child: new Text(GSYStrings.app_cancel),
+                        child: new Text(GSYStrings.app_cancel, style: GSYConstant.subNormalText),
                         onPressed: () {
                           Navigator.pop(context);
                         })),
                 new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subTextColor)),
-                new Expanded(child: new FlatButton(child: new Text(GSYStrings.app_ok), onPressed: onPressed)),
+                new Expanded(child: new FlatButton(child: new Text(GSYStrings.app_ok, style: GSYConstant.normalTextBold), onPressed: onPressed)),
               ],
             )
           ],
