@@ -81,6 +81,7 @@
 **iconfont**|**字库图标**
 **share**|**系统分享**
 **flutter_spinkit**|**加载框样式**
+**get_version**|**版本信息**
 
 
 ### 进行中：

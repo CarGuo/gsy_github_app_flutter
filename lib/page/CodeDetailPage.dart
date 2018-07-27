@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -69,7 +70,7 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
   Widget build(BuildContext context) {
     String currentBranch = ((branch == null) ? "" : ("/" + branch));
     String url = htmlUrl;
-    if(data == null) {
+    if(htmlUrl == null) {
        url = Address.hostWeb + userName + "/" + reposName + "/blob" + currentBranch + path;
     }
     Widget widget = (data == null)
@@ -81,7 +82,7 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new CircularProgressIndicator(),
+                  new SpinKitDoubleBounce(color: Color(GSYColors.primaryValue)),
                   new Container(width: 10.0),
                   new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleText)),
                 ],

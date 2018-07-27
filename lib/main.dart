@@ -50,6 +50,7 @@ class FlutterReduxApp extends StatelessWidget {
   }
 }
 
+///类似多语言的实现尝试
 class GSYMaterialLocalizations extends DefaultMaterialLocalizations {
   const GSYMaterialLocalizations();
 
