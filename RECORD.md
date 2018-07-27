@@ -31,16 +31,15 @@ https://github.com/flutter/flutter/issues/19030 没有webview，残念
 
 https://github.com/flutter/flutter/issues/19030#issuecomment-406656714
 
-https://github.com/flutter/flutter/issues/19809
-https://github.com/flutter/flutter/issues/11895 tab alive
 
 https://github.com/flutter/flutter/issues/19030 没有webview，残念
 
+
+//升级到0.5.7 对三个以上tab还是有问题，TabBarView放弃，使用PageView，实现两个control同步，GlobalKey也没问题了。
+https://github.com/flutter/flutter/issues/19809
+https://github.com/flutter/flutter/issues/11895 tab alive
 _debugUltimatePreviousSiblingOf
-
 GlobalKey可以记录state，但是需要跟随build创建
-
-
 https://stackoverflow.com/questions/49862572
 
 readme等view的loading
