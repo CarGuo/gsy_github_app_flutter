@@ -27,22 +27,25 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final TarWidgetControl tarWidgetControl;
 
-  GSYTabBarWidget(
-      {Key key,
-      this.type,
-      this.tabItems,
-      this.tabViews,
-      this.backgroundColor,
-      this.indicatorColor,
-      this.title,
-      this.drawer,
-      this.floatingActionButton,
-      this.tarWidgetControl})
-      : super(key: key);
+  final PageController topPageControl;
+
+  GSYTabBarWidget({
+    Key key,
+    this.type,
+    this.tabItems,
+    this.tabViews,
+    this.backgroundColor,
+    this.indicatorColor,
+    this.title,
+    this.drawer,
+    this.floatingActionButton,
+    this.tarWidgetControl,
+    this.topPageControl,
+  }) : super(key: key);
 
   @override
-  _GSYTabBarState createState() =>
-      new _GSYTabBarState(type, tabItems, tabViews, backgroundColor, indicatorColor, title, drawer, floatingActionButton, tarWidgetControl);
+  _GSYTabBarState createState() => new _GSYTabBarState(
+      type, tabItems, tabViews, backgroundColor, indicatorColor, title, drawer, floatingActionButton, tarWidgetControl, topPageControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -63,10 +66,12 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   final Widget _floatingActionButton;
 
-  final TarWidgetControl tarWidgetControl;
+  final TarWidgetControl _tarWidgetControl;
+
+  final PageController _pageController;
 
   _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title, this._drawer,
-      this._floatingActionButton, this.tarWidgetControl)
+      this._floatingActionButton, this._tarWidgetControl, this._pageController)
       : super();
 
   TabController _tabController;
@@ -74,20 +79,20 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
-      _tabController = new TabController(
-          vsync: this, //动画效果的异步处理，默认格式，背下来即可
-          length: _tabItems.length //需要控制的Tab页数量
-          );
-    }
+    //if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
+    _tabController = new TabController(
+        vsync: this, //动画效果的异步处理，默认格式，背下来即可
+        length: _tabItems.length //需要控制的Tab页数量
+        );
+    //}
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
   @override
   void dispose() {
-    if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
-      _tabController.dispose();
-    }
+    //if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
+    _tabController.dispose();
+    //}
     super.dispose();
   }
 
@@ -95,22 +100,24 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     if (this._type == GSYTabBarWidget.TOP_TAB) {
       ///顶部tab bar
-      return new DefaultTabController(
-        length: _tabItems.length,
-        child: new Scaffold(
-          floatingActionButton: _floatingActionButton,
-          persistentFooterButtons: tarWidgetControl == null ? [] : tarWidgetControl.footerButton,
-          appBar: new AppBar(
-            backgroundColor: _backgroundColor,
-            title: _title,
-            bottom: new TabBar(
-              tabs: _tabItems,
-              indicatorColor: _indicatorColor,
-            ),
+      return new Scaffold(
+        floatingActionButton: _floatingActionButton,
+        persistentFooterButtons: _tarWidgetControl == null ? [] : _tarWidgetControl.footerButton,
+        appBar: new AppBar(
+          backgroundColor: _backgroundColor,
+          title: _title,
+          bottom: new TabBar(
+            controller: _tabController,
+            tabs: _tabItems,
+            indicatorColor: _indicatorColor,
           ),
-          body: new TabBarView(
-            children: _tabViews,
-          ),
+        ),
+        body: new PageView(
+          controller: _pageController,
+          children: _tabViews,
+          onPageChanged: (index) {
+            _tabController.animateTo(index);
+          },
         ),
       );
     }
