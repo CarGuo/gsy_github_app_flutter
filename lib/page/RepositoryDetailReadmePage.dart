@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
@@ -78,7 +78,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new CircularProgressIndicator(),
+              new SpinKitDoubleBounce(color: Color(GSYColors.primaryValue)),
               new Container(width: 10.0),
               new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleText)),
             ],
