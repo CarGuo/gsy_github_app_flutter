@@ -261,10 +261,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
               )),
         ],
         tabViews: [
-          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl),
-          new RepositoryDetailReadmePage(userName, reposName, branchControl),
+          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
+          new RepositoryDetailReadmePage(userName, reposName, branchControl, key: readmeKey),
           new RepositoryDetailIssuePage(userName, reposName),
-          new RepositoryDetailFileListPage(userName, reposName, branchControl),
+          new RepositoryDetailFileListPage(userName, reposName, branchControl, key: fileListKey),
         ],
         topPageControl: topPageControl,
         backgroundColor: GSYColors.primarySwatch,

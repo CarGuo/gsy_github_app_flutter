@@ -9,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
@@ -104,7 +105,9 @@ class _PersonState extends GSYListState<PersonPage> {
         NavigatorUtils.goPerson(context, pullLoadWidgetControl.dataList[index - 1].userName);
       });
     } else {
-      return new EventItem(pullLoadWidgetControl.dataList[index - 1]);
+      return new EventItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
+        EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index - 1].eventMap, "");
+      });
     }
   }
 
