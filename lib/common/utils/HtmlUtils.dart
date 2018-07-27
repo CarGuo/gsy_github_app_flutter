@@ -21,9 +21,7 @@ class HtmlUtils {
     Iterable<Match> tags = exp.allMatches(mdData);
     String mdDataCode = mdData;
     for (Match m in tags) {
-      print(m.group(0));
       String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
-      print(match);
       mdDataCode = mdDataCode.replaceAll(m.group(0), match);
     }
 

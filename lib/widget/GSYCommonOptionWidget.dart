@@ -55,7 +55,6 @@ class GSYCommonOptionWidget extends StatelessWidget {
         _launchURL();
       }),
       new GSYOptionModel(GSYStrings.option_copy, GSYStrings.option_copy, (model) {
-        print("复制链接");
         Clipboard.setData(new ClipboardData(text: url));
         Fluttertoast.showToast(msg: GSYStrings.option_share_copy_success);
       }),

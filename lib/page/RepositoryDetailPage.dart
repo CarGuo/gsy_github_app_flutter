@@ -71,10 +71,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   _getReposStatus() async {
     var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
-    if (Config.DEBUG) {
-      print(result.data["star"]);
-      print(result.data["watch"]);
-    }
     String watchText = result.data["watch"] ? "UnWatch" : "Watch";
     String starText = result.data["star"] ? "UnStar" : "Star";
     IconData watchIcon = result.data["watch"] ? GSYICons.REPOS_ITEM_WATCHED : GSYICons.REPOS_ITEM_WATCH;
