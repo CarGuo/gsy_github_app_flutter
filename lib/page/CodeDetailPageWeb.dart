@@ -61,11 +61,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branch, text: true, isHtml: true).then((res) {
         if (res != null && res.result) {
           String data2 = HtmlUtils.resolveHtmlFile(res, "java");
-          final flutterWebviewPlugin = new FlutterWebviewPlugin();
           String url = new Uri.dataFromString(data2, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString();
-          print("-------------");
-          print(url);
-          flutterWebviewPlugin.reload();
           setState(() {
             this.data = url;
           });
@@ -108,6 +104,5 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         title: new Text(title),
       ),
     );
-    ;
   }
 }
