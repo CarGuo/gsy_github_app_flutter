@@ -14,8 +14,10 @@ class GSYMarkdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: SingleChildScrollView(
-      child: new MarkdownBody(data: markdownData),
-    ));
+      padding: EdgeInsets.all(5.0),
+      child: SingleChildScrollView(
+        child: new MarkdownBody(data: markdownData),
+      ),
+    );
   }
 }
