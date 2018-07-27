@@ -18,8 +18,7 @@ class PushCodeItem extends StatelessWidget {
     return new Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       new Container(
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 0.0),
-        child:
-        new Text(
+        child: new Text(
           pushCodeItemViewModel.path,
           style: GSYConstant.subLightSmallText,
         ),
@@ -44,6 +43,9 @@ class PushCodeItem extends StatelessWidget {
 class PushCodeItemViewModel {
   String path;
   String name;
+  String patch;
+
+  String blob_url;
 
   PushCodeItemViewModel();
 
@@ -52,5 +54,7 @@ class PushCodeItemViewModel {
     List<String> nameSplit = filename.split("/");
     name = nameSplit[nameSplit.length - 1];
     path = filename;
+    patch = map["patch"];
+    blob_url = map["blob_url"];
   }
 }

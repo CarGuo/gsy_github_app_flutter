@@ -76,7 +76,8 @@ class NavigatorUtils {
   }
 
   ///文件代码详情
-  static gotoCodeDetailPage(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch}) {
+  static gotoCodeDetailPage(BuildContext context,
+      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
     Navigator.push(
         context,
         new MaterialPageRoute(
@@ -87,6 +88,7 @@ class NavigatorUtils {
                   path: path,
                   data: data,
                   branch: branch,
+                  htmlUrl: htmlUrl,
                 )));
   }
 

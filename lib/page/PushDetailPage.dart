@@ -73,7 +73,10 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
       return new PushHeader(pushHeaderViewModel);
     }
     PushCodeItemViewModel itemViewModel = pullLoadWidgetControl.dataList[index - 1];
-    return new PushCodeItem(itemViewModel, () {});
+    return new PushCodeItem(itemViewModel, () {
+      NavigatorUtils.gotoCodeDetailPage(context, title: itemViewModel.name, userName: userName, reposName: reposName, data: itemViewModel.patch,
+          htmlUrl: itemViewModel.blob_url,);
+    });
   }
 
   _getDataLogic() async {
