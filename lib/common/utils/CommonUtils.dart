@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -69,6 +70,34 @@ class CommonUtils {
       }
     }
     return image;
+  }
+
+  static launchUrl(context, String url) {
+    if (url == null && url.length == 0) return;
+    Uri parseUrl = Uri.parse(url);
+    if (isImageEnd(parseUrl.toString())) {
+      return;
+    }
+
+    if (parseUrl != null && parseUrl.host == "github.com" && parseUrl.path.length > 0) {
+      List<String> pathnames = parseUrl.path.split("/");
+      if (pathnames.length == 2) {
+        //解析人
+        String userName = pathnames[1];
+        NavigatorUtils.goPerson(context, userName);
+      } else if (pathnames.length >= 3) {
+        String userName = pathnames[1];
+        String repoName = pathnames[2];
+        //解析仓库
+        if (pathnames.length == 3) {
+          NavigatorUtils.goReposDetail(context, userName, repoName);
+        } else {
+          //todo web
+        }
+      }
+    } else {
+      //todo web
+    }
   }
 
   static Future<Null> showLoadingDialog(BuildContext context) {

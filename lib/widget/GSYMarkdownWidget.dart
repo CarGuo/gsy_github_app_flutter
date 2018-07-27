@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 
 /**
  * 代码详情
@@ -16,7 +17,12 @@ class GSYMarkdownWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(5.0),
       child: SingleChildScrollView(
-        child: new MarkdownBody(data: markdownData),
+        child: new MarkdownBody(
+          data: markdownData,
+          onTapLink: (String source) {
+            CommonUtils.launchUrl(context, source);
+          },
+        ),
       ),
     );
   }
