@@ -55,6 +55,9 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     if (control.needHeader) {
       return (control.dataList.length > 0) ? control.dataList.length + 2 : control.dataList.length + 1;
     } else {
+      if(control.dataList.length == 0) {
+        return 1;
+      }
       return (control.dataList.length > 0) ? control.dataList.length + 1 : control.dataList.length;
     }
   }
@@ -71,6 +74,8 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
             return _buildProgressIndicator();
           } else if (control.needHeader && index == _getListCount() - 1 && control.dataList.length != 0) {
             return _buildProgressIndicator();
+          } else if (!control.needHeader && control.dataList.length == 0) {
+            return _buildEmpty();
           } else {
             return itemBuilder(context, index);
           }
@@ -81,11 +86,31 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     );
   }
 
+  Widget _buildEmpty() {
+    return new Container(
+      height: MediaQuery.of(context).size.height - 100,
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          FlatButton(
+            onPressed: () {},
+            child: new Image(image: new AssetImage('static/images/logo.png'), width: 70.0, height: 70.0),
+          ),
+          Container(
+            child: Text(GSYStrings.app_empty, style: GSYConstant.normalText),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProgressIndicator() {
     Widget bottomWidget = (control.needLoadMore)
         ? new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             new SpinKitRotatingCircle(color: Color(GSYColors.primaryValue)),
-            new Container(width: 5.0,),
+            new Container(
+              width: 5.0,
+            ),
             new Text(
               GSYStrings.load_more_text,
               style: GSYConstant.smallTextBold,
