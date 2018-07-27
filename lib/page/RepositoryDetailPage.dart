@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailReadmePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepostoryDetailInfoPage.dart';
+import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
@@ -221,6 +223,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    String url = Address.hostWeb + userName + "/" + reposName;
+    Widget widget = new GSYCommonOptionWidget(url);
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
@@ -269,7 +273,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         topPageControl: topPageControl,
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
-        title: new GSYTitleBar(reposName));
+        title: new GSYTitleBar(
+          reposName,
+          rightWidget: widget,
+        ));
   }
 }
 
