@@ -8,6 +8,8 @@ import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
+import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
+import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
@@ -393,6 +395,24 @@ class ReposDao {
       } else {
         return new DataResult(null, false);
       }
+    }
+  }
+
+  /**
+   * 获取仓库的单个提交详情
+   */
+  static getReposCommitsInfoDao(userName, reposName, sha) async {
+    String url = Address.getReposCommitsInfo(userName, reposName, sha);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result ) {
+      PushHeaderViewModel pushHeaderViewModel = PushHeaderViewModel.forMap(res.data);
+      var files = res.data["files"];
+      for(int i = 0; i <files.length; i++) {
+       pushHeaderViewModel.files.add(PushCodeItemViewModel.fromMap(files[i]));
+      }
+      return new DataResult(pushHeaderViewModel, true);
+    } else {
+      return new DataResult(null, false);
     }
   }
 }

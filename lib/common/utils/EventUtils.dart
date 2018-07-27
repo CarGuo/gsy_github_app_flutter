@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 
 /**
@@ -41,11 +42,13 @@ class EventUtils {
         actionStr = event["payload"]["action"] + " repository from an installation ";
         break;
       case "IssueCommentEvent":
-        actionStr = event["payload"]["action"] + " comment on issue " + event["payload"]["issue"]["number"].toString() + " in " + event["repo"]["name"];
+        actionStr =
+            event["payload"]["action"] + " comment on issue " + event["payload"]["issue"]["number"].toString() + " in " + event["repo"]["name"];
         des = event["payload"]["comment"]["body"];
         break;
       case "IssuesEvent":
-        actionStr = event["payload"]["action"] + " issue " + event["payload"]["issue"]["number"].toString().toString() + " in " + event["repo"]["name"];
+        actionStr =
+            event["payload"]["action"] + " issue " + event["payload"]["issue"]["number"].toString().toString() + " in " + event["repo"]["name"];
         des = event["payload"]["issue"]["title"];
         break;
 
@@ -144,9 +147,11 @@ class EventUtils {
           }
           NavigatorUtils.goReposDetail(context, owner, repositoryName);
         } else if (event["payload"]["commits"].length == 1) {
-          //goToPush(repositoryName, owner, event.payload.commits[0].sha)
+          NavigatorUtils.goPushDetailPage(context,  owner, repositoryName, event["payload"]["commits"][0]["sha"], true);
         } else {
-          //Actions.OptionModal({dataList: getOptionItem(repositoryName, owner, event.payload.commits)});
+          CommonUtils.showCommitOptionDialog(context, event["payload"]["commits"], (index) {
+            NavigatorUtils.goPushDetailPage(context, owner, repositoryName,event["payload"]["commits"][index]["sha"], true);
+          });
         }
         break;
       case 'ReleaseEvent':

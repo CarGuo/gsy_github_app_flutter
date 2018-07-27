@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
 import 'package:gsy_github_app_flutter/page/NotifyPage.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
+import 'package:gsy_github_app_flutter/page/PushDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/SearchPage.dart';
 
@@ -97,5 +98,18 @@ class NavigatorUtils {
   ///搜索
   static Future<Null> goSearchPage(BuildContext context) {
     return Navigator.push(context, new MaterialPageRoute(builder: (context) => new SearchPage()));
+  }
+
+  ///提交详情
+  static Future<Null> goPushDetailPage(BuildContext context, String userName, String reposName, String sha, bool needHomeIcon) {
+    return Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new PushDetailPage(
+                  sha,
+                  userName,
+                  reposName,
+                  needHomeIcon: needHomeIcon,
+                )));
   }
 }

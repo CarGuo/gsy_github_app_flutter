@@ -190,7 +190,6 @@ class GSYStrings {
   static const String nothing_now = "目前什么都没有。";
   static const String loading_text = "加载中···";
 
-
   static const String option_web = "浏览器打开";
   static const String option_copy = "复制链接";
   static const String option_share = "分享";
@@ -268,7 +267,6 @@ class GSYStrings {
   static const String issue_edit_issue_title_tip = "请输入标题";
   static const String issue_edit_issue_content_tip = "请输入内容";
 
-
   static const String notify_title = "通知";
   static const String notify_tab_all = "所有";
   static const String notify_tab_part = "参与";
@@ -281,7 +279,6 @@ class GSYStrings {
   static const String search_title = "搜索";
   static const String search_tab_repos = "仓库";
   static const String search_tab_user = "用户";
-
 }
 
 class GSYICons {
@@ -321,4 +318,7 @@ class GSYICons {
 
   static const IconData NOTIFY_ALL_READ = const IconData(0xe62f, fontFamily: GSYICons.FONT_FAMILY);
 
+  static const IconData PUSH_ITEM_EDIT = Icons.mode_edit;
+  static const IconData PUSH_ITEM_ADD = Icons.add_box;
+  static const IconData PUSH_ITEM_MIN = Icons.indeterminate_check_box;
 }
