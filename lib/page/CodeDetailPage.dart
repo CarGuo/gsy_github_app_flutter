@@ -55,7 +55,6 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
   @override
   void initState() {
     super.initState();
-    print(data);
     if (data == null) {
       ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branch, text: true).then((res) {
         if (res != null && res.result) {

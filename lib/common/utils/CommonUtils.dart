@@ -167,7 +167,6 @@ class CommonUtils {
   }
 
   static Future<Null> showCommitOptionDialog(BuildContext context, List commitMaps, ValueChanged<int> onTap) {
-    print(commitMaps.length);
     return showDialog(
         context: context,
         builder: (BuildContext context) {

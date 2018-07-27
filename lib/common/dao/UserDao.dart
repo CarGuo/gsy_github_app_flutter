@@ -223,7 +223,6 @@ class UserDao {
    */
   static doFollowDao(name, bool followed) async {
     String url = Address.doFollow(name);
-    print(followed);
     var res = await HttpManager.netFetch(url, null, null, new Options(method: !followed ? "PUT" : "DELETE"), noTip: true);
     return new DataResult(res.data, res.result);
   }

@@ -34,7 +34,6 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
       if (eventMap["unread"]) {
         UserDao.setNotificationAsReadDao(eventMap["id"].toString());
       }
-      print(eventMap["id"]);
       if (eventMap["subject"]["type"] == 'Issue') {
         String url = eventMap["subject"]["url"];
         List<String> tmp = url.split("/");

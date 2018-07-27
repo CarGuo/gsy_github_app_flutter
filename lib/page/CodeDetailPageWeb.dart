@@ -55,9 +55,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
   @override
   void initState() {
     super.initState();
-    print("22222222");
     if (data == null) {
-      print("333333333");
       ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branch, text: true, isHtml: true).then((res) {
         if (res != null && res.result) {
           String data2 = HtmlUtils.resolveHtmlFile(res, "java");
