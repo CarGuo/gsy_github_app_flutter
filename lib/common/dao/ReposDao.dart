@@ -133,8 +133,9 @@ class ReposDao {
     var res = await HttpManager.netFetch(
       url,
       null,
-      text ? {"Accept": 'application/vnd.github.VERSION.raw'} : {"Accept": 'application/vnd.github.html'},
-      new Options(contentType: text ? ContentType.TEXT : ContentType.JSON),
+      //text ? {"Accept": 'application/vnd.github.VERSION.raw'} : {"Accept": 'application/vnd.github.html'},
+      text ? {"Accept": 'application/vnd.github.html'} : {"Accept": 'application/vnd.github.VERSION.raw'},
+      new Options(contentType: text ? ContentType.text : ContentType.json),
     );
     if (res != null && res.result) {
       if (text) {

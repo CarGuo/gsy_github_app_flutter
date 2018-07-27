@@ -17,15 +17,19 @@ class HtmlUtils {
     if (mdData == null) {
       return "";
     }
-    RegExp exp = new RegExp("<code(([\s\S])*?)<\/code>");
+    RegExp exp = new RegExp("<code(([\\s\\S])*?)<\/code>");
     Iterable<Match> tags = exp.allMatches(mdData);
     String mdDataCode = mdData;
+    print("---------------------`--------------------------");
+    print(tags);
     for (Match m in tags) {
+      print(m.group(0));
       String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
+      print(match);
       mdDataCode = mdDataCode.replaceAll(m.group(0), match);
     }
 
-    exp = new RegExp("<pre(([\s\S])*?)<\/pre>");
+    exp = new RegExp("<pre(([\\s\\S])*?)<\/pre>");
     tags = exp.allMatches(mdDataCode);
     for (Match m in tags) {
       if (m.group(0).indexOf("<code>") < 0) {
@@ -34,7 +38,7 @@ class HtmlUtils {
       }
     }
 
-    exp = new RegExp("<pre>(([\s\S])*?)<\/pre>");
+    exp = new RegExp("<pre>(([\\s\\S])*?)<\/pre>");
     tags = exp.allMatches(mdDataCode);
     for (Match m in tags) {
       if (m.group(0).indexOf("<code>") < 0) {
@@ -201,5 +205,50 @@ class HtmlUtils {
       builder += " ";
     }
     return builder;
+  }
+
+
+  static resolveHtmlFile(var res, String defaultLang) {
+    if (res != null && res.result) {
+      String startTag = "class=\"instapaper_body ";
+      int startLang = res.data.indexOf(startTag);
+      int endLang = res.data.indexOf("\" data-path=\"");
+      String lang;
+      if (startLang >= 0 && endLang >= 0) {
+        String tmpLang = res.data.substring(startLang + startTag.length, endLang);
+        if (tmpLang != null) {
+          lang = formName(tmpLang.toLowerCase());
+        }
+      }
+      if (lang == null) {
+        lang = defaultLang;
+      }
+      if ('markdown' == lang) {
+        return generateHtml(res.data, backgroundColor: GSYColors.miWhiteString);
+      } else {
+        return generateCode2HTml(res.data, backgroundColor: GSYColors.webDraculaBackgroundColorString, lang: lang);
+      }
+    } else {
+      return "<h1>" + "Not Support" + "</h1>";
+    }
+  }
+
+  static formName(name) {
+    switch (name) {
+      case 'sh':
+        return 'shell';
+      case 'js':
+        return 'javascript';
+      case 'kt':
+        return 'kotlin';
+      case 'c':
+      case 'cpp':
+        return 'cpp';
+      case 'md':
+        return 'markdown';
+      case 'html':
+        return 'xml';
+    }
+    return name;
   }
 }

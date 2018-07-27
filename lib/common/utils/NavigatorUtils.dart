@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/CodeDetailPage.dart';
-import 'package:gsy_github_app_flutter/page/CodeDetailPageWeb.dart';
 import 'package:gsy_github_app_flutter/page/CommonListPage.dart';
+import 'package:gsy_github_app_flutter/page/GSYWebView.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
 import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
@@ -115,12 +115,13 @@ class NavigatorUtils {
                 )));
   }
 
-  static Future<Null> goCodeDetailPageWeb(BuildContext context, String url, String title) {
+  static Future<Null> goGSYWebView(BuildContext context, String url, String title) {
     return Navigator.push(
       context,
       new MaterialPageRoute(
-        builder: (context) => new CodeDetailPageWeb(url, title),
+        builder: (context) => new GSYWebView(url, title),
       ),
     );
   }
+
 }
