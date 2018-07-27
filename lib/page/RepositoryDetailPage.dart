@@ -96,8 +96,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   }
 
   _refresh() {
-    this._getReposDetail();
     this._getReposStatus();
+    this._getReposDetail();
   }
 
   _renderBranchPopItem(String data, List<String> list, onSelected) {
@@ -217,8 +217,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   @override
   void initState() {
     super.initState();
-    _refresh();
     _getBranchList();
+    _refresh();
   }
 
   @override
@@ -232,36 +232,44 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
           ///无奈之举，只能pageView配合tabbar，通过control同步
           ///TabView 配合tabbar 在四个页面上问题太多
           new FlatButton(
+              padding: EdgeInsets.all(0.0),
               onPressed: () {
                 topPageControl.jumpTo(0.0);
               },
               child: new Text(
                 GSYStrings.repos_tab_info,
                 style: GSYConstant.smallTextWhite,
+                maxLines: 1,
               )),
           new FlatButton(
+              padding: EdgeInsets.all(0.0),
               onPressed: () {
                 topPageControl.jumpTo(MediaQuery.of(context).size.width);
               },
               child: new Text(
                 GSYStrings.repos_tab_readme,
                 style: GSYConstant.smallTextWhite,
+                maxLines: 1,
               )),
           new FlatButton(
+              padding: EdgeInsets.all(0.0),
               onPressed: () {
                 topPageControl.jumpTo(MediaQuery.of(context).size.width * 2);
               },
               child: new Text(
                 GSYStrings.repos_tab_issue,
                 style: GSYConstant.smallTextWhite,
+                maxLines: 1,
               )),
           new FlatButton(
+              padding: EdgeInsets.all(0.0),
               onPressed: () {
                 topPageControl.jumpTo(MediaQuery.of(context).size.width * 3);
               },
               child: new Text(
                 GSYStrings.repos_tab_file,
                 style: GSYConstant.smallTextWhite,
+                maxLines: 1,
               )),
         ],
         tabViews: [
