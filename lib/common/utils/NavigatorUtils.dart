@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/CodeDetailPage.dart';
+import 'package:gsy_github_app_flutter/page/CodeDetailPageWeb.dart';
 import 'package:gsy_github_app_flutter/page/CommonListPage.dart';
 import 'package:gsy_github_app_flutter/page/GSYWebView.dart';
 import 'package:gsy_github_app_flutter/page/HomePage.dart';
@@ -122,6 +123,22 @@ class NavigatorUtils {
         builder: (context) => new GSYWebView(url, title),
       ),
     );
+  }
+
+  ///文件代码详情
+  static gotoCodeDetailPageWeb(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new CodeDetailPageWeb(
+              title: title,
+              userName: userName,
+              reposName: reposName,
+              path: path,
+              data: data,
+              branch: branch,
+              htmlUrl: htmlUrl,
+            )));
   }
 
 }
