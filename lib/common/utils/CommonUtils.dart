@@ -104,8 +104,6 @@ class CommonUtils {
 
   static void launchWebView(BuildContext context, String title, String url) {
     if (url.startsWith("http")) {
-      print("fff");
-      print(url);
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
       NavigatorUtils.goGSYWebView(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);

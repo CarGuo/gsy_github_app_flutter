@@ -133,15 +133,25 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
             path: path,
             branch: branchControl.currentBranch,
           );
+
+
         } else {
-          CommonUtils.showLoadingDialog(context);
+          /*CommonUtils.showLoadingDialog(context);
           ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branchControl.currentBranch, text: true, isHtml: true).then((res) {
             if (res != null && res.result) {
               Navigator.pop(context);
               String data = HtmlUtils.resolveHtmlFile(res, "java");
               CommonUtils.launchWebView(context, fileItemViewModel.name, data);
             }
-          });
+          });*/
+          NavigatorUtils.gotoCodeDetailPageWeb(
+            context,
+            title: fileItemViewModel.name,
+            reposName: reposName,
+            userName: userName,
+            path: path,
+            branch: branchControl.currentBranch,
+          );
         }
       }
     }
