@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 ///颜色
 class GSYColors {
   static const String primaryValueString = "#24292E";
+  static const String primaryLightValueString = "#42464b";
+  static const String primaryDarkValueString = "#121917";
+  static const String miWhiteString = "#ececec";
+  static const String actionBlueString = "#267aff";
+  static const String webDraculaBackgroundColorString = "#282a36";
+
   static const int primaryValue = 0xFF24292E;
   static const int primaryLightValue = 0xFF42464b;
   static const int primaryDarkValue = 0xFF121917;

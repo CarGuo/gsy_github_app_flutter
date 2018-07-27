@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
@@ -92,11 +94,19 @@ class CommonUtils {
         if (pathnames.length == 3) {
           NavigatorUtils.goReposDetail(context, userName, repoName);
         } else {
-          //todo web
+          launchWebView(context, "", url);
         }
       }
     } else {
-      //todo web
+      launchWebView(context, "", url);
+    }
+  }
+
+  static void launchWebView(BuildContext context, String title, String url) {
+    if (url.startsWith("http")) {
+      NavigatorUtils.goCodeDetailPageWeb(context, url, title);
+    } else {
+      NavigatorUtils.goCodeDetailPageWeb(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
     }
   }
 
