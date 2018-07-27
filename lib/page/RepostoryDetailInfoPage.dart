@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -55,7 +56,10 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     if (selectIndex == 1) {
       return new EventItem(
         pullLoadWidgetControl.dataList[index - 1],
-        onPressed: () {;
+        onPressed: () {
+          EventViewModel model = pullLoadWidgetControl.dataList[index - 1];
+          var map = model.eventMap;
+          NavigatorUtils.goPushDetailPage(context, userName, reposName, map["sha"], false);
         },
         needImage: false,
       );
