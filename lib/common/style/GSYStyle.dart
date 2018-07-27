@@ -171,6 +171,16 @@ class GSYConstant {
     fontSize: bigTextSize,
   );
 
+  static const largeLargeTextWhite = TextStyle(
+    color: Color(GSYColors.TextColorWhite),
+    fontSize: largetTextSize,
+  );
+
+  static const largeLargeText = TextStyle(
+    color: Color(GSYColors.primaryValue),
+    fontSize: largetTextSize,
+  );
+
   static const largeTextWhiteBold = TextStyle(
     color: Color(GSYColors.TextColorWhite),
     fontSize: bigTextSize,

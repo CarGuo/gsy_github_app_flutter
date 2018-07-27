@@ -31,7 +31,8 @@ class CodeDetailPage extends StatefulWidget {
   CodeDetailPage({this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl});
 
   @override
-  _CodeDetailPageState createState() => _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
+  _CodeDetailPageState createState() =>
+      _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
 }
 
 class _CodeDetailPageState extends State<CodeDetailPage> {
@@ -70,8 +71,8 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
   Widget build(BuildContext context) {
     String currentBranch = ((branch == null) ? "" : ("/" + branch));
     String url = htmlUrl;
-    if(htmlUrl == null) {
-       url = Address.hostWeb + userName + "/" + reposName + "/blob" + currentBranch + path;
+    if (htmlUrl == null) {
+      url = Address.hostWeb + userName + "/" + reposName + "/blob" + currentBranch + path;
     }
     Widget widget = (data == null)
         ? new Center(
@@ -89,11 +90,14 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
               ),
             ),
           )
-        : new GSYMarkdownWidget(markdownData: data);
+        : new GSYMarkdownWidget(
+            markdownData: data,
+            style: 1,
+          );
 
     return new Scaffold(
       appBar: new AppBar(
-        title:  GSYTitleBar(
+        title: GSYTitleBar(
           title,
           rightWidget: new GSYCommonOptionWidget(url),
           needRightLocalIcon: false,
