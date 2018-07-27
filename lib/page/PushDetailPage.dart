@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
@@ -76,9 +77,20 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
     }
     PushCodeItemViewModel itemViewModel = pullLoadWidgetControl.dataList[index - 1];
     return new PushCodeItem(itemViewModel, () {
-      String html =
-          HtmlUtils.generateCode2HTml(HtmlUtils.parseDiffSource(itemViewModel.patch, false), backgroundColor: GSYColors.webDraculaBackgroundColorString, lang: '', userBR: false);
-      CommonUtils.launchWebView(context, itemViewModel.name, html);
+      if (Platform.isIOS) {
+        NavigatorUtils.gotoCodeDetailPage(
+          context,
+          title: itemViewModel.name,
+          userName: userName,
+          reposName: reposName,
+          data: itemViewModel.patch,
+          htmlUrl: itemViewModel.blob_url,
+        );
+      } else {
+        String html = HtmlUtils.generateCode2HTml(HtmlUtils.parseDiffSource(itemViewModel.patch, false),
+            backgroundColor: GSYColors.webDraculaBackgroundColorString, lang: '', userBR: false);
+        CommonUtils.launchWebView(context, itemViewModel.name, html);
+      }
     });
   }
 
