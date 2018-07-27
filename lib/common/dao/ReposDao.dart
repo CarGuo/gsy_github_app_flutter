@@ -128,13 +128,13 @@ class ReposDao {
   /***
    * 获取仓库的文件列表
    */
-  static getReposFileDirDao(userName, reposName, {path = '', branch, text = false}) async {
+  static getReposFileDirDao(userName, reposName, {path = '', branch, text = false, isHtml = false}) async {
     String url = Address.reposDataDir(userName, reposName, path, branch);
     var res = await HttpManager.netFetch(
       url,
       null,
       //text ? {"Accept": 'application/vnd.github.VERSION.raw'} : {"Accept": 'application/vnd.github.html'},
-      text ? {"Accept": 'application/vnd.github.html'} : {"Accept": 'application/vnd.github.VERSION.raw'},
+      isHtml ? {"Accept": 'application/vnd.github.html'} : {"Accept": 'application/vnd.github.VERSION.raw'},
       new Options(contentType: text ? ContentType.text : ContentType.json),
     );
     if (res != null && res.result) {

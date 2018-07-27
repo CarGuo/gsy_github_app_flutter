@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -122,14 +124,25 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
       if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
         //todo 图片
       } else {
-        CommonUtils.showLoadingDialog(context);
-        ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branchControl.currentBranch, text: true).then((res) {
-          if (res != null && res.result) {
-            Navigator.pop(context);
-            String data  = HtmlUtils.resolveHtmlFile(res, "java");
-            CommonUtils.launchWebView(context,  fileItemViewModel.name, data);
-          }
-        });
+        if (Platform.isIOS) {
+          NavigatorUtils.gotoCodeDetailPage(
+            context,
+            title: fileItemViewModel.name,
+            reposName: reposName,
+            userName: userName,
+            path: path,
+            branch: branchControl.currentBranch,
+          );
+        } else {
+          CommonUtils.showLoadingDialog(context);
+          ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branchControl.currentBranch, text: true, isHtml: true).then((res) {
+            if (res != null && res.result) {
+              Navigator.pop(context);
+              String data = HtmlUtils.resolveHtmlFile(res, "java");
+              CommonUtils.launchWebView(context, fileItemViewModel.name, data);
+            }
+          });
+        }
       }
     }
   }
