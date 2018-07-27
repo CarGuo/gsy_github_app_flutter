@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -11,6 +12,7 @@ import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
+import 'package:gsy_github_app_flutter/common/utils/HtmlUtils.dart';
 
 /**
  * Created by guoshuyu
@@ -74,8 +76,9 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
     }
     PushCodeItemViewModel itemViewModel = pullLoadWidgetControl.dataList[index - 1];
     return new PushCodeItem(itemViewModel, () {
-      NavigatorUtils.gotoCodeDetailPage(context, title: itemViewModel.name, userName: userName, reposName: reposName, data: itemViewModel.patch,
-          htmlUrl: itemViewModel.blob_url,);
+      String html =
+          HtmlUtils.generateCode2HTml(HtmlUtils.parseDiffSource(itemViewModel.patch, false), backgroundColor: GSYColors.webDraculaBackgroundColorString, lang: '', userBR: false);
+      CommonUtils.launchWebView(context, itemViewModel.name, html);
     });
   }
 

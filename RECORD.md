@@ -43,3 +43,6 @@ GlobalKey可以记录state，但是需要跟随build创建
 https://stackoverflow.com/questions/49862572
 
 readme等view的loading
+
+flutter 的跨平台见兼容性意外的话，得益于flutter engine，skia的渲染，只需要canvas
+所以第一次运行意外的没有兼容问题，特别是有生之年在ios上看到完全一模一样的下拉刷新
