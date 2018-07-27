@@ -46,6 +46,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final BranchControl branchControl = new BranchControl("master");
 
+  final PageController topPageControl = new PageController();
+
   GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
 
   GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
@@ -217,17 +219,46 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     _getBranchList();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
         tabItems: [
-          new Tab(text: GSYStrings.repos_tab_info),
-          new Tab(text: GSYStrings.repos_tab_readme),
-          new Tab(text: GSYStrings.repos_tab_issue),
-          new Tab(text: GSYStrings.repos_tab_file),
+          ///无奈之举，只能pageView配合tabbar，通过control同步
+          ///TabView 配合tabbar 在四个页面上问题太多
+          new FlatButton(
+              onPressed: () {
+                topPageControl.jumpTo(0.0);
+              },
+              child: new Text(
+                GSYStrings.repos_tab_info,
+                style: GSYConstant.smallTextWhite,
+              )),
+          new FlatButton(
+              onPressed: () {
+                topPageControl.jumpTo(MediaQuery.of(context).size.width);
+              },
+              child: new Text(
+                GSYStrings.repos_tab_readme,
+                style: GSYConstant.smallTextWhite,
+              )),
+          new FlatButton(
+              onPressed: () {
+                topPageControl.jumpTo(MediaQuery.of(context).size.width * 2);
+              },
+              child: new Text(
+                GSYStrings.repos_tab_issue,
+                style: GSYConstant.smallTextWhite,
+              )),
+          new FlatButton(
+              onPressed: () {
+                topPageControl.jumpTo(MediaQuery.of(context).size.width * 3);
+              },
+              child: new Text(
+                GSYStrings.repos_tab_file,
+                style: GSYConstant.smallTextWhite,
+              )),
         ],
         tabViews: [
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl),
@@ -235,6 +266,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
           new RepositoryDetailIssuePage(userName, reposName),
           new RepositoryDetailFileListPage(userName, reposName, branchControl),
         ],
+        topPageControl: topPageControl,
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Colors.white,
         title: new GSYTitleBar(reposName));
