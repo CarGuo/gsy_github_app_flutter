@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:get_version/get_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
@@ -16,6 +19,20 @@ import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
  * Date: 2018-07-18
  */
 class HomeDrawer extends StatelessWidget {
+  showAboutDialog(BuildContext context, String versionName) {
+    if(versionName == null) {
+      versionName = "Null";
+    }
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AboutDialog(
+              applicationName: GSYStrings.app_name,
+              applicationVersion: GSYStrings.app_version + ": " + versionName,
+              applicationIcon: new Image(image: new AssetImage('static/images/logo.png'), width: 50.0, height: 50.0),
+              applicationLegalese: "http://github.com/CarGuo",
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StoreBuilder<GSYState>(
@@ -76,14 +93,9 @@ class HomeDrawer extends StatelessWidget {
                     style: GSYConstant.normalText,
                   ),
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AboutDialog(
-                              applicationName: GSYStrings.app_name,
-                              applicationVersion: "1.0.0",
-                              applicationIcon: new Image(image: new AssetImage('static/images/logo.png'), width: 50.0, height: 50.0),
-                              applicationLegalese: null,
-                            ));
+                      GetVersion.projectVersion.then((value){
+                        showAboutDialog(context, value);
+                      });
                   }),
               new ListTile(
                   title: new GSYFlexButton(
@@ -96,8 +108,7 @@ class HomeDrawer extends StatelessWidget {
                       NavigatorUtils.goLogin(context);
                     },
                   ),
-                  onTap: () {
-                  }),
+                  onTap: () {}),
             ],
           ),
         );
