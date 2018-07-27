@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
+import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 
 /**
  * 主页drawer
@@ -85,14 +86,17 @@ class HomeDrawer extends StatelessWidget {
                             ));
                   }),
               new ListTile(
-                  title: new Text(
-                    GSYStrings.Login_out,
-                    style: GSYConstant.normalText,
+                  title: new GSYFlexButton(
+                    text: GSYStrings.Login_out,
+                    color: Colors.redAccent,
+                    textColor: Color(GSYColors.textWhite),
+                    onPress: () {
+                      UserDao.clearAll(store);
+                      EventDao.clearEvent(store);
+                      NavigatorUtils.goLogin(context);
+                    },
                   ),
                   onTap: () {
-                    UserDao.clearAll(store);
-                    EventDao.clearEvent(store);
-                    NavigatorUtils.goLogin(context);
                   }),
             ],
           ),
