@@ -186,6 +186,9 @@ class GSYStrings {
   static const String app_ok = "确定";
   static const String app_cancel = "取消";
   static const String app_empty = "目前什么也没有哟";
+  static const String app_licenses = "协议";
+  static const String app_close = "关闭";
+  static const String app_version = "版本";
 
   static const String nothing_now = "目前什么都没有。";
   static const String loading_text = "加载中···";

@@ -19,6 +19,7 @@ dependencies:
   url_launcher: ^3.0.3
   share: ^0.5.2
   flutter_spinkit: ^2.0.0
+  get_version: ^0.0.5
 
 dev_dependencies:
   build_runner: ^0.7.6
