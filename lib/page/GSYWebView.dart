@@ -7,11 +7,11 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
  * Created by guoshuyu
  * on 2018/7/27.
  */
-class CodeDetailPageWeb extends StatelessWidget {
+class GSYWebView extends StatelessWidget {
   final String url;
   final String title;
 
-  CodeDetailPageWeb(this.url, this.title);
+  GSYWebView(this.url, this.title);
 
   @override
   Widget build(BuildContext context) {
