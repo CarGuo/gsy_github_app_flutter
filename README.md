@@ -89,8 +89,6 @@
 * 主页drawer：关于、个人信息
 * 仓库的： 动态的背景头像|版本|tag| 浏览器打开|下载、复制克隆间接|分享
 * 本地数据库
-* 空页面
-* Tab中GlobalKey问题处理（Multiple widgets used the same GlobalKey）
   
 ### 常见问题
 
