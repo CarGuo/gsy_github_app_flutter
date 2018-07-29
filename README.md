@@ -7,7 +7,7 @@
 
 
 ```
-基于Flutter开发，适配Android与IOS。
+基于Flutter开发，适配Android与IOS。目前初版，持续完善中。
 
 项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
 
