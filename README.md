@@ -82,6 +82,7 @@
 **share**|**系统分享**
 **flutter_spinkit**|**加载框样式**
 **get_version**|**版本信息**
+**flutter_webview_plugin**|**全屏的webview**
 
 
 ### 进行中：
@@ -90,7 +91,6 @@
 * 仓库的：|版本|tag|下载、克隆
 * 本地数据库
 * issue数据统计
-* html view
   
 ### 常见问题
 
