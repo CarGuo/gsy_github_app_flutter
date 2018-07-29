@@ -46,11 +46,11 @@
 
 #### Apk下载链接：
 
->未发布
+#### [Apk下载链接](https://www.pgyer.com/vj2B)
 
 #### Apk二维码
 
->未发布
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png)
 
 
 ### 示例图片
@@ -87,6 +87,7 @@
 
 ### 进行中：
 
+* ui调整
 * 主页drawer：个人信息
 * 仓库的：|版本|tag|下载、克隆
 * 本地数据库

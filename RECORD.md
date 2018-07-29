@@ -48,3 +48,7 @@ flutter 的跨平台见兼容性意外的话，得益于flutter engine，skia的
 所以第一次运行意外的没有兼容问题，特别是有生之年在ios上看到完全一模一样的下拉刷新
 
 https://github.com/dart-flitter/flutter_webview_plugin/issues/23
+
+
+repos detail info 的显示问题。
+ui 上的调整。
