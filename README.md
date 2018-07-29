@@ -44,9 +44,7 @@
 
 ### 下载
 
-#### Apk下载链接：
-
-#### [Apk下载链接](https://www.pgyer.com/vj2B)
+#### Apk下载链接： [Apk下载链接](https://www.pgyer.com/vj2B)
 
 #### Apk二维码
 
