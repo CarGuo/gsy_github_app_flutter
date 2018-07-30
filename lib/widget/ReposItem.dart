@@ -3,6 +3,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
+import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
 
 /**
  * 仓库Item
@@ -39,30 +40,21 @@ class ReposItem extends StatelessWidget {
           child: new FlatButton(
               onPressed: onPressed,
               child: new Padding(
-                padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+                padding: new EdgeInsets.only(left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        new RawMaterialButton(
-                            constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                            padding: new EdgeInsets.all(0.0),
+                        new GSYUserIconWidget(
+                            padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+                            width: 40.0,
+                            height: 40.0,
+                            image: reposViewModel.ownerPic,
                             onPressed: () {
                               NavigatorUtils.goPerson(context, reposViewModel.ownerName);
-                            },
-                            child: new ClipOval(
-                              child: new FadeInImage.assetNetwork(
-                                placeholder: "static/images/logo.png",
-                                //预览图
-                                fit: BoxFit.fitWidth,
-                                image: reposViewModel.ownerPic,
-                                width: 40.0,
-                                height: 40.0,
-                              ),
-                            )),
-                        new Padding(padding: EdgeInsets.all(10.0)),
+                            }),
                         new Expanded(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

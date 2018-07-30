@@ -72,8 +72,8 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
     if (markdownData == null) {
       return Center(
         child: new Container(
-          width: 140.0,
-          height: 140.0,
+          width: 200.0,
+          height: 200.0,
           padding: new EdgeInsets.all(4.0),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
+import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
 
 /**
  * Issue 详情头
@@ -59,17 +60,11 @@ class IssueHeaderItem extends StatelessWidget {
               new Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new IconButton(
-                      icon: new ClipOval(
-                        child: new FadeInImage.assetNetwork(
-                          placeholder: "static/images/logo.png",
-                          //预览图
-                          fit: BoxFit.fitWidth,
-                          image: issueHeaderViewModel.actionUserPic,
-                          width: 80.0,
-                          height: 80.0,
-                        ),
-                      ),
+                  new GSYUserIconWidget(
+                      padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+                      width: 50.0,
+                      height: 50.0,
+                      image: issueHeaderViewModel.actionUserPic,
                       onPressed: () {
                         NavigatorUtils.goPerson(context, issueHeaderViewModel.actionUser);
                       }),
