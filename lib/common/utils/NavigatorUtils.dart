@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/LoginPage.dart';
 import 'package:gsy_github_app_flutter/page/NotifyPage.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
 import 'package:gsy_github_app_flutter/page/PushDetailPage.dart';
+import 'package:gsy_github_app_flutter/page/ReleasePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/SearchPage.dart';
 
@@ -48,6 +49,11 @@ class NavigatorUtils {
   ///仓库详情
   static Future<Null> goReposDetail(BuildContext context, String userName, String reposName) {
     return Navigator.push(context, new MaterialPageRoute(builder: (context) => new RepositoryDetailPage(userName, reposName)));
+  }
+
+  ///仓库版本列表
+  static Future<Null> goReleasePage(BuildContext context, String userName, String reposName) {
+    return Navigator.push(context, new MaterialPageRoute(builder: (context) => new ReleasePage(userName, reposName)));
   }
 
   ///issue详情

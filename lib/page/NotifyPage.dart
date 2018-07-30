@@ -10,6 +10,7 @@ import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 
 /**
+ * 通知消息
  * Created by guoshuyu
  * Date: 2018-07-24
  */
@@ -103,6 +104,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
             this.selectIndex = selectIndex;
             _resolveSelectIndex();
           },
+          height: 30.0,
           margin: const EdgeInsets.all(0.0),
           elevation: 0.0,
         ),

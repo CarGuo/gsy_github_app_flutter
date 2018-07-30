@@ -10,6 +10,7 @@ import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
+import 'package:gsy_github_app_flutter/widget/ReleaseItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
@@ -406,13 +407,43 @@ class ReposDao {
   static getReposCommitsInfoDao(userName, reposName, sha) async {
     String url = Address.getReposCommitsInfo(userName, reposName, sha);
     var res = await HttpManager.netFetch(url, null, null, null);
-    if (res != null && res.result ) {
+    if (res != null && res.result) {
       PushHeaderViewModel pushHeaderViewModel = PushHeaderViewModel.forMap(res.data);
       var files = res.data["files"];
-      for(int i = 0; i <files.length; i++) {
-       pushHeaderViewModel.files.add(PushCodeItemViewModel.fromMap(files[i]));
+      for (int i = 0; i < files.length; i++) {
+        pushHeaderViewModel.files.add(PushCodeItemViewModel.fromMap(files[i]));
       }
       return new DataResult(pushHeaderViewModel, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * 获取仓库的release列表
+   */
+  static getRepositoryReleaseDao(userName, reposName, page, {needHtml = true, release = true}) async {
+    String url = release
+        ? Address.getReposRelease(userName, reposName) + Address.getPageParams("?", page)
+        : Address.getReposTag(userName, reposName) + Address.getPageParams("?", page);
+
+    var res = await HttpManager.netFetch(
+      url,
+      null,
+      {"Accept": (needHtml ? 'application/vnd.github.html,application/vnd.github.VERSION.raw' : "")},
+      null,
+    );
+    if (res != null && res.result && res.data.length > 0) {
+      List<ReleaseItemViewModel> list = new List();
+      var dataList = res.data;
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < dataList.length; i++) {
+        var data = dataList[i];
+        list.add(ReleaseItemViewModel.fromMap(data));
+      }
+      return new DataResult(list, true);
     } else {
       return new DataResult(null, false);
     }

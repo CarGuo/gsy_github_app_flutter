@@ -55,7 +55,7 @@ class ReposHeaderItem extends StatelessWidget {
           child: new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.cover,
                 image: new NetworkImage(reposHeaderViewModel.ownerPic),
               ),
             ),
