@@ -136,61 +136,45 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return list;
   }
 
+  _renderBottomItem(var text, var icon, var onPressed) {
+    return new FlatButton(
+        onPressed: onPressed,
+        child: new GSYIConText(
+          icon,
+          text,
+          GSYConstant.smallText,
+          Color(GSYColors.primaryValue),
+          15.0,
+          padding: 5.0,
+          mainAxisAlignment: MainAxisAlignment.center,
+        ));
+  }
+
   _getBottomWidget() {
     List<Widget> bottomWidget = (bottomStatusModel == null)
         ? []
         : <Widget>[
-            new FlatButton(
-                onPressed: () {
-                  CommonUtils.showLoadingDialog(context);
-                  return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
-                    _refresh();
-                    Navigator.pop(context);
-                  });
-                },
-                child: new GSYIConText(
-                  bottomStatusModel.starIcon,
-                  bottomStatusModel.starText,
-                  GSYConstant.smallText,
-                  Color(GSYColors.primaryValue),
-                  15.0,
-                  padding: 5.0,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                )),
-            new FlatButton(
-                onPressed: () {
-                  CommonUtils.showLoadingDialog(context);
-                  return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
-                    _refresh();
-                    Navigator.pop(context);
-                  });
-                },
-                child: new GSYIConText(
-                  bottomStatusModel.watchIcon,
-                  bottomStatusModel.watchText,
-                  GSYConstant.smallText,
-                  Color(GSYColors.primaryValue),
-                  15.0,
-                  padding: 5.0,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                )),
-            new FlatButton(
-                onPressed: () {
-                  CommonUtils.showLoadingDialog(context);
-                  return ReposDao.createForkDao(userName, reposName).then((result) {
-                    _refresh();
-                    Navigator.pop(context);
-                  });
-                },
-                child: new GSYIConText(
-                  GSYICons.REPOS_ITEM_FORK,
-                  "fork",
-                  GSYConstant.smallText,
-                  Color(GSYColors.primaryValue),
-                  15.0,
-                  padding: 5.0,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                )),
+            _renderBottomItem(bottomStatusModel.starText, bottomStatusModel.starIcon, () {
+              CommonUtils.showLoadingDialog(context);
+              return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
+                _refresh();
+                Navigator.pop(context);
+              });
+            }),
+            _renderBottomItem(bottomStatusModel.watchText, bottomStatusModel.watchIcon, () {
+              CommonUtils.showLoadingDialog(context);
+              return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
+                _refresh();
+                Navigator.pop(context);
+              });
+            }),
+            _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
+              CommonUtils.showLoadingDialog(context);
+              return ReposDao.createForkDao(userName, reposName).then((result) {
+                _refresh();
+                Navigator.pop(context);
+              });
+            }),
             _renderBranchPopItem(branchControl.currentBranch, branchList, (value) {
               setState(() {
                 branchControl.currentBranch = value;
@@ -210,6 +194,35 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return bottomWidget;
   }
 
+  ///无奈之举，只能pageView配合tabbar，通过control同步
+  ///TabView 配合tabbar 在四个页面上问题太多
+  _renderTabItem() {
+    var itemList = [
+      GSYStrings.repos_tab_info,
+      GSYStrings.repos_tab_readme,
+      GSYStrings.repos_tab_issue,
+      GSYStrings.repos_tab_file,
+    ];
+    renderItem(String item, int i) {
+      return new FlatButton(
+          padding: EdgeInsets.all(0.0),
+          onPressed: () {
+            topPageControl.jumpTo(MediaQuery.of(context).size.width * i);
+          },
+          child: new Text(
+            item,
+            style: GSYConstant.smallTextWhite,
+            maxLines: 1,
+          ));
+    }
+
+    List<Widget> list = new List();
+    for (int i = 0; i < itemList.length; i++) {
+      list.add(renderItem(itemList[i], i));
+    }
+    return list;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -224,50 +237,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
-        tabItems: [
-          ///无奈之举，只能pageView配合tabbar，通过control同步
-          ///TabView 配合tabbar 在四个页面上问题太多
-          new FlatButton(
-              padding: EdgeInsets.all(0.0),
-              onPressed: () {
-                topPageControl.jumpTo(0.0);
-              },
-              child: new Text(
-                GSYStrings.repos_tab_info,
-                style: GSYConstant.smallTextWhite,
-                maxLines: 1,
-              )),
-          new FlatButton(
-              padding: EdgeInsets.all(0.0),
-              onPressed: () {
-                topPageControl.jumpTo(MediaQuery.of(context).size.width);
-              },
-              child: new Text(
-                GSYStrings.repos_tab_readme,
-                style: GSYConstant.smallTextWhite,
-                maxLines: 1,
-              )),
-          new FlatButton(
-              padding: EdgeInsets.all(0.0),
-              onPressed: () {
-                topPageControl.jumpTo(MediaQuery.of(context).size.width * 2);
-              },
-              child: new Text(
-                GSYStrings.repos_tab_issue,
-                style: GSYConstant.smallTextWhite,
-                maxLines: 1,
-              )),
-          new FlatButton(
-              padding: EdgeInsets.all(0.0),
-              onPressed: () {
-                topPageControl.jumpTo(MediaQuery.of(context).size.width * 3);
-              },
-              child: new Text(
-                GSYStrings.repos_tab_file,
-                style: GSYConstant.smallTextWhite,
-                maxLines: 1,
-              )),
-        ],
+        tabItems: _renderTabItem(),
         tabViews: [
           new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
           new RepositoryDetailReadmePage(userName, reposName, branchControl, key: readmeKey),

@@ -55,7 +55,7 @@ class ReposHeaderItem extends StatelessWidget {
           child: new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
-                fit: BoxFit.fill,
+                fit: BoxFit.fitWidth,
                 image: new NetworkImage(reposHeaderViewModel.ownerPic),
               ),
             ),
@@ -64,7 +64,7 @@ class ReposHeaderItem extends StatelessWidget {
                 color: Color(GSYColors.primaryDarkValue & 0xA0FFFFFF),
               ),
               child: new Padding(
-                padding: new EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+                padding: new EdgeInsets.only(left: 10.0, top: 0.0, right: 10.0, bottom: 10.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -82,7 +82,6 @@ class ReposHeaderItem extends StatelessWidget {
                         new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
                       ],
                     ),
-                    new Padding(padding: new EdgeInsets.all(5.0)),
                     new Row(
                       children: <Widget>[
                         new Text(reposHeaderViewModel.repositoryType ?? "--",
@@ -94,7 +93,6 @@ class ReposHeaderItem extends StatelessWidget {
                         new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.subLightSmallText),
                       ],
                     ),
-                    new Padding(padding: new EdgeInsets.all(5.0)),
                     new Container(
                         child:
                             new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.subLightSmallText),
@@ -121,7 +119,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
-                            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+                            new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_FORK,
                               reposHeaderViewModel.repositoryFork,
@@ -130,7 +128,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
-                            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+                            new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_WATCH,
                               reposHeaderViewModel.repositoryWatch,
@@ -139,7 +137,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
-                            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+                            new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_ISSUE,
                               reposHeaderViewModel.repositoryIssue,

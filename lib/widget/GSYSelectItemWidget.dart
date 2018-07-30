@@ -54,8 +54,10 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   _renderItem(String name, int index) {
     var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubText;
     return new Expanded(
-      child: FlatButton(
-          padding: EdgeInsets.all(0.0),
+      child: RawMaterialButton(
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+          padding: EdgeInsets.all(10.0),
           child: new Text(
             name,
             style: style,
