@@ -56,3 +56,5 @@ ui 上的调整。
 
 https://stackoverflow.com/questions/47114639/yellow-lines-under-text-widgets-in-flutter
 Dialog中，没使用Scaffold ，导致文本有黄色溢出线提示，可以使用Material ，color或者type为透明
+
+启动页变形问题。

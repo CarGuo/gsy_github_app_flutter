@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -16,10 +18,31 @@ import 'package:gsy_github_app_flutter/widget/HomeDrawer.dart';
 class HomePage extends StatelessWidget {
   static final String sName = "home";
 
+  /// 单击提示退出
+  Future<bool> _dialogExitApp(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => new AlertDialog(
+              content: new Text(GSYStrings.app_back_tip),
+              actions: <Widget>[
+                new FlatButton(onPressed: () => Navigator.of(context).pop(false), child: new Text(GSYStrings.app_cancel)),
+                new FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    child: new Text(GSYStrings.app_ok))
+              ],
+            ));
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new GSYTabBarWidget(
+    return WillPopScope(
+      onWillPop: () {
+        return _dialogExitApp(context);
+      },
+      child: new GSYTabBarWidget(
         drawer: new HomeDrawer(),
         type: GSYTabBarWidget.BOTTOM_TAB,
         tabItems: [
@@ -56,10 +79,8 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             NavigatorUtils.goSearchPage(context);
           },
-        ));
+        ),
+      ),
+    );
   }
-
-
-
-
 }
