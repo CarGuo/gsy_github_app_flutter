@@ -143,6 +143,8 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
           this.searchText = value;
         }, (value) {
           _resolveSelectIndex();
+        }, (){
+          _resolveSelectIndex();
         }),
         elevation: 0.0,
         backgroundColor: Color(GSYColors.mainBackgroundColor),

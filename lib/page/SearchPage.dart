@@ -50,7 +50,6 @@ class _SearchPageState extends GSYListState<SearchPage> {
     return await ReposDao.searchRepositoryDao(searchText, language, type, sort, selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
   }
 
-
   _clearSelect(List<FilterModel> list) {
     for (FilterModel model in list) {
       model.select = false;
@@ -111,8 +110,15 @@ class _SearchPageState extends GSYListState<SearchPage> {
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
           title: new Text(GSYStrings.search_title),
-          bottom: new SearchBottom((value) {}, (value) {
+          bottom: new SearchBottom((value) {
             searchText = value;
+          }, (value) {
+            searchText = value;
+            if (searchText == null || searchText.trim().length == 0) {
+              return;
+            }
+            _resolveSelectIndex();
+          }, () {
             if (searchText == null || searchText.trim().length == 0) {
               return;
             }
@@ -139,13 +145,15 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
 
   final SelectItemChanged selectItemChanged;
 
-  SearchBottom(this.onChanged, this.onSubmitted, this.selectItemChanged);
+  final VoidCallback onSubmitPressed;
+
+  SearchBottom(this.onChanged, this.onSubmitted, this.onSubmitPressed, this.selectItemChanged);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GSYSearchInputWidget(onChanged, onSubmitted),
+        GSYSearchInputWidget(onChanged, onSubmitted, onSubmitPressed),
         new GSYSelectItemWidget(
           [
             GSYStrings.search_tab_repos,
