@@ -266,6 +266,7 @@ class GSYStrings {
   static const String repos_tab_issue_all = "所有";
   static const String repos_tab_issue_open = "打开";
   static const String repos_tab_issue_closed = "关闭";
+  static const String repos_option_release = "版本";
 
   static const String repos_issue_search = "搜索";
 
@@ -298,6 +299,9 @@ class GSYStrings {
   static const String search_title = "搜索";
   static const String search_tab_repos = "仓库";
   static const String search_tab_user = "用户";
+
+  static const String release_tab_release = "版本";
+  static const String release_tab_tag = "标记";
 }
 
 class GSYICons {

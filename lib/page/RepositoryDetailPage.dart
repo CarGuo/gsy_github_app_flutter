@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailIssueListPage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailReadmePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
@@ -223,6 +224,14 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return list;
   }
 
+  _getMoreOtherItem() {
+    return [
+      new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
+        NavigatorUtils.goReleasePage(context, userName, reposName);
+      }),
+    ];
+  }
+
   @override
   void initState() {
     super.initState();
@@ -233,7 +242,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   @override
   Widget build(BuildContext context) {
     String url = Address.hostWeb + userName + "/" + reposName;
-    Widget widget = new GSYCommonOptionWidget(url);
+    Widget widget = new GSYCommonOptionWidget(url, otherList: _getMoreOtherItem());
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,
