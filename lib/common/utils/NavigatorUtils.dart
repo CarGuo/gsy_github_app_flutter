@@ -116,6 +116,7 @@ class NavigatorUtils {
                 )));
   }
 
+  ///全屏Web页面
   static Future<Null> goGSYWebView(BuildContext context, String url, String title) {
     return Navigator.push(
       context,
@@ -125,7 +126,7 @@ class NavigatorUtils {
     );
   }
 
-  ///文件代码详情
+  ///文件代码详情Web
   static gotoCodeDetailPageWeb(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
     Navigator.push(
         context,

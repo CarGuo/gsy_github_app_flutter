@@ -207,7 +207,7 @@ class GSYStrings {
   static const String app_version = "版本";
 
   static const String nothing_now = "目前什么都没有。";
-  static const String loading_text = "加载中···";
+  static const String loading_text = "努力加载中···";
 
   static const String option_web = "浏览器打开";
   static const String option_copy = "复制链接";
