@@ -61,7 +61,7 @@ class IssueHeaderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new GSYUserIconWidget(
-                      padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+                      padding: const EdgeInsets.only(top: 0.0, right: 10.0, left: 0.0),
                       width: 50.0,
                       height: 50.0,
                       image: issueHeaderViewModel.actionUserPic,
@@ -78,7 +78,6 @@ class IssueHeaderItem extends StatelessWidget {
                             new Text(
                               issueHeaderViewModel.actionTime,
                               style: GSYConstant.subSmallText,
-                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
@@ -89,7 +88,6 @@ class IssueHeaderItem extends StatelessWidget {
                             child: new Text(
                               issueHeaderViewModel.issueComment,
                               style: GSYConstant.smallTextWhite,
-                              maxLines: 2,
                             ),
                             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
@@ -105,7 +103,6 @@ class IssueHeaderItem extends StatelessWidget {
                   child: new Text(
                     issueHeaderViewModel.issueDesHtml,
                     style: GSYConstant.smallTextWhite,
-                    maxLines: 2,
                   ),
                   margin: new EdgeInsets.all(10.0),
                   alignment: Alignment.topLeft)

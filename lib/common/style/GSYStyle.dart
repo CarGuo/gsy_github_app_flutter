@@ -215,6 +215,7 @@ class GSYStrings {
   static const String app_licenses = "协议";
   static const String app_close = "关闭";
   static const String app_version = "版本";
+  static const String app_back_tip = "确定要退出应用？";
 
   static const String app_not_new_version = "没有新版本";
   static const String app_version_title = "版本更新";
