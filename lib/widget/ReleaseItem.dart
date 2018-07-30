@@ -45,6 +45,7 @@ class ReleaseItemViewModel {
   String actionMode;
   String actionTarget;
   String actionTargetHtml;
+  String body;
 
   ReleaseItemViewModel();
 
@@ -55,5 +56,6 @@ class ReleaseItemViewModel {
     actionTitle = map["name"] ?? map["tag_name"];
     actionTarget = map["target_commitish"];
     actionTargetHtml = map["body_html"];
+    body = map["body"] ?? "";
   }
 }

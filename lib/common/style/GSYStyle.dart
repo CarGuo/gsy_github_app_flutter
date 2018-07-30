@@ -150,7 +150,17 @@ class GSYConstant {
     fontSize: normalTextSize,
   );
 
-  static const normalTextMitWhiteBold = TextStyle(color: Color(GSYColors.miWhite), fontSize: normalTextSize, fontWeight: FontWeight.bold);
+  static const normalTextMitWhiteBold = TextStyle(
+    color: Color(GSYColors.miWhite),
+    fontSize: normalTextSize,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const normalTextActionWhiteBold = TextStyle(
+    color: Color(GSYColors.actionBlue),
+    fontSize: normalTextSize,
+    fontWeight: FontWeight.bold,
+  );
 
   static const normalTextLight = TextStyle(
     color: Color(GSYColors.primaryLightValue),
@@ -205,6 +215,9 @@ class GSYStrings {
   static const String app_licenses = "协议";
   static const String app_close = "关闭";
   static const String app_version = "版本";
+
+  static const String app_not_new_version = "没有新版本";
+  static const String app_version_title = "版本更新";
 
   static const String nothing_now = "目前什么都没有。";
   static const String loading_text = "努力加载中···";

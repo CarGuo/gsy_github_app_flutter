@@ -2,10 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_version/get_version.dart';
+import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
@@ -14,6 +19,7 @@ import 'package:gsy_github_app_flutter/widget/ReleaseItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 /**
  * Created by guoshuyu
@@ -446,6 +452,44 @@ class ReposDao {
       return new DataResult(list, true);
     } else {
       return new DataResult(null, false);
+    }
+  }
+
+  /**
+   * 版本更新
+   */
+  static getNewsVersion(context, showTip) async {
+    //ios不检查更新
+    if (Platform.isIOS) {
+      return;
+    }
+    var res = await getRepositoryReleaseDao("CarGuo", 'GSYGithubAppFlutter', 1, needHtml: false);
+    if (res != null && res.result && res.data.length > 0) {
+      //github只能有release的versionName，没有code，囧
+      String versionName = res.data[0].actionTitle;
+      if (versionName != null) {
+        if (Config.DEBUG) {
+          print("versionName " + versionName);
+        }
+        var appVersion = await GetVersion.projectVersion;
+        if (Config.DEBUG) {
+          print("appVersion " + appVersion);
+        }
+        Version versionNameNum = Version.parse(versionName);
+        Version currentNum = Version.parse(appVersion);
+        int result = versionNameNum.compareTo(currentNum);
+        if (Config.DEBUG) {
+          print("versionNameNum " + versionNameNum.toString() + " currentNum " + currentNum.toString());
+        }
+        if (Config.DEBUG) {
+          print("newsHad " + result.toString());
+        }
+        if (result > 0) {
+          CommonUtils.showUpdateDialog(context, res.data[0].actionTitle + ": " + res.data[0].body);
+        } else {
+          if (showTip) Fluttertoast.showToast(msg: GSYStrings.app_not_new_version);
+        }
+      }
     }
   }
 }

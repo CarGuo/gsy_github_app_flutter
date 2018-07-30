@@ -2,11 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /**
  * 通用逻辑
@@ -105,8 +108,7 @@ class CommonUtils {
     if (url.startsWith("http")) {
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
-      NavigatorUtils.goGSYWebView(
-          context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
+      NavigatorUtils.goGSYWebView(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
     }
   }
 
@@ -200,6 +202,31 @@ class CommonUtils {
                     );
                   }),
             ),
+          );
+        });
+  }
+
+  ///版本更新
+  static Future<Null> showUpdateDialog(BuildContext context, String contentMsg) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(GSYStrings.app_version_title),
+            content: new Text(contentMsg),
+            actions: <Widget>[
+              new FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: new Text(GSYStrings.app_cancel)),
+              new FlatButton(
+                  onPressed: () {
+                    launch(Address.updateUrl);
+                    Navigator.pop(context);
+                  },
+                  child: new Text(GSYStrings.app_ok)),
+            ],
           );
         });
   }

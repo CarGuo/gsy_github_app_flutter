@@ -13,6 +13,7 @@ class GSYCardItem extends StatelessWidget {
   final RoundedRectangleBorder shape;
   final double elevation;
 
+
   GSYCardItem({@required this.child, this.margin, this.color, this.shape, this.elevation = 5.0});
 
   @override

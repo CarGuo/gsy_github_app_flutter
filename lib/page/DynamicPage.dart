@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
+import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
@@ -73,6 +74,8 @@ class _DynamicPageState extends GSYListState<DynamicPage> {
   @override
   void initState() {
     super.initState();
+    ReposDao.getNewsVersion(context, false);
+
   }
 
   @override
