@@ -127,7 +127,7 @@ class ReposViewModel {
     repositoryStar = data["watchers_count"].toString();
     repositoryFork = data["forks_count"].toString();
     repositoryWatch = data["open_issues"].toString();
-    repositoryType = data["language"] != null ? data["language"] : '---';
-    repositoryDes = data["description"] != null ? data["description"] : '---';
+    repositoryType = data["language"] ?? '---';
+    repositoryDes = data["description"] ?? '---';
   }
 }

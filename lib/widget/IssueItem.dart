@@ -137,7 +137,7 @@ class IssueItemViewModel {
       issueTag = "#" + issueMap["number"].toString();
       number = issueMap["number"].toString();
     } else {
-      issueComment = issueMap["body"] != null ? issueMap["body"] : "";
+      issueComment = issueMap["body"] ?? "";
       id = issueMap["id"].toString();
     }
   }
