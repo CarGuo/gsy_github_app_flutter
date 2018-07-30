@@ -27,8 +27,8 @@ class IssueEditDialog extends StatefulWidget {
       {this.titleController, this.valueController, this.needTitle = true});
 
   @override
-  _IssueEditDialogState createState() =>
-      _IssueEditDialogState(this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed, titleController, valueController, needTitle);
+  _IssueEditDialogState createState() => _IssueEditDialogState(
+      this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed, titleController, valueController, needTitle);
 }
 
 class _IssueEditDialogState extends State<IssueEditDialog> {
@@ -71,13 +71,13 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             new Padding(
-                padding: new EdgeInsets.all(5.0),
+                padding: new EdgeInsets.only(top: 5.0, bottom: 15.0),
                 child: new Center(
                   child: new Text(dialogTitle, style: GSYConstant.normalTextBold),
                 )),
             title,
             new Container(
-              height: 300.0,
+              height: MediaQuery.of(context).size.width * 3 / 4,
               decoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: Colors.white,
@@ -101,13 +101,22 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 new Expanded(
-                    child: new FlatButton(
+                    child: new RawMaterialButton(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: EdgeInsets.all(4.0),
+                        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
                         child: new Text(GSYStrings.app_cancel, style: GSYConstant.subNormalText),
                         onPressed: () {
                           Navigator.pop(context);
                         })),
-                new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subTextColor)),
-                new Expanded(child: new FlatButton(child: new Text(GSYStrings.app_ok, style: GSYConstant.normalTextBold), onPressed: onPressed)),
+                new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subTextColor)),
+                new Expanded(
+                    child: new RawMaterialButton(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: EdgeInsets.all(4.0),
+                        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                        child: new Text(GSYStrings.app_ok, style: GSYConstant.normalTextBold),
+                        onPressed: onPressed)),
               ],
             )
           ],
