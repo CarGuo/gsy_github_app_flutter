@@ -118,7 +118,7 @@ class CommonUtils {
             color: Colors.transparent,
             child: Center(
               child: new Container(
-                width: 140.0,
+                width: 200.0,
                 height: 200.0,
                 padding: new EdgeInsets.all(4.0),
                 decoration: new BoxDecoration(

@@ -55,6 +55,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
     var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubText;
     return new Expanded(
       child: FlatButton(
+          padding: EdgeInsets.all(0.0),
           child: new Text(
             name,
             style: style,
@@ -95,10 +96,8 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         shape: new RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
-        child: new Padding(
-            padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
-            child: new Row(
-              children: _renderList(),
-            )));
+        child: new Row(
+          children: _renderList(),
+        ));
   }
 }

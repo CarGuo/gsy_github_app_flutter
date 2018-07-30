@@ -152,7 +152,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
             GSYStrings.search_tab_user,
           ],
           selectItemChanged,
-          margin: const EdgeInsets.only(top: 0.0),
+          margin: const EdgeInsets.all(0.0),
         )
       ],
     );
