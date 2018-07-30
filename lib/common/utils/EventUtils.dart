@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 
@@ -148,17 +147,16 @@ class EventUtils {
           }
           NavigatorUtils.goReposDetail(context, owner, repositoryName);
         } else if (event["payload"]["commits"].length == 1) {
-          NavigatorUtils.goPushDetailPage(context,  owner, repositoryName, event["payload"]["commits"][0]["sha"], true);
+          NavigatorUtils.goPushDetailPage(context, owner, repositoryName, event["payload"]["commits"][0]["sha"], true);
         } else {
           CommonUtils.showCommitOptionDialog(context, event["payload"]["commits"], (index) {
-            NavigatorUtils.goPushDetailPage(context, owner, repositoryName,event["payload"]["commits"][index]["sha"], true);
+            NavigatorUtils.goPushDetailPage(context, owner, repositoryName, event["payload"]["commits"][index]["sha"], true);
           });
         }
         break;
       case 'ReleaseEvent':
         String url = event["payload"]["release"]["html_url"];
-        final flutterWebviewPlugin = new FlutterWebviewPlugin();
-        flutterWebviewPlugin.launch(url, hidden: true);
+        CommonUtils.launchWebView(context, repositoryName, url);
         break;
       case 'IssueCommentEvent':
       case 'IssuesEvent':

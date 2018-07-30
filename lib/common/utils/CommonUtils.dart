@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
@@ -106,7 +105,8 @@ class CommonUtils {
     if (url.startsWith("http")) {
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
-      NavigatorUtils.goGSYWebView(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
+      NavigatorUtils.goGSYWebView(
+          context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
     }
   }
 
@@ -114,25 +114,26 @@ class CommonUtils {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Center(
-            child: new Container(
-              width: 140.0,
-              height: 140.0,
-              padding: new EdgeInsets.all(4.0),
-              decoration: new BoxDecoration(
-                color: Colors.transparent,
-                //用一个BoxDecoration装饰器提供背景图片
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
-              ),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SpinKitCubeGrid(
-                    color: Colors.white,
-                  ),
-                  new Container(width: 10.0),
-                  new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleTextWhite)),
-                ],
+          return new Material(
+            color: Colors.transparent,
+            child: Center(
+              child: new Container(
+                width: 140.0,
+                height: 200.0,
+                padding: new EdgeInsets.all(4.0),
+                decoration: new BoxDecoration(
+                  color: Colors.transparent,
+                  //用一个BoxDecoration装饰器提供背景图片
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                ),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Container(child: SpinKitCubeGrid(color: Colors.white)),
+                    new Container(height: 10.0),
+                    new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.normalTextWhite)),
+                  ],
+                ),
               ),
             ),
           );
