@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
+import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 
 /**
@@ -41,17 +42,11 @@ class PushHeader extends StatelessWidget {
               new Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new IconButton(
-                      icon: new ClipOval(
-                        child: new FadeInImage.assetNetwork(
-                          placeholder: "static/images/logo.png",
-                          //预览图
-                          fit: BoxFit.fitWidth,
-                          image: pushHeaderViewModel.actionUserPic,
-                          width: 90.0,
-                          height: 90.0,
-                        ),
-                      ),
+                  new GSYUserIconWidget(
+                      padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+                      width: 40.0,
+                      height: 40.0,
+                      image: pushHeaderViewModel.actionUserPic,
                       onPressed: () {
                         NavigatorUtils.goPerson(context, pushHeaderViewModel.actionUser);
                       }),
@@ -111,6 +106,7 @@ class PushHeaderViewModel {
   String addCount = "---";
   String deleteCount = "---";
   List<PushCodeItemViewModel> files = new List();
+
   PushHeaderViewModel();
 
   PushHeaderViewModel.forMap(pushMap) {

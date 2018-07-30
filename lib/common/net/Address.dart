@@ -6,6 +6,7 @@ class Address {
   static const String hostWeb = "https://github.com/";
   static const String downloadUrl = 'https://www.pgyer.com/GSYGithubApp';
   static const String graphicHost = 'https://ghchart.rshah.org/';
+  static const String updateUrl = 'https://www.pgyer.com/vj2B';
 
   ///获取授权  post
   static getAuthorization() {

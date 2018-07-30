@@ -76,7 +76,7 @@ class ReposHeaderItem extends StatelessWidget {
                           onPressed: () {
                             NavigatorUtils.goPerson(context, reposHeaderViewModel.ownerName);
                           },
-                          child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextMitWhiteBold),
+                          child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextActionWhiteBold),
                         ),
                         new Text(" /", style: GSYConstant.normalTextMitWhiteBold),
                         new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
