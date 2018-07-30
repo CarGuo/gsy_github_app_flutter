@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/page/CodeDetailPage.dart';
@@ -84,7 +85,8 @@ class NavigatorUtils {
   }
 
   ///文件代码详情
-  static gotoCodeDetailPage(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+  static gotoCodeDetailPage(BuildContext context,
+      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
     Navigator.push(
         context,
         new MaterialPageRoute(
@@ -133,19 +135,43 @@ class NavigatorUtils {
   }
 
   ///文件代码详情Web
-  static gotoCodeDetailPageWeb(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+  static gotoCodeDetailPageWeb(BuildContext context,
+      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
     Navigator.push(
         context,
         new MaterialPageRoute(
             builder: (context) => new CodeDetailPageWeb(
-              title: title,
-              userName: userName,
-              reposName: reposName,
-              path: path,
-              data: data,
-              branch: branch,
-              htmlUrl: htmlUrl,
-            )));
+                  title: title,
+                  userName: userName,
+                  reposName: reposName,
+                  path: path,
+                  data: data,
+                  branch: branch,
+                  htmlUrl: htmlUrl,
+                )));
   }
 
+  ///根据平台跳转文件代码详情Web
+  static gotoCodeDetailPlatform(BuildContext context,
+      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+    if (Platform.isIOS) {
+      NavigatorUtils.gotoCodeDetailPage(
+        context,
+        title: title,
+        reposName: reposName,
+        userName: userName,
+        path: path,
+        branch: branch,
+      );
+    } else {
+      NavigatorUtils.gotoCodeDetailPageWeb(
+        context,
+        title: title,
+        reposName: reposName,
+        userName: userName,
+        path: path,
+        branch: branch,
+      );
+    }
+  }
 }

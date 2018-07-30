@@ -23,9 +23,9 @@ class ReleaseItem extends StatelessWidget {
       child: new GSYCardItem(
         child: new InkWell(
           onTap: onPressed,
-          onLongPress: () {},
+          onLongPress: onLongPress,
           child: new Padding(
-            padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
+            padding: new EdgeInsets.only(left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
             child: new Row(
               children: <Widget>[
                 new Expanded(child: new Text(releaseItemViewModel.actionTitle, style: GSYConstant.smallTextBold)),
@@ -49,7 +49,9 @@ class ReleaseItemViewModel {
   ReleaseItemViewModel();
 
   ReleaseItemViewModel.fromMap(map) {
-    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(map["published_at"]));
+    if (map["published_at"] != null) {
+      actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(map["published_at"]));
+    }
     actionTitle = map["name"] ?? map["tag_name"];
     actionTarget = map["target_commitish"];
     actionTargetHtml = map["body_html"];
