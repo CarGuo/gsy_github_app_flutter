@@ -50,6 +50,13 @@ class _SearchPageState extends GSYListState<SearchPage> {
     return await ReposDao.searchRepositoryDao(searchText, language, type, sort, selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
   }
 
+
+  _clearSelect(List<FilterModel> list) {
+    for (FilterModel model in list) {
+      model.select = false;
+    }
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -67,6 +74,17 @@ class _SearchPageState extends GSYListState<SearchPage> {
   @override
   requestRefresh() async {
     return await _getDataLogic();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _clearSelect(sortType);
+    sortType[0].select = true;
+    _clearSelect(searchLanguageType);
+    searchLanguageType[0].select = true;
+    _clearSelect(searchFilterType);
+    searchFilterType[0].select = true;
   }
 
   @override

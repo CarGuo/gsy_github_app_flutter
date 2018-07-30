@@ -85,19 +85,19 @@ class ReposHeaderItem extends StatelessWidget {
                     new Padding(padding: new EdgeInsets.all(5.0)),
                     new Row(
                       children: <Widget>[
-                        new Text(reposHeaderViewModel.repositoryType != null ? reposHeaderViewModel.repositoryType : "--",
+                        new Text(reposHeaderViewModel.repositoryType ?? "--",
                             style: GSYConstant.subLightSmallText),
                         new Container(width: 5.3, height: 1.0),
-                        new Text(reposHeaderViewModel.repositorySize != null ? reposHeaderViewModel.repositorySize : "--",
+                        new Text(reposHeaderViewModel.repositorySize ?? "--",
                             style: GSYConstant.subLightSmallText),
                         new Container(width: 5.3, height: 1.0),
-                        new Text(reposHeaderViewModel.license != null ? reposHeaderViewModel.license : "--", style: GSYConstant.subLightSmallText),
+                        new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.subLightSmallText),
                       ],
                     ),
                     new Padding(padding: new EdgeInsets.all(5.0)),
                     new Container(
                         child:
-                            new Text(reposHeaderViewModel.repositoryDes != null ? reposHeaderViewModel.repositoryDes : "---", style: GSYConstant.subLightSmallText),
+                            new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.subLightSmallText),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
                     new Container(

@@ -20,9 +20,7 @@ import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
  */
 class HomeDrawer extends StatelessWidget {
   showAboutDialog(BuildContext context, String versionName) {
-    if(versionName == null) {
-      versionName = "Null";
-    }
+    versionName ??= "Null";
     showDialog(
         context: context,
         builder: (BuildContext context) => AboutDialog(

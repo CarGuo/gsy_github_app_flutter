@@ -20,15 +20,9 @@ class GSYCardItem extends StatelessWidget {
     EdgeInsets margin = this.margin;
     RoundedRectangleBorder shape = this.shape;
     Color color = this.color;
-    if (margin == null) {
-      margin = EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0);
-    }
-    if (shape == null) {
-      shape = new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));
-    }
-    if (color == null) {
-      color = new Color(GSYColors.cardWhite);
-    }
+    margin ??= EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0);
+    shape ??= new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));
+    color ??= new Color(GSYColors.cardWhite);
     return new Card(elevation: elevation, shape: shape, color: color, margin: margin, child: child);
   }
 }

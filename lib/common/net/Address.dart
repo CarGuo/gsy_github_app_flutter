@@ -17,18 +17,10 @@ class Address {
     if (type == 'user') {
       return "${host}search/users?q=$q&page=$page&per_page=$pageSize";
     }
-    if (sort == null) {
-      sort = "best%20match";
-    }
-    if (order == null) {
-      order = "desc";
-    }
-    if (page == null) {
-      page = 1;
-    }
-    if (pageSize == null) {
-      pageSize = Config.PAGE_SIZE;
-    }
+    sort ??= "best%20match";
+    order ??= "desc";
+    page ??= 1;
+    pageSize ??= Config.PAGE_SIZE;
     return "${host}search/repositories?q=$q&sort=$sort&order=$order&page=$page&per_page=$pageSize";
   }
 
@@ -39,9 +31,7 @@ class Address {
 
   ///用户的仓库 get
   static userRepos(userName, sort) {
-    if (sort == null) {
-      sort = 'pushed';
-    }
+    sort ??= 'pushed';
     return "${host}users/$userName/repos?sort=$sort";
   }
 
@@ -82,15 +72,9 @@ class Address {
 
   ///仓库Issue get
   static getReposIssue(reposOwner, reposName, state, sort, direction) {
-    if (state == null) {
-      state = 'all';
-    }
-    if (sort == null) {
-      sort = 'created';
-    }
-    if (direction == null) {
-      direction = 'desc';
-    }
+    state ??= 'all';
+    sort ??= 'created';
+    direction ??= 'desc';
     return "${host}repos/$reposOwner/$reposName/issues?state=$state&sort=$sort&direction=$direction";
   }
 
@@ -152,17 +136,15 @@ class Address {
 
   ///自己的star get
   static myStar(sort) {
-    if (sort == null) {
-      sort = 'updated';
-    }
+    sort ??= 'updated';
+
     return "${host}users/starred?sort=$sort";
   }
 
   ///用户的star get
   static userStar(userName, sort) {
-    if (sort == null) {
-      sort = 'updated';
-    }
+    sort ??= 'updated';
+
     return "${host}users/$userName/starred?sort=$sort";
   }
 
@@ -233,9 +215,7 @@ class Address {
 
   ///fork get
   static getForker(reposOwner, reposName, sort) {
-    if (sort == null) {
-      sort = 'newest';
-    }
+    sort ??= 'newest';
     return "${host}repos/$reposOwner/$reposName/forks?sort=$sort";
   }
 
@@ -269,12 +249,8 @@ class Address {
     if (all == null && participating == null) {
       return "${host}notifications";
     }
-    if (all == null) {
-      all = false;
-    }
-    if (participating == null) {
-      participating = false;
-    }
+    all ??= false;
+    participating ??= false;
     return "${host}notifications?all=$all&participating=$participating";
   }
 
