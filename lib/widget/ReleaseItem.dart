@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/Release.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
@@ -49,13 +50,13 @@ class ReleaseItemViewModel {
 
   ReleaseItemViewModel();
 
-  ReleaseItemViewModel.fromMap(map) {
-    if (map["published_at"] != null) {
-      actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(map["published_at"]));
+  ReleaseItemViewModel.fromMap(Release map) {
+    if (map.publishedAt != null) {
+      actionTime = CommonUtils.getNewsTimeStr(map.publishedAt);
     }
-    actionTitle = map["name"] ?? map["tag_name"];
-    actionTarget = map["target_commitish"];
-    actionTargetHtml = map["body_html"];
-    body = map["body"] ?? "";
+    actionTitle = map.name ?? map.tagName;
+    actionTarget = map.targetCommitish;
+    actionTargetHtml = map.bodyHtml;
+    body = map.body ?? "";
   }
 }
