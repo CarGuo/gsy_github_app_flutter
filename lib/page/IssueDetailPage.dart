@@ -117,7 +117,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     var res = await IssueDao.getIssueInfoDao(userName, reposName, issueNum);
     if (res != null && res.result) {
       setState(() {
-        issueHeaderViewModel = res.data;
+        issueHeaderViewModel = IssueHeaderViewModel.fromMap(res.data);
         headerStatus = true;
       });
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -118,7 +119,8 @@ class IssueHeaderViewModel {
   String actionTime = "---";
   String actionUser = "---";
   String actionUserPic = "---";
-  String closed_by = "---";
+
+  //String closed_by = "---";
   bool locked = false;
   String issueComment = "---";
   String issueDesHtml = "---";
@@ -129,17 +131,17 @@ class IssueHeaderViewModel {
 
   IssueHeaderViewModel();
 
-  IssueHeaderViewModel.fromMap(issueMap) {
-    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(issueMap["created_at"]));
-    actionUser = issueMap["user"]["login"];
-    actionUserPic = issueMap["user"]["avatar_url"];
-    closed_by = issueMap["closed_by"] != null ? issueMap["closed_by"]["login"] : "";
-    locked = issueMap["locked"];
-    issueComment = issueMap["title"];
-    issueDesHtml = issueMap["body_html"] != null ? issueMap["body_html"] : (issueMap["body"] != null) ? issueMap["body"] : "";
-    commentCount = issueMap["comments"].toString() + "";
-    state = issueMap["state"];
-    issueDes = issueMap["body"] != null ? ": \n" + issueMap["body"] : '';
-    issueTag = "#" + issueMap["number"].toString();
+  IssueHeaderViewModel.fromMap(Issue issueMap) {
+    actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt);
+    actionUser = issueMap.user.login;
+    actionUserPic = issueMap.user.avatar_url;
+    //closed_by = issueMap.closed_by != null ? issueMap["closed_by"]["login"] : "";
+    locked = issueMap.locked;
+    issueComment = issueMap.title;
+    issueDesHtml = issueMap.bodyHtml != null ? issueMap.bodyHtml : (issueMap.body != null) ? issueMap.body : "";
+    commentCount = issueMap.commentNum.toString() + "";
+    state = issueMap.state;
+    issueDes = issueMap.body != null ? ": \n" + issueMap.body : '';
+    issueTag = "#" + issueMap.number.toString();
   }
 }
