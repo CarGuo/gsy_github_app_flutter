@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/CommitFile.dart';
+import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
-import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 
 /**
  * 提交详情的头
@@ -105,28 +106,26 @@ class PushHeaderViewModel {
   String editCount = "---";
   String addCount = "---";
   String deleteCount = "---";
-  List<PushCodeItemViewModel> files = new List();
 
   PushHeaderViewModel();
 
-  PushHeaderViewModel.forMap(pushMap) {
+  PushHeaderViewModel.forMap(PushCommit pushMap) {
     String name = "---";
     String pic = "---";
-    if (pushMap["committer"] != null) {
-      name = pushMap["committer"]["login"];
-    } else if (pushMap["commit"] != null && pushMap["commit"]["author"] != null) {
-      name = pushMap["commit"]["author"]["name"];
+    if (pushMap.committer != null) {
+      name = pushMap.committer.login;
+    } else if (pushMap.commit != null && pushMap.commit.author != null) {
+      name = pushMap.commit.author.name;
     }
-    if (pushMap["committer"] != null && pushMap["committer"]["avatar_url"] != null) {
-      pic = pushMap["committer"]["avatar_url"];
+    if (pushMap.committer != null && pushMap.committer.avatar_url != null) {
+      pic = pushMap.committer.avatar_url;
     }
     actionUser = name;
     actionUserPic = pic;
-    pushDes = "Push at " + pushMap["commit"]["message"];
-    pushTime = CommonUtils.getNewsTimeStr(DateTime.parse(pushMap["commit"]["committer"]["date"]));
-    ;
-    editCount = pushMap["files"].length.toString() + "";
-    addCount = pushMap["stats"]["additions"].toString() + "";
-    deleteCount = pushMap["stats"]["deletions"].toString() + "";
+    pushDes = "Push at " + pushMap.commit.message;
+    pushTime = CommonUtils.getNewsTimeStr(pushMap.commit.committer.date);
+    editCount = pushMap.files.length.toString() + "";
+    addCount = pushMap.stats.additions.toString() + "";
+    deleteCount = pushMap.stats.deletions.toString() + "";
   }
 }

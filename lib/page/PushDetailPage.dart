@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
@@ -57,12 +58,12 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
     page = 1;
     var res = await _getDataLogic();
     if (res != null && res.result) {
-      PushHeaderViewModel headerViewModel = res.data;
+      PushCommit pushCommit = res.data;
       pullLoadWidgetControl.dataList.clear();
       if (isShow) {
         setState(() {
-          pushHeaderViewModel = headerViewModel;
-          pullLoadWidgetControl.dataList.addAll(pushHeaderViewModel.files);
+          pushHeaderViewModel = PushHeaderViewModel.forMap(pushCommit);
+          pullLoadWidgetControl.dataList.addAll(pushCommit.files);
           pullLoadWidgetControl.needLoadMore = false;
         });
       }
@@ -75,7 +76,7 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
     if (index == 0) {
       return new PushHeader(pushHeaderViewModel);
     }
-    PushCodeItemViewModel itemViewModel = pullLoadWidgetControl.dataList[index - 1];
+    PushCodeItemViewModel itemViewModel = PushCodeItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]);
     return new PushCodeItem(itemViewModel, () {
       if (Platform.isIOS) {
         NavigatorUtils.gotoCodeDetailPage(

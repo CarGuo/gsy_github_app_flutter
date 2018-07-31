@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/CommitFile.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
@@ -49,12 +50,12 @@ class PushCodeItemViewModel {
 
   PushCodeItemViewModel();
 
-  PushCodeItemViewModel.fromMap(map) {
-    String filename = map["filename"];
+  PushCodeItemViewModel.fromMap(CommitFile map) {
+    String filename = map.fileName;
     List<String> nameSplit = filename.split("/");
     name = nameSplit[nameSplit.length - 1];
     path = filename;
-    patch = map["patch"];
-    blob_url = map["blob_url"];
+    patch = map.patch;
+    blob_url = map.blobUrl;
   }
 }
