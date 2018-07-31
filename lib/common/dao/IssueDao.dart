@@ -5,7 +5,6 @@ import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
-import 'package:gsy_github_app_flutter/widget/IssueHeaderItem.dart';
 
 /**
  * Issue相关
@@ -81,7 +80,7 @@ class IssueDao {
     //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      return new DataResult(IssueHeaderViewModel.fromMap(res.data), true);
+      return new DataResult(Issue.fromJson(res.data), true);
     } else {
       return new DataResult(null, false);
     }
