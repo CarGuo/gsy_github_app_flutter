@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
+import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
@@ -79,7 +80,7 @@ class HomeDrawer extends StatelessWidget {
                         return;
                       }
                       CommonUtils.showLoadingDialog(context);
-                      IssueDao.createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": "问题反馈", "body": content}).then((result) {
+                      IssueDao.createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": GSYStrings.home_reply, "body": content}).then((result) {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       });
@@ -87,13 +88,21 @@ class HomeDrawer extends StatelessWidget {
                   }),
               new ListTile(
                   title: new Text(
+                    GSYStrings.home_check_update,
+                    style: GSYConstant.normalText,
+                  ),
+                  onTap: () {
+                    ReposDao.getNewsVersion(context, true);
+                  }),
+              new ListTile(
+                  title: new Text(
                     GSYStrings.home_about,
                     style: GSYConstant.normalText,
                   ),
                   onTap: () {
-                      GetVersion.projectVersion.then((value){
-                        showAboutDialog(context, value);
-                      });
+                    GetVersion.projectVersion.then((value) {
+                      showAboutDialog(context, value);
+                    });
                   }),
               new ListTile(
                   title: new GSYFlexButton(

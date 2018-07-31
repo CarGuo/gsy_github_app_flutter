@@ -221,7 +221,7 @@ class GSYStrings {
   static const String app_version = "版本";
   static const String app_back_tip = "确定要退出应用？";
 
-  static const String app_not_new_version = "没有新版本";
+  static const String app_not_new_version = "当前没有新版本";
   static const String app_version_title = "版本更新";
 
   static const String nothing_now = "目前什么都没有。";
@@ -240,6 +240,7 @@ class GSYStrings {
 
   static const String home_reply = "问题反馈";
   static const String home_about = "关于";
+  static const String home_check_update = "检测更新";
 
   static const String login_username_hint_text = "请输入github用户名";
   static const String login_password_hint_text = "请输入密码";
