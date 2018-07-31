@@ -56,7 +56,7 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
           NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
         });
       case 'user':
-        return new UserItem(data, onPressed: () {
+        return new UserItem(UserItemViewModel.fromMap(data), onPressed: () {
           NavigatorUtils.goPerson(context, data.userName);
         });
       case 'org':

@@ -11,7 +11,6 @@ import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
-import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
@@ -134,13 +133,13 @@ class UserDao {
     String url = Address.getUserFollower(userName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<UserItemViewModel> list = new List();
+      List<User> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+        list.add(new User.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -155,13 +154,13 @@ class UserDao {
     String url = Address.getUserFollow(userName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<UserItemViewModel> list = new List();
+      List<User> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+        list.add(new User.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -234,13 +233,13 @@ class UserDao {
     String url = Address.getMember(userName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<UserItemViewModel> list = new List();
+      List<User> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+        list.add(new User.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {

@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/model/FileModel.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
-import 'package:gsy_github_app_flutter/common/utils/HtmlUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
@@ -49,7 +47,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
 
   ///渲染文件item
   _renderEventItem(index) {
-    FileItemViewModel fileItemViewModel = pullLoadWidgetControl.dataList[index];
+    FileItemViewModel fileItemViewModel = FileItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     IconData iconData = (fileItemViewModel.type == "file") ? GSYICons.REPOS_ITEM_FILE : GSYICons.REPOS_ITEM_DIR;
     Widget trailing = (fileItemViewModel.type == "file") ? null : new Icon(GSYICons.REPOS_ITEM_NEXT, size: 14.0);
     return new GSYCardItem(
@@ -187,8 +185,8 @@ class FileItemViewModel {
 
   FileItemViewModel();
 
-  FileItemViewModel.fromMap(map) {
-    name = map["name"];
-    type = map["type"];
+  FileItemViewModel.fromMap(FileModel map) {
+    name = map.name;
+    type = map.type;
   }
 }

@@ -36,8 +36,8 @@ class _SearchPageState extends GSYListState<SearchPage> {
         NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
     } else if (selectIndex == 1) {
-      return new UserItem(data, onPressed: () {
-        NavigatorUtils.goPerson(context, data.userName);
+      return new UserItem(UserItemViewModel.fromMap(data), onPressed: () {
+        NavigatorUtils.goPerson(context, UserItemViewModel.fromMap(data).userName);
       });
     }
   }

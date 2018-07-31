@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
@@ -53,5 +54,8 @@ class UserItemViewModel {
   String userPic;
   String userName;
 
-  UserItemViewModel(this.userName, this.userPic);
+  UserItemViewModel.fromMap(User user) {
+    userName = user.login;
+    userPic = user.avatar_url;
+  }
 }
