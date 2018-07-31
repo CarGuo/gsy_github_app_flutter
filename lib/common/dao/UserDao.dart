@@ -6,11 +6,11 @@ import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
+import 'package:gsy_github_app_flutter/common/model/Notification.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
-import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
@@ -176,13 +176,13 @@ class UserDao {
     String url = Address.getNotifation(all, participating) + Address.getPageParams(tag, page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<EventViewModel> list = new List();
+      List<Notification> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult([], true);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(EventViewModel.fromNotify(data[i]));
+        list.add(Notification.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {

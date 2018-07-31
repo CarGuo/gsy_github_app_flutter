@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
+import 'package:gsy_github_app_flutter/common/model/Notification.dart' as Model;
 
 /**
  * 通知消息
@@ -29,18 +30,18 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
   _NotifyPageState();
 
   _renderEventItem(index) {
-    EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index];
+    Model.Notification notification = pullLoadWidgetControl.dataList[index];
+    EventViewModel eventViewModel = EventViewModel.fromNotify(notification);
     return new EventItem(eventViewModel, onPressed: () {
-      var eventMap = eventViewModel.eventMap;
-      if (eventMap["unread"]) {
-        UserDao.setNotificationAsReadDao(eventMap["id"].toString());
+      if (notification.unread) {
+        UserDao.setNotificationAsReadDao(notification.id.toString());
       }
-      if (eventMap["subject"]["type"] == 'Issue') {
-        String url = eventMap["subject"]["url"];
+      if (notification.subject.type == 'Issue') {
+        String url = notification.subject.url;
         List<String> tmp = url.split("/");
         String number = tmp[tmp.length - 1];
-        String userName = eventMap["repository"]["owner"]["login"];
-        String reposName = eventMap["repository"]["name"];
+        String userName = notification.repository.owner.login;
+        String reposName = notification.repository.name;
         NavigatorUtils.goIssueDetail(context, userName, reposName, number, needRightLocalIcon: true).then((res) {
           showRefreshLoading();
         });
