@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
+import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -45,7 +46,6 @@ class _PersonState extends GSYListState<PersonPage> {
   String focus = "";
 
   User userInfo = User.empty();
-
 
   String launchUrl = "";
 
@@ -105,8 +105,9 @@ class _PersonState extends GSYListState<PersonPage> {
         NavigatorUtils.goPerson(context, pullLoadWidgetControl.dataList[index - 1].userName);
       });
     } else {
-      return new EventItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
-        EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index - 1].eventMap, "");
+      Event event = pullLoadWidgetControl.dataList[index - 1];
+      return new EventItem(EventViewModel.fromEventMap(event), onPressed: () {
+        EventUtils.ActionUtils(context, event, "");
       });
     }
   }
@@ -147,10 +148,9 @@ class _PersonState extends GSYListState<PersonPage> {
     return new Scaffold(
         appBar: new AppBar(
             title: GSYTitleBar(
-              (userInfo != null && userInfo.login != null) ? userInfo.login : "",
-              rightWidget: GSYCommonOptionWidget(launchUrl),
-            )
-        ),
+          (userInfo != null && userInfo.login != null) ? userInfo.login : "",
+          rightWidget: GSYCommonOptionWidget(launchUrl),
+        )),
         floatingActionButton: new FloatingActionButton(
             child: new Text(focus),
             onPressed: () {
@@ -169,7 +169,7 @@ class _PersonState extends GSYListState<PersonPage> {
             }),
         body: GSYPullLoadWidget(
           pullLoadWidgetControl,
-              (BuildContext context, int index) => _renderEventItem(index),
+          (BuildContext context, int index) => _renderEventItem(index),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIndicatorKey,

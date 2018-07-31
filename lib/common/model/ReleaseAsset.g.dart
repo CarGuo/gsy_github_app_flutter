@@ -8,7 +8,7 @@ part of 'ReleaseAsset.dart';
 
 ReleaseAsset _$ReleaseAssetFromJson(Map<String, dynamic> json) =>
     new ReleaseAsset(
-        json['id'] as String,
+        json['id'] as int,
         json['name'] as String,
         json['label'] as String,
         json['uploader'] == null
@@ -27,7 +27,7 @@ ReleaseAsset _$ReleaseAssetFromJson(Map<String, dynamic> json) =>
         json['browser_download_url'] as String);
 
 abstract class _$ReleaseAssetSerializerMixin {
-  String get id;
+  int get id;
   String get name;
   String get label;
   User get uploader;

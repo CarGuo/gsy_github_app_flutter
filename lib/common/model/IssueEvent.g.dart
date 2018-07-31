@@ -7,7 +7,7 @@ part of 'IssueEvent.dart';
 // **************************************************************************
 
 IssueEvent _$IssueEventFromJson(Map<String, dynamic> json) => new IssueEvent(
-    json['id'] as String,
+    json['id'] as int,
     json['user'] == null
         ? null
         : new User.fromJson(json['user'] as Map<String, dynamic>),
@@ -24,7 +24,7 @@ IssueEvent _$IssueEventFromJson(Map<String, dynamic> json) => new IssueEvent(
     json['html_url'] as String);
 
 abstract class _$IssueEventSerializerMixin {
-  String get id;
+  int get id;
   User get user;
   DateTime get createdAt;
   DateTime get updatedAt;

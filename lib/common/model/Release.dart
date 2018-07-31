@@ -11,7 +11,7 @@ part 'Release.g.dart';
 
 @JsonSerializable()
 class Release extends Object with _$ReleaseSerializerMixin {
-  String id;
+  int id;
   @JsonKey(name: "tag_name")
   String tagName;
   @JsonKey(name: "target_commitish")

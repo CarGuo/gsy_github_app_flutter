@@ -7,7 +7,7 @@ part of 'Release.dart';
 // **************************************************************************
 
 Release _$ReleaseFromJson(Map<String, dynamic> json) => new Release(
-    json['id'] as String,
+    json['id'] as int,
     json['tag_name'] as String,
     json['target_commitish'] as String,
     json['name'] as String,
@@ -33,7 +33,7 @@ Release _$ReleaseFromJson(Map<String, dynamic> json) => new Release(
         ?.toList());
 
 abstract class _$ReleaseSerializerMixin {
-  String get id;
+  int get id;
   String get tagName;
   String get targetCommitish;
   String get name;

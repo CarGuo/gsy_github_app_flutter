@@ -15,7 +15,7 @@ part 'EventPayload.g.dart';
 class EventPayload extends Object with _$EventPayloadSerializerMixin {
 
   @JsonKey(name: "push_id")
-  String pushId;
+  int pushId;
   int size;
   @JsonKey(name: "distinct_size")
   int distinctSize;

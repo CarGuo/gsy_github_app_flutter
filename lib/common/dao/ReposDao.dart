@@ -6,13 +6,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
+import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
-import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
 import 'package:gsy_github_app_flutter/widget/ReleaseItem.dart';
@@ -85,13 +86,13 @@ class ReposDao {
     String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<EventViewModel> list = new List();
+      List<Event> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(EventViewModel.fromEventMap(data[i]));
+        list.add(Event.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -118,13 +119,13 @@ class ReposDao {
     String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page) + "&sha=" + branch;
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<EventViewModel> list = new List();
+      List<RepoCommit> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(EventViewModel.fromCommitMap(data[i]));
+        list.add(RepoCommit.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {

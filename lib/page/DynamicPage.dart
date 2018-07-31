@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
@@ -87,11 +88,12 @@ class _DynamicPageState extends GSYListState<DynamicPage> {
     super.didChangeDependencies();
   }
 
-  _renderEventItem(EventViewModel e) {
+  _renderEventItem(Event e) {
+    EventViewModel eventViewModel = EventViewModel.fromEventMap(e);
     return new EventItem(
-      e,
+      eventViewModel,
       onPressed: () {
-        EventUtils.ActionUtils(context, e.eventMap, "");
+        EventUtils.ActionUtils(context, e, "");
       },
     );
   }

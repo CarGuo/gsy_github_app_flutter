@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
@@ -79,22 +81,20 @@ class EventViewModel {
   String actionTarget;
   var eventMap;
 
-  EventViewModel.fromEventMap(eventMap) {
-    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["created_at"]));
-    actionUser = eventMap["actor"]["display_login"];
-    actionUserPic = eventMap["actor"]["avatar_url"];
-    var other = EventUtils.getActionAndDes(eventMap);
+  EventViewModel.fromEventMap(Event event) {
+    actionTime = CommonUtils.getNewsTimeStr(event.createdAt);
+    actionUser = event.actor.login;
+    actionUserPic = event.actor.avatar_url;
+    var other = EventUtils.getActionAndDes(event);
     actionDes = other["des"];
     actionTarget = other["actionStr"];
-    this.eventMap = eventMap;
   }
 
-  EventViewModel.fromCommitMap(eventMap) {
-    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["commit"]["committer"]["date"]));
-    actionUser = eventMap["commit"]["committer"]["name"];
-    actionDes = "sha:" + eventMap["sha"];
-    actionTarget = eventMap["commit"]["message"];
-    this.eventMap = eventMap;
+  EventViewModel.fromCommitMap(RepoCommit eventMap) {
+    actionTime = CommonUtils.getNewsTimeStr(eventMap.commit.committer.date);
+    actionUser = eventMap.commit.committer.name;
+    actionDes = "sha:" + eventMap.sha;
+    actionTarget = eventMap.commit.message;
   }
 
   EventViewModel.fromNotify(eventMap) {

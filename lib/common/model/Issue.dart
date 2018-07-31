@@ -10,7 +10,7 @@ part 'Issue.g.dart';
 
 @JsonSerializable()
 class Issue extends Object with _$IssueSerializerMixin {
-  String id;
+  int id;
   int number;
   String title;
   String state;
