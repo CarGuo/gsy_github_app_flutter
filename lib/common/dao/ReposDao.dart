@@ -7,6 +7,7 @@ import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/model/Release.dart';
 import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
@@ -16,8 +17,6 @@ import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
-import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
-import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:pub_semver/pub_semver.dart';
 
@@ -405,12 +404,8 @@ class ReposDao {
     String url = Address.getReposCommitsInfo(userName, reposName, sha);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      PushHeaderViewModel pushHeaderViewModel = PushHeaderViewModel.forMap(res.data);
-      var files = res.data["files"];
-      for (int i = 0; i < files.length; i++) {
-        pushHeaderViewModel.files.add(PushCodeItemViewModel.fromMap(files[i]));
-      }
-      return new DataResult(pushHeaderViewModel, true);
+      PushCommit pushCommit = PushCommit.fromJson(res.data);
+      return new DataResult(pushCommit, true);
     } else {
       return new DataResult(null, false);
     }
