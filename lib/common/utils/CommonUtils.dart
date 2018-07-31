@@ -8,7 +8,6 @@ import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /**
