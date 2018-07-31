@@ -39,7 +39,7 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
   _RepositoryDetailIssuePageState(this.userName, this.reposName);
 
   _renderEventItem(index) {
-    IssueItemViewModel issueItemViewModel = pullLoadWidgetControl.dataList[index];
+    IssueItemViewModel issueItemViewModel = IssueItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return new IssueItem(
       issueItemViewModel,
       onPressed: () {
