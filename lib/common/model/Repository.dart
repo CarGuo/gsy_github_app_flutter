@@ -1,3 +1,4 @@
+import 'package:gsy_github_app_flutter/common/model/License.dart';
 import 'package:gsy_github_app_flutter/common/model/RepositoryPermissions.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -86,6 +87,8 @@ class Repository extends Object with _$RepositorySerializerMixin {
 
   User owner;
 
+  License license;
+
   Repository parent;
 
   RepositoryPermissions permissions;
@@ -98,6 +101,7 @@ class Repository extends Object with _$RepositorySerializerMixin {
     this.htmlUrl,
     this.description,
     this.language,
+    this.license,
     this.defaultBranch,
     this.createdAt,
     this.updatedAt,
@@ -127,4 +131,6 @@ class Repository extends Object with _$RepositorySerializerMixin {
   /// from a map. We pass the map to the generated _$UserFromJson constructor.
   /// The constructor is named after the source class, in this case User.
   factory Repository.fromJson(Map<String, dynamic> json) => _$RepositoryFromJson(json);
+
+  Repository.empty();
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -185,23 +186,23 @@ class ReposHeaderViewModel {
 
   ReposHeaderViewModel();
 
-  ReposHeaderViewModel.fromHttpMap(reposName, ownerName, map) {
+  ReposHeaderViewModel.fromHttpMap(ownerName, reposName, Repository map) {
     this.ownerName = ownerName;
-    this.ownerPic = map["owner"]["avatar_url"];
+    this.ownerPic = map.owner.avatar_url;
     this.repositoryName = reposName;
-    this.repositoryStar = map["watchers_count"] != null ? map["watchers_count"].toString() : "";
-    this.repositoryFork = map["forks_count"] != null ? map["forks_count"].toString() : "";
-    this.repositoryWatch = map["subscribers_count"] != null ? map["subscribers_count"].toString() : "";
-    this.repositoryIssue = map["open_issues_count"] != null ? map["open_issues_count"].toString() : "";
-    this.repositoryIssueClose = map["closed_issues_count"] != null ? map["closed_issues_count"].toString() : "";
-    this.repositoryIssueAll = map["all_issues_count"] != null ? map["all_issues_count"].toString() : "";
-    this.repositorySize = ((map["size"] / 1024.0)).toString().substring(0, 3) + "M";
-    this.repositoryType = map["language"];
-    this.repositoryDes = map["description"];
-    this.repositoryIsFork = map["fork"];
-    this.license = map["license"] != null ? map["license"]["name"] : "";
-    this.repositoryParentName = map["parent"] != null ? map["parent"]["full_name"] : null;
-    this.created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map["created_at"]));
-    this.push_at = CommonUtils.getNewsTimeStr(DateTime.parse(map["pushed_at"]));
+    this.repositoryStar = map.watchersCount != null ? map.watchersCount.toString() : "";
+    this.repositoryFork = map.forksCount != null ? map.forksCount.toString() : "";
+    this.repositoryWatch = map.subscribersCount != null ? map.subscribersCount.toString() : "";
+    this.repositoryIssue = map.openIssuesCount != null ? map.openIssuesCount.toString() : "";
+    //this.repositoryIssueClose = map.closedIssuesCount != null ? map.closed_issues_count.toString() : "";
+    //this.repositoryIssueAll = map.all_issues_count != null ? map.all_issues_count.toString() : "";
+    this.repositorySize = ((map.size / 1024.0)).toString().substring(0, 3) + "M";
+    this.repositoryType = map.language;
+    this.repositoryDes = map.description;
+    this.repositoryIsFork = map.fork;
+    this.license = map.license != null ? map.license.name : "";
+    this.repositoryParentName = map.parent != null ? map.parent.fullName : null;
+    this.created_at = CommonUtils.getNewsTimeStr(map.createdAt);
+    this.push_at = CommonUtils.getNewsTimeStr(map.pushedAt);
   }
 }

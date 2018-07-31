@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
+import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
@@ -22,7 +23,7 @@ class ReposDetailInfoPage extends StatefulWidget {
 
   final BranchControl branchControl;
 
-  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName, this.branchControl, { Key key }) : super(key: key);
+  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName, this.branchControl, {Key key}) : super(key: key);
 
   @override
   ReposDetailInfoPageState createState() => ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName, branchControl);
@@ -44,7 +45,7 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new ReposHeaderItem(reposDetailInfoPageControl.reposHeaderViewModel, (index) {
+      return new ReposHeaderItem(ReposHeaderViewModel.fromHttpMap(userName, reposName, reposDetailInfoPageControl.repository), (index) {
         selectIndex = index;
         clearData();
         showRefreshLoading();
@@ -109,5 +110,5 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 }
 
 class ReposDetailInfoPageControl {
-  ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
+  Repository repository =  Repository.empty();
 }
