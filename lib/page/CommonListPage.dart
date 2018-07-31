@@ -51,8 +51,9 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
     var data = pullLoadWidgetControl.dataList[index];
     switch (showType) {
       case 'repository':
-        return new ReposItem(data, onPressed: () {
-          NavigatorUtils.goReposDetail(context, data.ownerName, data.repositoryName);
+        ReposViewModel reposViewModel =  ReposViewModel.fromMap(data);
+        return new ReposItem(reposViewModel, onPressed: () {
+          NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
         });
       case 'user':
         return new UserItem(data, onPressed: () {

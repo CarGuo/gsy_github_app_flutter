@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
@@ -112,14 +113,26 @@ class ReposViewModel {
 
   ReposViewModel();
 
-  ReposViewModel.fromMap(data) {
-    ownerName = data["owner"]["login"];
-    ownerPic = data["owner"]["avatar_url"];
-    repositoryName = data["name"];
-    repositoryStar = data["watchers_count"].toString();
-    repositoryFork = data["forks_count"].toString();
-    repositoryWatch = data["open_issues"].toString();
-    repositoryType = data["language"] ?? '---';
-    repositoryDes = data["description"] ?? '---';
+  ReposViewModel.fromMap(Repository data) {
+    ownerName = data.owner.login;
+    ownerPic = data.owner.avatar_url;
+    repositoryName = data.name;
+    repositoryStar = data.watchersCount.toString();
+    repositoryFork = data.forksCount.toString();
+    repositoryWatch = data.openIssuesCount.toString();
+    repositoryType = data.language ?? '---';
+    repositoryDes = data.description ?? '---';
   }
+
+  ReposViewModel.fromTrendMap(model) {
+    ownerName = model.name;
+    ownerPic = model.contributors[0];
+    repositoryName = model.reposName;
+    repositoryStar = model.starCount;
+    repositoryFork = model.forkCount;
+    repositoryWatch = model.meta;
+    repositoryType = model.language;
+    repositoryDes = model.description;
+  }
+
 }
