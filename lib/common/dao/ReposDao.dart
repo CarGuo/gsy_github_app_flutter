@@ -451,8 +451,8 @@ class ReposDao {
     }
     var res = await getRepositoryReleaseDao("CarGuo", 'GSYGithubAppFlutter', 1, needHtml: false);
     if (res != null && res.result && res.data.length > 0) {
-      //github只能有release的versionName，没有code，囧
-      String versionName = res.data[0].title;
+      Release release = res.data[0];
+      String versionName = release.name;
       if (versionName != null) {
         if (Config.DEBUG) {
           print("versionName " + versionName);
@@ -471,7 +471,7 @@ class ReposDao {
           print("newsHad " + result.toString());
         }
         if (result > 0) {
-          CommonUtils.showUpdateDialog(context, res.data[0].title + ": " + res.data[0].body);
+          CommonUtils.showUpdateDialog(context, release.name + ": " + release.body);
         } else {
           if (showTip) Fluttertoast.showToast(msg: GSYStrings.app_not_new_version);
         }
