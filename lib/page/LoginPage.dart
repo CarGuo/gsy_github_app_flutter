@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    new Image(image: new AssetImage('static/images/logo.png'), width: 90.0, height: 90.0),
+                    new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 90.0, height: 90.0),
                     new Padding(padding: new EdgeInsets.all(10.0)),
                     new GSYInputWidget(
                       hintText: GSYStrings.login_username_hint_text,

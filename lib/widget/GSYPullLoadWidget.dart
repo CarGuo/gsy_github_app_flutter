@@ -94,7 +94,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
         children: <Widget>[
           FlatButton(
             onPressed: () {},
-            child: new Image(image: new AssetImage('static/images/logo.png'), width: 70.0, height: 70.0),
+            child: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 70.0, height: 70.0),
           ),
           Container(
             child: Text(GSYStrings.app_empty, style: GSYConstant.normalText),

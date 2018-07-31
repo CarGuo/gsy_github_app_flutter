@@ -26,7 +26,7 @@ class HomeDrawer extends StatelessWidget {
         builder: (BuildContext context) => AboutDialog(
               applicationName: GSYStrings.app_name,
               applicationVersion: GSYStrings.app_version + ": " + versionName,
-              applicationIcon: new Image(image: new AssetImage('static/images/logo.png'), width: 50.0, height: 50.0),
+              applicationIcon: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 50.0, height: 50.0),
               applicationLegalese: "http://github.com/CarGuo",
             ));
   }
