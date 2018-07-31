@@ -85,11 +85,8 @@
 
 ### 进行中：
 
-* ui调整
-* 主页drawer：个人信息
-* 仓库的：|版本|tag|下载、克隆
-* 本地数据库
-* issue数据统计
+[版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
+  
   
 ### 常见问题
 
