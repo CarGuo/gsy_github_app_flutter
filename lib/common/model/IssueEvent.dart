@@ -10,7 +10,7 @@ part 'IssueEvent.g.dart';
 
 @JsonSerializable()
 class IssueEvent extends Object with _$IssueEventSerializerMixin {
-  String id;
+  int id;
   User user;
   @JsonKey(name: "created_at")
   DateTime createdAt;

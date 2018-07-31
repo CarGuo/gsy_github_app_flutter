@@ -1,7 +1,7 @@
+import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/EventRedux.dart';
-import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 
 /**
  * Redux全局State
@@ -13,7 +13,7 @@ class GSYState {
 
   User userInfo;
 
-  List<EventViewModel> eventList = new List();
+  List<Event> eventList = new List();
 
   GSYState({this.userInfo, this.eventList});
 

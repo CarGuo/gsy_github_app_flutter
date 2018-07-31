@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
+import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
@@ -50,24 +51,20 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
       });
     }
 
-    EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
-
-
     if (selectIndex == 1) {
       return new EventItem(
-        pullLoadWidgetControl.dataList[index - 1],
+        EventViewModel.fromCommitMap(pullLoadWidgetControl.dataList[index - 1]),
         onPressed: () {
-          EventViewModel model = pullLoadWidgetControl.dataList[index - 1];
-          var map = model.eventMap;
-          NavigatorUtils.goPushDetailPage(context, userName, reposName, map["sha"], false);
+          RepoCommit model = pullLoadWidgetControl.dataList[index - 1];
+          NavigatorUtils.goPushDetailPage(context, userName, reposName, model.sha, false);
         },
         needImage: false,
       );
     }
     return new EventItem(
-      pullLoadWidgetControl.dataList[index - 1],
+      EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index - 1]),
       onPressed: () {
-        EventUtils.ActionUtils(context, eventViewModel.eventMap, userName + "/" + reposName);
+        EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index - 1], userName + "/" + reposName);
       },
     );
   }

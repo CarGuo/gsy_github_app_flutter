@@ -8,7 +8,7 @@ part of 'EventPayload.dart';
 
 EventPayload _$EventPayloadFromJson(Map<String, dynamic> json) =>
     new EventPayload()
-      ..pushId = json['push_id'] as String
+      ..pushId = json['push_id'] as int
       ..size = json['size'] as int
       ..distinctSize = json['distinct_size'] as int
       ..ref = json['ref'] as String
@@ -35,7 +35,7 @@ EventPayload _$EventPayloadFromJson(Map<String, dynamic> json) =>
           : new IssueEvent.fromJson(json['comment'] as Map<String, dynamic>);
 
 abstract class _$EventPayloadSerializerMixin {
-  String get pushId;
+  int get pushId;
   int get size;
   int get distinctSize;
   String get ref;

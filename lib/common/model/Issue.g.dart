@@ -7,7 +7,7 @@ part of 'Issue.dart';
 // **************************************************************************
 
 Issue _$IssueFromJson(Map<String, dynamic> json) => new Issue(
-    json['id'] as String,
+    json['id'] as int,
     json['number'] as int,
     json['title'] as String,
     json['state'] as String,
@@ -31,7 +31,7 @@ Issue _$IssueFromJson(Map<String, dynamic> json) => new Issue(
     json['html_url'] as String);
 
 abstract class _$IssueSerializerMixin {
-  String get id;
+  int get id;
   int get number;
   String get title;
   String get state;

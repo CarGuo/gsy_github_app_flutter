@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
+import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -42,9 +41,9 @@ class _MyPageState extends GSYListState<MyPage> {
         },
       );
     }
-    EventViewModel eventViewModel = pullLoadWidgetControl.dataList[index - 1];
-    return new EventItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
-      EventUtils.ActionUtils(context, eventViewModel.eventMap, "");
+    Event event = pullLoadWidgetControl.dataList[index - 1];
+    return new EventItem(EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
+      EventUtils.ActionUtils(context, event, "");
     });
   }
 

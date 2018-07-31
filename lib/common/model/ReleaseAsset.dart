@@ -10,7 +10,7 @@ part 'ReleaseAsset.g.dart';
 
 @JsonSerializable()
 class ReleaseAsset extends Object with _$ReleaseAssetSerializerMixin {
-  String id;
+  int id;
   String name;
   String label;
   User uploader;
