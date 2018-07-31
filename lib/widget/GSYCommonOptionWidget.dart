@@ -12,9 +12,9 @@ import 'package:share/share.dart';
 class GSYCommonOptionWidget extends StatelessWidget {
   final List<GSYOptionModel> otherList;
 
-  final String url;
+  final OptionControl control;
 
-  GSYCommonOptionWidget(this.url, {this.otherList});
+  GSYCommonOptionWidget(this.control, {this.otherList});
 
   _renderHeaderPopItem(List<GSYOptionModel> list) {
     return new PopupMenuButton<GSYOptionModel>(
@@ -40,33 +40,37 @@ class GSYCommonOptionWidget extends StatelessWidget {
   }
 
   _launchURL() async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunch(control.url)) {
+      await launch(control.url);
     } else {
-      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + url);
+      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + control.url);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    String text = GSYStrings.option_share_title + url;
+    String text = GSYStrings.option_share_title + control.url ?? "";
     List<GSYOptionModel> list = [
       new GSYOptionModel(GSYStrings.option_web, GSYStrings.option_web, (model) {
         _launchURL();
       }),
       new GSYOptionModel(GSYStrings.option_copy, GSYStrings.option_copy, (model) {
-        Clipboard.setData(new ClipboardData(text: url));
+        Clipboard.setData(new ClipboardData(text: control.url ?? ""));
         Fluttertoast.showToast(msg: GSYStrings.option_share_copy_success);
       }),
       new GSYOptionModel(GSYStrings.option_share, GSYStrings.option_share, (model) {
         Share.share(text);
       }),
     ];
-    if(otherList != null && otherList.length > 0) {
+    if (otherList != null && otherList.length > 0) {
       list.addAll(otherList);
     }
     return _renderHeaderPopItem(list);
   }
+}
+
+class OptionControl {
+  String url = GSYStrings.app_default_share_url;
 }
 
 class GSYOptionModel {

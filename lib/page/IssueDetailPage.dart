@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/model/Issue.dart';
-import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -54,14 +53,15 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
 
   TextEditingController issueInfoValueControl = new TextEditingController();
 
-  TextEditingController issueInfoCommitValueControl = new TextEditingController();
+  final TextEditingController issueInfoCommitValueControl = new TextEditingController();
+
+  final OptionControl titleOptionControl = new OptionControl();
 
   _IssueDetailPageState(this.issueNum, this.userName, this.reposName, this.needHomeIcon);
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new IssueHeaderItem(issueHeaderViewModel, onPressed: () {
-      });
+      return new IssueHeaderItem(issueHeaderViewModel, onPressed: () {});
     }
     Issue issue = pullLoadWidgetControl.dataList[index - 1];
     return new IssueItem(
@@ -116,8 +116,10 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
   _getHeaderInfo() async {
     var res = await IssueDao.getIssueInfoDao(userName, reposName, issueNum);
     if (res != null && res.result) {
+      Issue issue = res.data;
       setState(() {
-        issueHeaderViewModel = IssueHeaderViewModel.fromMap(res.data);
+        issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue);
+        titleOptionControl.url = issue.htmlUrl;
         headerStatus = true;
       });
     }
@@ -132,13 +134,11 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
       context,
       GSYStrings.issue_edit_issue,
       null,
-          (contentValue) {
+      (contentValue) {
         contentData = contentValue;
       },
-          () {
-        if (contentData == null || contentData
-            .trim()
-            .length == 0) {
+      () {
+        if (contentData == null || contentData.trim().length == 0) {
           Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
           return;
         }
@@ -174,22 +174,18 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     CommonUtils.showEditDialog(
       context,
       GSYStrings.issue_edit_issue,
-          (titleValue) {
+      (titleValue) {
         title = titleValue;
       },
-          (contentValue) {
+      (contentValue) {
         content = contentValue;
       },
-          () {
-        if (title == null || title
-            .trim()
-            .length == 0) {
+      () {
+        if (title == null || title.trim().length == 0) {
           Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_title_not_be_null);
           return;
         }
-        if (content == null || content
-            .trim()
-            .length == 0) {
+        if (content == null || content.trim().length == 0) {
           Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
           return;
         }
@@ -213,9 +209,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     CommonUtils.showEditDialog(context, GSYStrings.issue_reply_issue, null, (replyContent) {
       content = replyContent;
     }, () {
-      if (content == null || content
-          .trim()
-          .length == 0) {
+      if (content == null || content.trim().length == 0) {
         Fluttertoast.showToast(msg: GSYStrings.issue_edit_issue_content_not_be_null);
         return;
       }
@@ -233,41 +227,40 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     List<Widget> bottomWidget = (!headerStatus)
         ? []
         : <Widget>[
-      new FlatButton(
-        onPressed: () {
-          _replyIssue();
-        },
-        child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText),
-      ),
-      new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-      new FlatButton(
-        onPressed: () {
-          _editIssue();
-        },
-        child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText),
-      ),
-      new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-      new FlatButton(
-          onPressed: () {
-            CommonUtils.showLoadingDialog(context);
-            IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then((
-                result) {
-              _getHeaderInfo();
-              Navigator.pop(context);
-            });
-          },
-          child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close, style: GSYConstant.smallText)),
-      new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
-      new FlatButton(
-          onPressed: () {
-            CommonUtils.showLoadingDialog(context);
-            IssueDao.lockIssueDao(userName, reposName, issueNum, issueHeaderViewModel.locked).then((result) {
-              _getHeaderInfo();
-              Navigator.pop(context);
-            });
-          },
-          child: new Text((issueHeaderViewModel.locked) ? GSYStrings.issue_unlock : GSYStrings.issue_lock, style: GSYConstant.smallText)),
-    ];
+            new FlatButton(
+              onPressed: () {
+                _replyIssue();
+              },
+              child: new Text(GSYStrings.issue_reply, style: GSYConstant.smallText),
+            ),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(
+              onPressed: () {
+                _editIssue();
+              },
+              child: new Text(GSYStrings.issue_edit, style: GSYConstant.smallText),
+            ),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(
+                onPressed: () {
+                  CommonUtils.showLoadingDialog(context);
+                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then((result) {
+                    _getHeaderInfo();
+                    Navigator.pop(context);
+                  });
+                },
+                child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close, style: GSYConstant.smallText)),
+            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new FlatButton(
+                onPressed: () {
+                  CommonUtils.showLoadingDialog(context);
+                  IssueDao.lockIssueDao(userName, reposName, issueNum, issueHeaderViewModel.locked).then((result) {
+                    _getHeaderInfo();
+                    Navigator.pop(context);
+                  });
+                },
+                child: new Text((issueHeaderViewModel.locked) ? GSYStrings.issue_unlock : GSYStrings.issue_lock, style: GSYConstant.smallText)),
+          ];
     return bottomWidget;
   }
 
@@ -293,8 +286,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    String url = Address.hostWeb + userName + "/" + reposName + "/issues/" + issueNum;
-    Widget widget = (needHomeIcon) ? null : new GSYCommonOptionWidget(url);
+    Widget widget = (needHomeIcon) ? null : new GSYCommonOptionWidget(titleOptionControl);
     return new Scaffold(
       persistentFooterButtons: _getBottomWidget(),
       appBar: new AppBar(
@@ -310,7 +302,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
       ),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,
-            (BuildContext context, int index) => _renderEventItem(index),
+        (BuildContext context, int index) => _renderEventItem(index),
         handleRefresh,
         onLoadMore,
         refreshKey: refreshIndicatorKey,

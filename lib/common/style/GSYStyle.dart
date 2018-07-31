@@ -209,6 +209,10 @@ class GSYStrings {
   static const String welcomeMessage = "Welcome To Flutter";
 
   static const String app_name = "GSYGithubAppFlutter";
+
+  static const String app_default_share_url = "https://github.com/CarGuo/GithubAppFlutter";
+
+
   static const String app_ok = "确定";
   static const String app_cancel = "取消";
   static const String app_empty = "目前什么也没有哟";
@@ -227,7 +231,7 @@ class GSYStrings {
   static const String option_copy = "复制链接";
   static const String option_share = "分享";
   static const String option_web_launcher_error = "url异常";
-  static const String option_share_title = "分享自GitHubFlutterApp： ";
+  static const String option_share_title = "分享自GSYGitHubFlutter： ";
   static const String option_share_copy_success = "已经复制到粘贴板";
 
   static const String login_text = "登录";

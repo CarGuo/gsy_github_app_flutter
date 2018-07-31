@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
-import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
@@ -31,8 +30,7 @@ class CodeDetailPage extends StatefulWidget {
   CodeDetailPage({this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl});
 
   @override
-  _CodeDetailPageState createState() =>
-      _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
+  _CodeDetailPageState createState() => _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
 }
 
 class _CodeDetailPageState extends State<CodeDetailPage> {
@@ -46,9 +44,11 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
 
   final String htmlUrl;
 
-  String data;
-
   final String title;
+
+  final OptionControl titleOptionControl = new OptionControl();
+
+  String data;
 
   _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
 
@@ -60,6 +60,9 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
         if (res != null && res.result) {
           setState(() {
             data = res.data;
+            if (htmlUrl != null) {
+              titleOptionControl.url = htmlUrl;
+            }
           });
         }
       });
@@ -68,11 +71,6 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    String currentBranch = ((branch == null) ? "" : ("/" + branch));
-    String url = htmlUrl;
-    if (htmlUrl == null) {
-      url = Address.hostWeb + userName + "/" + reposName + "/blob" + currentBranch + path;
-    }
     Widget widget = (data == null)
         ? new Center(
             child: new Container(
@@ -98,7 +96,7 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
       appBar: new AppBar(
         title: GSYTitleBar(
           title,
-          rightWidget: new GSYCommonOptionWidget(url),
+          rightWidget: new GSYCommonOptionWidget(titleOptionControl),
           needRightLocalIcon: false,
         ),
       ),

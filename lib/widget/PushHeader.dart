@@ -106,6 +106,7 @@ class PushHeaderViewModel {
   String editCount = "---";
   String addCount = "---";
   String deleteCount = "---";
+  String htmlUrl = GSYStrings.app_default_share_url;
 
   PushHeaderViewModel();
 
@@ -127,5 +128,6 @@ class PushHeaderViewModel {
     editCount = pushMap.files.length.toString() + "";
     addCount = pushMap.stats.additions.toString() + "";
     deleteCount = pushMap.stats.deletions.toString() + "";
+    htmlUrl = pushMap.htmlUrl;
   }
 }
