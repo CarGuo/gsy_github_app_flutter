@@ -31,8 +31,9 @@ class _SearchPageState extends GSYListState<SearchPage> {
   _renderEventItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
     if (selectIndex == 0) {
-      return new ReposItem(data, onPressed: () {
-        NavigatorUtils.goReposDetail(context, data.ownerName, data.repositoryName);
+      ReposViewModel reposViewModel =  ReposViewModel.fromMap(data);
+      return new ReposItem(reposViewModel, onPressed: () {
+        NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
     } else if (selectIndex == 1) {
       return new UserItem(data, onPressed: () {

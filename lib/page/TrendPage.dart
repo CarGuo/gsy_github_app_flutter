@@ -21,9 +21,10 @@ class _TrendPageState extends GSYListState<TrendPage> {
   TrendTypeModel selectTime = TrendTime[0];
   TrendTypeModel selectType = TrendType[0];
 
-  _renderItem(ReposViewModel e) {
-    return new ReposItem(e, onPressed: () {
-      NavigatorUtils.goReposDetail(context, e.ownerName, e.repositoryName);
+  _renderItem(e) {
+    ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
+    return new ReposItem(reposViewModel, onPressed: () {
+      NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
     });
   }
 

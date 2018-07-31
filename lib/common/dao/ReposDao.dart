@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
+import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
@@ -18,7 +19,6 @@ import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
 import 'package:gsy_github_app_flutter/widget/ReleaseItem.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
-import 'package:gsy_github_app_flutter/widget/ReposItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:pub_semver/pub_semver.dart';
 
@@ -38,23 +38,14 @@ class ReposDao {
     String url = Address.trending(since, languageType);
     var res = await new GitHubTrending().fetchTrending(url);
     if (res != null && res.result && res.data.length > 0) {
-      List<ReposViewModel> list = new List();
+      List<TrendingRepoModel> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
         TrendingRepoModel model = data[i];
-        ReposViewModel reposViewModel = new ReposViewModel();
-        reposViewModel.ownerName = model.name;
-        reposViewModel.ownerPic = model.contributors[0];
-        reposViewModel.repositoryName = model.reposName;
-        reposViewModel.repositoryStar = model.starCount;
-        reposViewModel.repositoryFork = model.forkCount;
-        reposViewModel.repositoryWatch = model.meta;
-        reposViewModel.repositoryType = model.language;
-        reposViewModel.repositoryDes = model.description;
-        list.add(reposViewModel);
+        list.add(model);
       }
       return new DataResult(list, true);
     } else {
@@ -241,14 +232,14 @@ class ReposDao {
     String url = Address.getReposForks(userName, reposName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<ReposViewModel> list = new List();
+      List<Repository> list = new List();
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
-        list.add(ReposViewModel.fromMap(data));
+        list.add(Repository.fromJson(data));
       }
       return new DataResult(list, true);
     } else {
@@ -263,14 +254,14 @@ class ReposDao {
     String url = Address.userStar(userName, sort) + Address.getPageParams("&", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<ReposViewModel> list = new List();
+      List<Repository> list = new List();
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
-        list.add(ReposViewModel.fromMap(data));
+        list.add(Repository.fromJson(data));
       }
       return new DataResult(list, true);
     } else {
@@ -285,14 +276,14 @@ class ReposDao {
     String url = Address.userRepos(userName, sort) + Address.getPageParams("&", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<ReposViewModel> list = new List();
+      List<Repository> list = new List();
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
-        list.add(ReposViewModel.fromMap(data));
+        list.add(Repository.fromJson(data));
       }
       return new DataResult(list, true);
     } else {
@@ -378,14 +369,14 @@ class ReposDao {
     var res = await HttpManager.netFetch(url, null, null, null);
     if (type == null) {
       if (res != null && res.result && res.data["items"] != null) {
-        List<ReposViewModel> list = new List();
+        List<Repository> list = new List();
         var dataList = res.data["items"];
         if (dataList == null || dataList.length == 0) {
           return new DataResult(null, false);
         }
         for (int i = 0; i < dataList.length; i++) {
           var data = dataList[i];
-          list.add(ReposViewModel.fromMap(data));
+          list.add(Repository.fromJson(data));
         }
         return new DataResult(list, true);
       } else {
