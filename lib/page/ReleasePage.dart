@@ -44,7 +44,7 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
   _ReleasePageState(this.userName, this.reposName);
 
   _renderEventItem(index) {
-    ReleaseItemViewModel releaseItemViewModel = pullLoadWidgetControl.dataList[index];
+    ReleaseItemViewModel releaseItemViewModel = ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return new ReleaseItem(
       releaseItemViewModel,
       onPressed: () {

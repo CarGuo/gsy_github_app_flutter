@@ -7,6 +7,7 @@ import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/Release.dart';
 import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
@@ -17,7 +18,6 @@ import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
-import 'package:gsy_github_app_flutter/widget/ReleaseItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:pub_semver/pub_semver.dart';
 
@@ -431,14 +431,14 @@ class ReposDao {
       null,
     );
     if (res != null && res.result && res.data.length > 0) {
-      List<ReleaseItemViewModel> list = new List();
+      List<Release> list = new List();
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
-        list.add(ReleaseItemViewModel.fromMap(data));
+        list.add(Release.fromJson(data));
       }
       return new DataResult(list, true);
     } else {
