@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
+import 'package:gsy_github_app_flutter/common/model/Notification.dart' as Model;
 
 /**
  * 事件Item
@@ -27,23 +28,23 @@ class EventItem extends StatelessWidget {
     Widget des = (eventViewModel.actionDes == null || eventViewModel.actionDes.length == 0)
         ? new Container()
         : new Container(
-        child: new Text(
-          eventViewModel.actionDes,
-          style: GSYConstant.subSmallText,
-          maxLines: 3,
-        ),
-        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-        alignment: Alignment.topLeft);
+            child: new Text(
+              eventViewModel.actionDes,
+              style: GSYConstant.subSmallText,
+              maxLines: 3,
+            ),
+            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+            alignment: Alignment.topLeft);
 
     Widget userImage = (needImage)
         ? new GSYUserIconWidget(
-        padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
-        width: 30.0,
-        height: 30.0,
-        image: eventViewModel.actionUserPic,
-        onPressed: () {
-          NavigatorUtils.goPerson(context, eventViewModel.actionUser);
-        })
+            padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+            width: 30.0,
+            height: 30.0,
+            image: eventViewModel.actionUserPic,
+            onPressed: () {
+              NavigatorUtils.goPerson(context, eventViewModel.actionUser);
+            })
         : Container();
     return new Container(
       child: new GSYCardItem(
@@ -79,7 +80,6 @@ class EventViewModel {
   String actionDes;
   String actionTime;
   String actionTarget;
-  var eventMap;
 
   EventViewModel.fromEventMap(Event event) {
     actionTime = CommonUtils.getNewsTimeStr(event.createdAt);
@@ -97,13 +97,12 @@ class EventViewModel {
     actionTarget = eventMap.commit.message;
   }
 
-  EventViewModel.fromNotify(eventMap) {
-    actionTime = CommonUtils.getNewsTimeStr(DateTime.parse(eventMap["updated_at"]));
-    actionUser = eventMap["repository"]["full_name"];
-    String type = eventMap["subject"]["type"];
-    String status = eventMap["unread"] ? GSYStrings.notify_unread : GSYStrings.notify_readed;
-    actionDes = eventMap["reason"] + "${GSYStrings.notify_type}：$type，${GSYStrings.notify_status}：$status";
-    actionTarget = eventMap["subject"]["title"];
-    this.eventMap = eventMap;
+  EventViewModel.fromNotify(Model.Notification eventMap) {
+    actionTime = CommonUtils.getNewsTimeStr(eventMap.updateAt);
+    actionUser = eventMap.repository.fullName;
+    String type = eventMap.subject.type;
+    String status = eventMap.unread ? GSYStrings.notify_unread : GSYStrings.notify_readed;
+    actionDes = eventMap.reason + "${GSYStrings.notify_type}：$type，${GSYStrings.notify_status}：$status";
+    actionTarget = eventMap.subject.title;
   }
 }
