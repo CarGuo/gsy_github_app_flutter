@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
-import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -47,6 +46,8 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
 
   PushHeaderViewModel pushHeaderViewModel = new PushHeaderViewModel();
 
+  final OptionControl titleOptionControl = new OptionControl();
+
   _PushDetailPageState(this.sha, this.userName, this.reposName, this.needHomeIcon);
 
   @override
@@ -65,6 +66,7 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
           pushHeaderViewModel = PushHeaderViewModel.forMap(pushCommit);
           pullLoadWidgetControl.dataList.addAll(pushCommit.files);
           pullLoadWidgetControl.needLoadMore = false;
+          titleOptionControl.url = pushCommit.htmlUrl;
         });
       }
     }
@@ -119,8 +121,7 @@ class _PushDetailPageState extends GSYListState<PushDetailPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    String url = Address.hostWeb + userName + "/" + reposName + "/commits/" + sha;
-    Widget widget = (needHomeIcon) ? null : new GSYCommonOptionWidget(url);
+    Widget widget = (needHomeIcon) ? null : new GSYCommonOptionWidget(titleOptionControl);
     return new Scaffold(
       appBar: new AppBar(
         title: GSYTitleBar(

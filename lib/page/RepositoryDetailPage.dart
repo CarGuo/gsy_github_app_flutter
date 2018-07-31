@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
-import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -51,6 +48,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final PageController topPageControl = new PageController();
 
+  final OptionControl titleOptionControl = new OptionControl();
+
   GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
 
   GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
@@ -66,6 +65,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     if (result != null && result.result) {
       setState(() {
         reposDetailInfoPageControl.repository = result.data;
+        titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
       });
     }
   }
@@ -227,7 +227,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   _getMoreOtherItem() {
     return [
       new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
-        NavigatorUtils.goReleasePage(context, userName, reposName);
+        NavigatorUtils.goReleasePage(context, userName, reposName, GSYStrings.app_default_share_url);
       }),
     ];
   }
@@ -241,8 +241,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    String url = Address.hostWeb + userName + "/" + reposName;
-    Widget widget = new GSYCommonOptionWidget(url, otherList: _getMoreOtherItem());
+    Widget widget = new GSYCommonOptionWidget(titleOptionControl, otherList: _getMoreOtherItem());
     return new GSYTabBarWidget(
         type: GSYTabBarWidget.TOP_TAB,
         tarWidgetControl: tarBarControl,

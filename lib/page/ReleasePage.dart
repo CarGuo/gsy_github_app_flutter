@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
-import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/HtmlUtils.dart';
@@ -26,11 +25,12 @@ class ReleasePage extends StatefulWidget {
   final String userName;
 
   final String reposName;
+  final String htmlUrl;
 
-  ReleasePage(this.userName, this.reposName);
+  ReleasePage(this.userName, this.reposName, this.htmlUrl);
 
   @override
-  _ReleasePageState createState() => _ReleasePageState(this.userName, this.reposName);
+  _ReleasePageState createState() => _ReleasePageState(this.userName, this.reposName, this.htmlUrl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -39,9 +39,13 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
 
   final String reposName;
 
+  final String htmlUrl;
+
+  final OptionControl titleOptionControl = new OptionControl();
+
   int selectIndex = 0;
 
-  _ReleasePageState(this.userName, this.reposName);
+  _ReleasePageState(this.userName, this.reposName, this.htmlUrl);
 
   _renderEventItem(index) {
     ReleaseItemViewModel releaseItemViewModel = ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
@@ -79,7 +83,7 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
   }
 
   _getUrl() {
-    return selectIndex == 0 ? Address.hostWeb + userName + "/" + reposName + "/releases" : Address.hostWeb + userName + "/" + reposName + "/tags";
+    return selectIndex == 0 ? htmlUrl : htmlUrl;
   }
 
   _resolveSelectIndex() {
@@ -107,6 +111,9 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
 
   @override
   requestRefresh() async {
+    setState(() {
+      titleOptionControl.url = htmlUrl;
+    });
     return await _getDataLogic();
   }
 
@@ -119,7 +126,7 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
       appBar: new AppBar(
         title: GSYTitleBar(
           reposName,
-          rightWidget: new GSYCommonOptionWidget(url),
+          rightWidget: new GSYCommonOptionWidget(titleOptionControl),
         ),
         bottom: new GSYSelectItemWidget(
           [

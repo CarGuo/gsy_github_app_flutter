@@ -45,7 +45,7 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
   _CommonListPageState(this.title, this.showType, this.dataType, this.userName, this.reposName);
 
   _renderItem(index) {
-    if(pullLoadWidgetControl.dataList == 0) {
+    if(pullLoadWidgetControl.dataList.length == 0) {
       return null;
     }
     var data = pullLoadWidgetControl.dataList[index];

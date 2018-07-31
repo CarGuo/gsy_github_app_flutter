@@ -7,7 +7,6 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
-import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
@@ -47,7 +46,7 @@ class _PersonState extends GSYListState<PersonPage> {
 
   User userInfo = User.empty();
 
-  String launchUrl = "";
+  final OptionControl titleOptionControl = new OptionControl();
 
   _PersonState(this.userName);
 
@@ -63,6 +62,7 @@ class _PersonState extends GSYListState<PersonPage> {
       userInfo = userResult.data;
       setState(() {
         userInfo = userResult.data;
+        titleOptionControl.url = userInfo.html_url;
       });
     } else {
       return null;
@@ -72,7 +72,6 @@ class _PersonState extends GSYListState<PersonPage> {
       pullLoadWidgetControl.dataList.clear();
       setState(() {
         pullLoadWidgetControl.dataList.addAll(res.data);
-        launchUrl = Address.hostWeb + userInfo.login;
       });
     }
     resolveDataResult(res);
@@ -149,7 +148,7 @@ class _PersonState extends GSYListState<PersonPage> {
         appBar: new AppBar(
             title: GSYTitleBar(
           (userInfo != null && userInfo.login != null) ? userInfo.login : "",
-          rightWidget: GSYCommonOptionWidget(launchUrl),
+          rightWidget: GSYCommonOptionWidget(titleOptionControl),
         )),
         floatingActionButton: new FloatingActionButton(
             child: new Text(focus),
