@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
+import 'package:gsy_github_app_flutter/common/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
@@ -62,9 +63,9 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
       return new IssueHeaderItem(issueHeaderViewModel, onPressed: () {
       });
     }
-    IssueItemViewModel issueItemViewModel = pullLoadWidgetControl.dataList[index - 1];
+    Issue issue = pullLoadWidgetControl.dataList[index - 1];
     return new IssueItem(
-      issueItemViewModel,
+      IssueItemViewModel.fromMap(issue, needTitle: false),
       hideBottom: true,
       limitComment: false,
       onPressed: () {
@@ -86,14 +87,14 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                         color: Colors.white,
                         text: GSYStrings.issue_edit_issue_edit_commit,
                         onPress: () {
-                          _editCommit(issueItemViewModel.id, issueItemViewModel.issueComment);
+                          _editCommit(issue.id.toString(), issue.title);
                         },
                       ),
                       new GSYFlexButton(
                         color: Colors.white,
                         text: GSYStrings.issue_edit_issue_delete_commit,
                         onPress: () {
-                          _deleteCommit(issueItemViewModel.id);
+                          _deleteCommit(issue.id.toString());
                         },
                       ),
                     ],

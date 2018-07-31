@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
+import 'package:gsy_github_app_flutter/common/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/widget/IssueHeaderItem.dart';
-import 'package:gsy_github_app_flutter/widget/IssueItem.dart';
 
 /**
  * Issue相关
@@ -27,13 +27,13 @@ class IssueDao {
     String url = Address.getReposIssue(userName, repository, state, sort, direction) + Address.getPageParams("&", page);
     var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}, null);
     if (res != null && res.result) {
-      List<IssueItemViewModel> list = new List();
+      List<Issue> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(IssueItemViewModel.fromMap(data[i]));
+        list.add(Issue.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -59,13 +59,13 @@ class IssueDao {
     String url = Address.repositoryIssueSearch(qu) + Address.getPageParams("&", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<IssueItemViewModel> list = new List();
+      List<Issue> list = new List();
       var data = res.data["items"];
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(IssueItemViewModel.fromMap(data[i]));
+        list.add(Issue.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -95,13 +95,13 @@ class IssueDao {
     //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<IssueItemViewModel> list = new List();
+      List<Issue> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(IssueItemViewModel.fromMap(data[i], needTitle: false));
+        list.add(Issue.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
