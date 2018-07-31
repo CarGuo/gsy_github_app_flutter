@@ -101,8 +101,8 @@ class _PersonState extends GSYListState<PersonPage> {
       return new UserHeaderItem(userInfo, beStaredCount);
     }
     if (userInfo.type == "Organization") {
-      return new UserItem(pullLoadWidgetControl.dataList[index - 1], onPressed: () {
-        NavigatorUtils.goPerson(context, pullLoadWidgetControl.dataList[index - 1].userName);
+      return new UserItem(UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
+        NavigatorUtils.goPerson(context, UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]).userName);
       });
     } else {
       Event event = pullLoadWidgetControl.dataList[index - 1];

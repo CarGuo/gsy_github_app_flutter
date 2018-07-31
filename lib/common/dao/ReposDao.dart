@@ -7,17 +7,17 @@ import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/FileModel.dart';
 import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/model/Release.dart';
 import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
+import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
-import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
-import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 /**
@@ -138,15 +138,15 @@ class ReposDao {
       if (text) {
         return new DataResult(res.data, true);
       }
-      List<FileItemViewModel> list = new List();
+      List<FileModel> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
-      List<FileItemViewModel> dirs = [];
-      List<FileItemViewModel> files = [];
+      List<FileModel> dirs = [];
+      List<FileModel> files = [];
       for (int i = 0; i < data.length; i++) {
-        FileItemViewModel file = FileItemViewModel.fromMap(data[i]);
+        FileModel file = FileModel.fromJson(data[i]);
         if (file.type == 'file') {
           files.add(file);
         } else {
@@ -188,13 +188,13 @@ class ReposDao {
     String url = Address.getReposWatcher(userName, reposName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<UserItemViewModel> list = new List();
+      List<User> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+        list.add(new User.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -209,13 +209,13 @@ class ReposDao {
     String url = Address.getReposStar(userName, reposName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<UserItemViewModel> list = new List();
+      List<User> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+        list.add(new User.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -382,13 +382,13 @@ class ReposDao {
       }
     } else {
       if (res != null && res.result && res.data["items"] != null) {
-        List<UserItemViewModel> list = new List();
+        List<User> list = new List();
         var data = res.data["items"];
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
         }
         for (int i = 0; i < data.length; i++) {
-          list.add(new UserItemViewModel(data[i]['login'], data[i]["avatar_url"]));
+          list.add(new User.fromJson(data[i]));
         }
         return new DataResult(list, true);
       } else {
