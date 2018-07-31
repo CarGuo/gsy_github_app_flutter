@@ -22,7 +22,7 @@ class UserItem extends StatelessWidget {
         padding: EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
         icon: new ClipOval(
           child: new FadeInImage.assetNetwork(
-            placeholder: "static/images/logo.png",
+            placeholder: GSYICons.DEFAULT_USER_ICON,
             //预览图
             fit: BoxFit.fitWidth,
             image: userItemViewModel.userPic,
