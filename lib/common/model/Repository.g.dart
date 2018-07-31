@@ -14,6 +14,9 @@ Repository _$RepositoryFromJson(Map<String, dynamic> json) => new Repository(
     json['html_url'] as String,
     json['description'] as String,
     json['language'] as String,
+    json['license'] == null
+        ? null
+        : new License.fromJson(json['license'] as Map<String, dynamic>),
     json['default_branch'] as String,
     json['created_at'] == null
         ? null
@@ -80,6 +83,7 @@ abstract class _$RepositorySerializerMixin {
   bool get hasWiki;
   bool get hasPages;
   User get owner;
+  License get license;
   Repository get parent;
   RepositoryPermissions get permissions;
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -111,6 +115,7 @@ abstract class _$RepositorySerializerMixin {
         'has_wiki': hasWiki,
         'has_pages': hasPages,
         'owner': owner,
+        'license': license,
         'parent': parent,
         'permissions': permissions
       };

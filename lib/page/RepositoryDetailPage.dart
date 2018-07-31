@@ -65,7 +65,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     var result = await ReposDao.getRepositoryDetailDao(userName, reposName, branchControl.currentBranch);
     if (result != null && result.result) {
       setState(() {
-        reposDetailInfoPageControl.reposHeaderViewModel = result.data;
+        reposDetailInfoPageControl.repository = result.data;
       });
     }
   }
@@ -93,8 +93,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   }
 
   _refresh() {
-    this._getReposStatus();
     this._getReposDetail();
+    this._getReposStatus();
   }
 
   _renderBranchPopItem(String data, List<String> list, onSelected) {

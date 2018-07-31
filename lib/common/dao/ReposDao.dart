@@ -18,7 +18,6 @@ import 'package:gsy_github_app_flutter/page/RepositoryFileListPage.dart';
 import 'package:gsy_github_app_flutter/widget/PushCoedItem.dart';
 import 'package:gsy_github_app_flutter/widget/PushHeader.dart';
 import 'package:gsy_github_app_flutter/widget/ReleaseItem.dart';
-import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
 import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:pub_semver/pub_semver.dart';
 
@@ -64,7 +63,7 @@ class ReposDao {
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
       }
-      return new DataResult(ReposHeaderViewModel.fromHttpMap(reposName, userName, data), true);
+      return new DataResult(Repository.fromJson(data), true);
     } else {
       return new DataResult(null, false);
     }
