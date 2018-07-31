@@ -56,64 +56,70 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return new StoreBuilder<GSYState>(builder: (context, store) {
-      return new Container(
-        color: Color(GSYColors.primaryValue),
-        child: new Center(
-          child: new Card(
-            elevation: 5.0,
-            shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            color: Color(GSYColors.cardWhite),
-            margin: const EdgeInsets.all(30.0),
-            child: new Padding(
-              padding: new EdgeInsets.only(left: 30.0, top: 40.0, right: 30.0, bottom: 80.0),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  new Image(image: new AssetImage('static/images/logo.png'), width: 90.0, height: 90.0),
-                  new Padding(padding: new EdgeInsets.all(10.0)),
-                  new GSYInputWidget(
-                    hintText: GSYStrings.login_username_hint_text,
-                    iconData: GSYICons.LOGIN_USER,
-                    onChanged: (String value) {
-                      _userName = value;
-                    },
-                    controller: userController,
-                  ),
-                  new Padding(padding: new EdgeInsets.all(10.0)),
-                  new GSYInputWidget(
-                    hintText: GSYStrings.login_password_hint_text,
-                    iconData: GSYICons.LOGIN_PW,
-                    obscureText: true,
-                    onChanged: (String value) {
-                      _password = value;
-                    },
-                    controller: pwController,
-                  ),
-                  new Padding(padding: new EdgeInsets.all(30.0)),
-                  new GSYFlexButton(
-                    text: GSYStrings.login_text,
-                    color: Color(GSYColors.primaryValue),
-                    textColor: Color(GSYColors.textWhite),
-                    onPress: () {
-                      if (_userName == null || _userName.length == 0) {
-                        return;
-                      }
-                      if (_password == null || _password.length == 0) {
-                        return;
-                      }
-                      CommonUtils.showLoadingDialog(context);
-                      UserDao.login(_userName, _password, store).then((res) {
-                        Navigator.pop(context);
-                        if (res != null && res.result) {
-                          new Future.delayed(const Duration(seconds: 1), () {
-                            NavigatorUtils.goHome(context);
-                          });
+      return new GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: new Container(
+          color: Color(GSYColors.primaryValue),
+          child: new Center(
+            child: new Card(
+              elevation: 5.0,
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              color: Color(GSYColors.cardWhite),
+              margin: const EdgeInsets.all(30.0),
+              child: new Padding(
+                padding: new EdgeInsets.only(left: 30.0, top: 40.0, right: 30.0, bottom: 80.0),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Image(image: new AssetImage('static/images/logo.png'), width: 90.0, height: 90.0),
+                    new Padding(padding: new EdgeInsets.all(10.0)),
+                    new GSYInputWidget(
+                      hintText: GSYStrings.login_username_hint_text,
+                      iconData: GSYICons.LOGIN_USER,
+                      onChanged: (String value) {
+                        _userName = value;
+                      },
+                      controller: userController,
+                    ),
+                    new Padding(padding: new EdgeInsets.all(10.0)),
+                    new GSYInputWidget(
+                      hintText: GSYStrings.login_password_hint_text,
+                      iconData: GSYICons.LOGIN_PW,
+                      obscureText: true,
+                      onChanged: (String value) {
+                        _password = value;
+                      },
+                      controller: pwController,
+                    ),
+                    new Padding(padding: new EdgeInsets.all(30.0)),
+                    new GSYFlexButton(
+                      text: GSYStrings.login_text,
+                      color: Color(GSYColors.primaryValue),
+                      textColor: Color(GSYColors.textWhite),
+                      onPress: () {
+                        if (_userName == null || _userName.length == 0) {
+                          return;
                         }
-                      });
-                    },
-                  )
-                ],
+                        if (_password == null || _password.length == 0) {
+                          return;
+                        }
+                        CommonUtils.showLoadingDialog(context);
+                        UserDao.login(_userName, _password, store).then((res) {
+                          Navigator.pop(context);
+                          if (res != null && res.result) {
+                            new Future.delayed(const Duration(seconds: 1), () {
+                              NavigatorUtils.goHome(context);
+                            });
+                          }
+                        });
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           ),
