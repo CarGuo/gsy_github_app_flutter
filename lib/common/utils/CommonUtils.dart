@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -75,6 +77,11 @@ class CommonUtils {
     return image;
   }
 
+  static copy(String data) {
+    Clipboard.setData(new ClipboardData(text: data));
+    Fluttertoast.showToast(msg: GSYStrings.option_share_copy_success);
+  }
+
   static launchUrl(context, String url) {
     if (url == null && url.length == 0) return;
     Uri parseUrl = Uri.parse(url);
@@ -107,7 +114,8 @@ class CommonUtils {
     if (url.startsWith("http")) {
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
-      NavigatorUtils.goGSYWebView(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
+      NavigatorUtils.goGSYWebView(
+          context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
     }
   }
 

@@ -97,6 +97,13 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                           _deleteCommit(issue.id.toString());
                         },
                       ),
+                      new GSYFlexButton(
+                        color: Colors.white,
+                        text: GSYStrings.issue_edit_issue_copy_commit,
+                        onPress: () {
+                          CommonUtils.copy(issue.body);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -244,12 +251,14 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);
-                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then((result) {
+                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then(
+                      (result) {
                     _getHeaderInfo();
                     Navigator.pop(context);
                   });
                 },
-                child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close, style: GSYConstant.smallText)),
+                child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close,
+                    style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {

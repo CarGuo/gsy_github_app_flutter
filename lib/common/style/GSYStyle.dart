@@ -301,6 +301,7 @@ class GSYStrings {
   static const String issue_edit_issue_commit = "编译回复";
   static const String issue_edit_issue_edit_commit = "编辑";
   static const String issue_edit_issue_delete_commit = "删除";
+  static const String issue_edit_issue_copy_commit = "复制";
   static const String issue_edit_issue_content_not_be_null = "内容不能为空";
   static const String issue_edit_issue_title_not_be_null = "标题不能为空";
   static const String issue_edit_issue_title_tip = "请输入标题";
