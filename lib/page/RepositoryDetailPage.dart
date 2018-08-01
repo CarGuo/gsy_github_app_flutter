@@ -18,7 +18,6 @@ import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
  * Created by guoshuyu
  * Date: 2018-07-18
  */
-
 class RepositoryDetailPage extends StatefulWidget {
   final String userName;
 
@@ -30,7 +29,7 @@ class RepositoryDetailPage extends StatefulWidget {
   _RepositoryDetailPageState createState() => _RepositoryDetailPageState(userName, reposName);
 }
 
-// ignore: mixin_inherits_from_not_object
+
 class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
 
@@ -226,8 +225,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   _getMoreOtherItem() {
     return [
+      ///Release Page
       new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
-        NavigatorUtils.goReleasePage(context, userName, reposName, GSYStrings.app_default_share_url);
+        String releaseUrl = reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/releases";
+        String tagUrl = reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/tags";
+        NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
       }),
     ];
   }

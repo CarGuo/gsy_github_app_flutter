@@ -53,14 +53,15 @@ class NavigatorUtils {
   }
 
   ///仓库版本列表
-  static Future<Null> goReleasePage(BuildContext context, String userName, String reposName, String htmlUrl) {
+  static Future<Null> goReleasePage(BuildContext context, String userName, String reposName, String releaseUrl, String tagUrl) {
     return Navigator.push(
         context,
         new MaterialPageRoute(
             builder: (context) => new ReleasePage(
                   userName,
                   reposName,
-                  htmlUrl,
+                  releaseUrl,
+                  tagUrl,
                 )));
   }
 
@@ -92,7 +93,8 @@ class NavigatorUtils {
   }
 
   ///文件代码详情
-  static gotoCodeDetailPage(BuildContext context, {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+  static gotoCodeDetailPage(BuildContext context,
+      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
     Navigator.push(
         context,
         new MaterialPageRoute(

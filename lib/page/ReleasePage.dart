@@ -25,12 +25,13 @@ class ReleasePage extends StatefulWidget {
   final String userName;
 
   final String reposName;
-  final String htmlUrl;
+  final String releaseUrl;
+  final String tagUrl;
 
-  ReleasePage(this.userName, this.reposName, this.htmlUrl);
+  ReleasePage(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
 
   @override
-  _ReleasePageState createState() => _ReleasePageState(this.userName, this.reposName, this.htmlUrl);
+  _ReleasePageState createState() => _ReleasePageState(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -39,13 +40,15 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
 
   final String reposName;
 
-  final String htmlUrl;
+  final String releaseUrl;
+
+  final String tagUrl;
 
   final OptionControl titleOptionControl = new OptionControl();
 
   int selectIndex = 0;
 
-  _ReleasePageState(this.userName, this.reposName, this.htmlUrl);
+  _ReleasePageState(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
 
   _renderEventItem(index) {
     ReleaseItemViewModel releaseItemViewModel = ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
@@ -83,7 +86,7 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
   }
 
   _getUrl() {
-    return selectIndex == 0 ? htmlUrl : htmlUrl;
+    return selectIndex == 0 ? releaseUrl : tagUrl;
   }
 
   _resolveSelectIndex() {
@@ -112,7 +115,7 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
   @override
   requestRefresh() async {
     setState(() {
-      titleOptionControl.url = htmlUrl;
+      titleOptionControl.url = _getUrl();
     });
     return await _getDataLogic();
   }
