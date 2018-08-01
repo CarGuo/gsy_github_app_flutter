@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
 /**
+ * 推送修改代码Item
  * Created by guoshuyu
  * Date: 2018-07-27
  */
@@ -18,6 +19,7 @@ class PushCodeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       new Container(
+        ///修改文件路径
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 0.0),
         child: new Text(
           pushCodeItemViewModel.path,
@@ -25,6 +27,7 @@ class PushCodeItem extends StatelessWidget {
         ),
       ),
       new GSYCardItem(
+        ///修改文件名
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
         child: new ListTile(
           title: new Text(pushCodeItemViewModel.name, style: GSYConstant.subSmallText),

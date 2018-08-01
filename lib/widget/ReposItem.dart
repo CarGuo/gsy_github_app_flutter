@@ -18,6 +18,7 @@ class ReposItem extends StatelessWidget {
 
   ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
+  ///仓库item的底部状态，比如star数量等
   _getBottomItem(IconData icon, String text, {int flex = 2}) {
     return new Expanded(
       flex: flex,
@@ -48,6 +49,7 @@ class ReposItem extends StatelessWidget {
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        ///头像
                         new GSYUserIconWidget(
                             padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
                             width: 40.0,
@@ -60,7 +62,10 @@ class ReposItem extends StatelessWidget {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              ///仓库名
                               new Text(reposViewModel.repositoryName, style: GSYConstant.normalTextBold),
+
+                              ///用户名
                               new GSYIConText(
                                 GSYICons.REPOS_ITEM_USER,
                                 reposViewModel.ownerName,
@@ -72,10 +77,14 @@ class ReposItem extends StatelessWidget {
                             ],
                           ),
                         ),
+
+                        ///仓库语言
                         new Text(reposViewModel.repositoryType, style: GSYConstant.subSmallText),
                       ],
                     ),
                     new Container(
+
+                        ///仓库描述
                         child: new Text(
                           reposViewModel.repositoryDes,
                           style: GSYConstant.subSmallText,
@@ -85,6 +94,8 @@ class ReposItem extends StatelessWidget {
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
                     new Padding(padding: EdgeInsets.all(10.0)),
+
+                    ///仓库状态数值
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -134,5 +145,4 @@ class ReposViewModel {
     repositoryType = model.language;
     repositoryDes = model.description;
   }
-
 }

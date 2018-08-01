@@ -23,8 +23,10 @@ class IssueHeaderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color issueStateColor = issueHeaderViewModel.state == "open" ? Colors.green : Colors.red;
+    ///底部Issue状态
     Widget bottomContainer = new Row(
       children: <Widget>[
+        ///issue 关闭打开状态
         new GSYIConText(
           GSYICons.ISSUE_ITEM_ISSUE,
           issueHeaderViewModel.state,
@@ -37,8 +39,10 @@ class IssueHeaderItem extends StatelessWidget {
           padding: 2.0,
         ),
         new Padding(padding: new EdgeInsets.all(2.0)),
+        ///issue issue编码
         new Text(issueHeaderViewModel.issueTag, style: GSYConstant.smallTextWhite),
         new Padding(padding: new EdgeInsets.all(2.0)),
+        ///issue 评论数
         new GSYIConText(
           GSYICons.ISSUE_ITEM_COMMENT,
           issueHeaderViewModel.commentCount,
@@ -61,6 +65,7 @@ class IssueHeaderItem extends StatelessWidget {
               new Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  ///头像
                   new GSYUserIconWidget(
                       padding: const EdgeInsets.only(top: 0.0, right: 10.0, left: 0.0),
                       width: 50.0,
@@ -75,7 +80,9 @@ class IssueHeaderItem extends StatelessWidget {
                       children: <Widget>[
                         new Row(
                           children: <Widget>[
+                            ///名称
                             new Expanded(child: new Text(issueHeaderViewModel.actionUser, style: GSYConstant.normalTextWhite)),
+                            ///时间
                             new Text(
                               issueHeaderViewModel.actionTime,
                               style: GSYConstant.subSmallText,
@@ -86,6 +93,7 @@ class IssueHeaderItem extends StatelessWidget {
                         new Padding(padding: new EdgeInsets.all(2.0)),
                         bottomContainer,
                         new Container(
+                            ///评论标题
                             child: new Text(
                               issueHeaderViewModel.issueComment,
                               style: GSYConstant.smallTextWhite,
@@ -101,6 +109,7 @@ class IssueHeaderItem extends StatelessWidget {
                 ],
               ),
               new Container(
+                ///评论内容
                   child: new Text(
                     issueHeaderViewModel.issueDesHtml,
                     style: GSYConstant.smallTextWhite,

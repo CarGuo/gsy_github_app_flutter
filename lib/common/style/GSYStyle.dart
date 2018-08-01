@@ -124,6 +124,11 @@ class GSYConstant {
     fontSize: smallTextSize,
   );
 
+  static const minSmallText = TextStyle(
+    color: Color(GSYColors.subTextColor),
+    fontSize: minTextSize,
+  );
+
   static const middleText = TextStyle(
     color: Color(GSYColors.mainTextColor),
     fontSize: middleTextWhiteSize,

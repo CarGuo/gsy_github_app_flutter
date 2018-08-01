@@ -19,6 +19,7 @@ class ReposHeaderItem extends StatelessWidget {
 
   ReposHeaderItem(this.reposHeaderViewModel, this.selectItemChanged) : super();
 
+  ///底部仓库状态信息，比如star数量等
   _getBottomItem(IconData icon, String text, onPressed) {
     return new Expanded(
       child: new Center(
@@ -54,6 +55,7 @@ class ReposHeaderItem extends StatelessWidget {
         new GSYCardItem(
           color: new Color(GSYColors.primaryValue),
           child: new Container(
+            ///背景头像
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 fit: BoxFit.cover,
@@ -61,6 +63,7 @@ class ReposHeaderItem extends StatelessWidget {
               ),
             ),
             child: new Container(
+              ///透明黑色遮罩
               decoration: new BoxDecoration(
                 color: Color(GSYColors.primaryDarkValue & 0xA0FFFFFF),
               ),
@@ -71,6 +74,7 @@ class ReposHeaderItem extends StatelessWidget {
                   children: <Widget>[
                     new Row(
                       children: <Widget>[
+                        ///用户名
                         new RawMaterialButton(
                           constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
                           padding: new EdgeInsets.all(0.0),
@@ -80,25 +84,33 @@ class ReposHeaderItem extends StatelessWidget {
                           child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextActionWhiteBold),
                         ),
                         new Text(" /", style: GSYConstant.normalTextMitWhiteBold),
+
+                        ///仓库名
                         new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
                       ],
                     ),
                     new Row(
                       children: <Widget>[
-                        new Text(reposHeaderViewModel.repositoryType ?? "--",
-                            style: GSYConstant.subLightSmallText),
+                        ///仓库语言
+                        new Text(reposHeaderViewModel.repositoryType ?? "--", style: GSYConstant.subLightSmallText),
                         new Container(width: 5.3, height: 1.0),
-                        new Text(reposHeaderViewModel.repositorySize ?? "--",
-                            style: GSYConstant.subLightSmallText),
+
+                        ///仓库大小
+                        new Text(reposHeaderViewModel.repositorySize ?? "--", style: GSYConstant.subLightSmallText),
                         new Container(width: 5.3, height: 1.0),
+
+                        ///仓库协议
                         new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.subLightSmallText),
                       ],
                     ),
+
+                    ///仓库描述
                     new Container(
-                        child:
-                            new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.subLightSmallText),
+                        child: new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.subLightSmallText),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
+
+                    ///创建状态
                     new Container(
                         child: new Text(infoText, style: GSYConstant.subLightSmallText),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
@@ -108,6 +120,8 @@ class ReposHeaderItem extends StatelessWidget {
                     ),
                     new Padding(
                         padding: new EdgeInsets.all(0.0),
+
+                        ///创建数值状态
                         child: new Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -152,6 +166,7 @@ class ReposHeaderItem extends StatelessWidget {
             ),
           ),
         ),
+        ///底部头
         new GSYSelectItemWidget([
           GSYStrings.repos_tab_activity,
           GSYStrings.repos_tab_commits,
