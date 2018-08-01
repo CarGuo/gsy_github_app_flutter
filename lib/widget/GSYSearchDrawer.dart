@@ -145,6 +145,7 @@ var searchFilterType = [
 var searchLanguageType = [
   FilterModel(name: "trendAll", value: null, select: true),
   FilterModel(name: "Java", value: 'Java', select: false),
+  FilterModel(name: "Dart", value: 'Dart', select: false),
   FilterModel(name: "Objective_C", value: 'Objective-C', select: false),
   FilterModel(name: "Swift", value: 'Swift', select: false),
   FilterModel(name: "JavaScript", value: 'JavaScript', select: false),
