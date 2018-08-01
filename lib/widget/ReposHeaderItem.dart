@@ -166,6 +166,7 @@ class ReposHeaderItem extends StatelessWidget {
             ),
           ),
         ),
+
         ///底部头
         new GSYSelectItemWidget([
           GSYStrings.repos_tab_activity,
@@ -203,6 +204,9 @@ class ReposHeaderViewModel {
 
   ReposHeaderViewModel.fromHttpMap(ownerName, reposName, Repository map) {
     this.ownerName = ownerName;
+    if (map == null || map.owner == null) {
+      return;
+    }
     this.ownerPic = map.owner.avatar_url;
     this.repositoryName = reposName;
     this.repositoryStar = map.watchersCount != null ? map.watchersCount.toString() : "";

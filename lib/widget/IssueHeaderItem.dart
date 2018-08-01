@@ -61,7 +61,7 @@ class IssueHeaderItem extends StatelessWidget {
 
   ///关闭操作人
   _renderCloseByText() {
-    return (issueHeaderViewModel.closed_by == null)
+    return (issueHeaderViewModel.closed_by == null || issueHeaderViewModel.closed_by.trim().length == 0)
         ? new Container()
         : new Container(
             child: new Text(
@@ -152,7 +152,7 @@ class IssueHeaderViewModel {
   String actionUser = "---";
   String actionUserPic = "---";
 
-  String closed_by = "---";
+  String closed_by = "";
   bool locked = false;
   String issueComment = "---";
   String issueDesHtml = "---";
