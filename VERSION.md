@@ -18,7 +18,6 @@
 * issue尝试换成htmlview
 * markdown点击跳转。
 * webview点击跳转。
-* 文件夹图标。
 * markdown htmlview 表格。
 
 ### 1.0.2 (更新中)

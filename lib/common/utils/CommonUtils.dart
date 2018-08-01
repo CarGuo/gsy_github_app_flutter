@@ -105,7 +105,7 @@ class CommonUtils {
           launchWebView(context, "", url);
         }
       }
-    } else {
+    } else if (url != null && url.startsWith("http")) {
       launchWebView(context, "", url);
     }
   }
