@@ -23,9 +23,7 @@ class DynamicPage extends StatefulWidget {
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-// ignore: mixin_inherits_from_not_object
-class _DynamicPageState extends GSYListState<DynamicPage> {
-
+class _DynamicPageState extends GSYListState<DynamicPage> with WidgetsBindingObserver {
   @override
   Future<Null> handleRefresh() async {
     if (isLoading) {
@@ -60,23 +58,27 @@ class _DynamicPageState extends GSYListState<DynamicPage> {
   bool get wantKeepAlive => true;
 
   @override
-  requestRefresh() {
-
-  }
+  requestRefresh() {}
 
   @override
-  requestLoadMore() {
-
-  }
+  requestLoadMore() {}
 
   @override
   bool get isRefreshFirst => false;
 
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     ReposDao.getNewsVersion(context, false);
+  }
 
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -86,6 +88,15 @@ class _DynamicPageState extends GSYListState<DynamicPage> {
       showRefreshLoading();
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (pullLoadWidgetControl.dataList.length != 0) {
+        showRefreshLoading();
+      }
+    }
   }
 
   _renderEventItem(Event e) {
@@ -109,7 +120,10 @@ class _DynamicPageState extends GSYListState<DynamicPage> {
       builder: (context, store) {
         return GSYPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(pullLoadWidgetControl.dataList[index]), handleRefresh, onLoadMore, refreshKey: refreshIndicatorKey,
+          (BuildContext context, int index) => _renderEventItem(pullLoadWidgetControl.dataList[index]),
+          handleRefresh,
+          onLoadMore,
+          refreshKey: refreshIndicatorKey,
         );
       },
     );
