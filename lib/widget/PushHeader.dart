@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/model/CommitFile.dart';
 import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
@@ -18,6 +17,7 @@ class PushHeader extends StatelessWidget {
 
   PushHeader(this.pushHeaderViewModel);
 
+  /// 头部变化数量图标
   _getIconItem(IconData icon, String text) {
     return new GSYIConText(
       icon,
@@ -43,6 +43,7 @@ class PushHeader extends StatelessWidget {
               new Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  ///用户头像
                   new GSYUserIconWidget(
                       padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
                       width: 40.0,
@@ -55,6 +56,7 @@ class PushHeader extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        ///变化状态
                         new Row(
                           children: <Widget>[
                             _getIconItem(GSYICons.PUSH_ITEM_EDIT, pushHeaderViewModel.editCount),
@@ -66,6 +68,8 @@ class PushHeader extends StatelessWidget {
                           ],
                         ),
                         new Padding(padding: new EdgeInsets.all(2.0)),
+
+                        ///修改时间
                         new Container(
                             child: new Text(
                               pushHeaderViewModel.pushTime,
@@ -74,6 +78,8 @@ class PushHeader extends StatelessWidget {
                             ),
                             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
+
+                        ///修改的commit内容
                         new Container(
                             child: new Text(
                               pushHeaderViewModel.pushDes,

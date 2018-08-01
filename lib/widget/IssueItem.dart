@@ -15,11 +15,16 @@ import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
 class IssueItem extends StatelessWidget {
   final IssueItemViewModel issueItemViewModel;
 
+  ///点击
   final GestureTapCallback onPressed;
+
+  ///长按
   final GestureTapCallback onLongPress;
 
+  ///是否需要底部状态
   final bool hideBottom;
 
+  ///是否需要限制内容行数
   final bool limitComment;
 
   IssueItem(this.issueItemViewModel, {this.onPressed, this.onLongPress, this.hideBottom = false, this.limitComment = true});
@@ -27,10 +32,13 @@ class IssueItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color issueStateColor = issueItemViewModel.state == "open" ? Colors.green : Colors.red;
+
+    ///issue 底部状态
     Widget bottomContainer = (hideBottom)
         ? new Container()
         : new Row(
             children: <Widget>[
+              ///issue 关闭打开状态
               new GSYIConText(
                 GSYICons.ISSUE_ITEM_ISSUE,
                 issueItemViewModel.state,
@@ -43,9 +51,13 @@ class IssueItem extends StatelessWidget {
                 padding: 2.0,
               ),
               new Padding(padding: new EdgeInsets.all(2.0)),
+
+              ///issue标号
               new Expanded(
                 child: new Text(issueItemViewModel.issueTag, style: GSYConstant.subSmallText),
               ),
+
+              ///评论数
               new GSYIConText(
                 GSYICons.ISSUE_ITEM_COMMENT,
                 issueItemViewModel.commentCount,
@@ -63,6 +75,7 @@ class IssueItem extends StatelessWidget {
         child: new Padding(
           padding: new EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 8.0),
           child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            ///头像
             new GSYUserIconWidget(
                 width: 30.0,
                 height: 30.0,
@@ -76,6 +89,7 @@ class IssueItem extends StatelessWidget {
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
+                      ///用户名
                       new Expanded(child: new Text(issueItemViewModel.actionUser, style: GSYConstant.smallTextBold)),
                       new Text(
                         issueItemViewModel.actionTime,
@@ -86,6 +100,8 @@ class IssueItem extends StatelessWidget {
                     ],
                   ),
                   new Container(
+
+                      ///评论内容
                       child: new Text(
                         issueItemViewModel.issueComment,
                         style: GSYConstant.subSmallText,
