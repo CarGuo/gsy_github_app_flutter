@@ -89,7 +89,7 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
           )
         : new GSYMarkdownWidget(
             markdownData: data,
-            style: 1,
+            style: GSYMarkdownWidget.DARK_LIGHT,
           );
 
     return new Scaffold(

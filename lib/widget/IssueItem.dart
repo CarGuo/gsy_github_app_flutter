@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
+import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
 
 /**
@@ -29,12 +30,10 @@ class IssueItem extends StatelessWidget {
 
   IssueItem(this.issueItemViewModel, {this.onPressed, this.onLongPress, this.hideBottom = false, this.limitComment = true});
 
-  @override
-  Widget build(BuildContext context) {
+  ///issue 底部状态
+  _renderBottomContainer() {
     Color issueStateColor = issueItemViewModel.state == "open" ? Colors.green : Colors.red;
-
-    ///issue 底部状态
-    Widget bottomContainer = (hideBottom)
+    return (hideBottom)
         ? new Container()
         : new Row(
             children: <Widget>[
@@ -68,6 +67,25 @@ class IssueItem extends StatelessWidget {
               ),
             ],
           );
+  }
+
+  ///评论内容
+  _renderCommentText() {
+    return (limitComment)
+        ? new Container(
+            child: new Text(
+              issueItemViewModel.issueComment,
+              style: GSYConstant.subSmallText,
+              maxLines: limitComment ? 2 : 1000,
+            ),
+            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+            alignment: Alignment.topLeft,
+          )
+        : GSYMarkdownWidget(markdownData: issueItemViewModel.issueComment);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return new GSYCardItem(
       child: new InkWell(
         onTap: onPressed,
@@ -99,20 +117,13 @@ class IssueItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  new Container(
 
-                      ///评论内容
-                      child: new Text(
-                        issueItemViewModel.issueComment,
-                        style: GSYConstant.subSmallText,
-                        maxLines: limitComment ? 2 : 1000,
-                      ),
-                      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      alignment: Alignment.topLeft),
+                  ///评论内容
+                  _renderCommentText(),
                   new Padding(
                     padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                   ),
-                  bottomContainer,
+                  _renderBottomContainer(),
                 ],
               ),
             ),

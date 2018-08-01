@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
+import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYUserIconWidget.dart';
 
 /**
@@ -20,9 +21,9 @@ class IssueHeaderItem extends StatelessWidget {
 
   IssueHeaderItem(this.issueHeaderViewModel, {this.onPressed});
 
-  @override
-  Widget build(BuildContext context) {
+  _renderBottomContainer() {
     Color issueStateColor = issueHeaderViewModel.state == "open" ? Colors.green : Colors.red;
+
     ///底部Issue状态
     Widget bottomContainer = new Row(
       children: <Widget>[
@@ -39,9 +40,11 @@ class IssueHeaderItem extends StatelessWidget {
           padding: 2.0,
         ),
         new Padding(padding: new EdgeInsets.all(2.0)),
+
         ///issue issue编码
         new Text(issueHeaderViewModel.issueTag, style: GSYConstant.smallTextWhite),
         new Padding(padding: new EdgeInsets.all(2.0)),
+
         ///issue 评论数
         new GSYIConText(
           GSYICons.ISSUE_ITEM_COMMENT,
@@ -53,6 +56,11 @@ class IssueHeaderItem extends StatelessWidget {
         ),
       ],
     );
+    return bottomContainer;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return new GSYCardItem(
       color: Color(GSYColors.primaryValue),
       child: new FlatButton(
@@ -82,6 +90,7 @@ class IssueHeaderItem extends StatelessWidget {
                           children: <Widget>[
                             ///名称
                             new Expanded(child: new Text(issueHeaderViewModel.actionUser, style: GSYConstant.normalTextWhite)),
+
                             ///时间
                             new Text(
                               issueHeaderViewModel.actionTime,
@@ -91,8 +100,11 @@ class IssueHeaderItem extends StatelessWidget {
                           ],
                         ),
                         new Padding(padding: new EdgeInsets.all(2.0)),
-                        bottomContainer,
+
+                        ///底部Item
+                        _renderBottomContainer(),
                         new Container(
+
                             ///评论标题
                             child: new Text(
                               issueHeaderViewModel.issueComment,
@@ -108,14 +120,9 @@ class IssueHeaderItem extends StatelessWidget {
                   ),
                 ],
               ),
-              new Container(
-                ///评论内容
-                  child: new Text(
-                    issueHeaderViewModel.issueDesHtml,
-                    style: GSYConstant.smallTextWhite,
-                  ),
-                  margin: new EdgeInsets.all(10.0),
-                  alignment: Alignment.topLeft)
+
+              ///评论内容
+              GSYMarkdownWidget(markdownData: issueHeaderViewModel.issueDesHtml, style: GSYMarkdownWidget.DARK_THEME),
             ],
           ),
         ),
