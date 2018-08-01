@@ -87,7 +87,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                         color: Colors.white,
                         text: GSYStrings.issue_edit_issue_edit_commit,
                         onPress: () {
-                          _editCommit(issue.id.toString(), issue.title);
+                          _editCommit(issue.id.toString(), issue.body);
                         },
                       ),
                       new GSYFlexButton(
@@ -128,6 +128,8 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
   _editCommit(id, content) {
     Navigator.pop(context);
     String contentData = content;
+    print(contentData);
+    print("Fffff");
     issueInfoValueControl = new TextEditingController(text: contentData);
     //编译Issue Info
     CommonUtils.showEditDialog(
