@@ -348,7 +348,7 @@ class GSYICons {
   static const IconData REPOS_ITEM_STARED = const IconData(0xe698, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData REPOS_ITEM_WATCH = const IconData(0xe681, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData REPOS_ITEM_WATCHED = const IconData(0xe629, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_DIR = const IconData(0xe793, fontFamily: GSYICons.FONT_FAMILY);
+  static const IconData REPOS_ITEM_DIR = Icons.folder;
   static const IconData REPOS_ITEM_FILE = const IconData(0xea77, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData REPOS_ITEM_NEXT = const IconData(0xe610, fontFamily: GSYICons.FONT_FAMILY);
 
