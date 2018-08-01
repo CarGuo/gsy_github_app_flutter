@@ -83,8 +83,6 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                   newText = valueController.value.text;
                 }
                 newText = newText + text;
-                print("fffff");
-                print(newText);
                 setState(() {
                   valueController.value = new TextEditingValue(text: newText);
                 });

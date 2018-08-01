@@ -59,6 +59,19 @@ class IssueHeaderItem extends StatelessWidget {
     return bottomContainer;
   }
 
+  ///关闭操作人
+  _renderCloseByText() {
+    return (issueHeaderViewModel.closed_by == null)
+        ? new Container()
+        : new Container(
+            child: new Text(
+              "Close By " + issueHeaderViewModel.closed_by,
+              style: GSYConstant.subSmallText,
+            ),
+            margin: new EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
+            alignment: Alignment.topRight);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
@@ -123,6 +136,9 @@ class IssueHeaderItem extends StatelessWidget {
 
               ///评论内容
               GSYMarkdownWidget(markdownData: issueHeaderViewModel.issueDesHtml, style: GSYMarkdownWidget.DARK_THEME),
+
+              ///close 用户
+              _renderCloseByText()
             ],
           ),
         ),
@@ -136,7 +152,7 @@ class IssueHeaderViewModel {
   String actionUser = "---";
   String actionUserPic = "---";
 
-  //String closed_by = "---";
+  String closed_by = "---";
   bool locked = false;
   String issueComment = "---";
   String issueDesHtml = "---";
@@ -151,7 +167,7 @@ class IssueHeaderViewModel {
     actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt);
     actionUser = issueMap.user.login;
     actionUserPic = issueMap.user.avatar_url;
-    //closed_by = issueMap.closed_by != null ? issueMap["closed_by"]["login"] : "";
+    closed_by = issueMap.closeBy != null ? issueMap.closeBy.login : "";
     locked = issueMap.locked;
     issueComment = issueMap.title;
     issueDesHtml = issueMap.bodyHtml != null ? issueMap.bodyHtml : (issueMap.body != null) ? issueMap.body : "";

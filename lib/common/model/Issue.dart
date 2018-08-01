@@ -33,6 +33,10 @@ class Issue extends Object with _$IssueSerializerMixin {
   String repoUrl;
   @JsonKey(name: "html_url")
   String htmlUrl;
+  @JsonKey(name: "closed_by")
+  User closeBy;
+
+
 
   Issue(
     this.id,
@@ -49,6 +53,7 @@ class Issue extends Object with _$IssueSerializerMixin {
     this.user,
     this.repoUrl,
     this.htmlUrl,
+    this.closeBy,
   );
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
