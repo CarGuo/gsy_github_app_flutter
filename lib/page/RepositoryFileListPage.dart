@@ -49,14 +49,14 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
   _renderEventItem(index) {
     FileItemViewModel fileItemViewModel = FileItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     IconData iconData = (fileItemViewModel.type == "file") ? GSYICons.REPOS_ITEM_FILE : GSYICons.REPOS_ITEM_DIR;
-    Widget trailing = (fileItemViewModel.type == "file") ? null : new Icon(GSYICons.REPOS_ITEM_NEXT, size: 14.0);
+    Widget trailing = (fileItemViewModel.type == "file") ? null : new Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
     return new GSYCardItem(
       margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
       child: new ListTile(
         title: new Text(fileItemViewModel.name, style: GSYConstant.subSmallText),
         leading: new Icon(
           iconData,
-          size: 15.0,
+          size: 16.0,
         ),
         onTap: () {
           _resolveItemClick(fileItemViewModel);
