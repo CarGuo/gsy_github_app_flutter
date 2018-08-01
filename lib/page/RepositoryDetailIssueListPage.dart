@@ -101,6 +101,8 @@ class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssue
         });
       },
       needTitle: true,
+      titleController: new TextEditingController(),
+      valueController: new TextEditingController()
     );
   }
 

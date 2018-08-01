@@ -367,6 +367,17 @@ class GSYICons {
   static const IconData ISSUE_ITEM_COMMENT = const IconData(0xe6ba, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData ISSUE_ITEM_ADD = const IconData(0xe662, fontFamily: GSYICons.FONT_FAMILY);
 
+
+
+  static const IconData ISSUE_EDIT_H1 =  Icons.filter_1;
+  static const IconData ISSUE_EDIT_H2 =  Icons.filter_2;
+  static const IconData ISSUE_EDIT_H3 =  Icons.filter_3;
+  static const IconData ISSUE_EDIT_BOLD =  Icons.format_bold;
+  static const IconData ISSUE_EDIT_ITALIC =  Icons.format_italic;
+  static const IconData ISSUE_EDIT_QUOTE =  Icons.format_quote;
+  static const IconData ISSUE_EDIT_CODE =  Icons.format_shapes;
+  static const IconData ISSUE_EDIT_LINK =  Icons.insert_link;
+
   static const IconData NOTIFY_ALL_READ = const IconData(0xe62f, fontFamily: GSYICons.FONT_FAMILY);
 
   static const IconData PUSH_ITEM_EDIT = Icons.mode_edit;
