@@ -28,7 +28,10 @@ Issue _$IssueFromJson(Map<String, dynamic> json) => new Issue(
         ? null
         : new User.fromJson(json['user'] as Map<String, dynamic>),
     json['repository_url'] as String,
-    json['html_url'] as String);
+    json['html_url'] as String,
+    json['closed_by'] == null
+        ? null
+        : new User.fromJson(json['closed_by'] as Map<String, dynamic>));
 
 abstract class _$IssueSerializerMixin {
   int get id;
@@ -45,6 +48,7 @@ abstract class _$IssueSerializerMixin {
   User get user;
   String get repoUrl;
   String get htmlUrl;
+  User get closeBy;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'number': number,
@@ -59,6 +63,7 @@ abstract class _$IssueSerializerMixin {
         'body_html': bodyHtml,
         'user': user,
         'repository_url': repoUrl,
-        'html_url': htmlUrl
+        'html_url': htmlUrl,
+        'closed_by': closeBy
       };
 }

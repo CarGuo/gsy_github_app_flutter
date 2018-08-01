@@ -16,7 +16,6 @@
 * markdown点击跳转。
 * webview点击跳转。
 * markdown htmlview 表格。
-* issue输入框的快速按键。
 
 ### 1.0.2 (更新中)
 
@@ -27,6 +26,7 @@
 * 趋势语言，搜索语言加dart。
 * 前后台切换刷新动态。
 * issue使用markdown解析
+* issue输入框的快速输入按键。
 
 
 ### 1.0.1 (已发布)
