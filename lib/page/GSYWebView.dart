@@ -20,7 +20,10 @@ class GSYWebView extends StatelessWidget {
       return new Text(title);
     }
     optionControl.url = url;
-    return GSYCommonOptionWidget(optionControl);
+    return new Row(children: [
+      new Expanded(child: new Container()),
+      GSYCommonOptionWidget(optionControl),
+    ]);
   }
 
   @override
