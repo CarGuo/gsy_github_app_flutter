@@ -29,7 +29,6 @@ class RepositoryDetailPage extends StatefulWidget {
   _RepositoryDetailPageState createState() => _RepositoryDetailPageState(userName, reposName);
 }
 
-
 class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
 
@@ -43,7 +42,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
-  final BranchControl branchControl = new BranchControl("master");
+  final ReposDetailParentControl reposDetailParentControl = new ReposDetailParentControl("master");
 
   final PageController topPageControl = new PageController();
 
@@ -60,7 +59,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   _RepositoryDetailPageState(this.userName, this.reposName);
 
   _getReposDetail() async {
-    var result = await ReposDao.getRepositoryDetailDao(userName, reposName, branchControl.currentBranch);
+    var result = await ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch);
     if (result != null && result.result) {
       setState(() {
         reposDetailInfoPageControl.repository = result.data;
@@ -175,9 +174,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 Navigator.pop(context);
               });
             }),
-            _renderBranchPopItem(branchControl.currentBranch, branchList, (value) {
+            _renderBranchPopItem(reposDetailParentControl.currentBranch, branchList, (value) {
               setState(() {
-                branchControl.currentBranch = value;
+                reposDetailParentControl.currentBranch = value;
                 tarBarControl.footerButton = _getBottomWidget();
               });
               if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
@@ -207,6 +206,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
       return new FlatButton(
           padding: EdgeInsets.all(0.0),
           onPressed: () {
+            reposDetailParentControl.currentIndex = i;
             topPageControl.jumpTo(MediaQuery.of(context).size.width * i);
           },
           child: new Text(
@@ -227,8 +227,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return [
       ///Release Page
       new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
-        String releaseUrl = reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/releases";
-        String tagUrl = reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/tags";
+        String releaseUrl =
+            reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/releases";
+        String tagUrl =
+            reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/tags";
         NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
       }),
     ];
@@ -245,22 +247,26 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   Widget build(BuildContext context) {
     Widget widget = new GSYCommonOptionWidget(titleOptionControl, otherList: _getMoreOtherItem());
     return new GSYTabBarWidget(
-        type: GSYTabBarWidget.TOP_TAB,
-        tarWidgetControl: tarBarControl,
-        tabItems: _renderTabItem(),
-        tabViews: [
-          new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, branchControl, key: infoListKey),
-          new RepositoryDetailReadmePage(userName, reposName, branchControl, key: readmeKey),
-          new RepositoryDetailIssuePage(userName, reposName),
-          new RepositoryDetailFileListPage(userName, reposName, branchControl, key: fileListKey),
-        ],
-        topPageControl: topPageControl,
-        backgroundColor: GSYColors.primarySwatch,
-        indicatorColor: Colors.white,
-        title: new GSYTitleBar(
-          reposName,
-          rightWidget: widget,
-        ));
+      type: GSYTabBarWidget.TOP_TAB,
+      tarWidgetControl: tarBarControl,
+      tabItems: _renderTabItem(),
+      tabViews: [
+        new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, reposDetailParentControl, key: infoListKey),
+        new RepositoryDetailReadmePage(userName, reposName, reposDetailParentControl, key: readmeKey),
+        new RepositoryDetailIssuePage(userName, reposName),
+        new RepositoryDetailFileListPage(userName, reposName, reposDetailParentControl, key: fileListKey),
+      ],
+      topPageControl: topPageControl,
+      backgroundColor: GSYColors.primarySwatch,
+      indicatorColor: Colors.white,
+      title: new GSYTitleBar(
+        reposName,
+        rightWidget: widget,
+      ),
+      onPageChanged: (index) {
+        reposDetailParentControl.currentIndex = index;
+      },
+    );
   }
 }
 
@@ -275,8 +281,10 @@ class BottomStatusModel {
   BottomStatusModel(this.watchText, this.starText, this.watchIcon, this.starIcon, this.watch, this.star);
 }
 
-class BranchControl {
+class ReposDetailParentControl {
+  int currentIndex = 0;
+
   String currentBranch;
 
-  BranchControl(this.currentBranch);
+  ReposDetailParentControl(this.currentBranch);
 }

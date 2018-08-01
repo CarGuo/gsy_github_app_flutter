@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/model/FileModel.dart';
@@ -20,12 +22,12 @@ class RepositoryDetailFileListPage extends StatefulWidget {
 
   final String reposName;
 
-  final BranchControl branchControl;
+  final ReposDetailParentControl reposDetailParentControl;
 
-  RepositoryDetailFileListPage(this.userName, this.reposName, this.branchControl, {Key key}) : super(key: key);
+  RepositoryDetailFileListPage(this.userName, this.reposName, this.reposDetailParentControl, {Key key}) : super(key: key);
 
   @override
-  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName, branchControl);
+  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName, reposDetailParentControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -34,7 +36,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
 
   final String reposName;
 
-  final BranchControl branchControl;
+  final ReposDetailParentControl reposDetailParentControl;
 
   String path = '';
 
@@ -43,7 +45,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
 
   List<String> headerList = ["."];
 
-  RepositoryDetailFileListPageState(this.userName, this.reposName, this.branchControl);
+  RepositoryDetailFileListPageState(this.userName, this.reposName, this.reposDetailParentControl);
 
   ///渲染文件item
   _renderEventItem(index) {
@@ -128,14 +130,27 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
           reposName: reposName,
           userName: userName,
           path: path,
-          branch: branchControl.currentBranch,
+          branch: reposDetailParentControl.currentBranch,
         );
       }
     }
   }
 
   _getDataLogic(String searchString) async {
-    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branchControl.currentBranch);
+    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: reposDetailParentControl.currentBranch);
+  }
+
+  /// 返回按键逻辑
+  Future<bool> _dialogExitApp(BuildContext context) {
+    if (reposDetailParentControl.currentIndex != 3) {
+      return Future.value(true);
+    }
+    if (headerList.length == 1) {
+      return Future.value(true);
+    } else {
+      _resolveHeaderClick(headerList.length - 2);
+      return Future.value(false);
+    }
   }
 
   @override
@@ -168,12 +183,17 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
         leading: new Container(),
         elevation: 0.0,
       ),
-      body: GSYPullLoadWidget(
-        pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderEventItem(index),
-        handleRefresh,
-        onLoadMore,
-        refreshKey: refreshIndicatorKey,
+      body: WillPopScope(
+        onWillPop: () {
+          return _dialogExitApp(context);
+        },
+        child: GSYPullLoadWidget(
+          pullLoadWidgetControl,
+          (BuildContext context, int index) => _renderEventItem(index),
+          handleRefresh,
+          onLoadMore,
+          refreshKey: refreshIndicatorKey,
+        ),
       ),
     );
   }
