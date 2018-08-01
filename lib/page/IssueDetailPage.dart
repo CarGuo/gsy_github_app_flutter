@@ -128,8 +128,6 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
   _editCommit(id, content) {
     Navigator.pop(context);
     String contentData = content;
-    print(contentData);
-    print("Fffff");
     issueInfoValueControl = new TextEditingController(text: contentData);
     //编译Issue Info
     CommonUtils.showEditDialog(
