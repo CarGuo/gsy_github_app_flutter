@@ -29,6 +29,8 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final PageController topPageControl;
 
+  final ValueChanged<int> onPageChanged;
+
   GSYTabBarWidget({
     Key key,
     this.type,
@@ -41,11 +43,23 @@ class GSYTabBarWidget extends StatefulWidget {
     this.floatingActionButton,
     this.tarWidgetControl,
     this.topPageControl,
+    this.onPageChanged,
   }) : super(key: key);
 
   @override
   _GSYTabBarState createState() => new _GSYTabBarState(
-      type, tabItems, tabViews, backgroundColor, indicatorColor, title, drawer, floatingActionButton, tarWidgetControl, topPageControl);
+        type,
+        tabItems,
+        tabViews,
+        backgroundColor,
+        indicatorColor,
+        title,
+        drawer,
+        floatingActionButton,
+        tarWidgetControl,
+        topPageControl,
+        onPageChanged,
+      );
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -70,8 +84,10 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   final PageController _pageController;
 
+  final ValueChanged<int> _onPageChanged;
+
   _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title, this._drawer,
-      this._floatingActionButton, this._tarWidgetControl, this._pageController)
+      this._floatingActionButton, this._tarWidgetControl, this._pageController, this._onPageChanged)
       : super();
 
   TabController _tabController;
@@ -79,20 +95,13 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    //if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
-    _tabController = new TabController(
-        vsync: this, //动画效果的异步处理，默认格式，背下来即可
-        length: _tabItems.length //需要控制的Tab页数量
-        );
-    //}
+    _tabController = new TabController(vsync: this, length: _tabItems.length);
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
   @override
   void dispose() {
-    //if (this._type == GSYTabBarWidget.BOTTOM_TAB) {
     _tabController.dispose();
-    //}
     super.dispose();
   }
 
@@ -117,6 +126,9 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
           children: _tabViews,
           onPageChanged: (index) {
             _tabController.animateTo(index);
+            if (_onPageChanged != null) {
+              _onPageChanged(index);
+            }
           },
         ),
       );

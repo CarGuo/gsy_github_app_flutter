@@ -21,12 +21,12 @@ class ReposDetailInfoPage extends StatefulWidget {
   final String reposName;
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
-  final BranchControl branchControl;
+  final ReposDetailParentControl reposDetailParentControl;
 
-  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName, this.branchControl, {Key key}) : super(key: key);
+  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName, this.reposDetailParentControl, {Key key}) : super(key: key);
 
   @override
-  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName, branchControl);
+  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName, reposDetailParentControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -37,11 +37,11 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
-  final BranchControl branchControl;
+  final ReposDetailParentControl reposDetailParentControl;
 
   int selectIndex = 0;
 
-  ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName, this.branchControl);
+  ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName, this.reposDetailParentControl);
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -72,9 +72,9 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   _getDataLogic() async {
     if (selectIndex == 1) {
-      return await ReposDao.getReposCommitsDao(userName, reposName, page: page, branch: branchControl.currentBranch);
+      return await ReposDao.getReposCommitsDao(userName, reposName, page: page, branch: reposDetailParentControl.currentBranch);
     }
-    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page, branch: branchControl.currentBranch);
+    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page, branch: reposDetailParentControl.currentBranch);
   }
 
   @override

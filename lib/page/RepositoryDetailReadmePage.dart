@@ -16,12 +16,12 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
   final String reposName;
 
-  final BranchControl branchControl;
+  final ReposDetailParentControl reposDetailParentControl;
 
-  RepositoryDetailReadmePage(this.userName, this.reposName, this.branchControl, {Key key}) : super(key: key);
+  RepositoryDetailReadmePage(this.userName, this.reposName, this.reposDetailParentControl, {Key key}) : super(key: key);
 
   @override
-  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName, branchControl);
+  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName, reposDetailParentControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -30,16 +30,16 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
 
   final String reposName;
 
-  final BranchControl branchControl;
+  final ReposDetailParentControl reposDetailParentControl;
 
   bool isShow = false;
 
   String markdownData;
 
-  RepositoryDetailReadmePageState(this.userName, this.reposName, this.branchControl);
+  RepositoryDetailReadmePageState(this.userName, this.reposName, this.reposDetailParentControl);
 
   refreshReadme() {
-    ReposDao.getRepositoryDetailReadmeDao(userName, reposName, branchControl.currentBranch).then((res) {
+    ReposDao.getRepositoryDetailReadmeDao(userName, reposName, reposDetailParentControl.currentBranch).then((res) {
       if (res != null && res.result) {
         if (isShow) {
           setState(() {
