@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 
@@ -55,8 +56,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
         _launchURL();
       }),
       new GSYOptionModel(GSYStrings.option_copy, GSYStrings.option_copy, (model) {
-        Clipboard.setData(new ClipboardData(text: control.url ?? ""));
-        Fluttertoast.showToast(msg: GSYStrings.option_share_copy_success);
+        CommonUtils.copy(control.url ?? "");
       }),
       new GSYOptionModel(GSYStrings.option_share, GSYStrings.option_share, (model) {
         Share.share(text);
