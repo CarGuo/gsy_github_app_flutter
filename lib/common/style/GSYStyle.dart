@@ -221,7 +221,7 @@ class GSYStrings {
 
   static const String app_name = "GSYGithubAppFlutter";
 
-  static const String app_default_share_url = "https://github.com/CarGuo/GithubAppFlutter";
+  static const String app_default_share_url = "https://github.com/CarGuo/GSYGithubAppFlutter";
 
   static const String app_ok = "确定";
   static const String app_cancel = "取消";

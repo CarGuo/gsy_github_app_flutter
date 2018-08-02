@@ -50,7 +50,6 @@ class GSYCommonOptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String text = GSYStrings.option_share_title + control.url ?? "";
     List<GSYOptionModel> list = [
       new GSYOptionModel(GSYStrings.option_web, GSYStrings.option_web, (model) {
         _launchURL();
@@ -59,7 +58,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
         CommonUtils.copy(control.url ?? "");
       }),
       new GSYOptionModel(GSYStrings.option_share, GSYStrings.option_share, (model) {
-        Share.share(text);
+        Share.share(GSYStrings.option_share_title + control.url ?? "");
       }),
     ];
     if (otherList != null && otherList.length > 0) {
