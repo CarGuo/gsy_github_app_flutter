@@ -12,6 +12,7 @@ class DEMOWidget extends StatelessWidget {
     //这里返回你需要的控件
     //这里末尾有没有的逗号，对于格式化代码而已是不一样的。
     return Container(
+      color: Colors.white,
       child: Text(text ?? "这就是无状态DMEO"),
     );
   }
