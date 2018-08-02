@@ -129,3 +129,15 @@ class _DynamicPageState extends GSYListState<DynamicPage> with WidgetsBindingObs
     );
   }
 }
+
+class ModelA {
+  String name;
+  String tag;
+
+  ModelA(this.name, this.tag);
+
+  ModelA.empty();
+
+  ModelA.forName(this.name);
+
+}
