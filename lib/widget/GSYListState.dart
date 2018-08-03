@@ -45,6 +45,9 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
         });
       }
     }
+    if(res.next != null) {
+
+    }
     resolveDataResult(res);
     isLoading = false;
     return null;
