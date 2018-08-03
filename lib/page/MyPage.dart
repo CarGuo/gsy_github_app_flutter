@@ -97,7 +97,7 @@ class _MyPageState extends GSYListState<MyPage> {
 
   @override
   requestLoadMore() async {
-    return await EventDao.getEventDao(_getUserName(), page: page);
+    return await EventDao.getEventDao(_getUserName(), page: page, needDb: false);
   }
 
   @override

@@ -122,7 +122,7 @@ class _PersonState extends GSYListState<PersonPage> {
     if (userInfo.type == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
-    return await EventDao.getEventDao(_getUserName(), page: page);
+    return await EventDao.getEventDao(_getUserName(), page: page, needDb: page <= 1);
   }
 
   @override
