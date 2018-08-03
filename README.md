@@ -24,9 +24,9 @@
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 v0.5.7)，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 v0.5.7 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
 
-2、clone代码，执行`Packages get`安装第三方包。
+2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
 >### 3、重点：你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。
 
@@ -90,15 +90,15 @@
   
 ### 常见问题
 
->待发布
-
-
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
+* 如果包同步失败，一般都是因为没设置包代理，可以参考：[代理环境变量](https://flutterchina.club/setup-windows/))
 
 
 ### 相关文章
 
->待发布
+* [Flutter 完整开发实战详解(一、Dart 语言和 Flutter 基础)](https://juejin.im/entry/5b631e3e51882519861c2ef1 )
+
+
+<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
 
 
 ### LICENSE
