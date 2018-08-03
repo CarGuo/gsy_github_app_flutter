@@ -64,6 +64,11 @@ class _PersonState extends GSYListState<PersonPage> {
     }
     isLoading = true;
     page = 1;
+    ///从Dao中获取数据
+    ///如果第一次返回的是网络数据，next为空
+    ///如果返回的是数据库数据，next不为空
+    ///这样数据库返回数据较快，马上显示
+    ///next异步再请求后，再更新
     var userResult = await UserDao.getUserInfo(userName, needDb: true);
     if (userResult != null && userResult.result) {
       _resolveUserInfo(userResult);

@@ -105,6 +105,9 @@ class UserDao {
 
     if (needDb) {
       User user = await provider.getUserInfo(userName);
+      if(user == null) {
+        return await next();
+      }
       DataResult dataResult = new DataResult(user, true, next: next());
       return dataResult;
     }
