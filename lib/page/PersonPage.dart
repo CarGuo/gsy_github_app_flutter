@@ -50,6 +50,13 @@ class _PersonState extends GSYListState<PersonPage> {
 
   _PersonState(this.userName);
 
+  _resolveUserInfo(res) {
+    setState(() {
+      userInfo = res.data;
+      titleOptionControl.url = res.data.html_url;
+    });
+  }
+
   @override
   Future<Null> handleRefresh() async {
     if (isLoading) {
@@ -57,24 +64,25 @@ class _PersonState extends GSYListState<PersonPage> {
     }
     isLoading = true;
     page = 1;
-    var userResult = await UserDao.getUserInfo(userName);
+    var userResult = await UserDao.getUserInfo(userName, needDb: true);
     if (userResult != null && userResult.result) {
-      userInfo = userResult.data;
-      setState(() {
-        userInfo = userResult.data;
-        titleOptionControl.url = userInfo.html_url;
-      });
+      _resolveUserInfo(userResult);
+      if (userResult.next != null) {
+        userResult.next.then((resNext) {
+          _resolveUserInfo(resNext);
+        });
+      }
     } else {
       return null;
     }
     var res = await _getDataLogic();
-    if (res != null && res.result) {
-      pullLoadWidgetControl.dataList.clear();
-      setState(() {
-        pullLoadWidgetControl.dataList.addAll(res.data);
-      });
-    }
+    resolveRefreshResult(res);
     resolveDataResult(res);
+    if (res.next != null) {
+      var resNext = await res.next;
+      resolveRefreshResult(resNext);
+      resolveDataResult(resNext);
+    }
     isLoading = false;
     _getFocusStatus();
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {

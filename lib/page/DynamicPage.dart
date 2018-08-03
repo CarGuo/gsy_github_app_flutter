@@ -31,7 +31,7 @@ class _DynamicPageState extends GSYListState<DynamicPage> with WidgetsBindingObs
     }
     isLoading = true;
     page = 1;
-    var result = await EventDao.getEventReceived(_getStore(), page: page);
+    var result = await EventDao.getEventReceived(_getStore(), page: page, needDb: true);
     setState(() {
       pullLoadWidgetControl.needLoadMore = (result != null && result.length == Config.PAGE_SIZE);
     });

@@ -8,6 +8,7 @@ import 'dart:convert';
  */
 import 'package:gsy_github_app_flutter/common/ab/SqlManager.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -60,8 +61,8 @@ class RepositoryPulseDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -98,8 +99,8 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   DateTime readDate;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnReadDate: readDate, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnReadDate: readDate, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -135,8 +136,8 @@ class RepositoryBranchDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -171,8 +172,8 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -207,8 +208,8 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -244,8 +245,8 @@ class RepositoryStarDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -281,8 +282,8 @@ class RepositoryForkDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -319,8 +320,8 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   final String columnBranch = "branch";
   final String columnData = "data";
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnBranch: branch, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnBranch: branch, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -358,8 +359,8 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
   final String columnBranch = "branch";
   final String columnData = "data";
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnBranch: branch, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnBranch: branch, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -396,8 +397,8 @@ class RepositoryEventDbProvider extends BaseDbProvider {
   String fullName;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -434,8 +435,8 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
   final String columnState = "state";
   final String columnData = "data";
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnState: state, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnState: state, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -473,8 +474,8 @@ class RepositoryCommitInfoDetailDbProvider extends BaseDbProvider {
   final String columnSha = "sha";
   final String columnData = "data";
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnSha: sha, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnSha: sha, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -512,8 +513,8 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
   final String columnLanguageType = "languageType";
   final String columnData = "data";
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnLanguageType: languageType, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnLanguageType: languageType, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -550,8 +551,10 @@ class UserInfoDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  Map toMap() {
-    Map map = {columnUserName: userName, columnData: data};
+  UserInfoDbProvider();
+
+  Map<String, dynamic> toMap(String userName, String data) {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -565,11 +568,52 @@ class UserInfoDbProvider extends BaseDbProvider {
   }
 
   @override
-  tableSqlString() {}
+  tableSqlString() {
+    return tableBaseString(name, columnId) +
+        '''
+        $columnUserName text not null,
+        $columnData text not null)
+      ''';
+  }
+
 
   @override
   tableName() {
     return name;
+  }
+
+  Future _getUserProvider(Database db, String userName) async {
+    List<Map<String, dynamic>> maps =
+        await db.query(name, columns: [columnId, columnUserName, columnData], where: "$columnUserName = ?", whereArgs: [userName]);
+    if (maps.length > 0) {
+      UserInfoDbProvider provider = UserInfoDbProvider.fromMap(maps.first);
+      return provider;
+    }
+    return null;
+  }
+
+  ///插入到数据库
+  Future insert(String userName, String eventMapString) async {
+    Database db = await getDataBase();
+    var userProvider = await _getUserProvider(db, userName);
+    print("-----------------");
+    print(userProvider);
+    if (userProvider != null) {
+      var result = await db.delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
+      print("=================");
+      print(result);
+    }
+    return await db.insert(name, toMap(userName, eventMapString));
+  }
+
+  ///获取事件数据
+  Future<User> getUserInfo(String userName) async {
+    Database db = await getDataBase();
+    var userProvider = await _getUserProvider(db, userName);
+    if (userProvider != null) {
+      return User.fromJson(json.decode(userProvider.data));
+    }
+    return null;
   }
 }
 
@@ -587,8 +631,8 @@ class UserFollowerDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  Map toMap() {
-    Map map = {columnUserName: userName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -624,8 +668,8 @@ class UserFollowedDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  Map toMap() {
-    Map map = {columnUserName: userName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -661,8 +705,8 @@ class OrgMemberDbProvider extends BaseDbProvider {
   String org;
   String data;
 
-  Map toMap() {
-    Map map = {columnOrg: org, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnOrg: org, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -698,8 +742,8 @@ class UserOrgsDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  Map toMap() {
-    Map map = {columnUserName: userName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -735,8 +779,8 @@ class UserStaredDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  Map toMap() {
-    Map map = {columnUserName: userName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -772,8 +816,8 @@ class UserReposDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  Map toMap() {
-    Map map = {columnUserName: userName, columnData: data};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -838,6 +882,7 @@ class ReceivedEventDbProvider extends BaseDbProvider {
   ///插入到数据库
   Future insert(String eventMapString) async {
     Database db = await getDataBase();
+
     ///清空后再插入，因为只保存第一页面
     db.execute("delete from $name");
     return await db.insert(name, toMap(eventMapString));
@@ -877,8 +922,8 @@ class UserEventDbProvider extends BaseDbProvider {
 
   UserEventDbProvider();
 
-  Map toMap(String userName, String eventMapString) {
-    Map map = {columnUserName: userName, columnData: eventMapString};
+  Map<String, dynamic> toMap(String userName, String eventMapString) {
+    Map<String, dynamic> map = {columnUserName: userName, columnData: eventMapString};
     if (id != null) {
       map[columnId] = id;
     }
@@ -893,9 +938,9 @@ class UserEventDbProvider extends BaseDbProvider {
 
   @override
   tableSqlString() {
-    tableBaseString(name, columnId) +
+    return tableBaseString(name, columnId) +
         '''
-        $columnUserName text not null)=
+        $columnUserName text not null,
         $columnData text not null)
       ''';
   }
@@ -908,6 +953,7 @@ class UserEventDbProvider extends BaseDbProvider {
   ///插入到数据库
   Future insert(String userName, String eventMapString) async {
     Database db = await getDataBase();
+
     ///清空后再插入，因为只保存第一页面
     db.execute("delete from $name");
     return await db.insert(name, toMap(userName, eventMapString));
@@ -919,7 +965,7 @@ class UserEventDbProvider extends BaseDbProvider {
     List<Map> maps = await db.query(name, columns: [columnId, columnData]);
     List<Event> list = new List();
     if (maps.length > 0) {
-      ReceivedEventDbProvider provider = ReceivedEventDbProvider.fromMap(maps.first);
+      UserEventDbProvider provider = UserEventDbProvider.fromMap(maps.first);
       List<dynamic> eventMap = json.decode(provider.data);
       if (eventMap.length > 0) {
         for (var item in eventMap) {
@@ -929,8 +975,6 @@ class UserEventDbProvider extends BaseDbProvider {
     }
     return list;
   }
-
-
 }
 
 /**
@@ -948,8 +992,8 @@ class IssueDetailDbProvider extends BaseDbProvider {
   String number;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data, columnNumber: number};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data, columnNumber: number};
     if (id != null) {
       map[columnId] = id;
     }
@@ -989,8 +1033,8 @@ class IssueCommentDbProvider extends BaseDbProvider {
   String number;
   String data;
 
-  Map toMap() {
-    Map map = {columnFullName: fullName, columnData: data, columnNumber: number, columnCommentId: commentId};
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data, columnNumber: number, columnCommentId: commentId};
     if (id != null) {
       map[columnId] = id;
     }
