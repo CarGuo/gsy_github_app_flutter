@@ -30,13 +30,7 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
   }
 
   @protected
-  Future<Null> handleRefresh() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page = 1;
-    var res = await requestRefresh();
+  resolveRefreshResult(res) {
     if (res != null && res.result) {
       pullLoadWidgetControl.dataList.clear();
       if (isShow) {
@@ -45,10 +39,23 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
         });
       }
     }
-    if(res.next != null) {
+  }
 
+  @protected
+  Future<Null> handleRefresh() async {
+    if (isLoading) {
+      return null;
     }
+    isLoading = true;
+    page = 1;
+    var res = await requestRefresh();
+    resolveRefreshResult(res);
     resolveDataResult(res);
+    if (res.next != null) {
+      var resNext = await res.next;
+      resolveRefreshResult(resNext);
+      resolveDataResult(resNext);
+    }
     isLoading = false;
     return null;
   }

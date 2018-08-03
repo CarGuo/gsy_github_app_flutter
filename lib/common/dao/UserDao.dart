@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
@@ -70,30 +71,44 @@ class UserDao {
   }
 
   ///获取用户详细信息
-  static getUserInfo(userName) async {
-    var res;
-    if (userName == null) {
-      res = await HttpManager.netFetch(Address.getMyUserInfo(), null, null, null);
-    } else {
-      res = await HttpManager.netFetch(Address.getUserInfo(userName), null, null, null);
-    }
-    if (res != null && res.result) {
-      String starred = "---";
-      if (res.data["type"] != "Organization") {
-        var countRes = await getUserStaredCountNet(res.data["login"]);
-        if (countRes.result) {
-          starred = countRes.data;
-        }
-      }
-      User user = User.fromJson(res.data);
-      user.starred = starred;
+  static getUserInfo(userName, {needDb = false}) async {
+    UserInfoDbProvider provider = new UserInfoDbProvider();
+    next() async {
+      var res;
       if (userName == null) {
-        LocalStorage.save(Config.USER_INFO, json.encode(res.data));
+        res = await HttpManager.netFetch(Address.getMyUserInfo(), null, null, null);
+      } else {
+        res = await HttpManager.netFetch(Address.getUserInfo(userName), null, null, null);
       }
-      return new DataResult(user, true);
-    } else {
-      return new DataResult(res.data, false);
+      if (res != null && res.result) {
+        String starred = "---";
+        if (res.data["type"] != "Organization") {
+          var countRes = await getUserStaredCountNet(res.data["login"]);
+          if (countRes.result) {
+            starred = countRes.data;
+          }
+        }
+        User user = User.fromJson(res.data);
+        user.starred = starred;
+        if (userName == null) {
+          LocalStorage.save(Config.USER_INFO, json.encode(res.data));
+        } else {
+          if (needDb) {
+            provider.insert(userName, json.encode(user.toJson()));
+          }
+        }
+        return new DataResult(user, true);
+      } else {
+        return new DataResult(res.data, false);
+      }
     }
+
+    if (needDb) {
+      User user = await provider.getUserInfo(userName);
+      DataResult dataResult = new DataResult(user, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   static clearAll(Store store) async {

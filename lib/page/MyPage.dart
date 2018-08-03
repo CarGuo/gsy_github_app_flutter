@@ -92,12 +92,12 @@ class _MyPageState extends GSYListState<MyPage> {
       }
     });
     _refreshNotify();
-    return await EventDao.getEventDao(_getUserName(), page: page);
+    return await EventDao.getEventDao(_getUserName(), page: page, needDb: true);
   }
 
   @override
   requestLoadMore() async {
-    return await EventDao.getEventDao(_getUserName(), page: page, needDb: false);
+    return await EventDao.getEventDao(_getUserName(), page: page);
   }
 
   @override
