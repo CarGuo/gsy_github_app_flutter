@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+
+import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
@@ -16,6 +19,13 @@ class EventDao {
     }
     String userName = user.login;
     String url = Address.getEventReceived(userName) + Address.getPageParams("?", page);
+    ReceivedEventDbProvider provider = new ReceivedEventDbProvider();
+
+    List<Event> dbList = await provider.getEvents();
+    if(dbList.length > 0) {
+      store.dispatch(new RefreshEventAction(dbList));
+    }
+
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<Event> list = new List();
@@ -23,6 +33,7 @@ class EventDao {
       if (data == null || data.length == 0) {
         return null;
       }
+      await provider.insert(json.encode(data));
       for (int i = 0; i < data.length; i++) {
         list.add(Event.fromJson(data[i]));
       }
@@ -41,6 +52,7 @@ class EventDao {
    * 用户行为事件
    */
   static getEventDao(userName, {page = 0}) async {
+    new UserEventDbProvider().open();
     String url = Address.getEvent(userName) + Address.getPageParams("?", page);
     var res = await HttpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
