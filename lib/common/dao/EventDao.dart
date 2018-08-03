@@ -77,6 +77,9 @@ class EventDao {
     }
     if(needDb) {
       List<Event> dbList = await provider.getEvents();
+      if(dbList == null && dbList.length == 0) {
+        return await next();
+      }
       DataResult dataResult = new DataResult(dbList, true, next: next());
       return dataResult;
     }
