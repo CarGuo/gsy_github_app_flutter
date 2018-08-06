@@ -16,12 +16,16 @@ void main() {
 }
 
 class FlutterReduxApp extends StatelessWidget {
+
+  /// 创建Store，引用 GSYState 中的 appReducer 创建 Reducer
+  /// initialState 初始化 State
   final store = new Store<GSYState>(appReducer, initialState: new GSYState(userInfo: User.empty(), eventList: new List()));
 
   FlutterReduxApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    /// 通过 StoreProvider 应用 store
     return new StoreProvider(
       store: store,
       child: new MaterialApp(
