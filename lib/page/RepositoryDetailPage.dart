@@ -63,8 +63,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     if (result != null && result.result) {
       setState(() {
         reposDetailInfoPageControl.repository = result.data;
-        print("==========================");
-        print(result.data.htmlUrl);
         titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
       });
     }

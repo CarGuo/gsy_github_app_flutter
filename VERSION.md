@@ -15,6 +15,11 @@
 * webview点击跳转。
 * markdown htmlview 表格。
 
+
+* 文件列表的左上角访问按键问题
+* 用户到github的时间
+* 提示其他异常，从通知进去issue
+
 ### 1.0.5(进行中)
 * fix分享问题。
 

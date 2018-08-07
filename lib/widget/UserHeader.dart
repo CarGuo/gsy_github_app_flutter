@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
@@ -47,11 +48,16 @@ class UserHeaderItem extends StatelessWidget {
     if (notifyColor == null) {
       return Container();
     }
-    return new IconButton(
-        icon: new Icon(
-          GSYICons.USER_NOTIFY,
-          color: color,
-          size: 18.0,
+    return new RawMaterialButton(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 5.0),
+        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+        child: new ClipOval(
+          child: new Icon(
+            GSYICons.USER_NOTIFY,
+            color: color,
+            size: 18.0,
+          ),
         ),
         onPressed: () {
           NavigatorUtils.goNotifyPage(context).then((res) {
@@ -145,12 +151,14 @@ class UserHeaderItem extends StatelessWidget {
                   ///用户描述
                   new Container(
                       child: new Text(
-                        userInfo.bio == null ? GSYStrings.nothing_now : userInfo.bio,
+                        userInfo.bio == null
+                            ? GSYStrings.user_create_at + CommonUtils.getDateStr(userInfo.created_at)
+                            : userInfo.bio + "\n" + GSYStrings.user_create_at + CommonUtils.getDateStr(userInfo.created_at),
                         style: GSYConstant.subLightSmallText,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),
-                  new Padding(padding: EdgeInsets.all(10.0)),
+                  new Padding(padding: EdgeInsets.only(bottom: 5.0)),
                   new Divider(
                     color: Color(GSYColors.subLightTextColor),
                   ),
