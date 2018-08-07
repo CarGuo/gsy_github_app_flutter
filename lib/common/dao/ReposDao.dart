@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailReadmeDbProvider.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryEventDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/TrendRepositoryDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
@@ -112,22 +113,40 @@ class ReposDao {
   /**
    * 仓库活动事件
    */
-  static getRepositoryEventDao(userName, reposName, {page = 0, branch = "master"}) async {
-    String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
-    var res = await HttpManager.netFetch(url, null, null, null);
-    if (res != null && res.result) {
-      List<Event> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
+  static getRepositoryEventDao(userName, reposName, {page = 0, branch = "master", needDb = false}) async {
+    String fullName = userName + "/" + reposName;
+    RepositoryEventDbProvider provider = new RepositoryEventDbProvider();
+
+    next() async {
+      String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
+      var res = await HttpManager.netFetch(url, null, null, null);
+      if (res != null && res.result) {
+        List<Event> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        for (int i = 0; i < data.length; i++) {
+          list.add(Event.fromJson(data[i]));
+        }
+        if (needDb) {
+          provider.insert(fullName, json.encode(data));
+        }
+        return new DataResult(list, true);
+      } else {
         return new DataResult(null, false);
       }
-      for (int i = 0; i < data.length; i++) {
-        list.add(Event.fromJson(data[i]));
-      }
-      return new DataResult(list, true);
-    } else {
-      return new DataResult(null, false);
     }
+
+    if (needDb) {
+      List<Event> list = await provider.getEvents(fullName);
+      if (list == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(list, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
