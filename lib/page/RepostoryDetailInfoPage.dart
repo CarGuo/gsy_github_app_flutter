@@ -83,6 +83,7 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
         reposName,
         page: page,
         branch: reposDetailParentControl.currentBranch,
+        needDb: page <= 1,
       );
     }
     return await ReposDao.getRepositoryEventDao(
