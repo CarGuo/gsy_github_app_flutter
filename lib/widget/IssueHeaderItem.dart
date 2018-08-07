@@ -61,11 +61,11 @@ class IssueHeaderItem extends StatelessWidget {
 
   ///关闭操作人
   _renderCloseByText() {
-    return (issueHeaderViewModel.closed_by == null || issueHeaderViewModel.closed_by.trim().length == 0)
+    return (issueHeaderViewModel.closedBy == null || issueHeaderViewModel.closedBy.trim().length == 0)
         ? new Container()
         : new Container(
             child: new Text(
-              "Close By " + issueHeaderViewModel.closed_by,
+              "Close By " + issueHeaderViewModel.closedBy,
               style: GSYConstant.subSmallText,
             ),
             margin: new EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
@@ -91,7 +91,7 @@ class IssueHeaderItem extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 0.0, right: 10.0, left: 0.0),
                       width: 50.0,
                       height: 50.0,
-                      image: issueHeaderViewModel.actionUserPic,
+                      image: issueHeaderViewModel.actionUserPic ?? GSYICons.DEFAULT_REMOTE_PIC,
                       onPressed: () {
                         NavigatorUtils.goPerson(context, issueHeaderViewModel.actionUser);
                       }),
@@ -150,9 +150,9 @@ class IssueHeaderItem extends StatelessWidget {
 class IssueHeaderViewModel {
   String actionTime = "---";
   String actionUser = "---";
-  String actionUserPic = "---";
+  String actionUserPic;
 
-  String closed_by = "";
+  String closedBy = "";
   bool locked = false;
   String issueComment = "---";
   String issueDesHtml = "---";
@@ -167,7 +167,7 @@ class IssueHeaderViewModel {
     actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt);
     actionUser = issueMap.user.login;
     actionUserPic = issueMap.user.avatar_url;
-    closed_by = issueMap.closeBy != null ? issueMap.closeBy.login : "";
+    closedBy = issueMap.closeBy != null ? issueMap.closeBy.login : "";
     locked = issueMap.locked;
     issueComment = issueMap.title;
     issueDesHtml = issueMap.bodyHtml != null ? issueMap.bodyHtml : (issueMap.body != null) ? issueMap.body : "";

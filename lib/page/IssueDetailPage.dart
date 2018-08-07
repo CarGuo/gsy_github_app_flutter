@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
@@ -117,19 +119,30 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
     if (page <= 1) {
       _getHeaderInfo();
     }
-    return await IssueDao.getIssueCommentDao(userName, reposName, issueNum, page: page);
+    return await IssueDao.getIssueCommentDao(userName, reposName, issueNum, page: page, needDb: page <= 1);
   }
 
-  _getHeaderInfo() async {
-    var res = await IssueDao.getIssueInfoDao(userName, reposName, issueNum);
-    if (res != null && res.result) {
-      Issue issue = res.data;
-      setState(() {
-        issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue);
-        titleOptionControl.url = issue.htmlUrl;
-        headerStatus = true;
-      });
-    }
+  _getHeaderInfo() {
+    IssueDao.getIssueInfoDao(userName, reposName, issueNum).then((res) {
+      if (res != null && res.result) {
+        _resolveHeaderInfo(res);
+        return res.next;
+      }
+      return new Future.value(null);
+    }).then((res) {
+      if (res != null && res.result) {
+        _resolveHeaderInfo(res);
+      }
+    });
+  }
+
+  _resolveHeaderInfo(res) {
+    Issue issue = res.data;
+    setState(() {
+      issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue);
+      titleOptionControl.url = issue.htmlUrl;
+      headerStatus = true;
+    });
   }
 
   _editCommit(id, content) {
@@ -251,14 +264,12 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);
-                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then(
-                      (result) {
+                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then((result) {
                     _getHeaderInfo();
                     Navigator.pop(context);
                   });
                 },
-                child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close,
-                    style: GSYConstant.smallText)),
+                child: new Text((issueHeaderViewModel.state == 'closed') ? GSYStrings.issue_open : GSYStrings.issue_close, style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
