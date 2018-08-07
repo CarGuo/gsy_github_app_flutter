@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/model/TrendingRepoModel.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/net/Code.dart';
 import 'package:gsy_github_app_flutter/common/net/ResultData.dart';
@@ -36,7 +37,7 @@ class TrendingUtil {
     var splitWithH3 = responseData.split('<h3');
     splitWithH3.removeAt(0);
     for (var i = 0; i < splitWithH3.length; i++) {
-      var repo = new TrendingRepoModel();
+      var repo = TrendingRepoModel.empty();
       var html = splitWithH3[i];
 
       parseRepoBaseInfo(repo, html);
@@ -131,23 +132,4 @@ class TrendingUtil {
       return text.toString().trim();
     }
   }
-}
-
-class TrendingRepoModel {
-  String fullName;
-  String url;
-
-  String description;
-  String language;
-  String meta;
-  List<String> contributors;
-  String contributorsUrl;
-
-  String starCount;
-  String forkCount;
-  String name;
-
-  String reposName;
-
-  TrendingRepoModel();
 }
