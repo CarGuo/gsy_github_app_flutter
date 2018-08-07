@@ -78,9 +78,20 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   _getDataLogic() async {
     if (selectIndex == 1) {
-      return await ReposDao.getReposCommitsDao(userName, reposName, page: page, branch: reposDetailParentControl.currentBranch);
+      return await ReposDao.getReposCommitsDao(
+        userName,
+        reposName,
+        page: page,
+        branch: reposDetailParentControl.currentBranch,
+      );
     }
-    return await ReposDao.getRepositoryEventDao(userName, reposName, page: page, branch: reposDetailParentControl.currentBranch);
+    return await ReposDao.getRepositoryEventDao(
+      userName,
+      reposName,
+      page: page,
+      branch: reposDetailParentControl.currentBranch,
+      needDb: page <= 1,
+    );
   }
 
   _getReposDetail() {
