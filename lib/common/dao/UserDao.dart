@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/user/UserFollowedDbProvider.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/user/UserFollowerDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/user/UserInfoDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
@@ -105,7 +107,7 @@ class UserDao {
 
     if (needDb) {
       User user = await provider.getUserInfo(userName);
-      if(user == null) {
+      if (user == null) {
         return await next();
       }
       DataResult dataResult = new DataResult(user, true, next: next());
@@ -147,43 +149,76 @@ class UserDao {
   /**
    * 获取用户粉丝列表
    */
-  static getFollowerListDao(userName, page) async {
-    String url = Address.getUserFollower(userName) + Address.getPageParams("?", page);
-    var res = await HttpManager.netFetch(url, null, null, null);
-    if (res != null && res.result) {
-      List<User> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
+  static getFollowerListDao(userName, page, {needDb = false}) async {
+    UserFollowerDbProvider provider = new UserFollowerDbProvider();
+
+    next() async {
+      String url = Address.getUserFollower(userName) + Address.getPageParams("?", page);
+      var res = await HttpManager.netFetch(url, null, null, null);
+      if (res != null && res.result) {
+        List<User> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        for (int i = 0; i < data.length; i++) {
+          list.add(new User.fromJson(data[i]));
+        }
+        if (needDb) {
+          provider.insert(userName, json.encode(data));
+        }
+        return new DataResult(list, true);
+      } else {
         return new DataResult(null, false);
       }
-      for (int i = 0; i < data.length; i++) {
-        list.add(new User.fromJson(data[i]));
-      }
-      return new DataResult(list, true);
-    } else {
-      return new DataResult(null, false);
     }
+
+    if (needDb) {
+      List<User> list = await provider.geData(userName);
+      if (list == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(list, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
    * 获取用户关注列表
    */
-  static getFollowedListDao(userName, page) async {
-    String url = Address.getUserFollow(userName) + Address.getPageParams("?", page);
-    var res = await HttpManager.netFetch(url, null, null, null);
-    if (res != null && res.result) {
-      List<User> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
+  static getFollowedListDao(userName, page, {needDb = false}) async {
+    UserFollowedDbProvider provider = new UserFollowedDbProvider();
+    next() async {
+      String url = Address.getUserFollow(userName) + Address.getPageParams("?", page);
+      var res = await HttpManager.netFetch(url, null, null, null);
+      if (res != null && res.result) {
+        List<User> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        for (int i = 0; i < data.length; i++) {
+          list.add(new User.fromJson(data[i]));
+        }
+        if (needDb) {
+          provider.insert(userName, json.encode(data));
+        }
+        return new DataResult(list, true);
+      } else {
         return new DataResult(null, false);
       }
-      for (int i = 0; i < data.length; i++) {
-        list.add(new User.fromJson(data[i]));
-      }
-      return new DataResult(list, true);
-    } else {
-      return new DataResult(null, false);
     }
+
+    if (needDb) {
+      List<User> list = await provider.geData(userName);
+      if (list == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(list, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
