@@ -51,10 +51,12 @@ class _PersonState extends GSYListState<PersonPage> {
   _PersonState(this.userName);
 
   _resolveUserInfo(res) {
-    setState(() {
-      userInfo = res.data;
-      titleOptionControl.url = res.data.html_url;
-    });
+    if (isShow) {
+      setState(() {
+        userInfo = res.data;
+        titleOptionControl.url = res.data.html_url;
+      });
+    }
   }
 
   @override
@@ -64,6 +66,7 @@ class _PersonState extends GSYListState<PersonPage> {
     }
     isLoading = true;
     page = 1;
+
     ///从Dao中获取数据
     ///如果第一次返回的是网络数据，next为空
     ///如果返回的是数据库数据，next不为空
@@ -92,9 +95,11 @@ class _PersonState extends GSYListState<PersonPage> {
     _getFocusStatus();
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
       if (res != null && res.result) {
-        setState(() {
-          beStaredCount = res.data.toString();
-        });
+        if (isShow) {
+          setState(() {
+            beStaredCount = res.data.toString();
+          });
+        }
       }
     });
     return null;
@@ -102,10 +107,12 @@ class _PersonState extends GSYListState<PersonPage> {
 
   _getFocusStatus() async {
     var focusRes = await UserDao.checkFollowDao(userName);
-    setState(() {
-      focus = (focusRes != null && focusRes.result) ? GSYStrings.user_focus : GSYStrings.user_un_focus;
-      focusStatus = (focusRes != null && focusRes.result);
-    });
+    if (isShow) {
+      setState(() {
+        focus = (focusRes != null && focusRes.result) ? GSYStrings.user_focus : GSYStrings.user_un_focus;
+        focusStatus = (focusRes != null && focusRes.result);
+      });
+    }
   }
 
   _renderEventItem(index) {
