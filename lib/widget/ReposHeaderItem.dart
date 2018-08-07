@@ -59,7 +59,7 @@ class ReposHeaderItem extends StatelessWidget {
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 fit: BoxFit.cover,
-                image: new NetworkImage(reposHeaderViewModel.ownerPic),
+                image: new NetworkImage(reposHeaderViewModel.ownerPic ?? GSYICons.DEFAULT_REMOTE_PIC),
               ),
             ),
             child: new Container(
@@ -179,7 +179,7 @@ class ReposHeaderItem extends StatelessWidget {
 
 class ReposHeaderViewModel {
   String ownerName = '---';
-  String ownerPic = "---";
+  String ownerPic;
   String repositoryName = "---";
   String repositorySize = "---";
   String repositoryStar = "---";
