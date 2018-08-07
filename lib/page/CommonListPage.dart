@@ -45,13 +45,13 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
   _CommonListPageState(this.title, this.showType, this.dataType, this.userName, this.reposName);
 
   _renderItem(index) {
-    if(pullLoadWidgetControl.dataList.length == 0) {
+    if (pullLoadWidgetControl.dataList.length == 0) {
       return null;
     }
     var data = pullLoadWidgetControl.dataList[index];
     switch (showType) {
       case 'repository':
-        ReposViewModel reposViewModel =  ReposViewModel.fromMap(data);
+        ReposViewModel reposViewModel = ReposViewModel.fromMap(data);
         return new ReposItem(reposViewModel, onPressed: () {
           NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
         });
@@ -73,19 +73,19 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
   _getDataLogic() async {
     switch (dataType) {
       case 'follower':
-        return await UserDao.getFollowerListDao(userName, page);
+        return await UserDao.getFollowerListDao(userName, page, needDb: page <= 1);
       case 'followed':
-        return await UserDao.getFollowedListDao(userName, page);
+        return await UserDao.getFollowedListDao(userName, page, needDb: page <= 1);
       case 'user_repos':
-        return await ReposDao.getUserRepositoryDao(userName, page, null);
+        return await ReposDao.getUserRepositoryDao(userName, page, null, needDb: page <= 1);
       case 'user_star':
-        return await ReposDao.getStarRepositoryDao(userName, page, null);
+        return await ReposDao.getStarRepositoryDao(userName, page, null, needDb: page <= 1);
       case 'repo_star':
-        return await ReposDao.getRepositoryStarDao(userName, reposName, page);
+        return await ReposDao.getRepositoryStarDao(userName, reposName, page, needDb: page <= 1);
       case 'repo_watcher':
-        return await ReposDao.getRepositoryWatcherDao(userName, reposName, page);
+        return await ReposDao.getRepositoryWatcherDao(userName, reposName, page, needDb: page <= 1);
       case 'repo_fork':
-        return await ReposDao.getRepositoryForksDao(userName, reposName, page);
+        return await ReposDao.getRepositoryForksDao(userName, reposName, page, needDb: page <= 1);
       case 'repo_release':
         return null;
       case 'repo_tag':
