@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
@@ -6,6 +8,7 @@ import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
+import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
@@ -19,14 +22,15 @@ class ReposDetailInfoPage extends StatefulWidget {
   final String userName;
 
   final String reposName;
-  final ReposDetailInfoPageControl reposDetailInfoPageControl;
 
   final ReposDetailParentControl reposDetailParentControl;
 
-  ReposDetailInfoPage(this.reposDetailInfoPageControl, this.userName, this.reposName, this.reposDetailParentControl, {Key key}) : super(key: key);
+  final OptionControl titleOptionControl;
+
+  ReposDetailInfoPage(this.userName, this.reposName, this.reposDetailParentControl, this.titleOptionControl, {Key key}) : super(key: key);
 
   @override
-  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(reposDetailInfoPageControl, userName, reposName, reposDetailParentControl);
+  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(userName, reposName, reposDetailParentControl, titleOptionControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -35,17 +39,19 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   final String reposName;
 
-  final ReposDetailInfoPageControl reposDetailInfoPageControl;
-
   final ReposDetailParentControl reposDetailParentControl;
+
+  final OptionControl titleOptionControl;
+
+  Repository repository = Repository.empty();
 
   int selectIndex = 0;
 
-  ReposDetailInfoPageState(this.reposDetailInfoPageControl, this.userName, this.reposName, this.reposDetailParentControl);
+  ReposDetailInfoPageState(this.userName, this.reposName, this.reposDetailParentControl, this.titleOptionControl);
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new ReposHeaderItem(ReposHeaderViewModel.fromHttpMap(userName, reposName, reposDetailInfoPageControl.repository), (index) {
+      return new ReposHeaderItem(ReposHeaderViewModel.fromHttpMap(userName, reposName, repository), (index) {
         selectIndex = index;
         clearData();
         showRefreshLoading();
@@ -77,11 +83,32 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     return await ReposDao.getRepositoryEventDao(userName, reposName, page: page, branch: reposDetailParentControl.currentBranch);
   }
 
+  _getReposDetail() {
+    ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch).then((result) {
+      if (result != null && result.result) {
+        setState(() {
+          repository = result.data;
+          titleOptionControl.url = repository.htmlUrl;
+        });
+        return result.next;
+      }
+      return new Future.value(null);
+    }).then((result) {
+      if (result != null && result.result) {
+        setState(() {
+          repository = result.data;
+          titleOptionControl.url = repository.htmlUrl;
+        });
+      }
+    });
+  }
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   requestRefresh() async {
+    _getReposDetail();
     return await _getDataLogic();
   }
 
@@ -107,8 +134,4 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
       refreshKey: refreshIndicatorKey,
     );
   }
-}
-
-class ReposDetailInfoPageControl {
-  Repository repository =  Repository.empty();
 }

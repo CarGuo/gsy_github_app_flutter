@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailDbProvider.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailReadmeDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/TrendRepositoryDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
@@ -96,6 +97,7 @@ class ReposDao {
         return new DataResult(null, false);
       }
     }
+
     if (needDb) {
       Repository repository = await provider.getRepository(fullName);
       if (repository == null) {
@@ -379,14 +381,32 @@ class ReposDao {
   /**
    * 详情的remde数据
    */
-  static getRepositoryDetailReadmeDao(userName, reposName, branch) async {
-    String url = Address.readmeFile(userName + '/' + reposName, branch);
-    var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, new Options(contentType: ContentType.TEXT));
-    //var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.html'}, new Options(contentType: ContentType.TEXT));
-    if (res != null && res.result) {
-      return new DataResult(res.data, true);
+  static getRepositoryDetailReadmeDao(userName, reposName, branch, {needDb = true}) async {
+    String fullName = userName + "/" + reposName;
+    RepositoryDetailReadmeDbProvider provider = new RepositoryDetailReadmeDbProvider();
+
+    next() async {
+      String url = Address.readmeFile(userName + '/' + reposName, branch);
+      var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, new Options(contentType: ContentType.TEXT));
+      //var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.html'}, new Options(contentType: ContentType.TEXT));
+      if (res != null && res.result) {
+        if (needDb) {
+          provider.insert(fullName, branch, res.data);
+        }
+        return new DataResult(res.data, true);
+      }
+      return new DataResult(null, false);
     }
-    return new DataResult(null, false);
+
+    if (needDb) {
+      String readme = await provider.getRepositoryReadme(fullName, branch);
+      if (readme == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(readme, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
