@@ -40,8 +40,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final String reposName;
 
-  final ReposDetailInfoPageControl reposDetailInfoPageControl = new ReposDetailInfoPageControl();
-
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
   final ReposDetailParentControl reposDetailParentControl = new ReposDetailParentControl("master");
@@ -59,26 +57,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   List<String> branchList = new List();
 
   _RepositoryDetailPageState(this.userName, this.reposName);
-
-  _getReposDetail() {
-    ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch).then((result) {
-      if (result != null && result.result) {
-        setState(() {
-          reposDetailInfoPageControl.repository = result.data;
-          titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
-        });
-        return result.next;
-      }
-      return new Future.value(null);
-    }).then((result) {
-      if (result != null && result.result) {
-        setState(() {
-          reposDetailInfoPageControl.repository = result.data;
-          titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
-        });
-      }
-    });
-  }
 
   _getReposStatus() async {
     var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
@@ -103,7 +81,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   }
 
   _refresh() {
-    this._getReposDetail();
     this._getReposStatus();
   }
 
@@ -239,12 +216,18 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return [
       ///Release Page
       new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
-        String releaseUrl = reposDetailInfoPageControl.repository == null
-            ? GSYStrings.app_default_share_url
-            : reposDetailInfoPageControl.repository.htmlUrl + "/releases";
-        String tagUrl = reposDetailInfoPageControl.repository == null
-            ? GSYStrings.app_default_share_url
-            : reposDetailInfoPageControl.repository.htmlUrl + "/tags";
+        String releaseUrl = "";
+        String tagUrl = "";
+        if (infoListKey == null || infoListKey.currentState == null) {
+          releaseUrl = GSYStrings.app_default_share_url;
+          tagUrl = GSYStrings.app_default_share_url;
+        } else {
+          releaseUrl = infoListKey.currentState.repository == null
+              ? GSYStrings.app_default_share_url
+              : infoListKey.currentState.repository.htmlUrl + "/releases";
+          tagUrl =
+              infoListKey.currentState.repository == null ? GSYStrings.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
+        }
         NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
       }),
     ];
@@ -265,7 +248,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
       tarWidgetControl: tarBarControl,
       tabItems: _renderTabItem(),
       tabViews: [
-        new ReposDetailInfoPage(reposDetailInfoPageControl, userName, reposName, reposDetailParentControl, key: infoListKey),
+        new ReposDetailInfoPage(userName, reposName, reposDetailParentControl, titleOptionControl, key: infoListKey),
         new RepositoryDetailReadmePage(userName, reposName, reposDetailParentControl, key: readmeKey),
         new RepositoryDetailIssuePage(userName, reposName),
         new RepositoryDetailFileListPage(userName, reposName, reposDetailParentControl, key: fileListKey),

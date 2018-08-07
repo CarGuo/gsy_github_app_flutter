@@ -51,7 +51,7 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   }
 
 
-  Future _getUserProvider(Database db, String fullName) async {
+  Future _getProvider(Database db, String fullName) async {
     List<Map<String, dynamic>> maps =
     await db.query(name, columns: [columnId, columnFullName, columnData], where: "$columnFullName = ?", whereArgs: [fullName]);
     if (maps.length > 0) {
@@ -64,8 +64,8 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   ///插入到数据库
   Future insert(String fullName, String dataMapString) async {
     Database db = await getDataBase();
-    var userProvider = await _getUserProvider(db, fullName);
-    if (userProvider != null) {
+    var provider = await _getProvider(db, fullName);
+    if (provider != null) {
       await db.delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
     }
     return await db.insert(name, toMap(fullName, dataMapString));
@@ -74,9 +74,9 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   ///获取详情
   Future<Repository> getRepository(String fullName) async {
     Database db = await getDataBase();
-    var userProvider = await _getUserProvider(db, fullName);
-    if (userProvider != null) {
-      return Repository.fromJson(json.decode(userProvider.data));
+    var provider = await _getProvider(db, fullName);
+    if (provider != null) {
+      return Repository.fromJson(json.decode(provider.data));
     }
     return null;
   }

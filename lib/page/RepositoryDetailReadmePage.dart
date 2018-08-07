@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
@@ -40,6 +42,16 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
 
   refreshReadme() {
     ReposDao.getRepositoryDetailReadmeDao(userName, reposName, reposDetailParentControl.currentBranch).then((res) {
+      if (res != null && res.result) {
+        if (isShow) {
+          setState(() {
+            markdownData = res.data;
+          });
+          return res.next;
+        }
+      }
+      return new Future.value(null);
+    }).then((res) {
       if (res != null && res.result) {
         if (isShow) {
           setState(() {

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
+import 'package:sqflite/sqflite.dart';
 
 /**
  * 仓库readme文件表
@@ -18,8 +21,10 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
   final String columnBranch = "branch";
   final String columnData = "data";
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {columnFullName: fullName, columnBranch: branch, columnData: data};
+  RepositoryDetailReadmeDbProvider();
+
+  Map<String, dynamic> toMap(String fullName, String branch, String dataMapString) {
+    Map<String, dynamic> map = {columnFullName: fullName, columnBranch: branch, columnData: dataMapString};
     if (id != null) {
       map[columnId] = id;
     }
@@ -32,12 +37,50 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
     branch = map[columnBranch];
     data = map[columnData];
   }
-
   @override
-  tableSqlString() {}
+  tableSqlString() {
+    return tableBaseString(name, columnId) +
+        '''
+        $columnFullName text not null,
+        $columnBranch text not null,
+        $columnData text not null)
+      ''';
+  }
 
   @override
   tableName() {
     return name;
   }
+
+
+  Future _getProvider(Database db, String fullName, String branch) async {
+    List<Map<String, dynamic>> maps =
+    await db.query(name, columns: [columnId, columnFullName, columnData], where: "$columnFullName = ? and $columnBranch = ?", whereArgs: [fullName, branch]);
+    if (maps.length > 0) {
+      RepositoryDetailReadmeDbProvider provider = RepositoryDetailReadmeDbProvider.fromMap(maps.first);
+      return provider;
+    }
+    return null;
+  }
+
+  ///插入到数据库
+  Future insert(String fullName, String branch, String dataMapString) async {
+    Database db = await getDataBase();
+    var provider = await _getProvider(db, fullName, branch);
+    if (provider != null) {
+      await db.delete(name, where: "$columnFullName = ? and $columnBranch = ?", whereArgs: [fullName, branch]);
+    }
+    return await db.insert(name, toMap(fullName, branch, dataMapString));
+  }
+
+  ///获取readme详情
+  Future<String> getRepositoryReadme(String fullName, String branch) async {
+    Database db = await getDataBase();
+    var provider = await _getProvider(db, fullName, branch);
+    if (provider != null) {
+      return provider.data;
+    }
+    return null;
+  }
+
 }
