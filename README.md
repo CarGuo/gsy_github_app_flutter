@@ -42,6 +42,7 @@
 4、运行
 
 
+
 ### 下载
 
 #### Apk下载链接： [Apk下载链接](https://www.pgyer.com/vj2B)
@@ -49,6 +50,18 @@
 #### Apk二维码
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png)
+
+  
+### 常见问题
+
+* 如果包同步失败，一般都是因为没设置包代理，可以参考：[环境变量问题](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
+
+
+### 相关文章
+
+* [Flutter 完整开发实战详解(一、Dart 语言和 Flutter 基础)](https://juejin.im/entry/5b631e3e51882519861c2ef1 )
+* [Flutter 完整开发实战详解(二、快速实战篇)](https://juejin.im/entry/5b685bd4e51d451994602cae )
+
 
 
 ### 示例图片
@@ -87,17 +100,6 @@
 ### 进行中：
 
 [版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
-  
-  
-### 常见问题
-
-* 如果包同步失败，一般都是因为没设置包代理，可以参考：[环境变量问题](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
-
-
-### 相关文章
-
-* [Flutter 完整开发实战详解(一、Dart 语言和 Flutter 基础)](https://juejin.im/entry/5b631e3e51882519861c2ef1 )
-* [Flutter 完整开发实战详解(二、快速实战篇)](https://juejin.im/entry/5b685bd4e51d451994602cae )
 
 
 <img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
