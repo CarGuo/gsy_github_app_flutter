@@ -339,7 +339,7 @@ class GSYICons {
   static const String FONT_FAMILY = 'wxcIconFont';
 
   static const String DEFAULT_USER_ICON = 'static/images/logo.png';
-  static const String DEFAULT_REMOTE_PIC =  'https://github.com/logo.png';
+  static const String DEFAULT_REMOTE_PIC =  'https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/static/images/logo.png';
 
   static const IconData HOME = const IconData(0xe624, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData MORE = const IconData(0xe674, fontFamily: GSYICons.FONT_FAMILY);

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/issue/IssueCommentDbProvider.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/issue/IssueDetailDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryIssueDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/model/Issue.dart';
@@ -96,37 +98,74 @@ class IssueDao {
   /**
    * issue的详请
    */
-  static getIssueInfoDao(userName, repository, number) async {
-    String url = Address.getIssueInfo(userName, repository, number);
-    //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
-    var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
-    if (res != null && res.result) {
-      return new DataResult(Issue.fromJson(res.data), true);
-    } else {
-      return new DataResult(null, false);
+  static getIssueInfoDao(userName, repository, number, {needDb = true}) async {
+    String fullName = userName + "/" + repository;
+
+    IssueDetailDbProvider provider = new IssueDetailDbProvider();
+
+    next() async {
+      String url = Address.getIssueInfo(userName, repository, number);
+      //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
+      var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
+      if (res != null && res.result) {
+        if (needDb) {
+          provider.insert(fullName, number, json.encode(res.data));
+        }
+        return new DataResult(Issue.fromJson(res.data), true);
+      } else {
+        return new DataResult(null, false);
+      }
     }
+
+    if (needDb) {
+      Issue issue = await provider.getRepository(fullName, number);
+      if (issue == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(issue, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
    * issue的详请列表
    */
-  static getIssueCommentDao(userName, repository, number, {page: 0}) async {
-    String url = Address.getIssueComment(userName, repository, number) + Address.getPageParams("?", page);
-    //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
-    var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
-    if (res != null && res.result) {
-      List<Issue> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
+  static getIssueCommentDao(userName, repository, number, {page: 0, needDb = false}) async {
+    String fullName = userName + "/" + repository;
+    IssueCommentDbProvider provider = new IssueCommentDbProvider();
+
+    next() async {
+      String url = Address.getIssueComment(userName, repository, number) + Address.getPageParams("?", page);
+      //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
+      var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
+      if (res != null && res.result) {
+        List<Issue> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        if (needDb) {
+          provider.insert(fullName, number, json.encode(res.data));
+        }
+        for (int i = 0; i < data.length; i++) {
+          list.add(Issue.fromJson(data[i]));
+        }
+        return new DataResult(list, true);
+      } else {
         return new DataResult(null, false);
       }
-      for (int i = 0; i < data.length; i++) {
-        list.add(Issue.fromJson(data[i]));
-      }
-      return new DataResult(list, true);
-    } else {
-      return new DataResult(null, false);
     }
+
+    if (needDb) {
+      List<Issue> list = await provider.getData(fullName, number);
+      if (list == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(list, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
@@ -160,8 +199,8 @@ class IssueDao {
    */
   static lockIssueDao(userName, repository, number, locked) async {
     String url = Address.lockIssue(userName, repository, number);
-    var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.full+json'},
-        new Options(method: locked ? "DELETE" : 'PUT', contentType: ContentType.TEXT),
+    var res = await HttpManager.netFetch(
+        url, null, {"Accept": 'application/vnd.github.VERSION.full+json'}, new Options(method: locked ? "DELETE" : 'PUT', contentType: ContentType.TEXT),
         noTip: true);
     if (res != null && res.result) {
       return new DataResult(res.data, true);

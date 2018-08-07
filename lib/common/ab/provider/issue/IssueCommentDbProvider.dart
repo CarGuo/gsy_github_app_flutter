@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
+import 'package:gsy_github_app_flutter/common/model/Issue.dart';
+import 'package:sqflite/sqflite.dart';
 
 /**
  * issue评论表
@@ -20,8 +25,10 @@ class IssueCommentDbProvider extends BaseDbProvider {
   String number;
   String data;
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {columnFullName: fullName, columnData: data, columnNumber: number, columnCommentId: commentId};
+  IssueCommentDbProvider();
+
+  Map<String, dynamic> toMap(String fullName, String number, String data) {
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data, columnNumber: number};
     if (id != null) {
       map[columnId] = id;
     }
@@ -31,16 +38,61 @@ class IssueCommentDbProvider extends BaseDbProvider {
   IssueCommentDbProvider.fromMap(Map map) {
     id = map[columnId];
     number = map[columnNumber];
-    commentId = map[columnCommentId];
     fullName = map[columnFullName];
     data = map[columnData];
   }
 
   @override
-  tableSqlString() {}
+  tableSqlString() {
+    return tableBaseString(name, columnId) +
+        '''
+        $columnFullName text not null,
+        $columnNumber text not null,
+        $columnCommentId text,
+        $columnData text not null)
+      ''';
+  }
 
   @override
   tableName() {
     return name;
+  }
+
+  Future _getProvider(Database db, String fullName, String number) async {
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnFullName, columnNumber, columnData], where: "$columnFullName = ? and $columnNumber = ?", whereArgs: [fullName, number]);
+    if (maps.length > 0) {
+      IssueCommentDbProvider provider = IssueCommentDbProvider.fromMap(maps.first);
+      return provider;
+    }
+    return null;
+  }
+
+  ///插入到数据库
+  Future insert(String fullName, String number, String dataMapString) async {
+    Database db = await getDataBase();
+    var provider = await _getProvider(db, fullName, number);
+    if (provider != null) {
+      await db.delete(name, where: "$columnFullName = ? and $columnNumber = ?", whereArgs: [fullName, number]);
+    }
+    return await db.insert(name, toMap(fullName, number, dataMapString));
+  }
+
+  ///获取事件数据
+  Future<List<Issue>> getData(String fullName, String number) async {
+    Database db = await getDataBase();
+
+    var provider = await _getProvider(db, fullName, number);
+    if (provider != null) {
+      List<Issue> list = new List();
+      List<dynamic> eventMap = json.decode(provider.data);
+      if (eventMap.length > 0) {
+        for (var item in eventMap) {
+          list.add(Issue.fromJson(item));
+        }
+      }
+      return list;
+    }
+    return null;
   }
 }
