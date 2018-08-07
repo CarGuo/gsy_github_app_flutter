@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/user/UserInfoDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
