@@ -91,7 +91,7 @@ class UserHeaderItem extends StatelessWidget {
                           placeholder: GSYICons.DEFAULT_USER_ICON,
                           //预览图
                           fit: BoxFit.fitWidth,
-                          image: userInfo.avatar_url == null ? "http://null" : userInfo.avatar_url,
+                          image:userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
                           width: 80.0,
                           height: 80.0,
                         ),
