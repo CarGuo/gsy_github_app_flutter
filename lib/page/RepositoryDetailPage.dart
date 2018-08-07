@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -58,14 +60,24 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   _RepositoryDetailPageState(this.userName, this.reposName);
 
-  _getReposDetail() async {
-    var result = await ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch);
-    if (result != null && result.result) {
-      setState(() {
-        reposDetailInfoPageControl.repository = result.data;
-        titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
-      });
-    }
+  _getReposDetail() {
+    ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch).then((result) {
+      if (result != null && result.result) {
+        setState(() {
+          reposDetailInfoPageControl.repository = result.data;
+          titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
+        });
+        return result.next;
+      }
+      return new Future.value(null);
+    }).then((result) {
+      if (result != null && result.result) {
+        setState(() {
+          reposDetailInfoPageControl.repository = result.data;
+          titleOptionControl.url = reposDetailInfoPageControl.repository.htmlUrl;
+        });
+      }
+    });
   }
 
   _getReposStatus() async {
@@ -227,10 +239,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return [
       ///Release Page
       new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
-        String releaseUrl =
-            reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/releases";
-        String tagUrl =
-            reposDetailInfoPageControl.repository == null ? GSYStrings.app_default_share_url : reposDetailInfoPageControl.repository.htmlUrl + "/tags";
+        String releaseUrl = reposDetailInfoPageControl.repository == null
+            ? GSYStrings.app_default_share_url
+            : reposDetailInfoPageControl.repository.htmlUrl + "/releases";
+        String tagUrl = reposDetailInfoPageControl.repository == null
+            ? GSYStrings.app_default_share_url
+            : reposDetailInfoPageControl.repository.htmlUrl + "/tags";
         NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
       }),
     ];

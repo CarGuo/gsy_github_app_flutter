@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_version/get_version.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/TrendRepositoryDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
@@ -75,18 +76,35 @@ class ReposDao {
   /**
    * 仓库的详情数据
    */
-  static getRepositoryDetailDao(userName, reposName, branch) async {
-    String url = Address.getReposDetail(userName, reposName) + "?ref=" + branch;
-    var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
-    if (res != null && res.result && res.data.length > 0) {
-      var data = res.data;
-      if (data == null || data.length == 0) {
+  static getRepositoryDetailDao(userName, reposName, branch, {needDb = true}) async {
+    String fullName = userName + "/" + reposName;
+    RepositoryDetailDbProvider provider = new RepositoryDetailDbProvider();
+
+    next() async {
+      String url = Address.getReposDetail(userName, reposName) + "?ref=" + branch;
+      var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
+      if (res != null && res.result && res.data.length > 0) {
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        if (needDb) {
+          provider.insert(fullName, json.encode(data));
+        }
+        return new DataResult(Repository.fromJson(data), true);
+      } else {
         return new DataResult(null, false);
       }
-      return new DataResult(Repository.fromJson(data), true);
-    } else {
-      return new DataResult(null, false);
     }
+    if (needDb) {
+      Repository repository = await provider.getRepository(fullName);
+      if (repository == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(repository, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
