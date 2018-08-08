@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
@@ -68,6 +70,43 @@ class UserHeaderItem extends StatelessWidget {
         });
   }
 
+  _renderChart(context) {
+    double height = 140.0;
+    double width = 3 * MediaQuery.of(context).size.width / 2;
+    return userInfo.login != null
+        ? new Card(
+            margin: EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 10.0),
+            color: Colors.white,
+            child: new SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: new Container(
+                padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                width: width,
+                height: height,
+                child: new SvgPicture.network(
+                  CommonUtils.getUserChartAddress(userInfo.login),
+                  width: width,
+                  height: height - 10,
+                  allowDrawingOutsideViewBox: true,
+                  placeholderBuilder: (BuildContext context) => new Container(
+                        height: height / 2,
+                        width: width,
+                        child: Center(
+                          child: const SpinKitRipple (color: Color(GSYColors.primaryValue)),
+                        ),
+                      ),
+                ),
+              ),
+            ),
+          )
+        : new Container(
+            height: height,
+            child: Center(
+              child: const SpinKitRipple(color: Color(GSYColors.primaryValue)),
+            ),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Column(
@@ -91,7 +130,7 @@ class UserHeaderItem extends StatelessWidget {
                           placeholder: GSYICons.DEFAULT_USER_ICON,
                           //预览图
                           fit: BoxFit.fitWidth,
-                          image:userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
+                          image: userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
                           width: 80.0,
                           height: 80.0,
                         ),
@@ -217,6 +256,7 @@ class UserHeaderItem extends StatelessWidget {
             ),
             margin: new EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
             alignment: Alignment.topLeft),
+        _renderChart(context),
       ],
     );
   }

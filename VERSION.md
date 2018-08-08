@@ -14,6 +14,7 @@
 * webview点击跳转。
 * markdown htmlview 表格。
 
+* trend修改为redux
 * 未读的通知进去issue提示其他异常
 
 ### 1.0.6（进行中）

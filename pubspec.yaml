@@ -24,6 +24,7 @@ dependencies:
   sqflite: ^0.11.0+5
   pub_semver: ^1.4.2
   flutter_statusbar: ^0.0.1
+  flutter_svg: ^0.5.4
 
 dev_dependencies:
   build_runner: ^0.7.6
