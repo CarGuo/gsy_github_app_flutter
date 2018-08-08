@@ -44,11 +44,11 @@ class HomeDrawer extends StatelessWidget {
               new UserAccountsDrawerHeader(
                 //Material内置控件
                 accountName: new Text(
-                  user.login != null ? user.login : "---",
+                  user.login ?? "---",
                   style: GSYConstant.largeTextWhite,
                 ),
                 accountEmail: new Text(
-                  user.email != null ? user.email : user.name != null ? user.name : "---",
+                  user.email ?? user.name ??  "---",
                   style: GSYConstant.subNormalText,
                 ),
                 //用户名
@@ -58,7 +58,7 @@ class HomeDrawer extends StatelessWidget {
                   onTap: () {},
                   child: new CircleAvatar(
                     //圆形图标控件
-                    backgroundImage: new NetworkImage(user.avatar_url != null ? user.avatar_url : "---"),
+                    backgroundImage: new NetworkImage(user.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC),
                   ),
                 ),
                 decoration: new BoxDecoration(

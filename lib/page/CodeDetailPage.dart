@@ -60,9 +60,7 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
         if (res != null && res.result) {
           setState(() {
             data = res.data;
-            if (htmlUrl != null) {
-              titleOptionControl.url = htmlUrl;
-            }
+            titleOptionControl.url = htmlUrl ?? "";
           });
         }
       });
