@@ -31,8 +31,8 @@ class CommonUtils {
 
   static double sStaticBarHeight = 0.0;
 
-  static void initStatusBarHeight() async {
-    sStaticBarHeight = await FlutterStatusbar.height;
+  static void initStatusBarHeight(context) async {
+    sStaticBarHeight = await FlutterStatusbar.height / MediaQuery.of(context).devicePixelRatio;
   }
 
   static String getDateStr(DateTime date) {
