@@ -83,13 +83,14 @@ class UserHeaderItem extends StatelessWidget {
                 padding: EdgeInsets.only(left: 10.0, right: 10.0),
                 width: width,
                 height: height,
+                ///svg chart
                 child: new SvgPicture.network(
                   CommonUtils.getUserChartAddress(userInfo.login),
                   width: width,
                   height: height - 10,
                   allowDrawingOutsideViewBox: true,
                   placeholderBuilder: (BuildContext context) => new Container(
-                        height: height / 2,
+                        height: height,
                         width: width,
                         child: Center(
                           child: const SpinKitRipple (color: Color(GSYColors.primaryValue)),
