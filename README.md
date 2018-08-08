@@ -97,6 +97,8 @@
 **get_version**|**版本信息**
 **flutter_webview_plugin**|**全屏的webview**
 **sqflite**|**数据库**
+**flutter_statusbar**|**状态栏**
+**flutter_svg**|**svg**
 
 
 ### 进行中：
