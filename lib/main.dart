@@ -19,7 +19,7 @@ class FlutterReduxApp extends StatelessWidget {
 
   /// 创建Store，引用 GSYState 中的 appReducer 创建 Reducer
   /// initialState 初始化 State
-  final store = new Store<GSYState>(appReducer, initialState: new GSYState(userInfo: User.empty(), eventList: new List()));
+  final store = new Store<GSYState>(appReducer, initialState: new GSYState(userInfo: User.empty(), eventList: new List(), trendList: new List()));
 
   FlutterReduxApp({Key key}) : super(key: key);
 
