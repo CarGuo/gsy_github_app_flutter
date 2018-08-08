@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:redux/redux.dart';
 
@@ -18,6 +19,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Store<GSYState> store = StoreProvider.of(context);
+    CommonUtils.initStatusBarHeight();
     new Future.delayed(const Duration(seconds: 2), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {

@@ -188,6 +188,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.1"
+  flutter_statusbar:
+    dependency: "direct main"
+    description:
+      name: flutter_statusbar
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.1"
   flutter_webview_plugin:
     dependency: "direct main"
     description:
