@@ -48,7 +48,7 @@ class HomeDrawer extends StatelessWidget {
                   style: GSYConstant.largeTextWhite,
                 ),
                 accountEmail: new Text(
-                  user.email ?? user.name ??  "---",
+                  user.email ?? user.name ?? "---",
                   style: GSYConstant.subNormalText,
                 ),
                 //用户名
@@ -85,6 +85,14 @@ class HomeDrawer extends StatelessWidget {
                         Navigator.pop(context);
                       });
                     }, titleController: new TextEditingController(), valueController: new TextEditingController(), needTitle: false);
+                  }),
+              new ListTile(
+                  title: new Text(
+                    GSYStrings.home_history,
+                    style: GSYConstant.normalText,
+                  ),
+                  onTap: () {
+                    NavigatorUtils.gotoCommonList(context, GSYStrings.home_history, "repository", "history", userName: "", reposName: "");
                   }),
               new ListTile(
                   title: new Text(

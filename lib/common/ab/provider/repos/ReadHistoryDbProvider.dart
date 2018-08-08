@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
 
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
+import 'package:gsy_github_app_flutter/common/config/Config.dart';
+import 'package:gsy_github_app_flutter/common/model/Repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /**
  * 本地已读历史表
@@ -16,11 +21,13 @@ class ReadHistoryDbProvider extends BaseDbProvider {
 
   int id;
   String fullName;
-  DateTime readDate;
+  int readDate;
   String data;
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {columnFullName: fullName, columnReadDate: readDate, columnData: data};
+  ReadHistoryDbProvider();
+
+  Map<String, dynamic> toMap(String fullName, DateTime readDate, String data) {
+    Map<String, dynamic> map = {columnFullName: fullName, columnReadDate: readDate.millisecondsSinceEpoch, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
@@ -35,12 +42,69 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   }
 
   @override
-  tableSqlString() {}
+  tableSqlString() {
+    return tableBaseString(name, columnId) +
+        '''
+        $columnFullName text not null,
+        $columnReadDate int not null,
+        $columnData text not null)
+      ''';
+  }
 
   @override
   tableName() {
     return name;
   }
+
+  Future _getProvider(Database db, int page) async {
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnFullName, columnReadDate, columnData],
+        limit: Config.PAGE_SIZE,
+        offset: (page - 1) * Config.PAGE_SIZE,
+        orderBy: "$columnReadDate DESC");
+    if (maps.length > 0) {
+      return maps;
+    }
+    return null;
+  }
+
+  Future _getProviderInsert(Database db, String fullName) async {
+    List<Map<String, dynamic>> maps = await db.query(
+      name,
+      columns: [columnId, columnFullName, columnReadDate, columnData],
+      where: "$columnFullName = ?",
+      whereArgs: [fullName],
+    );
+    if (maps.length > 0) {
+      ReadHistoryDbProvider provider = ReadHistoryDbProvider.fromMap(maps.first);
+      return provider;
+    }
+    return null;
+  }
+
+  ///插入到数据库
+  Future insert(String fullName, DateTime dateTime, String dataMapString) async {
+    Database db = await getDataBase();
+    var provider = await _getProviderInsert(db, fullName);
+    if (provider != null) {
+      await db.delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
+    }
+    return await db.insert(name, toMap(fullName, dateTime, dataMapString));
+  }
+
+  ///获取事件数据
+  Future<List<Repository>> geData(int page) async {
+    Database db = await getDataBase();
+    var provider = await _getProvider(db, page);
+    if (provider != null) {
+      List<Repository> list = new List();
+      for (var providerMap in provider) {
+        ReadHistoryDbProvider provider = ReadHistoryDbProvider.fromMap(providerMap);
+        Map map = json.decode(provider.data);
+        list.add(Repository.fromJson(map));
+      }
+      return list;
+    }
+    return null;
+  }
 }
-
-

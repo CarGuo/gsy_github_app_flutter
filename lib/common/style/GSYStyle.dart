@@ -251,6 +251,7 @@ class GSYStrings {
   static const String home_reply = "问题反馈";
   static const String home_about = "关于";
   static const String home_check_update = "检测更新";
+  static const String home_history = "阅读历史";
 
   static const String login_username_hint_text = "请输入github用户名";
   static const String login_password_hint_text = "请输入密码";

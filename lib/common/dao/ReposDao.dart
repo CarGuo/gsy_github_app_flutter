@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_version/get_version.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/repos/ReadHistoryDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryCommitsDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailReadmeDbProvider.dart';
@@ -99,6 +100,7 @@ class ReposDao {
         if (needDb) {
           provider.insert(fullName, json.encode(data));
         }
+        saveHistoryDao(fullName, DateTime.now(), json.encode(data));
         return new DataResult(Repository.fromJson(data), true);
       } else {
         return new DataResult(null, false);
@@ -664,5 +666,25 @@ class ReposDao {
         }
       }
     }
+  }
+
+  /**
+   * 获取阅读历史
+   */
+  static getHistoryDao(page) async {
+    ReadHistoryDbProvider provider = new ReadHistoryDbProvider();
+    List<Repository> list = await provider.geData(page);
+    if (list == null || list.length <= 0) {
+      return new DataResult(null, false);
+    }
+    return new DataResult(list, true);
+  }
+
+  /**
+   * 保存阅读历史
+   */
+  static saveHistoryDao(String fullName, DateTime dateTime, String data) {
+    ReadHistoryDbProvider provider = new ReadHistoryDbProvider();
+    provider.insert(fullName, dateTime, data);
   }
 }
