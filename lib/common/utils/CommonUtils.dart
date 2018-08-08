@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_statusbar/flutter_statusbar.dart';
 
 /**
  * 通用逻辑
@@ -27,6 +28,12 @@ class CommonUtils {
   static final double HOURS_LIMIT = 24 * MINUTES_LIMIT;
 
   static final double DAYS_LIMIT = 30 * HOURS_LIMIT;
+
+  static double sStaticBarHeight = 0.0;
+
+  static void initStatusBarHeight() async {
+    sStaticBarHeight = await FlutterStatusbar.height;
+  }
 
   static String getDateStr(DateTime date) {
     if (date == null || date.toString() == null) {
