@@ -93,7 +93,7 @@ class UserDao {
         User user = User.fromJson(res.data);
         user.starred = starred;
         if (userName == null) {
-          LocalStorage.save(Config.USER_INFO, json.encode(res.data));
+          LocalStorage.save(Config.USER_INFO, json.encode(user.toJson()));
         } else {
           if (needDb) {
             provider.insert(userName, json.encode(user.toJson()));
