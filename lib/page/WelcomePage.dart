@@ -19,7 +19,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Store<GSYState> store = StoreProvider.of(context);
-    CommonUtils.initStatusBarHeight();
+    CommonUtils.initStatusBarHeight(context);
     new Future.delayed(const Duration(seconds: 2), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {

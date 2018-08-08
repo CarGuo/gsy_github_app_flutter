@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 
 /**
  * 搜索drawer
  * Created by guoshuyu
  * Date: 2018-07-18
  */
-
 
 typedef void SearchSelectItemChanged<String>(String value);
 
@@ -33,10 +33,14 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      color: Colors.white,
-      child: new SingleChildScrollView(
-        child: new Column(
-          children: _renderList(),
+      color: Color(GSYColors.primaryValue),
+      padding: EdgeInsets.only(top: CommonUtils.sStaticBarHeight),
+      child: Container(
+        color: Color(GSYColors.white),
+        child: new SingleChildScrollView(
+          child: new Column(
+            children: _renderList(),
+          ),
         ),
       ),
     );
@@ -45,7 +49,6 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   _renderList() {
     List<Widget> list = new List();
     list.add(new Container(
-      height: 50.0,
       width: itemWidth,
     ));
     list.add(_renderTitle("类型"));

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:get_version/get_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -38,10 +36,12 @@ class HomeDrawer extends StatelessWidget {
       builder: (context, store) {
         User user = store.state.userInfo;
         return new Drawer(
-          //侧边栏按钮Drawer
+          ///侧边栏按钮Drawer
           child: new Container(
+            ///默认背景
             color: Color(GSYColors.primaryValue),
             child: new SingleChildScrollView(
+              ///item 背景
               child: new Container(
                 height: MediaQuery.of(context).size.height,
                 color: Color(GSYColors.white),
