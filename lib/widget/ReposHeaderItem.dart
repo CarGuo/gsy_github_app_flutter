@@ -40,16 +40,58 @@ class ReposHeaderItem extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _renderTopicItem(String item) {
+    return new RawMaterialButton(
+        onPressed: () {},
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: const EdgeInsets.all(0.0),
+        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+        child: new Container(
+          padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 2.5, bottom: 2.5),
+          decoration: new BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            color: Colors.white30,
+            border: new Border.all(color: Colors.white30, width: 0.0),
+          ),
+          child: new Text(
+            item,
+            style: GSYConstant.subLightSmallText,
+          ),
+        ));
+  }
+
+  ///话题组控件
+  _renderTopicGroup() {
+    if (reposHeaderViewModel.topics == null || reposHeaderViewModel.topics.length == 0) {
+      return Container();
+    }
+    List<Widget> list = new List();
+    for (String item in reposHeaderViewModel.topics) {
+      list.add(_renderTopicItem(item));
+    }
+    return new Container(
+      alignment: Alignment.topLeft,
+      child: Wrap(
+        spacing: 10.0,
+        runSpacing: 5.0,
+        children: list,
+      ),
+    );
+  }
+
+  ///仓库创建和提交状态信息
+  _getInfoText() {
     String createStr = reposHeaderViewModel.repositoryIsFork
         ? GSYStrings.repos_fork_at + reposHeaderViewModel.repositoryParentName + '\n'
         : GSYStrings.repos_create_at + reposHeaderViewModel.created_at + "\n";
 
     String updateStr = GSYStrings.repos_last_commit + reposHeaderViewModel.push_at;
 
-    String infoText = createStr + ((reposHeaderViewModel.push_at != null) ? updateStr : '');
+    return createStr + ((reposHeaderViewModel.push_at != null) ? updateStr : '');
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return new Column(
       children: <Widget>[
         new GSYCardItem(
@@ -123,7 +165,7 @@ class ReposHeaderItem extends StatelessWidget {
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         padding: const EdgeInsets.all(0.0),
                         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                        child: new Text(infoText,
+                        child: new Text(_getInfoText(),
                             style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.actionLightSmallText : GSYConstant.subLightSmallText),
                       ),
                     ),
@@ -190,6 +232,7 @@ class ReposHeaderItem extends StatelessWidget {
                             ),
                           ],
                         )),
+                    _renderTopicGroup(),
                   ],
                 ),
               ),
@@ -226,6 +269,7 @@ class ReposHeaderViewModel {
   String created_at = "";
   String push_at = "";
   String license = "";
+  List<String> topics;
   int allIssueCount = 0;
   int openIssuesCount = 0;
   bool repositoryStared = false;
@@ -243,6 +287,7 @@ class ReposHeaderViewModel {
     this.ownerPic = map.owner.avatar_url;
     this.repositoryName = reposName;
     this.allIssueCount = map.allIssueCount;
+    this.topics = map.topics;
     this.openIssuesCount = map.openIssuesCount;
     this.repositoryStar = map.watchersCount != null ? map.watchersCount.toString() : "";
     this.repositoryFork = map.forksCount != null ? map.forksCount.toString() : "";

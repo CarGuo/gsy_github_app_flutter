@@ -93,6 +93,8 @@ class Repository extends Object with _$RepositorySerializerMixin {
 
   RepositoryPermissions permissions;
 
+  List<String> topics;
+
   ///issue总数，不参加序列化
   int allIssueCount;
 
@@ -128,6 +130,7 @@ class Repository extends Object with _$RepositorySerializerMixin {
     this.owner,
     this.parent,
     this.permissions,
+    this.topics,
   );
 
   /// A necessary factory constructor for creating a new User instance
