@@ -155,7 +155,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
           ),
         );
       },
-    );;
+    );
   }
 }
 

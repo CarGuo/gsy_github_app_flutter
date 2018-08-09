@@ -103,6 +103,14 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
+                          GSYStrings.home_user_info,
+                          style: GSYConstant.normalText,
+                        ),
+                        onTap: () {
+                          NavigatorUtils.gotoUserProfileInfo(context);
+                        }),
+                    new ListTile(
+                        title: new Text(
                           GSYStrings.home_check_update,
                           style: GSYConstant.normalText,
                         ),
