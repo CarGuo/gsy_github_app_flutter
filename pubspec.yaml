@@ -25,6 +25,7 @@ dependencies:
   pub_semver: ^1.4.2
   flutter_statusbar: ^0.0.1
   flutter_svg: ^0.5.4
+  photo_view: ^0.0.3
 
 dev_dependencies:
   build_runner: ^0.7.6
@@ -78,6 +79,7 @@ flutter:
   assets:
     - static/images/logo.png
     - static/images/welcome.png
+    - static/images/default_img.png
 
   fonts:
     - family: wxcIconFont

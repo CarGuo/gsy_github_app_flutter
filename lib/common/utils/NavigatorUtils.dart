@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/IssueDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/LoginPage.dart';
 import 'package:gsy_github_app_flutter/page/NotifyPage.dart';
 import 'package:gsy_github_app_flutter/page/PersonPage.dart';
+import 'package:gsy_github_app_flutter/page/PhotoViewPage.dart';
 import 'package:gsy_github_app_flutter/page/PushDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/ReleasePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
@@ -181,5 +182,10 @@ class NavigatorUtils {
         branch: branch,
       );
     }
+  }
+
+  ///图片预览
+  static gotoPhotoViewPage(BuildContext context, String url) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new PhotoViewPage(url)));
   }
 }
