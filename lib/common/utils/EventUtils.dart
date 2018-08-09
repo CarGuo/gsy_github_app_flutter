@@ -147,7 +147,11 @@ class EventUtils {
         } else if (event.payload.commits.length == 1) {
           NavigatorUtils.goPushDetailPage(context, owner, repositoryName, event.payload.commits[0].sha, true);
         } else {
-          CommonUtils.showCommitOptionDialog(context, event.payload.commits, (index) {
+          List<String> list = new List();
+          for (int i = 0; i < event.payload.commits.length; i++) {
+            list.add(event.payload.commits[i].message + " " + event.payload.commits[i].sha.substring(0, 4));
+          }
+          CommonUtils.showCommitOptionDialog(context, list, (index) {
             NavigatorUtils.goPushDetailPage(context, owner, repositoryName, event.payload.commits[index].sha, true);
           });
         }

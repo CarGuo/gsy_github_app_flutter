@@ -93,6 +93,9 @@ class Repository extends Object with _$RepositorySerializerMixin {
 
   RepositoryPermissions permissions;
 
+  ///issue总数，不参加序列化
+  int allIssueCount;
+
   Repository(
     this.id,
     this.size,

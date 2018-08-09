@@ -49,6 +49,7 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
 
   ReposDetailInfoPageState(this.userName, this.reposName, this.reposDetailParentControl, this.titleOptionControl);
 
+  ///渲染时间Item或者提交Item
   _renderEventItem(index) {
     if (index == 0) {
       return new ReposHeaderItem(ReposHeaderViewModel.fromHttpMap(userName, reposName, repository), (index) {
@@ -59,6 +60,7 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     }
 
     if (selectIndex == 1) {
+      ///提交
       return new EventItem(
         EventViewModel.fromCommitMap(pullLoadWidgetControl.dataList[index - 1]),
         onPressed: () {
@@ -76,6 +78,7 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     );
   }
 
+  ///获取列表
   _getDataLogic() async {
     if (selectIndex == 1) {
       return await ReposDao.getReposCommitsDao(
@@ -95,6 +98,7 @@ class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
     );
   }
 
+  ///获取详情
   _getReposDetail() {
     ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch).then((result) {
       if (result != null && result.result) {

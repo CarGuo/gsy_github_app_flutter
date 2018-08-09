@@ -126,6 +126,7 @@ class ReposHeaderItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            ///star状态
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_STAR,
                               reposHeaderViewModel.repositoryStar,
@@ -134,6 +135,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
+                            ///fork状态
                             new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_FORK,
@@ -143,6 +145,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
+                            ///订阅状态
                             new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_WATCH,
@@ -152,11 +155,23 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
+                            ///issue状态
                             new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
                               GSYICons.REPOS_ITEM_ISSUE,
                               reposHeaderViewModel.repositoryIssue,
-                              () {},
+                              () {
+                                if (reposHeaderViewModel.allIssueCount == null || reposHeaderViewModel.allIssueCount <= 0) {
+                                  return;
+                                }
+                                List<String> list = [
+                                  GSYStrings.repos_all_issue_count + reposHeaderViewModel.allIssueCount.toString(),
+                                  GSYStrings.repos_open_issue_count + reposHeaderViewModel.openIssuesCount.toString(),
+                                  GSYStrings.repos_close_issue_count +
+                                      (reposHeaderViewModel.allIssueCount - reposHeaderViewModel.openIssuesCount).toString(),
+                                ];
+                                CommonUtils.showCommitOptionDialog(context, list, (index) {}, height: 150.0);
+                              },
                             ),
                           ],
                         )),
@@ -195,6 +210,8 @@ class ReposHeaderViewModel {
   String created_at = "";
   String push_at = "";
   String license = "";
+  int allIssueCount = 0;
+  int openIssuesCount = 0;
   bool repositoryStared = false;
   bool repositoryForked = false;
   bool repositoryWatched = false;
@@ -209,6 +226,8 @@ class ReposHeaderViewModel {
     }
     this.ownerPic = map.owner.avatar_url;
     this.repositoryName = reposName;
+    this.allIssueCount = map.allIssueCount;
+    this.openIssuesCount = map.openIssuesCount;
     this.repositoryStar = map.watchersCount != null ? map.watchersCount.toString() : "";
     this.repositoryFork = map.forksCount != null ? map.forksCount.toString() : "";
     this.repositoryWatch = map.subscribersCount != null ? map.subscribersCount.toString() : "";
