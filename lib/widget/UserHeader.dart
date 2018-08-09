@@ -199,10 +199,7 @@ class UserHeaderItem extends StatelessWidget {
                         child: new GSYIConText(
                           GSYICons.USER_ITEM_LINK,
                           userInfo.blog ?? GSYStrings.nothing_now,
-                          TextStyle(
-                            color: (userInfo.blog == null) ? Color(GSYColors.subLightTextColor) : Color(GSYColors.actionBlue),
-                            fontSize: GSYConstant.smallTextSize,
-                          ),
+                          (userInfo.blog == null) ? GSYConstant.subLightSmallText : GSYConstant.actionLightSmallText,
                           Color(GSYColors.subLightTextColor),
                           10.0,
                           padding: 3.0,

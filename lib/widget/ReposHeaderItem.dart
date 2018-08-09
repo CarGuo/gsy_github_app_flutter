@@ -43,10 +43,10 @@ class ReposHeaderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String createStr = reposHeaderViewModel.repositoryIsFork
-        ? "Frok at " + " " + reposHeaderViewModel.repositoryParentName + '\n'
-        : "Create at " + " " + reposHeaderViewModel.created_at + "\n";
+        ? GSYStrings.repos_fork_at + reposHeaderViewModel.repositoryParentName + '\n'
+        : GSYStrings.repos_create_at + reposHeaderViewModel.created_at + "\n";
 
-    String updateStr = "Last commit at " + reposHeaderViewModel.push_at;
+    String updateStr = GSYStrings.repos_last_commit + reposHeaderViewModel.push_at;
 
     String infoText = createStr + ((reposHeaderViewModel.push_at != null) ? updateStr : '');
 
@@ -112,9 +112,21 @@ class ReposHeaderItem extends StatelessWidget {
 
                     ///创建状态
                     new Container(
-                        child: new Text(infoText, style: GSYConstant.subLightSmallText),
-                        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
-                        alignment: Alignment.topRight),
+                      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
+                      alignment: Alignment.topRight,
+                      child: new RawMaterialButton(
+                        onPressed: () {
+                          if (reposHeaderViewModel.repositoryIsFork) {
+                            NavigatorUtils.goReposDetail(context, reposHeaderViewModel.repositoryParentUser, reposHeaderViewModel.repositoryName);
+                          }
+                        },
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.all(0.0),
+                        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                        child: new Text(infoText,
+                            style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.actionLightSmallText : GSYConstant.subLightSmallText),
+                      ),
+                    ),
                     new Divider(
                       color: Color(GSYColors.subTextColor),
                     ),
@@ -135,6 +147,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
+
                             ///fork状态
                             new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
@@ -145,6 +158,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
+
                             ///订阅状态
                             new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
@@ -155,6 +169,7 @@ class ReposHeaderItem extends StatelessWidget {
                                     userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
                               },
                             ),
+
                             ///issue状态
                             new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
                             _getBottomItem(
@@ -207,6 +222,7 @@ class ReposHeaderViewModel {
   String repositoryDes = "---";
   String repositoryLastActivity = "";
   String repositoryParentName = "";
+  String repositoryParentUser = "";
   String created_at = "";
   String push_at = "";
   String license = "";
@@ -240,6 +256,7 @@ class ReposHeaderViewModel {
     this.repositoryIsFork = map.fork;
     this.license = map.license != null ? map.license.name : "";
     this.repositoryParentName = map.parent != null ? map.parent.fullName : null;
+    this.repositoryParentUser = map.parent != null ? map.parent.owner.login : null;
     this.created_at = CommonUtils.getNewsTimeStr(map.createdAt);
     this.push_at = CommonUtils.getNewsTimeStr(map.pushedAt);
   }
