@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
+import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:photo_view/photo_view.dart';
 
 /**
@@ -16,22 +18,25 @@ class PhotoViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OptionControl optionControl = new OptionControl();
+    optionControl.url = url;
     return new Scaffold(
-      appBar: new AppBar(),
-      body: new Container(
-        child: new PhotoView(
-          imageProvider: new NetworkImage(url ?? GSYICons.DEFAULT_REMOTE_PIC),
-          loadingChild: Container(
-            child: new Stack(
-              children: <Widget>[
-                new Center(child: new Image.asset(GSYICons.DEFAULT_IMAGE)),
-                new Center(child: new SpinKitDoubleBounce(color: Color(GSYColors.primaryValue))),
-              ],
+        appBar: new AppBar(
+          title: GSYTitleBar("", rightWidget: new GSYCommonOptionWidget(optionControl)),
+        ),
+        body: new Container(
+          color: Colors.black,
+          child: new PhotoView(
+            imageProvider: new NetworkImage(url ?? GSYICons.DEFAULT_REMOTE_PIC),
+            loadingChild: Container(
+              child: new Stack(
+                children: <Widget>[
+                  new Center(child: new Image.asset(GSYICons.DEFAULT_IMAGE, height: 150.0, width: 150.0)),
+                  new Center(child: new SpinKitFoldingCube(color: Colors.white30, size: 60.0)),
+                ],
+              ),
             ),
           ),
-        ),
-      )
-    );
-
+        ));
   }
 }
