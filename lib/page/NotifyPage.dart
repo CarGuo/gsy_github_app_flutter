@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYSelectItemWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gsy_github_app_flutter/common/model/Notification.dart' as Model;
 
 /**
@@ -25,12 +26,38 @@ class NotifyPage extends StatefulWidget {
 
 // ignore: mixin_inherits_from_not_object
 class _NotifyPageState extends GSYListState<NotifyPage> {
-  int selectIndex;
+  final SlidableController slidableController = new SlidableController();
+
+  int selectIndex = 0;
 
   _NotifyPageState();
 
-  _renderEventItem(index) {
+  _renderItem(index) {
     Model.Notification notification = pullLoadWidgetControl.dataList[index];
+    if (selectIndex != 0) {
+      return _renderEventItem(notification);
+    }
+    return new Slidable(
+      controller: slidableController,
+      delegate: new SlidableDrawerDelegate(),
+      actionExtentRatio: 0.25,
+      child: _renderEventItem(notification),
+      secondaryActions: <Widget>[
+        new IconSlideAction(
+          caption: GSYStrings.notify_readed,
+          color: Colors.redAccent,
+          icon: Icons.delete,
+          onTap: () {
+            UserDao.setNotificationAsReadDao(notification.id.toString()).then((res) {
+              showRefreshLoading();
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  _renderEventItem(Model.Notification notification) {
     EventViewModel eventViewModel = EventViewModel.fromNotify(notification);
     return new EventItem(eventViewModel, onPressed: () {
       if (notification.unread) {
@@ -113,7 +140,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
       ),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderEventItem(index),
+        (BuildContext context, int index) => _renderItem(index),
         handleRefresh,
         onLoadMore,
         refreshKey: refreshIndicatorKey,
