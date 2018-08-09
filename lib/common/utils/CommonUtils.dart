@@ -136,6 +136,14 @@ class CommonUtils {
     }
   }
 
+  static launchOutURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + url);
+    }
+  }
+
   static Future<Null> showLoadingDialog(BuildContext context) {
     return showDialog(
         context: context,
