@@ -86,9 +86,11 @@ class _MyPageState extends GSYListState<MyPage> {
     });
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
       if (res != null && res.result) {
-        setState(() {
-          beStaredCount = res.data.toString();
-        });
+        if(isShow) {
+          setState(() {
+            beStaredCount = res.data.toString();
+          });
+        }
       }
     });
     _refreshNotify();

@@ -99,6 +99,7 @@
 **sqflite**|**数据库**
 **flutter_statusbar**|**状态栏**
 **flutter_svg**|**svg**
+**photo_view**|**图片预览**
 
 
 ### 进行中：
