@@ -163,7 +163,7 @@ class UserHeaderItem extends StatelessWidget {
                             ///用户组织
                             new GSYIConText(
                               GSYICons.USER_ITEM_COMPANY,
-                              userInfo.company == null ? GSYStrings.nothing_now : userInfo.company,
+                              userInfo.company ?? GSYStrings.nothing_now,
                               GSYConstant.subLightSmallText,
                               Color(GSYColors.subLightTextColor),
                               10.0,
@@ -173,7 +173,7 @@ class UserHeaderItem extends StatelessWidget {
                             ///用户位置
                             new GSYIConText(
                               GSYICons.USER_ITEM_LOCATION,
-                              userInfo.location == null ? GSYStrings.nothing_now : userInfo.location,
+                              userInfo.location ?? GSYStrings.nothing_now,
                               GSYConstant.subLightSmallText,
                               Color(GSYColors.subLightTextColor),
                               10.0,
@@ -187,13 +187,26 @@ class UserHeaderItem extends StatelessWidget {
                   new Container(
 
                       ///用户博客
-                      child: new GSYIConText(
-                        GSYICons.USER_ITEM_LINK,
-                        userInfo.blog == null ? GSYStrings.nothing_now : userInfo.blog,
-                        GSYConstant.subLightSmallText,
-                        Color(GSYColors.subLightTextColor),
-                        10.0,
-                        padding: 3.0,
+                      child: new RawMaterialButton(
+                        onPressed: () {
+                          if (userInfo.blog != null) {
+                            CommonUtils.launchOutURL(userInfo.blog);
+                          }
+                        },
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.all(0.0),
+                        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                        child: new GSYIConText(
+                          GSYICons.USER_ITEM_LINK,
+                          userInfo.blog ?? GSYStrings.nothing_now,
+                          TextStyle(
+                            color: (userInfo.blog == null) ? Color(GSYColors.subLightTextColor) : Color(GSYColors.actionBlue),
+                            fontSize: GSYConstant.smallTextSize,
+                          ),
+                          Color(GSYColors.subLightTextColor),
+                          10.0,
+                          padding: 3.0,
+                        ),
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),

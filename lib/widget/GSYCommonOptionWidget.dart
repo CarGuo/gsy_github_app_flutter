@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 
 /**
@@ -40,19 +37,12 @@ class GSYCommonOptionWidget extends StatelessWidget {
     return list;
   }
 
-  _launchURL() async {
-    if (await canLaunch(control.url)) {
-      await launch(control.url);
-    } else {
-      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + control.url);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> list = [
       new GSYOptionModel(GSYStrings.option_web, GSYStrings.option_web, (model) {
-        _launchURL();
+        CommonUtils.launchOutURL(control.url);
       }),
       new GSYOptionModel(GSYStrings.option_copy, GSYStrings.option_copy, (model) {
         CommonUtils.copy(control.url ?? "");
