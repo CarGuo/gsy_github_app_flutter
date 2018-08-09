@@ -114,6 +114,12 @@ class GSYConstant {
     fontSize: smallTextSize,
   );
 
+  static const actionLightSmallText = TextStyle(
+    color: Color(GSYColors.actionBlue),
+    fontSize: smallTextSize,
+  );
+
+
   static const miLightSmallText = TextStyle(
     color: Color(GSYColors.miWhite),
     fontSize: smallTextSize,
@@ -299,6 +305,9 @@ class GSYStrings {
   static const String repos_tab_issue_open = "打开";
   static const String repos_tab_issue_closed = "关闭";
   static const String repos_option_release = "版本";
+  static const String repos_fork_at = "Fork于 ";
+  static const String repos_create_at = "创建于 ";
+  static const String repos_last_commit = "最后提交于 ";
   static const String repos_all_issue_count = "所有Issue数：";
   static const String repos_open_issue_count = "开启Issue数：";
   static const String repos_close_issue_count = "关闭Issue数：";
