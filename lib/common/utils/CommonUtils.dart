@@ -32,17 +32,13 @@ class CommonUtils {
   static double sStaticBarHeight = 0.0;
 
   static void initStatusBarHeight(context) async {
-    sStaticBarHeight = await FlutterStatusbar.height / MediaQuery
-        .of(context)
-        .devicePixelRatio;
+    sStaticBarHeight = await FlutterStatusbar.height / MediaQuery.of(context).devicePixelRatio;
   }
 
   static String getDateStr(DateTime date) {
     if (date == null || date.toString() == null) {
       return "";
-    } else if (date
-        .toString()
-        .length < 10) {
+    } else if (date.toString().length < 10) {
       return date.toString();
     }
     return date.toString().substring(0, 10);
@@ -54,9 +50,7 @@ class CommonUtils {
 
   ///日期格式转换
   static String getNewsTimeStr(DateTime date) {
-    int subTime = DateTime
-        .now()
-        .millisecondsSinceEpoch - date.millisecondsSinceEpoch;
+    int subTime = DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
 
     if (subTime < MILLIS_LIMIT) {
       return "刚刚";
@@ -108,6 +102,7 @@ class CommonUtils {
     if (url == null && url.length == 0) return;
     Uri parseUrl = Uri.parse(url);
     if (isImageEnd(parseUrl.toString())) {
+      NavigatorUtils.gotoPhotoViewPage(context, url);
       return;
     }
 
@@ -173,15 +168,16 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showEditDialog(BuildContext context,
-      String dialogTitle,
-      ValueChanged<String> onTitleChanged,
-      ValueChanged<String> onContentChanged,
-      VoidCallback onPressed, {
-        TextEditingController titleController,
-        TextEditingController valueController,
-        bool needTitle = true,
-      }) {
+  static Future<Null> showEditDialog(
+    BuildContext context,
+    String dialogTitle,
+    ValueChanged<String> onTitleChanged,
+    ValueChanged<String> onContentChanged,
+    VoidCallback onPressed, {
+    TextEditingController titleController,
+    TextEditingController valueController,
+    bool needTitle = true,
+  }) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
