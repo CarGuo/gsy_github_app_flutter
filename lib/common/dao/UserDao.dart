@@ -248,7 +248,7 @@ class UserDao {
    */
   static setNotificationAsReadDao(id) async {
     String url = Address.setNotificationAsRead(id);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PATCH"));
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PATCH"), noTip: true);
     return res;
   }
 
