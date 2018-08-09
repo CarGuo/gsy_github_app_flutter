@@ -608,10 +608,10 @@ class ReposDao {
         : Address.getReposTag(userName, reposName) + Address.getPageParams("?", page);
 
     var res = await HttpManager.netFetch(
-      url,
-      null,
-      {"Accept": (needHtml ? 'application/vnd.github.html,application/vnd.github.VERSION.raw' : "")},
-      null,
+        url,
+        null,
+        {"Accept": (needHtml ? 'application/vnd.github.html,application/vnd.github.VERSION.raw' : "")},
+        null
     );
     if (res != null && res.result && res.data.length > 0) {
       List<Release> list = new List();
@@ -690,6 +690,31 @@ class ReposDao {
     }
     return new DataResult(null, false);
   }
+
+  /**
+   * 搜索话题
+   */
+  static searchTopicRepositoryDao(searchTopic, {page = 0}) async {
+    String url = Address.searchTopic(searchTopic) + Address.getPageParams("&", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    var data = (res.data != null && res.data["items"] != null) ? res.data["items"] : res.data;
+    if (res != null && res.result && data != null && data.length > 0) {
+      List<Repository> list = new List();
+      var dataList = data;
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < dataList.length; i++) {
+        var data = dataList[i];
+        list.add(Repository.fromJson(data));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
+  }
+
+
 
   /**
    * 获取阅读历史

@@ -40,9 +40,11 @@ class ReposHeaderItem extends StatelessWidget {
     );
   }
 
-  _renderTopicItem(String item) {
+  _renderTopicItem(BuildContext context, String item) {
     return new RawMaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          NavigatorUtils.gotoCommonList(context, item, "repository", "topics", userName: item, reposName: "");
+        },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: const EdgeInsets.all(0.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
@@ -61,13 +63,13 @@ class ReposHeaderItem extends StatelessWidget {
   }
 
   ///话题组控件
-  _renderTopicGroup() {
+  _renderTopicGroup(BuildContext context) {
     if (reposHeaderViewModel.topics == null || reposHeaderViewModel.topics.length == 0) {
       return Container();
     }
     List<Widget> list = new List();
     for (String item in reposHeaderViewModel.topics) {
-      list.add(_renderTopicItem(item));
+      list.add(_renderTopicItem(context, item));
     }
     return new Container(
       alignment: Alignment.topLeft,
@@ -232,7 +234,7 @@ class ReposHeaderItem extends StatelessWidget {
                             ),
                           ],
                         )),
-                    _renderTopicGroup(),
+                    _renderTopicGroup(context),
                   ],
                 ),
               ),
