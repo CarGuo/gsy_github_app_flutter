@@ -299,6 +299,9 @@ class GSYStrings {
   static const String repos_tab_issue_open = "打开";
   static const String repos_tab_issue_closed = "关闭";
   static const String repos_option_release = "版本";
+  static const String repos_all_issue_count = "所有Issue数：";
+  static const String repos_open_issue_count = "开启Issue数：";
+  static const String repos_close_issue_count = "关闭Issue数：";
 
   static const String repos_issue_search = "搜索";
 
@@ -336,7 +339,6 @@ class GSYStrings {
   static const String release_tab_release = "版本";
   static const String release_tab_tag = "标记";
 
-
   static const String user_profile_name = "名字";
   static const String user_profile_email = "邮箱";
   static const String user_profile_link = "链接";
@@ -350,7 +352,7 @@ class GSYICons {
 
   static const String DEFAULT_USER_ICON = 'static/images/logo.png';
   static const String DEFAULT_IMAGE = 'static/images/default_img.png';
-  static const String DEFAULT_REMOTE_PIC =  'https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/static/images/logo.png';
+  static const String DEFAULT_REMOTE_PIC = 'https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/static/images/logo.png';
 
   static const IconData HOME = const IconData(0xe624, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData MORE = const IconData(0xe674, fontFamily: GSYICons.FONT_FAMILY);

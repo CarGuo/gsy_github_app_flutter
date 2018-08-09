@@ -203,14 +203,15 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showCommitOptionDialog(BuildContext context, List commitMaps, ValueChanged<int> onTap) {
+  static Future<Null> showCommitOptionDialog(BuildContext context, List<String> commitMaps, ValueChanged<int> onTap,
+      {width = 250.0, height = 400.0}) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
             child: new Container(
-              width: 250.0,
-              height: 400.0,
+              width: width,
+              height: height,
               padding: new EdgeInsets.all(4.0),
               margin: new EdgeInsets.all(20.0),
               decoration: new BoxDecoration(
@@ -221,13 +222,12 @@ class CommonUtils {
               child: new ListView.builder(
                   itemCount: commitMaps.length,
                   itemBuilder: (context, index) {
-                    String itemName = commitMaps[index]["message"] + " " + commitMaps[index]["sha"].substring(0, 4);
                     return GSYFlexButton(
                       maxLines: 2,
                       mainAxisAlignment: MainAxisAlignment.start,
                       fontSize: 14.0,
                       color: Color(GSYColors.primaryValue),
-                      text: itemName,
+                      text: commitMaps[index],
                       textColor: Color(GSYColors.white),
                       onPress: () {
                         Navigator.pop(context);
