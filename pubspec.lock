@@ -14,7 +14,7 @@ packages:
       name: args
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.4"
+    version: "1.5.0"
   async:
     dependency: transitive
     description:
@@ -28,7 +28,7 @@ packages:
       name: build
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.12.7+2"
+    version: "0.12.7+3"
   build_config:
     dependency: transitive
     description:
@@ -173,7 +173,7 @@ packages:
       name: flutter_markdown
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -194,7 +194,7 @@ packages:
       name: flutter_spinkit
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   flutter_statusbar:
     dependency: "direct main"
     description:
@@ -320,7 +320,7 @@ packages:
       name: markdown
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.1"
+    version: "2.0.2"
   matcher:
     dependency: transitive
     description:
@@ -390,7 +390,7 @@ packages:
       name: photo_view
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   plugin:
     dependency: transitive
     description:
