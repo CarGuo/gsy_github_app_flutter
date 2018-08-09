@@ -83,6 +83,7 @@ class UserHeaderItem extends StatelessWidget {
                 padding: EdgeInsets.only(left: 10.0, right: 10.0),
                 width: width,
                 height: height,
+
                 ///svg chart
                 child: new SvgPicture.network(
                   CommonUtils.getUserChartAddress(userInfo.login),
@@ -93,7 +94,7 @@ class UserHeaderItem extends StatelessWidget {
                         height: height,
                         width: width,
                         child: Center(
-                          child: const SpinKitRipple (color: Color(GSYColors.primaryValue)),
+                          child: const SpinKitRipple(color: Color(GSYColors.primaryValue)),
                         ),
                       ),
                 ),
@@ -126,16 +127,25 @@ class UserHeaderItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       ///用户头像
-                      new ClipOval(
-                        child: new FadeInImage.assetNetwork(
-                          placeholder: GSYICons.DEFAULT_USER_ICON,
-                          //预览图
-                          fit: BoxFit.fitWidth,
-                          image: userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
-                          width: 80.0,
-                          height: 80.0,
-                        ),
-                      ),
+                      new RawMaterialButton(
+                          onPressed: () {
+                            if (userInfo.avatar_url != null) {
+                              NavigatorUtils.gotoPhotoViewPage(context, userInfo.avatar_url);
+                            }
+                          },
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          padding: const EdgeInsets.all(0.0),
+                          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                          child: new ClipOval(
+                            child: new FadeInImage.assetNetwork(
+                              placeholder: GSYICons.DEFAULT_USER_ICON,
+                              //预览图
+                              fit: BoxFit.fitWidth,
+                              image: userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
+                              width: 80.0,
+                              height: 80.0,
+                            ),
+                          )),
                       new Padding(padding: EdgeInsets.all(10.0)),
                       new Expanded(
                         child: new Column(
