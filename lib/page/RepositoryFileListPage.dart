@@ -122,7 +122,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
     } else {
       String path = headerList.sublist(1, headerList.length).join("/") + "/" + fileItemViewModel.name;
       if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
-        //todo 图片
+        NavigatorUtils.gotoPhotoViewPage(context, fileItemViewModel.htmlUrl + "?raw=true");
       } else {
         NavigatorUtils.gotoCodeDetailPlatform(
           context,
@@ -202,11 +202,13 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
 class FileItemViewModel {
   String type;
   String name;
+  String htmlUrl;
 
   FileItemViewModel();
 
   FileItemViewModel.fromMap(FileModel map) {
     name = map.name;
     type = map.type;
+    htmlUrl = map.htmlUrl;
   }
 }
