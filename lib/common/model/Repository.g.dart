@@ -52,7 +52,9 @@ Repository _$RepositoryFromJson(Map<String, dynamic> json) => new Repository(
     json['permissions'] == null
         ? null
         : new RepositoryPermissions.fromJson(
-            json['permissions'] as Map<String, dynamic>));
+            json['permissions'] as Map<String, dynamic>),
+    (json['topics'] as List)?.map((e) => e as String)?.toList())
+  ..allIssueCount = json['allIssueCount'] as int;
 
 abstract class _$RepositorySerializerMixin {
   int get id;
@@ -86,6 +88,8 @@ abstract class _$RepositorySerializerMixin {
   License get license;
   Repository get parent;
   RepositoryPermissions get permissions;
+  List<String> get topics;
+  int get allIssueCount;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'size': size,
@@ -117,6 +121,8 @@ abstract class _$RepositorySerializerMixin {
         'owner': owner,
         'license': license,
         'parent': parent,
-        'permissions': permissions
+        'permissions': permissions,
+        'topics': topics,
+        'allIssueCount': allIssueCount
       };
 }
