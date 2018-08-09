@@ -299,4 +299,21 @@ class UserDao {
       return new DataResult(null, false);
     }
   }
+
+  /**
+   * 更新用户信息
+   */
+  static updateUserDao(params, Store store) async {
+    String url = Address.getMyUserInfo();
+    var res = await HttpManager.netFetch(url, params, null, new Options(method: "PATCH"));
+    if (res != null && res.result) {
+      var localResult = await getUserInfoLocal();
+      User newUser = User.fromJson(res.data);
+      newUser.starred = localResult.data.starred;
+      await LocalStorage.save(Config.USER_INFO, json.encode(newUser.toJson()));
+      store.dispatch(new UpdateUserAction(newUser));
+      return new DataResult(newUser, true);
+    }
+    return new DataResult(null, false);
+  }
 }

@@ -252,6 +252,7 @@ class GSYStrings {
   static const String home_about = "关于";
   static const String home_check_update = "检测更新";
   static const String home_history = "阅读历史";
+  static const String home_user_info = "个人信息";
 
   static const String login_username_hint_text = "请输入github用户名";
   static const String login_password_hint_text = "请输入密码";
@@ -334,6 +335,14 @@ class GSYStrings {
 
   static const String release_tab_release = "版本";
   static const String release_tab_tag = "标记";
+
+
+  static const String user_profile_name = "名字";
+  static const String user_profile_email = "邮箱";
+  static const String user_profile_link = "链接";
+  static const String user_profile_org = "公司";
+  static const String user_profile_location = "位置";
+  static const String user_profile_info = "简介";
 }
 
 class GSYICons {

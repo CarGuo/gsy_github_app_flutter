@@ -16,6 +16,8 @@ import 'package:gsy_github_app_flutter/page/PushDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/ReleasePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/SearchPage.dart';
+import 'package:gsy_github_app_flutter/page/UserProfilePage.dart';
+import 'package:path/path.dart';
 
 /**
  * 导航栏
@@ -187,5 +189,10 @@ class NavigatorUtils {
   ///图片预览
   static gotoPhotoViewPage(BuildContext context, String url) {
     Navigator.push(context, new MaterialPageRoute(builder: (context) => new PhotoViewPage(url)));
+  }
+
+  ///用户配置
+  static gotoUserProfileInfo(BuildContext context) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new UserProfileInfo()));
   }
 }
