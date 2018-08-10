@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
@@ -45,6 +46,8 @@ class _PersonState extends GSYListState<PersonPage> {
   String focus = "";
 
   User userInfo = User.empty();
+
+  final List<UserOrg> orgList = new List();
 
   final OptionControl titleOptionControl = new OptionControl();
 
@@ -117,7 +120,7 @@ class _PersonState extends GSYListState<PersonPage> {
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new UserHeaderItem(userInfo, beStaredCount);
+      return new UserHeaderItem(userInfo, beStaredCount, orgList: orgList);
     }
     if (userInfo.type == "Organization") {
       return new UserItem(UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
@@ -138,10 +141,24 @@ class _PersonState extends GSYListState<PersonPage> {
     return userInfo.login;
   }
 
+  _getUserOrg() {
+    if (page <= 1) {
+      UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
+        if (res != null && res.result) {
+          setState(() {
+            orgList.clear();
+            orgList.addAll(res.data);
+          });
+        }
+      });
+    }
+  }
+
   _getDataLogic() async {
     if (userInfo.type == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
+    _getUserOrg();
     return await EventDao.getEventDao(_getUserName(), page: page, needDb: page <= 1);
   }
 

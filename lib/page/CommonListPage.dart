@@ -57,10 +57,12 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
         });
       case 'user':
         return new UserItem(UserItemViewModel.fromMap(data), onPressed: () {
-          NavigatorUtils.goPerson(context, data.userName);
+          NavigatorUtils.goPerson(context, data.login);
         });
       case 'org':
-        return null;
+        return new UserItem(UserItemViewModel.fromOrgMap(data), onPressed: () {
+          NavigatorUtils.goPerson(context, data.login);
+        });
       case 'issue':
         return null;
       case 'release':
@@ -99,7 +101,7 @@ class _CommonListPageState extends GSYListState<CommonListPage> {
       case 'user_be_stared':
         return null;
       case 'user_orgs':
-        return null;
+        return await UserDao.getUserOrgsDao(userName, page, needDb: page <= 1);
     }
   }
 
