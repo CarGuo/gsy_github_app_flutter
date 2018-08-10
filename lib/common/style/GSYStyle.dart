@@ -188,6 +188,25 @@ class GSYConstant {
     fontSize: middleTextWhiteSize,
   );
 
+  static const middleTextBold = TextStyle(
+    color: Color(GSYColors.mainTextColor),
+    fontSize: middleTextWhiteSize,
+    fontWeight:FontWeight.bold,
+  );
+
+
+  static const middleTextWhiteBold = TextStyle(
+    color: Color(GSYColors.TextColorWhite),
+    fontSize: middleTextWhiteSize,
+    fontWeight:FontWeight.bold,
+  );
+
+  static const middleSubTextBold = TextStyle(
+    color: Color(GSYColors.subTextColor),
+    fontSize: middleTextWhiteSize,
+    fontWeight:FontWeight.bold,
+  );
+
   static const largeText = TextStyle(
     color: Color(GSYColors.mainTextColor),
     fontSize: bigTextSize,
@@ -204,21 +223,24 @@ class GSYConstant {
     fontSize: bigTextSize,
   );
 
-  static const largeLargeTextWhite = TextStyle(
-    color: Color(GSYColors.TextColorWhite),
-    fontSize: largetTextSize,
-  );
-
-  static const largeLargeText = TextStyle(
-    color: Color(GSYColors.primaryValue),
-    fontSize: largetTextSize,
-  );
-
   static const largeTextWhiteBold = TextStyle(
     color: Color(GSYColors.TextColorWhite),
     fontSize: bigTextSize,
     fontWeight: FontWeight.bold,
   );
+
+  static const largeLargeTextWhite = TextStyle(
+    color: Color(GSYColors.TextColorWhite),
+    fontSize: largetTextSize,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const largeLargeText = TextStyle(
+    color: Color(GSYColors.primaryValue),
+    fontSize: largetTextSize,
+    fontWeight: FontWeight.bold,
+  );
+
 }
 
 ///字符文本
