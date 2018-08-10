@@ -11,10 +11,12 @@ import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
+import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/UserHeader.dart';
+import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -47,10 +49,17 @@ class _MyPageState extends GSYListState<MyPage> {
         orgList: orgList,
       );
     }
-    Event event = pullLoadWidgetControl.dataList[index - 1];
-    return new EventItem(EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
-      EventUtils.ActionUtils(context, event, "");
-    });
+
+    if (getUserType() == "Organization") {
+      return new UserItem(UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
+        NavigatorUtils.goPerson(context, UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]).userName);
+      });
+    } else {
+      Event event = pullLoadWidgetControl.dataList[index - 1];
+      return new EventItem(EventViewModel.fromEventMap(event), onPressed: () {
+        EventUtils.ActionUtils(context, event, "");
+      });
+    }
   }
 
   Store<GSYState> _getStore() {
@@ -62,6 +71,13 @@ class _MyPageState extends GSYListState<MyPage> {
       return null;
     }
     return _getStore().state.userInfo.login;
+  }
+
+  getUserType() {
+    if (_getStore().state.userInfo == null) {
+      return null;
+    }
+    return _getStore().state.userInfo.type;
   }
 
   _refreshNotify() {
@@ -105,6 +121,13 @@ class _MyPageState extends GSYListState<MyPage> {
     super.initState();
   }
 
+  _getDataLogic() async {
+    if (getUserType() == "Organization") {
+      return await UserDao.getMemberDao(_getUserName(), page);
+    }
+    return await EventDao.getEventDao(_getUserName(), page: page, needDb: page <= 1);
+  }
+
   @override
   requestRefresh() async {
     UserDao.getUserInfo(null).then((res) {
@@ -123,12 +146,12 @@ class _MyPageState extends GSYListState<MyPage> {
       }
     });
     _refreshNotify();
-    return await EventDao.getEventDao(_getUserName(), page: page, needDb: true);
+    return await _getDataLogic();
   }
 
   @override
   requestLoadMore() async {
-    return await EventDao.getEventDao(_getUserName(), page: page);
+    return await _getDataLogic();
   }
 
   @override
