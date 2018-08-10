@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/user/UserFollowedDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/user/UserFollowerDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/user/UserInfoDbProvider.dart';
+import 'package:gsy_github_app_flutter/common/ab/provider/user/UserOrgsDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
@@ -322,20 +323,36 @@ class UserDao {
    * 获取用户组织
    */
   static getUserOrgsDao(userName, page, {needDb = false}) async {
-    String url = Address.getUserOrgs(userName) + Address.getPageParams("?", page);
-    var res = await HttpManager.netFetch(url, null, null, null);
-    if (res != null && res.result) {
-      List<UserOrg> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
+    UserOrgsDbProvider provider = new UserOrgsDbProvider();
+    next() async {
+      String url = Address.getUserOrgs(userName) + Address.getPageParams("?", page);
+      var res = await HttpManager.netFetch(url, null, null, null);
+      if (res != null && res.result) {
+        List<UserOrg> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        for (int i = 0; i < data.length; i++) {
+          list.add(new UserOrg.fromJson(data[i]));
+        }
+        if (needDb) {
+          provider.insert(userName, json.encode(data));
+        }
+        return new DataResult(list, true);
+      } else {
         return new DataResult(null, false);
       }
-      for (int i = 0; i < data.length; i++) {
-        list.add(new UserOrg.fromJson(data[i]));
-      }
-      return new DataResult(list, true);
-    } else {
-      return new DataResult(null, false);
     }
+
+    if (needDb) {
+      List<UserOrg> list = await provider.geData(userName);
+      if (list == null) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(list, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 }
