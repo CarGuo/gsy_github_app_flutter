@@ -73,7 +73,10 @@ class UserHeaderItem extends StatelessWidget {
   _renderChart(context) {
     double height = 140.0;
     double width = 3 * MediaQuery.of(context).size.width / 2;
-    return userInfo.login != null
+    if(userInfo.login != null && userInfo.type == "Organization") {
+      return new Container();
+    }
+    return (userInfo.login != null)
         ? new Card(
             margin: EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 10.0),
             color: Colors.white,
