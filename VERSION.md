@@ -6,6 +6,7 @@
 * markdown点击跳转。
 * webview点击跳转。
 * markdown htmlview 表格。
+* 版本信息列表
 
 ### 1.0.8 
 * readme图片解析优化
