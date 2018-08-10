@@ -149,6 +149,15 @@ class _PersonState extends GSYListState<PersonPage> {
             orgList.clear();
             orgList.addAll(res.data);
           });
+          return res.next;
+        }
+        return new Future.value(null);
+      }).then((res) {
+        if (res != null && res.result) {
+          setState(() {
+            orgList.clear();
+            orgList.addAll(res.data);
+          });
         }
       });
     }

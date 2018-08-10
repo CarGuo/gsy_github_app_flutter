@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -30,6 +33,8 @@ class _MyPageState extends GSYListState<MyPage> {
 
   Color notifyColor = const Color(GSYColors.subTextColor);
 
+  final List<UserOrg> orgList = new List();
+
   _renderEventItem(userInfo, index) {
     if (index == 0) {
       return new UserHeaderItem(
@@ -39,6 +44,7 @@ class _MyPageState extends GSYListState<MyPage> {
         refreshCallBack: () {
           _refreshNotify();
         },
+        orgList: orgList,
       );
     }
     Event event = pullLoadWidgetControl.dataList[index - 1];
@@ -68,6 +74,28 @@ class _MyPageState extends GSYListState<MyPage> {
     });
   }
 
+  _getUserOrg(String userName) {
+    if (page <= 1) {
+      UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
+        if (res != null && res.result) {
+          setState(() {
+            orgList.clear();
+            orgList.addAll(res.data);
+          });
+          return res.next;
+        }
+        return new Future.value(null);
+      }).then((res) {
+        if (res != null && res.result) {
+          setState(() {
+            orgList.clear();
+            orgList.addAll(res.data);
+          });
+        }
+      });
+    }
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -82,11 +110,12 @@ class _MyPageState extends GSYListState<MyPage> {
     UserDao.getUserInfo(null).then((res) {
       if (res != null && res.result) {
         _getStore().dispatch(UpdateUserAction(res.data));
+        _getUserOrg(_getUserName());
       }
     });
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
       if (res != null && res.result) {
-        if(isShow) {
+        if (isShow) {
           setState(() {
             beStaredCount = res.data.toString();
           });
