@@ -8,9 +8,10 @@
 * webview点击跳转。
 * markdown htmlview 表格。
 
-### 1.0.8
+### 1.0.8 (进行中)
 * readme图片解析优化
 * readme图片增加点击查看
+* 组织账号不显示活跃记录Item
 
 
 
