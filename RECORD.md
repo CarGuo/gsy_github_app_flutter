@@ -78,7 +78,7 @@ hotload很有优势。
 
 ### 动画、本地通讯
 
-### upgrade 和 get的区别，在于lock
+### upgrade 和 get的区别，在于lock 在yaml线下，^代表大于等于哦
 
 ### redux 下切换主题 
 
