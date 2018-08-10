@@ -130,7 +130,7 @@ class UserHeaderItem extends StatelessWidget {
     return (userInfo.login != null)
         ? new Card(
       margin: EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 10.0),
-      color: Colors.white,
+      color:  Color(GSYColors.white),
       child: new SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: new Container(

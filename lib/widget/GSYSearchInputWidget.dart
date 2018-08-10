@@ -20,7 +20,7 @@ class GSYSearchInputWidget extends StatelessWidget {
     return new Container(
       decoration: new BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          color: Colors.white,
+          color:  Color(GSYColors.white),
           border: new Border.all(color: Color(GSYColors.primaryValue), width: 0.3),
           boxShadow: [BoxShadow(color: Color(GSYColors.primaryDarkValue),  blurRadius: 4.0)]),
       padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
