@@ -79,3 +79,7 @@ hotload很有优势。
 ### 动画、本地通讯
 
 ### upgrade 和 get的区别，在于lock
+
+### redux 下切换主题 
+
+### 谷歌推荐redux
