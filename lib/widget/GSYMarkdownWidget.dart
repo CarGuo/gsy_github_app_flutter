@@ -111,6 +111,9 @@ class GSYMarkdownWidget extends StatelessWidget {
   _getMarkDownData(String markdownData) {
     ///优化图片显示
     RegExp exp = new RegExp(r'!\[.*\]\((.+)\)');
+    RegExp expImg = new RegExp("<img.*?(?:>|\/>)");
+    RegExp expSrc = new RegExp("src=[\'\"]?([^\'\"]*)[\'\"]?");
+
     Iterable<Match> tags = exp.allMatches(markdownData);
     String mdDataCode = markdownData;
     if (tags != null && tags.length > 0) {
@@ -118,14 +121,18 @@ class GSYMarkdownWidget extends StatelessWidget {
         String imageMatch = m.group(0);
         if (imageMatch != null) {
           String match = m.group(0).replaceAll("\)", "?raw=true)");
+          if (!match.contains(".svg")) {
+            ///增加点击
+            String src = match.replaceAll("![](", "").replaceAll(")", "");
+            String actionMatch = "[$match]($src)";
+            match = actionMatch;
+          }
           mdDataCode = mdDataCode.replaceAll(m.group(0), match);
         }
       }
     }
 
     ///优化img标签的src资源
-    RegExp expImg = new RegExp("<img.*?(?:>|\/>)");
-    RegExp expSrc = new RegExp("src=[\'\"]?([^\'\"]*)[\'\"]?");
     tags = expImg.allMatches(markdownData);
     if (tags != null && tags.length > 0) {
       for (Match m in tags) {
@@ -137,14 +144,15 @@ class GSYMarkdownWidget extends StatelessWidget {
             String srcString = srcMatch.group(0);
             if (srcString != null && srcString.contains("http")) {
               String newSrc = srcString.substring(srcString.indexOf("http"), srcString.length - 1) + "?raw=true";
-              match = "![]($newSrc)";
+
+              ///增加点击
+              match = "[![]($newSrc)]($newSrc)";
             }
           }
         }
         mdDataCode = mdDataCode.replaceAll(imageTag, match);
       }
     }
-
 
     return mdDataCode;
   }
