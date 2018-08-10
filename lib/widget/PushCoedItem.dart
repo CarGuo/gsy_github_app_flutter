@@ -23,14 +23,14 @@ class PushCodeItem extends StatelessWidget {
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 0.0),
         child: new Text(
           pushCodeItemViewModel.path,
-          style: GSYConstant.subLightSmallText,
+          style: GSYConstant.smallSubLightText,
         ),
       ),
       new GSYCardItem(
         ///修改文件名
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
         child: new ListTile(
-          title: new Text(pushCodeItemViewModel.name, style: GSYConstant.subSmallText),
+          title: new Text(pushCodeItemViewModel.name, style: GSYConstant.smallSubText),
           leading: new Icon(
             GSYICons.REPOS_ITEM_FILE,
             size: 15.0,

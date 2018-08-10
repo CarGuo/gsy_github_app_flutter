@@ -66,7 +66,7 @@ class IssueHeaderItem extends StatelessWidget {
         : new Container(
             child: new Text(
               "Close By " + issueHeaderViewModel.closedBy,
-              style: GSYConstant.subSmallText,
+              style: GSYConstant.smallSubText,
             ),
             margin: new EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
             alignment: Alignment.topRight);
@@ -107,7 +107,7 @@ class IssueHeaderItem extends StatelessWidget {
                             ///时间
                             new Text(
                               issueHeaderViewModel.actionTime,
-                              style: GSYConstant.subSmallText,
+                              style: GSYConstant.smallSubText,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],

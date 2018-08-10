@@ -22,7 +22,7 @@ class PushHeader extends StatelessWidget {
     return new GSYIConText(
       icon,
       text,
-      GSYConstant.subSmallText,
+      GSYConstant.smallSubText,
       Color(GSYColors.subTextColor),
       15.0,
       padding: 0.0,

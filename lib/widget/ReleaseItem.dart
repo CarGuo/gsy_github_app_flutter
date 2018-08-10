@@ -30,7 +30,7 @@ class ReleaseItem extends StatelessWidget {
             child: new Row(
               children: <Widget>[
                 new Expanded(child: new Text(releaseItemViewModel.actionTitle, style: GSYConstant.smallTextBold)),
-                new Container(child: new Text(releaseItemViewModel.actionTime ?? "", style: GSYConstant.subSmallText)),
+                new Container(child: new Text(releaseItemViewModel.actionTime ?? "", style: GSYConstant.smallSubText)),
               ],
             ),
           ),

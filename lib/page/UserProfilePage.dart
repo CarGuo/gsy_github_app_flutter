@@ -35,7 +35,7 @@ class _UserProfileState extends State<UserProfileInfo> {
             new Container(
               width: 10.0,
             ),
-            new Text(title, style: GSYConstant.subNormalText),
+            new Text(title, style: GSYConstant.normalSubText),
             new Container(
               width: 10.0,
             ),

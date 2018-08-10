@@ -33,7 +33,7 @@ class UserHeaderItem extends StatelessWidget {
     String data = value == null ? "" : value.toString();
     TextStyle valueStyle = (value != null && value
         .toString()
-        .length > 4) ? GSYConstant.minSmallText : GSYConstant.subSmallText;
+        .length > 4) ? GSYConstant.minText : GSYConstant.smallSubText;
     return new Expanded(
       child: new Center(
         child: new FlatButton(
@@ -41,7 +41,7 @@ class UserHeaderItem extends StatelessWidget {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: GSYConstant.subSmallText,
+              style: GSYConstant.smallSubText,
               text: title + "\n",
               children: [TextSpan(text: data, style: valueStyle)],
             ),
@@ -96,7 +96,7 @@ class UserHeaderItem extends StatelessWidget {
 
     int length = orgList.length > 3 ? 3 : orgList.length;
 
-    list.add(new Text(GSYStrings.user_orgs_title + ":", style: GSYConstant.subLightSmallText));
+    list.add(new Text(GSYStrings.user_orgs_title + ":", style: GSYConstant.smallSubLightText));
 
     for (int i = 0; i < length; i++) {
       list.add(renderOrgsItem(orgList[i]));
@@ -215,13 +215,13 @@ class UserHeaderItem extends StatelessWidget {
                                 _getNotifyIcon(context, notifyColor),
                               ],
                             ),
-                            new Text(userInfo.name == null ? "" : userInfo.name, style: GSYConstant.subLightSmallText),
+                            new Text(userInfo.name == null ? "" : userInfo.name, style: GSYConstant.smallSubLightText),
 
                             ///用户组织
                             new GSYIConText(
                               GSYICons.USER_ITEM_COMPANY,
                               userInfo.company ?? GSYStrings.nothing_now,
-                              GSYConstant.subLightSmallText,
+                              GSYConstant.smallSubLightText,
                               Color(GSYColors.subLightTextColor),
                               10.0,
                               padding: 3.0,
@@ -231,7 +231,7 @@ class UserHeaderItem extends StatelessWidget {
                             new GSYIConText(
                               GSYICons.USER_ITEM_LOCATION,
                               userInfo.location ?? GSYStrings.nothing_now,
-                              GSYConstant.subLightSmallText,
+                              GSYConstant.smallSubLightText,
                               Color(GSYColors.subLightTextColor),
                               10.0,
                               padding: 3.0,
@@ -256,7 +256,7 @@ class UserHeaderItem extends StatelessWidget {
                         child: new GSYIConText(
                           GSYICons.USER_ITEM_LINK,
                           userInfo.blog ?? GSYStrings.nothing_now,
-                          (userInfo.blog == null) ? GSYConstant.subLightSmallText : GSYConstant.actionLightSmallText,
+                          (userInfo.blog == null) ? GSYConstant.smallSubLightText : GSYConstant.smallActionLightText,
                           Color(GSYColors.subLightTextColor),
                           10.0,
                           padding: 3.0,
@@ -274,7 +274,7 @@ class UserHeaderItem extends StatelessWidget {
                         userInfo.bio == null
                             ? GSYStrings.user_create_at + CommonUtils.getDateStr(userInfo.created_at)
                             : userInfo.bio + "\n" + GSYStrings.user_create_at + CommonUtils.getDateStr(userInfo.created_at),
-                        style: GSYConstant.subLightSmallText,
+                        style: GSYConstant.smallSubLightText,
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft),

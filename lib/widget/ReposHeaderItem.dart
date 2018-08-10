@@ -29,7 +29,7 @@ class ReposHeaderItem extends StatelessWidget {
           child: new GSYIConText(
             icon,
             text,
-            GSYConstant.subLightSmallText,
+            GSYConstant.smallSubLightText,
             Color(GSYColors.subLightTextColor),
             15.0,
             padding: 3.0,
@@ -57,7 +57,7 @@ class ReposHeaderItem extends StatelessWidget {
           ),
           child: new Text(
             item,
-            style: GSYConstant.subLightSmallText,
+            style: GSYConstant.smallSubLightText,
           ),
         ));
   }
@@ -136,21 +136,21 @@ class ReposHeaderItem extends StatelessWidget {
                     new Row(
                       children: <Widget>[
                         ///仓库语言
-                        new Text(reposHeaderViewModel.repositoryType ?? "--", style: GSYConstant.subLightSmallText),
+                        new Text(reposHeaderViewModel.repositoryType ?? "--", style: GSYConstant.smallSubLightText),
                         new Container(width: 5.3, height: 1.0),
 
                         ///仓库大小
-                        new Text(reposHeaderViewModel.repositorySize ?? "--", style: GSYConstant.subLightSmallText),
+                        new Text(reposHeaderViewModel.repositorySize ?? "--", style: GSYConstant.smallSubLightText),
                         new Container(width: 5.3, height: 1.0),
 
                         ///仓库协议
-                        new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.subLightSmallText),
+                        new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.smallSubLightText),
                       ],
                     ),
 
                     ///仓库描述
                     new Container(
-                        child: new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.subLightSmallText),
+                        child: new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.smallSubLightText),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
 
@@ -168,7 +168,7 @@ class ReposHeaderItem extends StatelessWidget {
                         padding: const EdgeInsets.all(0.0),
                         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
                         child: new Text(_getInfoText(),
-                            style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.actionLightSmallText : GSYConstant.subLightSmallText),
+                            style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.smallActionLightText : GSYConstant.smallSubLightText),
                       ),
                     ),
                     new Divider(

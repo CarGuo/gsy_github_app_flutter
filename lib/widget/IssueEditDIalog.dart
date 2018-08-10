@@ -168,7 +168,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               padding: EdgeInsets.all(4.0),
                               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                              child: new Text(GSYStrings.app_cancel, style: GSYConstant.subNormalText),
+                              child: new Text(GSYStrings.app_cancel, style: GSYConstant.normalSubText),
                               onPressed: () {
                                 Navigator.pop(context);
                               })),

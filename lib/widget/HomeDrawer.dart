@@ -55,7 +55,7 @@ class HomeDrawer extends StatelessWidget {
                       ),
                       accountEmail: new Text(
                         user.email ?? user.name ?? "---",
-                        style: GSYConstant.subNormalText,
+                        style: GSYConstant.normalSubText,
                       ),
                       //用户名
                       //用户邮箱

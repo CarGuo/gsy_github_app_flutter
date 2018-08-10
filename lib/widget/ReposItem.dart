@@ -26,7 +26,7 @@ class ReposItem extends StatelessWidget {
         child: new GSYIConText(
           icon,
           text,
-          GSYConstant.subSmallText,
+          GSYConstant.smallSubText,
           Color(GSYColors.subTextColor),
           15.0,
           padding: 5.0,
@@ -69,7 +69,7 @@ class ReposItem extends StatelessWidget {
                               new GSYIConText(
                                 GSYICons.REPOS_ITEM_USER,
                                 reposViewModel.ownerName,
-                                GSYConstant.subLightSmallText,
+                                GSYConstant.smallSubLightText,
                                 Color(GSYColors.subLightTextColor),
                                 10.0,
                                 padding: 3.0,
@@ -79,7 +79,7 @@ class ReposItem extends StatelessWidget {
                         ),
 
                         ///仓库语言
-                        new Text(reposViewModel.repositoryType, style: GSYConstant.subSmallText),
+                        new Text(reposViewModel.repositoryType, style: GSYConstant.smallSubText),
                       ],
                     ),
                     new Container(
@@ -87,7 +87,7 @@ class ReposItem extends StatelessWidget {
                         ///仓库描述
                         child: new Text(
                           reposViewModel.repositoryDes,
-                          style: GSYConstant.subSmallText,
+                          style: GSYConstant.smallSubText,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),

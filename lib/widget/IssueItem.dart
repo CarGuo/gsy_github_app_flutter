@@ -53,14 +53,14 @@ class IssueItem extends StatelessWidget {
 
               ///issue标号
               new Expanded(
-                child: new Text(issueItemViewModel.issueTag, style: GSYConstant.subSmallText),
+                child: new Text(issueItemViewModel.issueTag, style: GSYConstant.smallSubText),
               ),
 
               ///评论数
               new GSYIConText(
                 GSYICons.ISSUE_ITEM_COMMENT,
                 issueItemViewModel.commentCount,
-                GSYConstant.subSmallText,
+                GSYConstant.smallSubText,
                 Color(GSYColors.subTextColor),
                 15.0,
                 padding: 2.0,
@@ -75,7 +75,7 @@ class IssueItem extends StatelessWidget {
         ? new Container(
             child: new Text(
               issueItemViewModel.issueComment,
-              style: GSYConstant.subSmallText,
+              style: GSYConstant.smallSubText,
               maxLines: limitComment ? 2 : 1000,
             ),
             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
@@ -111,7 +111,7 @@ class IssueItem extends StatelessWidget {
                       new Expanded(child: new Text(issueItemViewModel.actionUser, style: GSYConstant.smallTextBold)),
                       new Text(
                         issueItemViewModel.actionTime,
-                        style: GSYConstant.subSmallText,
+                        style: GSYConstant.smallSubText,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
