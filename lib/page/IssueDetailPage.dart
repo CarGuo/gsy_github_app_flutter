@@ -78,7 +78,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                 child: new Container(
                   decoration: new BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      color: Colors.white,
+                      color: Color(GSYColors.white),
                       border: new Border.all(color: Color(GSYColors.subTextColor), width: 0.3)),
                   margin: EdgeInsets.all(10.0),
                   child: Column(
@@ -86,21 +86,21 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       new GSYFlexButton(
-                        color: Colors.white,
+                        color: Color(GSYColors.white),
                         text: GSYStrings.issue_edit_issue_edit_commit,
                         onPress: () {
                           _editCommit(issue.id.toString(), issue.body);
                         },
                       ),
                       new GSYFlexButton(
-                        color: Colors.white,
+                        color:Color(GSYColors.white),
                         text: GSYStrings.issue_edit_issue_delete_commit,
                         onPress: () {
                           _deleteCommit(issue.id.toString());
                         },
                       ),
                       new GSYFlexButton(
-                        color: Colors.white,
+                        color: Color(GSYColors.white),
                         text: GSYStrings.issue_edit_issue_copy_commit,
                         onPress: () {
                           CommonUtils.copy(issue.body);

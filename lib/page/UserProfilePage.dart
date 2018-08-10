@@ -105,7 +105,7 @@ class _UserProfileState extends State<UserProfileInfo> {
       return Scaffold(
         appBar: new AppBar(title: new Text(GSYStrings.home_user_info)),
         body: new Container(
-          color: Colors.white,
+          color: Color(GSYColors.white),
           child: new SingleChildScrollView(
             child: new Column(
               children: _renderList(store.state.userInfo, store),

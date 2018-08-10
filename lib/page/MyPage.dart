@@ -83,7 +83,7 @@ class _MyPageState extends GSYListState<MyPage> {
   _refreshNotify() {
     UserDao.getNotifyDao(false, false, 0).then((res) {
       if (res != null && res.result && res.data.length > 0) {
-        notifyColor = Colors.blue;
+        notifyColor = Color(GSYColors.actionBlue);
       } else {
         notifyColor = Color(GSYColors.subTextColor);
       }

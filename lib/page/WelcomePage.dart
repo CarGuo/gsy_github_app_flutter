@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:redux/redux.dart';
@@ -32,7 +33,7 @@ class WelcomePage extends StatelessWidget {
     return StoreBuilder<GSYState>(
       builder: (context, store) {
         return new Container(
-          color: Colors.white,
+          color: Color(GSYColors.white),
           child: new Center(
             child: new Image(image: new AssetImage('static/images/welcome.png')),
           ),

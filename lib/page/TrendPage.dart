@@ -50,7 +50,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
               });
               showRefreshLoading();
             }),
-            new Container(height: 10.0, width: 0.5, color: Colors.white),
+            new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
             _renderHeaderPopItem(selectType.name, trendType, (TrendTypeModel result) {
               setState(() {
                 selectType = result;

@@ -253,7 +253,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
       ],
       topPageControl: topPageControl,
       backgroundColor: GSYColors.primarySwatch,
-      indicatorColor: Colors.white,
+      indicatorColor: Color(GSYColors.white),
       title: new GSYTitleBar(
         reposName,
         rightWidget: widget,
