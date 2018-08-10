@@ -123,7 +123,7 @@ class GSYMarkdownWidget extends StatelessWidget {
           String match = m.group(0).replaceAll("\)", "?raw=true)");
           if (!match.contains(".svg")) {
             ///增加点击
-            String src = match.replaceAll("![](", "").replaceAll(")", "");
+            String src = match.replaceAll(new RegExp(r'!\[.*\]\('), "").replaceAll(")", "");
             String actionMatch = "[$match]($src)";
             match = actionMatch;
           }
