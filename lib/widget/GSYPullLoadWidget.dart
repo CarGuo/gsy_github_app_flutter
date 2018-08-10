@@ -95,17 +95,21 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     return new RefreshIndicator(
       ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
       key: refreshKey,
+
       ///下拉刷新触发，返回的是一个Future
       onRefresh: onRefresh,
       child: new ListView.builder(
         ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
         physics: const AlwaysScrollableScrollPhysics(),
+
         ///根据状态返回子孔健
         itemBuilder: (context, index) {
           return _getItem(index);
         },
+
         ///根据状态返回数量
         itemCount: _getListCount(),
+
         ///滑动监听
         controller: _scrollController,
       ),
@@ -141,9 +145,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
             new Container(
               width: 5.0,
             ),
+
             ///加载中文本
             new Text(
-              "加载中···",
+              GSYStrings.load_more_text,
               style: TextStyle(
                 color: Color(0xFF121917),
                 fontSize: 14.0,
@@ -151,7 +156,8 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
               ),
             )
           ])
-          /// 不需要加载
+
+        /// 不需要加载
         : new Container();
     return new Padding(
       padding: const EdgeInsets.all(20.0),
