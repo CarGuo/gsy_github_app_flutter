@@ -24,6 +24,35 @@ _debugUltimatePreviousSiblingOf
 GlobalKey可以记录state，但是需要跟随build创建
 https://stackoverflow.com/questions/49862572
 
+```
+if you use AutomaticKeepAliveClientMixin to keep alive page item,you can't write like this:
+
+PageView(
+controller: _pageController,
+onPageChanged: (index) {
+onPageChanged(index);
+},
+children: [NewsList(),Text('page1'),Text('page2'),Text('page3')],
+),
+
+you should write like this:
+
+List _list = [
+NewsList(),
+Text('page1'),
+Text('page2'),
+Text('page3')
+];
+PageView(
+controller: _pageController,
+onPageChanged: (index) {
+onPageChanged(index);
+},
+children:_list,
+), 
+```
+
+
 ### webView
 
 https://github.com/flutter/flutter/issues/19030 没有webview，残念

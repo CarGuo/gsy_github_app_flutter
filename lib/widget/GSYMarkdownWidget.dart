@@ -108,6 +108,47 @@ class GSYMarkdownWidget extends StatelessWidget {
     return styleSheet;
   }
 
+  _getMarkDownData(String markdownData) {
+    ///优化图片显示
+    RegExp exp = new RegExp(r'!\[.*\]\((.+)\)');
+    Iterable<Match> tags = exp.allMatches(markdownData);
+    String mdDataCode = markdownData;
+    if (tags != null && tags.length > 0) {
+      for (Match m in tags) {
+        String imageMatch = m.group(0);
+        if (imageMatch != null) {
+          String match = m.group(0).replaceAll("\)", "?raw=true)");
+          mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+        }
+      }
+    }
+
+    ///优化img标签的src资源
+    RegExp expImg = new RegExp("<img.*?(?:>|\/>)");
+    RegExp expSrc = new RegExp("src=[\'\"]?([^\'\"]*)[\'\"]?");
+    tags = expImg.allMatches(markdownData);
+    if (tags != null && tags.length > 0) {
+      for (Match m in tags) {
+        String imageTag = m.group(0);
+        String match = imageTag;
+        if (imageTag != null) {
+          Iterable<Match> srcTags = expSrc.allMatches(imageTag);
+          for (Match srcMatch in srcTags) {
+            String srcString = srcMatch.group(0);
+            if (srcString != null && srcString.contains("http")) {
+              String newSrc = srcString.substring(srcString.indexOf("http"), srcString.length - 1) + "?raw=true";
+              match = "![]($newSrc)";
+            }
+          }
+        }
+        mdDataCode = mdDataCode.replaceAll(imageTag, match);
+      }
+    }
+
+
+    return mdDataCode;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,7 +158,7 @@ class GSYMarkdownWidget extends StatelessWidget {
         child: new MarkdownBody(
           styleSheet: _getStyle(context),
           syntaxHighlighter: new GSYHighlighter(),
-          data: markdownData,
+          data: _getMarkDownData(markdownData),
           onTapLink: (String source) {
             CommonUtils.launchUrl(context, source);
           },

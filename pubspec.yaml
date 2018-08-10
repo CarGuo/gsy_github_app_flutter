@@ -15,7 +15,7 @@ dependencies:
   flutter_redux: ^0.5.2
   device_info: ^0.2.1
   connectivity: ^0.3.1
-  flutter_markdown: ^0.1.5
+  flutter_markdown: ^0.1.6
   url_launcher: ^3.0.3
   share: ^0.5.2
   flutter_spinkit: ^2.0.0
