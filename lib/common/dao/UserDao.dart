@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/dao/DaoResult.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
 import 'package:gsy_github_app_flutter/common/model/Notification.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
@@ -315,5 +316,26 @@ class UserDao {
       return new DataResult(newUser, true);
     }
     return new DataResult(null, false);
+  }
+
+  /**
+   * 获取用户组织
+   */
+  static getUserOrgsDao(userName, page, {needDb = false}) async {
+    String url = Address.getUserOrgs(userName) + Address.getPageParams("?", page);
+    var res = await HttpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      List<UserOrg> list = new List();
+      var data = res.data;
+      if (data == null || data.length == 0) {
+        return new DataResult(null, false);
+      }
+      for (int i = 0; i < data.length; i++) {
+        list.add(new UserOrg.fromJson(data[i]));
+      }
+      return new DataResult(list, true);
+    } else {
+      return new DataResult(null, false);
+    }
   }
 }

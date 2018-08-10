@@ -316,6 +316,7 @@ class GSYStrings {
   static const String user_un_focus = "关注";
   static const String user_focus_no_support = "不支持关注组织。";
   static const String user_create_at = "创建于：";
+  static const String user_orgs_title = "所在组织";
 
   static const String repos_tab_readme = "详情";
   static const String repos_tab_info = "动态";

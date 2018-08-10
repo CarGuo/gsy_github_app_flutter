@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 
@@ -57,5 +58,10 @@ class UserItemViewModel {
   UserItemViewModel.fromMap(User user) {
     userName = user.login;
     userPic = user.avatar_url;
+  }
+
+  UserItemViewModel.fromOrgMap(UserOrg org) {
+    userName = org.login;
+    userPic = org.avatarUrl;
   }
 }
