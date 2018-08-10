@@ -49,7 +49,7 @@ class GSYMarkdownWidget extends StatelessWidget {
       h6: GSYConstant.smallTextWhite,
       em: const TextStyle(fontStyle: FontStyle.italic),
       strong: GSYConstant.middleTextWhiteBold,
-      code: GSYConstant.subSmallText,
+      code: GSYConstant.smallSubText,
     );
   }
 
@@ -63,7 +63,7 @@ class GSYMarkdownWidget extends StatelessWidget {
       h5: GSYConstant.smallText,
       h6: GSYConstant.smallText,
       strong: GSYConstant.middleTextBold,
-      code: GSYConstant.subSmallText,
+      code: GSYConstant.smallSubText,
     );
   }
 
@@ -78,7 +78,7 @@ class GSYMarkdownWidget extends StatelessWidget {
       h6: GSYConstant.smallTextWhite,
       em: const TextStyle(fontStyle: FontStyle.italic),
       strong: GSYConstant.middleTextWhiteBold,
-      code: GSYConstant.subSmallText,
+      code: GSYConstant.smallSubText,
     );
   }
 

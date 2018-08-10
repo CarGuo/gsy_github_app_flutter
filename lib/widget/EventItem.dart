@@ -30,7 +30,7 @@ class EventItem extends StatelessWidget {
         : new Container(
             child: new Text(
               eventViewModel.actionDes,
-              style: GSYConstant.subSmallText,
+              style: GSYConstant.smallSubText,
               maxLines: 3,
             ),
             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
@@ -59,7 +59,7 @@ class EventItem extends StatelessWidget {
                       children: <Widget>[
                         userImage,
                         new Expanded(child: new Text(eventViewModel.actionUser, style: GSYConstant.smallTextBold)),
-                        new Text(eventViewModel.actionTime, style: GSYConstant.subSmallText),
+                        new Text(eventViewModel.actionTime, style: GSYConstant.smallSubText),
                       ],
                     ),
                     new Container(

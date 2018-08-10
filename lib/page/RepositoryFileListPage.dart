@@ -55,7 +55,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
     return new GSYCardItem(
       margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
       child: new ListTile(
-        title: new Text(fileItemViewModel.name, style: GSYConstant.subSmallText),
+        title: new Text(fileItemViewModel.name, style: GSYConstant.smallSubText),
         leading: new Icon(
           iconData,
           size: 16.0,
