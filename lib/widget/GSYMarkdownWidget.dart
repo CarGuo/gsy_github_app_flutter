@@ -42,13 +42,13 @@ class GSYMarkdownWidget extends StatelessWidget {
     return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
-      h2: GSYConstant.largeTextWhite,
-      h3: GSYConstant.normalTextWhite,
+      h2: GSYConstant.largeTextWhiteBold,
+      h3: GSYConstant.normalTextMitWhiteBold,
       h4: GSYConstant.middleTextWhite,
       h5: GSYConstant.smallTextWhite,
       h6: GSYConstant.smallTextWhite,
       em: const TextStyle(fontStyle: FontStyle.italic),
-      strong: GSYConstant.middleTextWhite,
+      strong: GSYConstant.middleTextWhiteBold,
       code: GSYConstant.subSmallText,
     );
   }
@@ -57,12 +57,12 @@ class GSYMarkdownWidget extends StatelessWidget {
     return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
       p: GSYConstant.smallText,
       h1: GSYConstant.largeLargeText,
-      h2: GSYConstant.largeText,
-      h3: GSYConstant.normalText,
+      h2: GSYConstant.largeTextBold,
+      h3: GSYConstant.normalTextBold,
       h4: GSYConstant.middleText,
       h5: GSYConstant.smallText,
       h6: GSYConstant.smallText,
-      strong: GSYConstant.middleText,
+      strong: GSYConstant.middleTextBold,
       code: GSYConstant.subSmallText,
     );
   }
@@ -71,13 +71,13 @@ class GSYMarkdownWidget extends StatelessWidget {
     return _getCommonSheet(context, Color(GSYColors.subTextColor)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
-      h2: GSYConstant.largeTextWhite,
-      h3: GSYConstant.normalTextWhite,
+      h2: GSYConstant.largeTextWhiteBold,
+      h3: GSYConstant.normalTextMitWhiteBold,
       h4: GSYConstant.middleTextWhite,
       h5: GSYConstant.smallTextWhite,
       h6: GSYConstant.smallTextWhite,
       em: const TextStyle(fontStyle: FontStyle.italic),
-      strong: GSYConstant.middleTextWhite,
+      strong: GSYConstant.middleTextWhiteBold,
       code: GSYConstant.subSmallText,
     );
   }
