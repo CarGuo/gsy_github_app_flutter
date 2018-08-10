@@ -18,7 +18,7 @@ class DEMOWidget extends StatelessWidget {
   }
 }
 
-class DemoStateWidget extends StatefulWidget {
+class DemoStateWidget extends StatefulWidget  {
 
   final String text;
 
@@ -28,7 +28,8 @@ class DemoStateWidget extends StatefulWidget {
   _DemoStateWidgetState createState() => _DemoStateWidgetState(text);
 }
 
-class _DemoStateWidgetState extends State<DemoStateWidget> {
+// ignore: mixin_inherits_from_not_object
+class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAliveClientMixin  {
 
   String text;
 
@@ -56,6 +57,10 @@ class _DemoStateWidgetState extends State<DemoStateWidget> {
       });
     });
   }
+
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
