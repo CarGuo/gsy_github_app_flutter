@@ -16,6 +16,7 @@ import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/net/Api.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
@@ -59,6 +60,13 @@ class UserDao {
     if (res != null && res.result && token != null) {
       store.dispatch(UpdateUserAction(res.data));
     }
+
+    ///读取主题
+    String themeIndex = await LocalStorage.get(Config.THEME_COLOR);
+    if (themeIndex != null && themeIndex.length != 0) {
+      CommonUtils.pushTheme(store, int.parse(themeIndex));
+    }
+
     return new DataResult(res.data, (res.result && (token != null)));
   }
 
