@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                           return;
                         }
                         CommonUtils.showLoadingDialog(context);
-                        UserDao.login(_userName, _password, store).then((res) {
+                        UserDao.login(_userName.trim(), _password.trim(), store).then((res) {
                           Navigator.pop(context);
                           if (res != null && res.result) {
                             new Future.delayed(const Duration(seconds: 1), () {
