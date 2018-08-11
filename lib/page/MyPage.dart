@@ -37,11 +37,12 @@ class _MyPageState extends GSYListState<MyPage> {
 
   final List<UserOrg> orgList = new List();
 
-  _renderEventItem(userInfo, index) {
+  _renderEventItem(Store<GSYState> store, userInfo, index) {
     if (index == 0) {
       return new UserHeaderItem(
         userInfo,
         beStaredCount,
+        store.state.themeData.primaryColor,
         notifyColor: notifyColor,
         refreshCallBack: () {
           _refreshNotify();
@@ -175,7 +176,7 @@ class _MyPageState extends GSYListState<MyPage> {
       builder: (context, store) {
         return GSYPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(store.state.userInfo, index),
+          (BuildContext context, int index) => _renderEventItem(store, store.state.userInfo, index),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIndicatorKey,

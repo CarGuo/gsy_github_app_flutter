@@ -75,7 +75,7 @@ class IssueHeaderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
-      color: Color(GSYColors.primaryValue),
+      color: Theme.of(context).primaryColor,
       child: new FlatButton(
         padding: new EdgeInsets.all(0.0),
         onPressed: onPressed,

@@ -113,7 +113,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
         floatingActionButton: _floatingActionButton,
         persistentFooterButtons: _tarWidgetControl == null ? [] : _tarWidgetControl.footerButton,
         appBar: new AppBar(
-          backgroundColor: _backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           title: _title,
           bottom: new TabBar(
             controller: _tabController,
@@ -138,7 +138,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
     return new Scaffold(
         drawer: _drawer,
         appBar: new AppBar(
-          backgroundColor: _backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           title: _title,
         ),
         body: new TabBarView(
@@ -147,7 +147,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
             children: _tabViews),
         bottomNavigationBar: new Material(
           //为了适配主题风格，包一层Material实现风格套用
-          color: _backgroundColor, //底部导航栏主题颜色
+          color: Theme.of(context).primaryColor, //底部导航栏主题颜色
           child: new TabBar(
             //TabBar导航标签，底部导航放到Scaffold的bottomNavigationBar中
             controller: _tabController, //配置控制器

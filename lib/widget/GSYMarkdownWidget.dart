@@ -39,7 +39,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetDark(BuildContext context) {
-    return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
+    return _getCommonSheet(context, Theme.of(context).primaryColor).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
       h2: GSYConstant.largeTextWhiteBold,
@@ -54,7 +54,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetWhite(BuildContext context) {
-    return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
+    return _getCommonSheet(context, Theme.of(context).primaryColor).copyWith(
       p: GSYConstant.smallText,
       h1: GSYConstant.largeLargeText,
       h2: GSYConstant.largeTextBold,
@@ -82,14 +82,14 @@ class GSYMarkdownWidget extends StatelessWidget {
     );
   }
 
-  _getBackgroundColor() {
+  _getBackgroundColor(context) {
     Color background = Color(GSYColors.white);
     switch (style) {
       case DARK_LIGHT:
         background = Color(GSYColors.primaryLightValue);
         break;
       case DARK_THEME:
-        background = Color(GSYColors.primaryValue);
+        background = Theme.of(context).primaryColor;
         break;
     }
     return background;
@@ -160,7 +160,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: _getBackgroundColor(),
+      color: _getBackgroundColor(context),
       padding: EdgeInsets.all(5.0),
       child: SingleChildScrollView(
         child: new MarkdownBody(

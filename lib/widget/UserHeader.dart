@@ -22,18 +22,20 @@ class UserHeaderItem extends StatelessWidget {
 
   final Color notifyColor;
 
+  final Color themeColor;
+
   final VoidCallback refreshCallBack;
 
   final List<UserOrg> orgList;
 
-  UserHeaderItem(this.userInfo, this.beStaredCount, {this.notifyColor, this.refreshCallBack, this.orgList});
+  UserHeaderItem(this.userInfo, this.beStaredCount, this.themeColor, {this.notifyColor, this.refreshCallBack, this.orgList});
 
   ///底部状态栏
   _getBottomItem(String title, var value, onPressed) {
     String data = value == null ? "" : value.toString();
     TextStyle valueStyle = (value != null && value
         .toString()
-        .length > 4) ? GSYConstant.minText : GSYConstant.smallSubText;
+        .length > 4) ? GSYConstant.minText : GSYConstant.smallSubLightText;
     return new Expanded(
       child: new Center(
         child: new FlatButton(
@@ -41,7 +43,7 @@ class UserHeaderItem extends StatelessWidget {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: GSYConstant.smallSubText,
+              style: GSYConstant.smallSubLightText,
               text: title + "\n",
               children: [TextSpan(text: data, style: valueStyle)],
             ),
@@ -170,7 +172,7 @@ class UserHeaderItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         new GSYCardItem(
-            color: Color(GSYColors.primaryValue),
+            color: themeColor,
             margin: EdgeInsets.all(0.0),
             shape: new RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0))),
             child: new Padding(
