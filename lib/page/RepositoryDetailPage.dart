@@ -91,8 +91,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
       child: new PopupMenuButton<String>(
         child: new FlatButton(
           onPressed: null,
-          color: Color(GSYColors.primaryValue),
-          disabledColor: Color(GSYColors.primaryValue),
+          color: Theme.of(context).primaryColorDark,
+          disabledColor: Theme.of(context).primaryColorDark,
           child: new GSYIConText(
             Icons.arrow_drop_up,
             data,

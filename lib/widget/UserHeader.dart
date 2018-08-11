@@ -33,9 +33,7 @@ class UserHeaderItem extends StatelessWidget {
   ///底部状态栏
   _getBottomItem(String title, var value, onPressed) {
     String data = value == null ? "" : value.toString();
-    TextStyle valueStyle = (value != null && value
-        .toString()
-        .length > 4) ? GSYConstant.minText : GSYConstant.smallSubLightText;
+    TextStyle valueStyle = (value != null && value.toString().length > 4) ? GSYConstant.minText : GSYConstant.smallSubLightText;
     return new Expanded(
       child: new Center(
         child: new FlatButton(
@@ -122,48 +120,44 @@ class UserHeaderItem extends StatelessWidget {
 
   _renderChart(context) {
     double height = 140.0;
-    double width = 3 * MediaQuery
-        .of(context)
-        .size
-        .width / 2;
+    double width = 3 * MediaQuery.of(context).size.width / 2;
     if (userInfo.login != null && userInfo.type == "Organization") {
       return new Container();
     }
     return (userInfo.login != null)
         ? new Card(
-      margin: EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 10.0),
-      color:  Color(GSYColors.white),
-      child: new SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: new Container(
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          width: width,
-          height: height,
+            margin: EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 10.0),
+            color: Color(GSYColors.white),
+            child: new SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: new Container(
+                padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                width: width,
+                height: height,
 
-          ///svg chart
-          child: new SvgPicture.network(
-            CommonUtils.getUserChartAddress(userInfo.login),
-            width: width,
-            height: height - 10,
-            allowDrawingOutsideViewBox: true,
-            placeholderBuilder: (BuildContext context) =>
-            new Container(
-              height: height,
-              width: width,
-              child: Center(
-                child: const SpinKitRipple(color: Color(GSYColors.primaryValue)),
+                ///svg chart
+                child: new SvgPicture.network(
+                  CommonUtils.getUserChartAddress(userInfo.login),
+                  width: width,
+                  height: height - 10,
+                  allowDrawingOutsideViewBox: true,
+                  placeholderBuilder: (BuildContext context) => new Container(
+                        height: height,
+                        width: width,
+                        child: Center(
+                          child: SpinKitRipple(color: Theme.of(context).primaryColor),
+                        ),
+                      ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    )
+          )
         : new Container(
-      height: height,
-      child: Center(
-        child: const SpinKitRipple(color: Color(GSYColors.primaryValue)),
-      ),
-    );
+            height: height,
+            child: Center(
+              child: SpinKitRipple(color: Theme.of(context).primaryColor),
+            ),
+          );
   }
 
   @override
@@ -183,7 +177,6 @@ class UserHeaderItem extends StatelessWidget {
                   new Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-
                       ///用户头像
                       new RawMaterialButton(
                           onPressed: () {
@@ -211,7 +204,6 @@ class UserHeaderItem extends StatelessWidget {
                           children: <Widget>[
                             new Row(
                               children: <Widget>[
-
                                 ///用户名
                                 new Text(userInfo.login ?? "", style: GSYConstant.largeTextWhiteBold),
                                 _getNotifyIcon(context, notifyColor),
@@ -245,7 +237,7 @@ class UserHeaderItem extends StatelessWidget {
                   ),
                   new Container(
 
-                    ///用户博客
+                      ///用户博客
                       child: new RawMaterialButton(
                         onPressed: () {
                           if (userInfo.blog != null) {
@@ -292,7 +284,7 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_repos,
                         userInfo.public_repos,
-                            () {
+                        () {
                           NavigatorUtils.gotoCommonList(context, userInfo.login, "repository", "user_repos", userName: userInfo.login);
                         },
                       ),
@@ -300,7 +292,7 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_fans,
                         userInfo.followers,
-                            () {
+                        () {
                           NavigatorUtils.gotoCommonList(context, userInfo.login, "user", "follower", userName: userInfo.login);
                         },
                       ),
@@ -308,7 +300,7 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_focus,
                         userInfo.following,
-                            () {
+                        () {
                           NavigatorUtils.gotoCommonList(context, userInfo.login, "user", "followed", userName: userInfo.login);
                         },
                       ),
@@ -316,7 +308,7 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_star,
                         userInfo.starred,
-                            () {
+                        () {
                           NavigatorUtils.gotoCommonList(context, userInfo.login, "repository", "user_star", userName: userInfo.login);
                         },
                       ),
@@ -324,8 +316,7 @@ class UserHeaderItem extends StatelessWidget {
                       _getBottomItem(
                         GSYStrings.user_tab_honor,
                         beStaredCount,
-                            () {
-                        },
+                        () {},
                       ),
                     ],
                   ),

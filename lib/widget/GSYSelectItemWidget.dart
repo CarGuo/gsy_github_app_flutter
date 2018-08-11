@@ -52,7 +52,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   _GSYSelectItemWidgetState(this.selectItemChanged, this.itemNames, this.elevation, this.margin);
 
   _renderItem(String name, int index) {
-    var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubText;
+    var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubLightText;
     return new Expanded(
       child: RawMaterialButton(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -94,7 +94,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
     return new GSYCardItem(
         elevation: elevation,
         margin: margin,
-        color: Color(GSYColors.primaryValue),
+        color: Theme.of(context).primaryColor,
         shape: new RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
