@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: new Container(
-          color: Color(GSYColors.primaryValue),
+          color: Theme.of(context).primaryColor,
           child: new Center(
             child: new Card(
               elevation: 5.0,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     new Padding(padding: new EdgeInsets.all(30.0)),
                     new GSYFlexButton(
                       text: GSYStrings.login_text,
-                      color: Color(GSYColors.primaryValue),
+                      color: Theme.of(context).primaryColor,
                       textColor: Color(GSYColors.textWhite),
                       onPress: () {
                         if (_userName == null || _userName.length == 0) {
