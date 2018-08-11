@@ -114,6 +114,11 @@ class GSYConstant {
     fontSize: middleTextWhiteSize,
   );
 
+  static const middleSubLightText = TextStyle(
+    color: Color(GSYColors.subLightTextColor),
+    fontSize: middleTextWhiteSize,
+  );
+
   static const middleTextBold = TextStyle(
     color: Color(GSYColors.mainTextColor),
     fontSize: middleTextWhiteSize,

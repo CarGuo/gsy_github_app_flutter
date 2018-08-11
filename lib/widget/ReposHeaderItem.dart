@@ -97,7 +97,7 @@ class ReposHeaderItem extends StatelessWidget {
     return new Column(
       children: <Widget>[
         new GSYCardItem(
-          color: new Color(GSYColors.primaryValue),
+          color: Theme.of(context).primaryColorDark,
           child: new Container(
             ///背景头像
             decoration: new BoxDecoration(

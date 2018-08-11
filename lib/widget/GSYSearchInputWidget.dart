@@ -21,8 +21,8 @@ class GSYSearchInputWidget extends StatelessWidget {
       decoration: new BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
           color:  Color(GSYColors.white),
-          border: new Border.all(color: Color(GSYColors.primaryValue), width: 0.3),
-          boxShadow: [BoxShadow(color: Color(GSYColors.primaryDarkValue),  blurRadius: 4.0)]),
+          border: new Border.all(color: Theme.of(context).primaryColor, width: 0.3),
+          boxShadow: [BoxShadow(color: Theme.of(context).primaryColorDark,  blurRadius: 4.0)]),
       padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
       child: new Row(
         children: <Widget>[
@@ -40,7 +40,7 @@ class GSYSearchInputWidget extends StatelessWidget {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: const EdgeInsets.only(right: 5.0, left: 10.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-              child: new Icon(GSYICons.SEARCH, size: 15.0),
+              child: new Icon(GSYICons.SEARCH, size: 15.0, color: Theme.of(context).primaryColorDark,),
               onPressed: onSubmitPressed)
         ],
       ),

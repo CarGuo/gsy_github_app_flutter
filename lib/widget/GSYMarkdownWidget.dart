@@ -39,7 +39,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetDark(BuildContext context) {
-    return _getCommonSheet(context, Theme.of(context).primaryColor).copyWith(
+    return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
       h2: GSYConstant.largeTextWhiteBold,
@@ -54,7 +54,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetWhite(BuildContext context) {
-    return _getCommonSheet(context, Theme.of(context).primaryColor).copyWith(
+    return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
       p: GSYConstant.smallText,
       h1: GSYConstant.largeLargeText,
       h2: GSYConstant.largeTextBold,

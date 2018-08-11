@@ -141,7 +141,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     Widget bottomWidget = (control.needLoadMore)
         ? new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             ///loading框
-            new SpinKitRotatingCircle(color: Color(0xFF24292E)),
+            new SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
             new Container(
               width: 5.0,
             ),
