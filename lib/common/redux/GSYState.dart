@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/TrendingRepoModel.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/EventRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/TrendRedux.dart';
+import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
 
 /**
  * Redux全局State
@@ -22,8 +24,10 @@ class GSYState {
   ///用户接受到的事件列表
   List<TrendingRepoModel> trendList = new List();
 
+  ThemeData themeData;
+
   ///构造方法
-  GSYState({this.userInfo, this.eventList, this.trendList});
+  GSYState({this.userInfo, this.eventList, this.trendList, this.themeData});
 }
 
 ///通过 Reducer 创建 store 保存的 GSYState
@@ -37,5 +41,7 @@ GSYState appReducer(GSYState state, action) {
 
     ///通过 TrendReducer 将 GSYState 内的 trendList 和 action 关联在一起
     trendList: TrendReducer(state.trendList, action),
+
+    themeData: ThemeDataReducer(state.themeData, action),
   );
 }

@@ -33,9 +33,9 @@ class _TrendPageState extends GSYListState<TrendPage> {
     });
   }
 
-  _renderHeader() {
+  _renderHeader(Store<GSYState> store) {
     return new GSYCardItem(
-      color: Color(GSYColors.primaryValue),
+      color: store.state.themeData.primaryColor,
       margin: EdgeInsets.all(10.0),
       shape: new RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -141,7 +141,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
         return new Scaffold(
           backgroundColor: Color(GSYColors.mainBackgroundColor),
           appBar: new AppBar(
-            flexibleSpace: _renderHeader(),
+            flexibleSpace: _renderHeader(store),
             backgroundColor: Color(GSYColors.mainBackgroundColor),
             leading: new Container(),
             elevation: 0.0,

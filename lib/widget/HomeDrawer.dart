@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -39,7 +40,7 @@ class HomeDrawer extends StatelessWidget {
           ///侧边栏按钮Drawer
           child: new Container(
             ///默认背景
-            color: Color(GSYColors.primaryValue),
+            color: store.state.themeData.primaryColor,
             child: new SingleChildScrollView(
               ///item 背景
               child: new Container(
@@ -55,7 +56,7 @@ class HomeDrawer extends StatelessWidget {
                       ),
                       accountEmail: new Text(
                         user.email ?? user.name ?? "---",
-                        style: GSYConstant.normalSubText,
+                        style: GSYConstant.normalTextLight,
                       ),
                       //用户名
                       //用户邮箱
@@ -69,7 +70,7 @@ class HomeDrawer extends StatelessWidget {
                       ),
                       decoration: new BoxDecoration(
                         //用一个BoxDecoration装饰器提供背景图片
-                        color: Color(GSYColors.primaryValue),
+                        color: store.state.themeData.primaryColor,
                       ),
                     ),
                     new ListTile(
@@ -86,8 +87,7 @@ class HomeDrawer extends StatelessWidget {
                               return;
                             }
                             CommonUtils.showLoadingDialog(context);
-                            IssueDao
-                                .createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": GSYStrings.home_reply, "body": content}).then((result) {
+                            IssueDao.createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": GSYStrings.home_reply, "body": content}).then((result) {
                               Navigator.pop(context);
                               Navigator.pop(context);
                             });
@@ -126,6 +126,7 @@ class HomeDrawer extends StatelessWidget {
                           GetVersion.projectVersion.then((value) {
                             showAboutDialog(context, value);
                           });
+                          store.dispatch(new RefreshThemeDataAction(new ThemeData(primarySwatch: Colors.blue)));
                         }),
                     new ListTile(
                         title: new GSYFlexButton(

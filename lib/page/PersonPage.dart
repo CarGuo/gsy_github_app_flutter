@@ -120,7 +120,7 @@ class _PersonState extends GSYListState<PersonPage> {
 
   _renderEventItem(index) {
     if (index == 0) {
-      return new UserHeaderItem(userInfo, beStaredCount, orgList: orgList);
+      return new UserHeaderItem(userInfo, beStaredCount, Theme.of(context).primaryColor, orgList: orgList);
     }
     if (userInfo.type == "Organization") {
       return new UserItem(UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {

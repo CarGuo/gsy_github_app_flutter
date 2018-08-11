@@ -16,10 +16,19 @@ void main() {
 }
 
 class FlutterReduxApp extends StatelessWidget {
-
   /// 创建Store，引用 GSYState 中的 appReducer 创建 Reducer
   /// initialState 初始化 State
-  final store = new Store<GSYState>(appReducer, initialState: new GSYState(userInfo: User.empty(), eventList: new List(), trendList: new List()));
+  final store = new Store<GSYState>(
+    appReducer,
+    initialState: new GSYState(
+      userInfo: User.empty(),
+      eventList: new List(),
+      trendList: new List(),
+      themeData: new ThemeData(
+        primarySwatch: GSYColors.primarySwatch,
+      ),
+    ),
+  );
 
   FlutterReduxApp({Key key}) : super(key: key);
 
@@ -28,28 +37,28 @@ class FlutterReduxApp extends StatelessWidget {
     /// 通过 StoreProvider 应用 store
     return new StoreProvider(
       store: store,
-      child: new MaterialApp(
-          localizationsDelegates: [
-            _MaterialLocalizationsDelegate(),
-          ],
-          supportedLocales: [
-            const Locale('zh', 'US'), // English
-            // ... other locales the app supports
-          ],
-          theme: new ThemeData(
-            primarySwatch: GSYColors.primarySwatch,
-          ),
-          routes: {
-            WelcomePage.sName: (context) {
-              return WelcomePage();
-            },
-            HomePage.sName: (context) {
-              return HomePage();
-            },
-            LoginPage.sName: (context) {
-              return LoginPage();
-            },
-          }),
+      child: new StoreBuilder<GSYState>(builder: (context, store) {
+        return new MaterialApp(
+            localizationsDelegates: [
+              _MaterialLocalizationsDelegate(),
+            ],
+            supportedLocales: [
+              const Locale('zh', 'US'), // English
+              // ... other locales the app supports
+            ],
+            theme: store.state.themeData,
+            routes: {
+              WelcomePage.sName: (context) {
+                return WelcomePage();
+              },
+              HomePage.sName: (context) {
+                return HomePage();
+              },
+              LoginPage.sName: (context) {
+                return LoginPage();
+              },
+            });
+      }),
     );
   }
 }
