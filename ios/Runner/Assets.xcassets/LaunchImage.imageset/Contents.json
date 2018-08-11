@@ -11,10 +11,12 @@
     },
     {
       "idiom" : "iphone",
+      "filename" : "Default@3x-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
+      "filename" : "Default@3x-2.png",
       "subtype" : "retina4",
       "scale" : "2x"
     },
@@ -26,10 +28,12 @@
     },
     {
       "idiom" : "iphone",
+      "filename" : "Default@3x.png",
       "scale" : "3x"
     },
     {
       "idiom" : "iphone",
+      "filename" : "Default@3x-4.png",
       "subtype" : "retina4",
       "scale" : "3x"
     },
@@ -54,20 +58,6 @@
       "unassigned" : true,
       "subtype" : "retina4",
       "scale" : "2x"
-    },
-    {
-      "idiom" : "iphone",
-      "filename" : "Default@3x.png",
-      "unassigned" : true,
-      "subtype" : "736h",
-      "scale" : "3x"
-    },
-    {
-      "idiom" : "iphone",
-      "filename" : "Default@3x-4.png",
-      "unassigned" : true,
-      "subtype" : "2436h",
-      "scale" : "3x"
     }
   ],
   "info" : {

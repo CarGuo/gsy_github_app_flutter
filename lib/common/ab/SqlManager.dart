@@ -10,9 +10,9 @@ import 'package:sqflite/sqflite.dart';
  */
 
 class SqlManager {
-  static final _VERSION = 1;
+  static const _VERSION = 1;
 
-  static final _NAME = "gsy_github_app_flutter.db";
+  static const _NAME = "gsy_github_app_flutter.db";
 
   static Database _database;
 
