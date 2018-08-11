@@ -94,3 +94,6 @@ https://blog.csdn.net/hekaiyou/article/details/52874796?locationNum=4&fps=1
 https://github.com/flutter/flutter/issues/19241#issuecomment-404601754
 
 https://github.com/flutter/flutter/issues/18305
+
+你需要选flutter build ios
+之后它会修改你的Podfile.lock文件指向
