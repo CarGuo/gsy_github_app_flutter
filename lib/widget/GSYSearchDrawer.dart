@@ -33,7 +33,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      color: Color(GSYColors.primaryValue),
+      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.only(top: CommonUtils.sStaticBarHeight),
       child: Container(
         color: Color(GSYColors.white),
@@ -75,7 +75,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   _renderTitle(String title) {
     return new Container(
-      color: Color(GSYColors.primaryValue),
+      color:  Theme.of(context).primaryColor,
       width: itemWidth + 50,
       height: 50.0,
       child: new Center(

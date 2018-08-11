@@ -22,8 +22,8 @@ class PushHeader extends StatelessWidget {
     return new GSYIConText(
       icon,
       text,
-      GSYConstant.smallSubText,
-      Color(GSYColors.subTextColor),
+      GSYConstant.smallSubLightText,
+      Color(GSYColors.subLightTextColor),
       15.0,
       padding: 0.0,
     );
@@ -32,7 +32,7 @@ class PushHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
-      color: Color(GSYColors.primaryValue),
+      color: Theme.of(context).primaryColor,
       child: new FlatButton(
         padding: new EdgeInsets.all(0.0),
         onPressed: () {},

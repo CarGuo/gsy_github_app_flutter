@@ -230,7 +230,7 @@ class CommonUtils {
                       maxLines: 2,
                       mainAxisAlignment: MainAxisAlignment.start,
                       fontSize: 14.0,
-                      color: Color(GSYColors.primaryValue),
+                      color: Theme.of(context).primaryColor,
                       text: commitMaps[index],
                       textColor: Color(GSYColors.white),
                       onPress: () {
