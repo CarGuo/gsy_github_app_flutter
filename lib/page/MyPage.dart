@@ -86,7 +86,7 @@ class _MyPageState extends GSYListState<MyPage> {
       if (res != null && res.result && res.data.length > 0) {
         notifyColor = Color(GSYColors.actionBlue);
       } else {
-        notifyColor = Color(GSYColors.subTextColor);
+        notifyColor = Color(GSYColors.subLightTextColor);
       }
     });
   }
