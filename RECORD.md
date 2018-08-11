@@ -83,3 +83,14 @@ hotload很有优势。
 ### redux 下切换主题 
 
 ### 谷歌推荐redux
+
+https://blog.csdn.net/yaoliangjun306/article/details/77824136
+flutter 运行ios项目失败 'shared_preferences/SharedPreferencesPlugin.h' file not found
+
+flutter 真机测试
+https://blog.csdn.net/hekaiyou/article/details/52874796?locationNum=4&fps=1
+
+///ios编译失败
+https://github.com/flutter/flutter/issues/19241#issuecomment-404601754
+
+https://github.com/flutter/flutter/issues/18305
