@@ -49,10 +49,10 @@
 #### Apk下载链接： [Apk下载链接](https://www.pgyer.com/vj2B)
 
 
-库 | 功能
+类型 | 二维码
 -------- | ---
 **Apk二维码**|![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png)
-**Ios**|**残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png)
+**IOS暂无下载**|**残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png)
 
 
 
