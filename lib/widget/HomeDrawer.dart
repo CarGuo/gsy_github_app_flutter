@@ -47,7 +47,7 @@ class HomeDrawer extends StatelessWidget {
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.pushTheme(store, index);
       LocalStorage.save(Config.THEME_COLOR, index.toString());
-    });
+    }, colorList: CommonUtils.getThemeListColor());
   }
 
   @override

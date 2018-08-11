@@ -85,30 +85,21 @@ class CommonUtils {
 
   static pushTheme(Store store, int index) {
     ThemeData themeData;
-    switch (index) {
-      case 0:
-        themeData = new ThemeData(primarySwatch: GSYColors.primarySwatch);
-        break;
-      case 1:
-        themeData = new ThemeData(primarySwatch: Colors.brown);
-        break;
-      case 2:
-        themeData = new ThemeData(primarySwatch: Colors.blue);
-        break;
-      case 3:
-        themeData = new ThemeData(primarySwatch: Colors.teal);
-        break;
-      case 4:
-        themeData = new ThemeData(primarySwatch: Colors.amber);
-        break;
-      case 5:
-        themeData = new ThemeData(primarySwatch: Colors.blueGrey);
-        break;
-      case 6:
-        themeData = new ThemeData(primarySwatch: Colors.deepOrange);
-        break;
-    }
+    List<Color> colors = getThemeListColor();
+    themeData = new ThemeData(primarySwatch: colors[index]);
     store.dispatch(new RefreshThemeDataAction(themeData));
+  }
+
+  static List<Color> getThemeListColor() {
+    return [
+      GSYColors.primarySwatch,
+      Colors.brown,
+      Colors.blue,
+      Colors.teal,
+      Colors.amber,
+      Colors.blueGrey,
+      Colors.deepOrange,
+    ];
   }
 
   static const IMAGE_END = [".png", ".jpg", ".jpeg", ".gif", ".svg"];
@@ -132,7 +123,7 @@ class CommonUtils {
     if (url == null && url.length == 0) return;
     Uri parseUrl = Uri.parse(url);
     bool isImage = isImageEnd(parseUrl.toString());
-    if(parseUrl.toString().endsWith("?raw=true")) {
+    if (parseUrl.toString().endsWith("?raw=true")) {
       isImage = isImageEnd(parseUrl.toString().replaceAll("?raw=true", ""));
     }
     if (isImage) {
@@ -165,8 +156,7 @@ class CommonUtils {
     if (url.startsWith("http")) {
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
-      NavigatorUtils.goGSYWebView(
-          context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
+      NavigatorUtils.goGSYWebView(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
     }
   }
 
@@ -237,8 +227,14 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showCommitOptionDialog(BuildContext context, List<String> commitMaps, ValueChanged<int> onTap,
-      {width = 250.0, height = 400.0}) {
+  static Future<Null> showCommitOptionDialog(
+    BuildContext context,
+    List<String> commitMaps,
+    ValueChanged<int> onTap, {
+    width = 250.0,
+    height = 400.0,
+    List<Color> colorList,
+  }) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -260,7 +256,7 @@ class CommonUtils {
                       maxLines: 2,
                       mainAxisAlignment: MainAxisAlignment.start,
                       fontSize: 14.0,
-                      color: Theme.of(context).primaryColor,
+                      color: colorList != null ? colorList[index] : Theme.of(context).primaryColor,
                       text: commitMaps[index],
                       textColor: Color(GSYColors.white),
                       onPress: () {
