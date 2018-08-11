@@ -1,10 +1,12 @@
 import 'package:get_version/get_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
+import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
@@ -43,31 +45,8 @@ class HomeDrawer extends StatelessWidget {
       GSYStrings.home_theme_6,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
-      ThemeData themeData;
-      switch (index) {
-        case 0:
-          themeData = new ThemeData(primarySwatch: GSYColors.primarySwatch);
-          break;
-        case 1:
-          themeData = new ThemeData(primarySwatch: Colors.brown);
-          break;
-        case 2:
-          themeData = new ThemeData(primarySwatch: Colors.blue);
-          break;
-        case 3:
-          themeData = new ThemeData(primarySwatch: Colors.teal);
-          break;
-        case 4:
-          themeData = new ThemeData(primarySwatch: Colors.amber);
-          break;
-        case 5:
-          themeData = new ThemeData(primarySwatch: Colors.blueGrey);
-          break;
-        case 6:
-          themeData = new ThemeData(primarySwatch: Colors.deepOrange);
-          break;
-      }
-      store.dispatch(new RefreshThemeDataAction(themeData));
+      CommonUtils.pushTheme(store, index);
+      LocalStorage.save(Config.THEME_COLOR, index.toString());
     });
   }
 

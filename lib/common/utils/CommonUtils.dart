@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
+import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_statusbar/flutter_statusbar.dart';
 
@@ -79,6 +81,34 @@ class CommonUtils {
       }
     }
     return fullName;
+  }
+
+  static pushTheme(Store store, int index) {
+    ThemeData themeData;
+    switch (index) {
+      case 0:
+        themeData = new ThemeData(primarySwatch: GSYColors.primarySwatch);
+        break;
+      case 1:
+        themeData = new ThemeData(primarySwatch: Colors.brown);
+        break;
+      case 2:
+        themeData = new ThemeData(primarySwatch: Colors.blue);
+        break;
+      case 3:
+        themeData = new ThemeData(primarySwatch: Colors.teal);
+        break;
+      case 4:
+        themeData = new ThemeData(primarySwatch: Colors.amber);
+        break;
+      case 5:
+        themeData = new ThemeData(primarySwatch: Colors.blueGrey);
+        break;
+      case 6:
+        themeData = new ThemeData(primarySwatch: Colors.deepOrange);
+        break;
+    }
+    store.dispatch(new RefreshThemeDataAction(themeData));
   }
 
   static const IMAGE_END = [".png", ".jpg", ".jpeg", ".gif", ".svg"];
