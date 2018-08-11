@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
+import 'package:redux/redux.dart';
 
 /**
  * 主页drawer
@@ -29,6 +30,45 @@ class HomeDrawer extends StatelessWidget {
               applicationIcon: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 50.0, height: 50.0),
               applicationLegalese: "http://github.com/CarGuo",
             ));
+  }
+
+  showThemeDialog(BuildContext context, Store store) {
+    List<String> list = [
+      GSYStrings.home_theme_default,
+      GSYStrings.home_theme_1,
+      GSYStrings.home_theme_2,
+      GSYStrings.home_theme_3,
+      GSYStrings.home_theme_4,
+      GSYStrings.home_theme_5,
+      GSYStrings.home_theme_6,
+    ];
+    CommonUtils.showCommitOptionDialog(context, list, (index) {
+      ThemeData themeData;
+      switch (index) {
+        case 0:
+          themeData = new ThemeData(primarySwatch: GSYColors.primarySwatch);
+          break;
+        case 1:
+          themeData = new ThemeData(primarySwatch: Colors.brown);
+          break;
+        case 2:
+          themeData = new ThemeData(primarySwatch: Colors.blue);
+          break;
+        case 3:
+          themeData = new ThemeData(primarySwatch: Colors.teal);
+          break;
+        case 4:
+          themeData = new ThemeData(primarySwatch: Colors.amber);
+          break;
+        case 5:
+          themeData = new ThemeData(primarySwatch: Colors.blueGrey);
+          break;
+        case 6:
+          themeData = new ThemeData(primarySwatch: Colors.deepOrange);
+          break;
+      }
+      store.dispatch(new RefreshThemeDataAction(themeData));
+    });
   }
 
   @override
@@ -111,6 +151,14 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
+                          GSYStrings.home_change_theme,
+                          style: GSYConstant.normalText,
+                        ),
+                        onTap: () {
+                          showThemeDialog(context, store);
+                        }),
+                    new ListTile(
+                        title: new Text(
                           GSYStrings.home_check_update,
                           style: GSYConstant.normalText,
                         ),
@@ -126,7 +174,6 @@ class HomeDrawer extends StatelessWidget {
                           GetVersion.projectVersion.then((value) {
                             showAboutDialog(context, value);
                           });
-                          store.dispatch(new RefreshThemeDataAction(new ThemeData(primarySwatch: Colors.blue)));
                         }),
                     new ListTile(
                         title: new GSYFlexButton(

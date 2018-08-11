@@ -45,7 +45,6 @@ class GSYColors {
 
 ///文本样式
 class GSYConstant {
-
   static const lagerTextSize = 30.0;
   static const bigTextSize = 23.0;
   static const normalTextSize = 18.0;
@@ -53,13 +52,10 @@ class GSYConstant {
   static const smallTextSize = 14.0;
   static const minTextSize = 12.0;
 
-
   static const minText = TextStyle(
     color: Color(GSYColors.subTextColor),
     fontSize: minTextSize,
   );
-
-
 
   static const smallTextWhite = TextStyle(
     color: Color(GSYColors.textColorWhite),
@@ -96,8 +92,6 @@ class GSYConstant {
     color: Color(GSYColors.subTextColor),
     fontSize: smallTextSize,
   );
-
-
 
   static const middleText = TextStyle(
     color: Color(GSYColors.mainTextColor),
@@ -137,7 +131,6 @@ class GSYConstant {
     fontWeight: FontWeight.bold,
   );
 
-
   static const normalText = TextStyle(
     color: Color(GSYColors.mainTextColor),
     fontSize: normalTextSize,
@@ -176,8 +169,6 @@ class GSYConstant {
     fontSize: normalTextSize,
   );
 
-
-
   static const largeText = TextStyle(
     color: Color(GSYColors.mainTextColor),
     fontSize: bigTextSize,
@@ -199,9 +190,6 @@ class GSYConstant {
     fontSize: bigTextSize,
     fontWeight: FontWeight.bold,
   );
-
-
-
 
   static const largeLargeTextWhite = TextStyle(
     color: Color(GSYColors.textColorWhite),
@@ -254,6 +242,15 @@ class GSYStrings {
   static const String home_check_update = "检测更新";
   static const String home_history = "阅读历史";
   static const String home_user_info = "个人信息";
+  static const String home_change_theme = "切换主题";
+
+  static const String home_theme_default = "默认主题";
+  static const String home_theme_1 = "主题1";
+  static const String home_theme_2 = "主题2";
+  static const String home_theme_3 = "主题3";
+  static const String home_theme_4 = "主题4";
+  static const String home_theme_5 = "主题5";
+  static const String home_theme_6 = "主题6";
 
   static const String login_username_hint_text = "请输入github用户名";
   static const String login_password_hint_text = "请输入密码";
