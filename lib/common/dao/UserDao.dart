@@ -267,7 +267,7 @@ class UserDao {
    */
   static setAllNotificationAsReadDao() async {
     String url = Address.setAllNotificationAsRead();
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PUT", contentType: ContentType.TEXT));
+    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PUT", contentType: ContentType.text));
     return new DataResult(res.data, res.result);
   }
 
@@ -276,7 +276,7 @@ class UserDao {
    */
   static checkFollowDao(name) async {
     String url = Address.doFollow(name);
-    var res = await HttpManager.netFetch(url, null, null, new Options(contentType: ContentType.TEXT), noTip: true);
+    var res = await HttpManager.netFetch(url, null, null, new Options(contentType: ContentType.text), noTip: true);
     return new DataResult(res.data, res.result);
   }
 
