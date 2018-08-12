@@ -73,6 +73,8 @@
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios.gif)
 
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/theme.gif)
+
 <img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/1.jpg" width="426px"/>
 
 <img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/2.jpg" width="426px"/>
