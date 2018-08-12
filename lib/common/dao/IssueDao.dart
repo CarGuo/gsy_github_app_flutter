@@ -200,7 +200,7 @@ class IssueDao {
   static lockIssueDao(userName, repository, number, locked) async {
     String url = Address.lockIssue(userName, repository, number);
     var res = await HttpManager.netFetch(
-        url, null, {"Accept": 'application/vnd.github.VERSION.full+json'}, new Options(method: locked ? "DELETE" : 'PUT', contentType: ContentType.TEXT),
+        url, null, {"Accept": 'application/vnd.github.VERSION.full+json'}, new Options(method: locked ? "DELETE" : 'PUT', contentType: ContentType.text),
         noTip: true);
     if (res != null && res.result) {
       return new DataResult(res.data, true);
