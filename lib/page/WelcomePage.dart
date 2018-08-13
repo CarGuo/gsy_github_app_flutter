@@ -28,6 +28,7 @@ class WelcomePage extends StatelessWidget {
         } else {
           NavigatorUtils.goLogin(context);
         }
+        return true;
       });
     });
     return StoreBuilder<GSYState>(

@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-
 /**
  * 数据库表
  * Created by guoshuyu
  * Date: 2018-08-03
  */
 import 'package:gsy_github_app_flutter/common/ab/SqlManager.dart';
-import 'package:gsy_github_app_flutter/common/model/Event.dart';
-import 'package:gsy_github_app_flutter/common/model/TrendingRepoModel.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 
