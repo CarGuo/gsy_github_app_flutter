@@ -26,6 +26,7 @@ abstract class GSYListState<T extends StatefulWidget> extends State<T> with Auto
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
       refreshIndicatorKey.currentState.show().then((e) {});
+      return true;
     });
   }
 

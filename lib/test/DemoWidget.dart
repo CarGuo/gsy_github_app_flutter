@@ -55,6 +55,7 @@ class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAli
       setState(() {
         text = "这就变了数值";
       });
+      return true;
     });
   }
 
