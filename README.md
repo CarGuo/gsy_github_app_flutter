@@ -40,7 +40,9 @@
      
    [      注册 Github APP 传送门](https://github.com/settings/applications/new)，当然，前提是你现有一个github账号(～￣▽￣)～ 。
 
-4、运行
+4、运行之前请注意下
+
+>### 1、本地Flutter SDK 版本 v0.5.7 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
 
 
 
