@@ -1,6 +1,7 @@
 import 'package:get_version/get_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gsy_github_app_flutter/common/ab/SqlManager.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/EventDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
@@ -162,6 +163,7 @@ class HomeDrawer extends StatelessWidget {
                           onPress: () {
                             UserDao.clearAll(store);
                             EventDao.clearEvent(store);
+                            SqlManager.close();
                             NavigatorUtils.goLogin(context);
                           },
                         ),
