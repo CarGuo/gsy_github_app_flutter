@@ -23,8 +23,10 @@ class TrendPage extends StatefulWidget {
 }
 
 class _TrendPageState extends GSYListState<TrendPage> {
-  TrendTypeModel selectTime = trendTime[0];
-  TrendTypeModel selectType = trendType[0];
+
+  static TrendTypeModel selectTime = trendTime[0];
+
+  static TrendTypeModel selectType = trendType[0];
 
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
