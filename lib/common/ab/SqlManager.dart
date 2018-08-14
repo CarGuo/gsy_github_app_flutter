@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
+import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
@@ -20,9 +22,17 @@ class SqlManager {
   static init() async {
     // open the database
     var databasesPath = await getDatabasesPath();
-    String path = databasesPath + _NAME;
+    var userRes= await UserDao.getUserInfoLocal();
+    String dbName = _NAME;
+    if(userRes != null && userRes.result) {
+      User user = userRes.data;
+      if(user != null && user.login != null) {
+        dbName = user.login + "_" + _NAME;
+      }
+    }
+    String path = databasesPath + dbName;
     if (Platform.isIOS) {
-      path = databasesPath + "/" + _NAME;
+      path = databasesPath + "/" + dbName;
     }
     _database = await openDatabase(path, version: _VERSION, onCreate: (Database db, int version) async {
       // When creating the db, create the table
