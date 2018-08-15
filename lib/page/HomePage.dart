@@ -37,9 +37,23 @@ class HomePage extends StatelessWidget {
             ));
   }
 
+  _renderTab(icon, text) {
+    return new Tab(
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[new Icon(icon, size: 16.0), new Text(text)],
+      ),
+    );
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    List<Widget> tabs = [
+      _renderTab(GSYICons.MAIN_DT, CommonUtils.getLocale(context).home_dynamic),
+      _renderTab(GSYICons.MAIN_QS, CommonUtils.getLocale(context).home_trend),
+      _renderTab(GSYICons.MAIN_MY, CommonUtils.getLocale(context).home_my),
+    ];
     return WillPopScope(
       onWillPop: () {
         return _dialogExitApp(context);
@@ -47,33 +61,14 @@ class HomePage extends StatelessWidget {
       child: new GSYTabBarWidget(
         drawer: new HomeDrawer(),
         type: GSYTabBarWidget.BOTTOM_TAB,
-        tabItems: [
-          new Tab(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[new Icon(GSYICons.MAIN_DT, size: 16.0), new Text(CommonUtils.getLocale(context).home_dynamic)],
-            ),
-          ),
-          new Tab(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[new Icon(GSYICons.MAIN_QS, size: 16.0), new Text(CommonUtils.getLocale(context).home_trend)],
-            ),
-          ),
-          new Tab(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[new Icon(GSYICons.MAIN_MY, size: 16.0), new Text(CommonUtils.getLocale(context).home_my)],
-            ),
-          ),
-        ],
+        tabItems: tabs,
         tabViews: [
           new DynamicPage(),
           new TrendPage(),
           new MyPage(),
         ],
         backgroundColor: GSYColors.primarySwatch,
-        indicatorColor:Color(GSYColors.white),
+        indicatorColor: Color(GSYColors.white),
         title: GSYTitleBar(
           GSYLocalizations.of(context).currentLocalized.app_name,
           iconData: GSYICons.MAIN_SEARCH,

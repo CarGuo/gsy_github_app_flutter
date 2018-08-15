@@ -49,9 +49,7 @@ class GSYTabBarWidget extends StatefulWidget {
   @override
   _GSYTabBarState createState() => new _GSYTabBarState(
         type,
-        tabItems,
         tabViews,
-        backgroundColor,
         indicatorColor,
         title,
         drawer,
@@ -66,11 +64,7 @@ class GSYTabBarWidget extends StatefulWidget {
 class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderStateMixin {
   final int _type;
 
-  final List<Widget> _tabItems;
-
   final List<Widget> _tabViews;
-
-  final Color _backgroundColor;
 
   final Color _indicatorColor;
 
@@ -86,16 +80,24 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   final ValueChanged<int> _onPageChanged;
 
-  _GSYTabBarState(this._type, this._tabItems, this._tabViews, this._backgroundColor, this._indicatorColor, this._title, this._drawer,
-      this._floatingActionButton, this._tarWidgetControl, this._pageController, this._onPageChanged)
-      : super();
+  _GSYTabBarState(
+    this._type,
+    this._tabViews,
+    this._indicatorColor,
+    this._title,
+    this._drawer,
+    this._floatingActionButton,
+    this._tarWidgetControl,
+    this._pageController,
+    this._onPageChanged,
+  ) : super();
 
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: _tabItems.length);
+    _tabController = new TabController(vsync: this, length: widget.tabItems.length);
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
@@ -117,7 +119,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
           title: _title,
           bottom: new TabBar(
             controller: _tabController,
-            tabs: _tabItems,
+            tabs: widget.tabItems,
             indicatorColor: _indicatorColor,
           ),
         ),
@@ -151,7 +153,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
           child: new TabBar(
             //TabBar导航标签，底部导航放到Scaffold的bottomNavigationBar中
             controller: _tabController, //配置控制器
-            tabs: _tabItems,
+            tabs: widget.tabItems,
             indicatorColor: _indicatorColor, //tab标签的下划线颜色
           ),
         ));
