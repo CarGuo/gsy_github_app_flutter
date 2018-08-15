@@ -58,6 +58,8 @@ class GSYStringZh extends GSYStringBase {
   @override
   String home_reply = "问题反馈";
   @override
+  String home_change_language = "语言切换";
+  @override
   String home_about = "关于";
   @override
   String home_check_update = "检测更新";
@@ -67,6 +69,12 @@ class GSYStringZh extends GSYStringBase {
   String home_user_info = "个人信息";
   @override
   String home_change_theme = "切换主题";
+  @override
+  String home_language_default= "默认";
+  @override
+  String home_language_zh= "中文";
+  @override
+  String home_language_en= "英文";
 
   @override
   String home_theme_default = "默认主题";
