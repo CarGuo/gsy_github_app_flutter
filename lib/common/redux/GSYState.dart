@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/EventRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/TrendRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
+import 'package:gsy_github_app_flutter/common/redux/LocaleRedux.dart';
 
 /**
  * Redux全局State
@@ -26,8 +27,10 @@ class GSYState {
 
   ThemeData themeData;
 
+  Locale locale;
+
   ///构造方法
-  GSYState({this.userInfo, this.eventList, this.trendList, this.themeData});
+  GSYState({this.userInfo, this.eventList, this.trendList, this.themeData, this.locale});
 }
 
 ///通过 Reducer 创建 store 保存的 GSYState
@@ -43,5 +46,7 @@ GSYState appReducer(GSYState state, action) {
     trendList: TrendReducer(state.trendList, action),
 
     themeData: ThemeDataReducer(state.themeData, action),
+
+    locale: LocaleReducer(state.locale, action),
   );
 }

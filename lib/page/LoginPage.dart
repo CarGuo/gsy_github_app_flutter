@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                     new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 90.0, height: 90.0),
                     new Padding(padding: new EdgeInsets.all(10.0)),
                     new GSYInputWidget(
-                      hintText: GSYStrings.login_username_hint_text,
+                      hintText: CommonUtils.getLocale(context).login_username_hint_text,
                       iconData: GSYICons.LOGIN_USER,
                       onChanged: (String value) {
                         _userName = value;
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     new Padding(padding: new EdgeInsets.all(10.0)),
                     new GSYInputWidget(
-                      hintText: GSYStrings.login_password_hint_text,
+                      hintText: CommonUtils.getLocale(context).login_password_hint_text,
                       iconData: GSYICons.LOGIN_PW,
                       obscureText: true,
                       onChanged: (String value) {
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     new Padding(padding: new EdgeInsets.all(30.0)),
                     new GSYFlexButton(
-                      text: GSYStrings.login_text,
+                      text: CommonUtils.getLocale(context).login_text,
                       color: Theme.of(context).primaryColor,
                       textColor: Color(GSYColors.textWhite),
                       onPress: () {

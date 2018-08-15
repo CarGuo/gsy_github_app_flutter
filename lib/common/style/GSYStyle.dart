@@ -45,6 +45,9 @@ class GSYColors {
 
 ///文本样式
 class GSYConstant {
+
+  static const String app_default_share_url = "https://github.com/CarGuo/GSYGithubAppFlutter";
+
   static const lagerTextSize = 30.0;
   static const bigTextSize = 23.0;
   static const normalTextSize = 18.0;
@@ -209,8 +212,6 @@ class GSYStrings {
   static const String welcomeMessage = "Welcome To Flutter";
 
   static const String app_name = "GSYGithubAppFlutter";
-
-  static const String app_default_share_url = "https://github.com/CarGuo/GSYGithubAppFlutter";
 
   static const String app_ok = "确定";
   static const String app_cancel = "取消";

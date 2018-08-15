@@ -82,12 +82,12 @@ class ReposHeaderItem extends StatelessWidget {
   }
 
   ///仓库创建和提交状态信息
-  _getInfoText() {
+  _getInfoText(BuildContext context) {
     String createStr = reposHeaderViewModel.repositoryIsFork
-        ? GSYStrings.repos_fork_at + reposHeaderViewModel.repositoryParentName + '\n'
-        : GSYStrings.repos_create_at + reposHeaderViewModel.created_at + "\n";
+        ? CommonUtils.getLocale(context).repos_fork_at + reposHeaderViewModel.repositoryParentName + '\n'
+        : CommonUtils.getLocale(context).repos_create_at + reposHeaderViewModel.created_at + "\n";
 
-    String updateStr = GSYStrings.repos_last_commit + reposHeaderViewModel.push_at;
+    String updateStr = CommonUtils.getLocale(context).repos_last_commit + reposHeaderViewModel.push_at;
 
     return createStr + ((reposHeaderViewModel.push_at != null) ? updateStr : '');
   }
@@ -167,7 +167,7 @@ class ReposHeaderItem extends StatelessWidget {
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         padding: const EdgeInsets.all(0.0),
                         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                        child: new Text(_getInfoText(),
+                        child: new Text(_getInfoText(context),
                             style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.smallActionLightText : GSYConstant.smallSubLightText),
                       ),
                     ),
@@ -224,9 +224,9 @@ class ReposHeaderItem extends StatelessWidget {
                                   return;
                                 }
                                 List<String> list = [
-                                  GSYStrings.repos_all_issue_count + reposHeaderViewModel.allIssueCount.toString(),
-                                  GSYStrings.repos_open_issue_count + reposHeaderViewModel.openIssuesCount.toString(),
-                                  GSYStrings.repos_close_issue_count +
+                                  CommonUtils.getLocale(context).repos_all_issue_count + reposHeaderViewModel.allIssueCount.toString(),
+                                  CommonUtils.getLocale(context).repos_open_issue_count + reposHeaderViewModel.openIssuesCount.toString(),
+                                  CommonUtils.getLocale(context).repos_close_issue_count +
                                       (reposHeaderViewModel.allIssueCount - reposHeaderViewModel.openIssuesCount).toString(),
                                 ];
                                 CommonUtils.showCommitOptionDialog(context, list, (index) {}, height: 150.0);
@@ -244,8 +244,8 @@ class ReposHeaderItem extends StatelessWidget {
 
         ///底部头
         new GSYSelectItemWidget([
-          GSYStrings.repos_tab_activity,
-          GSYStrings.repos_tab_commits,
+          CommonUtils.getLocale(context).repos_tab_activity,
+          CommonUtils.getLocale(context).repos_tab_commits,
         ], selectItemChanged)
       ],
     );

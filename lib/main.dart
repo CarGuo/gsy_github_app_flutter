@@ -1,7 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/GSYLocalizationsDelegate.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -21,13 +21,13 @@ class FlutterReduxApp extends StatelessWidget {
   final store = new Store<GSYState>(
     appReducer,
     initialState: new GSYState(
-      userInfo: User.empty(),
-      eventList: new List(),
-      trendList: new List(),
-      themeData: new ThemeData(
-        primarySwatch: GSYColors.primarySwatch,
-      ),
-    ),
+        userInfo: User.empty(),
+        eventList: new List(),
+        trendList: new List(),
+        themeData: new ThemeData(
+          primarySwatch: GSYColors.primarySwatch,
+        ),
+        locale: Locale('zh', 'CH')),
   );
 
   FlutterReduxApp({Key key}) : super(key: key);
@@ -40,11 +40,13 @@ class FlutterReduxApp extends StatelessWidget {
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         return new MaterialApp(
             localizationsDelegates: [
-              _MaterialLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GSYLocalizationsDelegate.delegate,
             ],
+            locale: store.state.locale,
             supportedLocales: [
-              const Locale('zh', 'US'), // English
-              // ... other locales the app supports
+              store.state.locale
             ],
             theme: store.state.themeData,
             routes: {
@@ -52,7 +54,9 @@ class FlutterReduxApp extends StatelessWidget {
                 return WelcomePage();
               },
               HomePage.sName: (context) {
-                return HomePage();
+                return new FreeLocalizations(
+                  child: new HomePage(),
+                );
               },
               LoginPage.sName: (context) {
                 return LoginPage();
@@ -63,27 +67,26 @@ class FlutterReduxApp extends StatelessWidget {
   }
 }
 
-///类似多语言的实现尝试
-class GSYMaterialLocalizations extends DefaultMaterialLocalizations {
-  const GSYMaterialLocalizations();
+class FreeLocalizations extends StatefulWidget {
+  final Widget child;
+
+  FreeLocalizations({Key key, this.child}) : super(key: key);
 
   @override
-  String get viewLicensesButtonLabel => GSYStrings.app_licenses;
-
-  String get closeButtonLabel => GSYStrings.app_close;
+  State<FreeLocalizations> createState() {
+    return new _FreeLocalizations();
+  }
 }
 
-class _MaterialLocalizationsDelegate extends LocalizationsDelegate<MaterialLocalizations> {
-  const _MaterialLocalizationsDelegate();
-
+class _FreeLocalizations extends State<FreeLocalizations> {
   @override
-  bool isSupported(Locale locale) => locale.languageCode == 'zh';
-
-  @override
-  Future<MaterialLocalizations> load(Locale locale) {
-    return new SynchronousFuture<MaterialLocalizations>(const GSYMaterialLocalizations());
+  Widget build(BuildContext context) {
+    return new StoreBuilder<GSYState>(builder: (context, store) {
+      return new Localizations.override(
+        context: context,
+        locale: store.state.locale,
+        child: widget.child,
+      );
+    });
   }
-
-  @override
-  bool shouldReload(_MaterialLocalizationsDelegate old) => false;
 }

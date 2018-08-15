@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 
 ///通用下上刷新控件
 class GSYPullLoadWidget extends StatefulWidget {
@@ -128,7 +129,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
             child: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 70.0, height: 70.0),
           ),
           Container(
-            child: Text(GSYStrings.app_empty, style: GSYConstant.normalText),
+            child: Text(CommonUtils.getLocale(context).app_empty, style: GSYConstant.normalText),
           ),
         ],
       ),
@@ -148,7 +149,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
             ///加载中文本
             new Text(
-              GSYStrings.load_more_text,
+              CommonUtils.getLocale(context).load_more_text,
               style: TextStyle(
                 color: Color(0xFF121917),
                 fontSize: 14.0,

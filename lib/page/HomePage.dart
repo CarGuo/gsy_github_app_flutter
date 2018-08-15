@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/DefaultLocalizations.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/page/DynamicPage.dart';
 import 'package:gsy_github_app_flutter/page/MyPage.dart';
@@ -23,14 +25,14 @@ class HomePage extends StatelessWidget {
     return showDialog(
         context: context,
         builder: (context) => new AlertDialog(
-              content: new Text(GSYStrings.app_back_tip),
+              content: new Text(CommonUtils.getLocale(context).app_back_tip),
               actions: <Widget>[
-                new FlatButton(onPressed: () => Navigator.of(context).pop(false), child: new Text(GSYStrings.app_cancel)),
+                new FlatButton(onPressed: () => Navigator.of(context).pop(false), child: new Text(CommonUtils.getLocale(context).app_cancel)),
                 new FlatButton(
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
-                    child: new Text(GSYStrings.app_ok))
+                    child: new Text(CommonUtils.getLocale(context).app_ok))
               ],
             ));
   }
@@ -49,19 +51,19 @@ class HomePage extends StatelessWidget {
           new Tab(
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[new Icon(GSYICons.MAIN_DT, size: 16.0), new Text(GSYStrings.home_dynamic)],
+              children: <Widget>[new Icon(GSYICons.MAIN_DT, size: 16.0), new Text(CommonUtils.getLocale(context).home_dynamic)],
             ),
           ),
           new Tab(
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[new Icon(GSYICons.MAIN_QS, size: 16.0), new Text(GSYStrings.home_trend)],
+              children: <Widget>[new Icon(GSYICons.MAIN_QS, size: 16.0), new Text(CommonUtils.getLocale(context).home_trend)],
             ),
           ),
           new Tab(
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[new Icon(GSYICons.MAIN_MY, size: 16.0), new Text(GSYStrings.home_my)],
+              children: <Widget>[new Icon(GSYICons.MAIN_MY, size: 16.0), new Text(CommonUtils.getLocale(context).home_my)],
             ),
           ),
         ],
@@ -73,7 +75,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor:Color(GSYColors.white),
         title: GSYTitleBar(
-          GSYStrings.app_name,
+          GSYLocalizations.of(context).currentLocalized.app_name,
           iconData: GSYICons.MAIN_SEARCH,
           needRightLocalIcon: true,
           onPressed: () {

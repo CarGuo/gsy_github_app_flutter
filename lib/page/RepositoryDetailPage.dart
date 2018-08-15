@@ -184,10 +184,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   ///TabView 配合tabbar 在四个页面上问题太多
   _renderTabItem() {
     var itemList = [
-      GSYStrings.repos_tab_info,
-      GSYStrings.repos_tab_readme,
-      GSYStrings.repos_tab_issue,
-      GSYStrings.repos_tab_file,
+      CommonUtils.getLocale(context).repos_tab_info,
+      CommonUtils.getLocale(context).repos_tab_readme,
+      CommonUtils.getLocale(context).repos_tab_issue,
+      CommonUtils.getLocale(context).repos_tab_file,
     ];
     renderItem(String item, int i) {
       return new FlatButton(
@@ -213,18 +213,18 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   _getMoreOtherItem() {
     return [
       ///Release Page
-      new GSYOptionModel(GSYStrings.repos_option_release, GSYStrings.repos_option_release, (model) {
+      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_release, CommonUtils.getLocale(context).repos_option_release, (model) {
         String releaseUrl = "";
         String tagUrl = "";
         if (infoListKey == null || infoListKey.currentState == null) {
-          releaseUrl = GSYStrings.app_default_share_url;
-          tagUrl = GSYStrings.app_default_share_url;
+          releaseUrl = GSYConstant.app_default_share_url;
+          tagUrl = GSYConstant.app_default_share_url;
         } else {
           releaseUrl = infoListKey.currentState.repository == null
-              ? GSYStrings.app_default_share_url
+              ? GSYConstant.app_default_share_url
               : infoListKey.currentState.repository.htmlUrl + "/releases";
           tagUrl =
-              infoListKey.currentState.repository == null ? GSYStrings.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
+              infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
         }
         NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
       }),

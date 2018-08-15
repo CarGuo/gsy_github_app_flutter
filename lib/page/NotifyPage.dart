@@ -44,7 +44,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
       child: _renderEventItem(notification),
       secondaryActions: <Widget>[
         new IconSlideAction(
-          caption: GSYStrings.notify_readed,
+          caption: CommonUtils.getLocale(context).notify_readed,
           color: Colors.redAccent,
           icon: Icons.delete,
           onTap: () {
@@ -58,7 +58,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
   }
 
   _renderEventItem(Model.Notification notification) {
-    EventViewModel eventViewModel = EventViewModel.fromNotify(notification);
+    EventViewModel eventViewModel = EventViewModel.fromNotify(context, notification);
     return new EventItem(eventViewModel, onPressed: () {
       if (notification.unread) {
         UserDao.setNotificationAsReadDao(notification.id.toString());
@@ -111,7 +111,7 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         title: GSYTitleBar(
-          GSYStrings.notify_title,
+          CommonUtils.getLocale(context).notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
           needRightLocalIcon: true,
           onPressed: () {
@@ -124,9 +124,9 @@ class _NotifyPageState extends GSYListState<NotifyPage> {
         ),
         bottom: new GSYSelectItemWidget(
           [
-            GSYStrings.notify_tab_unread,
-            GSYStrings.notify_tab_part,
-            GSYStrings.notify_tab_all,
+            CommonUtils.getLocale(context).notify_tab_unread,
+            CommonUtils.getLocale(context).notify_tab_part,
+            CommonUtils.getLocale(context).notify_tab_all,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

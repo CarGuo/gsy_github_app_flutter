@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -110,7 +111,7 @@ class _SearchPageState extends GSYListState<SearchPage> {
       ),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
-          title: new Text(GSYStrings.search_title),
+          title: new Text(CommonUtils.getLocale(context).search_title),
           bottom: new SearchBottom((value) {
             searchText = value;
           }, (value) {
@@ -157,8 +158,8 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
         GSYSearchInputWidget(onChanged, onSubmitted, onSubmitPressed),
         new GSYSelectItemWidget(
           [
-            GSYStrings.search_tab_repos,
-            GSYStrings.search_tab_user,
+            CommonUtils.getLocale(context).search_tab_repos,
+            CommonUtils.getLocale(context).search_tab_user,
           ],
           selectItemChanged,
           elevation: 0.0,

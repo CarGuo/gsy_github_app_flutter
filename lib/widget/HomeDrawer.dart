@@ -8,9 +8,10 @@ import 'package:gsy_github_app_flutter/common/dao/IssueDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
+import 'package:gsy_github_app_flutter/common/localization/DefaultLocalizations.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
-import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
+import 'package:gsy_github_app_flutter/common/redux/LocaleRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -28,8 +29,8 @@ class HomeDrawer extends StatelessWidget {
     showDialog(
         context: context,
         builder: (BuildContext context) => AboutDialog(
-              applicationName: GSYStrings.app_name,
-              applicationVersion: GSYStrings.app_version + ": " + versionName,
+              applicationName: CommonUtils.getLocale(context).app_name,
+              applicationVersion: CommonUtils.getLocale(context).app_version + ": " + versionName,
               applicationIcon: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 50.0, height: 50.0),
               applicationLegalese: "http://github.com/CarGuo",
             ));
@@ -37,13 +38,13 @@ class HomeDrawer extends StatelessWidget {
 
   showThemeDialog(BuildContext context, Store store) {
     List<String> list = [
-      GSYStrings.home_theme_default,
-      GSYStrings.home_theme_1,
-      GSYStrings.home_theme_2,
-      GSYStrings.home_theme_3,
-      GSYStrings.home_theme_4,
-      GSYStrings.home_theme_5,
-      GSYStrings.home_theme_6,
+      CommonUtils.getLocale(context).home_theme_default,
+      CommonUtils.getLocale(context).home_theme_1,
+      CommonUtils.getLocale(context).home_theme_2,
+      CommonUtils.getLocale(context).home_theme_3,
+      CommonUtils.getLocale(context).home_theme_4,
+      CommonUtils.getLocale(context).home_theme_5,
+      CommonUtils.getLocale(context).home_theme_6,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.pushTheme(store, index);
@@ -95,19 +96,19 @@ class HomeDrawer extends StatelessWidget {
                     ),
                     new ListTile(
                         title: new Text(
-                          GSYStrings.home_reply,
+                          CommonUtils.getLocale(context).home_reply,
                           style: GSYConstant.normalText,
                         ),
                         onTap: () {
                           String content = "";
-                          CommonUtils.showEditDialog(context, GSYStrings.home_reply, (title) {}, (res) {
+                          CommonUtils.showEditDialog(context, CommonUtils.getLocale(context).home_reply, (title) {}, (res) {
                             content = res;
                           }, () {
                             if (content == null || content.length == 0) {
                               return;
                             }
                             CommonUtils.showLoadingDialog(context);
-                            IssueDao.createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": GSYStrings.home_reply, "body": content}).then((result) {
+                            IssueDao.createIssueDao("CarGuo", "GSYGithubAppFlutter", {"title": CommonUtils.getLocale(context).home_reply, "body": content}).then((result) {
                               Navigator.pop(context);
                               Navigator.pop(context);
                             });
@@ -115,15 +116,15 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
-                          GSYStrings.home_history,
+                          CommonUtils.getLocale(context).home_history,
                           style: GSYConstant.normalText,
                         ),
                         onTap: () {
-                          NavigatorUtils.gotoCommonList(context, GSYStrings.home_history, "repository", "history", userName: "", reposName: "");
+                          NavigatorUtils.gotoCommonList(context, CommonUtils.getLocale(context).home_history, "repository", "history", userName: "", reposName: "");
                         }),
                     new ListTile(
                         title: new Text(
-                          GSYStrings.home_user_info,
+                          CommonUtils.getLocale(context).home_user_info,
                           style: GSYConstant.normalText,
                         ),
                         onTap: () {
@@ -131,7 +132,7 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
-                          GSYStrings.home_change_theme,
+                          CommonUtils.getLocale(context).home_change_theme,
                           style: GSYConstant.normalText,
                         ),
                         onTap: () {
@@ -139,7 +140,7 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
-                          GSYStrings.home_check_update,
+                          CommonUtils.getLocale(context).home_check_update,
                           style: GSYConstant.normalText,
                         ),
                         onTap: () {
@@ -147,17 +148,18 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
-                          GSYStrings.home_about,
+                          GSYLocalizations.of(context).currentLocalized.home_about,
                           style: GSYConstant.normalText,
                         ),
                         onTap: () {
                           GetVersion.projectVersion.then((value) {
                             showAboutDialog(context, value);
+                            store.dispatch(RefreshLocaleAction(Locale('en', 'US')));
                           });
                         }),
                     new ListTile(
                         title: new GSYFlexButton(
-                          text: GSYStrings.Login_out,
+                          text: CommonUtils.getLocale(context).Login_out,
                           color: Colors.redAccent,
                           textColor: Color(GSYColors.textWhite),
                           onPress: () {

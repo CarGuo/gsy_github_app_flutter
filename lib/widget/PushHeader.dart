@@ -112,7 +112,7 @@ class PushHeaderViewModel {
   String editCount = "---";
   String addCount = "---";
   String deleteCount = "---";
-  String htmlUrl = GSYStrings.app_default_share_url;
+  String htmlUrl = GSYConstant.app_default_share_url;
 
   PushHeaderViewModel();
 

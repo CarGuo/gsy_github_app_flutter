@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/common/localization/DefaultLocalizations.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
 import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
+import 'package:gsy_github_app_flutter/common/style/GSYStringBase.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
@@ -90,6 +92,14 @@ class CommonUtils {
     store.dispatch(new RefreshThemeDataAction(themeData));
   }
 
+  static changeLocale() {
+
+  }
+
+  static GSYStringBase getLocale(BuildContext context) {
+    return GSYLocalizations.of(context).currentLocalized;
+  }
+
   static List<Color> getThemeListColor() {
     return [
       GSYColors.primarySwatch,
@@ -114,9 +124,9 @@ class CommonUtils {
     return image;
   }
 
-  static copy(String data) {
+  static copy(String data, BuildContext context) {
     Clipboard.setData(new ClipboardData(text: data));
-    Fluttertoast.showToast(msg: GSYStrings.option_share_copy_success);
+    Fluttertoast.showToast(msg: CommonUtils.getLocale(context).option_share_copy_success);
   }
 
   static launchUrl(context, String url) {
@@ -160,11 +170,11 @@ class CommonUtils {
     }
   }
 
-  static launchOutURL(String url) async {
+  static launchOutURL(String url, BuildContext context) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + url);
+      Fluttertoast.showToast(msg: CommonUtils.getLocale(context).option_web_launcher_error + ": " + url);
     }
   }
 
@@ -191,7 +201,7 @@ class CommonUtils {
                       children: <Widget>[
                         new Container(child: SpinKitCubeGrid(color: Color(GSYColors.white))),
                         new Container(height: 10.0),
-                        new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.normalTextWhite)),
+                        new Container(child: new Text(CommonUtils.getLocale(context).loading_text, style: GSYConstant.normalTextWhite)),
                       ],
                     ),
                   ),
@@ -276,20 +286,20 @@ class CommonUtils {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(GSYStrings.app_version_title),
+            title: new Text(CommonUtils.getLocale(context).app_version_title),
             content: new Text(contentMsg),
             actions: <Widget>[
               new FlatButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYStrings.app_cancel)),
+                  child: new Text(CommonUtils.getLocale(context).app_cancel)),
               new FlatButton(
                   onPressed: () {
                     launch(Address.updateUrl);
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYStrings.app_ok)),
+                  child: new Text(CommonUtils.getLocale(context).app_ok)),
             ],
           );
         });
