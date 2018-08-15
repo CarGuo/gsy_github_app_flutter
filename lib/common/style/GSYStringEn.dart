@@ -37,7 +37,7 @@ class GSYStringEn extends GSYStringBase {
   String loading_text = "Loading···";
 
   @override
-  String option_web = "open browser";
+  String option_web = "browser";
   @override
   String option_copy = "copy";
   @override
