@@ -16,9 +16,6 @@ class GSYLocalizations {
   };
 
   GSYStringBase get currentLocalized {
-    print("++++++++++++++++++++++++++++++++++");
-    print(locale.languageCode);
-    print("++++++++++++++++++++++++++++++++++");
     return _localizedValues[locale.languageCode];
   }
 

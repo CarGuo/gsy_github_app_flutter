@@ -17,8 +17,6 @@ import 'package:gsy_github_app_flutter/page/ReleasePage.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/page/SearchPage.dart';
 import 'package:gsy_github_app_flutter/page/UserProfilePage.dart';
-import 'package:path/path.dart';
-
 /**
  * 导航栏
  * Created by guoshuyu

@@ -209,53 +209,7 @@ class GSYConstant {
 
 ///字符文本
 class GSYStrings {
-  static const String welcomeMessage = "Welcome To Flutter";
 
-  static const String app_name = "GSYGithubAppFlutter";
-
-  static const String app_ok = "确定";
-  static const String app_cancel = "取消";
-  static const String app_empty = "目前什么也没有哟";
-  static const String app_licenses = "协议";
-  static const String app_close = "关闭";
-  static const String app_version = "版本";
-  static const String app_back_tip = "确定要退出应用？";
-
-  static const String app_not_new_version = "当前没有新版本";
-  static const String app_version_title = "版本更新";
-
-  static const String nothing_now = "目前什么都没有。";
-  static const String loading_text = "努力加载中···";
-
-  static const String option_web = "浏览器打开";
-  static const String option_copy = "复制链接";
-  static const String option_share = "分享";
-  static const String option_web_launcher_error = "url异常";
-  static const String option_share_title = "分享自GSYGitHubFlutter： ";
-  static const String option_share_copy_success = "已经复制到粘贴板";
-
-  static const String login_text = "登录";
-
-  static const String Login_out = "退出登录";
-
-  static const String home_reply = "问题反馈";
-  static const String home_about = "关于";
-  static const String home_check_update = "检测更新";
-  static const String home_history = "阅读历史";
-  static const String home_user_info = "个人信息";
-  static const String home_change_theme = "切换主题";
-
-  static const String home_theme_default = "默认主题";
-  static const String home_theme_1 = "主题1";
-  static const String home_theme_2 = "主题2";
-  static const String home_theme_3 = "主题3";
-  static const String home_theme_4 = "主题4";
-  static const String home_theme_5 = "主题5";
-  static const String home_theme_6 = "主题6";
-
-  static const String login_username_hint_text = "请输入github用户名";
-  static const String login_password_hint_text = "请输入密码";
-  static const String login_success = "登录成功";
 
   static const String network_error_401 = "[401错误可能: 未授权 \\ 授权登录失败 \\ 登录过期]";
   static const String network_error_403 = "403权限错误";
@@ -263,91 +217,6 @@ class GSYStrings {
   static const String network_error_timeout = "请求超时";
   static const String network_error_unknown = "其他异常";
   static const String network_error = "网络错误";
-
-  static const String load_more_not = "没有更多数据";
-  static const String load_more_text = "正在加载更多";
-
-  static const String home_dynamic = "动态";
-  static const String home_trend = "趋势";
-  static const String home_my = "我的";
-
-  static const String trend_day = '今日';
-  static const String trend_week = '本周';
-  static const String trend_month = '本月';
-  static const String trend_all = '全部';
-
-  static const String user_tab_repos = "仓库";
-  static const String user_tab_fans = "粉丝";
-  static const String user_tab_focus = "关注";
-  static const String user_tab_star = "星标";
-  static const String user_tab_honor = "荣耀";
-  static const String user_dynamic_group = "组织成员";
-  static const String user_dynamic_title = "个人动态";
-  static const String user_focus = "已关注";
-  static const String user_un_focus = "关注";
-  static const String user_focus_no_support = "不支持关注组织。";
-  static const String user_create_at = "创建于：";
-  static const String user_orgs_title = "所在组织";
-
-  static const String repos_tab_readme = "详情";
-  static const String repos_tab_info = "动态";
-  static const String repos_tab_file = "文件";
-  static const String repos_tab_issue = "ISSUE";
-  static const String repos_tab_activity = "动态";
-  static const String repos_tab_commits = "提交";
-  static const String repos_tab_issue_all = "所有";
-  static const String repos_tab_issue_open = "打开";
-  static const String repos_tab_issue_closed = "关闭";
-  static const String repos_option_release = "版本";
-  static const String repos_fork_at = "Fork于 ";
-  static const String repos_create_at = "创建于 ";
-  static const String repos_last_commit = "最后提交于 ";
-  static const String repos_all_issue_count = "所有Issue数：";
-  static const String repos_open_issue_count = "开启Issue数：";
-  static const String repos_close_issue_count = "关闭Issue数：";
-
-  static const String repos_issue_search = "搜索";
-
-  static const String issue_reply = "回复";
-  static const String issue_edit = "编辑";
-  static const String issue_open = "打开";
-  static const String issue_close = "关闭";
-  static const String issue_lock = "锁定";
-  static const String issue_unlock = "解锁";
-  static const String issue_reply_issue = "回复Issue";
-  static const String issue_commit_issue = "提交Issue";
-  static const String issue_edit_issue = "编译Issue";
-  static const String issue_edit_issue_commit = "编译回复";
-  static const String issue_edit_issue_edit_commit = "编辑";
-  static const String issue_edit_issue_delete_commit = "删除";
-  static const String issue_edit_issue_copy_commit = "复制";
-  static const String issue_edit_issue_content_not_be_null = "内容不能为空";
-  static const String issue_edit_issue_title_not_be_null = "标题不能为空";
-  static const String issue_edit_issue_title_tip = "请输入标题";
-  static const String issue_edit_issue_content_tip = "请输入内容";
-
-  static const String notify_title = "通知";
-  static const String notify_tab_all = "所有";
-  static const String notify_tab_part = "参与";
-  static const String notify_tab_unread = "未读";
-  static const String notify_unread = "未读";
-  static const String notify_readed = "已读";
-  static const String notify_status = "状态";
-  static const String notify_type = "类型";
-
-  static const String search_title = "搜索";
-  static const String search_tab_repos = "仓库";
-  static const String search_tab_user = "用户";
-
-  static const String release_tab_release = "版本";
-  static const String release_tab_tag = "标记";
-
-  static const String user_profile_name = "名字";
-  static const String user_profile_email = "邮箱";
-  static const String user_profile_link = "链接";
-  static const String user_profile_org = "公司";
-  static const String user_profile_location = "位置";
-  static const String user_profile_info = "简介";
 }
 
 class GSYICons {
