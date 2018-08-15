@@ -661,7 +661,7 @@ class ReposDao {
         if (result > 0) {
           CommonUtils.showUpdateDialog(context, release.name + ": " + release.body);
         } else {
-          if (showTip) Fluttertoast.showToast(msg: GSYStrings.app_not_new_version);
+          if (showTip) Fluttertoast.showToast(msg: CommonUtils.getLocale(context).app_not_new_version);
         }
       }
     }

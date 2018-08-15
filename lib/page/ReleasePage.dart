@@ -81,7 +81,7 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      Fluttertoast.showToast(msg: GSYStrings.option_web_launcher_error + ": " + url);
+      Fluttertoast.showToast(msg: CommonUtils.getLocale(context).option_web_launcher_error + ": " + url);
     }
   }
 
@@ -133,8 +133,8 @@ class _ReleasePageState extends GSYListState<ReleasePage> {
         ),
         bottom: new GSYSelectItemWidget(
           [
-            GSYStrings.release_tab_release,
-            GSYStrings.release_tab_tag,
+            CommonUtils.getLocale(context).release_tab_release,
+            CommonUtils.getLocale(context).release_tab_tag,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

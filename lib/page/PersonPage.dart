@@ -112,7 +112,7 @@ class _PersonState extends GSYListState<PersonPage> {
     var focusRes = await UserDao.checkFollowDao(userName);
     if (isShow) {
       setState(() {
-        focus = (focusRes != null && focusRes.result) ? GSYStrings.user_focus : GSYStrings.user_un_focus;
+        focus = (focusRes != null && focusRes.result) ? CommonUtils.getLocale(context).user_focus : CommonUtils.getLocale(context).user_un_focus;
         focusStatus = (focusRes != null && focusRes.result);
       });
     }
@@ -203,7 +203,7 @@ class _PersonState extends GSYListState<PersonPage> {
                 return;
               }
               if (userInfo.type == "Organization") {
-                Fluttertoast.showToast(msg: GSYStrings.user_focus_no_support);
+                Fluttertoast.showToast(msg: CommonUtils.getLocale(context).user_focus_no_support);
                 return;
               }
               CommonUtils.showLoadingDialog(context);

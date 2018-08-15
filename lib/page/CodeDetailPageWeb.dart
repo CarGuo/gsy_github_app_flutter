@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/HtmlUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 
@@ -87,7 +88,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
               children: <Widget>[
                 new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                 new Container(width: 10.0),
-                new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleText)),
+                new Container(child: new Text(CommonUtils.getLocale(context).loading_text, style: GSYConstant.middleText)),
               ],
             ),
           ),

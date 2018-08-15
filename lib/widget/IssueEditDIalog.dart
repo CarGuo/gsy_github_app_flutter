@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYInputWidget.dart';
 
@@ -57,7 +58,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
             child: new GSYInputWidget(
               onChanged: onTitleChanged,
               controller: titleController,
-              hintText: GSYStrings.issue_edit_issue_title_tip,
+              hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
               obscureText: false,
             ))
         : new Container();
@@ -146,7 +147,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                             onChanged: onContentChanged,
                             controller: valueController,
                             decoration: new InputDecoration.collapsed(
-                              hintText: GSYStrings.issue_edit_issue_title_tip,
+                              hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
                               hintStyle: GSYConstant.middleSubText,
                             ),
                             style: GSYConstant.middleText,
@@ -168,7 +169,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               padding: EdgeInsets.all(4.0),
                               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                              child: new Text(GSYStrings.app_cancel, style: GSYConstant.normalSubText),
+                              child: new Text(CommonUtils.getLocale(context).app_cancel, style: GSYConstant.normalSubText),
                               onPressed: () {
                                 Navigator.pop(context);
                               })),
@@ -180,7 +181,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               padding: EdgeInsets.all(4.0),
                               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                              child: new Text(GSYStrings.app_ok, style: GSYConstant.normalTextBold),
+                              child: new Text(CommonUtils.getLocale(context).app_ok, style: GSYConstant.normalTextBold),
                               onPressed: onPressed)),
                     ],
                   )

@@ -78,23 +78,23 @@ class _UserProfileState extends State<UserProfileInfo> {
 
   List<Widget> _renderList(User userInfo, Store store) {
     return [
-      _renderItem(Icons.info, GSYStrings.user_profile_name, userInfo.name ?? "---", () {
-        _showEditDialog(GSYStrings.user_profile_name, userInfo.name, "name", store);
+      _renderItem(Icons.info, CommonUtils.getLocale(context).user_profile_name, userInfo.name ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_name, userInfo.name, "name", store);
       }),
-      _renderItem(Icons.email, GSYStrings.user_profile_email, userInfo.email ?? "---", () {
-        _showEditDialog(GSYStrings.user_profile_email, userInfo.email, "email", store);
+      _renderItem(Icons.email, CommonUtils.getLocale(context).user_profile_email, userInfo.email ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_email, userInfo.email, "email", store);
       }),
-      _renderItem(Icons.link, GSYStrings.user_profile_link, userInfo.blog ?? "---", () {
-        _showEditDialog(GSYStrings.user_profile_link, userInfo.blog, "blog", store);
+      _renderItem(Icons.link, CommonUtils.getLocale(context).user_profile_link, userInfo.blog ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_link, userInfo.blog, "blog", store);
       }),
-      _renderItem(Icons.group, GSYStrings.user_profile_org, userInfo.company ?? "---", () {
-        _showEditDialog(GSYStrings.user_profile_org, userInfo.company, "company", store);
+      _renderItem(Icons.group, CommonUtils.getLocale(context).user_profile_org, userInfo.company ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_org, userInfo.company, "company", store);
       }),
-      _renderItem(Icons.location_on, GSYStrings.user_profile_location, userInfo.location ?? "---", () {
-        _showEditDialog(GSYStrings.user_profile_location, userInfo.location, "location", store);
+      _renderItem(Icons.location_on, CommonUtils.getLocale(context).user_profile_location, userInfo.location ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_location, userInfo.location, "location", store);
       }),
-      _renderItem(Icons.message, GSYStrings.user_profile_info, userInfo.bio ?? "---", () {
-        _showEditDialog(GSYStrings.user_profile_info, userInfo.bio, "bio", store);
+      _renderItem(Icons.message, CommonUtils.getLocale(context).user_profile_info, userInfo.bio ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_info, userInfo.bio, "bio", store);
       }),
     ];
   }
@@ -103,7 +103,7 @@ class _UserProfileState extends State<UserProfileInfo> {
   Widget build(BuildContext context) {
     return new StoreBuilder<GSYState>(builder: (context, store) {
       return Scaffold(
-        appBar: new AppBar(title: new Text(GSYStrings.home_user_info)),
+        appBar: new AppBar(title: new Text(CommonUtils.getLocale(context).home_user_info)),
         body: new Container(
           color: Color(GSYColors.white),
           child: new SingleChildScrollView(

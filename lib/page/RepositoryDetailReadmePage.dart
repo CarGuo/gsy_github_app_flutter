@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
 
@@ -76,6 +77,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
   void dispose() {
     isShow = false;
     super.dispose();
+
   }
 
   @override
@@ -92,7 +94,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
             children: <Widget>[
               new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
               new Container(width: 10.0),
-              new Container(child: new Text(GSYStrings.loading_text, style: GSYConstant.middleText)),
+              new Container(child: new Text(CommonUtils.getLocale(context).loading_text, style: GSYConstant.middleText)),
             ],
           ),
         ),

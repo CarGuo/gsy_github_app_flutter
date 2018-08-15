@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
+import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -23,10 +24,9 @@ class TrendPage extends StatefulWidget {
 }
 
 class _TrendPageState extends GSYListState<TrendPage> {
+  static TrendTypeModel selectTime = null;
 
-  static TrendTypeModel selectTime = trendTime[0];
-
-  static TrendTypeModel selectType = trendType[0];
+  static TrendTypeModel selectType = null;
 
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
@@ -36,6 +36,9 @@ class _TrendPageState extends GSYListState<TrendPage> {
   }
 
   _renderHeader(Store<GSYState> store) {
+    if (selectType == null && selectType == null) {
+      return Container();
+    }
     return new GSYCardItem(
       color: store.state.themeData.primaryColor,
       margin: EdgeInsets.all(10.0),
@@ -46,14 +49,14 @@ class _TrendPageState extends GSYListState<TrendPage> {
         padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: new Row(
           children: <Widget>[
-            _renderHeaderPopItem(selectTime.name, trendTime, (TrendTypeModel result) {
+            _renderHeaderPopItem(selectTime.name, trendTime(context), (TrendTypeModel result) {
               setState(() {
                 selectTime = result;
               });
               showRefreshLoading();
             }),
             new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
-            _renderHeaderPopItem(selectType.name, trendType, (TrendTypeModel result) {
+            _renderHeaderPopItem(selectType.name, trendType(context), (TrendTypeModel result) {
               setState(() {
                 selectType = result;
               });
@@ -120,6 +123,10 @@ class _TrendPageState extends GSYListState<TrendPage> {
   void didChangeDependencies() {
     pullLoadWidgetControl.dataList = _getStore().state.trendList;
     if (pullLoadWidgetControl.dataList.length == 0) {
+      setState(() {
+        selectTime = trendTime(context)[0];
+        selectType = trendType(context)[0];
+      });
       showRefreshLoading();
     }
     super.didChangeDependencies();
@@ -150,7 +157,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
           ),
           body: GSYPullLoadWidget(
             pullLoadWidgetControl,
-                (BuildContext context, int index) => _renderItem(pullLoadWidgetControl.dataList[index]),
+            (BuildContext context, int index) => _renderItem(pullLoadWidgetControl.dataList[index]),
             handleRefresh,
             onLoadMore,
             refreshKey: refreshIndicatorKey,
@@ -168,24 +175,28 @@ class TrendTypeModel {
   TrendTypeModel(this.name, this.value);
 }
 
-var trendTime = [
-  TrendTypeModel(GSYStrings.trend_day, "daily"),
-  TrendTypeModel(GSYStrings.trend_week, "weekly"),
-  TrendTypeModel(GSYStrings.trend_month, "monthly"),
-];
+trendTime(BuildContext context) {
+  return [
+    new TrendTypeModel(CommonUtils.getLocale(context).trend_day, "daily"),
+    new TrendTypeModel(CommonUtils.getLocale(context).trend_week, "weekly"),
+    new TrendTypeModel(CommonUtils.getLocale(context).trend_month, "monthly"),
+  ];
+}
 
-var trendType = [
-  TrendTypeModel(GSYStrings.trend_all, null),
-  TrendTypeModel("Java", "Java"),
-  TrendTypeModel("Kotlin", "Kotlin"),
-  TrendTypeModel("Dart", "Dart"),
-  TrendTypeModel("Objective-C", "Objective-C"),
-  TrendTypeModel("Swift", "Swift"),
-  TrendTypeModel("JavaScript", "JavaScript"),
-  TrendTypeModel("PHP", "PHP"),
-  TrendTypeModel("Go", "Go"),
-  TrendTypeModel("C++", "C++"),
-  TrendTypeModel("C", "C"),
-  TrendTypeModel("HTML", "HTML"),
-  TrendTypeModel("CSS", "CSS"),
-];
+trendType(BuildContext context) {
+  return [
+    TrendTypeModel(CommonUtils.getLocale(context).trend_all, null),
+    TrendTypeModel("Java", "Java"),
+    TrendTypeModel("Kotlin", "Kotlin"),
+    TrendTypeModel("Dart", "Dart"),
+    TrendTypeModel("Objective-C", "Objective-C"),
+    TrendTypeModel("Swift", "Swift"),
+    TrendTypeModel("JavaScript", "JavaScript"),
+    TrendTypeModel("PHP", "PHP"),
+    TrendTypeModel("Go", "Go"),
+    TrendTypeModel("C++", "C++"),
+    TrendTypeModel("C", "C"),
+    TrendTypeModel("HTML", "HTML"),
+    TrendTypeModel("CSS", "CSS"),
+  ];
+}

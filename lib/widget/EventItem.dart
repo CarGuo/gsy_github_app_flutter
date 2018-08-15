@@ -97,12 +97,12 @@ class EventViewModel {
     actionTarget = eventMap.commit.message;
   }
 
-  EventViewModel.fromNotify(Model.Notification eventMap) {
+  EventViewModel.fromNotify(BuildContext context, Model.Notification eventMap) {
     actionTime = CommonUtils.getNewsTimeStr(eventMap.updateAt);
     actionUser = eventMap.repository.fullName;
     String type = eventMap.subject.type;
-    String status = eventMap.unread ? GSYStrings.notify_unread : GSYStrings.notify_readed;
-    actionDes = eventMap.reason + "${GSYStrings.notify_type}：$type，${GSYStrings.notify_status}：$status";
+    String status = eventMap.unread ? CommonUtils.getLocale(context).notify_unread : CommonUtils.getLocale(context).notify_readed;
+    actionDes = eventMap.reason + "${CommonUtils.getLocale(context).notify_type}：$type，${CommonUtils.getLocale(context).notify_status}：$status";
     actionTarget = eventMap.subject.title;
   }
 }
