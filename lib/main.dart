@@ -51,15 +51,18 @@ class FlutterReduxApp extends StatelessWidget {
             theme: store.state.themeData,
             routes: {
               WelcomePage.sName: (context) {
+                store.state.platformLocale = Localizations.localeOf(context);
                 return WelcomePage();
               },
               HomePage.sName: (context) {
-                return new FreeLocalizations(
+                return new GSYLocalizations(
                   child: new HomePage(),
                 );
               },
               LoginPage.sName: (context) {
-                return LoginPage();
+                return new GSYLocalizations(
+                  child: new LoginPage(),
+                );
               },
             });
       }),
@@ -67,18 +70,18 @@ class FlutterReduxApp extends StatelessWidget {
   }
 }
 
-class FreeLocalizations extends StatefulWidget {
+class GSYLocalizations extends StatefulWidget {
   final Widget child;
 
-  FreeLocalizations({Key key, this.child}) : super(key: key);
+  GSYLocalizations({Key key, this.child}) : super(key: key);
 
   @override
-  State<FreeLocalizations> createState() {
-    return new _FreeLocalizations();
+  State<GSYLocalizations> createState() {
+    return new _GSYLocalizations();
   }
 }
 
-class _FreeLocalizations extends State<FreeLocalizations> {
+class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   Widget build(BuildContext context) {
     return new StoreBuilder<GSYState>(builder: (context, store) {

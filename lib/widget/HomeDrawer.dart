@@ -11,7 +11,6 @@ import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
 import 'package:gsy_github_app_flutter/common/localization/DefaultLocalizations.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
-import 'package:gsy_github_app_flutter/common/redux/LocaleRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
@@ -51,6 +50,19 @@ class HomeDrawer extends StatelessWidget {
       LocalStorage.save(Config.THEME_COLOR, index.toString());
     }, colorList: CommonUtils.getThemeListColor());
   }
+
+  showLanguageDialog(BuildContext context, Store store) {
+    List<String> list = [
+      CommonUtils.getLocale(context).home_language_default,
+      CommonUtils.getLocale(context).home_language_zh,
+      CommonUtils.getLocale(context).home_language_en,
+    ];
+    CommonUtils.showCommitOptionDialog(context, list, (index) {
+      CommonUtils.changeLocale(store, index);
+      LocalStorage.save(Config.LOCALE, index.toString());
+    }, colorList: CommonUtils.getThemeListColor(), height: 150.0);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +152,14 @@ class HomeDrawer extends StatelessWidget {
                         }),
                     new ListTile(
                         title: new Text(
+                          CommonUtils.getLocale(context).home_change_language,
+                          style: GSYConstant.normalText,
+                        ),
+                        onTap: () {
+                          showLanguageDialog(context, store);
+                        }),
+                    new ListTile(
+                        title: new Text(
                           CommonUtils.getLocale(context).home_check_update,
                           style: GSYConstant.normalText,
                         ),
@@ -154,7 +174,6 @@ class HomeDrawer extends StatelessWidget {
                         onTap: () {
                           GetVersion.projectVersion.then((value) {
                             showAboutDialog(context, value);
-                            store.dispatch(RefreshLocaleAction(Locale('en', 'US')));
                           });
                         }),
                     new ListTile(

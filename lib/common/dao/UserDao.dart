@@ -67,6 +67,12 @@ class UserDao {
       CommonUtils.pushTheme(store, int.parse(themeIndex));
     }
 
+    ///切换语言
+    String localeIndex = await LocalStorage.get(Config.LOCALE);
+    if (localeIndex != null && localeIndex.length != 0) {
+      CommonUtils.changeLocale(store, int.parse(localeIndex));
+    }
+
     return new DataResult(res.data, (res.result && (token != null)));
   }
 

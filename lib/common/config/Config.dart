@@ -13,4 +13,5 @@ class Config {
   static const LANGUAGE_SELECT_NAME = "language-select-name";
   static const REFRESH_LANGUAGE = "refreshLanguageApp";
   static const THEME_COLOR = "theme-color";
+  static const LOCALE = "locale";
 }

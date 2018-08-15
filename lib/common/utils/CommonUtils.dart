@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/DefaultLocalizations.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
+import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/redux/LocaleRedux.dart';
 import 'package:gsy_github_app_flutter/common/redux/ThemeRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStringBase.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -92,8 +94,20 @@ class CommonUtils {
     store.dispatch(new RefreshThemeDataAction(themeData));
   }
 
-  static changeLocale() {
-
+  /**
+   * 切换语言
+   */
+  static changeLocale(Store<GSYState> store, int index) {
+    Locale locale = store.state.platformLocale;
+    switch (index) {
+      case 1:
+        locale = Locale('zh', 'CH');
+        break;
+      case 2:
+        locale = Locale('en', 'US');
+        break;
+    }
+    store.dispatch(RefreshLocaleAction(locale));
   }
 
   static GSYStringBase getLocale(BuildContext context) {
@@ -166,7 +180,8 @@ class CommonUtils {
     if (url.startsWith("http")) {
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
-      NavigatorUtils.goGSYWebView(context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
+      NavigatorUtils.goGSYWebView(
+          context, new Uri.dataFromString(url, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(), title);
     }
   }
 

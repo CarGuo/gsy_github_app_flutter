@@ -3,11 +3,9 @@
  * Date: 2018-08-15
  */
 abstract class GSYStringBase {
-
   String welcomeMessage;
 
   String app_name;
-
 
   String app_ok;
 
@@ -45,6 +43,8 @@ abstract class GSYStringBase {
 
   String home_reply;
 
+  String home_change_language;
+
   String home_about;
 
   String home_check_update;
@@ -54,6 +54,10 @@ abstract class GSYStringBase {
   String home_user_info;
 
   String home_change_theme;
+
+  String home_language_default;
+  String home_language_zh;
+  String home_language_en;
 
   String home_theme_default;
 

@@ -29,6 +29,8 @@ class GSYState {
 
   Locale locale;
 
+  Locale platformLocale;
+
   ///构造方法
   GSYState({this.userInfo, this.eventList, this.trendList, this.themeData, this.locale});
 }
