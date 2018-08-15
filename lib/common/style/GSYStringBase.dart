@@ -213,4 +213,8 @@ abstract class GSYStringBase {
   String user_profile_org;
   String user_profile_location;
   String user_profile_info;
+
+  String search_type;
+  String search_sort;
+  String search_language;
 }

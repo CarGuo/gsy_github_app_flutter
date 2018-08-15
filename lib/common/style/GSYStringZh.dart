@@ -261,4 +261,11 @@ class GSYStringZh extends GSYStringBase {
   String user_profile_location = "位置";
   @override
   String user_profile_info = "简介";
+
+  @override
+  String search_type = "类型";
+  @override
+  String search_sort = "排序";
+  @override
+  String search_language = "语言";
 }
