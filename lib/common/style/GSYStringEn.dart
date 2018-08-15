@@ -58,7 +58,7 @@ class GSYStringEn extends GSYStringBase {
   @override
   String home_reply = "Feedback";
   @override
-  String home_change_language = "language";
+  String home_change_language = "Language";
   @override
   String home_about = "About";
   @override
