@@ -60,7 +60,7 @@ class HomeDrawer extends StatelessWidget {
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.changeLocale(store, index);
       LocalStorage.save(Config.LOCALE, index.toString());
-    }, colorList: CommonUtils.getThemeListColor(), height: 150.0);
+    }, height: 150.0);
   }
 
 
