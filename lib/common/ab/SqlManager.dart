@@ -59,9 +59,7 @@ class SqlManager {
 
   ///关闭
   static close() {
-    if (_database != null) {
-      _database.close();
+      _database?.close();
       _database = null;
-    }
   }
 }

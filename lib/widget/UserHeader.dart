@@ -70,9 +70,7 @@ class UserHeaderItem extends StatelessWidget {
         ),
         onPressed: () {
           NavigatorUtils.goNotifyPage(context).then((res) {
-            if (refreshCallBack != null) {
-              refreshCallBack();
-            }
+            refreshCallBack?.call();
           });
         });
   }

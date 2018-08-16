@@ -64,10 +64,8 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
             textAlign: TextAlign.center,
           ),
           onPressed: () {
-            if (selectItemChanged != null) {
-              if (selectIndex != index) {
-                selectItemChanged(index);
-              }
+            if (selectIndex != index) {
+              selectItemChanged?.call(index);
             }
             setState(() {
               selectIndex = index;

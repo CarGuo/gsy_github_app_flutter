@@ -87,9 +87,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                 setState(() {
                   valueController.value = new TextEditingValue(text: newText);
                 });
-                if (onContentChanged != null) {
-                  onContentChanged(newText);
-                }
+                onContentChanged?.call(newText);
               });
         },
         itemCount: FAST_INPUT_LIST.length,
