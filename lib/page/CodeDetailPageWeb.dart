@@ -98,6 +98,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
     return new WebviewScaffold(
       withJavascript: true,
       url: data,
+      scrollBar:false,
       withLocalUrl: true,
       appBar: new AppBar(
         title: new Text(title),

@@ -31,6 +31,7 @@ class GSYWebView extends StatelessWidget {
     return new WebviewScaffold(
       withJavascript: true,
       url: url,
+      scrollBar:true,
       withLocalUrl: true,
       appBar: new AppBar(
         title: _renderTitle(),
