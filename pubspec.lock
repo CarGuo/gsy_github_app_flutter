@@ -227,7 +227,7 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.6"
+    version: "0.2.1"
   fluttertoast:
     dependency: "direct main"
     description:

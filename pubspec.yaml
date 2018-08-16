@@ -19,8 +19,8 @@ dependencies:
   share: ^0.5.2
   flutter_spinkit: ^2.0.1
   get_version: ^0.0.5
-  flutter_webview_plugin: ^0.1.6
   sqflite: ^0.11.0+5
+  flutter_webview_plugin: ^0.2.1+2
   pub_semver: ^1.4.2
   flutter_statusbar: ^0.0.1
   flutter_svg: ^0.5.4
