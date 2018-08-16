@@ -35,9 +35,7 @@ class GSYFlexButton extends StatelessWidget {
           children: <Widget>[new Text(text, style: new TextStyle(fontSize: fontSize), maxLines: maxLines, overflow:TextOverflow.ellipsis)],
         ),
         onPressed: () {
-          if (this.onPress != null) {
-            this.onPress();
-          }
+          this.onPress?.call();
         });
   }
 }

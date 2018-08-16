@@ -128,9 +128,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
           children: _tabViews,
           onPageChanged: (index) {
             _tabController.animateTo(index);
-            if (_onPageChanged != null) {
-              _onPageChanged(index);
-            }
+            _onPageChanged?.call(index);
           },
         ),
       );

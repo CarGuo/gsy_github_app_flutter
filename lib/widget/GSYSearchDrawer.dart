@@ -107,9 +107,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
             }
             list[index].select = true;
           });
-          if (select != null) {
-            select(model.value);
-          }
+          select?.call(model.value);
         },
         child: new Container(
           width: itemWidth,

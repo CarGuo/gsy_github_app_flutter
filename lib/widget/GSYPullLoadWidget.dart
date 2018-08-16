@@ -46,8 +46,8 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     _scrollController.addListener(() {
       ///判断当前滑动位置是不是到达底部，触发加载更多回调
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        if (this.onLoadMore != null && this.control.needLoadMore) {
-          this.onLoadMore();
+        if (this.control.needLoadMore) {
+          this.onLoadMore?.call();
         }
       }
     });
