@@ -119,13 +119,15 @@ class GSYMarkdownWidget extends StatelessWidget {
     if (tags != null && tags.length > 0) {
       for (Match m in tags) {
         String imageMatch = m.group(0);
-        if (imageMatch != null) {
-          String match = m.group(0).replaceAll("\)", "?raw=true)");
-          if (!match.contains(".svg")) {
+        if (imageMatch != null && !imageMatch.contains(".svg")) {
+          String match = imageMatch.replaceAll("\)", "?raw=true)");
+          if (!match.contains(".svg") && match.contains("http")) {
             ///增加点击
             String src = match.replaceAll(new RegExp(r'!\[.*\]\('), "").replaceAll(")", "");
             String actionMatch = "[$match]($src)";
             match = actionMatch;
+          } else {
+            match = "";
           }
           mdDataCode = mdDataCode.replaceAll(m.group(0), match);
         }
