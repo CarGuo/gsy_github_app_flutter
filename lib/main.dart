@@ -47,6 +47,7 @@ class FlutterReduxApp extends StatelessWidget {
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         return new MaterialApp(
+            ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -61,6 +62,7 @@ class FlutterReduxApp extends StatelessWidget {
                 return WelcomePage();
               },
               HomePage.sName: (context) {
+                ///通过 Localizations.override 包裹一层，
                 return new GSYLocalizations(
                   child: new HomePage(),
                 );
@@ -95,6 +97,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   Widget build(BuildContext context) {
     return new StoreBuilder<GSYState>(builder: (context, store) {
+      ///通过 StoreBuilder 和 Localizations 实现实时多语言切换
       return new Localizations.override(
         context: context,
         locale: store.state.locale,
