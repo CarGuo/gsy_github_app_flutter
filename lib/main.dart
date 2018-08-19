@@ -23,10 +23,11 @@ void main() {
 }
 
 class FlutterReduxApp extends StatelessWidget {
-  /// 创建Store，引用 GSYState 中的 appReducer 创建 Reducer
+  /// 创建Store，引用 GSYState 中的 appReducer 实现 Reducer 方法
   /// initialState 初始化 State
   final store = new Store<GSYState>(
     appReducer,
+    ///初始化数据
     initialState: new GSYState(
         userInfo: User.empty(),
         eventList: new List(),
