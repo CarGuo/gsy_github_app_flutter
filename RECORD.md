@@ -57,6 +57,7 @@ children:_list,
 
 https://github.com/flutter/flutter/issues/19030 没有webview，残念
 https://github.com/dart-flitter/flutter_webview_plugin/issues/23
+https://github.com/flutter/flutter/issues/730
 
 
 ### 兼容性 
@@ -103,3 +104,7 @@ drop Pods/Pods.xcodeproj into Runner/Pods.
 
 你需要选flutter build ios
 之后它会修改你的Podfile.lock文件指向
+
+
+https://github.com/facebook/react-native/issues/20712 react-native 0.57.0-rc.0 问题
+https://github.com/facebook/react-native/issues/20710 react-native 0.57.0-rc.0 问题
