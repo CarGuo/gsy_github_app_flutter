@@ -77,7 +77,7 @@ class HomeDrawer extends StatelessWidget {
             child: new SingleChildScrollView(
               ///item 背景
               child: new Container(
-                height: MediaQuery.of(context).size.height,
+                constraints: new BoxConstraints(minHeight: MediaQuery.of(context).size.height),
                 color: Color(GSYColors.white),
                 child: new Column(
                   children: <Widget>[
