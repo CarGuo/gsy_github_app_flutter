@@ -234,7 +234,7 @@ packages:
       name: flutter_svg
       url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
     source: hosted
-    version: "0.5.4"`
+    version: "0.5.4"
   flutter_webview_plugin:
     dependency: "direct main"
     description:
