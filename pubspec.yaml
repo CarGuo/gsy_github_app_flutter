@@ -23,7 +23,7 @@ dependencies:
   sqflite: ^0.11.1
   pub_semver: ^1.4.2
   flutter_statusbar: ^0.0.1
-  flutter_svg: ^0.5.4
+  flutter_svg: 0.5.4
   photo_view: ^0.0.7
   flutter_slidable: ^0.4.3
   dio: ^1.0.1
