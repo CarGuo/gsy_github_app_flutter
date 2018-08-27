@@ -90,7 +90,7 @@ class CommonUtils {
   static pushTheme(Store store, int index) {
     ThemeData themeData;
     List<Color> colors = getThemeListColor();
-    themeData = new ThemeData(primarySwatch: colors[index]);
+    themeData = new ThemeData(primarySwatch: colors[index], platform: TargetPlatform.iOS);
     store.dispatch(new RefreshThemeDataAction(themeData));
   }
 

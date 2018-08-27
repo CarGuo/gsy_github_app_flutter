@@ -34,6 +34,7 @@ class FlutterReduxApp extends StatelessWidget {
         trendList: new List(),
         themeData: new ThemeData(
           primarySwatch: GSYColors.primarySwatch,
+          platform: TargetPlatform.iOS//滑动返回
         ),
         locale: Locale('zh', 'CH')),
   );
