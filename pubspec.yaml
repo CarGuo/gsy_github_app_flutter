@@ -9,31 +9,31 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   shared_preferences: ^0.4.2
-  fluttertoast: ^2.0.4
-  json_annotation: ^0.2.2
+  fluttertoast: ^2.0.7
+  json_annotation: ^1.1.0
   flutter_redux: ^0.5.2
   device_info: ^0.2.1
   connectivity: ^0.3.1
-  flutter_markdown: ^0.1.6
   url_launcher: ^3.0.3
-  share: ^0.5.2
+  flutter_markdown: ^0.2.0
+  share: ^0.5.3
   flutter_spinkit: ^2.0.1
   get_version: ^0.0.5
   flutter_webview_plugin: ^0.2.1+2
-  sqflite: ^0.11.0+5
+  sqflite: ^0.11.1
   pub_semver: ^1.4.2
   flutter_statusbar: ^0.0.1
   flutter_svg: ^0.5.4
-  photo_view: ^0.0.4
-  flutter_slidable: ^0.4.1
-  dio: ^1.0.0
+  photo_view: ^0.0.7
+  flutter_slidable: ^0.4.3
+  dio: ^1.0.2
   flutter_localizations:
     sdk: flutter
   event_bus:  ^1.0.1
 
 dev_dependencies:
-  build_runner: ^0.7.6
-  json_serializable: ^0.3.2
+  build_runner: ^0.10.1+1
+  json_serializable: ^1.1.0
 #  flutter_test:
 #    sdk: flutter
 
