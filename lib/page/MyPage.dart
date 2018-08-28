@@ -83,10 +83,16 @@ class _MyPageState extends GSYListState<MyPage> {
 
   _refreshNotify() {
     UserDao.getNotifyDao(false, false, 0).then((res) {
+      Color newColor;
       if (res != null && res.result && res.data.length > 0) {
-        notifyColor = Color(GSYColors.actionBlue);
+        newColor = Color(GSYColors.actionBlue);
       } else {
-        notifyColor = Color(GSYColors.subLightTextColor);
+        newColor = Color(GSYColors.subLightTextColor);
+      }
+      if (isShow) {
+        setState(() {
+          notifyColor = newColor;
+        });
       }
     });
   }
