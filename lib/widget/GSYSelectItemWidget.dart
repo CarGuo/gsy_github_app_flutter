@@ -30,7 +30,7 @@ class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget 
   });
 
   @override
-  _GSYSelectItemWidgetState createState() => _GSYSelectItemWidgetState(selectItemChanged, itemNames, elevation, margin);
+  _GSYSelectItemWidgetState createState() => _GSYSelectItemWidgetState();
 
   @override
   Size get preferredSize {
@@ -41,15 +41,7 @@ class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget 
 class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   int selectIndex = 0;
 
-  final List<String> itemNames;
-
-  final SelectItemChanged selectItemChanged;
-
-  final double elevation;
-
-  final EdgeInsets margin;
-
-  _GSYSelectItemWidgetState(this.selectItemChanged, this.itemNames, this.elevation, this.margin);
+  _GSYSelectItemWidgetState();
 
   _renderItem(String name, int index) {
     var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubLightText;
@@ -65,7 +57,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
           ),
           onPressed: () {
             if (selectIndex != index) {
-              selectItemChanged?.call(index);
+              widget.selectItemChanged?.call(index);
             }
             setState(() {
               selectIndex = index;
@@ -76,11 +68,11 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
 
   _renderList() {
     List<Widget> list = new List();
-    for (int i = 0; i < itemNames.length; i++) {
-      if (i == itemNames.length - 1) {
-        list.add(_renderItem(itemNames[i], i));
+    for (int i = 0; i < widget.itemNames.length; i++) {
+      if (i == widget.itemNames.length - 1) {
+        list.add(_renderItem(widget.itemNames[i], i));
       } else {
-        list.add(_renderItem(itemNames[i], i));
+        list.add(_renderItem(widget.itemNames[i], i));
         list.add(new Container(width: 1.0, height: 25.0, color: Color(GSYColors.subLightTextColor)));
       }
     }
@@ -90,8 +82,8 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
-        elevation: elevation,
-        margin: margin,
+        elevation: widget.elevation,
+        margin: widget.margin,
         color: Theme.of(context).primaryColor,
         shape: new RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),

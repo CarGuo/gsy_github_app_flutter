@@ -18,15 +18,11 @@ class GSYSearchDrawer extends StatefulWidget {
   GSYSearchDrawer(this.typeCallback, this.sortCallback, this.languageCallback);
 
   @override
-  _GSYSearchDrawerState createState() => _GSYSearchDrawerState(this.typeCallback, this.sortCallback, this.languageCallback);
+  _GSYSearchDrawerState createState() => _GSYSearchDrawerState();
 }
 
 class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
-  final SearchSelectItemChanged<String> typeCallback;
-  final SearchSelectItemChanged<String> sortCallback;
-  final SearchSelectItemChanged<String> languageCallback;
-
-  _GSYSearchDrawerState(this.typeCallback, this.sortCallback, this.languageCallback);
+  _GSYSearchDrawerState();
 
   final double itemWidth = 200.0;
 
@@ -54,20 +50,20 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     list.add(_renderTitle(CommonUtils.getLocale(context).search_type));
     for (int i = 0; i < searchFilterType.length; i++) {
       FilterModel model = searchFilterType[i];
-      list.add(_renderItem(model, searchFilterType, i, this.typeCallback));
+      list.add(_renderItem(model, searchFilterType, i, widget.typeCallback));
       list.add(_renderDivider());
     }
     list.add(_renderTitle(CommonUtils.getLocale(context).search_type));
 
     for (int i = 0; i < sortType.length; i++) {
       FilterModel model = sortType[i];
-      list.add(_renderItem(model, sortType, i, this.sortCallback));
+      list.add(_renderItem(model, sortType, i, widget.sortCallback));
       list.add(_renderDivider());
     }
     list.add(_renderTitle(CommonUtils.getLocale(context).search_language));
     for (int i = 0; i < searchLanguageType.length; i++) {
       FilterModel model = searchLanguageType[i];
-      list.add(_renderItem(model, searchLanguageType, i, this.languageCallback));
+      list.add(_renderItem(model, searchLanguageType, i, widget.languageCallback));
       list.add(_renderDivider());
     }
     return list;
@@ -97,30 +93,37 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   }
 
   _renderItem(FilterModel model, List<FilterModel> list, int index, SearchSelectItemChanged<String> select) {
-    return new Container(
-      height: 50.0,
-      child: new FlatButton(
-        onPressed: () {
-          setState(() {
-            for (FilterModel model in list) {
-              model.select = false;
-            }
-            list[index].select = true;
-          });
-          select?.call(model.value);
-        },
-        child: new Container(
-          width: itemWidth,
-          child: new Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Center(child: new Checkbox(value: model.select, onChanged: (value) {})),
-              new Center(child: Text(model.name)),
-            ],
+    return new Stack(
+      children: <Widget>[
+        new Container(
+          height: 50.0,
+          child: new Container(
+            width: itemWidth,
+            child: new Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Center(child: new Checkbox(value: model.select, onChanged: (value) {})),
+                new Center(child: Text(model.name)),
+              ],
+            ),
           ),
         ),
-      ),
+        new FlatButton(
+          onPressed: () {
+            setState(() {
+              for (FilterModel model in list) {
+                model.select = false;
+              }
+              list[index].select = true;
+            });
+            select?.call(model.value);
+          },
+          child: new Container(
+            width: itemWidth,
+          ),
+        )
+      ],
     );
   }
 }
