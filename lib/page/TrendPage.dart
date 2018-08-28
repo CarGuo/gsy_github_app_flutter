@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -50,6 +51,10 @@ class _TrendPageState extends GSYListState<TrendPage> {
         child: new Row(
           children: <Widget>[
             _renderHeaderPopItem(selectTime.name, trendTime(context), (TrendTypeModel result) {
+              if(isLoading) {
+                Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+                return;
+              }
               setState(() {
                 selectTime = result;
               });
@@ -57,6 +62,10 @@ class _TrendPageState extends GSYListState<TrendPage> {
             }),
             new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
             _renderHeaderPopItem(selectType.name, trendType(context), (TrendTypeModel result) {
+              if(isLoading) {
+                Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+                return;
+              }
               setState(() {
                 selectType = result;
               });
