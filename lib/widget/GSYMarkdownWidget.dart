@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:gsy_github_app_flutter/widget/syntax_highlighter.dart';
 
 /**
  * 代码详情
@@ -23,23 +24,26 @@ class GSYMarkdownWidget extends StatelessWidget {
   GSYMarkdownWidget({this.markdownData = "", this.style = DARK_WHITE});
 
   _getCommonSheet(BuildContext context, Color codeBackground) {
-    MarkdownStyleSheet markdownStyleSheet = MarkdownStyleSheet.fromTheme(Theme.of(context));
+    MarkdownStyleSheet markdownStyleSheet =
+        MarkdownStyleSheet.fromTheme(Theme.of(context));
     return markdownStyleSheet
         .copyWith(
             codeblockDecoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: codeBackground,
-                border: new Border.all(color: Color(GSYColors.subTextColor), width: 0.3)))
+                border: new Border.all(
+                    color: Color(GSYColors.subTextColor), width: 0.3)))
         .copyWith(
             blockquoteDecoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: Color(GSYColors.subTextColor),
-                border: new Border.all(color: Color(GSYColors.subTextColor), width: 0.3)),
+                border: new Border.all(
+                    color: Color(GSYColors.subTextColor), width: 0.3)),
             blockquote: GSYConstant.smallTextWhite);
   }
 
   _getStyleSheetDark(BuildContext context) {
-    return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
+    return _getCommonSheet(context, Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
       h2: GSYConstant.largeTextWhiteBold,
@@ -54,7 +58,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetWhite(BuildContext context) {
-    return _getCommonSheet(context, Color(GSYColors.primaryValue)).copyWith(
+    return _getCommonSheet(context, Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
       p: GSYConstant.smallText,
       h1: GSYConstant.largeLargeText,
       h2: GSYConstant.largeTextBold,
@@ -68,7 +72,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetTheme(BuildContext context) {
-    return _getCommonSheet(context, Color(GSYColors.subTextColor)).copyWith(
+    return _getCommonSheet(context, Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
       h2: GSYConstant.largeTextWhiteBold,
@@ -123,7 +127,9 @@ class GSYMarkdownWidget extends StatelessWidget {
           String match = imageMatch.replaceAll("\)", "?raw=true)");
           if (!match.contains(".svg") && match.contains("http")) {
             ///增加点击
-            String src = match.replaceAll(new RegExp(r'!\[.*\]\('), "").replaceAll(")", "");
+            String src = match
+                .replaceAll(new RegExp(r'!\[.*\]\('), "")
+                .replaceAll(")", "");
             String actionMatch = "[$match]($src)";
             match = actionMatch;
           } else {
@@ -145,7 +151,9 @@ class GSYMarkdownWidget extends StatelessWidget {
           for (Match srcMatch in srcTags) {
             String srcString = srcMatch.group(0);
             if (srcString != null && srcString.contains("http")) {
-              String newSrc = srcString.substring(srcString.indexOf("http"), srcString.length - 1) + "?raw=true";
+              String newSrc = srcString.substring(
+                      srcString.indexOf("http"), srcString.length - 1) +
+                  "?raw=true";
 
               ///增加点击
               match = "[![]($newSrc)]($newSrc)";
@@ -181,9 +189,7 @@ class GSYMarkdownWidget extends StatelessWidget {
 class GSYHighlighter extends SyntaxHighlighter {
   @override
   TextSpan format(String source) {
-    return new TextSpan(
-      text: source,
-      style: GSYConstant.smallTextWhite,
-    );
+    print(source);
+    return new DartSyntaxHighlighter().format(source);
   }
 }
