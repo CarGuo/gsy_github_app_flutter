@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
-import 'package:gsy_github_app_flutter/widget/syntax_highlighter.dart';
+import 'package:gsy_github_app_flutter/widget/SyntaxHighLighter.dart';
 
 /**
  * 代码详情
@@ -189,7 +189,8 @@ class GSYMarkdownWidget extends StatelessWidget {
 class GSYHighlighter extends SyntaxHighlighter {
   @override
   TextSpan format(String source) {
-    print(source);
-    return new DartSyntaxHighlighter().format(source);
+    String showSource = source.replaceAll("&lt;", "<");
+    showSource = showSource.replaceAll("&gt;", ">");
+    return new DartSyntaxHighlighter().format(showSource);
   }
 }
