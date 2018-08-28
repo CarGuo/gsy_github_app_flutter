@@ -28,36 +28,21 @@ class IssueEditDialog extends StatefulWidget {
       {this.titleController, this.valueController, this.needTitle = true});
 
   @override
-  _IssueEditDialogState createState() => _IssueEditDialogState(
-      this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed, titleController, valueController, needTitle);
+  _IssueEditDialogState createState() => _IssueEditDialogState();
 }
 
 class _IssueEditDialogState extends State<IssueEditDialog> {
-  final String dialogTitle;
 
-  final ValueChanged<String> onTitleChanged;
-
-  final ValueChanged<String> onContentChanged;
-
-  final VoidCallback onPressed;
-
-  final TextEditingController titleController;
-
-  final TextEditingController valueController;
-
-  final bool needTitle;
-
-  _IssueEditDialogState(
-      this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed, this.titleController, this.valueController, this.needTitle);
+  _IssueEditDialogState();
 
   ///标题输入框
   renderTitleInput() {
-    return (needTitle)
+    return (widget.needTitle)
         ? new Padding(
             padding: new EdgeInsets.all(5.0),
             child: new GSYInputWidget(
-              onChanged: onTitleChanged,
-              controller: titleController,
+              onChanged: widget.onTitleChanged,
+              controller: widget.titleController,
               hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
               obscureText: false,
             ))
@@ -80,14 +65,14 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               onPressed: () {
                 String text = FAST_INPUT_LIST[index].content;
                 String newText = "";
-                if (valueController.value != null) {
-                  newText = valueController.value.text;
+                if (widget.valueController.value != null) {
+                  newText = widget.valueController.value.text;
                 }
                 newText = newText + text;
                 setState(() {
-                  valueController.value = new TextEditingValue(text: newText);
+                  widget.valueController.value = new TextEditingValue(text: newText);
                 });
-                onContentChanged?.call(newText);
+                widget.onContentChanged?.call(newText);
               });
         },
         itemCount: FAST_INPUT_LIST.length,
@@ -121,7 +106,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                   new Padding(
                       padding: new EdgeInsets.only(top: 5.0, bottom: 15.0),
                       child: new Center(
-                        child: new Text(dialogTitle, style: GSYConstant.normalTextBold),
+                        child: new Text(widget.dialogTitle, style: GSYConstant.normalTextBold),
                       )),
 
                   ///标题输入框
@@ -142,8 +127,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                           child: new TextField(
                             autofocus: false,
                             maxLines: 999,
-                            onChanged: onContentChanged,
-                            controller: valueController,
+                            onChanged: widget.onContentChanged,
+                            controller: widget.valueController,
                             decoration: new InputDecoration.collapsed(
                               hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
                               hintStyle: GSYConstant.middleSubText,
@@ -180,7 +165,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                               padding: EdgeInsets.all(4.0),
                               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
                               child: new Text(CommonUtils.getLocale(context).app_ok, style: GSYConstant.normalTextBold),
-                              onPressed: onPressed)),
+                              onPressed: widget.onPressed)),
                     ],
                   )
                 ],
