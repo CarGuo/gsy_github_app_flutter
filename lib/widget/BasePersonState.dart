@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/dao/UserDao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
@@ -16,6 +19,9 @@ import 'package:gsy_github_app_flutter/widget/UserItem.dart';
 
 abstract class BasePersonState<T extends StatefulWidget> extends GSYListState<T> {
 
+  final List<UserOrg> orgList = new List();
+
+  @protected
   renderItem(index, User userInfo, String beStaredCount, Color notifyColor, VoidCallback refreshCallBack, List<UserOrg> orgList) {
     if (index == 0) {
       return new UserHeaderItem(userInfo, beStaredCount, Theme.of(context).primaryColor,
@@ -41,4 +47,28 @@ abstract class BasePersonState<T extends StatefulWidget> extends GSYListState<T>
 
   @override
   bool get needHeader => true;
+
+  @protected
+  getUserOrg(String userName) {
+    if (page <= 1) {
+      UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
+        if (res != null && res.result) {
+          setState(() {
+            orgList.clear();
+            orgList.addAll(res.data);
+          });
+          return res.next;
+        }
+        return new Future.value(null);
+      }).then((res) {
+        if (res != null && res.result) {
+          setState(() {
+            orgList.clear();
+            orgList.addAll(res.data);
+          });
+        }
+      });
+    }
+  }
+
 }
