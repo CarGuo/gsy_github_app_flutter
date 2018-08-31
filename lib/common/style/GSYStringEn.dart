@@ -178,6 +178,8 @@ class GSYStringEn extends GSYStringBase {
   @override
   String repos_option_release = "release";
   @override
+  String repos_option_branch = "branch";
+  @override
   String repos_fork_at = "Fork at ";
   @override
   String repos_create_at = "create at ";

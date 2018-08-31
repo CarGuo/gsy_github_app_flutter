@@ -141,6 +141,7 @@ abstract class GSYStringBase {
   String repos_tab_issue_open;
   String repos_tab_issue_closed;
   String repos_option_release;
+  String repos_option_branch;
 
   String repos_fork_at;
   String repos_create_at;

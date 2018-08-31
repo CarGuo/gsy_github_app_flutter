@@ -82,45 +82,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     this._getReposStatus();
   }
 
-  _renderBranchPopItem(String data, List<String> list, onSelected) {
-    if (list == null && list.length == 0) {
-      return new Container(height: 0.0, width: 0.0);
-    }
-    return new Container(
-      height: 30.0,
-      child: new PopupMenuButton<String>(
-        child: new FlatButton(
-          onPressed: null,
-          color: Theme.of(context).primaryColorDark,
-          disabledColor: Theme.of(context).primaryColorDark,
-          child: new GSYIConText(
-            Icons.arrow_drop_up,
-            data,
-            GSYConstant.smallTextWhite,
-            Color(GSYColors.white),
-            30.0,
-            padding: 3.0,
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-        ),
-        onSelected: onSelected,
-        itemBuilder: (BuildContext context) {
-          return _renderHeaderPopItemChild(list);
-        },
-      ),
-    );
-  }
-
-  _renderHeaderPopItemChild(List<String> data) {
-    List<PopupMenuEntry<String>> list = new List();
-    for (String item in data) {
-      list.add(PopupMenuItem<String>(
-        value: item,
-        child: new Text(item),
-      ));
-    }
-    return list;
-  }
 
   _renderBottomItem(var text, var icon, var onPressed) {
     return new FlatButton(
@@ -160,21 +121,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 _refresh();
                 Navigator.pop(context);
               });
-            }),
-            _renderBranchPopItem(reposDetailParentControl.currentBranch, branchList, (value) {
-              setState(() {
-                reposDetailParentControl.currentBranch = value;
-                tarBarControl.footerButton = _getBottomWidget();
-              });
-              if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
-                infoListKey.currentState.showRefreshLoading();
-              }
-              if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
-                fileListKey.currentState.showRefreshLoading();
-              }
-              if (readmeKey.currentState != null && readmeKey.currentState.mounted) {
-                readmeKey.currentState.refreshReadme();
-              }
             }),
           ];
     return bottomWidget;
@@ -227,6 +173,25 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
               infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
         }
         NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
+      }),      ///Branch Page
+      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_branch, CommonUtils.getLocale(context).repos_option_branch, (model) {
+          if(branchList.length == 0) {
+            return;
+          }
+          CommonUtils.showCommitOptionDialog(context, branchList, (value){
+            setState(() {
+              reposDetailParentControl.currentBranch = branchList[value];
+            });
+            if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
+              infoListKey.currentState.showRefreshLoading();
+            }
+            if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
+              fileListKey.currentState.showRefreshLoading();
+            }
+            if (readmeKey.currentState != null && readmeKey.currentState.mounted) {
+              readmeKey.currentState.refreshReadme();
+            }
+          });
       }),
     ];
   }
