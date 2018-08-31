@@ -23,20 +23,20 @@ class ReposHeaderItem extends StatelessWidget {
   _getBottomItem(IconData icon, String text, onPressed) {
     return new Expanded(
       child: new Center(
-        child: new FlatButton(
-          onPressed: onPressed,
-          padding: new EdgeInsets.all(0.0),
-          child: new GSYIConText(
-            icon,
-            text,
-            GSYConstant.smallSubLightText,
-            Color(GSYColors.subLightTextColor),
-            15.0,
-            padding: 3.0,
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-        ),
-      ),
+          child: new RawMaterialButton(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+              child: new GSYIConText(
+                icon,
+                text,
+                GSYConstant.smallSubLightText,
+                Color(GSYColors.subLightTextColor),
+                15.0,
+                padding: 3.0,
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              onPressed: onPressed)),
     );
   }
 
@@ -73,6 +73,7 @@ class ReposHeaderItem extends StatelessWidget {
     }
     return new Container(
       alignment: Alignment.topLeft,
+      margin: EdgeInsets.only(top: 5.0),
       child: Wrap(
         spacing: 10.0,
         runSpacing: 5.0,
