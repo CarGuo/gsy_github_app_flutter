@@ -121,33 +121,12 @@ class _PersonState extends BasePersonState<PersonPage> {
     return userInfo.login;
   }
 
-  _getUserOrg() {
-    if (page <= 1) {
-      UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
-        if (res != null && res.result) {
-          setState(() {
-            orgList.clear();
-            orgList.addAll(res.data);
-          });
-          return res.next;
-        }
-        return new Future.value(null);
-      }).then((res) {
-        if (res != null && res.result) {
-          setState(() {
-            orgList.clear();
-            orgList.addAll(res.data);
-          });
-        }
-      });
-    }
-  }
 
   _getDataLogic() async {
     if (userInfo.type == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
-    _getUserOrg();
+    getUserOrg(_getUserName());
     return await EventDao.getEventDao(_getUserName(), page: page, needDb: page <= 1);
   }
 

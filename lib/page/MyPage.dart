@@ -36,7 +36,6 @@ class _MyPageState extends BasePersonState<MyPage> {
 
   Color notifyColor = const Color(GSYColors.subTextColor);
 
-  final List<UserOrg> orgList = new List();
 
 
   Store<GSYState> _getStore() {
@@ -73,27 +72,6 @@ class _MyPageState extends BasePersonState<MyPage> {
     });
   }
 
-  _getUserOrg(String userName) {
-    if (page <= 1) {
-      UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
-        if (res != null && res.result) {
-          setState(() {
-            orgList.clear();
-            orgList.addAll(res.data);
-          });
-          return res.next;
-        }
-        return new Future.value(null);
-      }).then((res) {
-        if (res != null && res.result) {
-          setState(() {
-            orgList.clear();
-            orgList.addAll(res.data);
-          });
-        }
-      });
-    }
-  }
 
   @override
   bool get wantKeepAlive => true;
@@ -116,7 +94,7 @@ class _MyPageState extends BasePersonState<MyPage> {
     UserDao.getUserInfo(null).then((res) {
       if (res != null && res.result) {
         _getStore().dispatch(UpdateUserAction(res.data));
-        _getUserOrg(_getUserName());
+        getUserOrg(_getUserName());
       }
     });
     ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
