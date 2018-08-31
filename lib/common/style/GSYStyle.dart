@@ -56,7 +56,7 @@ class GSYConstant {
   static const minTextSize = 12.0;
 
   static const minText = TextStyle(
-    color: Color(GSYColors.subTextColor),
+    color: Color(GSYColors.subLightTextColor),
     fontSize: minTextSize,
   );
 

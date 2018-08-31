@@ -34,21 +34,25 @@ class UserHeaderItem extends StatelessWidget {
   ///底部状态栏
   _getBottomItem(String title, var value, onPressed) {
     String data = value == null ? "" : value.toString();
-    TextStyle valueStyle = (value != null && value.toString().length > 4) ? GSYConstant.minText : GSYConstant.smallSubLightText;
+    TextStyle valueStyle = (value != null && value.toString().length > 6) ? GSYConstant.minText : GSYConstant.smallSubLightText;
+    TextStyle titleStyle = (title != null && title.toString().length > 6) ? GSYConstant.minText : GSYConstant.smallSubLightText;
     return new Expanded(
       child: new Center(
-        child: new FlatButton(
-          onPressed: onPressed,
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              style: GSYConstant.smallSubLightText,
-              text: title + "\n",
-              children: [TextSpan(text: data, style: valueStyle)],
-            ),
-          ),
-        ),
-      ),
+          child: new RawMaterialButton(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: EdgeInsets.only(top: 5.0),
+              constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(text: title, style: titleStyle),
+                    TextSpan(text: "\n", style: valueStyle),
+                    TextSpan(text: data, style: valueStyle)
+                  ],
+                ),
+              ),
+              onPressed: onPressed)),
     );
   }
 
@@ -103,7 +107,8 @@ class UserHeaderItem extends StatelessWidget {
     if (orgList.length > 3) {
       list.add(new RawMaterialButton(
           onPressed: () {
-            NavigatorUtils.gotoCommonList(context, userInfo.login + " " + CommonUtils.getLocale(context).user_orgs_title, "org", "user_orgs", userName: userInfo.login);
+            NavigatorUtils.gotoCommonList(context, userInfo.login + " " + CommonUtils.getLocale(context).user_orgs_title, "org", "user_orgs",
+                userName: userInfo.login);
           },
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: const EdgeInsets.only(right: 5.0, left: 5.0),
@@ -324,7 +329,9 @@ class UserHeaderItem extends StatelessWidget {
             )),
         new Container(
             child: new Text(
-              (userInfo.type == "Organization") ? CommonUtils.getLocale(context).user_dynamic_group : CommonUtils.getLocale(context).user_dynamic_title,
+              (userInfo.type == "Organization")
+                  ? CommonUtils.getLocale(context).user_dynamic_group
+                  : CommonUtils.getLocale(context).user_dynamic_title,
               style: GSYConstant.normalTextBold,
               overflow: TextOverflow.ellipsis,
             ),
