@@ -178,6 +178,8 @@ class GSYStringZh extends GSYStringBase {
   @override
   String repos_option_release = "版本";
   @override
+  String repos_option_branch = "分支";
+  @override
   String repos_fork_at = "Fork于 ";
   @override
   String repos_create_at = "创建于 ";
