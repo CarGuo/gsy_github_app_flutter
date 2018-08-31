@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/common/redux/UserRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
+import 'package:gsy_github_app_flutter/widget/BasePersonState.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
@@ -30,38 +31,13 @@ class MyPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _MyPageState extends GSYListState<MyPage> {
+class _MyPageState extends BasePersonState<MyPage> {
   String beStaredCount = '---';
 
   Color notifyColor = const Color(GSYColors.subTextColor);
 
   final List<UserOrg> orgList = new List();
 
-  _renderEventItem(Store<GSYState> store, userInfo, index) {
-    if (index == 0) {
-      return new UserHeaderItem(
-        userInfo,
-        beStaredCount,
-        store.state.themeData.primaryColor,
-        notifyColor: notifyColor,
-        refreshCallBack: () {
-          _refreshNotify();
-        },
-        orgList: orgList,
-      );
-    }
-
-    if (getUserType() == "Organization") {
-      return new UserItem(UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
-        NavigatorUtils.goPerson(context, UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]).userName);
-      });
-    } else {
-      Event event = pullLoadWidgetControl.dataList[index - 1];
-      return new EventItem(EventViewModel.fromEventMap(event), onPressed: () {
-        EventUtils.ActionUtils(context, event, "");
-      });
-    }
-  }
 
   Store<GSYState> _getStore() {
     return StoreProvider.of(context);
@@ -182,7 +158,9 @@ class _MyPageState extends GSYListState<MyPage> {
       builder: (context, store) {
         return GSYPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(store, store.state.userInfo, index),
+          (BuildContext context, int index) => renderItem(index, store.state.userInfo, beStaredCount, notifyColor, () {
+                _refreshNotify();
+              }, orgList),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIndicatorKey,
