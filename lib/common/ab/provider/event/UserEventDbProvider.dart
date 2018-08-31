@@ -52,29 +52,39 @@ class UserEventDbProvider extends BaseDbProvider {
     return name;
   }
 
+  Future _getProvider(Database db, String userName) async {
+    List<Map> maps = await db.query(name, columns: [columnId, columnData, columnUserName], where: "$columnUserName = ?", whereArgs: [userName]);
+    if (maps.length > 0) {
+      UserEventDbProvider provider = UserEventDbProvider.fromMap(maps.first);
+      return provider;
+    }
+    return null;
+  }
+
   ///插入到数据库
   Future insert(String userName, String eventMapString) async {
     Database db = await getDataBase();
-
-    ///清空后再插入，因为只保存第一页面
-    db.execute("delete from $name");
+    var provider = await _getProvider(db, userName);
+    if (provider != null) {
+      await db.delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
+    }
     return await db.insert(name, toMap(userName, eventMapString));
   }
 
   ///获取事件数据
-  Future<List<Event>> getEvents() async {
+  Future<List<Event>> getEvents(userName) async {
     Database db = await getDataBase();
-    List<Map> maps = await db.query(name, columns: [columnId, columnData]);
-    List<Event> list = new List();
-    if (maps.length > 0) {
-      UserEventDbProvider provider = UserEventDbProvider.fromMap(maps.first);
+    var provider = await _getProvider(db, userName);
+    if (provider != null) {
+      List<Event> list = new List();
       List<dynamic> eventMap = json.decode(provider.data);
       if (eventMap.length > 0) {
         for (var item in eventMap) {
           list.add(Event.fromJson(item));
         }
       }
+      return list;
     }
-    return list;
+    return null;
   }
 }

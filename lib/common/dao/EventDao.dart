@@ -63,7 +63,7 @@ class EventDao {
         List<Event> list = new List();
         var data = res.data;
         if (data == null || data.length == 0) {
-          return null;
+          return new DataResult(list, true);
         }
         if(needDb) {
           provider.insert(userName, json.encode(data));
@@ -77,8 +77,8 @@ class EventDao {
       }
     }
     if(needDb) {
-      List<Event> dbList = await provider.getEvents();
-      if(dbList == null && dbList.length == 0) {
+      List<Event> dbList = await provider.getEvents(userName);
+      if(dbList == null || dbList.length == 0) {
         return await next();
       }
       DataResult dataResult = new DataResult(dbList, true, next: next());

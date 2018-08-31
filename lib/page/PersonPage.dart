@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/EventUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
+import 'package:gsy_github_app_flutter/widget/BasePersonState.dart';
 import 'package:gsy_github_app_flutter/widget/EventItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
@@ -36,7 +37,7 @@ class PersonPage extends StatefulWidget {
   _PersonState createState() => _PersonState(userName);
 }
 
-class _PersonState extends GSYListState<PersonPage> {
+class _PersonState extends BasePersonState<PersonPage> {
   final String userName;
 
   String beStaredCount = "---";
@@ -69,12 +70,6 @@ class _PersonState extends GSYListState<PersonPage> {
     }
     isLoading = true;
     page = 1;
-
-    ///从Dao中获取数据
-    ///如果第一次返回的是网络数据，next为空
-    ///如果返回的是数据库数据，next不为空
-    ///这样数据库返回数据较快，马上显示
-    ///next异步再请求后，再更新
     var userResult = await UserDao.getUserInfo(userName, needDb: true);
     if (userResult != null && userResult.result) {
       _resolveUserInfo(userResult);
@@ -118,21 +113,6 @@ class _PersonState extends GSYListState<PersonPage> {
     }
   }
 
-  _renderEventItem(index) {
-    if (index == 0) {
-      return new UserHeaderItem(userInfo, beStaredCount, Theme.of(context).primaryColor, orgList: orgList);
-    }
-    if (userInfo.type == "Organization") {
-      return new UserItem(UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]), onPressed: () {
-        NavigatorUtils.goPerson(context, UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]).userName);
-      });
-    } else {
-      Event event = pullLoadWidgetControl.dataList[index - 1];
-      return new EventItem(EventViewModel.fromEventMap(event), onPressed: () {
-        EventUtils.ActionUtils(context, event, "");
-      });
-    }
-  }
 
   _getUserName() {
     if (userInfo == null) {
@@ -214,7 +194,7 @@ class _PersonState extends GSYListState<PersonPage> {
             }),
         body: GSYPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(index),
+          (BuildContext context, int index) => renderItem(index, userInfo, beStaredCount, null, null, orgList),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIndicatorKey,
