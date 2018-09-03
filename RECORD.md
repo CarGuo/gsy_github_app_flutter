@@ -108,3 +108,7 @@ drop Pods/Pods.xcodeproj into Runner/Pods.
 
 https://github.com/facebook/react-native/issues/20712 react-native 0.57.0-rc.0 问题
 https://github.com/facebook/react-native/issues/20710 react-native 0.57.0-rc.0 问题
+
+
+
+gsyvideoplayer 1407 issue 显示问题
