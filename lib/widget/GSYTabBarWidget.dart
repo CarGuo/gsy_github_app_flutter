@@ -47,13 +47,50 @@ class GSYTabBarWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GSYTabBarState createState() => new _GSYTabBarState();
+  _GSYTabBarState createState() => new _GSYTabBarState(
+    type,
+    tabViews,
+    indicatorColor,
+    title,
+    drawer,
+    floatingActionButton,
+    tarWidgetControl,
+    topPageControl,
+    onPageChanged,
+  );
 }
 
 // ignore: mixin_inherits_from_not_object
 class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderStateMixin {
+  final int _type;
 
-  _GSYTabBarState();
+  final List<Widget> _tabViews;
+
+  final Color _indicatorColor;
+
+  final Widget _title;
+
+  final Widget _drawer;
+
+  final Widget _floatingActionButton;
+
+  final TarWidgetControl _tarWidgetControl;
+
+  final PageController _pageController;
+
+  final ValueChanged<int> _onPageChanged;
+
+  _GSYTabBarState(
+      this._type,
+      this._tabViews,
+      this._indicatorColor,
+      this._title,
+      this._drawer,
+      this._floatingActionButton,
+      this._tarWidgetControl,
+      this._pageController,
+      this._onPageChanged,
+      ) : super();
 
   TabController _tabController;
 
@@ -72,26 +109,26 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    if (widget.type == GSYTabBarWidget.TOP_TAB) {
+    if (this._type == GSYTabBarWidget.TOP_TAB) {
       ///顶部tab bar
       return new Scaffold(
-        floatingActionButton: widget.floatingActionButton,
-        persistentFooterButtons: widget.tarWidgetControl == null ? [] : widget.tarWidgetControl.footerButton,
+        floatingActionButton: _floatingActionButton,
+        persistentFooterButtons: _tarWidgetControl == null ? [] : _tarWidgetControl.footerButton,
         appBar: new AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: widget.title,
+          title: _title,
           bottom: new TabBar(
             controller: _tabController,
             tabs: widget.tabItems,
-            indicatorColor: widget.indicatorColor,
+            indicatorColor: _indicatorColor,
           ),
         ),
         body: new PageView(
-          controller: widget.topPageControl,
-          children: widget.tabViews,
+          controller: _pageController,
+          children: _tabViews,
           onPageChanged: (index) {
             _tabController.animateTo(index);
-            widget.onPageChanged?.call(index);
+            _onPageChanged?.call(index);
           },
         ),
       );
@@ -99,15 +136,15 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
 
     ///底部tab bar
     return new Scaffold(
-        drawer: widget.drawer,
+        drawer: _drawer,
         appBar: new AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: widget.title,
+          title: _title,
         ),
         body: new TabBarView(
-            //TabBarView呈现内容，因此放到Scaffold的body中
+          //TabBarView呈现内容，因此放到Scaffold的body中
             controller: _tabController, //配置控制器
-            children: widget.tabViews),
+            children: _tabViews),
         bottomNavigationBar: new Material(
           //为了适配主题风格，包一层Material实现风格套用
           color: Theme.of(context).primaryColor, //底部导航栏主题颜色
@@ -115,7 +152,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderSt
             //TabBar导航标签，底部导航放到Scaffold的bottomNavigationBar中
             controller: _tabController, //配置控制器
             tabs: widget.tabItems,
-            indicatorColor: widget.indicatorColor, //tab标签的下划线颜色
+            indicatorColor: _indicatorColor, //tab标签的下划线颜色
           ),
         ));
   }
