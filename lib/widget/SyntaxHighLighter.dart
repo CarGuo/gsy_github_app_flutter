@@ -169,171 +169,192 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
   bool _generateSpans() {
     int lastLoopPosition = _scanner.position;
 
-    while (!_scanner.isDone) {
-      // Skip White space
-      _scanner.scan(new RegExp(r"\s+"));
+    try {
+      while (!_scanner.isDone) {
+        // Skip White space
+        _scanner.scan(new RegExp(r"\s+"));
 
-      // Block comments
-      if (_scanner.scan(new RegExp(r"/\*(.|\n)*\*/"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.comment,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Line comments
-      if (_scanner.scan("//")) {
-        int startComment = _scanner.lastMatch.start;
-
-        bool eof = false;
-        int endComment;
-        if (_scanner.scan(new RegExp(r".*\n"))) {
-          endComment = _scanner.lastMatch.end - 1;
-        } else {
-          eof = true;
-          endComment = _src.length;
+        // Block comments
+        if (_scanner.scan(new RegExp(r"/\*(.|\n)*\*/"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.comment,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
         }
 
-        _spans.add(new _HighlightSpan(
-            _HighlightType.comment, startComment, endComment));
 
-        if (eof) break;
+        // Line comments
+        if (_scanner.scan("//")) {
+          int startComment = _scanner.lastMatch.start;
 
-        continue;
-      }
+          bool eof = false;
+          int endComment;
+          if (_scanner.scan(new RegExp(r".*\n"))) {
+            endComment = _scanner.lastMatch.end - 1;
+          } else {
+            eof = true;
+            endComment = _src.length;
+          }
 
-      if (_scanner.scan("#")) {
-        int startComment = _scanner.lastMatch.start;
 
-        bool eof = false;
-        int endComment;
-        if (_scanner.scan(new RegExp(r".*\n"))) {
-          endComment = _scanner.lastMatch.end - 1;
-        } else {
-          eof = true;
-          endComment = _src.length;
-        }
-
-        _spans.add(new _HighlightSpan(
-            _HighlightType.comment, startComment, endComment));
-
-        if (eof) break;
-
-        continue;
-      }
-      // Raw r"String"
-      if (_scanner.scan(new RegExp(r'r".*"'))) {
-        _spans.add(new _HighlightSpan(_HighlightType.string,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Raw r'String'
-      if (_scanner.scan(new RegExp(r"r'.*'"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.string,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Multiline """String"""
-      if (_scanner.scan(new RegExp(r'"""(?:[^"\\]|\\(.|\n))*"""'))) {
-        _spans.add(new _HighlightSpan(_HighlightType.string,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Multiline '''String'''
-      if (_scanner.scan(new RegExp(r"'''(?:[^'\\]|\\(.|\n))*'''"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.string,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // "String"
-      if (_scanner.scan(new RegExp(r'"(?:[^"\\]|\\.)*"'))) {
-        _spans.add(new _HighlightSpan(_HighlightType.string,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // 'String'
-      if (_scanner.scan(new RegExp(r"'(?:[^'\\]|\\.)*'"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.string,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Double
-      if (_scanner.scan(new RegExp(r"\d+\.\d+"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.number,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Integer
-      if (_scanner.scan(new RegExp(r"\d+"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.number,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Punctuation
-      if (_scanner.scan(new RegExp(r"[\[\]{}().!=<>&\|\?\+\-\*/%\^~;:,]"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.punctuation,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-      //中文
-      if (_scanner.scan(new RegExp(r"[\u4e00-\u9fa5]"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.punctuation,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Metadata
-      if (_scanner.scan(new RegExp(r"@\w+"))) {
-        _spans.add(new _HighlightSpan(_HighlightType.keyword,
-            _scanner.lastMatch.start, _scanner.lastMatch.end));
-        continue;
-      }
-
-      // Words
-      if (_scanner.scan(new RegExp(r"\w+"))) {
-        _HighlightType type;
-
-        String word = _scanner.lastMatch[0];
-        if (word.startsWith("_")) word = word.substring(1);
-
-        if (_kKeywords.contains(word))
-          type = _HighlightType.keyword;
-        else if (_kBuiltInTypes.contains(word))
-          type = _HighlightType.keyword;
-        else if (_firstLetterIsUpperCase(word))
-          type = _HighlightType.klass;
-        else if (word.length >= 2 &&
-            word.startsWith("k") &&
-            _firstLetterIsUpperCase(word.substring(1)))
-          type = _HighlightType.constant;
-
-        if (type != null) {
           _spans.add(new _HighlightSpan(
-              type, _scanner.lastMatch.start, _scanner.lastMatch.end));
-        }
-      }
+              _HighlightType.comment, startComment, endComment));
 
-      // Check if this loop did anything
-      if (lastLoopPosition == _scanner.position) {
-        // Failed to parse this file, abort gracefully
-        if (_spans.length > 0) {
+          if (eof) break;
+
+          continue;
+        }
+
+        if (_scanner.scan("#")) {
+          int startComment = _scanner.lastMatch.start;
+
+          bool eof = false;
+          int endComment;
+
+          if (_scanner.scan(new RegExp(r".*\n"))) {
+            endComment = _scanner.lastMatch.end - 1;
+          } else {
+            eof = true;
+            endComment = _src.length;
+          }
+
+
+          _spans.add(new _HighlightSpan(
+              _HighlightType.comment, startComment, endComment));
+
+          if (eof) break;
+
+          continue;
+        }
+        // Raw r"String"
+        if (_scanner.scan(new RegExp(r'r".*"'))) {
+          _spans.add(new _HighlightSpan(_HighlightType.string,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+        // Raw r'String'
+        if (_scanner.scan(new RegExp(r"r'.*'"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.string,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+
+        // Multiline """String"""
+        if (_scanner.scan(new RegExp(r'"""(?:[^"\\]|\\(.|\n))*"""'))) {
+          _spans.add(new _HighlightSpan(_HighlightType.string,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+
+        // Multiline '''String'''
+        if (_scanner.scan(new RegExp(r"'''(?:[^'\\]|\\(.|\n))*'''"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.string,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+        // "String"
+        if (_scanner.scan(new RegExp(r'"(?:[^"\\]|\\.)*"'))) {
+          _spans.add(new _HighlightSpan(_HighlightType.string,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+        // 'String'
+        if (_scanner.scan(new RegExp(r"'(?:[^'\\]|\\.)*'"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.string,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+        // Double
+        if (_scanner.scan(new RegExp(r"\d+\.\d+"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.number,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+        // Integer
+        if (_scanner.scan(new RegExp(r"\d+"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.number,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+        // Punctuation
+        if (_scanner.scan(new RegExp(r"[\[\]{}().!=<>&\|\?\+\-\*/%\^~;:,]"))) {
           _spans.add(new _HighlightSpan(_HighlightType.punctuation,
-              lastLoopPosition, _scanner.string.length - 1));
-          _simplify();
-          return true;
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
         }
-        return false;
-      }
 
-      lastLoopPosition = _scanner.position;
+
+        //中文
+        if (_scanner.scan(new RegExp(r"[\u4e00-\u9fa5]"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.punctuation,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+        // Metadata
+        if (_scanner.scan(new RegExp(r"@\w+"))) {
+          _spans.add(new _HighlightSpan(_HighlightType.keyword,
+              _scanner.lastMatch.start, _scanner.lastMatch.end));
+          continue;
+        }
+
+
+        // Words
+        if (_scanner.scan(new RegExp(r"\w+"))) {
+          _HighlightType type;
+
+          String word = _scanner.lastMatch[0];
+          if (word.startsWith("_")) word = word.substring(1);
+
+          if (_kKeywords.contains(word))
+            type = _HighlightType.keyword;
+          else if (_kBuiltInTypes.contains(word))
+            type = _HighlightType.keyword;
+          else if (_firstLetterIsUpperCase(word))
+            type = _HighlightType.klass;
+          else if (word.length >= 2 &&
+              word.startsWith("k") &&
+              _firstLetterIsUpperCase(word.substring(1)))
+            type = _HighlightType.constant;
+
+          if (type != null) {
+            _spans.add(new _HighlightSpan(
+                type, _scanner.lastMatch.start, _scanner.lastMatch.end));
+          }
+        }
+
+        // Check if this loop did anything
+        if (lastLoopPosition == _scanner.position) {
+          // Failed to parse this file, abort gracefully
+          if (_spans.length > 0) {
+            _spans.add(new _HighlightSpan(_HighlightType.punctuation,
+                lastLoopPosition, _scanner.string.length - 1));
+            _simplify();
+            return true;
+          }
+          return false;
+        }
+
+        lastLoopPosition = _scanner.position;
+      }
+    } catch (e) {
+      print(e.toString());
     }
+
 
     _simplify();
     return true;
