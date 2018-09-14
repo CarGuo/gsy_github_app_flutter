@@ -17,39 +17,57 @@ class HtmlUtils {
     if (mdData == null) {
       return "";
     }
-    RegExp exp = new RegExp("<code(([\\s\\S])*?)<\/code>");
-    Iterable<Match> tags = exp.allMatches(mdData);
     String mdDataCode = mdData;
-    for (Match m in tags) {
-      String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
-      mdDataCode = mdDataCode.replaceAll(m.group(0), match);
-    }
+    String regExCode = "<[\\s]*?code[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?code[\\s]*?>";
+    String regExPre = "<[\\s]*?pre[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?pre[\\s]*?>";
 
-    exp = new RegExp("<pre(([\\s\\S])*?)<\/pre>");
-    tags = exp.allMatches(mdDataCode);
-    for (Match m in tags) {
-      if (m.group(0).indexOf("<code>") < 0) {
+
+    try {
+      RegExp exp = new RegExp(regExCode);
+      Iterable<Match> tags = exp.allMatches(mdData);
+      for (Match m in tags) {
         String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
         mdDataCode = mdDataCode.replaceAll(m.group(0), match);
       }
+    } catch (e) {
+      print(e);
+    }
+    try {
+      RegExp exp = new RegExp(regExPre);
+      Iterable<Match> tags = exp.allMatches(mdDataCode);
+      for (Match m in tags) {
+        if (m.group(0).indexOf("<code>") < 0) {
+          String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
+          mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+        }
+      }
+    } catch (e) {
+      print(e);
     }
 
-    exp = new RegExp("<pre>(([\\s\\S])*?)<\/pre>");
-    tags = exp.allMatches(mdDataCode);
-    for (Match m in tags) {
-      if (m.group(0).indexOf("<code>") < 0) {
-        String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
-        mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+    try {
+      RegExp exp = new RegExp("<pre>(([\\s\\S])*?)<\/pre>");
+      Iterable<Match> tags = exp.allMatches(mdDataCode);
+      for (Match m in tags) {
+        if (m.group(0).indexOf("<code>") < 0) {
+          String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
+          mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+        }
       }
+    } catch (e) {
+      print(e);
     }
-
-    exp = new RegExp("href=\"(.*?)\"");
-    tags = exp.allMatches(mdDataCode);
-    for (Match m in tags) {
-      String capture = m.group(0);
-      if (capture.indexOf("http://") < 0 && capture.indexOf("https://") < 0 && capture.indexOf("#") != 0) {
-        mdDataCode = mdDataCode.replaceAll(m.group(0), "gsygithub://" + capture);
+    try {
+      RegExp exp = new RegExp("href=\"(.*?)\"");
+      Iterable<Match> tags = exp.allMatches(mdDataCode);
+      for (Match m in tags) {
+        String capture = m.group(0);
+        if (capture.indexOf("http://") < 0 && capture.indexOf("https://") < 0 && capture.indexOf("#") != 0) {
+          mdDataCode = mdDataCode.replaceAll(m.group(0), "gsygithub://" + capture);
+        }
       }
+    } catch (e) {
+      print(e);
     }
 
     return generateCodeHtml(mdDataCode, false, backgroundColor: backgroundColor, actionColor: GSYColors.actionBlueString, userBR: userBR);
@@ -202,7 +220,6 @@ class HtmlUtils {
     }
     return builder;
   }
-
 
   static resolveHtmlFile(var res, String defaultLang) {
     if (res != null && res.result) {
