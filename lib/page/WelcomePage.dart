@@ -25,27 +25,28 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage>  {
 
   bool hadInit = false;
+  
+  Future<Null> _navigator() async {
+    ///防止多次进入
+    Store<GSYState> store = StoreProvider.of(context);
+    CommonUtils.initStatusBarHeight(context);
+    final res = await UserDao.initUserInfo(store);
+    if (res != null && res.result) {
+      NavigatorUtils.goHome(context);
+    } else {
+      NavigatorUtils.goLogin(context);
+    }
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(hadInit) {
-      return;
+    if (!hadInit) {
+      hadInit = true;
+
+      ///防止多次进入
+      _navigator();
     }
-    hadInit = true;
-    ///防止多次进入
-    Store<GSYState> store = StoreProvider.of(context);
-    CommonUtils.initStatusBarHeight(context);
-    new Future.delayed(const Duration(seconds: 2), () {
-      UserDao.initUserInfo(store).then((res) {
-        if (res != null && res.result) {
-          NavigatorUtils.goHome(context);
-        } else {
-          NavigatorUtils.goLogin(context);
-        }
-        return true;
-      });
-    });
   }
 
   @override
