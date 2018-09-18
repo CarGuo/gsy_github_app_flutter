@@ -30,6 +30,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   event_bus:  ^1.0.1
+  flutter_cache_manager: ^0.1.2
+  path_provider: ^0.4.1
+  permission_handler: ^2.0.0
 
 dev_dependencies:
   build_runner: ^0.10.1+1
