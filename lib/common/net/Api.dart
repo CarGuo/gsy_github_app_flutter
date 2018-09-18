@@ -53,6 +53,9 @@ class HttpManager {
       option.headers = headers;
     }
 
+    ///超时
+    option.connectTimeout = 15000;
+
     Dio dio = new Dio();
     Response response;
     try {
