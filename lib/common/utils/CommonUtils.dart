@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/DefaultLocalizations.dart';
 import 'package:gsy_github_app_flutter/common/net/Address.dart';
@@ -14,7 +16,9 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
 import 'package:gsy_github_app_flutter/widget/IssueEditDIalog.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_statusbar/flutter_statusbar.dart';
@@ -71,6 +75,43 @@ class CommonUtils {
     } else {
       return getDateStr(date);
     }
+  }
+
+  static getLocalPath() async {
+    Directory appDir;
+    if (Platform.isIOS) {
+      appDir = await getApplicationDocumentsDirectory();
+    } else {
+      appDir = await getExternalStorageDirectory();
+    }
+    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted) {
+      Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      if (permissions[PermissionGroup.storage] != PermissionStatus.granted) {
+        return null;
+      }
+    }
+    String appDocPath = appDir.path + "/gsygithubappflutter";
+    Directory appPath = Directory(appDocPath);
+    await appPath.create(recursive: true);
+    return appPath;
+  }
+
+  static saveImage(String url) async  {
+    Future<String> _findPath(String imageUrl) async {
+      final cache = await CacheManager.getInstance();
+      final file = await cache.getFile(imageUrl);
+      if(file == null) {
+        return null;
+      }
+      Directory localPath = await CommonUtils.getLocalPath();
+      if(localPath == null) {
+        return null;
+      }
+      final result = await file.copy(localPath.path + file.path.substring(file.path.lastIndexOf("/")));
+      return result.path;
+    }
+    return _findPath(url);
   }
 
   static getFullName(String repository_url) {
