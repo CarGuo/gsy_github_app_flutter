@@ -116,7 +116,9 @@
 **flutter_svg**|**svg**
 **photo_view**|**图片预览**
 **flutter_slidable**|**侧滑**
-
+**flutter_cache_manager**|**缓存管理**
+**path_provider**|**本地路径**
+**permission_handler**|**权限**
 
 ### 进行中：
 
