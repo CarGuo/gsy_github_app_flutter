@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -29,6 +32,10 @@ class PhotoViewPage extends StatelessWidget {
             CommonUtils.saveImage(url).then((res) {
               if (res != null) {
                 Fluttertoast.showToast(msg: res);
+                if (Platform.isAndroid) {
+                  const updateAlbum = const MethodChannel('com.shuyu.gsygithub.gsygithubflutter/UpdateAlbumPlugin');
+                  updateAlbum.invokeMethod('updateAlbum', { 'path': res, 'name': CommonUtils.splitFileNameByPath(res)});
+                }
               }
             });
           },
