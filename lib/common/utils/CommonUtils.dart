@@ -97,21 +97,27 @@ class CommonUtils {
     return appPath;
   }
 
-  static saveImage(String url) async  {
+  static saveImage(String url) async {
     Future<String> _findPath(String imageUrl) async {
       final cache = await CacheManager.getInstance();
       final file = await cache.getFile(imageUrl);
-      if(file == null) {
+      if (file == null) {
         return null;
       }
       Directory localPath = await CommonUtils.getLocalPath();
-      if(localPath == null) {
+      if (localPath == null) {
         return null;
       }
-      final result = await file.copy(localPath.path + file.path.substring(file.path.lastIndexOf("/")));
+      final name = splitFileNameByPath(file.path);
+      final result = await file.copy(localPath.path + name);
       return result.path;
     }
+
     return _findPath(url);
+  }
+
+  static splitFileNameByPath(String path) {
+    return path.substring(path.lastIndexOf("/"));
   }
 
   static getFullName(String repository_url) {
