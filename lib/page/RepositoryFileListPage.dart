@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/ReposDao.dart';
 import 'package:gsy_github_app_flutter/common/model/FileModel.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
@@ -91,6 +92,10 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
 
   ///头部列表点击
   _resolveHeaderClick(index) {
+    if(isLoading) {
+      Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+      return;
+    }
     if (headerList[index] != ".") {
       List<String> newHeaderList = headerList.sublist(0, index + 1);
       String path = newHeaderList.sublist(1, newHeaderList.length).join("/");
@@ -111,6 +116,10 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
   ///item文件列表点击
   _resolveItemClick(FileItemViewModel fileItemViewModel) {
     if (fileItemViewModel.type == "dir") {
+      if(isLoading) {
+        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+        return;
+      }
       this.setState(() {
         headerList.add(fileItemViewModel.name);
       });
