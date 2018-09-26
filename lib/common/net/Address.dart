@@ -247,7 +247,7 @@ class Address {
 
   ///通知 get
   static getNotifation(all, participating) {
-    if (all == null && participating == null) {
+    if ((all == null && participating == null) || (all == false && participating == false)) {
       return "${host}notifications";
     }
     all ??= false;
