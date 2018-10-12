@@ -4,33 +4,66 @@
  */
 
 abstract class Base {
-  a();
+  a() {
+
+  }
+  b() {
+
+  }
 }
 
-class S extends Base with A {
+class S extends Base {
   a() {
-    super.a();
     print("S.a");
+    super.a();
   }
 }
 
 class A extends Base {
   a() {
     print("A.a");
+    super.a();
   }
 
   b() {
     print("A.b");
+    super.b();
+  }
+}
+
+class A1 extends Base {
+  a() {
+    print("A1.a");
+    super.a();
+  }
+
+  b() {
+    print("A1.b");
+    super.b();
+  }
+}
+
+class A2 extends Base {
+  a() {
+    print("A2.a");
+    super.a();
+  }
+
+  b() {
+    print("A2.b");
+    super.b();
   }
 }
 
 class B extends Base {
   a() {
     print("B.a");
+    super.a();
   }
 
   b() {
     print("B.b");
+    super.b();
   }
 
   c() {
@@ -38,7 +71,7 @@ class B extends Base {
   }
 }
 
-class T = B with A, S;
+class T = B with A1, A2, A, S;
 
 
 testMixins() {
@@ -47,3 +80,16 @@ testMixins() {
   t.b();
   t.c();
 }
+
+/**
+ *  I/flutter ( 1864): S.a
+    I/flutter ( 1864): A.a
+    I/flutter ( 1864): A2.a
+    I/flutter ( 1864): A1.a
+    I/flutter ( 1864): B.a
+    I/flutter ( 1864): A.b
+    I/flutter ( 1864): A2.b
+    I/flutter ( 1864): A1.b
+    I/flutter ( 1864): B.b
+    I/flutter ( 1864): B.c
+ * */
