@@ -34,7 +34,7 @@ class ReposDetailInfoPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class ReposDetailInfoPageState extends GSYListState<ReposDetailInfoPage> {
+class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with AutomaticKeepAliveClientMixin<ReposDetailInfoPage>, GSYListState<ReposDetailInfoPage> {
   final String userName;
 
   final String reposName;

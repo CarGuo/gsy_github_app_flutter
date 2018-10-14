@@ -17,8 +17,7 @@ import 'package:gsy_github_app_flutter/widget/UserItem.dart';
  * Date: 2018-08-30
  */
 
-abstract class BasePersonState<T extends StatefulWidget> extends GSYListState<T> {
-
+abstract class BasePersonState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, GSYListState<T> {
   final List<UserOrg> orgList = new List();
 
   @protected
@@ -70,5 +69,4 @@ abstract class BasePersonState<T extends StatefulWidget> extends GSYListState<T>
       });
     }
   }
-
 }
