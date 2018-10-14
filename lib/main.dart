@@ -20,6 +20,7 @@ import 'package:gsy_github_app_flutter/common/net/Code.dart';
 
 void main() {
   runApp(new FlutterReduxApp());
+  PaintingBinding.instance.imageCache.maximumSize = 100;
 }
 
 class FlutterReduxApp extends StatelessWidget {
