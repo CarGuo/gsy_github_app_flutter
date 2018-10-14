@@ -36,7 +36,7 @@ class IssueDetailPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
+class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAliveClientMixin<IssueDetailPage>, GSYListState<IssueDetailPage> {
   final String userName;
 
   final String reposName;
@@ -93,7 +93,7 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                         },
                       ),
                       new GSYFlexButton(
-                        color:Color(GSYColors.white),
+                        color: Color(GSYColors.white),
                         text: CommonUtils.getLocale(context).issue_edit_issue_delete_commit,
                         onPress: () {
                           _deleteCommit(issue.id.toString());
@@ -278,7 +278,9 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                     Navigator.pop(context);
                   });
                 },
-                child: new Text((issueHeaderViewModel.state == 'closed') ? CommonUtils.getLocale(context).issue_open : CommonUtils.getLocale(context).issue_close, style: GSYConstant.smallText)),
+                child: new Text(
+                    (issueHeaderViewModel.state == 'closed') ? CommonUtils.getLocale(context).issue_open : CommonUtils.getLocale(context).issue_close,
+                    style: GSYConstant.smallText)),
             new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
@@ -288,7 +290,8 @@ class _IssueDetailPageState extends GSYListState<IssueDetailPage> {
                     Navigator.pop(context);
                   });
                 },
-                child: new Text((issueHeaderViewModel.locked) ? CommonUtils.getLocale(context).issue_unlock : CommonUtils.getLocale(context).issue_lock, style: GSYConstant.smallText)),
+                child: new Text((issueHeaderViewModel.locked) ? CommonUtils.getLocale(context).issue_unlock : CommonUtils.getLocale(context).issue_lock,
+                    style: GSYConstant.smallText)),
           ];
     return bottomWidget;
   }

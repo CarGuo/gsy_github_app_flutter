@@ -32,7 +32,8 @@ class RepositoryDetailFileListPage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFileListPage> {
+class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPage>
+    with AutomaticKeepAliveClientMixin<RepositoryDetailFileListPage>, GSYListState<RepositoryDetailFileListPage> {
   final String userName;
 
   final String reposName;
@@ -92,7 +93,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
 
   ///头部列表点击
   _resolveHeaderClick(index) {
-    if(isLoading) {
+    if (isLoading) {
       Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
       return;
     }
@@ -116,7 +117,7 @@ class RepositoryDetailFileListPageState extends GSYListState<RepositoryDetailFil
   ///item文件列表点击
   _resolveItemClick(FileItemViewModel fileItemViewModel) {
     if (fileItemViewModel.type == "dir") {
-      if(isLoading) {
+      if (isLoading) {
         Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
         return;
       }

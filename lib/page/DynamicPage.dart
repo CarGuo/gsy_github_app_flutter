@@ -23,7 +23,7 @@ class DynamicPage extends StatefulWidget {
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends GSYListState<DynamicPage> with WidgetsBindingObserver {
+class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin<DynamicPage>, GSYListState<DynamicPage>, WidgetsBindingObserver {
   @override
   Future<Null> handleRefresh() async {
     if (isLoading) {
@@ -66,14 +66,12 @@ class _DynamicPageState extends GSYListState<DynamicPage> with WidgetsBindingObs
   @override
   bool get isRefreshFirst => false;
 
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     ReposDao.getNewsVersion(context, false);
   }
-
 
   @override
   void dispose() {
@@ -139,5 +137,4 @@ class ModelA {
   ModelA.empty();
 
   ModelA.forName(this.name);
-
 }

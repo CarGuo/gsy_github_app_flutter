@@ -10,7 +10,7 @@ import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
  * Date: 2018-07-20
  */
 // ignore: mixin_inherits_from_not_object
-abstract class GSYListState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin {
+abstract class GSYListState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T> {
   bool isShow = false;
 
   bool isLoading = false;

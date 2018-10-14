@@ -27,7 +27,8 @@ class RepositoryDetailIssuePage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _RepositoryDetailIssuePageState extends GSYListState<RepositoryDetailIssuePage> {
+class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
+    with AutomaticKeepAliveClientMixin<RepositoryDetailIssuePage>, GSYListState<RepositoryDetailIssuePage> {
   final String userName;
 
   final String reposName;

@@ -35,7 +35,7 @@ class ReleasePage extends StatefulWidget {
 }
 
 // ignore: mixin_inherits_from_not_object
-class _ReleasePageState extends GSYListState<ReleasePage> {
+class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClientMixin<ReleasePage>, GSYListState<ReleasePage> {
   final String userName;
 
   final String reposName;

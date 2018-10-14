@@ -35,7 +35,7 @@ class PushDetailPage extends StatefulWidget {
   _PushDetailPageState createState() => _PushDetailPageState(sha, userName, reposName, needHomeIcon);
 }
 
-class _PushDetailPageState extends GSYListState<PushDetailPage> {
+class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAliveClientMixin<PushDetailPage>, GSYListState<PushDetailPage> {
   final String userName;
 
   final String reposName;

@@ -24,7 +24,7 @@ class TrendPage extends StatefulWidget {
   _TrendPageState createState() => _TrendPageState();
 }
 
-class _TrendPageState extends GSYListState<TrendPage> {
+class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin<TrendPage>, GSYListState<TrendPage> {
   static TrendTypeModel selectTime = null;
 
   static TrendTypeModel selectType = null;
@@ -51,7 +51,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
         child: new Row(
           children: <Widget>[
             _renderHeaderPopItem(selectTime.name, trendTime(context), (TrendTypeModel result) {
-              if(isLoading) {
+              if (isLoading) {
                 Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
@@ -62,7 +62,7 @@ class _TrendPageState extends GSYListState<TrendPage> {
             }),
             new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
             _renderHeaderPopItem(selectType.name, trendType(context), (TrendTypeModel result) {
-              if(isLoading) {
+              if (isLoading) {
                 Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }

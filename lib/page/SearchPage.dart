@@ -21,7 +21,7 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchPageState extends GSYListState<SearchPage> {
+class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMixin<SearchPage>, GSYListState<SearchPage> {
   int selectIndex = 0;
 
   String searchText;
@@ -32,7 +32,7 @@ class _SearchPageState extends GSYListState<SearchPage> {
   _renderEventItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
     if (selectIndex == 0) {
-      ReposViewModel reposViewModel =  ReposViewModel.fromMap(data);
+      ReposViewModel reposViewModel = ReposViewModel.fromMap(data);
       return new ReposItem(reposViewModel, onPressed: () {
         NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
