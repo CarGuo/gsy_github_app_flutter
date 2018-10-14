@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYMarkdownWidget.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /**
  * Readme
@@ -19,12 +20,10 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
   final String reposName;
 
-  final ReposDetailParentControl reposDetailParentControl;
-
-  RepositoryDetailReadmePage(this.userName, this.reposName, this.reposDetailParentControl, {Key key}) : super(key: key);
+  RepositoryDetailReadmePage(this.userName, this.reposName, {Key key}) : super(key: key);
 
   @override
-  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName, reposDetailParentControl);
+  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -33,16 +32,14 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
 
   final String reposName;
 
-  final ReposDetailParentControl reposDetailParentControl;
-
   bool isShow = false;
 
   String markdownData;
 
-  RepositoryDetailReadmePageState(this.userName, this.reposName, this.reposDetailParentControl);
+  RepositoryDetailReadmePageState(this.userName, this.reposName);
 
   refreshReadme() {
-    ReposDao.getRepositoryDetailReadmeDao(userName, reposName, reposDetailParentControl.currentBranch).then((res) {
+    ReposDao.getRepositoryDetailReadmeDao(userName, reposName, ReposDetailModel.of(context).currentBranch).then((res) {
       if (res != null && res.result) {
         if (isShow) {
           setState(() {
@@ -77,29 +74,31 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
   void dispose() {
     isShow = false;
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (markdownData == null) {
-      return Center(
-        child: new Container(
-          width: 200.0,
-          height: 200.0,
-          padding: new EdgeInsets.all(4.0),
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
-              new Container(width: 10.0),
-              new Container(child: new Text(CommonUtils.getLocale(context).loading_text, style: GSYConstant.middleText)),
-            ],
-          ),
-        ),
-      );
-    }
-    return GSYMarkdownWidget(markdownData: markdownData);
+    var widget = (markdownData == null)
+        ? Center(
+            child: new Container(
+              width: 200.0,
+              height: 200.0,
+              padding: new EdgeInsets.all(4.0),
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
+                  new Container(width: 10.0),
+                  new Container(child: new Text(CommonUtils.getLocale(context).loading_text, style: GSYConstant.middleText)),
+                ],
+              ),
+            ),
+          )
+        : GSYMarkdownWidget(markdownData: markdownData);
+
+    return new ScopedModelDescendant<ReposDetailModel>(
+      builder: (context, child, model) => widget,
+    );
   }
 }

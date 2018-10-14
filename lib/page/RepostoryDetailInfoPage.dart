@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/widget/GSYCommonOptionWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /**
  * 仓库详情动态信息页面
@@ -23,14 +24,12 @@ class ReposDetailInfoPage extends StatefulWidget {
 
   final String reposName;
 
-  final ReposDetailParentControl reposDetailParentControl;
-
   final OptionControl titleOptionControl;
 
-  ReposDetailInfoPage(this.userName, this.reposName, this.reposDetailParentControl, this.titleOptionControl, {Key key}) : super(key: key);
+  ReposDetailInfoPage(this.userName, this.reposName, this.titleOptionControl, {Key key}) : super(key: key);
 
   @override
-  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(userName, reposName, reposDetailParentControl, titleOptionControl);
+  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(userName, reposName, titleOptionControl);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -39,15 +38,13 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
 
   final String reposName;
 
-  final ReposDetailParentControl reposDetailParentControl;
-
   final OptionControl titleOptionControl;
 
   Repository repository = Repository.empty();
 
   int selectIndex = 0;
 
-  ReposDetailInfoPageState(this.userName, this.reposName, this.reposDetailParentControl, this.titleOptionControl);
+  ReposDetailInfoPageState(this.userName, this.reposName, this.titleOptionControl);
 
   ///渲染时间Item或者提交Item
   _renderEventItem(index) {
@@ -85,7 +82,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
         userName,
         reposName,
         page: page,
-        branch: reposDetailParentControl.currentBranch,
+        branch: ReposDetailModel.of(context).currentBranch,
         needDb: page <= 1,
       );
     }
@@ -93,14 +90,14 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
       userName,
       reposName,
       page: page,
-      branch: reposDetailParentControl.currentBranch,
+      branch: ReposDetailModel.of(context).currentBranch,
       needDb: page <= 1,
     );
   }
 
   ///获取详情
   _getReposDetail() {
-    ReposDao.getRepositoryDetailDao(userName, reposName, reposDetailParentControl.currentBranch).then((result) {
+    ReposDao.getRepositoryDetailDao(userName, reposName, ReposDetailModel.of(context).currentBranch).then((result) {
       if (result != null && result.result) {
         setState(() {
           repository = result.data;
@@ -141,13 +138,18 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // See AutomaticKeepAliveClientMixin.
-    return GSYPullLoadWidget(
-      pullLoadWidgetControl,
-      (BuildContext context, int index) => _renderEventItem(index),
-      handleRefresh,
-      onLoadMore,
-      refreshKey: refreshIndicatorKey,
-    );
+    super.build(context); //
+
+    return ScopedModelDescendant<ReposDetailModel>(
+      builder: (context, child, model) {
+        return GSYPullLoadWidget(
+          pullLoadWidgetControl,
+          (BuildContext context, int index) => _renderEventItem(index),
+          handleRefresh,
+          onLoadMore,
+          refreshKey: refreshIndicatorKey,
+        );
+      },
+    ); // See
   }
 }

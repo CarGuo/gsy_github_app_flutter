@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/RepositoryDetailPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYCardItem.dart';
 import 'package:gsy_github_app_flutter/widget/GSYListState.dart';
 import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /**
  * 仓库文件列表
@@ -23,12 +24,10 @@ class RepositoryDetailFileListPage extends StatefulWidget {
 
   final String reposName;
 
-  final ReposDetailParentControl reposDetailParentControl;
-
-  RepositoryDetailFileListPage(this.userName, this.reposName, this.reposDetailParentControl, {Key key}) : super(key: key);
+  RepositoryDetailFileListPage(this.userName, this.reposName, {Key key}) : super(key: key);
 
   @override
-  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName, reposDetailParentControl);
+  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName);
 }
 
 // ignore: mixin_inherits_from_not_object
@@ -38,8 +37,6 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
 
   final String reposName;
 
-  final ReposDetailParentControl reposDetailParentControl;
-
   String path = '';
 
   String searchText;
@@ -47,7 +44,7 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
 
   List<String> headerList = ["."];
 
-  RepositoryDetailFileListPageState(this.userName, this.reposName, this.reposDetailParentControl);
+  RepositoryDetailFileListPageState(this.userName, this.reposName);
 
   ///渲染文件item
   _renderEventItem(index) {
@@ -140,19 +137,19 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
           reposName: reposName,
           userName: userName,
           path: path,
-          branch: reposDetailParentControl.currentBranch,
+          branch: ReposDetailModel.of(context).currentBranch,
         );
       }
     }
   }
 
   _getDataLogic(String searchString) async {
-    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: reposDetailParentControl.currentBranch);
+    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: ReposDetailModel.of(context).currentBranch);
   }
 
   /// 返回按键逻辑
   Future<bool> _dialogExitApp(BuildContext context) {
-    if (reposDetailParentControl.currentIndex != 3) {
+    if (ReposDetailModel.of(context).currentIndex != 3) {
       return Future.value(true);
     }
     if (headerList.length == 1) {
@@ -197,12 +194,16 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
         onWillPop: () {
           return _dialogExitApp(context);
         },
-        child: GSYPullLoadWidget(
-          pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(index),
-          handleRefresh,
-          onLoadMore,
-          refreshKey: refreshIndicatorKey,
+        child: ScopedModelDescendant<ReposDetailModel>(
+          builder: (context, child, model) {
+            return GSYPullLoadWidget(
+              pullLoadWidgetControl,
+              (BuildContext context, int index) => _renderEventItem(index),
+              handleRefresh,
+              onLoadMore,
+              refreshKey: refreshIndicatorKey,
+            );
+          },
         ),
       ),
     );
