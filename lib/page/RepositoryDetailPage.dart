@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/widget/GSYIConText.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/ReposHeaderItem.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /**
  * 仓库详情
@@ -40,7 +41,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
-  final ReposDetailParentControl reposDetailParentControl = new ReposDetailParentControl("master");
+  final ReposDetailModel reposDetailModel = new ReposDetailModel();
 
   final PageController topPageControl = new PageController();
 
@@ -81,7 +82,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   _refresh() {
     this._getReposStatus();
   }
-
 
   _renderBottomItem(var text, var icon, var onPressed) {
     return new FlatButton(
@@ -139,7 +139,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
       return new FlatButton(
           padding: EdgeInsets.all(0.0),
           onPressed: () {
-            reposDetailParentControl.currentIndex = i;
+            reposDetailModel.setCurrentIndex(i);
             topPageControl.jumpTo(MediaQuery.of(context).size.width * i);
           },
           child: new Text(
@@ -166,32 +166,32 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
           releaseUrl = GSYConstant.app_default_share_url;
           tagUrl = GSYConstant.app_default_share_url;
         } else {
-          releaseUrl = infoListKey.currentState.repository == null
-              ? GSYConstant.app_default_share_url
-              : infoListKey.currentState.repository.htmlUrl + "/releases";
-          tagUrl =
-              infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
+          releaseUrl =
+              infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/releases";
+          tagUrl = infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
         }
         NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
-      }),      ///Branch Page
+      }),
+
+      ///Branch Page
       new GSYOptionModel(CommonUtils.getLocale(context).repos_option_branch, CommonUtils.getLocale(context).repos_option_branch, (model) {
-          if(branchList.length == 0) {
-            return;
-          }
-          CommonUtils.showCommitOptionDialog(context, branchList, (value){
-            setState(() {
-              reposDetailParentControl.currentBranch = branchList[value];
-            });
-            if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
-              infoListKey.currentState.showRefreshLoading();
-            }
-            if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
-              fileListKey.currentState.showRefreshLoading();
-            }
-            if (readmeKey.currentState != null && readmeKey.currentState.mounted) {
-              readmeKey.currentState.refreshReadme();
-            }
+        if (branchList.length == 0) {
+          return;
+        }
+        CommonUtils.showCommitOptionDialog(context, branchList, (value) {
+          setState(() {
+            reposDetailModel.setCurrentBranch(branchList[value]);
           });
+          if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
+            infoListKey.currentState.showRefreshLoading();
+          }
+          if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
+            fileListKey.currentState.showRefreshLoading();
+          }
+          if (readmeKey.currentState != null && readmeKey.currentState.mounted) {
+            readmeKey.currentState.refreshReadme();
+          }
+        });
       }),
     ];
   }
@@ -206,26 +206,33 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   @override
   Widget build(BuildContext context) {
     Widget widget = new GSYCommonOptionWidget(titleOptionControl, otherList: _getMoreOtherItem());
-    return new GSYTabBarWidget(
-      type: GSYTabBarWidget.TOP_TAB,
-      tarWidgetControl: tarBarControl,
-      tabItems: _renderTabItem(),
-      tabViews: [
-        new ReposDetailInfoPage(userName, reposName, reposDetailParentControl, titleOptionControl, key: infoListKey),
-        new RepositoryDetailReadmePage(userName, reposName, reposDetailParentControl, key: readmeKey),
-        new RepositoryDetailIssuePage(userName, reposName),
-        new RepositoryDetailFileListPage(userName, reposName, reposDetailParentControl, key: fileListKey),
-      ],
-      topPageControl: topPageControl,
-      backgroundColor: GSYColors.primarySwatch,
-      indicatorColor: Color(GSYColors.white),
-      title: new GSYTitleBar(
-        reposName,
-        rightWidget: widget,
+    return new ScopedModel<ReposDetailModel>(
+      model: reposDetailModel,
+      child: new ScopedModelDescendant<ReposDetailModel>(
+        builder: (context, child, model) {
+          return new GSYTabBarWidget(
+            type: GSYTabBarWidget.TOP_TAB,
+            tarWidgetControl: tarBarControl,
+            tabItems: _renderTabItem(),
+            tabViews: [
+              new ReposDetailInfoPage(userName, reposName, titleOptionControl, key: infoListKey),
+              new RepositoryDetailReadmePage(userName, reposName, key: readmeKey),
+              new RepositoryDetailIssuePage(userName, reposName),
+              new RepositoryDetailFileListPage(userName, reposName, key: fileListKey),
+            ],
+            topPageControl: topPageControl,
+            backgroundColor: GSYColors.primarySwatch,
+            indicatorColor: Color(GSYColors.white),
+            title: new GSYTitleBar(
+              reposName,
+              rightWidget: widget,
+            ),
+            onPageChanged: (index) {
+              reposDetailModel.setCurrentIndex(index);
+            },
+          );
+        },
       ),
-      onPageChanged: (index) {
-        reposDetailParentControl.currentIndex = index;
-      },
     );
   }
 }
@@ -241,10 +248,26 @@ class BottomStatusModel {
   BottomStatusModel(this.watchText, this.starText, this.watchIcon, this.starIcon, this.watch, this.star);
 }
 
-class ReposDetailParentControl {
-  int currentIndex = 0;
+class ReposDetailModel extends Model {
+  int _currentIndex = 0;
 
-  String currentBranch;
+  String _currentBranch = "master";
 
-  ReposDetailParentControl(this.currentBranch);
+  String get currentBranch => _currentBranch;
+
+  int get currentIndex => _currentIndex;
+
+  static ReposDetailModel of(BuildContext context) => ScopedModel.of<ReposDetailModel>(context);
+
+  void setCurrentBranch(String branch) {
+    _currentBranch = branch;
+    notifyListeners();
+  }
+
+  void setCurrentIndex(int index) {
+    _currentIndex = index;
+    print("----");
+    print(_currentIndex);
+    notifyListeners();
+  }
 }
