@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'UserOrg.g.dart';
 
 @JsonSerializable()
-class UserOrg extends Object with _$UserOrgSerializerMixin {
+class UserOrg {
   String login;
   int id;
   String url;
@@ -44,10 +44,10 @@ class UserOrg extends Object with _$UserOrgSerializerMixin {
     this.avatarUrl,
   );
 
-  /// A necessary factory constructor for creating a new User instance
-  /// from a map. We pass the map to the generated _$UserFromJson constructor.
-  /// The constructor is named after the source class, in this case User.
   factory UserOrg.fromJson(Map<String, dynamic> json) => _$UserOrgFromJson(json);
+
+
+  Map<String, dynamic> toJson() => _$UserOrgToJson(this);
 
   // 命名构造函数
   UserOrg.empty();

@@ -3,20 +3,17 @@
 part of 'CommitGitUser.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-CommitGitUser _$CommitGitUserFromJson(Map<String, dynamic> json) =>
-    new CommitGitUser(json['name'] as String, json['email'] as String,
-        json['date'] == null ? null : DateTime.parse(json['date'] as String));
-
-abstract class _$CommitGitUserSerializerMixin {
-  String get name;
-  String get email;
-  DateTime get date;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'email': email,
-        'date': date?.toIso8601String()
-      };
+CommitGitUser _$CommitGitUserFromJson(Map<String, dynamic> json) {
+  return CommitGitUser(json['name'] as String, json['email'] as String,
+      json['date'] == null ? null : DateTime.parse(json['date'] as String));
 }
+
+Map<String, dynamic> _$CommitGitUserToJson(CommitGitUser instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'email': instance.email,
+      'date': instance.date?.toIso8601String()
+    };

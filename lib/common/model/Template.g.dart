@@ -3,16 +3,16 @@
 part of 'Template.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-Template _$TemplateFromJson(Map<String, dynamic> json) => new Template(
-    json['name'] as String, json['id'] as int, json['push_id'] as int);
-
-abstract class _$TemplateSerializerMixin {
-  String get name;
-  int get id;
-  int get pushId;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'name': name, 'id': id, 'push_id': pushId};
+Template _$TemplateFromJson(Map<String, dynamic> json) {
+  return Template(
+      json['name'] as String, json['id'] as int, json['push_id'] as int);
 }
+
+Map<String, dynamic> _$TemplateToJson(Template instance) => <String, dynamic>{
+      'name': instance.name,
+      'id': instance.id,
+      'push_id': instance.pushId
+    };

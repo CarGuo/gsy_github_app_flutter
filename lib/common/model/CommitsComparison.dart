@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'CommitsComparison.g.dart';
 
 @JsonSerializable()
-class CommitsComparison extends Object with _$CommitsComparisonSerializerMixin {
+class CommitsComparison{
   String url;
   @JsonKey(name: "html_url")
   String htmlUrl;
@@ -36,4 +36,6 @@ class CommitsComparison extends Object with _$CommitsComparisonSerializerMixin {
   );
 
   factory CommitsComparison.fromJson(Map<String, dynamic> json) => _$CommitsComparisonFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CommitsComparisonToJson(this);
 }

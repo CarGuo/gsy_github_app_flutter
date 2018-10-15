@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'CommitStats.g.dart';
 
 @JsonSerializable()
-class CommitStats extends Object with _$CommitStatsSerializerMixin {
+class CommitStats  {
   int total;
   int additions;
   int deletions;
@@ -16,4 +16,6 @@ class CommitStats extends Object with _$CommitStatsSerializerMixin {
   CommitStats(this.total, this.additions, this.deletions);
 
   factory CommitStats.fromJson(Map<String, dynamic> json) => _$CommitStatsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CommitStatsToJson(this);
 }

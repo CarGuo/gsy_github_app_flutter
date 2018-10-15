@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'RepoCommit.g.dart';
 
 @JsonSerializable()
-class RepoCommit extends Object with _$RepoCommitSerializerMixin {
+class RepoCommit {
   String sha;
   String url;
   @JsonKey(name: "html_url")
@@ -35,4 +35,5 @@ class RepoCommit extends Object with _$RepoCommitSerializerMixin {
   );
 
   factory RepoCommit.fromJson(Map<String, dynamic> json) => _$RepoCommitFromJson(json);
+  Map<String, dynamic> toJson() => _$RepoCommitToJson(this);
 }

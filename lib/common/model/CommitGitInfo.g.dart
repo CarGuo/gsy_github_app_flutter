@@ -3,34 +3,27 @@
 part of 'CommitGitInfo.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-CommitGitInfo _$CommitGitInfoFromJson(Map<String, dynamic> json) =>
-    new CommitGitInfo(
-        json['message'] as String,
-        json['url'] as String,
-        json['comment_count'] as int,
-        json['author'] == null
-            ? null
-            : new CommitGitUser.fromJson(
-                json['author'] as Map<String, dynamic>),
-        json['committer'] == null
-            ? null
-            : new CommitGitUser.fromJson(
-                json['committer'] as Map<String, dynamic>));
-
-abstract class _$CommitGitInfoSerializerMixin {
-  String get message;
-  String get url;
-  int get commentCount;
-  CommitGitUser get author;
-  CommitGitUser get committer;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'message': message,
-        'url': url,
-        'comment_count': commentCount,
-        'author': author,
-        'committer': committer
-      };
+CommitGitInfo _$CommitGitInfoFromJson(Map<String, dynamic> json) {
+  return CommitGitInfo(
+      json['message'] as String,
+      json['url'] as String,
+      json['comment_count'] as int,
+      json['author'] == null
+          ? null
+          : CommitGitUser.fromJson(json['author'] as Map<String, dynamic>),
+      json['committer'] == null
+          ? null
+          : CommitGitUser.fromJson(json['committer'] as Map<String, dynamic>));
 }
+
+Map<String, dynamic> _$CommitGitInfoToJson(CommitGitInfo instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+      'url': instance.url,
+      'comment_count': instance.commentCount,
+      'author': instance.author,
+      'committer': instance.committer
+    };

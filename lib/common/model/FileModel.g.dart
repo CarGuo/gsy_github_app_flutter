@@ -3,39 +3,30 @@
 part of 'FileModel.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-FileModel _$FileModelFromJson(Map<String, dynamic> json) => new FileModel(
-    json['name'] as String,
-    json['path'] as String,
-    json['sha'] as String,
-    json['size'] as int,
-    json['url'] as String,
-    json['html_url'] as String,
-    json['git_url'] as String,
-    json['download_url'] as String,
-    json['type'] as String);
-
-abstract class _$FileModelSerializerMixin {
-  String get name;
-  String get path;
-  String get sha;
-  int get size;
-  String get url;
-  String get htmlUrl;
-  String get gitUrl;
-  String get downloadUrl;
-  String get type;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'path': path,
-        'sha': sha,
-        'size': size,
-        'url': url,
-        'html_url': htmlUrl,
-        'git_url': gitUrl,
-        'download_url': downloadUrl,
-        'type': type
-      };
+FileModel _$FileModelFromJson(Map<String, dynamic> json) {
+  return FileModel(
+      json['name'] as String,
+      json['path'] as String,
+      json['sha'] as String,
+      json['size'] as int,
+      json['url'] as String,
+      json['html_url'] as String,
+      json['git_url'] as String,
+      json['download_url'] as String,
+      json['type'] as String);
 }
+
+Map<String, dynamic> _$FileModelToJson(FileModel instance) => <String, dynamic>{
+      'name': instance.name,
+      'path': instance.path,
+      'sha': instance.sha,
+      'size': instance.size,
+      'url': instance.url,
+      'html_url': instance.htmlUrl,
+      'git_url': instance.gitUrl,
+      'download_url': instance.downloadUrl,
+      'type': instance.type
+    };

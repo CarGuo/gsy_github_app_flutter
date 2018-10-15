@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ReleaseAsset.g.dart';
 
 @JsonSerializable()
-class ReleaseAsset extends Object with _$ReleaseAssetSerializerMixin {
+class ReleaseAsset {
   int id;
   String name;
   String label;
@@ -41,4 +41,5 @@ class ReleaseAsset extends Object with _$ReleaseAssetSerializerMixin {
   );
 
   factory ReleaseAsset.fromJson(Map<String, dynamic> json) => _$ReleaseAssetFromJson(json);
+  Map<String, dynamic> toJson() => _$ReleaseAssetToJson(this);
 }

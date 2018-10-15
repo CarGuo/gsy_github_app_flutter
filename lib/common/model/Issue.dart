@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Issue.g.dart';
 
 @JsonSerializable()
-class Issue extends Object with _$IssueSerializerMixin {
+class Issue {
   int id;
   int number;
   String title;
@@ -57,4 +57,6 @@ class Issue extends Object with _$IssueSerializerMixin {
   );
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
+
+  Map<String, dynamic> toJson() => _$IssueToJson(this);
 }

@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'FileModel.g.dart';
 
 @JsonSerializable()
-class FileModel extends Object with _$FileModelSerializerMixin {
+class FileModel {
   String name;
   String path;
   String sha;
@@ -36,4 +36,6 @@ class FileModel extends Object with _$FileModelSerializerMixin {
   );
 
   factory FileModel.fromJson(Map<String, dynamic> json) => _$FileModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FileModelToJson(this);
 }

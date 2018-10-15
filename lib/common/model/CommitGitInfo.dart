@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'CommitGitInfo.g.dart';
 
 @JsonSerializable()
-class CommitGitInfo extends Object with _$CommitGitInfoSerializerMixin {
+class CommitGitInfo  {
   String message;
   String url;
   @JsonKey(name: "comment_count")
@@ -26,4 +26,7 @@ class CommitGitInfo extends Object with _$CommitGitInfoSerializerMixin {
   );
 
   factory CommitGitInfo.fromJson(Map<String, dynamic> json) => _$CommitGitInfoFromJson(json);
+
+
+  Map<String, dynamic> toJson() => _$CommitGitInfoToJson(this);
 }

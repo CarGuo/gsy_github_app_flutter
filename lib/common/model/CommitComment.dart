@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'CommitComment.g.dart';
 
 @JsonSerializable()
-class CommitComment extends Object with _$CommitCommentSerializerMixin {
+class CommitComment{
   int id;
   String body;
   String path;
@@ -41,4 +41,6 @@ class CommitComment extends Object with _$CommitCommentSerializerMixin {
   );
 
   factory CommitComment.fromJson(Map<String, dynamic> json) => _$CommitCommentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CommitCommentToJson(this);
 }
