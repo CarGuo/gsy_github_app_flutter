@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'TrendingRepoModel.g.dart';
 
 @JsonSerializable()
-class TrendingRepoModel extends Object with _$TrendingRepoModelSerializerMixin {
+class TrendingRepoModel {
   String fullName;
   String url;
 
@@ -40,4 +40,6 @@ class TrendingRepoModel extends Object with _$TrendingRepoModelSerializerMixin {
   TrendingRepoModel.empty();
 
   factory TrendingRepoModel.fromJson(Map<String, dynamic> json) => _$TrendingRepoModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TrendingRepoModelToJson(this);
 }

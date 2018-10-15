@@ -3,19 +3,17 @@
 part of 'CommitStats.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-CommitStats _$CommitStatsFromJson(Map<String, dynamic> json) => new CommitStats(
-    json['total'] as int, json['additions'] as int, json['deletions'] as int);
-
-abstract class _$CommitStatsSerializerMixin {
-  int get total;
-  int get additions;
-  int get deletions;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'total': total,
-        'additions': additions,
-        'deletions': deletions
-      };
+CommitStats _$CommitStatsFromJson(Map<String, dynamic> json) {
+  return CommitStats(
+      json['total'] as int, json['additions'] as int, json['deletions'] as int);
 }
+
+Map<String, dynamic> _$CommitStatsToJson(CommitStats instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'additions': instance.additions,
+      'deletions': instance.deletions
+    };

@@ -27,7 +27,8 @@ class Strings{
 ### Json序列化
 
 生成序列化模板
-flutter packages pub run build_runner build
+flutter packages pub run build_runner build --delete-conflicting-outputs
+
 
 ### 配合AutomaticKeepAliveClientMixin可以keep住tab
 

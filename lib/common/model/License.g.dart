@@ -3,13 +3,12 @@
 part of 'License.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-License _$LicenseFromJson(Map<String, dynamic> json) =>
-    new License(json['name'] as String);
-
-abstract class _$LicenseSerializerMixin {
-  String get name;
-  Map<String, dynamic> toJson() => <String, dynamic>{'name': name};
+License _$LicenseFromJson(Map<String, dynamic> json) {
+  return License(json['name'] as String);
 }
+
+Map<String, dynamic> _$LicenseToJson(License instance) =>
+    <String, dynamic>{'name': instance.name};

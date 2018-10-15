@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Release.g.dart';
 
 @JsonSerializable()
-class Release extends Object with _$ReleaseSerializerMixin {
+class Release {
   int id;
   @JsonKey(name: "tag_name")
   String tagName;
@@ -54,4 +54,6 @@ class Release extends Object with _$ReleaseSerializerMixin {
   );
 
   factory Release.fromJson(Map<String, dynamic> json) => _$ReleaseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReleaseToJson(this);
 }

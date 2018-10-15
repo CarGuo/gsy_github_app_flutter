@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'DownloadSource.g.dart';
 
 @JsonSerializable()
-class DownloadSource extends Object with _$DownloadSourceSerializerMixin {
+class DownloadSource {
   String url;
   bool isSourceCode;
   String name;
@@ -22,4 +22,6 @@ class DownloadSource extends Object with _$DownloadSourceSerializerMixin {
   );
 
   factory DownloadSource.fromJson(Map<String, dynamic> json) => _$DownloadSourceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DownloadSourceToJson(this);
 }

@@ -3,24 +3,17 @@
 part of 'Branch.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-Branch _$BranchFromJson(Map<String, dynamic> json) => new Branch(
-    json['name'] as String,
-    json['tarball_url'] as bool,
-    json['tarballUrl'] as String,
-    json['zipball_url'] as String);
-
-abstract class _$BranchSerializerMixin {
-  String get name;
-  String get tarballUrl;
-  String get zipballUrl;
-  bool get isBranch;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'tarballUrl': tarballUrl,
-        'zipball_url': zipballUrl,
-        'tarball_url': isBranch
-      };
+Branch _$BranchFromJson(Map<String, dynamic> json) {
+  return Branch(json['name'] as String, json['tarball_url'] as bool,
+      json['tarballUrl'] as String, json['zipball_url'] as String);
 }
+
+Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
+      'name': instance.name,
+      'tarballUrl': instance.tarballUrl,
+      'zipball_url': instance.zipballUrl,
+      'tarball_url': instance.isBranch
+    };

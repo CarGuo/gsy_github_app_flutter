@@ -3,17 +3,18 @@
 part of 'NotificationSubject.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-NotificationSubject _$NotificationSubjectFromJson(Map<String, dynamic> json) =>
-    new NotificationSubject(
-        json['title'] as String, json['url'] as String, json['type'] as String);
-
-abstract class _$NotificationSubjectSerializerMixin {
-  String get title;
-  String get url;
-  String get type;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'title': title, 'url': url, 'type': type};
+NotificationSubject _$NotificationSubjectFromJson(Map<String, dynamic> json) {
+  return NotificationSubject(
+      json['title'] as String, json['url'] as String, json['type'] as String);
 }
+
+Map<String, dynamic> _$NotificationSubjectToJson(
+        NotificationSubject instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'url': instance.url,
+      'type': instance.type
+    };

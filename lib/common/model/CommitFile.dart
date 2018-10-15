@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'CommitFile.g.dart';
 
 @JsonSerializable()
-class CommitFile extends Object with _$CommitFileSerializerMixin {
+class CommitFile {
   String sha;
   @JsonKey(name: "filename")
   String fileName;
@@ -38,4 +38,6 @@ class CommitFile extends Object with _$CommitFileSerializerMixin {
   );
 
   factory CommitFile.fromJson(Map<String, dynamic> json) => _$CommitFileFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CommitFileToJson(this);
 }

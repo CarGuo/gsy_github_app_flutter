@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'PushEventCommit.g.dart';
 
 @JsonSerializable()
-class PushEventCommit extends Object with _$PushEventCommitSerializerMixin {
+class PushEventCommit {
   String sha;
   User author;
   String message;
@@ -25,4 +25,6 @@ class PushEventCommit extends Object with _$PushEventCommitSerializerMixin {
   );
 
   factory PushEventCommit.fromJson(Map<String, dynamic> json) => _$PushEventCommitFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PushEventCommitToJson(this);
 }
