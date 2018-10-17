@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_version/get_version.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/ReadHistoryDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryCommitsDbProvider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/repos/RepositoryDetailDbProvider.dart';
@@ -32,6 +31,7 @@ import 'package:gsy_github_app_flutter/common/net/trending/GithubTrending.dart';
 import 'package:gsy_github_app_flutter/common/redux/TrendRedux.dart';
 import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
+import 'package:package_info/package_info.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:redux/redux.dart';
 
@@ -645,7 +645,10 @@ class ReposDao {
         if (Config.DEBUG) {
           print("versionName " + versionName);
         }
-        var appVersion = await GetVersion.projectVersion;
+
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        var appVersion = packageInfo.version;
+
         if (Config.DEBUG) {
           print("appVersion " + appVersion);
         }
