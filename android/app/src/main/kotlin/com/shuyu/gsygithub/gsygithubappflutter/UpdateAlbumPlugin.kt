@@ -19,8 +19,8 @@ object UpdateAlbumPlugin {
     fun register(context: Context, messenger: BinaryMessenger) = MethodChannel(messenger, ChannelName).setMethodCallHandler { methodCall, result ->
         when (methodCall.method) {
             "updateAlbum" -> {
-                val path: String = methodCall.argument("path")
-                val name: String = methodCall.argument("name")
+                val path: String? = methodCall.argument("path")
+                val name: String? = methodCall.argument("name")
                 try {
                     MediaStore.Images.Media.insertImage(context.contentResolver, path, name, null)
                 } catch (e: Exception) {

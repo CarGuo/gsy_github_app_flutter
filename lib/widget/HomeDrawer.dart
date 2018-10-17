@@ -1,4 +1,3 @@
-import 'package:get_version/get_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlManager.dart';
@@ -15,6 +14,7 @@ import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
 import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
 import 'package:gsy_github_app_flutter/common/utils/NavigatorUtils.dart';
 import 'package:gsy_github_app_flutter/widget/GSYFlexButton.dart';
+import 'package:package_info/package_info.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -175,8 +175,9 @@ class HomeDrawer extends StatelessWidget {
                             style: GSYConstant.normalText,
                           ),
                           onTap: () {
-                            GetVersion.projectVersion.then((value) {
-                              showAboutDialog(context, value);
+                            PackageInfo.fromPlatform().then((value) {
+                              print(value);
+                              showAboutDialog(context, value.version);
                             });
                           }),
                       new ListTile(

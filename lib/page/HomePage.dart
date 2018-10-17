@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/TrendPage.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/HomeDrawer.dart';
+import 'package:gsy_github_app_flutter/widget/webview/WebView.dart';
 
 /**
  * 主页
@@ -53,6 +54,7 @@ class HomePage extends StatelessWidget {
       _renderTab(GSYICons.MAIN_DT, CommonUtils.getLocale(context).home_dynamic),
       _renderTab(GSYICons.MAIN_QS, CommonUtils.getLocale(context).home_trend),
       _renderTab(GSYICons.MAIN_MY, CommonUtils.getLocale(context).home_my),
+      _renderTab(GSYICons.MAIN_MY, CommonUtils.getLocale(context).home_my),
     ];
     return WillPopScope(
       onWillPop: () {
@@ -66,6 +68,9 @@ class HomePage extends StatelessWidget {
           new DynamicPage(),
           new TrendPage(),
           new MyPage(),
+          new WebView(initialUrl: 'https://www.baidu.com',
+            javaScriptMode: JavaScriptMode.unrestricted,
+          ),
         ],
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: Color(GSYColors.white),
