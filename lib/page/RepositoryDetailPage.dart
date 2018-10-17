@@ -266,8 +266,6 @@ class ReposDetailModel extends Model {
 
   void setCurrentIndex(int index) {
     _currentIndex = index;
-    print("----");
-    print(_currentIndex);
     notifyListeners();
   }
 }
