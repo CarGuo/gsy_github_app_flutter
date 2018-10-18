@@ -36,24 +36,25 @@ class _MyPageState extends BasePersonState<MyPage> {
 
   Color notifyColor = const Color(GSYColors.subTextColor);
 
-
-
   Store<GSYState> _getStore() {
+    if (context == null) {
+      return null;
+    }
     return StoreProvider.of(context);
   }
 
   _getUserName() {
-    if (_getStore().state.userInfo == null) {
+    if (_getStore()?.state?.userInfo == null) {
       return null;
     }
-    return _getStore().state.userInfo.login;
+    return _getStore()?.state?.userInfo?.login;
   }
 
   getUserType() {
-    if (_getStore().state.userInfo == null) {
+    if (_getStore()?.state?.userInfo == null) {
       return null;
     }
-    return _getStore().state.userInfo.type;
+    return _getStore()?.state?.userInfo?.type;
   }
 
   _refreshNotify() {
@@ -72,7 +73,6 @@ class _MyPageState extends BasePersonState<MyPage> {
     });
   }
 
-
   @override
   bool get wantKeepAlive => true;
 
@@ -83,6 +83,9 @@ class _MyPageState extends BasePersonState<MyPage> {
   }
 
   _getDataLogic() async {
+    if (_getUserName() == null) {
+      return [];
+    }
     if (getUserType() == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
@@ -91,22 +94,24 @@ class _MyPageState extends BasePersonState<MyPage> {
 
   @override
   requestRefresh() async {
-    UserDao.getUserInfo(null).then((res) {
-      if (res != null && res.result) {
-        _getStore().dispatch(UpdateUserAction(res.data));
-        getUserOrg(_getUserName());
-      }
-    });
-    ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
-      if (res != null && res.result) {
-        if (isShow) {
-          setState(() {
-            beStaredCount = res.data.toString();
-          });
+    if (_getUserName() != null) {
+      UserDao.getUserInfo(null).then((res) {
+        if (res != null && res.result) {
+          _getStore()?.dispatch(UpdateUserAction(res.data));
+          getUserOrg(_getUserName());
         }
-      }
-    });
-    _refreshNotify();
+      });
+      ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
+        if (res != null && res.result) {
+          if (isShow) {
+            setState(() {
+              beStaredCount = res.data.toString();
+            });
+          }
+        }
+      });
+      _refreshNotify();
+    }
     return await _getDataLogic();
   }
 

@@ -49,7 +49,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T> with A
 
   @protected
   getUserOrg(String userName) {
-    if (page <= 1) {
+    if (page <= 1 && userName != null) {
       UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
         if (res != null && res.result) {
           setState(() {
