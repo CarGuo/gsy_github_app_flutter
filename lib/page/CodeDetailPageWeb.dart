@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -102,7 +103,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       );
     }
 
-    if (Config.USE_NATIVE_WEBVIEW) {
+    if (Config.USE_NATIVE_WEBVIEW && Platform.isAndroid) {
       return Scaffold(
         appBar: AppBar(
           title: new Text(title),

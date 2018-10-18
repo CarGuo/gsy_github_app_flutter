@@ -14,9 +14,11 @@ PODS:
   - FMDB (2.7.2):
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
-  - get_version (0.0.1):
-    - Flutter
   - package_info (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - permission_handler (2.0.0):
     - Flutter
   - Reachability (3.2)
   - share (0.5.2):
@@ -32,12 +34,13 @@ PODS:
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
-  - Flutter (from `.symlinks/flutter/ios-release`)
+  - Flutter (from `.symlinks/flutter/ios`)
   - flutter_statusbar (from `.symlinks/plugins/flutter_statusbar/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - get_version (from `.symlinks/plugins/get_version/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -54,17 +57,19 @@ EXTERNAL SOURCES:
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
-    :path: ".symlinks/flutter/ios-release"
+    :path: ".symlinks/flutter/ios"
   flutter_statusbar:
     :path: ".symlinks/plugins/flutter_statusbar/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
-  get_version:
-    :path: ".symlinks/plugins/get_version/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences:
@@ -82,12 +87,13 @@ SPEC CHECKSUMS:
   flutter_webview_plugin: 116575b48572029304775b768e9f15ebfc316274
   fluttertoast: ad0527b15297baf11349f3f581dae4d40f24f340
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
-  get_version: a59b7bd8fbf7543739bd853218b6685899419d05
   package_info: d7c98b64f60add4c2908b9d94d82a45d3c8827ad
+  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  permission_handler: d18559f3fbbc767b9c3af4849bf7b95c92467b22
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 222b5dcc8031238af9d7de91149df65bad1aef75
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
-  sqflite: d1612813fa7db7c667bed9f1d1b508deffc56999
+  sqflite: 801b6b0983f722fa29baf00d1476e4556ada6de4
   url_launcher: 92b89c1029a0373879933c21642958c874539095
 
 PODFILE CHECKSUM: 7765ea4305eaab0b3dfd384c7de11902aa3195fd
