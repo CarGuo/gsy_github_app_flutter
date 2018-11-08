@@ -4,8 +4,7 @@
 
 * ### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppWeex ）
 * ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
-
-
+* ### 同款Android Kotlin版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
 
 ```
 基于Flutter开发，适配Android与IOS。目前初版，持续完善中。
