@@ -50,8 +50,13 @@
        static const CLIENT_SECRET = "xxxxxxxxxxx";
      }
 
-     
+
    [      注册 Github APP 传送门](https://github.com/settings/applications/new)，当然，前提是你现有一个github账号(～￣▽￣)～ 。
+
+<div>
+<img src="https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/register0.jpg" width="426px"/>
+<img src="https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/register1.jpg" width="426px"/>
+</div>
 
 4、运行之前请注意下
 
@@ -64,14 +69,14 @@
 #### Apk下载链接： [Apk下载链接](https://www.pgyer.com/vj2B)
 
 
-类型 | 二维码
--------- | ---
-**Apk二维码**|![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png)
-**IOS暂无下载**|**残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png)
+| 类型          | 二维码                                      |
+| ----------- | ---------------------------------------- |
+| **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
+| **IOS暂无下载** | **残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
 
 
 
-  
+
 ### 常见问题
 
 * 如果包同步失败，一般都是因为没设置包代理，可以参考：[环境变量问题](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
@@ -95,32 +100,32 @@
 
 >当前 Flutter SDK 版本 v0.10.0
 
-库 | 功能
--------- | ---
-**dio**|**网络框架**
-**shared_preferences**|**本地数据缓存**
-**fluttertoast**|**toast**
-**flutter_redux**|**redux**
-**device_info**|**设备信息**
-**connectivity**|**网络链接**
-**flutter_markdown**|**markdown解析**
-**json_annotation**|**json模板**
-**json_serializable**|**json模板**
-**url_launcher**|**启动外部浏览器**
-**iconfont**|**字库图标**
-**share**|**系统分享**
-**flutter_spinkit**|**加载框样式**
-**get_version**|**版本信息**
-**flutter_webview_plugin**|**全屏的webview**
-**sqflite**|**数据库**
-**flutter_statusbar**|**状态栏**
-**flutter_svg**|**svg**
-**photo_view**|**图片预览**
-**flutter_slidable**|**侧滑**
-**flutter_cache_manager**|**缓存管理**
-**path_provider**|**本地路径**
-**permission_handler**|**权限**
-**scope_model**|**状态管理和共享**
+| 库                          | 功能             |
+| -------------------------- | -------------- |
+| **dio**                    | **网络框架**       |
+| **shared_preferences**     | **本地数据缓存**     |
+| **fluttertoast**           | **toast**      |
+| **flutter_redux**          | **redux**      |
+| **device_info**            | **设备信息**       |
+| **connectivity**           | **网络链接**       |
+| **flutter_markdown**       | **markdown解析** |
+| **json_annotation**        | **json模板**     |
+| **json_serializable**      | **json模板**     |
+| **url_launcher**           | **启动外部浏览器**    |
+| **iconfont**               | **字库图标**       |
+| **share**                  | **系统分享**       |
+| **flutter_spinkit**        | **加载框样式**      |
+| **get_version**            | **版本信息**       |
+| **flutter_webview_plugin** | **全屏的webview** |
+| **sqflite**                | **数据库**        |
+| **flutter_statusbar**      | **状态栏**        |
+| **flutter_svg**            | **svg**        |
+| **photo_view**             | **图片预览**       |
+| **flutter_slidable**       | **侧滑**         |
+| **flutter_cache_manager**  | **缓存管理**       |
+| **path_provider**          | **本地路径**       |
+| **permission_handler**     | **权限**         |
+| **scope_model**            | **状态管理和共享**    |
 
 ### 进行中：
 
@@ -142,4 +147,4 @@ Licensed works, modifications, and larger works may be distributed under differe
 
 
 
-    
+​    
