@@ -24,6 +24,7 @@ class TrendPage extends StatefulWidget {
   _TrendPageState createState() => _TrendPageState();
 }
 
+// ignore: mixin_inherits_from_not_object
 class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin<TrendPage>, GSYListState<TrendPage> {
   static TrendTypeModel selectTime = null;
 
