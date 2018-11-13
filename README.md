@@ -63,6 +63,11 @@
 
 
 
+## 项目结构图
+
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework.png)
+
+
 ### 下载
 
 #### Apk下载链接： [Apk下载链接](https://www.pgyer.com/vj2B)
