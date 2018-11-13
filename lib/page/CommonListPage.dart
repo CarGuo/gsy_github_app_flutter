@@ -30,7 +30,6 @@ class CommonListPage extends StatefulWidget {
   _CommonListPageState createState() => _CommonListPageState(this.title, this.showType, this.dataType, this.userName, this.reposName);
 }
 
-// ignore: mixin_inherits_from_not_object
 class _CommonListPageState extends State<CommonListPage> with AutomaticKeepAliveClientMixin<CommonListPage>, GSYListState<CommonListPage> {
   final String userName;
 

@@ -60,7 +60,6 @@ class GSYTabBarWidget extends StatefulWidget {
   );
 }
 
-// ignore: mixin_inherits_from_not_object
 class _GSYTabBarState extends State<GSYTabBarWidget> with SingleTickerProviderStateMixin {
   final int _type;
 

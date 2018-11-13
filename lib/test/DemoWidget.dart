@@ -28,7 +28,6 @@ class DemoStateWidget extends StatefulWidget  {
   _DemoStateWidgetState createState() => _DemoStateWidgetState(text);
 }
 
-// ignore: mixin_inherits_from_not_object
 class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAliveClientMixin  {
 
   String text;

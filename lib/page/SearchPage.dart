@@ -21,7 +21,7 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-// ignore: mixin_inherits_from_not_object
+
 class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMixin<SearchPage>, GSYListState<SearchPage> {
   int selectIndex = 0;
 
