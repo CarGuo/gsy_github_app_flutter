@@ -26,7 +26,7 @@ class RepositoryDetailReadmePage extends StatefulWidget {
   RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName);
 }
 
-// ignore: mixin_inherits_from_not_object
+
 class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> with AutomaticKeepAliveClientMixin {
   final String userName;
 

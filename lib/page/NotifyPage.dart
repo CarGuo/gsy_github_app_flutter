@@ -24,7 +24,6 @@ class NotifyPage extends StatefulWidget {
   _NotifyPageState createState() => _NotifyPageState();
 }
 
-// ignore: mixin_inherits_from_not_object
 class _NotifyPageState extends State<NotifyPage> with AutomaticKeepAliveClientMixin<NotifyPage>, GSYListState<NotifyPage> {
   final SlidableController slidableController = new SlidableController();
 

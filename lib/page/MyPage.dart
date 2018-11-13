@@ -30,7 +30,6 @@ class MyPage extends StatefulWidget {
   _MyPageState createState() => _MyPageState();
 }
 
-// ignore: mixin_inherits_from_not_object
 class _MyPageState extends BasePersonState<MyPage> {
   String beStaredCount = '---';
 

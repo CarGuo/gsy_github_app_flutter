@@ -35,7 +35,6 @@ class IssueDetailPage extends StatefulWidget {
   _IssueDetailPageState createState() => _IssueDetailPageState(issueNum, userName, reposName, needHomeIcon);
 }
 
-// ignore: mixin_inherits_from_not_object
 class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAliveClientMixin<IssueDetailPage>, GSYListState<IssueDetailPage> {
   final String userName;
 
