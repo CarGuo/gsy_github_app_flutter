@@ -53,6 +53,7 @@ class B extends Base {
   }
 }
 
+// ignore: mixin_inherits_from_not_object, mixin_references_super
 class G extends B with A, A2 {
 
 }

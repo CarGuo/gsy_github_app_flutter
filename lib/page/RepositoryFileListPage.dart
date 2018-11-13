@@ -30,8 +30,8 @@ class RepositoryDetailFileListPage extends StatefulWidget {
   RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName);
 }
 
-// ignore: mixin_inherits_from_not_object
 class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPage>
+    // ignore: mixin_inherits_from_not_object
     with AutomaticKeepAliveClientMixin<RepositoryDetailFileListPage>, GSYListState<RepositoryDetailFileListPage> {
   final String userName;
 

@@ -17,6 +17,7 @@ import 'package:gsy_github_app_flutter/widget/UserItem.dart';
  * Date: 2018-08-30
  */
 
+// ignore: mixin_inherits_from_not_object
 abstract class BasePersonState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, GSYListState<T> {
   final List<UserOrg> orgList = new List();
 

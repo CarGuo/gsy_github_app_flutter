@@ -23,6 +23,7 @@ class DynamicPage extends StatefulWidget {
   _DynamicPageState createState() => _DynamicPageState();
 }
 
+// ignore: mixin_inherits_from_not_object
 class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin<DynamicPage>, GSYListState<DynamicPage>, WidgetsBindingObserver {
   @override
   Future<Null> handleRefresh() async {
