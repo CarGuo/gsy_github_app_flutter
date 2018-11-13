@@ -59,7 +59,7 @@ class WebView extends StatefulWidget {
 
 class _WebViewState extends State<WebView> {
   final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
+      Completer<WebViewController>();
 
   _WebSettings _settings;
 
@@ -76,7 +76,9 @@ class _WebViewState extends State<WebView> {
         child: AndroidView(
           viewType: 'plugins.flutter.io/webview',
           onPlatformViewCreated: _onPlatformViewCreated,
-          gestureRecognizers: widget.gestureRecognizers,
+          gestureRecognizers: widget.gestureRecognizers.map((e) {
+            return Factory<OneSequenceGestureRecognizer>(() => e);
+          }).toSet(),
           // WebView content is not affected by the Android view's layout direction,
           // we explicitly set it here so that the widget doesn't require an ambient
           // directionality.
@@ -101,7 +103,7 @@ class _WebViewState extends State<WebView> {
     super.didUpdateWidget(oldWidget);
     final _WebSettings newSettings = _WebSettings.fromWidget(widget);
     final Map<String, dynamic> settingsUpdate =
-    _settings.updatesMap(newSettings);
+        _settings.updatesMap(newSettings);
     _updateSettings(settingsUpdate);
     _settings = newSettings;
   }
