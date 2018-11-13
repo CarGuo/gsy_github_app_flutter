@@ -35,7 +35,7 @@ packages:
       name: build
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.8"
+    version: "1.0.1"
   build_config:
     dependency: transitive
     description:
@@ -56,14 +56,14 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.3"
+    version: "1.1.1"
   build_runner_core:
     dependency: transitive
     description:
       name: build_runner_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   built_collection:
     dependency: transitive
     description:
@@ -187,7 +187,7 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.2.0+1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -234,7 +234,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.4"
+    version: "0.6.3"
   flutter_webview_plugin:
     dependency: "direct main"
     description:
@@ -325,14 +325,14 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "2.0.0"
   json_serializable:
     dependency: "direct dev"
     description:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.1"
+    version: "2.0.0"
   kernel:
     dependency: transitive
     description:
@@ -402,7 +402,7 @@ packages:
       name: path_drawing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.1"
+    version: "0.4.0"
   path_parsing:
     dependency: transitive
     description:
@@ -655,4 +655,4 @@ packages:
     version: "2.1.15"
 sdks:
   dart: ">=2.0.0 <3.0.0"
-  flutter: ">=0.5.1 <2.0.0"
+  flutter: ">=0.7.3 <2.0.0"
