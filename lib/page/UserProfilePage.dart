@@ -103,7 +103,15 @@ class _UserProfileState extends State<UserProfileInfo> {
   Widget build(BuildContext context) {
     return new StoreBuilder<GSYState>(builder: (context, store) {
       return Scaffold(
-        appBar: new AppBar(title: new Text(CommonUtils.getLocale(context).home_user_info)),
+        appBar: new AppBar(
+            title: new Hero(
+                tag: "home_user_info",
+                child: new Material(
+                    color: Colors.transparent,
+                    child: new Text(
+                      CommonUtils.getLocale(context).home_user_info,
+                      style: GSYConstant.normalTextWhite,
+                    )))),
         body: new Container(
           color: Color(GSYColors.white),
           child: new SingleChildScrollView(
