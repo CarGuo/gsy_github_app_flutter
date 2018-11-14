@@ -65,142 +65,148 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreBuilder<GSYState>(
-      builder: (context, store) {
-        User user = store.state.userInfo;
-        return new Drawer(
-          ///侧边栏按钮Drawer
-          child: new Container(
-            ///默认背景
-            color: store.state.themeData.primaryColor,
-            child: new SingleChildScrollView(
-              ///item 背景
-              child: Container(
-                constraints: new BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-                child: new Material(
-                  color: Color(GSYColors.white),
-                  child: new Column(
-                    children: <Widget>[
-                      new UserAccountsDrawerHeader(
-                        //Material内置控件
-                        accountName: new Text(
-                          user.login ?? "---",
-                          style: GSYConstant.largeTextWhite,
-                        ),
-                        accountEmail: new Text(
-                          user.email ?? user.name ?? "---",
-                          style: GSYConstant.normalTextLight,
-                        ),
-                        //用户名
-                        //用户邮箱
-                        currentAccountPicture: new GestureDetector(
-                          //用户头像
-                          onTap: () {},
-                          child: new CircleAvatar(
-                            //圆形图标控件
-                            backgroundImage: new NetworkImage(user.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC),
+    return Material(
+      child: new StoreBuilder<GSYState>(
+        builder: (context, store) {
+          User user = store.state.userInfo;
+          return new Drawer(
+            ///侧边栏按钮Drawer
+            child: new Container(
+              ///默认背景
+              color: store.state.themeData.primaryColor,
+              child: new SingleChildScrollView(
+                ///item 背景
+                child: Container(
+                  constraints: new BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+                  child: new Material(
+                    color: Color(GSYColors.white),
+                    child: new Column(
+                      children: <Widget>[
+                        new UserAccountsDrawerHeader(
+                          //Material内置控件
+                          accountName: new Text(
+                            user.login ?? "---",
+                            style: GSYConstant.largeTextWhite,
+                          ),
+                          accountEmail: new Text(
+                            user.email ?? user.name ?? "---",
+                            style: GSYConstant.normalTextLight,
+                          ),
+                          //用户名
+                          //用户邮箱
+                          currentAccountPicture: new GestureDetector(
+                            //用户头像
+                            onTap: () {},
+                            child: new CircleAvatar(
+                              //圆形图标控件
+                              backgroundImage: new NetworkImage(user.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC),
+                            ),
+                          ),
+                          decoration: new BoxDecoration(
+                            //用一个BoxDecoration装饰器提供背景图片
+                            color: store.state.themeData.primaryColor,
                           ),
                         ),
-                        decoration: new BoxDecoration(
-                          //用一个BoxDecoration装饰器提供背景图片
-                          color: store.state.themeData.primaryColor,
-                        ),
-                      ),
-                      new ListTile(
-                          title: new Text(
-                            CommonUtils.getLocale(context).home_reply,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            String content = "";
-                            CommonUtils.showEditDialog(context, CommonUtils.getLocale(context).home_reply, (title) {}, (res) {
-                              content = res;
-                            }, () {
-                              if (content == null || content.length == 0) {
-                                return;
-                              }
-                              CommonUtils.showLoadingDialog(context);
-                              IssueDao.createIssueDao(
-                                      "CarGuo", "GSYGithubAppFlutter", {"title": CommonUtils.getLocale(context).home_reply, "body": content})
-                                  .then((result) {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
+                        new ListTile(
+                            title: new Text(
+                              CommonUtils.getLocale(context).home_reply,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              String content = "";
+                              CommonUtils.showEditDialog(context, CommonUtils.getLocale(context).home_reply, (title) {}, (res) {
+                                content = res;
+                              }, () {
+                                if (content == null || content.length == 0) {
+                                  return;
+                                }
+                                CommonUtils.showLoadingDialog(context);
+                                IssueDao.createIssueDao(
+                                        "CarGuo", "GSYGithubAppFlutter", {"title": CommonUtils.getLocale(context).home_reply, "body": content})
+                                    .then((result) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                });
+                              }, titleController: new TextEditingController(), valueController: new TextEditingController(), needTitle: false);
+                            }),
+                        new ListTile(
+                            title: new Text(
+                              CommonUtils.getLocale(context).home_history,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              NavigatorUtils.gotoCommonList(context, CommonUtils.getLocale(context).home_history, "repository", "history",
+                                  userName: "", reposName: "");
+                            }),
+                        new ListTile(
+                            title: new Hero(
+                                tag: "home_user_info",
+                                child: new Material(
+                                    color: Colors.transparent,
+                                    child: new Text(
+                                      CommonUtils.getLocale(context).home_user_info,
+                                      style: GSYConstant.normalText,
+                                    ))),
+                            onTap: () {
+                              NavigatorUtils.gotoUserProfileInfo(context);
+                            }),
+                        new ListTile(
+                            title: new Text(
+                              CommonUtils.getLocale(context).home_change_theme,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              showThemeDialog(context, store);
+                            }),
+                        new ListTile(
+                            title: new Text(
+                              CommonUtils.getLocale(context).home_change_language,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              showLanguageDialog(context, store);
+                            }),
+                        new ListTile(
+                            title: new Text(
+                              CommonUtils.getLocale(context).home_check_update,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              ReposDao.getNewsVersion(context, true);
+                            }),
+                        new ListTile(
+                            title: new Text(
+                              GSYLocalizations.of(context).currentLocalized.home_about,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              PackageInfo.fromPlatform().then((value) {
+                                print(value);
+                                showAboutDialog(context, value.version);
                               });
-                            }, titleController: new TextEditingController(), valueController: new TextEditingController(), needTitle: false);
-                          }),
-                      new ListTile(
-                          title: new Text(
-                            CommonUtils.getLocale(context).home_history,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            NavigatorUtils.gotoCommonList(context, CommonUtils.getLocale(context).home_history, "repository", "history",
-                                userName: "", reposName: "");
-                          }),
-                      new ListTile(
-                          title: new Text(
-                            CommonUtils.getLocale(context).home_user_info,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            NavigatorUtils.gotoUserProfileInfo(context);
-                          }),
-                      new ListTile(
-                          title: new Text(
-                            CommonUtils.getLocale(context).home_change_theme,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            showThemeDialog(context, store);
-                          }),
-                      new ListTile(
-                          title: new Text(
-                            CommonUtils.getLocale(context).home_change_language,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            showLanguageDialog(context, store);
-                          }),
-                      new ListTile(
-                          title: new Text(
-                            CommonUtils.getLocale(context).home_check_update,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            ReposDao.getNewsVersion(context, true);
-                          }),
-                      new ListTile(
-                          title: new Text(
-                            GSYLocalizations.of(context).currentLocalized.home_about,
-                            style: GSYConstant.normalText,
-                          ),
-                          onTap: () {
-                            PackageInfo.fromPlatform().then((value) {
-                              print(value);
-                              showAboutDialog(context, value.version);
-                            });
-                          }),
-                      new ListTile(
-                          title: new GSYFlexButton(
-                            text: CommonUtils.getLocale(context).Login_out,
-                            color: Colors.redAccent,
-                            textColor: Color(GSYColors.textWhite),
-                            onPress: () {
-                              UserDao.clearAll(store);
-                              EventDao.clearEvent(store);
-                              SqlManager.close();
-                              NavigatorUtils.goLogin(context);
-                            },
-                          ),
-                          onTap: () {}),
-                    ],
+                            }),
+                        new ListTile(
+                            title: new GSYFlexButton(
+                              text: CommonUtils.getLocale(context).Login_out,
+                              color: Colors.redAccent,
+                              textColor: Color(GSYColors.textWhite),
+                              onPress: () {
+                                UserDao.clearAll(store);
+                                EventDao.clearEvent(store);
+                                SqlManager.close();
+                                NavigatorUtils.goLogin(context);
+                              },
+                            ),
+                            onTap: () {}),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
