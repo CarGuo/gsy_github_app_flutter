@@ -67,6 +67,7 @@
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework.png)
 
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
 
 ### 下载
 
