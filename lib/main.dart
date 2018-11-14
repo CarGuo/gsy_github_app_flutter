@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:event_bus/event_bus.dart';
@@ -35,7 +36,6 @@ class FlutterReduxApp extends StatelessWidget {
         trendList: new List(),
         themeData: new ThemeData(
           primarySwatch: GSYColors.primarySwatch,
-          platform: TargetPlatform.iOS//滑动返回
         ),
         locale: Locale('zh', 'CH')),
   );
