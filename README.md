@@ -65,7 +65,7 @@
 
 ## 项目结构图
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework.png)
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
 
