@@ -118,52 +118,55 @@ class GSYMarkdownWidget extends StatelessWidget {
     RegExp expImg = new RegExp("<img.*?(?:>|\/>)");
     RegExp expSrc = new RegExp("src=[\'\"]?([^\'\"]*)[\'\"]?");
 
-    Iterable<Match> tags = exp.allMatches(markdownData);
     String mdDataCode = markdownData;
-    if (tags != null && tags.length > 0) {
-      for (Match m in tags) {
-        String imageMatch = m.group(0);
-        if (imageMatch != null && !imageMatch.contains(".svg")) {
-          String match = imageMatch.replaceAll("\)", "?raw=true)");
-          if (!match.contains(".svg") && match.contains("http")) {
-            ///增加点击
-            String src = match
-                .replaceAll(new RegExp(r'!\[.*\]\('), "")
-                .replaceAll(")", "");
-            String actionMatch = "[$match]($src)";
-            match = actionMatch;
-          } else {
-            match = "";
+    try {
+      Iterable<Match> tags = exp.allMatches(markdownData);
+      if (tags != null && tags.length > 0) {
+        for (Match m in tags) {
+          String imageMatch = m.group(0);
+          if (imageMatch != null && !imageMatch.contains(".svg")) {
+            String match = imageMatch.replaceAll("\)", "?raw=true)");
+            if (!match.contains(".svg") && match.contains("http")) {
+              ///增加点击
+              String src = match
+                  .replaceAll(new RegExp(r'!\[.*\]\('), "")
+                  .replaceAll(")", "");
+              String actionMatch = "[$match]($src)";
+              match = actionMatch;
+            } else {
+              match = "";
+            }
+            mdDataCode = mdDataCode.replaceAll(m.group(0), match);
           }
-          mdDataCode = mdDataCode.replaceAll(m.group(0), match);
         }
       }
-    }
 
-    ///优化img标签的src资源
-    tags = expImg.allMatches(markdownData);
-    if (tags != null && tags.length > 0) {
-      for (Match m in tags) {
-        String imageTag = m.group(0);
-        String match = imageTag;
-        if (imageTag != null) {
-          Iterable<Match> srcTags = expSrc.allMatches(imageTag);
-          for (Match srcMatch in srcTags) {
-            String srcString = srcMatch.group(0);
-            if (srcString != null && srcString.contains("http")) {
-              String newSrc = srcString.substring(
-                      srcString.indexOf("http"), srcString.length - 1) +
-                  "?raw=true";
+      ///优化img标签的src资源
+      tags = expImg.allMatches(markdownData);
+      if (tags != null && tags.length > 0) {
+        for (Match m in tags) {
+          String imageTag = m.group(0);
+          String match = imageTag;
+          if (imageTag != null) {
+            Iterable<Match> srcTags = expSrc.allMatches(imageTag);
+            for (Match srcMatch in srcTags) {
+              String srcString = srcMatch.group(0);
+              if (srcString != null && srcString.contains("http")) {
+                String newSrc = srcString.substring(
+                    srcString.indexOf("http"), srcString.length - 1) +
+                    "?raw=true";
 
-              ///增加点击
-              match = "[![]($newSrc)]($newSrc)";
+                ///增加点击
+                match = "[![]($newSrc)]($newSrc)";
+              }
             }
           }
+          mdDataCode = mdDataCode.replaceAll(imageTag, match);
         }
-        mdDataCode = mdDataCode.replaceAll(imageTag, match);
       }
+    } catch(e) {
+      print(e.toString());
     }
-
     return mdDataCode;
   }
 

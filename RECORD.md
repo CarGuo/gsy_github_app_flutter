@@ -7,7 +7,7 @@ https://github.com/flutter/plugins/tree/master/packages/webview_flutter
 
 
 
-
+GSYVideoPlayer 1604 的issue，会触发`inline_parser.dart`在 `List<Node> parse() ` 正则解析出现问题，等待 flutter issue 19341
 
 
 
