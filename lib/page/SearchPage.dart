@@ -21,7 +21,6 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-
 class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMixin<SearchPage>, GSYListState<SearchPage> {
   int selectIndex = 0;
 
@@ -93,6 +92,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
       endDrawer: new GSYSearchDrawer(
         (String type) {
           this.type = type;

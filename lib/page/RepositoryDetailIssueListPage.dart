@@ -121,6 +121,7 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
       floatingActionButton: new FloatingActionButton(
           child: new Icon(
             GSYICons.ISSUE_ITEM_ADD,
