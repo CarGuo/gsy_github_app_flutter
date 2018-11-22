@@ -145,7 +145,7 @@ class HomeDrawer extends StatelessWidget {
                                     color: Colors.transparent,
                                     child: new Text(
                                       CommonUtils.getLocale(context).home_user_info,
-                                      style: GSYConstant.normalText,
+                                      style: GSYConstant.normalTextBold,
                                     ))),
                             onTap: () {
                               NavigatorUtils.gotoUserProfileInfo(context);
