@@ -15,7 +15,6 @@
 		3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B80C3931E831B6300D905FE /* App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; };
-		9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9740EEB21CF90195004384FC /* Debug.xcconfig */; };
 		9740EEB51CF90195004384FC /* Generated.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9740EEB31CF90195004384FC /* Generated.xcconfig */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -66,13 +65,6 @@
 			remoteGlobalIDString = 05CFA344FD05BDC7846987FC69E2968D;
 			remoteInfo = FMDB;
 		};
-		4B512129211F395B00E0C9B3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2168EE11486D639FC8BD7CB7AF2AA7A;
-			remoteInfo = get_version;
-		};
 		4B51212B211F395B00E0C9B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
@@ -122,6 +114,20 @@
 			remoteGlobalIDString = 4B40ADA9AD61ADB08CA9739165A77AE5;
 			remoteInfo = url_launcher;
 		};
+		4BDB48EC21A2AEFF00E882C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8B158E8230AA4D2DFAE7C847882628E;
+			remoteInfo = path_provider;
+		};
+		4BDB48EE21A2AEFF00E882C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FAE7273859BB129D96609B584B6F2535;
+			remoteInfo = permission_handler;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -132,7 +138,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */,
-				9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -183,8 +188,9 @@
 				4B512124211F395B00E0C9B3 /* flutter_webview_plugin.framework */,
 				4B512126211F395B00E0C9B3 /* fluttertoast.framework */,
 				4B512128211F395B00E0C9B3 /* FMDB.framework */,
-				4B51212A211F395B00E0C9B3 /* get_version.framework */,
 				4B51212C211F395B00E0C9B3 /* package_info.framework */,
+				4BDB48ED21A2AEFF00E882C1 /* path_provider.framework */,
+				4BDB48EF21A2AEFF00E882C1 /* permission_handler.framework */,
 				4B51212E211F395B00E0C9B3 /* Pods_Runner.framework */,
 				4B512130211F395B00E0C9B3 /* Reachability.framework */,
 				4B512132211F395B00E0C9B3 /* share.framework */,
@@ -305,6 +311,7 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = B29J9885S3;
 						LastSwiftMigration = 0910;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -375,13 +382,6 @@
 			remoteRef = 4B512127211F395B00E0C9B3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4B51212A211F395B00E0C9B3 /* get_version.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = get_version.framework;
-			remoteRef = 4B512129211F395B00E0C9B3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		4B51212C211F395B00E0C9B3 /* package_info.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -431,6 +431,20 @@
 			remoteRef = 4B512137211F395B00E0C9B3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4BDB48ED21A2AEFF00E882C1 /* path_provider.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = path_provider.framework;
+			remoteRef = 4BDB48EC21A2AEFF00E882C1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4BDB48EF21A2AEFF00E882C1 /* permission_handler.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = permission_handler.framework;
+			remoteRef = 4BDB48EE21A2AEFF00E882C1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -459,7 +473,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
-				"${PODS_ROOT}/../.symlinks/flutter/ios/Flutter.framework",
+				"${PODS_ROOT}/../.symlinks/flutter/ios-release/Flutter.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/connectivity/connectivity.framework",
 				"${BUILT_PRODUCTS_DIR}/device_info/device_info.framework",
@@ -509,7 +523,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" thin";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" thin\n";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -686,6 +700,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B29J9885S3;
 				ENABLE_BITCODE = NO;
@@ -701,6 +717,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.shuyu.GSYGithubAppFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -715,6 +732,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B29J9885S3;
 				ENABLE_BITCODE = NO;
@@ -730,6 +749,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.shuyu.GSYGithubAppFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
