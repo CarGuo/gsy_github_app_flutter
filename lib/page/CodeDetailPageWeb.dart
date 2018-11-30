@@ -114,14 +114,13 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         ),
       );
     }
-
-    return new WebviewScaffold(
-      withJavascript: true,
-      url: data,
-      scrollBar:false,
-      withLocalUrl: true,
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: new Text(title),
+      ),
+      body: WebView(
+        initialUrl: data,
+        javaScriptMode: JavaScriptMode.unrestricted,
       ),
     );
 
