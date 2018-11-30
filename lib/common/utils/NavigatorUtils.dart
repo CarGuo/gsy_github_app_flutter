@@ -164,7 +164,7 @@ class NavigatorUtils {
   ///根据平台跳转文件代码详情Web
   static gotoCodeDetailPlatform(BuildContext context,
       {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
-    if (Platform.isIOS) {
+    /*if (Platform.isIOS) {
       NavigatorUtils.gotoCodeDetailPage(
         context,
         title: title,
@@ -183,6 +183,15 @@ class NavigatorUtils {
         branch: branch,
       );
     }
+*/
+    NavigatorUtils.gotoCodeDetailPageWeb(
+      context,
+      title: title,
+      reposName: reposName,
+      userName: userName,
+      path: path,
+      branch: branch,
+    );
   }
 
   ///图片预览
