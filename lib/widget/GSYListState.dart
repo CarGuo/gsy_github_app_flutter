@@ -9,8 +9,7 @@ import 'package:gsy_github_app_flutter/widget/GSYPullLoadWidget.dart';
  * Created by guoshuyu
  * Date: 2018-07-20
  */
-// ignore: A
-abstract class GSYListState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T> {
+mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClientMixin<T> {
   bool isShow = false;
 
   bool isLoading = false;
