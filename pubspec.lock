@@ -14,7 +14,7 @@ packages:
       name: analyzer
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.33.3+2"
+    version: "0.33.6"
   args:
     dependency: transitive
     description:
@@ -70,14 +70,14 @@ packages:
       name: build_runner_core
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   built_collection:
     dependency: transitive
     description:
       name: built_collection
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   built_value:
     dependency: transitive
     description:
@@ -262,7 +262,7 @@ packages:
       name: front_end
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.6+5"
+    version: "0.1.6+8"
   glob:
     dependency: transitive
     description:
@@ -353,7 +353,7 @@ packages:
       name: kernel
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.6+5"
+    version: "0.3.6+8"
   logging:
     dependency: transitive
     description:
@@ -659,7 +659,7 @@ packages:
       name: test
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.5.1"
+    version: "1.5.1+1"
   test_api:
     dependency: transitive
     description:
@@ -673,7 +673,7 @@ packages:
       name: test_core
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.0+1"
   timing:
     dependency: transitive
     description:
