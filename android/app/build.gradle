@@ -30,9 +30,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
         minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 16
-        versionName "1.1.6"
+        targetSdkVersion 28
+        versionCode 17
+        versionName "1.1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
