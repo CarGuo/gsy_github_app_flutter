@@ -35,7 +35,8 @@ class FlutterReduxApp extends StatelessWidget {
         eventList: new List(),
         trendList: new List(),
         themeData: new ThemeData(
-          primarySwatch: GSYColors.primarySwatch,
+            primarySwatch: GSYColors.primarySwatch,
+            platform: TargetPlatform.android,//fix #192
         ),
         locale: Locale('zh', 'CH')),
   );
