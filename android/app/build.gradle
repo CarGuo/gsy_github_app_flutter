@@ -60,6 +60,9 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 flutter {
