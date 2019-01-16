@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
           body: new Container(
             color: Theme.of(context).primaryColor,
             child: new Center(
+              //防止overFlow的现象
               child: SafeArea(
                 child: SingleChildScrollView(
                   child: new Card(
