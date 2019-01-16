@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/event/HttpErrorEvent.dart';
@@ -34,10 +32,7 @@ class FlutterReduxApp extends StatelessWidget {
         userInfo: User.empty(),
         eventList: new List(),
         trendList: new List(),
-        themeData: new ThemeData(
-            primarySwatch: GSYColors.primarySwatch,
-            platform: TargetPlatform.android,//fix #192
-        ),
+        themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
         locale: Locale('zh', 'CH')),
   );
 
@@ -99,6 +94,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
 
   @override
   Widget build(BuildContext context) {
+
     return new StoreBuilder<GSYState>(builder: (context, store) {
       ///通过 StoreBuilder 和 Localizations 实现实时多语言切换
       return new Localizations.override(

@@ -137,8 +137,13 @@ class CommonUtils {
   static pushTheme(Store store, int index) {
     ThemeData themeData;
     List<Color> colors = getThemeListColor();
-    themeData = new ThemeData(primarySwatch: colors[index], platform: TargetPlatform.iOS);
+    themeData = getThemeData(colors[index]);
     store.dispatch(new RefreshThemeDataAction(themeData));
+  }
+
+
+  static getThemeData(Color color) {
+    return ThemeData(primarySwatch: color, platform: TargetPlatform.android);
   }
 
   /**
