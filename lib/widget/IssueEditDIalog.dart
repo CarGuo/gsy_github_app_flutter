@@ -32,7 +32,6 @@ class IssueEditDialog extends StatefulWidget {
 }
 
 class _IssueEditDialogState extends State<IssueEditDialog> {
-
   _IssueEditDialogState();
 
   ///标题输入框
@@ -84,99 +83,102 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
   Widget build(BuildContext context) {
     return new Scaffold(
         backgroundColor: Colors.transparent,
-        body: new Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.black12,
-          ///触摸收起键盘
-          child: new GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-            },
-            child: new Center(
-              child: new GSYCardItem(
-                margin: EdgeInsets.only(left:50.0, right: 50.0),
-                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                child: new Padding(
-                  padding: new EdgeInsets.all(12.0),
-                  child: new Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ///dialog标题
-                      new Padding(
-                          padding: new EdgeInsets.only(top: 5.0, bottom: 15.0),
-                          child: new Center(
-                            child: new Text(widget.dialogTitle, style: GSYConstant.normalTextBold),
-                          )),
-
-                      ///标题输入框
-                      renderTitleInput(),
-
-                      ///内容输入框
-                      new Container(
-                        height: MediaQuery.of(context).size.width * 3 / 4,
-                        decoration: new BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                          color:  Color(GSYColors.white),
-                          border: new Border.all(color: Color(GSYColors.subTextColor), width: .3),
-                        ),
-                        padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
-                        child: new Column(
-                          children: <Widget>[
-                            new Expanded(
-                              child: new TextField(
-                                autofocus: false,
-                                maxLines: 999,
-                                onChanged: widget.onContentChanged,
-                                controller: widget.valueController,
-                                decoration: new InputDecoration.collapsed(
-                                  hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
-                                  hintStyle: GSYConstant.middleSubText,
-                                ),
-                                style: GSYConstant.middleText,
-                              ),
-                            ),
-
-                            ///快速输入框
-                            _renderFastInputContainer(),
-                          ],
-                        ),
-                      ),
-                      new Container(height: 10.0),
-                      new Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: new Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.black12,
+              ///触摸收起键盘
+              child: new GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+                child: new Center(
+                  child: new GSYCardItem(
+                    margin: EdgeInsets.only(left: 50.0, right: 50.0),
+                    shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    child: new Padding(
+                      padding: new EdgeInsets.all(12.0),
+                      child: new Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          ///取消
-                          new Expanded(
-                              child: new RawMaterialButton(
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  padding: EdgeInsets.all(4.0),
-                                  constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                                  child: new Text(CommonUtils.getLocale(context).app_cancel, style: GSYConstant.normalSubText),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  })),
-                          new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subTextColor)),
+                          ///dialog标题
+                          new Padding(
+                              padding: new EdgeInsets.only(top: 5.0, bottom: 15.0),
+                              child: new Center(
+                                child: new Text(widget.dialogTitle, style: GSYConstant.normalTextBold),
+                              )),
 
-                          ///确定
-                          new Expanded(
-                              child: new RawMaterialButton(
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  padding: EdgeInsets.all(4.0),
-                                  constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                                  child: new Text(CommonUtils.getLocale(context).app_ok, style: GSYConstant.normalTextBold),
-                                  onPressed: widget.onPressed)),
+                          ///标题输入框
+                          renderTitleInput(),
+
+                          ///内容输入框
+                          new Container(
+                            height: MediaQuery.of(context).size.width * 3 / 4,
+                            decoration: new BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                              color: Color(GSYColors.white),
+                              border: new Border.all(color: Color(GSYColors.subTextColor), width: .3),
+                            ),
+                            padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
+                            child: new Column(
+                              children: <Widget>[
+                                new Expanded(
+                                  child: new TextField(
+                                    autofocus: false,
+                                    maxLines: 999,
+                                    onChanged: widget.onContentChanged,
+                                    controller: widget.valueController,
+                                    decoration: new InputDecoration.collapsed(
+                                      hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
+                                      hintStyle: GSYConstant.middleSubText,
+                                    ),
+                                    style: GSYConstant.middleText,
+                                  ),
+                                ),
+
+                                ///快速输入框
+                                _renderFastInputContainer(),
+                              ],
+                            ),
+                          ),
+                          new Container(height: 10.0),
+                          new Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              ///取消
+                              new Expanded(
+                                  child: new RawMaterialButton(
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      padding: EdgeInsets.all(4.0),
+                                      constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                                      child: new Text(CommonUtils.getLocale(context).app_cancel, style: GSYConstant.normalSubText),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      })),
+                              new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subTextColor)),
+
+                              ///确定
+                              new Expanded(
+                                  child: new RawMaterialButton(
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      padding: EdgeInsets.all(4.0),
+                                      constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                                      child: new Text(CommonUtils.getLocale(context).app_ok, style: GSYConstant.normalTextBold),
+                                      onPressed: widget.onPressed)),
+                            ],
+                          )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        )
-      );
+        ));
   }
 }
 

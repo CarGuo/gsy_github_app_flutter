@@ -224,6 +224,8 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
 
   _replyIssue() {
     //回复 Info
+    issueInfoTitleControl = new TextEditingController(text: "");
+    issueInfoValueControl = new TextEditingController(text: "");
     String content = "";
     CommonUtils.showEditDialog(
       context,
