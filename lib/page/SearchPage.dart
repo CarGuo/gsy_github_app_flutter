@@ -120,13 +120,25 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
             if (searchText == null || searchText.trim().length == 0) {
               return;
             }
+            if(isLoading) {
+              return;
+            }
             _resolveSelectIndex();
           }, () {
             if (searchText == null || searchText.trim().length == 0) {
               return;
             }
+            if(isLoading) {
+              return;
+            }
             _resolveSelectIndex();
           }, (selectIndex) {
+            if (searchText == null || searchText.trim().length == 0) {
+              return;
+            }
+            if(isLoading) {
+              return;
+            }
             this.selectIndex = selectIndex;
             _resolveSelectIndex();
           })),
