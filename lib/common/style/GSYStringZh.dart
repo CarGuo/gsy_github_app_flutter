@@ -74,7 +74,7 @@ class GSYStringZh extends GSYStringBase {
   @override
   String home_language_zh= "中文";
   @override
-  String home_language_en= "英文";
+  String home_language_en= "English";
 
   @override
   String home_theme_default = "默认主题";
