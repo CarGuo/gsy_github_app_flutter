@@ -38,7 +38,7 @@ class UserDao {
     };
     HttpManager.clearAuthorization();
 
-    var res = await HttpManager.netFetch(Address.getAuthorization(), json.encode(requestParams), null, new Options(method: "post"));
+    var res = await HttpManager.netFetch(Address.getAuthorization(), json.encode(requestParams), null, new Options(method: "get"));
     var resultData = null;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
