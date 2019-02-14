@@ -114,7 +114,9 @@ class TrendingUtil {
   static parseRepoContributors(repo, htmlContributors) {
     htmlContributors = parseContentWithNote(htmlContributors, 'Built by', '<\/a>');
     var splitWitSemicolon = htmlContributors.split('\"');
-    repo.contributorsUrl = splitWitSemicolon[1];
+    if(splitWitSemicolon.length > 1) {
+      repo.contributorsUrl = splitWitSemicolon[1];
+    }
     var contributors = new List<String>();
     for (var i = 0; i < splitWitSemicolon.length; i++) {
       String url = splitWitSemicolon[i];
