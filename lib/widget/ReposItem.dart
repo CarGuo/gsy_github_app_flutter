@@ -137,7 +137,11 @@ class ReposViewModel {
 
   ReposViewModel.fromTrendMap(model) {
     ownerName = model.name;
-    ownerPic = model.contributors[0];
+    if(model.contributors.length > 0) {
+      ownerPic = model.contributors[0];
+    } else {
+      ownerPic = "";
+    }
     repositoryName = model.reposName;
     repositoryStar = model.starCount;
     repositoryFork = model.forkCount;
