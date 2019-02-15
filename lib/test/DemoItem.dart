@@ -22,7 +22,7 @@ class DemoItem extends StatelessWidget {
         ///横向布局
         child: new Row(
           ///主轴居中,即是横向居中
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
 
           ///大小按照最大充满
           mainAxisSize: MainAxisSize.max,
@@ -39,13 +39,16 @@ class DemoItem extends StatelessWidget {
 
             ///间隔
             new Padding(padding: new EdgeInsets.all(5.0)),
-
-            ///显示数量文本
-            new Text(
-              text,
-              style: new TextStyle(color: Colors.grey, fontSize: 14.0),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+            new Container(
+              width: 60,
+              child:
+              ///显示数量文本
+              new Text(
+                text,
+                style: new TextStyle(color: Colors.grey, fontSize: 14.0),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
           ],
         ),
@@ -86,7 +89,7 @@ class DemoItem extends StatelessWidget {
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _getBottomItem(Icons.star, "1000"),
+                        _getBottomItem(Icons.star, "10000000000000000000000000000000000000000000000000"),
                         _getBottomItem(Icons.link, "1000"),
                         _getBottomItem(Icons.subject, "1000"),
                       ],
