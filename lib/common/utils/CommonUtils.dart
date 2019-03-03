@@ -99,8 +99,7 @@ class CommonUtils {
 
   static saveImage(String url) async {
     Future<String> _findPath(String imageUrl) async {
-      final cache = await CacheManager.getInstance();
-      final file = await cache.getFile(imageUrl);
+      final file = await DefaultCacheManager().getSingleFile(url);
       if (file == null) {
         return null;
       }
