@@ -26,6 +26,8 @@ class GSYIConText extends StatelessWidget {
 
   final CrossAxisAlignment crossAxisAlignment;
 
+  final double textWidth;
+
   GSYIConText(
     this.iconData,
     this.iconText,
@@ -37,10 +39,30 @@ class GSYIConText extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.max,
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.textWidth = -1,
   });
 
   @override
   Widget build(BuildContext context) {
+    Widget showText = (textWidth == -1)
+        ? new Text(
+            iconText,
+            style: textStyle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          )
+        : new Container(
+            width: textWidth,
+            child:
+
+                ///显示数量文本
+                new Text(
+              iconText,
+              style: textStyle,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ));
+
     return new Row(
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -52,12 +74,7 @@ class GSYIConText extends StatelessWidget {
           color: iconColor,
         ),
         new Padding(padding: new EdgeInsets.all(padding)),
-        new Text(
-          iconText,
-          style: textStyle,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
+        showText,
       ],
     );
   }

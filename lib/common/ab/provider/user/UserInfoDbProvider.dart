@@ -4,6 +4,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:sqflite/sqflite.dart';
@@ -80,7 +81,11 @@ class UserInfoDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var userProvider = await _getUserProvider(db, userName);
     if (userProvider != null) {
-      return User.fromJson(json.decode(userProvider.data));
+
+
+      ///使用 compute 的 Isolate 优化 json decode
+      var mapData = await compute(BaseDbProvider.parseResult, userProvider.data as String);
+      return User.fromJson(mapData);
     }
     return null;
   }

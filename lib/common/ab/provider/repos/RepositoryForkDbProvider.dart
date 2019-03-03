@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:sqflite/sqflite.dart';
@@ -79,7 +80,10 @@ class RepositoryForkDbProvider extends BaseDbProvider {
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
       List<Repository> list = new List();
-      List<dynamic> eventMap = json.decode(provider.data);
+
+      ///使用 compute 的 Isolate 优化 json decode
+      List<dynamic> eventMap = await compute(BaseDbProvider.parseListResult, provider.data as String);
+
       if (eventMap.length > 0) {
         for (var item in eventMap) {
           list.add(Repository.fromJson(item));

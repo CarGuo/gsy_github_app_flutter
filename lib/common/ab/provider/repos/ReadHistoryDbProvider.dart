@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
@@ -100,8 +101,11 @@ class ReadHistoryDbProvider extends BaseDbProvider {
       List<Repository> list = new List();
       for (var providerMap in provider) {
         ReadHistoryDbProvider provider = ReadHistoryDbProvider.fromMap(providerMap);
-        Map map = json.decode(provider.data);
-        list.add(Repository.fromJson(map));
+
+        ///使用 compute 的 Isolate 优化 json decode
+        var mapData = await compute(BaseDbProvider.parseResult, provider.data);
+
+        list.add(Repository.fromJson(mapData));
       }
       return list;
     }
