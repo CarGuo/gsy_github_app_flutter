@@ -258,6 +258,7 @@ class UserHeaderItem extends StatelessWidget {
                           Color(GSYColors.subLightTextColor),
                           10.0,
                           padding: 3.0,
+                          textWidth: MediaQuery.of(context).size.width - 50,
                         ),
                       ),
                       margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:sqflite/sqflite.dart';
@@ -76,7 +77,12 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
-      return Repository.fromJson(json.decode(provider.data));
+
+
+      ///使用 compute 的 Isolate 优化 json decode
+      var mapData = await compute(BaseDbProvider.parseResult, provider.data as String);
+
+      return Repository.fromJson(mapData);
     }
     return null;
   }
