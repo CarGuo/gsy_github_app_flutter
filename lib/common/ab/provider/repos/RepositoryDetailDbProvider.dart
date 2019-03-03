@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+import 'package:gsy_github_app_flutter/common/utils/CodeUtils.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
@@ -80,7 +80,7 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
 
 
       ///使用 compute 的 Isolate 优化 json decode
-      var mapData = await compute(BaseDbProvider.parseResult, provider.data as String);
+      var mapData = await compute(CodeUtils.decodeMapResult, provider.data as String);
 
       return Repository.fromJson(mapData);
     }
