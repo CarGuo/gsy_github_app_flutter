@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/config/Config.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:gsy_github_app_flutter/common/utils/CodeUtils.dart';
 
 /**
  * 本地已读历史表
@@ -103,7 +103,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
         ReadHistoryDbProvider provider = ReadHistoryDbProvider.fromMap(providerMap);
 
         ///使用 compute 的 Isolate 优化 json decode
-        var mapData = await compute(BaseDbProvider.parseResult, provider.data);
+        var mapData = await compute(CodeUtils.decodeMapResult, provider.data);
 
         list.add(Repository.fromJson(mapData));
       }

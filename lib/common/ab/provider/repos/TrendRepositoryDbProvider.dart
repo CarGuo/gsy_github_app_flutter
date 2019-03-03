@@ -1,10 +1,11 @@
 
 import 'dart:async';
-import 'dart:convert';
+import 'package:gsy_github_app_flutter/common/utils/CodeUtils.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/ab/SqlProvider.dart';
 import 'package:gsy_github_app_flutter/common/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/common/utils/CodeUtils.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
@@ -79,7 +80,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
 
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(BaseDbProvider.parseListResult, provider.data);
+      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {
