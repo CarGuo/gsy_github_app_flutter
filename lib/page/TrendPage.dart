@@ -207,5 +207,7 @@ trendType(BuildContext context) {
     TrendTypeModel("C", "C"),
     TrendTypeModel("HTML", "HTML"),
     TrendTypeModel("CSS", "CSS"),
+    TrendTypeModel("Python", "Python"),
+    TrendTypeModel("C#", "c%23"),
   ];
 }
