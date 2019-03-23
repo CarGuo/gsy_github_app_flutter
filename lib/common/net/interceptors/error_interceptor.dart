@@ -1,7 +1,7 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/common/net/Code.dart';
-import 'package:gsy_github_app_flutter/common/net/ResultData.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
+import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 
 ///是否需要弹提示
 const NOT_TIP_KEY = "noTip";
@@ -30,7 +30,6 @@ class ErrorInterceptors extends InterceptorsWrapper {
   @override
   onError(DioError e) {
     Response errorResponse;
-    print("………………………………");
     var noTip = e.response != null ? e.response.headers[NOT_TIP_KEY] : true;
     if (e.response != null) {
       errorResponse = e.response;

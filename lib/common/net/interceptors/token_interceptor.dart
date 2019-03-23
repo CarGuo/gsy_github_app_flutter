@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/common/config/Config.dart';
-import 'package:gsy_github_app_flutter/common/local/LocalStorage.dart';
+import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 
 /**
  * Token拦截器
