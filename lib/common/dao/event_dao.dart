@@ -4,51 +4,48 @@ import 'package:gsy_github_app_flutter/common/ab/provider/event/received_event_d
 import 'package:gsy_github_app_flutter/common/ab/provider/event/user_event_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
-import 'package:gsy_github_app_flutter/common/redux/event_redux.dart';
-import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:redux/redux.dart';
 
 class EventDao {
-  static getEventReceived(Store<GSYState> store, {page = 1, bool needDb = false}) async {
-    User user = store.state.userInfo;
-    if (user == null || user.login == null) {
+  static getEventReceived(String userName, {page = 1, bool needDb = false}) async {
+    if (userName == null) {
       return null;
     }
     ReceivedEventDbProvider provider = new ReceivedEventDbProvider();
-    if(needDb) {
-      List<Event> dbList = await provider.getEvents();
-      if (dbList.length > 0) {
-        store.dispatch(new RefreshEventAction(dbList));
-      }
-    }
-    String userName = user.login;
-    String url = Address.getEventReceived(userName) + Address.getPageParams("?", page);
 
-    var res = await httpManager.netFetch(url, null, null, null);
-    if (res != null && res.result) {
-      List<Event> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
-        return null;
-      }
-      if(needDb) {
-        await provider.insert(json.encode(data));
-      }
-      for (int i = 0; i < data.length; i++) {
-        list.add(Event.fromJson(data[i]));
-      }
-      if (page == 1) {
-        store.dispatch(new RefreshEventAction(list));
+    next() async {
+      String url = Address.getEventReceived(userName) + Address.getPageParams("?", page);
+
+      var res = await httpManager.netFetch(url, null, null, null);
+      if (res != null && res.result) {
+        List<Event> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return null;
+        }
+        if (needDb) {
+          await provider.insert(json.encode(data));
+        }
+        for (int i = 0; i < data.length; i++) {
+          list.add(Event.fromJson(data[i]));
+        }
+        return new DataResult(list, true);
       } else {
-        store.dispatch(new LoadMoreEventAction(list));
+        return new DataResult(null, false);
       }
-      return list;
-    } else {
-      return null;
     }
+
+    if (needDb) {
+      List<Event> dbList = await provider.getEvents();
+      if (dbList == null || dbList.length == 0) {
+        return await next();
+      }
+      DataResult dataResult = new DataResult(dbList, true, next: next());
+      return dataResult;
+    }
+    return await next();
   }
 
   /**
@@ -65,7 +62,7 @@ class EventDao {
         if (data == null || data.length == 0) {
           return new DataResult(list, true);
         }
-        if(needDb) {
+        if (needDb) {
           provider.insert(userName, json.encode(data));
         }
         for (int i = 0; i < data.length; i++) {
@@ -76,9 +73,10 @@ class EventDao {
         return null;
       }
     }
-    if(needDb) {
+
+    if (needDb) {
       List<Event> dbList = await provider.getEvents(userName);
-      if(dbList == null || dbList.length == 0) {
+      if (dbList == null || dbList.length == 0) {
         return await next();
       }
       DataResult dataResult = new DataResult(dbList, true, next: next());
@@ -89,6 +87,7 @@ class EventDao {
 
   static clearEvent(Store store) {
     store.state.eventList.clear();
-    store.dispatch(new RefreshEventAction([]));
+
+    /// todo 清理
   }
 }

@@ -3,14 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/bloc/base/base_bloc.dart';
+import 'package:gsy_github_app_flutter/bloc/trend_bloc.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_bloc_list_state.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_pull_new_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/repos_item.dart';
 import 'package:redux/redux.dart';
 
@@ -28,6 +30,8 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   static TrendTypeModel selectTime = null;
 
   static TrendTypeModel selectType = null;
+
+  final TrendBloc trendBloc = new TrendBloc();
 
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
@@ -101,23 +105,8 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   }
 
   @override
-  Future<Null> handleRefresh() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page = 1;
-    await ReposDao.getTrendDao(_getStore(), since: selectTime.value, languageType: selectType.value);
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = false;
-    });
-    isLoading = false;
-    return null;
-  }
-
-  @override
   requestRefresh() async {
-    return null;
+    return await trendBloc.requestRefresh(selectTime, selectType);
   }
 
   @override
@@ -126,12 +115,14 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   }
 
   @override
+  BlocListBase get bloc => trendBloc;
+
+  @override
   bool get isRefreshFirst => false;
 
   @override
   void didChangeDependencies() {
-    pullLoadWidgetControl.dataList = _getStore().state.trendList;
-    if (pullLoadWidgetControl.dataList.length == 0) {
+    if (bloc.getDataLength() == 0) {
       setState(() {
         selectTime = trendTime(context)[0];
         selectType = trendType(context)[0];
@@ -147,15 +138,12 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
     clearData();
   }
 
-  Store<GSYState> _getStore() {
-    return StoreProvider.of(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
+        bloc.changeNeedHeaderStatus(needHeader);
         return new Scaffold(
           backgroundColor: Color(GSYColors.mainBackgroundColor),
           appBar: new AppBar(
@@ -164,12 +152,15 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
             leading: new Container(),
             elevation: 0.0,
           ),
-          body: GSYPullLoadWidget(
-            pullLoadWidgetControl,
-            (BuildContext context, int index) => _renderItem(pullLoadWidgetControl.dataList[index]),
-            handleRefresh,
-            onLoadMore,
-            refreshKey: refreshIndicatorKey,
+          body: BlocProvider<TrendBloc>(
+            bloc: trendBloc,
+            child: GSYPullLoadWidget(
+              bloc.pullLoadWidgetControl,
+              (BuildContext context, int index) => _renderItem(bloc.dataList[index]),
+              handleRefresh,
+              onLoadMore,
+              refreshKey: refreshIndicatorKey,
+            ),
           ),
         );
       },

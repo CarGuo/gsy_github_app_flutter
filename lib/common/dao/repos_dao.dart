@@ -28,8 +28,6 @@ import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/github_trending.dart';
-import 'package:gsy_github_app_flutter/common/redux/trend_redux.dart';
-import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -47,32 +45,39 @@ class ReposDao {
    * @param since 数据时长， 本日，本周，本月
    * @param languageType 语言
    */
-  static getTrendDao(Store store, {since = 'daily', languageType, page = 0, needDb = true}) async {
+  static getTrendDao({since = 'daily', languageType, page = 0, needDb = true}) async {
     TrendRepositoryDbProvider provider = new TrendRepositoryDbProvider();
     String languageTypeDb = languageType ?? "*";
-    List<TrendingRepoModel> list = await provider.getData(languageTypeDb, since);
-    if (list != null && list.length > 0) {
-      store.dispatch(new RefreshTrendAction(list));
-    }
-    String url = Address.trending(since, languageType);
-    var res = await new GitHubTrending().fetchTrending(url);
-    if (res != null && res.result && res.data.length > 0) {
-      List<TrendingRepoModel> list = new List();
-      var data = res.data;
-      if (data == null || data.length == 0) {
+
+    next() async {
+      String url = Address.trending(since, languageType);
+      var res = await new GitHubTrending().fetchTrending(url);
+      if (res != null && res.result && res.data.length > 0) {
+        List<TrendingRepoModel> list = new List();
+        var data = res.data;
+        if (data == null || data.length == 0) {
+          return new DataResult(null, false);
+        }
+        if (needDb) {
+          provider.insert(languageTypeDb, since, json.encode(data));
+        }
+        for (int i = 0; i < data.length; i++) {
+          TrendingRepoModel model = data[i];
+          list.add(model);
+        }
+        return new DataResult(list, true);
+      } else {
         return new DataResult(null, false);
       }
-      if (needDb) {
-        provider.insert(languageTypeDb, since, json.encode(data));
+    }
+
+    if (needDb) {
+      List<TrendingRepoModel> list = await provider.getData(languageTypeDb, since);
+      if (list != null && list.length > 0) {
+        return await next();
       }
-      for (int i = 0; i < data.length; i++) {
-        TrendingRepoModel model = data[i];
-        list.add(model);
-      }
-      store.dispatch(new RefreshTrendAction(list));
-      return new DataResult(list, true);
-    } else {
-      return new DataResult(null, false);
+      DataResult dataResult = new DataResult(list, true, next: next());
+      return dataResult;
     }
   }
 
@@ -607,12 +612,7 @@ class ReposDao {
         ? Address.getReposRelease(userName, reposName) + Address.getPageParams("?", page)
         : Address.getReposTag(userName, reposName) + Address.getPageParams("?", page);
 
-    var res = await httpManager.netFetch(
-        url,
-        null,
-        {"Accept": (needHtml ? 'application/vnd.github.html,application/vnd.github.VERSION.raw' : "")},
-        null
-    );
+    var res = await httpManager.netFetch(url, null, {"Accept": (needHtml ? 'application/vnd.github.html,application/vnd.github.VERSION.raw' : "")}, null);
     if (res != null && res.result && res.data.length > 0) {
       List<Release> list = new List();
       var dataList = res.data;
@@ -716,8 +716,6 @@ class ReposDao {
       return new DataResult(null, false);
     }
   }
-
-
 
   /**
    * 获取阅读历史
