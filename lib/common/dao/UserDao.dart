@@ -36,9 +36,9 @@ class UserDao {
       "client_id": NetConfig.CLIENT_ID,
       "client_secret": NetConfig.CLIENT_SECRET
     };
-    HttpManager.clearAuthorization();
+    httpManager.clearAuthorization();
 
-    var res = await HttpManager.netFetch(Address.getAuthorization(), json.encode(requestParams), null, new Options(method: "post"));
+    var res = await httpManager.netFetch(Address.getAuthorization(), json.encode(requestParams), null, new Options(method: "post"));
     var resultData = null;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
@@ -94,9 +94,9 @@ class UserDao {
     next() async {
       var res;
       if (userName == null) {
-        res = await HttpManager.netFetch(Address.getMyUserInfo(), null, null, null);
+        res = await httpManager.netFetch(Address.getMyUserInfo(), null, null, null);
       } else {
-        res = await HttpManager.netFetch(Address.getUserInfo(userName), null, null, null);
+        res = await httpManager.netFetch(Address.getUserInfo(userName), null, null, null);
       }
       if (res != null && res.result) {
         String starred = "---";
@@ -133,7 +133,7 @@ class UserDao {
   }
 
   static clearAll(Store store) async {
-    HttpManager.clearAuthorization();
+    httpManager.clearAuthorization();
     LocalStorage.remove(Config.USER_INFO);
     store.dispatch(new UpdateUserAction(User.empty()));
   }
@@ -143,7 +143,7 @@ class UserDao {
    */
   static getUserStaredCountNet(userName) async {
     String url = Address.userStar(userName, null) + "&per_page=1";
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.headers != null) {
       try {
         List<String> link = res.headers['link'];
@@ -170,7 +170,7 @@ class UserDao {
 
     next() async {
       String url = Address.getUserFollower(userName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<User> list = new List();
         var data = res.data;
@@ -207,7 +207,7 @@ class UserDao {
     UserFollowedDbProvider provider = new UserFollowedDbProvider();
     next() async {
       String url = Address.getUserFollow(userName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<User> list = new List();
         var data = res.data;
@@ -243,7 +243,7 @@ class UserDao {
   static getNotifyDao(bool all, bool participating, page) async {
     String tag = (!all && !participating) ? '?' : "&";
     String url = Address.getNotifation(all, participating) + Address.getPageParams(tag, page);
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<Notification> list = new List();
       var data = res.data;
@@ -264,7 +264,7 @@ class UserDao {
    */
   static setNotificationAsReadDao(id) async {
     String url = Address.setNotificationAsRead(id);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PATCH"), noTip: true);
+    var res = await httpManager.netFetch(url, null, null, new Options(method: "PATCH"), noTip: true);
     return res;
   }
 
@@ -273,7 +273,7 @@ class UserDao {
    */
   static setAllNotificationAsReadDao() async {
     String url = Address.setAllNotificationAsRead();
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: "PUT", contentType: ContentType.text));
+    var res = await httpManager.netFetch(url, null, null, new Options(method: "PUT", contentType: ContentType.text));
     return new DataResult(res.data, res.result);
   }
 
@@ -282,7 +282,7 @@ class UserDao {
    */
   static checkFollowDao(name) async {
     String url = Address.doFollow(name);
-    var res = await HttpManager.netFetch(url, null, null, new Options(contentType: ContentType.text), noTip: true);
+    var res = await httpManager.netFetch(url, null, null, new Options(contentType: ContentType.text), noTip: true);
     return new DataResult(res.data, res.result);
   }
 
@@ -291,7 +291,7 @@ class UserDao {
    */
   static doFollowDao(name, bool followed) async {
     String url = Address.doFollow(name);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: !followed ? "PUT" : "DELETE"), noTip: true);
+    var res = await httpManager.netFetch(url, null, null, new Options(method: !followed ? "PUT" : "DELETE"), noTip: true);
     return new DataResult(res.data, res.result);
   }
 
@@ -300,7 +300,7 @@ class UserDao {
    */
   static getMemberDao(userName, page) async {
     String url = Address.getMember(userName) + Address.getPageParams("?", page);
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<User> list = new List();
       var data = res.data;
@@ -321,7 +321,7 @@ class UserDao {
    */
   static updateUserDao(params, Store store) async {
     String url = Address.getMyUserInfo();
-    var res = await HttpManager.netFetch(url, params, null, new Options(method: "PATCH"));
+    var res = await httpManager.netFetch(url, params, null, new Options(method: "PATCH"));
     if (res != null && res.result) {
       var localResult = await getUserInfoLocal();
       User newUser = User.fromJson(res.data);
@@ -340,7 +340,7 @@ class UserDao {
     UserOrgsDbProvider provider = new UserOrgsDbProvider();
     next() async {
       String url = Address.getUserOrgs(userName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<UserOrg> list = new List();
         var data = res.data;
