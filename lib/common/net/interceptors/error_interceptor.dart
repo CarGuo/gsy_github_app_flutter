@@ -12,7 +12,6 @@ const NOT_TIP_KEY = "noTip";
  * on 2019/3/23.
  */
 class ErrorInterceptors extends InterceptorsWrapper {
-
   final Dio _dio;
 
   ErrorInterceptors(this._dio);
@@ -21,8 +20,9 @@ class ErrorInterceptors extends InterceptorsWrapper {
   onRequest(RequestOptions options) async {
     //没有网络
     var connectivityResult = await (new Connectivity().checkConnectivity());
+    var noTip = options.headers[NOT_TIP_KEY];
     if (connectivityResult == ConnectivityResult.none) {
-      return _dio.reject(DioError(response: Response(statusCode: Code.NETWORK_ERROR)));
+      return _dio.resolve(new ResultData(Code.errorHandleFunction(Code.NETWORK_ERROR, "", noTip ?? false), false, Code.NETWORK_ERROR));
     }
     return options;
   }
@@ -30,7 +30,8 @@ class ErrorInterceptors extends InterceptorsWrapper {
   @override
   onError(DioError e) {
     Response errorResponse;
-    var noTip = e.request.headers[NOT_TIP_KEY];
+    print("………………………………");
+    var noTip = e.response != null ? e.response.headers[NOT_TIP_KEY] : true;
     if (e.response != null) {
       errorResponse = e.response;
     } else {
