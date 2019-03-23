@@ -30,8 +30,6 @@ class FlutterReduxApp extends StatelessWidget {
     ///初始化数据
     initialState: new GSYState(
         userInfo: User.empty(),
-        eventList: new List(),
-        trendList: new List(),
         themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
         locale: Locale('zh', 'CH')),
   );

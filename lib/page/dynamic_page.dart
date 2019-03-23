@@ -1,16 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
+import 'package:gsy_github_app_flutter/bloc/base/base_bloc.dart';
+import 'package:gsy_github_app_flutter/bloc/dynamic_bloc.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/widget/event_item.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_bloc_list_state.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_pull_new_load_widget.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -24,47 +22,26 @@ class DynamicPage extends StatefulWidget {
 }
 
 class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin<DynamicPage>, GSYListState<DynamicPage>, WidgetsBindingObserver {
-  @override
-  Future<Null> handleRefresh() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page = 1;
-    var result = await EventDao.getEventReceived(_getStore(), page: page, needDb: true);
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null && result.length == Config.PAGE_SIZE);
-    });
-    isLoading = false;
-    return null;
-  }
-
-  @override
-  Future<Null> onLoadMore() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    page++;
-    var result = await EventDao.getEventReceived(_getStore(), page: page);
-    setState(() {
-      pullLoadWidgetControl.needLoadMore = (result != null);
-    });
-    isLoading = false;
-    return null;
-  }
+  final DynamicBloc dynamicBloc = new DynamicBloc();
 
   @override
   bool get wantKeepAlive => true;
 
   @override
-  requestRefresh() {}
+  requestRefresh() async {
+    return await dynamicBloc.requestRefresh(_getStore().state.userInfo?.login);
+  }
 
   @override
-  requestLoadMore() {}
+  requestLoadMore() async {
+    return await dynamicBloc.requestLoadMore(_getStore().state.userInfo?.login);
+  }
 
   @override
   bool get isRefreshFirst => false;
+
+  @override
+  BlocListBase get bloc => dynamicBloc;
 
   @override
   void initState() {
@@ -81,8 +58,7 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
 
   @override
   void didChangeDependencies() {
-    pullLoadWidgetControl.dataList = _getStore().state.eventList;
-    if (pullLoadWidgetControl.dataList.length == 0) {
+    if (bloc.getDataLength() == 0) {
       showRefreshLoading();
     }
     super.didChangeDependencies();
@@ -91,7 +67,7 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (pullLoadWidgetControl.dataList.length != 0) {
+      if (bloc.getDataLength() != 0) {
         showRefreshLoading();
       }
     }
@@ -116,25 +92,18 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
-        return GSYPullLoadWidget(
-          pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(pullLoadWidgetControl.dataList[index]),
-          handleRefresh,
-          onLoadMore,
-          refreshKey: refreshIndicatorKey,
+        bloc.changeNeedHeaderStatus(needHeader);
+        return BlocProvider<DynamicBloc>(
+          bloc: dynamicBloc,
+          child: GSYPullLoadWidget(
+            bloc.pullLoadWidgetControl,
+            (BuildContext context, int index) => _renderEventItem(bloc.dataList[index]),
+            handleRefresh,
+            onLoadMore,
+            refreshKey: refreshIndicatorKey,
+          ),
         );
       },
     );
   }
-}
-
-class ModelA {
-  String name;
-  String tag;
-
-  ModelA(this.name, this.tag);
-
-  ModelA.empty();
-
-  ModelA.forName(this.name);
 }
