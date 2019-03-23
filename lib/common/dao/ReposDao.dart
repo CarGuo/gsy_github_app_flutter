@@ -85,7 +85,7 @@ class ReposDao {
 
     next() async {
       String url = Address.getReposDetail(userName, reposName) + "?ref=" + branch;
-      var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
+      var res = await httpManager.netFetch(url, null, {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
       if (res != null && res.result && res.data.length > 0) {
         var data = res.data;
         if (data == null || data.length == 0) {
@@ -126,7 +126,7 @@ class ReposDao {
 
     next() async {
       String url = Address.getReposEvent(userName, reposName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<Event> list = new List();
         var data = res.data;
@@ -162,8 +162,8 @@ class ReposDao {
   static getRepositoryStatusDao(userName, reposName) async {
     String urls = Address.resolveStarRepos(userName, reposName);
     String urlw = Address.resolveWatcherRepos(userName, reposName);
-    var resS = await HttpManager.netFetch(urls, null, null, new Options(contentType: ContentType.text), noTip: true);
-    var resW = await HttpManager.netFetch(urlw, null, null, new Options(contentType: ContentType.text), noTip: true);
+    var resS = await httpManager.netFetch(urls, null, null, new Options(contentType: ContentType.text), noTip: true);
+    var resW = await httpManager.netFetch(urlw, null, null, new Options(contentType: ContentType.text), noTip: true);
     var data = {"star": resS.result, "watch": resW.result};
     return new DataResult(data, true);
   }
@@ -178,7 +178,7 @@ class ReposDao {
 
     next() async {
       String url = Address.getReposCommits(userName, reposName) + Address.getPageParams("?", page) + "&sha=" + branch;
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<RepoCommit> list = new List();
         var data = res.data;
@@ -213,7 +213,7 @@ class ReposDao {
    */
   static getReposFileDirDao(userName, reposName, {path = '', branch, text = false, isHtml = false}) async {
     String url = Address.reposDataDir(userName, reposName, path, branch);
-    var res = await HttpManager.netFetch(
+    var res = await httpManager.netFetch(
       url,
       null,
       //text ? {"Accept": 'application/vnd.github.VERSION.raw'} : {"Accept": 'application/vnd.github.html'},
@@ -252,7 +252,7 @@ class ReposDao {
    */
   static Future<DataResult> doRepositoryStarDao(userName, reposName, star) async {
     String url = Address.resolveStarRepos(userName, reposName);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: !star ? 'PUT' : 'DELETE', contentType: ContentType.text));
+    var res = await httpManager.netFetch(url, null, null, new Options(method: !star ? 'PUT' : 'DELETE', contentType: ContentType.text));
     return Future<DataResult>(() {
       return new DataResult(null, res.result);
     });
@@ -263,7 +263,7 @@ class ReposDao {
    */
   static doRepositoryWatchDao(userName, reposName, watch) async {
     String url = Address.resolveWatcherRepos(userName, reposName);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: !watch ? 'PUT' : 'DELETE', contentType: ContentType.text));
+    var res = await httpManager.netFetch(url, null, null, new Options(method: !watch ? 'PUT' : 'DELETE', contentType: ContentType.text));
     return new DataResult(null, res.result);
   }
 
@@ -276,7 +276,7 @@ class ReposDao {
 
     next() async {
       String url = Address.getReposWatcher(userName, reposName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<User> list = new List();
         var data = res.data;
@@ -314,7 +314,7 @@ class ReposDao {
     RepositoryStarDbProvider provider = new RepositoryStarDbProvider();
     next() async {
       String url = Address.getReposStar(userName, reposName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<User> list = new List();
         var data = res.data;
@@ -352,7 +352,7 @@ class ReposDao {
     RepositoryForkDbProvider provider = new RepositoryForkDbProvider();
     next() async {
       String url = Address.getReposForks(userName, reposName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result && res.data.length > 0) {
         List<Repository> list = new List();
         var dataList = res.data;
@@ -390,7 +390,7 @@ class ReposDao {
     UserStaredDbProvider provider = new UserStaredDbProvider();
     next() async {
       String url = Address.userStar(userName, sort) + Address.getPageParams("&", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result && res.data.length > 0) {
         List<Repository> list = new List();
         var dataList = res.data;
@@ -428,7 +428,7 @@ class ReposDao {
     UserReposDbProvider provider = new UserReposDbProvider();
     next() async {
       String url = Address.userRepos(userName, sort) + Address.getPageParams("&", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result && res.data.length > 0) {
         List<Repository> list = new List();
         var dataList = res.data;
@@ -464,7 +464,7 @@ class ReposDao {
    */
   static createForkDao(userName, reposName) async {
     String url = Address.createFork(userName, reposName);
-    var res = await HttpManager.netFetch(url, null, null, new Options(method: "POST", contentType: ContentType.text));
+    var res = await httpManager.netFetch(url, null, null, new Options(method: "POST", contentType: ContentType.text));
     return new DataResult(null, res.result);
   }
 
@@ -473,7 +473,7 @@ class ReposDao {
    */
   static getBranchesDao(userName, reposName) async {
     String url = Address.getbranches(userName, reposName);
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
       List<String> list = new List();
       var dataList = res.data;
@@ -495,7 +495,7 @@ class ReposDao {
    */
   static getUserRepository100StatusDao(userName) async {
     String url = Address.userRepos(userName, 'pushed') + "&page=1&per_page=100";
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
       int stared = 0;
       for (int i = 0; i < res.data.length; i++) {
@@ -516,8 +516,8 @@ class ReposDao {
 
     next() async {
       String url = Address.readmeFile(userName + '/' + reposName, branch);
-      var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, new Options(contentType: ContentType.text));
-      //var res = await HttpManager.netFetch(url, null, {"Accept": 'application/vnd.github.html'}, new Options(contentType: ContentType.text));
+      var res = await httpManager.netFetch(url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, new Options(contentType: ContentType.text));
+      //var res = await httpManager.netFetch(url, null, {"Accept": 'application/vnd.github.html'}, new Options(contentType: ContentType.text));
       if (res != null && res.result) {
         if (needDb) {
           provider.insert(fullName, branch, res.data);
@@ -552,7 +552,7 @@ class ReposDao {
       q = q + "%2Blanguage%3A$language";
     }
     String url = Address.search(q, sort, order, type, page, pageSize);
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (type == null) {
       if (res != null && res.result && res.data["items"] != null) {
         List<Repository> list = new List();
@@ -590,7 +590,7 @@ class ReposDao {
    */
   static getReposCommitsInfoDao(userName, reposName, sha) async {
     String url = Address.getReposCommitsInfo(userName, reposName, sha);
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       PushCommit pushCommit = PushCommit.fromJson(res.data);
       return new DataResult(pushCommit, true);
@@ -607,7 +607,7 @@ class ReposDao {
         ? Address.getReposRelease(userName, reposName) + Address.getPageParams("?", page)
         : Address.getReposTag(userName, reposName) + Address.getPageParams("?", page);
 
-    var res = await HttpManager.netFetch(
+    var res = await httpManager.netFetch(
         url,
         null,
         {"Accept": (needHtml ? 'application/vnd.github.html,application/vnd.github.VERSION.raw' : "")},
@@ -675,7 +675,7 @@ class ReposDao {
    */
   static getRepositoryIssueStatusDao(userName, repository) async {
     String url = Address.getReposIssue(userName, repository, null, null, null) + "&per_page=1";
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.headers != null) {
       try {
         List<String> link = res.headers['link'];
@@ -699,7 +699,7 @@ class ReposDao {
    */
   static searchTopicRepositoryDao(searchTopic, {page = 0}) async {
     String url = Address.searchTopic(searchTopic) + Address.getPageParams("&", page);
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     var data = (res.data != null && res.data["items"] != null) ? res.data["items"] : res.data;
     if (res != null && res.result && data != null && data.length > 0) {
       List<Repository> list = new List();

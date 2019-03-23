@@ -27,7 +27,7 @@ class EventDao {
     String userName = user.login;
     String url = Address.getEventReceived(userName) + Address.getPageParams("?", page);
 
-    var res = await HttpManager.netFetch(url, null, null, null);
+    var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<Event> list = new List();
       var data = res.data;
@@ -58,7 +58,7 @@ class EventDao {
     UserEventDbProvider provider = new UserEventDbProvider();
     next() async {
       String url = Address.getEvent(userName) + Address.getPageParams("?", page);
-      var res = await HttpManager.netFetch(url, null, null, null);
+      var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<Event> list = new List();
         var data = res.data;
