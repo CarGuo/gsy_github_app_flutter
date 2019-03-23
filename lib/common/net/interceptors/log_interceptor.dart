@@ -33,7 +33,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   onError(DioError err) {
     if (Config.DEBUG) {
       print('请求异常: ' + err.toString());
-      print('请求异常url: ' + err.request.path);
+      print('请求异常信息: ' + err.response?.toString() ?? "");
     }
     return err;
   }
