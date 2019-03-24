@@ -1,5 +1,4 @@
 import 'package:gsy_github_app_flutter/bloc/base/base_bloc.dart';
-import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
 
 /**
@@ -20,4 +19,5 @@ class DynamicBloc extends BlocListBase {
     changeLoadMoreStatus(getLoadMoreStatus(res));
     return res;
   }
+
 }

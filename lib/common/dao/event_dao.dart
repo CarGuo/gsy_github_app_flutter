@@ -84,10 +84,4 @@ class EventDao {
     }
     return await next();
   }
-
-  static clearEvent(Store store) {
-    store.state.eventList.clear();
-
-    /// todo 清理
-  }
 }

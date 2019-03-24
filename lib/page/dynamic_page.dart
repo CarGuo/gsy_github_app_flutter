@@ -92,14 +92,13 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
-        bloc.changeNeedHeaderStatus(needHeader);
         return BlocProvider<DynamicBloc>(
           bloc: dynamicBloc,
           child: GSYPullLoadWidget(
             bloc.pullLoadWidgetControl,
             (BuildContext context, int index) => _renderEventItem(bloc.dataList[index]),
-            handleRefresh,
-            onLoadMore,
+            requestRefresh,
+            requestLoadMore,
             refreshKey: refreshIndicatorKey,
           ),
         );

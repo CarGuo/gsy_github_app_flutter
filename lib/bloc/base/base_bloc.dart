@@ -29,6 +29,8 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
 }
 
 class _BlocProviderState<T> extends State<BlocProvider<BlocBase>> {
+
+
   @override
   void dispose() {
     widget.bloc.dispose();
@@ -39,9 +41,18 @@ class _BlocProviderState<T> extends State<BlocProvider<BlocBase>> {
   Widget build(BuildContext context) {
     return widget.child;
   }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.initState();
+
+  }
 }
 
 abstract class BlocListBase extends BlocBase {
+
+  bool _isShow = false;
 
   int _page = 1;
 
@@ -49,7 +60,15 @@ abstract class BlocListBase extends BlocBase {
 
   @mustCallSuper
   @override
+  void initState() {
+    _isShow = true;
+    pullLoadWidgetControl.dispose();
+  }
+
+  @mustCallSuper
+  @override
   void dispose() {
+    _isShow = false;
     pullLoadWidgetControl.dispose();
   }
 
@@ -68,8 +87,16 @@ abstract class BlocListBase extends BlocBase {
     return (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
   }
 
-  int get page => _page;
+  @protected
+  resolveRefreshResult(res) {
+    if (res != null && res.result) {
+      if (_isShow) {
+        refreshData(res.data);
+      }
+    }
+  }
 
+  int get page => _page;
 
   ///列表数据长度
   int getDataLength() {
@@ -110,5 +137,8 @@ abstract class BlocListBase extends BlocBase {
 }
 
 abstract class BlocBase {
+
+  void initState();
+
   void dispose();
 }

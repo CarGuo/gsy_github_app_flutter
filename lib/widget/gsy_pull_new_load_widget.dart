@@ -17,26 +17,16 @@ class GSYPullLoadWidget extends StatefulWidget {
   ///控制器，比如数据和一些配置
   final GSYPullLoadWidgetControl control;
 
+  ///刷新key
   final Key refreshKey;
 
   GSYPullLoadWidget(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, {this.refreshKey});
 
   @override
-  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
+  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState();
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
-  final IndexedWidgetBuilder itemBuilder;
-
-  final RefreshCallback onLoadMore;
-
-  final RefreshCallback onRefresh;
-
-  final Key refreshKey;
-
-  GSYPullLoadWidgetControl control;
-
-  _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
 
   final ScrollController _scrollController = new ScrollController();
 
@@ -46,12 +36,12 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     _scrollController.addListener(() {
       ///判断当前滑动位置是不是到达底部，触发加载更多回调
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        if (this.control.needLoadMore) {
-          this.onLoadMore?.call();
+        if (widget.control.needLoadMore) {
+          handleLoadMore();
         }
       }
     });
-    control.addListener(() {
+    widget.control.addListener(() {
       setState(() {});
     });
     super.initState();
@@ -62,46 +52,68 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   ///比如多个头部，是否需要空页面，是否需要显示加载更多。
   _getListCount() {
     ///是否需要头部
-    if (control.needHeader) {
+    if (widget.control.needHeader) {
       ///如果需要头部，用Item 0 的 Widget 作为ListView的头部
       ///列表数量大于0时，因为头部和底部加载更多选项，需要对列表数据总数+2
-      return (control.dataList.length > 0) ? control.dataList.length + 2 : control.dataList.length + 1;
+      return (widget.control.dataList.length > 0) ? widget.control.dataList.length + 2 : widget.control.dataList.length + 1;
     } else {
       ///如果不需要头部，在没有数据时，固定返回数量1用于空页面呈现
-      if (control.dataList.length == 0) {
+      if (widget.control.dataList.length == 0) {
         return 1;
       }
 
       ///如果有数据,因为部加载更多选项，需要对列表数据总数+1
-      return (control.dataList.length > 0) ? control.dataList.length + 1 : control.dataList.length;
+      return (widget.control.dataList.length > 0) ? widget.control.dataList.length + 1 : widget.control.dataList.length;
     }
   }
 
   ///根据配置状态返回实际列表渲染Item
   _getItem(int index) {
-    if (!control.needHeader && index == control.dataList.length && control.dataList.length != 0) {
+    if (!widget.control.needHeader && index == widget.control.dataList.length && widget.control.dataList.length != 0) {
       ///如果不需要头部，并且数据不为0，当index等于数据长度时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (control.needHeader && index == _getListCount() - 1 && control.dataList.length != 0) {
+    } else if (widget.control.needHeader && index == _getListCount() - 1 && widget.control.dataList.length != 0) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (!control.needHeader && control.dataList.length == 0) {
+    } else if (!widget.control.needHeader && widget.control.dataList.length == 0) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {
       ///回调外部正常渲染Item，如果这里有需要，可以直接返回相对位置的index
-      return itemBuilder(context, index);
+      return widget.itemBuilder(context, index);
     }
+  }
+
+  @protected
+  Future<Null> handleRefresh() async {
+    if (widget.control.isLoading) {
+      return null;
+    }
+    widget.control.isLoading = true;
+    await widget.onRefresh?.call();
+    widget.control.isLoading = false;
+    return null;
+  }
+
+  @protected
+  Future<Null> handleLoadMore() async {
+    if (widget.control.isLoading) {
+      return null;
+    }
+    widget.control.isLoading = true;
+    await widget.onLoadMore?.call();
+    widget.control.isLoading = false;
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return new RefreshIndicator(
       ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
-      key: refreshKey,
+      key: widget.refreshKey,
 
       ///下拉刷新触发，返回的是一个Future
-      onRefresh: onRefresh,
+      onRefresh: handleRefresh,
       child: new ListView.builder(
         ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
         physics: const AlwaysScrollableScrollPhysics(),
@@ -142,7 +154,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   ///上拉加载更多
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
-    Widget bottomWidget = (control.needLoadMore)
+    Widget bottomWidget = (widget.control.needLoadMore)
         ? new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             ///loading框
             new SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
@@ -208,4 +220,7 @@ class GSYPullLoadWidgetControl extends ChangeNotifier {
   }
 
   get needHeader => _needHeader;
+
+  ///是否加载中
+  bool isLoading = false;
 }
