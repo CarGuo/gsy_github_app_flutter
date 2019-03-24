@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/redux/middleware/epic_middleware.dart';
 import 'package:gsy_github_app_flutter/common/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/redux/theme_redux.dart';
 import 'package:gsy_github_app_flutter/common/redux/locale_redux.dart';
+import 'package:redux/redux.dart';
 
 /**
  * Redux全局State
@@ -43,3 +45,10 @@ GSYState appReducer(GSYState state, action) {
     locale: LocaleReducer(state.locale, action),
   );
 }
+
+
+
+final List<Middleware<GSYState>> middleware = [
+  EpicMiddleware<GSYState>(UserInfoEpic()),
+  UserInfoMiddleware(),
+];

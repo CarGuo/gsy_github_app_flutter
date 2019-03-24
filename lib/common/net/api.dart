@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 import 'dart:collection';
 
@@ -8,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.d
 
 import 'package:gsy_github_app_flutter/common/net/interceptors/response_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/token_interceptor.dart';
+import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 
 ///http请求
 class HttpManager {
@@ -19,7 +21,6 @@ class HttpManager {
   final TokenInterceptors _tokenInterceptors = new TokenInterceptors();
 
   HttpManager() {
-
     _dio.interceptors.add(new HeaderInterceptors());
 
     _dio.interceptors.add(_tokenInterceptors);
@@ -49,13 +50,20 @@ class HttpManager {
       option.headers = headers;
     }
 
-    option.headers[NOT_TIP_KEY] = noTip;
-
     Response response;
     try {
       response = await _dio.request(url, data: params, options: option);
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
+      Response errorResponse;
+      if (e.response != null) {
+        errorResponse = e.response;
+      } else {
+        errorResponse = new Response(statusCode: 666);
+      }
+      if (e.type == DioErrorType.CONNECT_TIMEOUT || e.type == DioErrorType.RECEIVE_TIMEOUT) {
+        errorResponse.statusCode = Code.NETWORK_TIMEOUT;
+      }
+      return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message, noTip), false, errorResponse.statusCode);
     }
     return response.data;
   }

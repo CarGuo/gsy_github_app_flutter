@@ -1,12 +1,17 @@
-
+import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
+import 'package:gsy_github_app_flutter/common/redux/middleware/epic.dart';
+import 'package:gsy_github_app_flutter/common/redux/middleware/epic_store.dart';
 import 'package:redux/redux.dart';
+import 'package:rxdart/rxdart.dart';
 
 /**
  * 用户相关Redux
  * Created by guoshuyu
  * Date: 2018-07-16
  */
+
 /// redux 的 combineReducers, 通过 TypedReducer 将 UpdateUserAction 与 reducers 关联起来
 final UserReducer = combineReducers<User>([
   TypedReducer<User, UpdateUserAction>(_updateLoaded),
@@ -24,5 +29,41 @@ User _updateLoaded(User user, action) {
 ///类名随你喜欢定义，只要通过上面TypedReducer绑定就好
 class UpdateUserAction {
   final User userInfo;
+
   UpdateUserAction(this.userInfo);
+}
+
+class FetchUserAction {
+}
+
+
+class UserInfoMiddleware implements MiddlewareClass<GSYState> {
+
+  @override
+  void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
+    if (action is UpdateUserAction) {
+      print("*********** UserInfoMiddleware *********** ");
+    }
+    // Make sure to forward actions to the next middleware in the chain!
+    next(action);
+  }
+}
+
+class UserInfoEpic implements EpicClass<GSYState> {
+  @override
+  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
+    return Observable(actions)
+    // to UpdateUserAction actions
+        .ofType(TypeToken<FetchUserAction>())
+    // Don't start  until the 10ms
+        .debounce(new Duration(milliseconds: 10))
+        .switchMap((action) => _loadUserInfo());
+  }
+
+  // Use the async* function to make easier
+  Stream<dynamic> _loadUserInfo() async* {
+    print("*********** userInfoEpic _loadUserInfo ***********");
+    var res = await UserDao.getUserInfo(null);
+    yield UpdateUserAction(res.data);
+  }
 }

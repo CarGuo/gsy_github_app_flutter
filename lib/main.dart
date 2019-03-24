@@ -27,11 +27,10 @@ class FlutterReduxApp extends StatelessWidget {
   /// initialState 初始化 State
   final store = new Store<GSYState>(
     appReducer,
+    middleware: middleware,
+
     ///初始化数据
-    initialState: new GSYState(
-        userInfo: User.empty(),
-        themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
-        locale: Locale('zh', 'CH')),
+    initialState: new GSYState(userInfo: User.empty(), themeData: CommonUtils.getThemeData(GSYColors.primarySwatch), locale: Locale('zh', 'CH')),
   );
 
   FlutterReduxApp({Key key}) : super(key: key);
@@ -43,6 +42,7 @@ class FlutterReduxApp extends StatelessWidget {
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         return new MaterialApp(
+
             ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
@@ -86,13 +86,10 @@ class GSYLocalizations extends StatefulWidget {
 }
 
 class _GSYLocalizations extends State<GSYLocalizations> {
-
-
   StreamSubscription stream;
 
   @override
   Widget build(BuildContext context) {
-
     return new StoreBuilder<GSYState>(builder: (context, store) {
       ///通过 StoreBuilder 和 Localizations 实现实时多语言切换
       return new Localizations.override(
@@ -106,7 +103,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   void initState() {
     super.initState();
-    stream =  Code.eventBus.on<HttpErrorEvent>().listen((event) {
+    stream = Code.eventBus.on<HttpErrorEvent>().listen((event) {
       errorHandleFunction(event.code, event.message);
     });
   }
@@ -114,7 +111,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   void dispose() {
     super.dispose();
-    if(stream != null) {
+    if (stream != null) {
       stream.cancel();
       stream = null;
     }

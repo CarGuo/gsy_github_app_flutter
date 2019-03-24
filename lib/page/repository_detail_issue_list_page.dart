@@ -26,7 +26,6 @@ class RepositoryDetailIssuePage extends StatefulWidget {
   _RepositoryDetailIssuePageState createState() => _RepositoryDetailIssuePageState(userName, reposName);
 }
 
-
 class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     with AutomaticKeepAliveClientMixin<RepositoryDetailIssuePage>, GSYListState<RepositoryDetailIssuePage> {
   final String userName;
@@ -122,15 +121,18 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: new Container(
+          width: 52,
+          height: 52,
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(offset: Offset(0, 1), color: Theme.of(context).primaryColorDark, blurRadius: 1.0)],
+              color: Color(GSYColors.primaryValue),
+              borderRadius: BorderRadius.all(Radius.circular(25))),
           child: new Icon(
             GSYICons.ISSUE_ITEM_ADD,
-            size: 55.0,
+            size: 50.0,
             color: Color(GSYColors.textWhite),
-          ),
-          onPressed: () {
-            _createIssue();
-          }),
+          )),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),
