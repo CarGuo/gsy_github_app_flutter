@@ -84,12 +84,14 @@ class _MyPageState extends BasePersonState<MyPage> {
   @override
   requestRefresh() async {
     if (_getUserName() != null) {
-      UserDao.getUserInfo(null).then((res) {
+      /*UserDao.getUserInfo(null).then((res) {
         if (res != null && res.result) {
           _getStore()?.dispatch(UpdateUserAction(res.data));
-          getUserOrg(_getUserName());
+          //todo getUserOrg(_getUserName());
         }
-      });
+      });*/
+      _getStore().dispatch(FetchUserAction());
+      getUserOrg(_getUserName());
       ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
         if (res != null && res.result) {
           if (isShow) {

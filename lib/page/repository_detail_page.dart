@@ -43,8 +43,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final ReposDetailModel reposDetailModel = new ReposDetailModel();
 
-  final PageController topPageControl = new PageController();
-
   final OptionControl titleOptionControl = new OptionControl();
 
   GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
@@ -136,12 +134,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
       CommonUtils.getLocale(context).repos_tab_file,
     ];
     renderItem(String item, int i) {
-      return new FlatButton(
+      return new Container(
           padding: EdgeInsets.all(0.0),
-          onPressed: () {
-            reposDetailModel.setCurrentIndex(i);
-            topPageControl.jumpTo(MediaQuery.of(context).size.width * i);
-          },
           child: new Text(
             item,
             style: GSYConstant.smallTextWhite,
@@ -220,7 +214,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
               new RepositoryDetailIssuePage(userName, reposName),
               new RepositoryDetailFileListPage(userName, reposName, key: fileListKey),
             ],
-            topPageControl: topPageControl,
             backgroundColor: GSYColors.primarySwatch,
             indicatorColor: Color(GSYColors.white),
             title: new GSYTitleBar(
