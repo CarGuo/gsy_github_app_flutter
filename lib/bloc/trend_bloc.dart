@@ -10,6 +10,7 @@ class TrendBloc extends BlocListBase {
     pageReset();
     var res = await ReposDao.getTrendDao(since: selectTime.value, languageType: selectType.value);
     changeLoadMoreStatus(getLoadMoreStatus(res));
+    refreshData(res);
     return res;
   }
 }

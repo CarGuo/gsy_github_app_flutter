@@ -10,6 +10,7 @@ class DynamicBloc extends BlocListBase {
     pageReset();
     var res = await EventDao.getEventReceived(userName, page: page, needDb: true);
     changeLoadMoreStatus(getLoadMoreStatus(res));
+    refreshData(res);
     return res;
   }
 
@@ -17,6 +18,7 @@ class DynamicBloc extends BlocListBase {
     pageUp();
     var res = await EventDao.getEventReceived(userName, page: page);
     changeLoadMoreStatus(getLoadMoreStatus(res));
+    loadMoreData(res);
     return res;
   }
 

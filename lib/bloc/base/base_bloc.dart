@@ -62,7 +62,6 @@ abstract class BlocListBase extends BlocBase {
   @override
   void initState() {
     _isShow = true;
-    pullLoadWidgetControl.dispose();
   }
 
   @mustCallSuper
@@ -87,15 +86,6 @@ abstract class BlocListBase extends BlocBase {
     return (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
   }
 
-  @protected
-  resolveRefreshResult(res) {
-    if (res != null && res.result) {
-      if (_isShow) {
-        refreshData(res.data);
-      }
-    }
-  }
-
   int get page => _page;
 
   ///列表数据长度
@@ -117,16 +107,16 @@ abstract class BlocListBase extends BlocBase {
   get dataList => pullLoadWidgetControl.dataList;
 
   ///刷新列表数据
-  refreshData(List listData) {
-    if (pullLoadWidgetControl.dataList != null) {
-      pullLoadWidgetControl.dataList = listData;
+  refreshData(res) {
+    if (res != null) {
+      pullLoadWidgetControl.dataList = res.data;
     }
   }
 
   ///加载更多数据
-  loadMoreData(List listData) {
-    if (listData != null) {
-      pullLoadWidgetControl.addList(listData);
+  loadMoreData(res) {
+    if (res != null) {
+      pullLoadWidgetControl.addList(res.data);
     }
   }
 

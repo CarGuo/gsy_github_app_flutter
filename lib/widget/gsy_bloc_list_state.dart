@@ -23,11 +23,11 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
 
   ///下拉刷新数据
   @protected
-  requestRefresh();
+  Future requestRefresh();
 
   ///上拉更多请求数据
   @protected
-  requestLoadMore();
+  Future requestLoadMore();
 
   ///是否需要第一次进入自动刷新
   @protected
