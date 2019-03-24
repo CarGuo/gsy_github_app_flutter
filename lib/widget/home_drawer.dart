@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/ab/sql_manager.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
@@ -192,7 +191,6 @@ class HomeDrawer extends StatelessWidget {
                               textColor: Color(GSYColors.textWhite),
                               onPress: () {
                                 UserDao.clearAll(store);
-                                EventDao.clearEvent(store);
                                 SqlManager.close();
                                 NavigatorUtils.goLogin(context);
                               },

@@ -13,64 +13,12 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
-  bool isShow = false;
-
-  bool isLoading = false;
-
-
+  ///显示刷新
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
       refreshIndicatorKey.currentState.show().then((e) {});
       return true;
     });
-  }
-
-  @protected
-  resolveRefreshResult(res) {
-    if (res != null && res.result) {
-      if (isShow) {
-        bloc.refreshData(res.data);
-      }
-    }
-  }
-
-  @protected
-  Future<Null> handleRefresh() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    var res = await requestRefresh();
-    resolveRefreshResult(res);
-    if (res.next != null) {
-      var resNext = await res.next;
-      resolveRefreshResult(resNext);
-    }
-    isLoading = false;
-    return null;
-  }
-
-  @protected
-  Future<Null> onLoadMore() async {
-    if (isLoading) {
-      return null;
-    }
-    isLoading = true;
-    var res = await requestLoadMore();
-    if (res != null && res.result) {
-      if (isShow) {
-        bloc.loadMoreData(res.data);
-      }
-    }
-    isLoading = false;
-    return null;
-  }
-
-  @protected
-  clearData() {
-    if (isShow) {
-      bloc.clearData();
-    }
   }
 
   ///下拉刷新数据
@@ -98,17 +46,10 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
 
   @override
   void initState() {
-    isShow = true;
     super.initState();
+    bloc.changeNeedHeaderStatus(needHeader);
     if (bloc.getDataLength() == 0 && isRefreshFirst) {
       showRefreshLoading();
     }
-  }
-
-  @override
-  void dispose() {
-    isShow = false;
-    isLoading = false;
-    super.dispose();
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/bloc/base/base_bloc.dart';
 import 'package:gsy_github_app_flutter/bloc/trend_bloc.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -55,7 +54,7 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
         child: new Row(
           children: <Widget>[
             _renderHeaderPopItem(selectTime.name, trendTime(context), (TrendTypeModel result) {
-              if (isLoading) {
+              if (bloc.pullLoadWidgetControl.isLoading) {
                 Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
@@ -66,7 +65,7 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
             }),
             new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
             _renderHeaderPopItem(selectType.name, trendType(context), (TrendTypeModel result) {
-              if (isLoading) {
+              if (bloc.pullLoadWidgetControl.isLoading) {
                 Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
@@ -133,17 +132,10 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    clearData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
-        bloc.changeNeedHeaderStatus(needHeader);
         return new Scaffold(
           backgroundColor: Color(GSYColors.mainBackgroundColor),
           appBar: new AppBar(
@@ -157,8 +149,8 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
             child: GSYPullLoadWidget(
               bloc.pullLoadWidgetControl,
               (BuildContext context, int index) => _renderItem(bloc.dataList[index]),
-              handleRefresh,
-              onLoadMore,
+              requestRefresh,
+              requestLoadMore,
               refreshKey: refreshIndicatorKey,
             ),
           ),
