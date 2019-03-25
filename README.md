@@ -55,13 +55,13 @@
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
 >### 3、重点：你需要自己在lib/common/config/目录下 创建一个`ignoreConfig.dart`文件，然后输入你申请的Github client_id 和 client_secret。
-
+```dart
      class NetConfig {
        static const CLIENT_ID = "xxxx";
      
        static const CLIENT_SECRET = "xxxxxxxxxxx";
      }
-
+```
 
    [      注册 Github APP 传送门](https://github.com/settings/applications/new)，当然，前提是你现有一个github账号(～￣▽￣)～ 。
 
