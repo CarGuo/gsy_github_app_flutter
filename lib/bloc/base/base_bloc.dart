@@ -86,6 +86,15 @@ abstract class BlocListBase extends BlocBase {
     return (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
   }
 
+  @protected
+  doNext(res) async {
+    if (res.next != null) {
+      var resNext = await res.next;
+      changeLoadMoreStatus(getLoadMoreStatus(resNext));
+      refreshData(resNext);
+    }
+  }
+
   int get page => _page;
 
   ///列表数据长度
