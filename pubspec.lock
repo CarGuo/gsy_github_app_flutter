@@ -15,6 +15,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.35.3"
+  android_intent:
+    dependency: "direct main"
+    description:
+      name: android_intent
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.0+1"
   args:
     dependency: transitive
     description:
@@ -459,6 +466,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.1"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.0"
   plugin:
     dependency: transitive
     description:

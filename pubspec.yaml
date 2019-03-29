@@ -35,6 +35,7 @@ dependencies:
   scoped_model: ^1.0.1
   package_info: ^0.4.0+1
   rxdart: ^0.21.0
+  android_intent: ^0.3.0
 
 dev_dependencies:
   build_runner: ^1.2.8
