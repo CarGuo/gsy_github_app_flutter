@@ -11,6 +11,7 @@ class DynamicBloc extends BlocListBase {
     var res = await EventDao.getEventReceived(userName, page: page, needDb: true);
     changeLoadMoreStatus(getLoadMoreStatus(res));
     refreshData(res);
+    await doNext(res);
     return res;
   }
 
