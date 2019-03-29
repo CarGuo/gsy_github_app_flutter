@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -20,21 +22,17 @@ import 'package:gsy_github_app_flutter/widget/home_drawer.dart';
 class HomePage extends StatelessWidget {
   static final String sName = "home";
 
-  /// 单击提示退出
-  Future<bool> _dialogExitApp(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) => new AlertDialog(
-              content: new Text(CommonUtils.getLocale(context).app_back_tip),
-              actions: <Widget>[
-                new FlatButton(onPressed: () => Navigator.of(context).pop(false), child: new Text(CommonUtils.getLocale(context).app_cancel)),
-                new FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                    child: new Text(CommonUtils.getLocale(context).app_ok))
-              ],
-            ));
+  /// 不退出
+  Future<bool> _dialogExitApp(BuildContext context) async {
+    if (Platform.isAndroid) {
+      AndroidIntent intent = AndroidIntent(
+        action: 'android.intent.action.MAIN',
+        category: "android.intent.category.HOME",
+      );
+      await intent.launch();
+    }
+
+    return Future.value(false);
   }
 
   _renderTab(icon, text) {
