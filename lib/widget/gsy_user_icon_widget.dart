@@ -24,7 +24,10 @@ class GSYUserIconWidget extends StatelessWidget {
         padding: padding ?? const EdgeInsets.only(top: 4.0, right: 5.0, left: 5.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: new ClipOval(
-          child: Image(
+          child: FadeInImage(
+            placeholder: AssetImage(
+              GSYICons.DEFAULT_USER_ICON,
+            ),
             image: NetworkCacheImage(image),
             //预览图
             fit: BoxFit.fitWidth,
