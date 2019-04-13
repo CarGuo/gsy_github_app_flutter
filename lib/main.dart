@@ -18,8 +18,13 @@ import 'package:redux/redux.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 void main() {
-  runApp(new FlutterReduxApp());
-  PaintingBinding.instance.imageCache.maximumSize = 100;
+  runZoned(() {
+    runApp(FlutterReduxApp());
+    PaintingBinding.instance.imageCache.maximumSize = 100;
+  }, onError: (Object obj, StackTrace stack) {
+    print(obj);
+    print(stack);
+  });
 }
 
 class FlutterReduxApp extends StatelessWidget {

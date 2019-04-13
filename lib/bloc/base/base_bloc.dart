@@ -90,8 +90,10 @@ abstract class BlocListBase extends BlocBase {
   doNext(res) async {
     if (res.next != null) {
       var resNext = await res.next;
-      changeLoadMoreStatus(getLoadMoreStatus(resNext));
-      refreshData(resNext);
+      if(resNext != null && resNext.result) {
+        changeLoadMoreStatus(getLoadMoreStatus(resNext));
+        refreshData(resNext);
+      }
     }
   }
 
