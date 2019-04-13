@@ -192,13 +192,17 @@ class GSYPullLoadWidgetControl extends ChangeNotifier {
 
   set dataList(List value) {
     _dataList.clear();
-    _dataList.addAll(value);
-    notifyListeners();
+    if(value != null) {
+      _dataList.addAll(value);
+      notifyListeners();
+    }
   }
 
   addList(List value) {
-    _dataList.addAll(value);
-    notifyListeners();
+    if(value != null) {
+      _dataList.addAll(value);
+      notifyListeners();
+    }
   }
 
   ///是否需要加载更多

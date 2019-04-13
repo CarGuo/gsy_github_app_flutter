@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/widget/network_cache_image.dart';
 
 /**
  * 头像Icon
@@ -23,11 +24,10 @@ class GSYUserIconWidget extends StatelessWidget {
         padding: padding ?? const EdgeInsets.only(top: 4.0, right: 5.0, left: 5.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: new ClipOval(
-          child: new FadeInImage.assetNetwork(
-            placeholder: GSYICons.DEFAULT_USER_ICON,
+          child: Image(
+            image: NetworkCacheImage(image),
             //预览图
             fit: BoxFit.fitWidth,
-            image: image,
             width: width,
             height: height,
           ),
