@@ -4,22 +4,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/event/HttpErrorEvent.dart';
-import 'package:gsy_github_app_flutter/common/localization/GSYLocalizationsDelegate.dart';
-import 'package:gsy_github_app_flutter/common/redux/GSYState.dart';
+import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
+import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
+import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
-import 'package:gsy_github_app_flutter/common/style/GSYStyle.dart';
-import 'package:gsy_github_app_flutter/common/utils/CommonUtils.dart';
-import 'package:gsy_github_app_flutter/page/HomePage.dart';
-import 'package:gsy_github_app_flutter/page/LoginPage.dart';
-import 'package:gsy_github_app_flutter/page/WelcomePage.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/page/home_page.dart';
+import 'package:gsy_github_app_flutter/page/login_page.dart';
+import 'package:gsy_github_app_flutter/page/welcome_page.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:gsy_github_app_flutter/common/net/Code.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 void main() {
-  runApp(new FlutterReduxApp());
-  PaintingBinding.instance.imageCache.maximumSize = 100;
+  runZoned(() {
+    runApp(FlutterReduxApp());
+    PaintingBinding.instance.imageCache.maximumSize = 100;
+  }, onError: (Object obj, StackTrace stack) {
+    print(obj);
+    print(stack);
+  });
 }
 
 class FlutterReduxApp extends StatelessWidget {
@@ -27,13 +32,10 @@ class FlutterReduxApp extends StatelessWidget {
   /// initialState 初始化 State
   final store = new Store<GSYState>(
     appReducer,
+    middleware: middleware,
+
     ///初始化数据
-    initialState: new GSYState(
-        userInfo: User.empty(),
-        eventList: new List(),
-        trendList: new List(),
-        themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
-        locale: Locale('zh', 'CH')),
+    initialState: new GSYState(userInfo: User.empty(), themeData: CommonUtils.getThemeData(GSYColors.primarySwatch), locale: Locale('zh', 'CH')),
   );
 
   FlutterReduxApp({Key key}) : super(key: key);
@@ -45,6 +47,7 @@ class FlutterReduxApp extends StatelessWidget {
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         return new MaterialApp(
+
             ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
@@ -88,13 +91,10 @@ class GSYLocalizations extends StatefulWidget {
 }
 
 class _GSYLocalizations extends State<GSYLocalizations> {
-
-
   StreamSubscription stream;
 
   @override
   Widget build(BuildContext context) {
-
     return new StoreBuilder<GSYState>(builder: (context, store) {
       ///通过 StoreBuilder 和 Localizations 实现实时多语言切换
       return new Localizations.override(
@@ -108,7 +108,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   void initState() {
     super.initState();
-    stream =  Code.eventBus.on<HttpErrorEvent>().listen((event) {
+    stream = Code.eventBus.on<HttpErrorEvent>().listen((event) {
       errorHandleFunction(event.code, event.message);
     });
   }
@@ -116,7 +116,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   void dispose() {
     super.dispose();
-    if(stream != null) {
+    if (stream != null) {
       stream.cancel();
       stream = null;
     }
