@@ -25,7 +25,7 @@ class ReposItem extends StatelessWidget {
       child: new Center(
         child: new GSYIConText(
           icon,
-          "000000000000000",
+          text,
           GSYConstant.smallSubText,
           Color(GSYColors.subTextColor),
           15.0,
