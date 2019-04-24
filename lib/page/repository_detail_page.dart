@@ -135,7 +135,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     ];
     renderItem(String item, int i) {
       return new Container(
-          padding: EdgeInsets.all(0.0),
+          padding: EdgeInsets.symmetric(vertical: 10),
           child: new Text(
             item,
             style: GSYConstant.smallTextWhite,

@@ -122,17 +122,23 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
       floatingActionButton: new Container(
-          width: 52,
-          height: 52,
-          decoration: BoxDecoration(
-              boxShadow: [BoxShadow(offset: Offset(0, 1), color: Theme.of(context).primaryColorDark, blurRadius: 1.0)],
-              color: Color(GSYColors.primaryValue),
-              borderRadius: BorderRadius.all(Radius.circular(25))),
+        width: 52,
+        height: 52,
+        decoration: BoxDecoration(
+            boxShadow: [BoxShadow(offset: Offset(0, 1), color: Theme.of(context).primaryColorDark, blurRadius: 1.0)],
+            color: Color(GSYColors.primaryValue),
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+        child: InkWell(
+          onTap: () {
+            _createIssue();
+          },
           child: new Icon(
             GSYICons.ISSUE_ITEM_ADD,
             size: 50.0,
             color: Color(GSYColors.textWhite),
-          )),
+          ),
+        ),
+      ),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),
