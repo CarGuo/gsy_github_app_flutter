@@ -19,17 +19,18 @@ class ReposItem extends StatelessWidget {
   ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
   ///仓库item的底部状态，比如star数量等
-  _getBottomItem(IconData icon, String text, {int flex = 2}) {
+  _getBottomItem(BuildContext context, IconData icon, String text, {int flex = 3}) {
     return new Expanded(
       flex: flex,
       child: new Center(
         child: new GSYIConText(
           icon,
-          text,
+          "000000000000000",
           GSYConstant.smallSubText,
           Color(GSYColors.subTextColor),
           15.0,
           padding: 5.0,
+          textWidth: 80,
         ),
       ),
     );
@@ -99,9 +100,9 @@ class ReposItem extends StatelessWidget {
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _getBottomItem(GSYICons.REPOS_ITEM_STAR, reposViewModel.repositoryStar),
-                        _getBottomItem(GSYICons.REPOS_ITEM_FORK, reposViewModel.repositoryFork),
-                        _getBottomItem(GSYICons.REPOS_ITEM_ISSUE, reposViewModel.repositoryWatch, flex: 4),
+                        _getBottomItem(context, GSYICons.REPOS_ITEM_STAR, reposViewModel.repositoryStar),
+                        _getBottomItem(context, GSYICons.REPOS_ITEM_FORK, reposViewModel.repositoryFork),
+                        _getBottomItem(context, GSYICons.REPOS_ITEM_ISSUE, reposViewModel.repositoryWatch, flex: 4),
                       ],
                     ),
                   ],

@@ -108,7 +108,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     if (this._type == GSYTabBarWidget.TOP_TAB) {
       ///顶部tab bar
       return new Scaffold(
-        floatingActionButton: _floatingActionButton,
+        floatingActionButton: SafeArea(child: _floatingActionButton ?? Container()),
         persistentFooterButtons:
             _tarWidgetControl == null ? [] : _tarWidgetControl.footerButton,
         appBar: new AppBar(
