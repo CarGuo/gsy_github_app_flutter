@@ -44,7 +44,7 @@ class GSYIConText extends StatelessWidget {
     Widget showText = (textWidth == -1)
         ? new Container(
             child: new Text(
-              iconText,
+              iconText ?? "",
               style: textStyle.merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
@@ -57,7 +57,7 @@ class GSYIConText extends StatelessWidget {
                 ///显示数量文本
                 new Text(
               iconText,
-              style: textStyle,
+                  style: textStyle.merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ));
