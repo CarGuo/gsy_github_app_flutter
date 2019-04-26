@@ -95,7 +95,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
 | **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **IOS暂无下载** | **残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+| **IOS暂无下载** | [ipa下载地址，需自己改签](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/GSYGithubFllutter-1.3.0.ipa) ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
 
 
 
