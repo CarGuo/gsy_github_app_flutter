@@ -36,6 +36,12 @@
 - 一些布局可以简化重构（但是改起来好懒怎么办？）
 
 
+```!
+因为是偏学习项目，所以项目里会才有各式各样的模式和库，请不要介意
+
+1、 TrendPage ： 目前采用纯 bloc 的 rxdart(stream) + streamBuilder 模式效果
+```
+
 ## 相关文章
 
 * ### [Flutter 完整开发实战详解(一、Dart 语言和 Flutter 基础)](https://juejin.im/entry/5b631e3e51882519861c2ef1 )

@@ -3,20 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/bloc/base/base_bloc.dart';
 import 'package:gsy_github_app_flutter/bloc/trend_bloc.dart';
+import 'package:gsy_github_app_flutter/common/model/TrendingRepoModel.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_bloc_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_new_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/repos_item.dart';
 import 'package:redux/redux.dart';
 
 /**
  * 主页趋势tab页
+ * 目前采用纯 bloc 的 rxdart(stream) + streamBuilder
  * Created by guoshuyu
  * Date: 2018-07-16
  */
@@ -25,12 +24,22 @@ class TrendPage extends StatefulWidget {
   _TrendPageState createState() => _TrendPageState();
 }
 
-class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin<TrendPage>, GSYListState<TrendPage> {
+class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin<TrendPage> {
   static TrendTypeModel selectTime = null;
 
   static TrendTypeModel selectType = null;
 
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   final TrendBloc trendBloc = new TrendBloc();
+
+  ///显示刷新
+  _showRefreshLoading() {
+    new Future.delayed(const Duration(seconds: 0), () {
+      refreshIndicatorKey.currentState.show().then((e) {});
+      return true;
+    });
+  }
 
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
@@ -54,25 +63,25 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
         child: new Row(
           children: <Widget>[
             _renderHeaderPopItem(selectTime.name, trendTime(context), (TrendTypeModel result) {
-              if (bloc.pullLoadWidgetControl.isLoading) {
+              if (trendBloc.isLoading) {
                 Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
               setState(() {
                 selectTime = result;
               });
-              showRefreshLoading();
+              _showRefreshLoading();
             }),
             new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
             _renderHeaderPopItem(selectType.name, trendType(context), (TrendTypeModel result) {
-              if (bloc.pullLoadWidgetControl.isLoading) {
+              if (trendBloc.isLoading) {
                 Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
               setState(() {
                 selectType = result;
               });
-              showRefreshLoading();
+              _showRefreshLoading();
             }),
           ],
         ),
@@ -103,32 +112,48 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
     return list;
   }
 
-  @override
-  requestRefresh() async {
-    return await trendBloc.requestRefresh(selectTime, selectType);
+  Future<void> requestRefresh() async {
+    return trendBloc.requestRefresh(selectTime, selectType);
   }
 
   @override
-  requestLoadMore() async {
-    return null;
-  }
-
-  @override
-  BlocListBase get bloc => trendBloc;
-
-  @override
-  bool get isRefreshFirst => false;
+  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {
-    if (bloc.getDataLength() == 0) {
+    if (!trendBloc.requested) {
       setState(() {
         selectTime = trendTime(context)[0];
         selectType = trendType(context)[0];
       });
-      showRefreshLoading();
+      _showRefreshLoading();
     }
     super.didChangeDependencies();
+  }
+
+  ///空页面
+  Widget _buildEmpty() {
+    var statusBar = MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.bottom;
+    var height = MediaQuery.of(context).size.height - statusBar - bottomArea - kBottomNavigationBarHeight - kToolbarHeight;
+    return SingleChildScrollView(
+      child: new Container(
+        height: height,
+        width: MediaQuery.of(context).size.width,
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {},
+              child: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 70.0, height: 70.0),
+            ),
+            Container(
+              child: Text(CommonUtils.getLocale(context).app_empty, style: GSYConstant.normalText),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -144,16 +169,24 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
             leading: new Container(),
             elevation: 0.0,
           ),
-          body: BlocProvider<TrendBloc>(
-            bloc: trendBloc,
-            child: GSYPullLoadWidget(
-              bloc.pullLoadWidgetControl,
-              (BuildContext context, int index) => _renderItem(bloc.dataList[index]),
-              requestRefresh,
-              requestLoadMore,
-              refreshKey: refreshIndicatorKey,
-            ),
-          ),
+          ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
+          body: StreamBuilder<List<TrendingRepoModel>>(
+              stream: trendBloc.stream,
+              builder: (context, snapShot) {
+                return new RefreshIndicator(
+                  key: refreshIndicatorKey,
+                  onRefresh: requestRefresh,
+                  child: (snapShot.data == null || snapShot.data.length == 0)
+                      ? _buildEmpty()
+                      : new ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return _renderItem(snapShot.data[index]);
+                          },
+                          itemCount: snapShot.data.length,
+                        ),
+                );
+              }),
         );
       },
     );
