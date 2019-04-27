@@ -48,6 +48,7 @@
 * ### [Flutter 完整开发实战详解(八、 实用技巧与填坑)](https://juejin.im/post/5c9e328251882567b91e1cfb)
 * ### [Flutter 完整开发实战详解(九、 深入绘制原理)](https://juejin.im/post/5ca0e0aff265da309728659a)
 * ### [Flutter 完整开发实战详解(十、 深入图片加载流程)](https://juejin.im/post/5cb1896ce51d456e63760449)
+* ### [Flutter 完整开发实战详解(十一、全面深入理解Stream)](https://juejin.im/post/5cc2acf86fb9a0321f042041)
 
 
 Flutter完整开发实战详解(十、 深入图片加载流程)
@@ -95,7 +96,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
 | **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **IOS暂无下载** | **残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+| **IOS暂无下载** | [ipa下载地址，需自己改签](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/GSYGithubFllutter-1.3.0.ipa) ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
 
 
 

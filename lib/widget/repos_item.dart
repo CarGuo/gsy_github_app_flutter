@@ -19,7 +19,8 @@ class ReposItem extends StatelessWidget {
   ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
   ///仓库item的底部状态，比如star数量等
-  _getBottomItem(BuildContext context, IconData icon, String text, {int flex = 3}) {
+  _getBottomItem(BuildContext context, IconData icon, String text,
+      {int flex = 3}) {
     return new Expanded(
       flex: flex,
       child: new Center(
@@ -30,7 +31,9 @@ class ReposItem extends StatelessWidget {
           Color(GSYColors.subTextColor),
           15.0,
           padding: 5.0,
-          textWidth: 80,
+          textWidth: flex == 4
+              ? (MediaQuery.of(context).size.width - 100) / 3
+              : (MediaQuery.of(context).size.width - 100) / 5,
         ),
       ),
     );
@@ -43,7 +46,8 @@ class ReposItem extends StatelessWidget {
           child: new FlatButton(
               onPressed: onPressed,
               child: new Padding(
-                padding: new EdgeInsets.only(left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
+                padding: new EdgeInsets.only(
+                    left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -52,19 +56,22 @@ class ReposItem extends StatelessWidget {
                       children: <Widget>[
                         ///头像
                         new GSYUserIconWidget(
-                            padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+                            padding: const EdgeInsets.only(
+                                top: 0.0, right: 5.0, left: 0.0),
                             width: 40.0,
                             height: 40.0,
                             image: reposViewModel.ownerPic,
                             onPressed: () {
-                              NavigatorUtils.goPerson(context, reposViewModel.ownerName);
+                              NavigatorUtils.goPerson(
+                                  context, reposViewModel.ownerName);
                             }),
                         new Expanded(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               ///仓库名
-                              new Text(reposViewModel.repositoryName, style: GSYConstant.normalTextBold),
+                              new Text(reposViewModel.repositoryName ?? "",
+                                  style: GSYConstant.normalTextBold),
 
                               ///用户名
                               new GSYIConText(
@@ -80,7 +87,8 @@ class ReposItem extends StatelessWidget {
                         ),
 
                         ///仓库语言
-                        new Text(reposViewModel.repositoryType, style: GSYConstant.smallSubText),
+                        new Text(reposViewModel.repositoryType,
+                            style: GSYConstant.smallSubText),
                       ],
                     ),
                     new Container(
@@ -100,9 +108,19 @@ class ReposItem extends StatelessWidget {
                     new Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _getBottomItem(context, GSYICons.REPOS_ITEM_STAR, reposViewModel.repositoryStar),
-                        _getBottomItem(context, GSYICons.REPOS_ITEM_FORK, reposViewModel.repositoryFork),
-                        _getBottomItem(context, GSYICons.REPOS_ITEM_ISSUE, reposViewModel.repositoryWatch, flex: 4),
+                        _getBottomItem(context, GSYICons.REPOS_ITEM_STAR,
+                            reposViewModel.repositoryStar),
+                        new SizedBox(
+                          width: 5,
+                        ),
+                        _getBottomItem(context, GSYICons.REPOS_ITEM_FORK,
+                            reposViewModel.repositoryFork),
+                        new SizedBox(
+                          width: 5,
+                        ),
+                        _getBottomItem(context, GSYICons.REPOS_ITEM_ISSUE,
+                            reposViewModel.repositoryWatch,
+                            flex: 4),
                       ],
                     ),
                   ],
@@ -138,7 +156,7 @@ class ReposViewModel {
 
   ReposViewModel.fromTrendMap(model) {
     ownerName = model.name;
-    if(model.contributors.length > 0) {
+    if (model.contributors.length > 0) {
       ownerPic = model.contributors[0];
     } else {
       ownerPic = "";
