@@ -36,6 +36,10 @@ dependencies:
   package_info: ^0.4.0+1
   rxdart: ^0.21.0
   android_intent: ^0.3.0
+  flutter_lottie:
+    git:
+      url: https://github.com/CarSmallGuo/flutter_lottie.git
+      ref: a59dffd8282746de1c0e463ae12bbd737205aec1
 
 dev_dependencies:
   build_runner: ^1.2.8
@@ -90,6 +94,8 @@ flutter:
     - static/images/logo.png
     - static/images/welcome.png
     - static/images/default_img.png
+    - static/file/rejection.json
+    - static/file/rejection2.json
 
   fonts:
     - family: wxcIconFont
