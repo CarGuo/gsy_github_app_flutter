@@ -55,7 +55,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 **v1.3.2** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 **v1.5.8** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
@@ -77,7 +77,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 
 4、运行之前请注意下
 
->### 1、本地Flutter SDK 版本 v1.3.2 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
+>### 1、本地Flutter SDK 版本 v1.5.8 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
 
 
 
@@ -121,7 +121,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 
 ### 第三方框架
 
->当前 Flutter SDK 版本 v1.3.2
+>当前 Flutter SDK 版本 v1.5.8
 
 | 库                          | 功能             |
 | -------------------------- | -------------- |
@@ -149,6 +149,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 | **path_provider**          | **本地路径**       |
 | **permission_handler**     | **权限**         |
 | **scope_model**            | **状态管理和共享**    |
+| **lottie**                 | **svg动画**    |
 
 ### 进行中：
 
