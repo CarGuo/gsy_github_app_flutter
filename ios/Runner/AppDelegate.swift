@@ -8,8 +8,6 @@ import Flutter
     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
-    FLTWebviewFlutterPlugin.register(with: self.registrar(forPlugin: "FLTWebviewFlutterPlugin"))
-
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

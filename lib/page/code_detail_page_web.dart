@@ -3,14 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:gsy_github_app_flutter/widget/webview/webview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /**
  * 文件代码详情
@@ -110,7 +109,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         ),
         body: WebView(
           initialUrl: data,
-          javaScriptMode: JavaScriptMode.unrestricted,
+          javascriptMode: JavascriptMode.unrestricted,
         ),
       );
     }
@@ -120,7 +119,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       ),
       body: WebView(
         initialUrl: data,
-        javaScriptMode: JavaScriptMode.unrestricted,
+        javascriptMode: JavascriptMode.unrestricted,
       ),
     );
 
