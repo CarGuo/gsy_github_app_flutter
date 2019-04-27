@@ -676,6 +676,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.12"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.6"
   xml:
     dependency: transitive
     description:
