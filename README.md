@@ -37,9 +37,11 @@
 
 
 ```!
+
 因为是偏学习项目，所以项目里会才有各式各样的模式和库，请不要介意
 
 1、 TrendPage ： 目前采用纯 bloc 的 rxdart(stream) + streamBuilder 模式效果
+
 ```
 
 ## 相关文章
@@ -56,8 +58,6 @@
 * ### [Flutter 完整开发实战详解(十、 深入图片加载流程)](https://juejin.im/post/5cb1896ce51d456e63760449)
 * ### [Flutter 完整开发实战详解(十一、全面深入理解Stream)](https://juejin.im/post/5cc2acf86fb9a0321f042041)
 
-
-Flutter完整开发实战详解(十、 深入图片加载流程)
 
 
 ### 编译运行流程
