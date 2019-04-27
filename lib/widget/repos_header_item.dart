@@ -99,144 +99,147 @@ class ReposHeaderItem extends StatelessWidget {
       children: <Widget>[
         new GSYCardItem(
           color: Theme.of(context).primaryColorDark,
-          child: new Container(
-            ///背景头像
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                fit: BoxFit.cover,
-                image: new NetworkImage(reposHeaderViewModel.ownerPic ?? GSYICons.DEFAULT_REMOTE_PIC),
-              ),
-            ),
+          child: new ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
             child: new Container(
-              ///透明黑色遮罩
+              ///背景头像
               decoration: new BoxDecoration(
-                color: Color(GSYColors.primaryDarkValue & 0xA0FFFFFF),
+                image: new DecorationImage(
+                  fit: BoxFit.cover,
+                  image: new NetworkImage(reposHeaderViewModel.ownerPic ?? GSYICons.DEFAULT_REMOTE_PIC),
+                ),
               ),
-              child: new Padding(
-                padding: new EdgeInsets.only(left: 10.0, top: 0.0, right: 10.0, bottom: 10.0),
-                child: new Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    new Row(
-                      children: <Widget>[
-                        ///用户名
-                        new RawMaterialButton(
-                          constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                          padding: new EdgeInsets.all(0.0),
-                          onPressed: () {
-                            NavigatorUtils.goPerson(context, reposHeaderViewModel.ownerName);
-                          },
-                          child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextActionWhiteBold),
-                        ),
-                        new Text(" /", style: GSYConstant.normalTextMitWhiteBold),
+              child: new Container(
+                ///透明黑色遮罩
+                decoration: new BoxDecoration(
+                  color: Color(GSYColors.primaryDarkValue & 0xA0FFFFFF),
+                ),
+                child: new Padding(
+                  padding: new EdgeInsets.only(left: 10.0, top: 0.0, right: 10.0, bottom: 10.0),
+                  child: new Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new Row(
+                        children: <Widget>[
+                          ///用户名
+                          new RawMaterialButton(
+                            constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                            padding: new EdgeInsets.all(0.0),
+                            onPressed: () {
+                              NavigatorUtils.goPerson(context, reposHeaderViewModel.ownerName);
+                            },
+                            child: new Text(reposHeaderViewModel.ownerName, style: GSYConstant.normalTextActionWhiteBold),
+                          ),
+                          new Text(" /", style: GSYConstant.normalTextMitWhiteBold),
 
-                        ///仓库名
-                        new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
-                      ],
-                    ),
-                    new Row(
-                      children: <Widget>[
-                        ///仓库语言
-                        new Text(reposHeaderViewModel.repositoryType ?? "--", style: GSYConstant.smallSubLightText),
-                        new Container(width: 5.3, height: 1.0),
-
-                        ///仓库大小
-                        new Text(reposHeaderViewModel.repositorySize ?? "--", style: GSYConstant.smallSubLightText),
-                        new Container(width: 5.3, height: 1.0),
-
-                        ///仓库协议
-                        new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.smallSubLightText),
-                      ],
-                    ),
-
-                    ///仓库描述
-                    new Container(
-                        child: new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.smallSubLightText),
-                        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-                        alignment: Alignment.topLeft),
-
-                    ///创建状态
-                    new Container(
-                      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
-                      alignment: Alignment.topRight,
-                      child: new RawMaterialButton(
-                        onPressed: () {
-                          if (reposHeaderViewModel.repositoryIsFork) {
-                            NavigatorUtils.goReposDetail(context, reposHeaderViewModel.repositoryParentUser, reposHeaderViewModel.repositoryName);
-                          }
-                        },
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        padding: const EdgeInsets.all(0.0),
-                        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                        child: new Text(_getInfoText(context),
-                            style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.smallActionLightText : GSYConstant.smallSubLightText),
+                          ///仓库名
+                          new Text(" " + reposHeaderViewModel.repositoryName, style: GSYConstant.normalTextMitWhiteBold),
+                        ],
                       ),
-                    ),
-                    new Divider(
-                      color: Color(GSYColors.subTextColor),
-                    ),
-                    new Padding(
-                        padding: new EdgeInsets.all(0.0),
+                      new Row(
+                        children: <Widget>[
+                          ///仓库语言
+                          new Text(reposHeaderViewModel.repositoryType ?? "--", style: GSYConstant.smallSubLightText),
+                          new Container(width: 5.3, height: 1.0),
 
-                        ///创建数值状态
-                        child: new Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            ///star状态
-                            _getBottomItem(
-                              GSYICons.REPOS_ITEM_STAR,
-                              reposHeaderViewModel.repositoryStar,
-                              () {
-                                NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_star",
-                                    userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
-                              },
-                            ),
+                          ///仓库大小
+                          new Text(reposHeaderViewModel.repositorySize ?? "--", style: GSYConstant.smallSubLightText),
+                          new Container(width: 5.3, height: 1.0),
 
-                            ///fork状态
-                            new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
-                            _getBottomItem(
-                              GSYICons.REPOS_ITEM_FORK,
-                              reposHeaderViewModel.repositoryFork,
-                              () {
-                                NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "repository", "repo_fork",
-                                    userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
-                              },
-                            ),
+                          ///仓库协议
+                          new Text(reposHeaderViewModel.license ?? "--", style: GSYConstant.smallSubLightText),
+                        ],
+                      ),
 
-                            ///订阅状态
-                            new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
-                            _getBottomItem(
-                              GSYICons.REPOS_ITEM_WATCH,
-                              reposHeaderViewModel.repositoryWatch,
-                              () {
-                                NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_watcher",
-                                    userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
-                              },
-                            ),
+                      ///仓库描述
+                      new Container(
+                          child: new Text(reposHeaderViewModel.repositoryDes ?? "---", style: GSYConstant.smallSubLightText),
+                          margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+                          alignment: Alignment.topLeft),
 
-                            ///issue状态
-                            new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
-                            _getBottomItem(
-                              GSYICons.REPOS_ITEM_ISSUE,
-                              reposHeaderViewModel.repositoryIssue,
-                              () {
-                                if (reposHeaderViewModel.allIssueCount == null || reposHeaderViewModel.allIssueCount <= 0) {
-                                  return;
-                                }
-                                List<String> list = [
-                                  CommonUtils.getLocale(context).repos_all_issue_count + reposHeaderViewModel.allIssueCount.toString(),
-                                  CommonUtils.getLocale(context).repos_open_issue_count + reposHeaderViewModel.openIssuesCount.toString(),
-                                  CommonUtils.getLocale(context).repos_close_issue_count +
-                                      (reposHeaderViewModel.allIssueCount - reposHeaderViewModel.openIssuesCount).toString(),
-                                ];
-                                CommonUtils.showCommitOptionDialog(context, list, (index) {}, height: 150.0);
-                              },
-                            ),
-                          ],
-                        )),
-                    _renderTopicGroup(context),
-                  ],
+                      ///创建状态
+                      new Container(
+                        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
+                        alignment: Alignment.topRight,
+                        child: new RawMaterialButton(
+                          onPressed: () {
+                            if (reposHeaderViewModel.repositoryIsFork) {
+                              NavigatorUtils.goReposDetail(context, reposHeaderViewModel.repositoryParentUser, reposHeaderViewModel.repositoryName);
+                            }
+                          },
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          padding: const EdgeInsets.all(0.0),
+                          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                          child: new Text(_getInfoText(context),
+                              style: reposHeaderViewModel.repositoryIsFork ? GSYConstant.smallActionLightText : GSYConstant.smallSubLightText),
+                        ),
+                      ),
+                      new Divider(
+                        color: Color(GSYColors.subTextColor),
+                      ),
+                      new Padding(
+                          padding: new EdgeInsets.all(0.0),
+
+                          ///创建数值状态
+                          child: new Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              ///star状态
+                              _getBottomItem(
+                                GSYICons.REPOS_ITEM_STAR,
+                                reposHeaderViewModel.repositoryStar,
+                                () {
+                                  NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_star",
+                                      userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                                },
+                              ),
+
+                              ///fork状态
+                              new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
+                              _getBottomItem(
+                                GSYICons.REPOS_ITEM_FORK,
+                                reposHeaderViewModel.repositoryFork,
+                                () {
+                                  NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "repository", "repo_fork",
+                                      userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                                },
+                              ),
+
+                              ///订阅状态
+                              new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
+                              _getBottomItem(
+                                GSYICons.REPOS_ITEM_WATCH,
+                                reposHeaderViewModel.repositoryWatch,
+                                () {
+                                  NavigatorUtils.gotoCommonList(context, reposHeaderViewModel.repositoryName, "user", "repo_watcher",
+                                      userName: reposHeaderViewModel.ownerName, reposName: reposHeaderViewModel.repositoryName);
+                                },
+                              ),
+
+                              ///issue状态
+                              new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subLightTextColor)),
+                              _getBottomItem(
+                                GSYICons.REPOS_ITEM_ISSUE,
+                                reposHeaderViewModel.repositoryIssue,
+                                () {
+                                  if (reposHeaderViewModel.allIssueCount == null || reposHeaderViewModel.allIssueCount <= 0) {
+                                    return;
+                                  }
+                                  List<String> list = [
+                                    CommonUtils.getLocale(context).repos_all_issue_count + reposHeaderViewModel.allIssueCount.toString(),
+                                    CommonUtils.getLocale(context).repos_open_issue_count + reposHeaderViewModel.openIssuesCount.toString(),
+                                    CommonUtils.getLocale(context).repos_close_issue_count +
+                                        (reposHeaderViewModel.allIssueCount - reposHeaderViewModel.openIssuesCount).toString(),
+                                  ];
+                                  CommonUtils.showCommitOptionDialog(context, list, (index) {}, height: 150.0);
+                                },
+                              ),
+                            ],
+                          )),
+                      _renderTopicGroup(context),
+                    ],
+                  ),
                 ),
               ),
             ),
