@@ -44,6 +44,9 @@
 
 ```
 
+### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
+
+
 ## 相关文章
 
 * ### [Flutter 完整开发实战详解(一、Dart 语言和 Flutter 基础)](https://juejin.im/entry/5b631e3e51882519861c2ef1 )
