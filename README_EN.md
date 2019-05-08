@@ -17,6 +17,8 @@ With the use and feedback of the project, will user experience and function opti
 ```
 -----
 
+### [state manager demo](https://github.com/CarGuo/state_manager_demo)
+
 
 ## Chinese Articles
 
@@ -30,6 +32,9 @@ With the use and feedback of the project, will user experience and function opti
 * ### [Flutter 完整开发实战详解(八、 实用技巧与填坑)](https://juejin.im/post/5c9e328251882567b91e1cfb)
 * ### [Flutter 完整开发实战详解(九、 深入绘制原理)](https://juejin.im/post/5ca0e0aff265da309728659a)
 * ### [Flutter 完整开发实战详解(十、 深入图片加载流程)](https://juejin.im/post/5cb1896ce51d456e63760449)
+* ### [Flutter 完整开发实战详解(十一、全面深入理解Stream)](https://juejin.im/post/5cc2acf86fb9a0321f042041)
+* ### [Flutter 完整开发实战详解(十二、全面深入理解状态管理设计)](https://juejin.im/post/5cc816866fb9a03231209c7c)
+
 
 
 
@@ -40,7 +45,7 @@ With the use and feedback of the project, will user experience and function opti
 
 ### Operation instructions
 
-1. Configure the Flutter development environment (Tag of the current version of Flutter SDK ** v1.3.2 **).
+1. Configure the Flutter development environment (Tag of the current version of Flutter SDK ** v1.5.8 **).
 
 2. Clone code, execute `Packages get'to install third-party packages.
 
@@ -63,7 +68,7 @@ With the use and feedback of the project, will user experience and function opti
 
 4、Be careful
 
->### Local Flutter SDK version v1.3.2 or more. 2. Does the third-party package version in pubspec. yaml correspond to the third-party package version in pubspec. lock?
+>### Local Flutter SDK version v1.5.8 or more. 2. Does the third-party package version in pubspec. yaml correspond to the third-party package version in pubspec. lock?
 
 
 ## Project Structure
@@ -100,7 +105,7 @@ With the use and feedback of the project, will user experience and function opti
 
 ### Third-party framework
 
->Current Flutter SDK version v1.3.2
+>Current Flutter SDK version v1.5.8
 
 | 库                          | 功能             |
 | -------------------------- | -------------- |

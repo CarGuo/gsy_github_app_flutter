@@ -24,8 +24,6 @@ class GSYIConText extends StatelessWidget {
 
   final MainAxisSize mainAxisSize;
 
-  final CrossAxisAlignment crossAxisAlignment;
-
   final double textWidth;
 
   GSYIConText(
@@ -38,18 +36,19 @@ class GSYIConText extends StatelessWidget {
     this.onPressed,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.max,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
     this.textWidth = -1,
   });
 
   @override
   Widget build(BuildContext context) {
     Widget showText = (textWidth == -1)
-        ? new Text(
-            iconText,
-            style: textStyle,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
+        ? new Container(
+            child: new Text(
+              iconText ?? "",
+              style: textStyle.merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           )
         : new Container(
             width: textWidth,
@@ -58,24 +57,27 @@ class GSYIConText extends StatelessWidget {
                 ///显示数量文本
                 new Text(
               iconText,
-              style: textStyle,
+                  style: textStyle.merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ));
 
-    return new Row(
-      mainAxisAlignment: mainAxisAlignment,
-      mainAxisSize: mainAxisSize,
-      crossAxisAlignment: crossAxisAlignment,
-      children: <Widget>[
-        new Icon(
-          iconData,
-          size: iconSize,
-          color: iconColor,
-        ),
-        new Padding(padding: new EdgeInsets.all(padding)),
-        new Expanded(child: showText)
-      ],
+    return new Container(
+      child: new Row(
+        textBaseline: TextBaseline.alphabetic,
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        children: <Widget>[
+          new Icon(
+            iconData,
+            size: iconSize,
+            color: iconColor,
+          ),
+          new Padding(padding: new EdgeInsets.all(padding)),
+          showText
+        ],
+      ),
     );
   }
 }

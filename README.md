@@ -28,12 +28,23 @@
 
 ## 最近回顾项目，发现了不少问题，目前优化调整中：
 
-- Dao层其实可以定制到Bloc层，隔离数据逻辑。
-- 一些页面可以通过FutureBuilder懒加载。
-- 调整redux
-- 自定义图片缓存，使用沙盒手机错误信息
-- 文件命名规范化。
-- 一些布局可以简化重构。
+- Dao层其实可以定制到Bloc层，隔离数据逻辑（已修改部分，但是写Bloc好懒）。
+- bloc 搭配 StreamBuilder （但是改起来好懒怎么办？）
+- 调整 redux，已经完成全局部分调整，是否使用 redux 做局部状态管理？（但是改起来好懒怎么办？）
+- scoped_model 已应用部分（但是改起来好懒怎么办？）
+- 自定义图片缓存（DefaultCacheManager居然用数据库存ID）
+- 一些布局可以简化重构（但是改起来好懒怎么办？）
+
+
+```!
+
+因为是偏学习项目，所以项目里会才有各式各样的模式和库，请不要介意
+
+1、 TrendPage ： 目前采用纯 bloc 的 rxdart(stream) + streamBuilder 模式效果
+
+```
+
+### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
 
 
 ## 相关文章
@@ -48,14 +59,13 @@
 * ### [Flutter 完整开发实战详解(八、 实用技巧与填坑)](https://juejin.im/post/5c9e328251882567b91e1cfb)
 * ### [Flutter 完整开发实战详解(九、 深入绘制原理)](https://juejin.im/post/5ca0e0aff265da309728659a)
 * ### [Flutter 完整开发实战详解(十、 深入图片加载流程)](https://juejin.im/post/5cb1896ce51d456e63760449)
-
-
-Flutter完整开发实战详解(十、 深入图片加载流程)
+* ### [Flutter 完整开发实战详解(十一、全面深入理解Stream)](https://juejin.im/post/5cc2acf86fb9a0321f042041)
+* ### [Flutter 完整开发实战详解(十二、全面深入理解状态管理设计)](https://juejin.im/post/5cc816866fb9a03231209c7c)
 
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 **v1.3.2** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 **v1.5.8** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
@@ -77,7 +87,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 
 4、运行之前请注意下
 
->### 1、本地Flutter SDK 版本 v1.3.2 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
+>### 1、本地Flutter SDK 版本 v1.5.8 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
 
 
 
@@ -95,7 +105,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
 | **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **IOS暂无下载** | **残念(╯‵□′)╯︵┻━┻，第三方太贵，没企业证书。**![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+| **IOS暂无下载** | [ipa下载地址，需自己改签](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/GSYGithubFllutter-1.3.0.ipa) ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
 
 
 
@@ -121,7 +131,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 
 ### 第三方框架
 
->当前 Flutter SDK 版本 v1.3.2
+>当前 Flutter SDK 版本 v1.5.8
 
 | 库                          | 功能             |
 | -------------------------- | -------------- |
@@ -149,6 +159,7 @@ Flutter完整开发实战详解(十、 深入图片加载流程)
 | **path_provider**          | **本地路径**       |
 | **permission_handler**     | **权限**         |
 | **scope_model**            | **状态管理和共享**    |
+| **lottie**                 | **svg动画**    |
 
 ### 进行中：
 

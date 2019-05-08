@@ -73,7 +73,7 @@ class ReposDao {
 
     if (needDb) {
       List<TrendingRepoModel> list = await provider.getData(languageTypeDb, since);
-      if (list != null && list.length > 0) {
+      if (list == null || list.length == 0) {
         return await next();
       }
       DataResult dataResult = new DataResult(list, true, next: next());
