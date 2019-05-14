@@ -36,6 +36,8 @@ With the use and feedback of the project, will user experience and function opti
 * ### [Flutter 完整开发实战详解(十二、全面深入理解状态管理设计)](https://juejin.im/post/5cc816866fb9a03231209c7c)
 * ### [Flutter 完整开发实战详解(十三、全面深入触摸和滑动原理)](https://juejin.im/post/5cd54839f265da03b2044c32)
 
+* ### [Flutter 番外篇之面试知识点集锦](https://juejin.im/post/5cd9875ae51d453d022cb662)
+
 
 [![GitHub stars](https://img.shields.io/github/stars/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/network)
