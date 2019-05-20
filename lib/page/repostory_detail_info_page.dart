@@ -26,29 +26,30 @@ class ReposDetailInfoPage extends StatefulWidget {
 
   final OptionControl titleOptionControl;
 
-  ReposDetailInfoPage(this.userName, this.reposName, this.titleOptionControl, {Key key}) : super(key: key);
+  ReposDetailInfoPage(this.userName, this.reposName, this.titleOptionControl,
+      {Key key})
+      : super(key: key);
 
   @override
-  ReposDetailInfoPageState createState() => ReposDetailInfoPageState(userName, reposName, titleOptionControl);
+  ReposDetailInfoPageState createState() => ReposDetailInfoPageState();
 }
 
-class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with AutomaticKeepAliveClientMixin<ReposDetailInfoPage>, GSYListState<ReposDetailInfoPage> {
-  final String userName;
-
-  final String reposName;
-
-  final OptionControl titleOptionControl;
-
+class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
+    with
+        AutomaticKeepAliveClientMixin<ReposDetailInfoPage>,
+        GSYListState<ReposDetailInfoPage> {
   Repository repository = Repository.empty();
 
   int selectIndex = 0;
 
-  ReposDetailInfoPageState(this.userName, this.reposName, this.titleOptionControl);
+  ReposDetailInfoPageState();
 
   ///渲染时间Item或者提交Item
   _renderEventItem(index) {
     if (index == 0) {
-      return new ReposHeaderItem(ReposHeaderViewModel.fromHttpMap(userName, reposName, repository), (index) {
+      return new ReposHeaderItem(
+          ReposHeaderViewModel.fromHttpMap(
+              widget.userName, widget.reposName, repository), (index) {
         selectIndex = index;
         clearData();
         showRefreshLoading();
@@ -61,7 +62,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
         EventViewModel.fromCommitMap(pullLoadWidgetControl.dataList[index - 1]),
         onPressed: () {
           RepoCommit model = pullLoadWidgetControl.dataList[index - 1];
-          NavigatorUtils.goPushDetailPage(context, userName, reposName, model.sha, false);
+          NavigatorUtils.goPushDetailPage(
+              context, widget.userName, widget.reposName, model.sha, false);
         },
         needImage: false,
       );
@@ -69,7 +71,10 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
     return new EventItem(
       EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index - 1]),
       onPressed: () {
-        EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index - 1], userName + "/" + reposName);
+        EventUtils.ActionUtils(
+            context,
+            pullLoadWidgetControl.dataList[index - 1],
+            widget.userName + "/" + widget.reposName);
       },
     );
   }
@@ -78,16 +83,16 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
   _getDataLogic() async {
     if (selectIndex == 1) {
       return await ReposDao.getReposCommitsDao(
-        userName,
-        reposName,
+        widget.userName,
+        widget.reposName,
         page: page,
         branch: ReposDetailModel.of(context).currentBranch,
         needDb: page <= 1,
       );
     }
     return await ReposDao.getRepositoryEventDao(
-      userName,
-      reposName,
+      widget.userName,
+      widget.reposName,
       page: page,
       branch: ReposDetailModel.of(context).currentBranch,
       needDb: page <= 1,
@@ -96,11 +101,13 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
 
   ///获取详情
   _getReposDetail() {
-    ReposDao.getRepositoryDetailDao(userName, reposName, ReposDetailModel.of(context).currentBranch).then((result) {
+    ReposDao.getRepositoryDetailDao(widget.userName, widget.reposName,
+            ReposDetailModel.of(context).currentBranch)
+        .then((result) {
       if (result != null && result.result) {
         setState(() {
           repository = result.data;
-          titleOptionControl.url = repository.htmlUrl;
+          widget.titleOptionControl.url = repository.htmlUrl;
         });
         return result.next;
       }
@@ -109,7 +116,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage> with Automatic
       if (result != null && result.result) {
         setState(() {
           repository = result.data;
-          titleOptionControl.url = repository.htmlUrl;
+          widget.titleOptionControl.url = repository.htmlUrl;
         });
       }
     });

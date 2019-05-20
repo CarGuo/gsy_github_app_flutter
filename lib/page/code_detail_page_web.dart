@@ -32,37 +32,40 @@ class CodeDetailPageWeb extends StatefulWidget {
 
   final String htmlUrl;
 
-  CodeDetailPageWeb({this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl});
+  CodeDetailPageWeb(
+      {this.title,
+      this.userName,
+      this.reposName,
+      this.path,
+      this.data,
+      this.branch,
+      this.htmlUrl});
 
   @override
-  _CodeDetailPageState createState() => _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
+  _CodeDetailPageState createState() => _CodeDetailPageState(data);
 }
 
 class _CodeDetailPageState extends State<CodeDetailPageWeb> {
-  final String userName;
 
-  final String reposName;
+  String data;
 
-  final String path;
-
-  final String branch;
-
-  final String htmlUrl;
-
-  String data ;
-
-  final String title;
-
-  _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
+  _CodeDetailPageState(this.data);
 
   @override
   void initState() {
     super.initState();
     if (data == null) {
-      ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branch, text: true, isHtml: true).then((res) {
+      ReposDao.getReposFileDirDao(widget.userName, widget.reposName,
+              path: widget.path,
+              branch: widget.branch,
+              text: true,
+              isHtml: true)
+          .then((res) {
         if (res != null && res.result) {
           String data2 = HtmlUtils.resolveHtmlFile(res, "java");
-          String url = new Uri.dataFromString(data2, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString();
+          String url = new Uri.dataFromString(data2,
+                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+              .toString();
           setState(() {
             this.data = url;
           });
@@ -76,9 +79,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
     if (data == null) {
       return new Scaffold(
         appBar: new AppBar(
-          title: GSYTitleBar(
-              title
-          ),
+          title: GSYTitleBar(widget.title),
         ),
         body: new Center(
           child: new Container(
@@ -88,13 +89,11 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new SpinKitDoubleBounce(color: Theme
-                    .of(context)
-                    .primaryColor),
+                new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                 new Container(width: 10.0),
-                new Container(child: new Text(CommonUtils
-                    .getLocale(context)
-                    .loading_text, style: GSYConstant.middleText)),
+                new Container(
+                    child: new Text(CommonUtils.getLocale(context).loading_text,
+                        style: GSYConstant.middleText)),
               ],
             ),
           ),
@@ -105,7 +104,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
     if (Config.USE_NATIVE_WEBVIEW && Platform.isAndroid) {
       return Scaffold(
         appBar: AppBar(
-          title: new Text(title),
+          title: new Text(widget.title),
         ),
         body: WebView(
           initialUrl: data,
@@ -115,13 +114,12 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: new Text(title),
+        title: new Text(widget.title),
       ),
       body: WebView(
         initialUrl: data,
         javascriptMode: JavascriptMode.unrestricted,
       ),
     );
-
   }
 }

@@ -17,6 +17,7 @@ import 'package:gsy_github_app_flutter/page/release_page.dart';
 import 'package:gsy_github_app_flutter/page/repository_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/search_page.dart';
 import 'package:gsy_github_app_flutter/page/user_profile_page.dart';
+
 /**
  * 导航栏
  * Created by guoshuyu
@@ -49,61 +50,73 @@ class NavigatorUtils {
   }
 
   ///仓库详情
-  static Future goReposDetail(BuildContext context, String userName, String reposName) {
+  static Future goReposDetail(
+      BuildContext context, String userName, String reposName) {
     return NavigatorRouter(context, RepositoryDetailPage(userName, reposName));
   }
 
   ///仓库版本列表
-  static Future goReleasePage(BuildContext context, String userName, String reposName, String releaseUrl, String tagUrl) {
+  static Future goReleasePage(BuildContext context, String userName,
+      String reposName, String releaseUrl, String tagUrl) {
     return NavigatorRouter(
         context,
         new ReleasePage(
-                  userName,
-                  reposName,
-                  releaseUrl,
-                  tagUrl,
-                ));
+          userName,
+          reposName,
+          releaseUrl,
+          tagUrl,
+        ));
   }
 
   ///issue详情
-  static Future goIssueDetail(BuildContext context, String userName, String reposName, String num, {bool needRightLocalIcon = false}) {
+  static Future goIssueDetail(
+      BuildContext context, String userName, String reposName, String num,
+      {bool needRightLocalIcon = false}) {
     return NavigatorRouter(
         context,
         new IssueDetailPage(
-                  userName,
-                  reposName,
-                  num,
-                  needHomeIcon: needRightLocalIcon,
-                ));
+          userName,
+          reposName,
+          num,
+          needHomeIcon: needRightLocalIcon,
+        ));
   }
 
   ///通用列表
-  static gotoCommonList(BuildContext context, String title, String showType, String dataType, {String userName, String reposName}) {
+  static gotoCommonList(
+      BuildContext context, String title, String showType, String dataType,
+      {String userName, String reposName}) {
     NavigatorRouter(
         context,
         new CommonListPage(
-                  title,
-                  showType,
-                  dataType,
-                  userName: userName,
-                  reposName: reposName,
-                ));
+          title,
+          showType,
+          dataType,
+          userName: userName,
+          reposName: reposName,
+        ));
   }
 
   ///文件代码详情
   static gotoCodeDetailPage(BuildContext context,
-      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+      {String title,
+      String userName,
+      String reposName,
+      String path,
+      String data,
+      String branch,
+      String htmlUrl}) {
     NavigatorRouter(
         context,
         new CodeDetailPage(
-                  title: title,
-                  userName: userName,
-                  reposName: reposName,
-                  path: path,
-                  data: data,
-                  branch: branch,
-                  htmlUrl: htmlUrl,
-                ));
+          title: title,
+          userName: userName,
+          reposName: reposName,
+          path: path,
+          data: data,
+          branch: branch,
+          htmlUrl: htmlUrl,
+        ));
   }
 
   ///仓库详情通知
@@ -117,48 +130,60 @@ class NavigatorUtils {
   }
 
   ///提交详情
-  static Future goPushDetailPage(BuildContext context, String userName, String reposName, String sha, bool needHomeIcon) {
+  static Future goPushDetailPage(BuildContext context, String userName,
+      String reposName, String sha, bool needHomeIcon) {
     return NavigatorRouter(
         context,
         new PushDetailPage(
-                  sha,
-                  userName,
-                  reposName,
-                  needHomeIcon: needHomeIcon,
-                ));
+          sha,
+          userName,
+          reposName,
+          needHomeIcon: needHomeIcon,
+        ));
   }
 
   ///全屏Web页面
   static Future goGSYWebView(BuildContext context, String url, String title) {
-    return NavigatorRouter(
-      context,
-      new GSYWebView(url, title)
-    );
+    return NavigatorRouter(context, new GSYWebView(url, title));
   }
 
   ///文件代码详情Web
   static gotoCodeDetailPageWeb(BuildContext context,
-      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+      {String title,
+      String userName,
+      String reposName,
+      String path,
+      String data,
+      String branch,
+      String htmlUrl}) {
     NavigatorRouter(
-        context, new CodeDetailPageWeb(
-                  title: title,
-                  userName: userName,
-                  reposName: reposName,
-                  path: path,
-                  data: data,
-                  branch: branch,
-                  htmlUrl: htmlUrl,
-                ));
+        context,
+        new CodeDetailPageWeb(
+          title: title,
+          userName: userName,
+          reposName: reposName,
+          path: path,
+          data: data,
+          branch: branch,
+          htmlUrl: htmlUrl,
+        ));
   }
 
   ///根据平台跳转文件代码详情Web
   static gotoCodeDetailPlatform(BuildContext context,
-      {String title, String userName, String reposName, String path, String data, String branch, String htmlUrl}) {
+      {String title,
+      String userName,
+      String reposName,
+      String path,
+      String data,
+      String branch,
+      String htmlUrl}) {
     NavigatorUtils.gotoCodeDetailPageWeb(
       context,
       title: title,
       reposName: reposName,
       userName: userName,
+      data: data,
       path: path,
       branch: branch,
     );
@@ -174,9 +199,8 @@ class NavigatorUtils {
     NavigatorRouter(context, new UserProfileInfo());
   }
 
-
   static NavigatorRouter(BuildContext context, Widget widget) {
-    return Navigator.push(context, new CupertinoPageRoute(builder: (context) => widget));
+    return Navigator.push(
+        context, new CupertinoPageRoute(builder: (context) => widget));
   }
-
 }

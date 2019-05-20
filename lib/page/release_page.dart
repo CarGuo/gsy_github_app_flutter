@@ -31,24 +31,17 @@ class ReleasePage extends StatefulWidget {
   ReleasePage(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
 
   @override
-  _ReleasePageState createState() => _ReleasePageState(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
+  _ReleasePageState createState() => _ReleasePageState();
 }
 
 
 class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClientMixin<ReleasePage>, GSYListState<ReleasePage> {
-  final String userName;
-
-  final String reposName;
-
-  final String releaseUrl;
-
-  final String tagUrl;
 
   final OptionControl titleOptionControl = new OptionControl();
 
   int selectIndex = 0;
 
-  _ReleasePageState(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
+  _ReleasePageState();
 
   _renderEventItem(index) {
     ReleaseItemViewModel releaseItemViewModel = ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
@@ -60,8 +53,8 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
             NavigatorUtils.gotoCodeDetailPage(
               context,
               title: releaseItemViewModel.actionTitle,
-              userName: userName,
-              reposName: reposName,
+              userName: widget.userName,
+              reposName: widget.reposName,
               data: HtmlUtils.generateHtml(releaseItemViewModel.actionTargetHtml, backgroundColor: GSYColors.webDraculaBackgroundColorString),
             );
           } else {
@@ -86,7 +79,7 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
   }
 
   _getUrl() {
-    return selectIndex == 0 ? releaseUrl : tagUrl;
+    return selectIndex == 0 ? widget.releaseUrl : widget.tagUrl;
   }
 
   _resolveSelectIndex() {
@@ -95,7 +88,7 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
   }
 
   _getDataLogic() async {
-    return await ReposDao.getRepositoryReleaseDao(userName, reposName, page, needHtml: Platform.isAndroid, release: selectIndex == 0);
+    return await ReposDao.getRepositoryReleaseDao(widget.userName, widget.reposName, page, needHtml: Platform.isAndroid, release: selectIndex == 0);
   }
 
   @override
@@ -128,7 +121,7 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         title: GSYTitleBar(
-          reposName,
+          widget.reposName,
           rightWidget: new GSYCommonOptionWidget(titleOptionControl),
         ),
         bottom: new GSYSelectItemWidget(

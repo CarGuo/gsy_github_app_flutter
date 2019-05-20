@@ -31,37 +31,24 @@ class CodeDetailPage extends StatefulWidget {
   CodeDetailPage({this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl});
 
   @override
-  _CodeDetailPageState createState() => _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
+  _CodeDetailPageState createState() => _CodeDetailPageState();
 }
 
 class _CodeDetailPageState extends State<CodeDetailPage> {
-  final String userName;
-
-  final String reposName;
-
-  final String path;
-
-  final String branch;
-
-  final String htmlUrl;
-
-  final String title;
 
   final OptionControl titleOptionControl = new OptionControl();
 
   String data;
 
-  _CodeDetailPageState(this.title, this.userName, this.reposName, this.path, this.data, this.branch, this.htmlUrl);
-
   @override
   void initState() {
     super.initState();
     if (data == null) {
-      ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: branch, text: true).then((res) {
+      ReposDao.getReposFileDirDao(widget.userName, widget.reposName, path: widget.path, branch: widget.branch, text: true).then((res) {
         if (res != null && res.result) {
           setState(() {
             data = res.data;
-            titleOptionControl.url = htmlUrl ?? "";
+            titleOptionControl.url = widget.htmlUrl ?? "";
           });
         }
       });
@@ -70,7 +57,7 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = (data == null)
+    Widget widgetContent = (data == null)
         ? new Center(
             child: new Container(
               width: 200.0,
@@ -94,12 +81,12 @@ class _CodeDetailPageState extends State<CodeDetailPage> {
     return new Scaffold(
       appBar: new AppBar(
         title: GSYTitleBar(
-          title,
+          widget.title,
           rightWidget: new GSYCommonOptionWidget(titleOptionControl),
           needRightLocalIcon: false,
         ),
       ),
-      body: widget,
+      body: widgetContent,
     );
   }
 }
