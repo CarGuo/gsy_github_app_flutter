@@ -23,23 +23,19 @@ class RepositoryDetailReadmePage extends StatefulWidget {
   RepositoryDetailReadmePage(this.userName, this.reposName, {Key key}) : super(key: key);
 
   @override
-  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState(userName, reposName);
+  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState();
 }
 
 
 class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> with AutomaticKeepAliveClientMixin {
-  final String userName;
-
-  final String reposName;
-
   bool isShow = false;
 
   String markdownData;
 
-  RepositoryDetailReadmePageState(this.userName, this.reposName);
+  RepositoryDetailReadmePageState();
 
   refreshReadme() {
-    ReposDao.getRepositoryDetailReadmeDao(userName, reposName, ReposDetailModel.of(context).currentBranch).then((res) {
+    ReposDao.getRepositoryDetailReadmeDao(widget.userName, widget.reposName, ReposDetailModel.of(context).currentBranch).then((res) {
       if (res != null && res.result) {
         if (isShow) {
           setState(() {

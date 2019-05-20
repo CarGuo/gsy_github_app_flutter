@@ -23,27 +23,22 @@ class RepositoryDetailIssuePage extends StatefulWidget {
   RepositoryDetailIssuePage(this.userName, this.reposName);
 
   @override
-  _RepositoryDetailIssuePageState createState() => _RepositoryDetailIssuePageState(userName, reposName);
+  _RepositoryDetailIssuePageState createState() => _RepositoryDetailIssuePageState();
 }
 
 class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     with AutomaticKeepAliveClientMixin<RepositoryDetailIssuePage>, GSYListState<RepositoryDetailIssuePage> {
-  final String userName;
-
-  final String reposName;
 
   String searchText;
   String issueState;
   int selectIndex;
-
-  _RepositoryDetailIssuePageState(this.userName, this.reposName);
 
   _renderEventItem(index) {
     IssueItemViewModel issueItemViewModel = IssueItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return new IssueItem(
       issueItemViewModel,
       onPressed: () {
-        NavigatorUtils.goIssueDetail(context, userName, reposName, issueItemViewModel.number);
+        NavigatorUtils.goIssueDetail(context, widget.userName, widget.reposName, issueItemViewModel.number);
       },
     );
   }
@@ -66,9 +61,9 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
 
   _getDataLogic(String searchString) async {
     if (searchString == null || searchString.trim().length == 0) {
-      return await IssueDao.getRepositoryIssueDao(userName, reposName, issueState, page: page, needDb: page <= 1);
+      return await IssueDao.getRepositoryIssueDao(widget.userName, widget.reposName, issueState, page: page, needDb: page <= 1);
     }
-    return await IssueDao.searchRepositoryIssue(searchString, userName, reposName, this.issueState, page: this.page);
+    return await IssueDao.searchRepositoryIssue(searchString, widget.userName, widget.reposName, this.issueState, page: this.page);
   }
 
   _createIssue() {
@@ -89,7 +84,7 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
       }
       CommonUtils.showLoadingDialog(context);
       //提交修改
-      IssueDao.createIssueDao(userName, reposName, {"title": title, "body": content}).then((result) {
+      IssueDao.createIssueDao(widget.userName, widget.reposName, {"title": title, "body": content}).then((result) {
         showRefreshLoading();
         Navigator.pop(context);
         Navigator.pop(context);

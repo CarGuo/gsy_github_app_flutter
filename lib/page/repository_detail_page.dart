@@ -27,17 +27,13 @@ class RepositoryDetailPage extends StatefulWidget {
   RepositoryDetailPage(this.userName, this.reposName);
 
   @override
-  _RepositoryDetailPageState createState() => _RepositoryDetailPageState(userName, reposName);
+  _RepositoryDetailPageState createState() => _RepositoryDetailPageState();
 }
 
 class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
 
   BottomStatusModel bottomStatusModel;
-
-  final String userName;
-
-  final String reposName;
 
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
@@ -53,10 +49,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   List<String> branchList = new List();
 
-  _RepositoryDetailPageState(this.userName, this.reposName);
 
   _getReposStatus() async {
-    var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
+    var result = await ReposDao.getRepositoryStatusDao(widget.userName, widget.reposName);
     String watchText = result.data["watch"] ? "UnWatch" : "Watch";
     String starText = result.data["star"] ? "UnStar" : "Star";
     IconData watchIcon = result.data["watch"] ? GSYICons.REPOS_ITEM_WATCHED : GSYICons.REPOS_ITEM_WATCH;
@@ -69,7 +64,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   }
 
   _getBranchList() async {
-    var result = await ReposDao.getBranchesDao(userName, reposName);
+    var result = await ReposDao.getBranchesDao(widget.userName, widget.reposName);
     if (result != null && result.result) {
       setState(() {
         branchList = result.data;
@@ -101,21 +96,21 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
         : <Widget>[
             _renderBottomItem(bottomStatusModel.starText, bottomStatusModel.starIcon, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryStarDao(userName, reposName, bottomStatusModel.star).then((result) {
+              return ReposDao.doRepositoryStarDao(widget.userName, widget.reposName, bottomStatusModel.star).then((result) {
                 _refresh();
                 Navigator.pop(context);
               });
             }),
             _renderBottomItem(bottomStatusModel.watchText, bottomStatusModel.watchIcon, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryWatchDao(userName, reposName, bottomStatusModel.watch).then((result) {
+              return ReposDao.doRepositoryWatchDao(widget.userName, widget.reposName, bottomStatusModel.watch).then((result) {
                 _refresh();
                 Navigator.pop(context);
               });
             }),
             _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.createForkDao(userName, reposName).then((result) {
+              return ReposDao.createForkDao(widget.userName, widget.reposName).then((result) {
                 _refresh();
                 Navigator.pop(context);
               });
@@ -164,7 +159,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
               infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/releases";
           tagUrl = infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
         }
-        NavigatorUtils.goReleasePage(context, userName, reposName, releaseUrl, tagUrl);
+        NavigatorUtils.goReleasePage(context, widget.userName, widget.reposName, releaseUrl, tagUrl);
       }),
 
       ///Branch Page
@@ -199,7 +194,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = new GSYCommonOptionWidget(titleOptionControl, otherList: _getMoreOtherItem());
+    Widget widgetContent = new GSYCommonOptionWidget(titleOptionControl, otherList: _getMoreOtherItem());
     return new ScopedModel<ReposDetailModel>(
       model: reposDetailModel,
       child: new ScopedModelDescendant<ReposDetailModel>(
@@ -209,16 +204,16 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
             tarWidgetControl: tarBarControl,
             tabItems: _renderTabItem(),
             tabViews: [
-              new ReposDetailInfoPage(userName, reposName, titleOptionControl, key: infoListKey),
-              new RepositoryDetailReadmePage(userName, reposName, key: readmeKey),
-              new RepositoryDetailIssuePage(userName, reposName),
-              new RepositoryDetailFileListPage(userName, reposName, key: fileListKey),
+              new ReposDetailInfoPage(widget.userName, widget.reposName, titleOptionControl, key: infoListKey),
+              new RepositoryDetailReadmePage(widget.userName, widget.reposName, key: readmeKey),
+              new RepositoryDetailIssuePage(widget.userName, widget.reposName),
+              new RepositoryDetailFileListPage(widget.userName, widget.reposName, key: fileListKey),
             ],
             backgroundColor: GSYColors.primarySwatch,
             indicatorColor: Color(GSYColors.white),
             title: new GSYTitleBar(
-              reposName,
-              rightWidget: widget,
+              widget.reposName,
+              rightWidget: widgetContent,
             ),
             onPageChanged: (index) {
               reposDetailModel.setCurrentIndex(index);
