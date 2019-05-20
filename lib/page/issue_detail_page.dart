@@ -29,24 +29,20 @@ class IssueDetailPage extends StatefulWidget {
 
   final bool needHomeIcon;
 
-  IssueDetailPage(this.userName, this.reposName, this.issueNum, {this.needHomeIcon = false});
+  IssueDetailPage(this.userName, this.reposName, this.issueNum,
+      {this.needHomeIcon = false});
 
   @override
-  _IssueDetailPageState createState() => _IssueDetailPageState(issueNum, userName, reposName, needHomeIcon);
+  _IssueDetailPageState createState() => _IssueDetailPageState();
 }
 
-class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAliveClientMixin<IssueDetailPage>, GSYListState<IssueDetailPage> {
-  final String userName;
-
-  final String reposName;
-
-  final String issueNum;
-
+class _IssueDetailPageState extends State<IssueDetailPage>
+    with
+        AutomaticKeepAliveClientMixin<IssueDetailPage>,
+        GSYListState<IssueDetailPage> {
   int selectIndex = 0;
 
   bool headerStatus = false;
-
-  bool needHomeIcon = false;
 
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
 
@@ -54,11 +50,10 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
 
   TextEditingController issueInfoValueControl = new TextEditingController();
 
-  final TextEditingController issueInfoCommitValueControl = new TextEditingController();
+  final TextEditingController issueInfoCommitValueControl =
+      new TextEditingController();
 
   final OptionControl titleOptionControl = new OptionControl();
-
-  _IssueDetailPageState(this.issueNum, this.userName, this.reposName, this.needHomeIcon);
 
   _renderEventItem(index) {
     if (index == 0) {
@@ -78,7 +73,8 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
                   decoration: new BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                       color: Color(GSYColors.white),
-                      border: new Border.all(color: Color(GSYColors.subTextColor), width: 0.3)),
+                      border: new Border.all(
+                          color: Color(GSYColors.subTextColor), width: 0.3)),
                   margin: EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -86,21 +82,24 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
                     children: <Widget>[
                       new GSYFlexButton(
                         color: Color(GSYColors.white),
-                        text: CommonUtils.getLocale(context).issue_edit_issue_edit_commit,
+                        text: CommonUtils.getLocale(context)
+                            .issue_edit_issue_edit_commit,
                         onPress: () {
                           _editCommit(issue.id.toString(), issue.body);
                         },
                       ),
                       new GSYFlexButton(
                         color: Color(GSYColors.white),
-                        text: CommonUtils.getLocale(context).issue_edit_issue_delete_commit,
+                        text: CommonUtils.getLocale(context)
+                            .issue_edit_issue_delete_commit,
                         onPress: () {
                           _deleteCommit(issue.id.toString());
                         },
                       ),
                       new GSYFlexButton(
                         color: Color(GSYColors.white),
-                        text: CommonUtils.getLocale(context).issue_edit_issue_copy_commit,
+                        text: CommonUtils.getLocale(context)
+                            .issue_edit_issue_copy_commit,
                         onPress: () {
                           CommonUtils.copy(issue.body, context);
                         },
@@ -118,11 +117,14 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
     if (page <= 1) {
       _getHeaderInfo();
     }
-    return await IssueDao.getIssueCommentDao(userName, reposName, issueNum, page: page, needDb: page <= 1);
+    return await IssueDao.getIssueCommentDao(
+        widget.userName, widget.reposName, widget.issueNum,
+        page: page, needDb: page <= 1);
   }
 
   _getHeaderInfo() {
-    IssueDao.getIssueInfoDao(userName, reposName, issueNum).then((res) {
+    IssueDao.getIssueInfoDao(widget.userName, widget.reposName, widget.issueNum)
+        .then((res) {
       if (res != null && res.result) {
         _resolveHeaderInfo(res);
         return res.next;
@@ -158,12 +160,15 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
       },
       () {
         if (contentData == null || contentData.trim().length == 0) {
-          Fluttertoast.showToast(msg: CommonUtils.getLocale(context).issue_edit_issue_content_not_be_null);
+          Fluttertoast.showToast(
+              msg: CommonUtils.getLocale(context)
+                  .issue_edit_issue_content_not_be_null);
           return;
         }
         CommonUtils.showLoadingDialog(context);
         //提交修改
-        IssueDao.editCommentDao(userName, reposName, issueNum, id, {"body": contentData}).then((result) {
+        IssueDao.editCommentDao(widget.userName, widget.reposName,
+            widget.issueNum, id, {"body": contentData}).then((result) {
           showRefreshLoading();
           Navigator.pop(context);
           Navigator.pop(context);
@@ -178,7 +183,9 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
     Navigator.pop(context);
     CommonUtils.showLoadingDialog(context);
     //提交修改
-    IssueDao.deleteCommentDao(userName, reposName, issueNum, id).then((result) {
+    IssueDao.deleteCommentDao(
+            widget.userName, widget.reposName, widget.issueNum, id)
+        .then((result) {
       Navigator.pop(context);
       showRefreshLoading();
     });
@@ -201,16 +208,21 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
       },
       () {
         if (title == null || title.trim().length == 0) {
-          Fluttertoast.showToast(msg: CommonUtils.getLocale(context).issue_edit_issue_title_not_be_null);
+          Fluttertoast.showToast(
+              msg: CommonUtils.getLocale(context)
+                  .issue_edit_issue_title_not_be_null);
           return;
         }
         if (content == null || content.trim().length == 0) {
-          Fluttertoast.showToast(msg: CommonUtils.getLocale(context).issue_edit_issue_content_not_be_null);
+          Fluttertoast.showToast(
+              msg: CommonUtils.getLocale(context)
+                  .issue_edit_issue_content_not_be_null);
           return;
         }
         CommonUtils.showLoadingDialog(context);
         //提交修改
-        IssueDao.editIssueDao(userName, reposName, issueNum, {"title": title, "body": content}).then((result) {
+        IssueDao.editIssueDao(widget.userName, widget.reposName,
+            widget.issueNum, {"title": title, "body": content}).then((result) {
           _getHeaderInfo();
           Navigator.pop(context);
           Navigator.pop(context);
@@ -236,12 +248,16 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
       },
       () {
         if (content == null || content.trim().length == 0) {
-          Fluttertoast.showToast(msg: CommonUtils.getLocale(context).issue_edit_issue_content_not_be_null);
+          Fluttertoast.showToast(
+              msg: CommonUtils.getLocale(context)
+                  .issue_edit_issue_content_not_be_null);
           return;
         }
         CommonUtils.showLoadingDialog(context);
         //提交评论
-        IssueDao.addIssueCommentDao(userName, reposName, issueNum, content).then((result) {
+        IssueDao.addIssueCommentDao(
+                widget.userName, widget.reposName, widget.issueNum, content)
+            .then((result) {
           showRefreshLoading();
           Navigator.pop(context);
           Navigator.pop(context);
@@ -261,37 +277,60 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
               onPressed: () {
                 _replyIssue();
               },
-              child: new Text(CommonUtils.getLocale(context).issue_reply, style: GSYConstant.smallText),
+              child: new Text(CommonUtils.getLocale(context).issue_reply,
+                  style: GSYConstant.smallText),
             ),
-            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new Container(
+                width: 0.3,
+                height: 30.0,
+                color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
               onPressed: () {
                 _editIssue();
               },
-              child: new Text(CommonUtils.getLocale(context).issue_edit, style: GSYConstant.smallText),
+              child: new Text(CommonUtils.getLocale(context).issue_edit,
+                  style: GSYConstant.smallText),
             ),
-            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new Container(
+                width: 0.3,
+                height: 30.0,
+                color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);
-                  IssueDao.editIssueDao(userName, reposName, issueNum, {"state": (issueHeaderViewModel.state == "closed") ? 'open' : 'closed'}).then((result) {
+                  IssueDao.editIssueDao(
+                      widget.userName, widget.reposName, widget.issueNum, {
+                    "state": (issueHeaderViewModel.state == "closed")
+                        ? 'open'
+                        : 'closed'
+                  }).then((result) {
                     _getHeaderInfo();
                     Navigator.pop(context);
                   });
                 },
                 child: new Text(
-                    (issueHeaderViewModel.state == 'closed') ? CommonUtils.getLocale(context).issue_open : CommonUtils.getLocale(context).issue_close,
+                    (issueHeaderViewModel.state == 'closed')
+                        ? CommonUtils.getLocale(context).issue_open
+                        : CommonUtils.getLocale(context).issue_close,
                     style: GSYConstant.smallText)),
-            new Container(width: 0.3, height: 30.0, color: Color(GSYColors.subLightTextColor)),
+            new Container(
+                width: 0.3,
+                height: 30.0,
+                color: Color(GSYColors.subLightTextColor)),
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);
-                  IssueDao.lockIssueDao(userName, reposName, issueNum, issueHeaderViewModel.locked).then((result) {
+                  IssueDao.lockIssueDao(widget.userName, widget.reposName,
+                          widget.issueNum, issueHeaderViewModel.locked)
+                      .then((result) {
                     _getHeaderInfo();
                     Navigator.pop(context);
                   });
                 },
-                child: new Text((issueHeaderViewModel.locked) ? CommonUtils.getLocale(context).issue_unlock : CommonUtils.getLocale(context).issue_lock,
+                child: new Text(
+                    (issueHeaderViewModel.locked)
+                        ? CommonUtils.getLocale(context).issue_unlock
+                        : CommonUtils.getLocale(context).issue_lock,
                     style: GSYConstant.smallText)),
           ];
     return bottomWidget;
@@ -319,17 +358,20 @@ class _IssueDetailPageState extends State<IssueDetailPage> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget widget = (needHomeIcon) ? null : new GSYCommonOptionWidget(titleOptionControl);
+    Widget widgetContent = (widget.needHomeIcon)
+        ? null
+        : new GSYCommonOptionWidget(titleOptionControl);
     return new Scaffold(
       persistentFooterButtons: _getBottomWidget(),
       appBar: new AppBar(
         title: GSYTitleBar(
-          reposName,
-          rightWidget: widget,
-          needRightLocalIcon: needHomeIcon,
+          widget.reposName,
+          rightWidget: widgetContent,
+          needRightLocalIcon: widget.needHomeIcon,
           iconData: GSYICons.HOME,
           onPressed: () {
-            NavigatorUtils.goReposDetail(context, userName, reposName);
+            NavigatorUtils.goReposDetail(
+                context, widget.userName, widget.reposName);
           },
         ),
       ),

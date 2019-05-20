@@ -27,14 +27,11 @@ class RepositoryDetailFileListPage extends StatefulWidget {
   RepositoryDetailFileListPage(this.userName, this.reposName, {Key key}) : super(key: key);
 
   @override
-  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState(userName, reposName);
+  RepositoryDetailFileListPageState createState() => RepositoryDetailFileListPageState();
 }
 
 class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPage>
     with AutomaticKeepAliveClientMixin<RepositoryDetailFileListPage>, GSYListState<RepositoryDetailFileListPage> {
-  final String userName;
-
-  final String reposName;
 
   String path = '';
 
@@ -42,8 +39,6 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
   String issueState;
 
   List<String> headerList = ["."];
-
-  RepositoryDetailFileListPageState(this.userName, this.reposName);
 
   ///渲染文件item
   _renderEventItem(index) {
@@ -133,8 +128,8 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
         NavigatorUtils.gotoCodeDetailPlatform(
           context,
           title: fileItemViewModel.name,
-          reposName: reposName,
-          userName: userName,
+          reposName: widget.reposName,
+          userName: widget.userName,
           path: path,
           branch: ReposDetailModel.of(context).currentBranch,
         );
@@ -143,7 +138,7 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
   }
 
   _getDataLogic(String searchString) async {
-    return await ReposDao.getReposFileDirDao(userName, reposName, path: path, branch: ReposDetailModel.of(context).currentBranch);
+    return await ReposDao.getReposFileDirDao(widget.userName, widget.reposName, path: path, branch: ReposDetailModel.of(context).currentBranch);
   }
 
   /// 返回按键逻辑
