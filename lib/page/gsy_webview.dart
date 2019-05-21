@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /**
  * webview版本
@@ -28,6 +29,16 @@ class GSYWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    /*return Scaffold(
+      appBar: new AppBar(
+        title: _renderTitle(),
+      ),
+      body: WebView(
+        initialUrl: url,
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
+    );*/
     return new WebviewScaffold(
       withJavascript: true,
       url: url,
