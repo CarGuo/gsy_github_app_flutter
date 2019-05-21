@@ -24,7 +24,7 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - permission_handler (3.0.0):
+  - permission_handler (3.0.2):
     - Flutter
   - Reachability (3.2)
   - share (0.5.2):
@@ -110,7 +110,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  permission_handler: 047f11d44db785922214783da5f7a3cc8874c843
+  permission_handler: 73cfc10e081c379c1dcc19cd0040c77e500fa936
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 7d22fe8baedfe93aefd864bf0b73f29711fbb0a3
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523

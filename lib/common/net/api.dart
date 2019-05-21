@@ -50,10 +50,7 @@ class HttpManager {
       option.headers = headers;
     }
 
-    Response response;
-    try {
-      response = await _dio.request(url, data: params, options: option);
-    } on DioError catch (e) {
+    resultError(DioError e) {
       Response errorResponse;
       if (e.response != null) {
         errorResponse = e.response;
@@ -64,6 +61,16 @@ class HttpManager {
         errorResponse.statusCode = Code.NETWORK_TIMEOUT;
       }
       return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message, noTip), false, errorResponse.statusCode);
+    }
+
+    Response response;
+    try {
+      response = await _dio.request(url, data: params, options: option);
+    } on DioError catch (e) {
+      return resultError(e);
+    }
+    if(response.data is DioError) {
+      return resultError(response.data);
     }
     return response.data;
   }
