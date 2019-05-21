@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -27,22 +29,37 @@ class GSYWebView extends StatelessWidget {
     ]);
   }
 
+  final FocusNode focusNode = new FocusNode();
   @override
   Widget build(BuildContext context) {
-
     /*return Scaffold(
       appBar: new AppBar(
         title: _renderTitle(),
       ),
-      body: WebView(
-        initialUrl: url,
-        javascriptMode: JavascriptMode.unrestricted,
+      body: new Stack(
+        children: <Widget>[
+          TextField(
+            focusNode: focusNode,
+          ),
+          WebView(
+              initialUrl: new Uri.dataFromString(html, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(),
+              javascriptMode: JavascriptMode.unrestricted,
+              javascriptChannels: Set.from([
+                JavascriptChannel(
+                    name: 'Print',
+                    onMessageReceived: (JavascriptMessage message) {
+                      print("FFFFFF");
+                      print(message.message);
+                      FocusScope.of(context).requestFocus(focusNode);
+                    })
+              ]))
+        ],
       ),
     );*/
     return new WebviewScaffold(
       withJavascript: true,
       url: url,
-      scrollBar:true,
+      scrollBar: true,
       withLocalUrl: true,
       appBar: new AppBar(
         title: _renderTitle(),
@@ -50,3 +67,34 @@ class GSYWebView extends StatelessWidget {
     );
   }
 }
+
+
+///测试 html 代码，不管
+final testhtml = "<!DOCTYPE html>"
+    "<html>"
+    "<head>"
+    "<meta charset=\"utf-8\">"
+    "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no\" />"
+    "<title>Local Title</title>"
+    "<script>"
+    "function callJS(){"
+    "alert(\"Android调用了web js\");"
+    "}"
+    "function callInterface(){"
+    "JSCallBackInterface.callback(\"我是web的js哟\");"
+    "}"
+    "function callInterface2(){"
+    "document.location = \"js://Authority?pra1=111&pra2=222\";"
+    "}"
+    "function clickPrompt(){"
+    "Print.postMessage('Hello');"
+    "}"
+    "</script>"
+    "</head>"
+    "<body>"
+    "<button type=\"button\" id=\"buttonxx\" onclick=\"callInterface()\">点我调用原生android方法</button>"
+    "<button type=\"button\" id=\"buttonxx2\" onclick=\"callInterface2()\">点我调用原生android方法2</button>"
+    "<button type=\"button\" id=\"buttonxx3\" onclick=\"clickPrompt()\">点我调用原生android方法3</button>"
+    "<input></input>"
+    "</body>"
+    "</html>";
