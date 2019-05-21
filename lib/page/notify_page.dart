@@ -24,7 +24,8 @@ class NotifyPage extends StatefulWidget {
   _NotifyPageState createState() => _NotifyPageState();
 }
 
-class _NotifyPageState extends State<NotifyPage> with AutomaticKeepAliveClientMixin<NotifyPage>, GSYListState<NotifyPage> {
+class _NotifyPageState extends State<NotifyPage>
+    with AutomaticKeepAliveClientMixin<NotifyPage>, GSYListState<NotifyPage> {
   final SlidableController slidableController = new SlidableController();
 
   int selectIndex = 0;
@@ -37,17 +38,23 @@ class _NotifyPageState extends State<NotifyPage> with AutomaticKeepAliveClientMi
       return _renderEventItem(notification);
     }
     return new Slidable(
+      key: ValueKey<String>(index.toString() + "_" + selectIndex.toString()),
       controller: slidableController,
-      delegate: new SlidableDrawerDelegate(),
+      actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       child: _renderEventItem(notification),
+      dismissal: SlidableDismissal(
+        child: SlidableDrawerDismissal(),
+        onDismissed: (actionType) {},
+      ),
       secondaryActions: <Widget>[
         new IconSlideAction(
           caption: CommonUtils.getLocale(context).notify_readed,
           color: Colors.redAccent,
           icon: Icons.delete,
           onTap: () {
-            UserDao.setNotificationAsReadDao(notification.id.toString()).then((res) {
+            UserDao.setNotificationAsReadDao(notification.id.toString())
+                .then((res) {
               showRefreshLoading();
             });
           },
@@ -57,7 +64,8 @@ class _NotifyPageState extends State<NotifyPage> with AutomaticKeepAliveClientMi
   }
 
   _renderEventItem(Model.Notification notification) {
-    EventViewModel eventViewModel = EventViewModel.fromNotify(context, notification);
+    EventViewModel eventViewModel =
+        EventViewModel.fromNotify(context, notification);
     return new EventItem(eventViewModel, onPressed: () {
       if (notification.unread) {
         UserDao.setNotificationAsReadDao(notification.id.toString());
@@ -68,7 +76,9 @@ class _NotifyPageState extends State<NotifyPage> with AutomaticKeepAliveClientMi
         String number = tmp[tmp.length - 1];
         String userName = notification.repository.owner.login;
         String reposName = notification.repository.name;
-        NavigatorUtils.goIssueDetail(context, userName, reposName, number, needRightLocalIcon: true).then((res) {
+        NavigatorUtils.goIssueDetail(context, userName, reposName, number,
+                needRightLocalIcon: true)
+            .then((res) {
           showRefreshLoading();
         });
       }

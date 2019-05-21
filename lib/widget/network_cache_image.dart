@@ -38,9 +38,9 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
     return MultiFrameImageStreamCompleter(
       codec: _loadAsync(key),
       scale: key.scale,
-      informationCollector: (StringBuffer information) {
-        information.writeln('Image provider: $this');
-        information.write('Image key: $key');
+      informationCollector: () sync* {
+        yield DiagnosticsProperty<ImageProvider>('Image provider', this);
+        yield DiagnosticsProperty<NetworkCacheImage>('Image key', key);
       },
     );
   }
