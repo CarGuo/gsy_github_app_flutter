@@ -71,7 +71,7 @@
 
 ### 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 ** master v1.6.1-pre** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 **master v1.6.1-pre** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
