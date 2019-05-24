@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -41,22 +42,30 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   final OptionControl titleOptionControl = new OptionControl();
 
-  GlobalKey<RepositoryDetailFileListPageState> fileListKey = new GlobalKey<RepositoryDetailFileListPageState>();
+  GlobalKey<RepositoryDetailFileListPageState> fileListKey =
+      new GlobalKey<RepositoryDetailFileListPageState>();
 
-  GlobalKey<ReposDetailInfoPageState> infoListKey = new GlobalKey<ReposDetailInfoPageState>();
+  GlobalKey<ReposDetailInfoPageState> infoListKey =
+      new GlobalKey<ReposDetailInfoPageState>();
 
-  GlobalKey<RepositoryDetailReadmePageState> readmeKey = new GlobalKey<RepositoryDetailReadmePageState>();
+  GlobalKey<RepositoryDetailReadmePageState> readmeKey =
+      new GlobalKey<RepositoryDetailReadmePageState>();
 
   List<String> branchList = new List();
 
-
   _getReposStatus() async {
-    var result = await ReposDao.getRepositoryStatusDao(widget.userName, widget.reposName);
+    var result = await ReposDao.getRepositoryStatusDao(
+        widget.userName, widget.reposName);
     String watchText = result.data["watch"] ? "UnWatch" : "Watch";
     String starText = result.data["star"] ? "UnStar" : "Star";
-    IconData watchIcon = result.data["watch"] ? GSYICons.REPOS_ITEM_WATCHED : GSYICons.REPOS_ITEM_WATCH;
-    IconData starIcon = result.data["star"] ? GSYICons.REPOS_ITEM_STARED : GSYICons.REPOS_ITEM_STAR;
-    BottomStatusModel model = new BottomStatusModel(watchText, starText, watchIcon, starIcon, result.data["watch"], result.data["star"]);
+    IconData watchIcon = result.data["watch"]
+        ? GSYICons.REPOS_ITEM_WATCHED
+        : GSYICons.REPOS_ITEM_WATCH;
+    IconData starIcon = result.data["star"]
+        ? GSYICons.REPOS_ITEM_STARED
+        : GSYICons.REPOS_ITEM_STAR;
+    BottomStatusModel model = new BottomStatusModel(watchText, starText,
+        watchIcon, starIcon, result.data["watch"], result.data["star"]);
     setState(() {
       bottomStatusModel = model;
       tarBarControl.footerButton = _getBottomWidget();
@@ -64,7 +73,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
   }
 
   _getBranchList() async {
-    var result = await ReposDao.getBranchesDao(widget.userName, widget.reposName);
+    var result =
+        await ReposDao.getBranchesDao(widget.userName, widget.reposName);
     if (result != null && result.result) {
       setState(() {
         branchList = result.data;
@@ -94,23 +104,30 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     List<Widget> bottomWidget = (bottomStatusModel == null)
         ? []
         : <Widget>[
-            _renderBottomItem(bottomStatusModel.starText, bottomStatusModel.starIcon, () {
+            _renderBottomItem(
+                bottomStatusModel.starText, bottomStatusModel.starIcon, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryStarDao(widget.userName, widget.reposName, bottomStatusModel.star).then((result) {
+              return ReposDao.doRepositoryStarDao(
+                      widget.userName, widget.reposName, bottomStatusModel.star)
+                  .then((result) {
                 _refresh();
                 Navigator.pop(context);
               });
             }),
-            _renderBottomItem(bottomStatusModel.watchText, bottomStatusModel.watchIcon, () {
+            _renderBottomItem(
+                bottomStatusModel.watchText, bottomStatusModel.watchIcon, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryWatchDao(widget.userName, widget.reposName, bottomStatusModel.watch).then((result) {
+              return ReposDao.doRepositoryWatchDao(widget.userName,
+                      widget.reposName, bottomStatusModel.watch)
+                  .then((result) {
                 _refresh();
                 Navigator.pop(context);
               });
             }),
             _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.createForkDao(widget.userName, widget.reposName).then((result) {
+              return ReposDao.createForkDao(widget.userName, widget.reposName)
+                  .then((result) {
                 _refresh();
                 Navigator.pop(context);
               });
@@ -145,25 +162,31 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     return list;
   }
 
-  _getMoreOtherItem() {
+  _getMoreOtherItem(Repository repository) {
     return [
       ///Release Page
-      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_release, CommonUtils.getLocale(context).repos_option_release, (model) {
+      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_release,
+          CommonUtils.getLocale(context).repos_option_release, (model) {
         String releaseUrl = "";
         String tagUrl = "";
         if (infoListKey == null || infoListKey.currentState == null) {
           releaseUrl = GSYConstant.app_default_share_url;
           tagUrl = GSYConstant.app_default_share_url;
         } else {
-          releaseUrl =
-              infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/releases";
-          tagUrl = infoListKey.currentState.repository == null ? GSYConstant.app_default_share_url : infoListKey.currentState.repository.htmlUrl + "/tags";
+          releaseUrl = repository == null
+              ? GSYConstant.app_default_share_url
+              : repository.htmlUrl + "/releases";
+          tagUrl = repository == null
+              ? GSYConstant.app_default_share_url
+              : repository.htmlUrl + "/tags";
         }
-        NavigatorUtils.goReleasePage(context, widget.userName, widget.reposName, releaseUrl, tagUrl);
+        NavigatorUtils.goReleasePage(
+            context, widget.userName, widget.reposName, releaseUrl, tagUrl);
       }),
 
       ///Branch Page
-      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_branch, CommonUtils.getLocale(context).repos_option_branch, (model) {
+      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_branch,
+          CommonUtils.getLocale(context).repos_option_branch, (model) {
         if (branchList.length == 0) {
           return;
         }
@@ -171,13 +194,16 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
           setState(() {
             reposDetailModel.setCurrentBranch(branchList[value]);
           });
-          if (infoListKey.currentState != null && infoListKey.currentState.mounted) {
+          if (infoListKey.currentState != null &&
+              infoListKey.currentState.mounted) {
             infoListKey.currentState.showRefreshLoading();
           }
-          if (fileListKey.currentState != null && fileListKey.currentState.mounted) {
+          if (fileListKey.currentState != null &&
+              fileListKey.currentState.mounted) {
             fileListKey.currentState.showRefreshLoading();
           }
-          if (readmeKey.currentState != null && readmeKey.currentState.mounted) {
+          if (readmeKey.currentState != null &&
+              readmeKey.currentState.mounted) {
             readmeKey.currentState.refreshReadme();
           }
         });
@@ -194,20 +220,26 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget widgetContent = new GSYCommonOptionWidget(titleOptionControl, otherList: _getMoreOtherItem());
     return new ScopedModel<ReposDetailModel>(
       model: reposDetailModel,
       child: new ScopedModelDescendant<ReposDetailModel>(
         builder: (context, child, model) {
+          Widget widgetContent = new GSYCommonOptionWidget(titleOptionControl,
+              otherList: _getMoreOtherItem(model.repository));
           return new GSYTabBarWidget(
             type: GSYTabBarWidget.TOP_TAB,
             tarWidgetControl: tarBarControl,
             tabItems: _renderTabItem(),
             tabViews: [
-              new ReposDetailInfoPage(widget.userName, widget.reposName, titleOptionControl, key: infoListKey),
-              new RepositoryDetailReadmePage(widget.userName, widget.reposName, key: readmeKey),
+              new ReposDetailInfoPage(
+                  widget.userName, widget.reposName, titleOptionControl,
+                  key: infoListKey),
+              new RepositoryDetailReadmePage(widget.userName, widget.reposName,
+                  key: readmeKey),
               new RepositoryDetailIssuePage(widget.userName, widget.reposName),
-              new RepositoryDetailFileListPage(widget.userName, widget.reposName, key: fileListKey),
+              new RepositoryDetailFileListPage(
+                  widget.userName, widget.reposName,
+                  key: fileListKey),
             ],
             backgroundColor: GSYColors.primarySwatch,
             indicatorColor: Color(GSYColors.white),
@@ -233,19 +265,30 @@ class BottomStatusModel {
   final bool star;
   final bool watch;
 
-  BottomStatusModel(this.watchText, this.starText, this.watchIcon, this.starIcon, this.watch, this.star);
+  BottomStatusModel(this.watchText, this.starText, this.watchIcon,
+      this.starIcon, this.watch, this.star);
 }
 
 class ReposDetailModel extends Model {
+  static ReposDetailModel of(BuildContext context) =>
+      ScopedModel.of<ReposDetailModel>(context);
+
   int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
 
   String _currentBranch = "master";
 
   String get currentBranch => _currentBranch;
 
-  int get currentIndex => _currentIndex;
+  Repository _repository = Repository.empty();
 
-  static ReposDetailModel of(BuildContext context) => ScopedModel.of<ReposDetailModel>(context);
+  Repository get repository => _repository;
+
+  set repository(Repository data) {
+    _repository = data;
+    notifyListeners();
+  }
 
   void setCurrentBranch(String branch) {
     _currentBranch = branch;
