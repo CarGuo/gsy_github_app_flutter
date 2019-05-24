@@ -45,7 +45,10 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         AutomaticKeepAliveClientMixin<ReposDetailInfoPage>,
         GSYListState<ReposDetailInfoPage>,
         TickerProviderStateMixin {
+  final ScrollController scrollController = new ScrollController();
+
   int selectIndex = 0;
+  double headerSize = 270;
 
   ReposDetailInfoPageState();
 
@@ -118,6 +121,9 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       return new Future.value(null);
     }).then((result) {
       if (result != null && result.result) {
+        if(!isShow) {
+          return;
+        }
         setState(() {
           widget.titleOptionControl.url = result.data.htmlUrl;
         });
@@ -165,6 +171,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIKey,
+          scrollController: scrollController,
           headerSliverBuilder: (context, _) {
             return _sliverBuilder(context, _);
           },
@@ -175,25 +182,29 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
     return <Widget>[
+      ///头部信息
       SliverPersistentHeader(
         delegate: _InfoHeaderDelegate(
-            maxHeight: 300,
-            minHeight: 300,
-            snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
-              curve: Curves.bounceInOut,
-              duration: const Duration(milliseconds: 10),
-            ),
-            child: new ReposHeaderItem(
-                ReposHeaderViewModel.fromHttpMap(
-                    widget.userName,
-                    widget.reposName,
-                    ReposDetailModel.of(context).repository), (index) {
-              selectIndex = index;
-              clearData();
-              showRefreshLoading();
-            })),
+          maxHeight: headerSize,
+          minHeight: headerSize,
+          snapConfig: FloatingHeaderSnapConfiguration(
+            vsync: this,
+            curve: Curves.bounceInOut,
+            duration: const Duration(milliseconds: 10),
+          ),
+          child: new ReposHeaderItem(
+            ReposHeaderViewModel.fromHttpMap(widget.userName, widget.reposName,
+                ReposDetailModel.of(context).repository),
+            layoutListener: (size) {
+              setState(() {
+                headerSize = size.height;
+              });
+            },
+          ),
+        ),
       ),
+
+      ///动态放大缩小的选择案件
       SliverPersistentHeader(
         pinned: true,
         delegate: _InfoHeaderDelegate(
@@ -207,6 +218,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             ),
             builder: (BuildContext context, double shrinkOffset,
                 bool overlapsContent) {
+              ///根据数值计算偏差
               var lr = 10 - shrinkOffset / 70 * 10;
               var radius = Radius.circular(4 - shrinkOffset / 70 * 4);
               return SizedBox.expand(
@@ -218,9 +230,16 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
                       CommonUtils.getLocale(context).repos_tab_commits,
                     ],
                     (index) {
-                      selectIndex = index;
-                      clearData();
-                      showRefreshLoading();
+                      ///切换时先滑动
+                      scrollController
+                          .animateTo(0,
+                              duration: Duration(milliseconds: 200),
+                              curve: Curves.bounceInOut)
+                          .then((_) {
+                        selectIndex = index;
+                        clearData();
+                        showRefreshLoading();
+                      });
                     },
                     margin: EdgeInsets.zero,
                     shape: new RoundedRectangleBorder(
@@ -265,9 +284,7 @@ class _InfoHeaderDelegate extends SliverPersistentHeaderDelegate {
     if (builder != null) {
       return builder(context, shrinkOffset, overlapsContent);
     }
-    return SizedBox.expand(
-      child: child,
-    );
+    return child;
   }
 
   @override
