@@ -208,8 +208,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       SliverPersistentHeader(
         pinned: true,
         delegate: _InfoHeaderDelegate(
-            maxHeight: 70,
-            minHeight: 70,
+            maxHeight: 60,
+            minHeight: 60,
             changeSize: true,
             snapConfig: FloatingHeaderSnapConfiguration(
               vsync: this,
@@ -219,11 +219,11 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             builder: (BuildContext context, double shrinkOffset,
                 bool overlapsContent) {
               ///根据数值计算偏差
-              var lr = 10 - shrinkOffset / 70 * 10;
-              var radius = Radius.circular(4 - shrinkOffset / 70 * 4);
+              var lr = 10 - shrinkOffset / 60 * 10;
+              var radius = Radius.circular(4 - shrinkOffset / 60 * 4);
               return SizedBox.expand(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 20, left: lr, right: lr),
+                  padding: EdgeInsets.only(bottom: 10, left: lr, right: lr),
                   child: new GSYSelectItemWidget(
                     [
                       CommonUtils.getLocale(context).repos_tab_activity,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -26,8 +27,8 @@ class ReposHeaderItem extends StatefulWidget {
 
 class _ReposHeaderItemState extends State<ReposHeaderItem> {
   final GlobalKey layoutKey = new GlobalKey();
-  final GlobalKey layoutKey2 = new GlobalKey();
-  final GlobalKey layoutKey3 = new GlobalKey();
+  final GlobalKey layoutTopicContainerKey = new GlobalKey();
+  final GlobalKey layoutLastTopicKey = new GlobalKey();
 
   double widgetHeight = 0;
 
@@ -55,7 +56,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   _renderTopicItem(BuildContext context, String item, index) {
     return new RawMaterialButton(
         key: index == widget.reposHeaderViewModel.topics.length - 1
-            ? layoutKey3
+            ? layoutLastTopicKey
             : null,
         onPressed: () {
           NavigatorUtils.gotoCommonList(context, item, "repository", "topics",
@@ -91,7 +92,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       list.add(_renderTopicItem(context, item, i));
     }
     return new Container(
-      key: layoutKey2,
+      key: layoutTopicContainerKey,
       alignment: Alignment.topLeft,
       margin: EdgeInsets.only(top: 5.0),
       child: Wrap(
@@ -123,20 +124,29 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   void didUpdateWidget(ReposHeaderItem oldWidget) {
     super.didUpdateWidget(oldWidget);
     ///如果没有tag列表，不需要处理
-    if(layoutKey2.currentContext == null || layoutKey3.currentContext == null) {
+    /*if(layoutTopicContainerKey.currentContext == null || layoutLastTopicKey.currentContext == null) {
       return;
-    }
+    }*/
     ///如果存在tag，根据tag去判断，修复溢出
     new Future.delayed(Duration(seconds: 0), (){
       /// tag 所在 container
-      RenderBox renderBox2 = layoutKey2.currentContext.findRenderObject();
+      RenderBox renderBox2 = layoutTopicContainerKey.currentContext?.findRenderObject();
       /// 最后面的一个tag
-      RenderBox renderBox3 = layoutKey3.currentContext.findRenderObject();
-      double overflow = (renderBox3.localToGlobal(Offset.zero).dy -
-          renderBox2.localToGlobal(Offset.zero).dy) -
-          layoutKey3.currentContext.size.height;
-      var newSize = layoutKey.currentContext.size.height + overflow;
-      if (widgetHeight != newSize) {
+      RenderBox renderBox3 = layoutLastTopicKey.currentContext?.findRenderObject();
+      double overflow = ((renderBox3?.localToGlobal(Offset.zero)?.dy ?? 0) -
+          (renderBox2?.localToGlobal(Offset.zero)?.dy ?? 0)) -
+          (layoutLastTopicKey.currentContext?.size?.height ?? 0);
+      var newSize;
+      if(overflow > 0) {
+         newSize = layoutKey.currentContext.size.height + overflow;
+      } else {
+         newSize = layoutKey.currentContext.size.height + 10.0;
+      }
+      if(Config.DEBUG) {
+        print("newSize $newSize overflow $overflow");
+      }
+      if (widgetHeight != newSize && newSize > 0) {
+        print("widget?.layoutListener?.call");
         widgetHeight = newSize;
         widget?.layoutListener
             ?.call(Size(layoutKey.currentContext.size.width, widgetHeight));
