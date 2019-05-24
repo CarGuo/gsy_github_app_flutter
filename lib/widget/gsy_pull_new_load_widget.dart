@@ -27,8 +27,11 @@ class GSYPullLoadWidget extends StatefulWidget {
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
-
   final ScrollController _scrollController = new ScrollController();
+
+  bool isRefreshing = false;
+
+  bool isLoadMoring = false;
 
   @override
   void initState() {
@@ -43,6 +46,14 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     });
     widget.control.addListener(() {
       setState(() {});
+      try {
+        Future.delayed(Duration(seconds: 2), () {
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          _scrollController.notifyListeners();
+        });
+      } catch (e) {
+        print(e);
+      }
     });
     super.initState();
   }
@@ -84,13 +95,35 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     }
   }
 
+  _lockToAwait() async {
+    ///if loading, lock to await
+    doDelayed() async {
+      await Future.delayed(Duration(seconds: 1)).then((_) async {
+        if (widget.control.isLoading) {
+          return await doDelayed();
+        } else {
+          return null;
+        }
+      });
+    }
+
+    await doDelayed();
+  }
+
   @protected
   Future<Null> handleRefresh() async {
     if (widget.control.isLoading) {
-      return null;
+      if (isRefreshing) {
+        return null;
+      }
+
+      ///if loading, lock to await
+      await _lockToAwait();
     }
     widget.control.isLoading = true;
+    isRefreshing = true;
     await widget.onRefresh?.call();
+    isRefreshing = false;
     widget.control.isLoading = false;
     return null;
   }
@@ -98,10 +131,17 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   @protected
   Future<Null> handleLoadMore() async {
     if (widget.control.isLoading) {
-      return null;
+      if (isLoadMoring) {
+        return null;
+      }
+
+      ///if loading, lock to await
+      await _lockToAwait();
     }
+    isLoadMoring = true;
     widget.control.isLoading = true;
     await widget.onLoadMore?.call();
+    isLoadMoring = false;
     widget.control.isLoading = false;
     return null;
   }
@@ -192,14 +232,14 @@ class GSYPullLoadWidgetControl extends ChangeNotifier {
 
   set dataList(List value) {
     _dataList.clear();
-    if(value != null) {
+    if (value != null) {
       _dataList.addAll(value);
       notifyListeners();
     }
   }
 
   addList(List value) {
-    if(value != null) {
+    if (value != null) {
       _dataList.addAll(value);
       notifyListeners();
     }

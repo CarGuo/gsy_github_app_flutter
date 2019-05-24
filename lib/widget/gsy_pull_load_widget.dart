@@ -42,11 +42,22 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   @override
   void initState() {
+    this.control.needLoadMore?.addListener((){
+      ///延迟两秒等待确认
+      try {
+        Future.delayed(Duration(seconds: 2), (){
+           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          _scrollController.notifyListeners();
+        });
+      } catch(e) {
+        print(e);
+      }
+    });
     ///增加滑动监听
     _scrollController.addListener(() {
       ///判断当前滑动位置是不是到达底部，触发加载更多回调
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        if (this.control.needLoadMore) {
+        if (this.control.needLoadMore.value) {
           this.onLoadMore?.call();
         }
       }
@@ -139,7 +150,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   ///上拉加载更多
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
-    Widget bottomWidget = (control.needLoadMore)
+    Widget bottomWidget = (control.needLoadMore.value)
         ? new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             ///loading框
             new SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
@@ -174,7 +185,7 @@ class GSYPullLoadWidgetControl {
   List dataList = new List();
 
   ///是否需要加载更多
-  bool needLoadMore = true;
+  ValueNotifier<bool> needLoadMore = new ValueNotifier(false);
 
   ///是否需要头部
   bool needHeader = false;
