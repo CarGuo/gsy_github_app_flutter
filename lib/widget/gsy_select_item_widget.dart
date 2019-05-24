@@ -15,6 +15,8 @@ class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget 
 
   final SelectItemChanged selectItemChanged;
 
+  final RoundedRectangleBorder shape;
+
   final double elevation;
 
   final double height;
@@ -26,6 +28,7 @@ class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget 
     this.selectItemChanged, {
     this.elevation = 5.0,
     this.height = 70.0,
+    this.shape,
     this.margin = const EdgeInsets.all(10.0),
   });
 
@@ -85,7 +88,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         elevation: widget.elevation,
         margin: widget.margin,
         color: Theme.of(context).primaryColor,
-        shape: new RoundedRectangleBorder(
+        shape: widget.shape ?? new RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
         child: new Row(
