@@ -16,11 +16,29 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
 
   int page = 1;
 
+  bool isRefreshing = false;
+
+  bool isLoadMoring = false;
+
   final List dataList = new List();
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
+  _lockToAwait() async {
+    ///if loading, lock to await
+    doDelayed() async {
+      await Future.delayed(Duration(seconds: 1)).then((_) async {
+        if (isLoading) {
+          return await doDelayed();
+        } else {
+          return null;
+        }
+      });
+    }
+    await doDelayed();
+  }
 
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
@@ -44,9 +62,13 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
   @protected
   Future<Null> handleRefresh() async {
     if (isLoading) {
-      return null;
+      if(isRefreshing) {
+        return null;
+      }
+      await _lockToAwait();
     }
     isLoading = true;
+    isRefreshing = true;
     page = 1;
     var res = await requestRefresh();
     resolveRefreshResult(res);
@@ -57,15 +79,20 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
       resolveDataResult(resNext);
     }
     isLoading = false;
+    isRefreshing = false;
     return null;
   }
 
   @protected
   Future<Null> onLoadMore() async {
     if (isLoading) {
-      return null;
+      if(isLoadMoring) {
+        return null;
+      }
+      await _lockToAwait();
     }
     isLoading = true;
+    isLoadMoring = true;
     page++;
     var res = await requestLoadMore();
     if (res != null && res.result) {
@@ -77,6 +104,7 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
     }
     resolveDataResult(res);
     isLoading = false;
+    isLoadMoring = false;
     return null;
   }
 
@@ -84,7 +112,7 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
   resolveDataResult(res) {
     if (isShow) {
       setState(() {
-        pullLoadWidgetControl.needLoadMore = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
+        pullLoadWidgetControl.needLoadMore.value = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
       });
     }
   }

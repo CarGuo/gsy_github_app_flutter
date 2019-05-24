@@ -59,7 +59,7 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
         setState(() {
           pushHeaderViewModel = PushHeaderViewModel.forMap(pushCommit);
           pullLoadWidgetControl.dataList.addAll(pushCommit.files);
-          pullLoadWidgetControl.needLoadMore = false;
+          pullLoadWidgetControl.needLoadMore.value = false;
           titleOptionControl.url = pushCommit.htmlUrl;
         });
       }

@@ -116,7 +116,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
           onNotification: (ScrollNotification p){
             if (p.metrics.pixels >=
                 p.metrics.maxScrollExtent) {
-              if (this.control.needLoadMore) {
+              if (this.control.needLoadMore.value) {
                 this.onLoadMore?.call();
               }
             }
@@ -163,7 +163,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   ///上拉加载更多
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
-    Widget bottomWidget = (control.needLoadMore)
+    Widget bottomWidget = (control.needLoadMore.value)
         ? new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
