@@ -23,9 +23,11 @@ class GSYNestedPullLoadWidget extends StatefulWidget {
   final Key refreshKey;
   final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
 
+  final ScrollController scrollController;
+
   GSYNestedPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
-      {this.refreshKey, this.headerSliverBuilder});
+      {this.refreshKey, this.headerSliverBuilder, this.scrollController});
 
   @override
   _GSYNestedPullLoadWidgetState createState() => _GSYNestedPullLoadWidgetState(
@@ -49,8 +51,6 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
   _GSYNestedPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh,
       this.onLoadMore, this.refreshKey);
-
-  final ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
       key: refreshKey,
       child: NestedScrollView(
         ///滑动监听
-        controller: _scrollController,
+        controller: widget.scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         headerSliverBuilder: widget.headerSliverBuilder,
         body: NotificationListener(
