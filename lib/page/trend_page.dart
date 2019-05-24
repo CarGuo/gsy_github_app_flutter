@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/bloc/trend_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
+import 'package:gsy_github_app_flutter/widget/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/repos_item.dart';
 import 'package:redux/redux.dart';
 
@@ -24,12 +27,19 @@ class TrendPage extends StatefulWidget {
   _TrendPageState createState() => _TrendPageState();
 }
 
-class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin<TrendPage> {
-  static TrendTypeModel selectTime = null;
+class _TrendPageState extends State<TrendPage>
+    with
+        AutomaticKeepAliveClientMixin<TrendPage>,
+        SingleTickerProviderStateMixin {
 
-  static TrendTypeModel selectType = null;
+  TrendTypeModel selectTime = null;
 
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  TrendTypeModel selectType = null;
+
+  final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIndicatorKey =
+      new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+
+  final ScrollController scrollController = new ScrollController();
 
   final TrendBloc trendBloc = new TrendBloc();
 
@@ -44,44 +54,63 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
     return new ReposItem(reposViewModel, onPressed: () {
-      NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
+      NavigatorUtils.goReposDetail(
+          context, reposViewModel.ownerName, reposViewModel.repositoryName);
     });
   }
 
-  _renderHeader(Store<GSYState> store) {
-    if (selectType == null && selectType == null) {
+  _renderHeader(Store<GSYState> store, Radius radius) {
+    if (selectTime == null && selectType == null) {
       return Container();
     }
     return new GSYCardItem(
       color: store.state.themeData.primaryColor,
-      margin: EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(0.0),
       shape: new RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(radius),
       ),
       child: new Padding(
-        padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
+        padding:
+            new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: new Row(
           children: <Widget>[
-            _renderHeaderPopItem(selectTime.name, trendTime(context), (TrendTypeModel result) {
+            _renderHeaderPopItem(selectTime.name, trendTime(context),
+                (TrendTypeModel result) {
               if (trendBloc.isLoading) {
-                Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+                Fluttertoast.showToast(
+                    msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
-              setState(() {
-                selectTime = result;
+              scrollController
+                  .animateTo(0,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.bounceInOut)
+                  .then((_) {
+                setState(() {
+                  selectTime = result;
+                });
+                _showRefreshLoading();
               });
-              _showRefreshLoading();
             }),
-            new Container(height: 10.0, width: 0.5, color: Color(GSYColors.white)),
-            _renderHeaderPopItem(selectType.name, trendType(context), (TrendTypeModel result) {
+            new Container(
+                height: 10.0, width: 0.5, color: Color(GSYColors.white)),
+            _renderHeaderPopItem(selectType.name, trendType(context),
+                (TrendTypeModel result) {
               if (trendBloc.isLoading) {
-                Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+                Fluttertoast.showToast(
+                    msg: CommonUtils.getLocale(context).loading_text);
                 return;
               }
-              setState(() {
-                selectType = result;
+              scrollController
+                  .animateTo(0,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.bounceInOut)
+                  .then((_) {
+                setState(() {
+                  selectType = result;
+                });
+                _showRefreshLoading();
               });
-              _showRefreshLoading();
             }),
           ],
         ),
@@ -89,10 +118,12 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
     );
   }
 
-  _renderHeaderPopItem(String data, List<TrendTypeModel> list, PopupMenuItemSelected<TrendTypeModel> onSelected) {
+  _renderHeaderPopItem(String data, List<TrendTypeModel> list,
+      PopupMenuItemSelected<TrendTypeModel> onSelected) {
     return new Expanded(
       child: new PopupMenuButton<TrendTypeModel>(
-        child: new Center(child: new Text(data, style: GSYConstant.middleTextWhite)),
+        child: new Center(
+            child: new Text(data, style: GSYConstant.middleTextWhite)),
         onSelected: onSelected,
         itemBuilder: (BuildContext context) {
           return _renderHeaderPopItemChild(list);
@@ -133,9 +164,16 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
 
   ///空页面
   Widget _buildEmpty() {
-    var statusBar = MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
-    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.bottom;
-    var height = MediaQuery.of(context).size.height - statusBar - bottomArea - kBottomNavigationBarHeight - kToolbarHeight;
+    var statusBar =
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+        .padding
+        .bottom;
+    var height = MediaQuery.of(context).size.height -
+        statusBar -
+        bottomArea -
+        kBottomNavigationBarHeight -
+        kToolbarHeight;
     return SingleChildScrollView(
       child: new Container(
         height: height,
@@ -145,10 +183,14 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
           children: <Widget>[
             FlatButton(
               onPressed: () {},
-              child: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 70.0, height: 70.0),
+              child: new Image(
+                  image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+                  width: 70.0,
+                  height: 70.0),
             ),
             Container(
-              child: Text(CommonUtils.getLocale(context).app_empty, style: GSYConstant.normalText),
+              child: Text(CommonUtils.getLocale(context).app_empty,
+                  style: GSYConstant.normalText),
             ),
           ],
         ),
@@ -163,33 +205,64 @@ class _TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixi
       builder: (context, store) {
         return new Scaffold(
           backgroundColor: Color(GSYColors.mainBackgroundColor),
-          appBar: new AppBar(
-            flexibleSpace: _renderHeader(store),
-            backgroundColor: Color(GSYColors.mainBackgroundColor),
-            leading: new Container(),
-            elevation: 0.0,
-          ),
           ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
           body: StreamBuilder<List<TrendingRepoModel>>(
               stream: trendBloc.stream,
               builder: (context, snapShot) {
-                return new RefreshIndicator(
+                return new NestedScrollViewRefreshIndicator(
                   key: refreshIndicatorKey,
+                  child: NestedScrollView(
+                    controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    headerSliverBuilder: (context, innerBoxIsScrolled) {
+                      return _sliverBuilder(context, innerBoxIsScrolled, store);
+                    },
+                    body: (snapShot.data == null || snapShot.data.length == 0)
+                        ? _buildEmpty()
+                        : new ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return _renderItem(snapShot.data[index]);
+                            },
+                            itemCount: snapShot.data.length,
+                          ),
+                  ),
                   onRefresh: requestRefresh,
-                  child: (snapShot.data == null || snapShot.data.length == 0)
-                      ? _buildEmpty()
-                      : new ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return _renderItem(snapShot.data[index]);
-                          },
-                          itemCount: snapShot.data.length,
-                        ),
                 );
               }),
         );
       },
     );
+  }
+
+  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled, Store store) {
+    return <Widget>[
+      ///动态放大缩小的选择案件
+      SliverPersistentHeader(
+        pinned: true,
+        delegate: _InfoHeaderDelegate(
+            maxHeight: 65,
+            minHeight: 65,
+            changeSize: true,
+            snapConfig: FloatingHeaderSnapConfiguration(
+              vsync: this,
+              curve: Curves.bounceInOut,
+              duration: const Duration(milliseconds: 10),
+            ),
+            builder: (BuildContext context, double shrinkOffset,
+                bool overlapsContent) {
+              ///根据数值计算偏差
+              var lr = 10 - shrinkOffset / 65 * 10;
+              var radius = Radius.circular(4 - shrinkOffset / 65 * 4);
+              return SizedBox.expand(
+                child: Padding(
+                  padding: EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
+                  child: _renderHeader(store, radius),
+                ),
+              );
+            }),
+      ),
+    ];
   }
 }
 
@@ -227,3 +300,48 @@ trendType(BuildContext context) {
     TrendTypeModel("C#", "c%23"),
   ];
 }
+
+///动态头部处理
+class _InfoHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _InfoHeaderDelegate(
+      {@required this.minHeight,
+      @required this.maxHeight,
+      @required this.snapConfig,
+      this.child,
+      this.builder,
+      this.changeSize = false});
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+  final Builder builder;
+  final bool changeSize;
+  final FloatingHeaderSnapConfiguration snapConfig;
+  AnimationController animationController;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    if (builder != null) {
+      return builder(context, shrinkOffset, overlapsContent);
+    }
+    return child;
+  }
+
+  @override
+  bool shouldRebuild(_InfoHeaderDelegate oldDelegate) {
+    return true;
+  }
+
+  @override
+  FloatingHeaderSnapConfiguration get snapConfiguration => snapConfig;
+}
+
+typedef Widget Builder(
+    BuildContext context, double shrinkOffset, bool overlapsContent);
