@@ -38,8 +38,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     with
         AutomaticKeepAliveClientMixin<ReposDetailInfoPage>,
         GSYListState<ReposDetailInfoPage> {
-  Repository repository = Repository.empty();
-
   int selectIndex = 0;
 
   ReposDetailInfoPageState();
@@ -48,8 +46,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   _renderEventItem(index) {
     if (index == 0) {
       return new ReposHeaderItem(
-          ReposHeaderViewModel.fromHttpMap(
-              widget.userName, widget.reposName, repository), (index) {
+          ReposHeaderViewModel.fromHttpMap(widget.userName, widget.reposName,
+              ReposDetailModel.of(context).repository), (index) {
         selectIndex = index;
         clearData();
         showRefreshLoading();
@@ -106,18 +104,18 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         .then((result) {
       if (result != null && result.result) {
         setState(() {
-          repository = result.data;
-          widget.titleOptionControl.url = repository.htmlUrl;
+          widget.titleOptionControl.url = result.data.htmlUrl;
         });
+        ReposDetailModel.of(context).repository = result.data;
         return result.next;
       }
       return new Future.value(null);
     }).then((result) {
       if (result != null && result.result) {
         setState(() {
-          repository = result.data;
-          widget.titleOptionControl.url = repository.htmlUrl;
+          widget.titleOptionControl.url = result.data.htmlUrl;
         });
+        ReposDetailModel.of(context).repository = result.data;
       }
     });
   }
@@ -144,8 +142,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); //
-
+    super.build(context);
     return ScopedModelDescendant<ReposDetailModel>(
       builder: (context, child, model) {
         return GSYPullLoadWidget(
@@ -156,6 +153,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           refreshKey: refreshIndicatorKey,
         );
       },
-    ); // See
+    );
   }
 }
