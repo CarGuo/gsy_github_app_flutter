@@ -245,12 +245,6 @@ class ReposHeaderItem extends StatelessWidget {
             ),
           ),
         ),
-
-        ///底部头
-        new GSYSelectItemWidget([
-          CommonUtils.getLocale(context).repos_tab_activity,
-          CommonUtils.getLocale(context).repos_tab_commits,
-        ], selectItemChanged)
       ],
     );
   }
