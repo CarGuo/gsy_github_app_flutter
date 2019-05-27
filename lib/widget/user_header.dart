@@ -239,9 +239,9 @@ class UserHeaderItem extends StatelessWidget {
                   margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                   alignment: Alignment.topLeft),
               new Padding(padding: EdgeInsets.only(bottom: 5.0)),
-              new Divider(
+              /*new Divider(
                 color: Color(GSYColors.subLightTextColor),
-              ),
+              ),*/
             ],
           ),
         ));

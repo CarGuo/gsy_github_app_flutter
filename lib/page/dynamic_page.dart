@@ -21,8 +21,25 @@ class DynamicPage extends StatefulWidget {
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin<DynamicPage>, GSYListState<DynamicPage>, WidgetsBindingObserver {
+class _DynamicPageState extends State<DynamicPage>
+    with
+        AutomaticKeepAliveClientMixin<DynamicPage>,
+        GSYListState<DynamicPage>,
+        WidgetsBindingObserver {
   final DynamicBloc dynamicBloc = new DynamicBloc();
+
+  final ScrollController scrollController = new ScrollController();
+
+  /// 模拟IOS下拉显示刷新
+  @override
+  showRefreshLoading() {
+    ///直接触发下拉
+    new Future.delayed(const Duration(milliseconds: 500), () {
+      scrollController.animateTo(-100,
+          duration: Duration(milliseconds: 500), curve: Curves.linear);
+      return true;
+    });
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -96,10 +113,14 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
           bloc: dynamicBloc,
           child: GSYPullLoadWidget(
             bloc.pullLoadWidgetControl,
-            (BuildContext context, int index) => _renderEventItem(bloc.dataList[index]),
+            (BuildContext context, int index) =>
+                _renderEventItem(bloc.dataList[index]),
             requestRefresh,
             requestLoadMore,
             refreshKey: refreshIndicatorKey,
+            scrollController: scrollController,
+            ///使用ios模式的下拉刷新
+            userIos: true,
           ),
         );
       },
