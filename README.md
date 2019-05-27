@@ -31,7 +31,9 @@
 > **因为是偏学习项目，所以项目里会有各式各样的模式、库、UI等，请不要介意**
 > 
 > 1、 TrendPage ： 目前采用纯 bloc 的 rxdart(stream) + streamBuilder 模式效果
+>
 > 2、 Scoped Model：目前在 RepositoryDetailPage 出使用
+>
 > 3、 Redux：目前在 MyPage ，UserInfo、Theme、Localization 等上面使用。
 > 
 > **列表显示有多个，其中：**
