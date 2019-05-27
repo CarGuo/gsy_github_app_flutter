@@ -23,7 +23,29 @@
 
 随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
 ```
+
 -----
+
+## 须知
+
+> **因为是偏学习项目，所以项目里会有各式各样的模式、库、UI等，请不要介意**
+> 
+> 1、 TrendPage ： 目前采用纯 bloc 的 rxdart(stream) + streamBuilder 模式效果
+> 2、 Scoped Model：目前在 RepositoryDetailPage 出使用
+> 3、 Redux：目前在 MyPage ，UserInfo、Theme、Localization 等上面使用。
+> 
+> **列表显示有多个，其中：**
+> 
+> 1、**gsy_pull_load_widget.dart.dart**
+> `common_list_page.dart 等使用，搭配 gsy_list_state.dart 使用`
+>
+> 2、**gsy_pull_new_load_widget.dart.dart**
+> `dynamic_page.dart 等使用，搭配 gsy_bloc_list_state.dart 使用`
+> `有 IOS 和 Android 两种风格下拉风格支持`
+> 
+> 3、**gsy_nested_pull_load_widget.dart**
+> `trend_page.dart 等使用，配置sliver 效果`
+
 
 
 ## 最近回顾项目，发现了不少问题，目前优化调整中：
@@ -33,16 +55,6 @@
 - 自定义图片缓存（DefaultCacheManager居然用数据库存ID），等待替换。
 - 一些布局可以简化重构
 
-
-```!
-
-因为是偏学习项目，所以项目里会才有各式各样的模式和库，请不要介意
-
-1、 TrendPage ： 目前采用纯 bloc 的 rxdart(stream) + streamBuilder 模式效果
-2、 Scoped Model：目前在 RepositoryDetailPage 出使用
-3、 Redux：目前在 MyPage ，UserInfo、Theme、Localization 等上面使用。
-
-```
 
 ### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
 
