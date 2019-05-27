@@ -176,9 +176,7 @@
 
 [版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
 
-
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
-
+![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg)
 
 ### LICENSE
 ```
