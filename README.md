@@ -14,7 +14,8 @@
 * ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 * ### 同款Android Kotlin版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
 
-```
+
+```!
 基于Flutter开发，适配Android与IOS。目前初版，持续完善中。
 
 项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
@@ -49,18 +50,6 @@
 > `trend_page.dart 等使用，配置sliver 效果`
 
 
-
-## 最近回顾项目，发现了不少问题，目前优化调整中：
-
-- Dao层调整，增加 cancel 等。
-- 调整 redux，已经完成全局部分调整。
-- 自定义图片缓存（DefaultCacheManager居然用数据库存ID），等待替换。
-- 一些布局可以简化重构
-
-
-### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
-
-
 ## 相关文章
 
 * ### [Flutter 完整开发实战详解(一、Dart 语言和 Flutter 基础)](https://juejin.im/entry/5b631e3e51882519861c2ef1 )
@@ -81,9 +70,11 @@
 
 * ### [Flutter 番外篇之面试知识点集锦](https://juejin.im/post/5cd9875ae51d453d022cb662)
 * ### [Flutter 开发实战与前景展望 - RTC Dev Meetup](https://juejin.im/post/5ce7ddf95188257a2b1eac8a)
+* ### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
 
+----
 
-### 编译运行流程
+## 编译运行流程
 
 1、配置好Flutter开发环境(目前Flutter SDK 版本 **master v1.6.1-pre** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
 
