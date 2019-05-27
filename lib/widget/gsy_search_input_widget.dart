@@ -19,8 +19,9 @@ class GSYSearchInputWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      height: kToolbarHeight,
       decoration: new BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(0.0), bottomLeft: Radius.circular(0.0)),
           color:  Color(GSYColors.white),
           border: new Border.all(color: Theme.of(context).primaryColor, width: 0.3),
           boxShadow: [BoxShadow(color: Theme.of(context).primaryColorDark,  blurRadius: 4.0)]),
