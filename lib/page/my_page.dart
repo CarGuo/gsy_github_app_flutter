@@ -7,7 +7,7 @@ import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/base_person_state.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/nested/gsy_nested_pull_load_widget.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -78,7 +78,8 @@ class _MyPageState extends BasePersonState<MyPage> {
     if (getUserType() == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
-    return await EventDao.getEventDao(_getUserName(), page: page, needDb: page <= 1);
+    return await EventDao.getEventDao(_getUserName(),
+        page: page, needDb: page <= 1);
   }
 
   @override
@@ -115,7 +116,7 @@ class _MyPageState extends BasePersonState<MyPage> {
   bool get isRefreshFirst => false;
 
   @override
-  bool get needHeader => true;
+  bool get needHeader => false;
 
   @override
   void didChangeDependencies() {
@@ -130,14 +131,22 @@ class _MyPageState extends BasePersonState<MyPage> {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
-        return GSYPullLoadWidget(
+        return GSYNestedPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => renderItem(index, store.state.userInfo, beStaredCount, notifyColor, () {
+          (BuildContext context, int index) => renderItem(
+                  index, store.state.userInfo, beStaredCount, notifyColor, () {
                 _refreshNotify();
               }, orgList),
           handleRefresh,
           onLoadMore,
-          refreshKey: refreshIndicatorKey,
+          refreshKey: refreshIKey,
+          headerSliverBuilder: (context, _) {
+            return sliverBuilder(
+                context, _, store.state.userInfo, notifyColor, beStaredCount,
+                () {
+              _refreshNotify();
+            });
+          },
         );
       },
     );

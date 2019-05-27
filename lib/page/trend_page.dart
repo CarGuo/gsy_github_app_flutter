@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
+import 'package:gsy_github_app_flutter/widget/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/repos_item.dart';
 import 'package:redux/redux.dart';
@@ -240,7 +240,7 @@ class _TrendPageState extends State<TrendPage>
       ///动态放大缩小的选择案件
       SliverPersistentHeader(
         pinned: true,
-        delegate: _InfoHeaderDelegate(
+        delegate: GSYSliverHeaderDelegate(
             maxHeight: 65,
             minHeight: 65,
             changeSize: true,
@@ -300,48 +300,3 @@ trendType(BuildContext context) {
     TrendTypeModel("C#", "c%23"),
   ];
 }
-
-///动态头部处理
-class _InfoHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _InfoHeaderDelegate(
-      {@required this.minHeight,
-      @required this.maxHeight,
-      @required this.snapConfig,
-      this.child,
-      this.builder,
-      this.changeSize = false});
-
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-  final Builder builder;
-  final bool changeSize;
-  final FloatingHeaderSnapConfiguration snapConfig;
-  AnimationController animationController;
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => math.max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    if (builder != null) {
-      return builder(context, shrinkOffset, overlapsContent);
-    }
-    return child;
-  }
-
-  @override
-  bool shouldRebuild(_InfoHeaderDelegate oldDelegate) {
-    return true;
-  }
-
-  @override
-  FloatingHeaderSnapConfiguration get snapConfiguration => snapConfig;
-}
-
-typedef Widget Builder(
-    BuildContext context, double shrinkOffset, bool overlapsContent);

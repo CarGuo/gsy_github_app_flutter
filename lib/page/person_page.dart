@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/widget/base_person_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
+import 'package:gsy_github_app_flutter/widget/nested/gsy_nested_pull_load_widget.dart';
 
 /**
  * 个人详情
@@ -99,12 +100,13 @@ class _PersonState extends BasePersonState<PersonPage> {
     var focusRes = await UserDao.checkFollowDao(userName);
     if (isShow) {
       setState(() {
-        focus = (focusRes != null && focusRes.result) ? CommonUtils.getLocale(context).user_focus : CommonUtils.getLocale(context).user_un_focus;
+        focus = (focusRes != null && focusRes.result)
+            ? CommonUtils.getLocale(context).user_focus
+            : CommonUtils.getLocale(context).user_un_focus;
         focusStatus = (focusRes != null && focusRes.result);
       });
     }
   }
-
 
   _getUserName() {
     if (userInfo == null) {
@@ -113,13 +115,13 @@ class _PersonState extends BasePersonState<PersonPage> {
     return userInfo.login;
   }
 
-
   _getDataLogic() async {
     if (userInfo.type == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
     getUserOrg(_getUserName());
-    return await EventDao.getEventDao(_getUserName(), page: page, needDb: page <= 1);
+    return await EventDao.getEventDao(_getUserName(),
+        page: page, needDb: page <= 1);
   }
 
   @override
@@ -137,10 +139,11 @@ class _PersonState extends BasePersonState<PersonPage> {
   bool get isRefreshFirst => true;
 
   @override
-  bool get needHeader => true;
+  bool get needHeader => false;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return new Scaffold(
         appBar: new AppBar(
             title: GSYTitleBar(
@@ -154,7 +157,8 @@ class _PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               if (userInfo.type == "Organization") {
-                Fluttertoast.showToast(msg: CommonUtils.getLocale(context).user_focus_no_support);
+                Fluttertoast.showToast(
+                    msg: CommonUtils.getLocale(context).user_focus_no_support);
                 return;
               }
               CommonUtils.showLoadingDialog(context);
@@ -163,12 +167,17 @@ class _PersonState extends BasePersonState<PersonPage> {
                 _getFocusStatus();
               });
             }),
-        body: GSYPullLoadWidget(
+        body: GSYNestedPullLoadWidget(
           pullLoadWidgetControl,
-          (BuildContext context, int index) => renderItem(index, userInfo, beStaredCount, null, null, orgList),
+          (BuildContext context, int index) =>
+              renderItem(index, userInfo, beStaredCount, null, null, orgList),
           handleRefresh,
           onLoadMore,
-          refreshKey: refreshIndicatorKey,
+          refreshKey: refreshIKey,
+          headerSliverBuilder: (context, _) {
+            return sliverBuilder(
+                context, _, userInfo, null, beStaredCount, null);
+          },
         ));
   }
 }
