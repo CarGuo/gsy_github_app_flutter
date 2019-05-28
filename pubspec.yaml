@@ -43,7 +43,7 @@ dependencies:
   photo_view:
     git:
       url: https://github.com/CarSmallGuo/photo_view.git
-      ref: 1fc0effdb8269f4f6bb61186acb127890002b770
+      ref: 6be6a50adfcead0e727a982d32090b9efec9e896
 
 dev_dependencies:
   build_runner: ^1.2.8

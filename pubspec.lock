@@ -472,8 +472,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1fc0effdb8269f4f6bb61186acb127890002b770"
-      resolved-ref: "1fc0effdb8269f4f6bb61186acb127890002b770"
+      ref: "6be6a50adfcead0e727a982d32090b9efec9e896"
+      resolved-ref: "6be6a50adfcead0e727a982d32090b9efec9e896"
       url: "https://github.com/CarSmallGuo/photo_view.git"
     source: git
     version: "0.3.3"
