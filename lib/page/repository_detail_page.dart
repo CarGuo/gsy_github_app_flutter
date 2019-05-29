@@ -34,7 +34,8 @@ class RepositoryDetailPage extends StatefulWidget {
   _RepositoryDetailPageState createState() => _RepositoryDetailPageState();
 }
 
-class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
+class _RepositoryDetailPageState extends State<RepositoryDetailPage>
+    with SingleTickerProviderStateMixin {
   ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
 
   BottomStatusModel bottomStatusModel;
@@ -56,6 +57,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   GlobalKey<RepositoryDetailIssuePageState> issueListKey =
       new GlobalKey<RepositoryDetailIssuePageState>();
+
+  AnimationController animationController;
 
   List<String> branchList = new List();
 
@@ -261,6 +264,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     super.initState();
     _getBranchList();
     _refresh();
+    animationController =
+        new AnimationController(vsync: this, duration: Duration(seconds: 2));
+    animationController.forward();
   }
 
   @override
@@ -299,12 +305,15 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
             onPageChanged: (index) {
               reposDetailModel.setCurrentIndex(index);
             },
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                _createIssue();
-              },
-              child: Icon(Icons.add),
-              backgroundColor: Theme.of(context).primaryColor,
+            floatingActionButton: ScaleTransition(
+              scale: CurvedAnimation(parent: animationController, curve: Curves.bounceIn),
+              child: FloatingActionButton(
+                onPressed: () {
+                  _createIssue();
+                },
+                child: Icon(Icons.add),
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
@@ -315,7 +324,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 rowContents: (tarBarControl.footerButton == null)
                     ? [Container()]
                     : tarBarControl.footerButton.length == 0
-                        ? [SizedBox.fromSize(size: Size(100, 50),)]
+                        ? [
+                            SizedBox.fromSize(
+                              size: Size(100, 50),
+                            )
+                          ]
                         : tarBarControl.footerButton),
           );
         },
