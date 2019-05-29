@@ -74,6 +74,8 @@
 
 ----
 
+# [所有运行问题请点击这里](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
+
 ## 编译运行流程
 
 1、配置好Flutter开发环境(目前Flutter SDK 版本 **master v1.6.1-pre** 的 Tag )，可参阅 [【搭建环境】](https://flutterchina.club)。
@@ -99,7 +101,6 @@
 4、运行之前请注意下
 
 >### 1、本地Flutter SDK 版本 master v1.6.1-pre 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
-
 
 
 ## 项目结构图
