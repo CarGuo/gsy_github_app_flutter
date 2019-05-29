@@ -306,7 +306,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
               reposDetailModel.setCurrentIndex(index);
             },
             floatingActionButton: ScaleTransition(
-              scale: CurvedAnimation(parent: animationController, curve: Curves.bounceIn),
+              scale: CurvedAnimation(parent: animationController, curve: Curves.fastLinearToSlowEaseIn),
               child: FloatingActionButton(
                 onPressed: () {
                   _createIssue();
