@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/Repository.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -8,6 +10,7 @@ import 'package:gsy_github_app_flutter/page/repository_detail_issue_list_page.da
 import 'package:gsy_github_app_flutter/page/repository_detail_readme_page.dart';
 import 'package:gsy_github_app_flutter/page/repository_file_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repostory_detail_info_page.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
@@ -50,6 +53,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
 
   GlobalKey<RepositoryDetailReadmePageState> readmeKey =
       new GlobalKey<RepositoryDetailReadmePageState>();
+
+  GlobalKey<RepositoryDetailIssuePageState> issueListKey =
+      new GlobalKey<RepositoryDetailIssuePageState>();
 
   List<String> branchList = new List();
 
@@ -211,6 +217,45 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
     ];
   }
 
+  _createIssue() {
+    String title = "";
+    String content = "";
+    CommonUtils.showEditDialog(
+        context, CommonUtils.getLocale(context).issue_edit_issue, (titleValue) {
+      title = titleValue;
+    }, (contentValue) {
+      content = contentValue;
+    }, () {
+      if (title == null || title.trim().length == 0) {
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context)
+                .issue_edit_issue_title_not_be_null);
+        return;
+      }
+      if (content == null || content.trim().length == 0) {
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context)
+                .issue_edit_issue_content_not_be_null);
+        return;
+      }
+      CommonUtils.showLoadingDialog(context);
+      //提交修改
+      IssueDao.createIssueDao(widget.userName, widget.reposName,
+          {"title": title, "body": content}).then((result) {
+        if (issueListKey.currentState != null &&
+            issueListKey.currentState.mounted) {
+          issueListKey.currentState.showRefreshLoading();
+        }
+
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    },
+        needTitle: true,
+        titleController: new TextEditingController(),
+        valueController: new TextEditingController());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -228,15 +273,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
               otherList: _getMoreOtherItem(model.repository));
           return new GSYTabBarWidget(
             type: GSYTabBarWidget.TOP_TAB,
-            tarWidgetControl: tarBarControl,
             tabItems: _renderTabItem(),
+            resizeToAvoidBottomPadding: false,
             tabViews: [
               new ReposDetailInfoPage(
                   widget.userName, widget.reposName, titleOptionControl,
                   key: infoListKey),
               new RepositoryDetailReadmePage(widget.userName, widget.reposName,
                   key: readmeKey),
-              new RepositoryDetailIssuePage(widget.userName, widget.reposName),
+              new RepositoryDetailIssuePage(
+                widget.userName,
+                widget.reposName,
+                key: issueListKey,
+              ),
               new RepositoryDetailFileListPage(
                   widget.userName, widget.reposName,
                   key: fileListKey),
@@ -250,6 +299,20 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
             onPageChanged: (index) {
               reposDetailModel.setCurrentIndex(index);
             },
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                _createIssue();
+              },
+              child: Icon(Icons.add),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.endDocked,
+            bottomBar: GSYBottomAppBar(
+                color: Color(GSYColors.white),
+                fabLocation: FloatingActionButtonLocation.endDocked,
+                shape: CircularNotchedRectangle(),
+                rowContents: tarBarControl.footerButton),
           );
         },
       ),

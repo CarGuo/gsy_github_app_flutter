@@ -11,6 +11,8 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final int type;
 
+  final bool resizeToAvoidBottomPadding;
+
   final List<Widget> tabItems;
 
   final List<Widget> tabViews;
@@ -25,6 +27,10 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final Widget floatingActionButton;
 
+  final FloatingActionButtonLocation floatingActionButtonLocation;
+
+  final Widget bottomBar;
+
   final TarWidgetControl tarWidgetControl;
 
   final ValueChanged<int> onPageChanged;
@@ -38,7 +44,10 @@ class GSYTabBarWidget extends StatefulWidget {
     this.indicatorColor,
     this.title,
     this.drawer,
+    this.bottomBar,
+    this.floatingActionButtonLocation,
     this.floatingActionButton,
+    this.resizeToAvoidBottomPadding = true,
     this.tarWidgetControl,
     this.onPageChanged,
   }) : super(key: key);
@@ -108,9 +117,12 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     if (this._type == GSYTabBarWidget.TOP_TAB) {
       ///顶部tab bar
       return new Scaffold(
-        floatingActionButton: SafeArea(child: _floatingActionButton ?? Container()),
+        resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+        floatingActionButton:
+            SafeArea(child: _floatingActionButton ?? Container()),
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
         persistentFooterButtons:
-            _tarWidgetControl == null ? [] : _tarWidgetControl.footerButton,
+            _tarWidgetControl == null ? null : _tarWidgetControl.footerButton,
         appBar: new AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: _title,
@@ -132,6 +144,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
             _onPageChanged?.call(index);
           },
         ),
+        bottomNavigationBar: widget.bottomBar,
       );
     }
 

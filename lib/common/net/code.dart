@@ -1,5 +1,7 @@
-import 'package:event_bus/event_bus.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
+import 'package:gsy_github_app_flutter/common/event/index.dart';
+
+
 ///错误编码
 class Code {
   ///网络错误
@@ -12,8 +14,6 @@ class Code {
   static const NETWORK_JSON_EXCEPTION = -3;
 
   static const SUCCESS = 200;
-
-  static final EventBus eventBus = new EventBus();
 
   static errorHandleFunction(code, message, noTip) {
     if(noTip) {
