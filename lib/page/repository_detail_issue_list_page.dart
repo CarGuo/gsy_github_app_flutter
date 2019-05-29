@@ -24,14 +24,14 @@ class RepositoryDetailIssuePage extends StatefulWidget {
 
   final String reposName;
 
-  RepositoryDetailIssuePage(this.userName, this.reposName);
+  RepositoryDetailIssuePage(this.userName, this.reposName, {Key key}) : super(key: key);
 
   @override
-  _RepositoryDetailIssuePageState createState() =>
-      _RepositoryDetailIssuePageState();
+  RepositoryDetailIssuePageState createState() =>
+      RepositoryDetailIssuePageState();
 }
 
-class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
+class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     with
         AutomaticKeepAliveClientMixin<RepositoryDetailIssuePage>,
         GSYListState<RepositoryDetailIssuePage>,
@@ -97,41 +97,6 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
         page: this.page);
   }
 
-  _createIssue() {
-    String title = "";
-    String content = "";
-    CommonUtils.showEditDialog(
-        context, CommonUtils.getLocale(context).issue_edit_issue, (titleValue) {
-      title = titleValue;
-    }, (contentValue) {
-      content = contentValue;
-    }, () {
-      if (title == null || title.trim().length == 0) {
-        Fluttertoast.showToast(
-            msg: CommonUtils.getLocale(context)
-                .issue_edit_issue_title_not_be_null);
-        return;
-      }
-      if (content == null || content.trim().length == 0) {
-        Fluttertoast.showToast(
-            msg: CommonUtils.getLocale(context)
-                .issue_edit_issue_content_not_be_null);
-        return;
-      }
-      CommonUtils.showLoadingDialog(context);
-      //提交修改
-      IssueDao.createIssueDao(widget.userName, widget.reposName,
-          {"title": title, "body": content}).then((result) {
-        showRefreshLoading();
-        Navigator.pop(context);
-        Navigator.pop(context);
-      });
-    },
-        needTitle: true,
-        titleController: new TextEditingController(),
-        valueController: new TextEditingController());
-  }
-
   @override
   bool get wantKeepAlive => true;
 
@@ -155,30 +120,6 @@ class _RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
-      resizeToAvoidBottomPadding: false,
-      floatingActionButton: new Container(
-        width: 52,
-        height: 52,
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(0, 1),
-                  color: Theme.of(context).primaryColorDark,
-                  blurRadius: 1.0)
-            ],
-            color: Color(GSYColors.primaryValue),
-            borderRadius: BorderRadius.all(Radius.circular(25))),
-        child: InkWell(
-          onTap: () {
-            _createIssue();
-          },
-          child: new Icon(
-            GSYICons.ISSUE_ITEM_ADD,
-            size: 50.0,
-            color: Color(GSYColors.textWhite),
-          ),
-        ),
-      ),
       backgroundColor: Color(GSYColors.mainBackgroundColor),
       appBar: new AppBar(
         leading: new Container(),

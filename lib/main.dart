@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
+import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
@@ -16,6 +17,8 @@ import 'package:gsy_github_app_flutter/page/welcome_page.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
+
+import 'common/event/index.dart';
 
 void main() {
   runZoned(() {
@@ -108,7 +111,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   void initState() {
     super.initState();
-    stream = Code.eventBus.on<HttpErrorEvent>().listen((event) {
+    stream = eventBus.on<HttpErrorEvent>().listen((event) {
       errorHandleFunction(event.code, event.message);
     });
   }
