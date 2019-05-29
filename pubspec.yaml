@@ -39,7 +39,7 @@ dependencies:
   flutter_lottie:
     git:
       url: https://github.com/CarSmallGuo/flutter_lottie.git
-      ref: a59dffd8282746de1c0e463ae12bbd737205aec1
+      ref: 3adb18f2e2a45b8dbdebc0437e9a4db3f6ff32b8
   photo_view:
     git:
       url: https://github.com/CarSmallGuo/photo_view.git
