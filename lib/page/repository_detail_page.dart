@@ -312,7 +312,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage> {
                 color: Color(GSYColors.white),
                 fabLocation: FloatingActionButtonLocation.endDocked,
                 shape: CircularNotchedRectangle(),
-                rowContents: tarBarControl.footerButton),
+                rowContents: (tarBarControl.footerButton == null)
+                    ? [Container()]
+                    : tarBarControl.footerButton.length == 0
+                        ? [SizedBox.fromSize(size: Size(100, 50),)]
+                        : tarBarControl.footerButton),
           );
         },
       ),
