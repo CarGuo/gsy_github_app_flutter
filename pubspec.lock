@@ -473,7 +473,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "5ba4d54a33ffbc1e34c3ade5936aa499c34ecd76"
+      resolved-ref: "966b32661fbb6a2170871d80edb07e418c392e36"
       url: "https://github.com/CarSmallGuo/photo_view.git"
     source: git
     version: "0.3.3"
