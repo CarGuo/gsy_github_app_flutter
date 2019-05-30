@@ -20,19 +20,34 @@ class GSYFlexButton extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   GSYFlexButton(
-      {Key key, this.text, this.color, this.textColor, this.onPress, this.fontSize = 20.0, this.mainAxisAlignment = MainAxisAlignment.center, this.maxLines = 1})
+      {Key key,
+      this.text,
+      this.color,
+      this.textColor,
+      this.onPress,
+      this.fontSize = 20.0,
+      this.mainAxisAlignment = MainAxisAlignment.center,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return new RaisedButton(
-        padding: new EdgeInsets.only(left: 20.0, top: 10.0, right: 20.0, bottom: 10.0),
+        padding: new EdgeInsets.only(
+            left: 20.0, top: 10.0, right: 20.0, bottom: 10.0),
         textColor: textColor,
         color: color,
         child: new Flex(
           mainAxisAlignment: mainAxisAlignment,
           direction: Axis.horizontal,
-          children: <Widget>[new Text(text, style: new TextStyle(fontSize: fontSize), maxLines: maxLines, overflow:TextOverflow.ellipsis)],
+          children: <Widget>[
+            new Expanded(
+              child: new Text(text,
+                  style: new TextStyle(fontSize: fontSize),
+                  maxLines: maxLines,
+                  overflow: TextOverflow.ellipsis),
+            )
+          ],
         ),
         onPressed: () {
           this.onPress?.call();

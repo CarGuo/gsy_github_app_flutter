@@ -24,7 +24,7 @@ import 'package:redux/redux.dart';
 class HomeDrawer extends StatelessWidget {
   showAboutDialog(BuildContext context, String versionName) {
     versionName ??= "Null";
-    showDialog(
+    NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) => AboutDialog(
               applicationName: CommonUtils.getLocale(context).app_name,

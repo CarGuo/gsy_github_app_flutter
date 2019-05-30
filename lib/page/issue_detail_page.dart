@@ -65,7 +65,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       hideBottom: true,
       limitComment: false,
       onPressed: () {
-        showDialog(
+        NavigatorUtils.showGSYDialog(
             context: context,
             builder: (BuildContext context) {
               return new Center(
