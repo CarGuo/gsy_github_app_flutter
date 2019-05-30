@@ -19,6 +19,7 @@ import 'package:redux/redux.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 import 'common/event/index.dart';
+import 'common/utils/navigator_utils.dart';
 
 void main() {
   runZoned(() {
@@ -38,7 +39,10 @@ class FlutterReduxApp extends StatelessWidget {
     middleware: middleware,
 
     ///初始化数据
-    initialState: new GSYState(userInfo: User.empty(), themeData: CommonUtils.getThemeData(GSYColors.primarySwatch), locale: Locale('zh', 'CH')),
+    initialState: new GSYState(
+        userInfo: User.empty(),
+        themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
+        locale: Locale('zh', 'CH')),
   );
 
   FlutterReduxApp({Key key}) : super(key: key);
@@ -68,13 +72,11 @@ class FlutterReduxApp extends StatelessWidget {
               HomePage.sName: (context) {
                 ///通过 Localizations.override 包裹一层，
                 return new GSYLocalizations(
-                  child: new HomePage(),
-                );
+                    child: NavigatorUtils.pageContainer(new HomePage()));
               },
               LoginPage.sName: (context) {
                 return new GSYLocalizations(
-                  child: new LoginPage(),
-                );
+                    child: NavigatorUtils.pageContainer(new LoginPage()));
               },
             });
       }),
@@ -128,23 +130,31 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   errorHandleFunction(int code, message) {
     switch (code) {
       case Code.NETWORK_ERROR:
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).network_error);
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context).network_error);
         break;
       case 401:
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).network_error_401);
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context).network_error_401);
         break;
       case 403:
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).network_error_403);
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context).network_error_403);
         break;
       case 404:
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).network_error_404);
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context).network_error_404);
         break;
       case Code.NETWORK_TIMEOUT:
         //超时
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).network_error_timeout);
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context).network_error_timeout);
         break;
       default:
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).network_error_unknown + " " + message);
+        Fluttertoast.showToast(
+            msg: CommonUtils.getLocale(context).network_error_unknown +
+                " " +
+                message);
         break;
     }
   }
