@@ -117,7 +117,7 @@
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
 | **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **IOS暂无下载** | [ipa下载地址，需自己改签](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/GSYGithubFllutter-1.3.0.ipa) ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+| **IOS暂无下载** | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
 
 
 
