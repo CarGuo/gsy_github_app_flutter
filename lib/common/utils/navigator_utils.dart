@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/router/size_route.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
@@ -52,7 +53,9 @@ class NavigatorUtils {
   ///仓库详情
   static Future goReposDetail(
       BuildContext context, String userName, String reposName) {
-    return NavigatorRouter(context, RepositoryDetailPage(userName, reposName));
+    ///利用 SizeRoute 动画大小打开
+    return Navigator.push(context,
+        new SizeRoute(widget: pageContainer(RepositoryDetailPage(userName, reposName))));
   }
 
   ///仓库版本列表
@@ -199,8 +202,18 @@ class NavigatorUtils {
     NavigatorRouter(context, new UserProfileInfo());
   }
 
+  ///公共打开方式
   static NavigatorRouter(BuildContext context, Widget widget) {
     return Navigator.push(
-        context, new CupertinoPageRoute(builder: (context) => widget));
+        context, new CupertinoPageRoute(builder: (context) => pageContainer(widget)));
+  }
+
+  ///Page页面的容器，做一次通用自定义
+  static Widget pageContainer(widget) {
+    return MediaQuery(
+        ///不受系统字体缩放影响
+        data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+            .copyWith(textScaleFactor: 1),
+        child: widget);
   }
 }
