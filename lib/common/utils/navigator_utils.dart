@@ -54,8 +54,10 @@ class NavigatorUtils {
   static Future goReposDetail(
       BuildContext context, String userName, String reposName) {
     ///利用 SizeRoute 动画大小打开
-    return Navigator.push(context,
-        new SizeRoute(widget: pageContainer(RepositoryDetailPage(userName, reposName))));
+    return Navigator.push(
+        context,
+        new SizeRoute(
+            widget: pageContainer(RepositoryDetailPage(userName, reposName))));
   }
 
   ///仓库版本列表
@@ -204,16 +206,35 @@ class NavigatorUtils {
 
   ///公共打开方式
   static NavigatorRouter(BuildContext context, Widget widget) {
-    return Navigator.push(
-        context, new CupertinoPageRoute(builder: (context) => pageContainer(widget)));
+    return Navigator.push(context,
+        new CupertinoPageRoute(builder: (context) => pageContainer(widget)));
   }
 
   ///Page页面的容器，做一次通用自定义
   static Widget pageContainer(widget) {
     return MediaQuery(
+
         ///不受系统字体缩放影响
         data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
             .copyWith(textScaleFactor: 1),
         child: widget);
+  }
+
+  ///弹出 dialog
+  static Future<T> showGSYDialog<T>({
+    @required BuildContext context,
+    bool barrierDismissible = true,
+    WidgetBuilder builder,
+  }) {
+    return showDialog<T>(
+        context: context,
+        barrierDismissible: barrierDismissible,
+        builder: (context) {
+          return MediaQuery(
+              ///不受系统字体缩放影响
+              data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+                  .copyWith(textScaleFactor: 1),
+              child: new SafeArea(child: builder(context)));
+        });
   }
 }
