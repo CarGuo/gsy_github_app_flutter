@@ -11,8 +11,8 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
-import 'package:gsy_github_app_flutter/widget/nested/gsy_sliver_header_delegate.dart';
-import 'package:gsy_github_app_flutter/widget/nested/nested_refresh.dart';
+import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
+import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/repos_item.dart';
 import 'package:redux/redux.dart';
 
@@ -31,7 +31,6 @@ class _TrendPageState extends State<TrendPage>
     with
         AutomaticKeepAliveClientMixin<TrendPage>,
         SingleTickerProviderStateMixin {
-
   TrendTypeModel selectTime = null;
 
   TrendTypeModel selectType = null;
@@ -83,8 +82,8 @@ class _TrendPageState extends State<TrendPage>
               }
               scrollController
                   .animateTo(0,
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.bounceInOut)
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.bounceInOut)
                   .then((_) {
                 setState(() {
                   selectTime = result;
@@ -103,8 +102,8 @@ class _TrendPageState extends State<TrendPage>
               }
               scrollController
                   .animateTo(0,
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.bounceInOut)
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.bounceInOut)
                   .then((_) {
                 setState(() {
                   selectType = result;
@@ -205,6 +204,7 @@ class _TrendPageState extends State<TrendPage>
       builder: (context, store) {
         return new Scaffold(
           backgroundColor: Color(GSYColors.mainBackgroundColor),
+
           ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
           body: StreamBuilder<List<TrendingRepoModel>>(
               stream: trendBloc.stream,
@@ -235,7 +235,8 @@ class _TrendPageState extends State<TrendPage>
     );
   }
 
-  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled, Store store) {
+  List<Widget> _sliverBuilder(
+      BuildContext context, bool innerBoxIsScrolled, Store store) {
     return <Widget>[
       ///动态放大缩小的选择案件
       SliverPersistentHeader(
@@ -256,7 +257,8 @@ class _TrendPageState extends State<TrendPage>
               var radius = Radius.circular(4 - shrinkOffset / 65 * 4);
               return SizedBox.expand(
                 child: Padding(
-                  padding: EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
+                  padding:
+                      EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
                   child: _renderHeader(store, radius),
                 ),
               );

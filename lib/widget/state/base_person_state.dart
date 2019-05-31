@@ -9,12 +9,11 @@ import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/event_item.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_list_state.dart';
+import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
+import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
+import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/user_header.dart';
 import 'package:gsy_github_app_flutter/widget/user_item.dart';
-
-import 'nested/gsy_sliver_header_delegate.dart';
-import 'nested/nested_refresh.dart';
 
 /**
  * Created by guoshuyu

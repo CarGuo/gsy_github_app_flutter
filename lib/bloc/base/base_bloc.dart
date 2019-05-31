@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_new_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 
 /**
  * Created by guoshuyu

@@ -6,6 +6,8 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'dart:math';
 
+import 'custom_bouncing_scroll_physics.dart';
+
 const double iosRefreshHeight = 140;
 const double iosRefreshIndicatorExtent = 100;
 
@@ -180,8 +182,8 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
         ///回弹效果
         physics: const CustomBouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+            parent: AlwaysScrollableScrollPhysics(),
+            refreshHeight: iosRefreshHeight),
         slivers: <Widget>[
           ///控制显示刷新的 CupertinoSliverRefreshControl
           IOS.CupertinoSliverRefreshControl(
@@ -296,15 +298,17 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: new Container(
-          color: Colors.black,
-          width: MediaQuery.of(context).size.width,
-          ///动态大小处理
-          height: pulledExtent > iosRefreshHeight ? pulledExtent : iosRefreshHeight,
-          child: FlareActor("static/file/loading_world_now.flr",
-              alignment: Alignment.topCenter,
-              fit: BoxFit.cover,
-              animation: "Earth Moving"),
-        ),
+        color: Colors.black,
+        width: MediaQuery.of(context).size.width,
+
+        ///动态大小处理
+        height:
+            pulledExtent > iosRefreshHeight ? pulledExtent : iosRefreshHeight,
+        child: FlareActor("static/file/loading_world_now.flr",
+            alignment: Alignment.topCenter,
+            fit: BoxFit.cover,
+            animation: "Earth Moving"),
+      ),
     );
   }
 }
@@ -352,97 +356,4 @@ class GSYPullLoadWidgetControl extends ChangeNotifier {
 
   ///是否加载中
   bool isLoading = false;
-}
-
-///自定义弹性滑动模块
-class CustomBouncingScrollPhysics extends ScrollPhysics {
-  const CustomBouncingScrollPhysics({ScrollPhysics parent})
-      : super(parent: parent);
-
-  @override
-  CustomBouncingScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return CustomBouncingScrollPhysics(parent: buildParent(ancestor));
-  }
-
-  double frictionFactor(double overscrollFraction) =>
-      0.52 * pow(1 - overscrollFraction, 2);
-
-  @override
-  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
-    assert(offset != 0.0);
-    assert(position.minScrollExtent <= position.maxScrollExtent);
-    if (!position.outOfRange) return offset;
-
-    /// -2 是因为有时候会只到 iosRefreshHeight - 1
-    /// 会导致触发重新又从0开始的问题
-    if (position.pixels.abs() >= (iosRefreshHeight - 2)) {
-      return 0;
-    }
-    final double overscrollPastStart =
-        max(position.minScrollExtent - position.pixels, 0.0);
-    final double overscrollPastEnd =
-        max(position.pixels - position.maxScrollExtent, 0.0);
-    final double overscrollPast = max(overscrollPastStart, overscrollPastEnd);
-
-    final bool easing = (overscrollPastStart > 0.0 && offset < 0.0) ||
-        (overscrollPastEnd > 0.0 && offset > 0.0);
-
-    final double friction = easing
-        ? frictionFactor(
-            (overscrollPast - offset.abs()) / position.viewportDimension)
-        : frictionFactor(overscrollPast / position.viewportDimension);
-
-
-
-    final double direction = offset.sign;
-
-    print("easing $easing overscrollPastStart $overscrollPastStart");
-
-    return direction * _applyFriction(overscrollPast, offset.abs(), friction);
-  }
-
-  static double _applyFriction(
-      double extentOutside, double absDelta, double gamma) {
-    assert(absDelta > 0);
-    double total = 0.0;
-    if (extentOutside > 0) {
-      final double deltaToLimit = extentOutside / gamma;
-      if (absDelta < deltaToLimit) return absDelta * gamma;
-      total += extentOutside;
-      absDelta -= deltaToLimit;
-    }
-    return total + absDelta;
-  }
-
-  @override
-  double applyBoundaryConditions(ScrollMetrics position, double value) => 0.0;
-
-  @override
-  Simulation createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
-    final Tolerance tolerance = this.tolerance;
-    if (velocity.abs() >= tolerance.velocity || position.outOfRange) {
-      return BouncingScrollSimulation(
-        spring: spring,
-        position: position.pixels,
-        velocity: velocity * 0.91,
-        leadingExtent: position.minScrollExtent,
-        trailingExtent: position.maxScrollExtent,
-        tolerance: tolerance,
-      );
-    }
-    return null;
-  }
-
-  @override
-  double get minFlingVelocity => 50.0 * 2.0;
-
-  @override
-  double carriedMomentum(double existingVelocity) {
-    return existingVelocity.sign *
-        min(0.000816 * pow(existingVelocity.abs(), 1.967).toDouble(), 40000.0);
-  }
-
-  @override
-  double get dragStartDistanceMotionThreshold => 3.5;
 }

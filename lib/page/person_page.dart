@@ -8,11 +8,10 @@ import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'package:gsy_github_app_flutter/widget/base_person_state.dart';
+import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/state/base_person_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:gsy_github_app_flutter/widget/nested/gsy_nested_pull_load_widget.dart';
 
 /**
  * 个人详情
