@@ -70,7 +70,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 child: new Container(
                   width: size,
                   height: size,
-                  child: new FlareActor("static/file/flare_flutter_2.flr",
+                  child: new FlareActor("static/file/flare_flutter_logo_.flr",
                       alignment: Alignment.topCenter,
                       fit: BoxFit.fill,
                       animation: "Placeholder"),
