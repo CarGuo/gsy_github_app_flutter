@@ -35,8 +35,8 @@ class _DynamicPageState extends State<DynamicPage>
   showRefreshLoading() {
     ///直接触发下拉
     new Future.delayed(const Duration(milliseconds: 500), () {
-      scrollController.animateTo(-100,
-          duration: Duration(milliseconds: 500), curve: Curves.linear);
+      scrollController.animateTo(-141,
+          duration: Duration(milliseconds: 600), curve: Curves.linear);
       return true;
     });
   }
