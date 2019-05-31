@@ -44,6 +44,7 @@ class GSYFlexButton extends StatelessWidget {
             new Expanded(
               child: new Text(text,
                   style: new TextStyle(fontSize: fontSize),
+                  textAlign: TextAlign.center,
                   maxLines: maxLines,
                   overflow: TextOverflow.ellipsis),
             )
