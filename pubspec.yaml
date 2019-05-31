@@ -101,7 +101,7 @@ flutter:
     - static/images/default_img.png
     - static/file/rejection.json
     - static/file/rejection2.json
-    - static/file/flare_flutter_2.flr
+    - static/file/flare_flutter_logo_.flr
     - static/file/loading_world_now.flr
 
   fonts:
