@@ -6,8 +6,8 @@ import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/widget/base_person_state.dart';
-import 'package:gsy_github_app_flutter/widget/nested/gsy_nested_pull_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/state/base_person_state.dart';
 import 'package:redux/redux.dart';
 
 /**

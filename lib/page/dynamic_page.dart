@@ -7,8 +7,8 @@ import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/widget/event_item.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_bloc_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_pull_new_load_widget.dart';
+import 'package:gsy_github_app_flutter/widget/state/gsy_bloc_list_state.dart';
+import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 import 'package:redux/redux.dart';
 
 /**
