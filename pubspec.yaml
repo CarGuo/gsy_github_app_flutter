@@ -102,6 +102,7 @@ flutter:
     - static/file/rejection.json
     - static/file/rejection2.json
     - static/file/flare_flutter_2.flr
+    - static/file/loading_world_now.flr
 
   fonts:
     - family: wxcIconFont
