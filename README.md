@@ -172,6 +172,7 @@
 | **permission_handler**     | **权限**         |
 | **scope_model**            | **状态管理和共享**    |
 | **lottie**                 | **svg动画**    |
+| **flare**                  | **路径动画**    |
 
 ### 进行中：
 
