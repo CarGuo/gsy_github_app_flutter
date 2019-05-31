@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lottie/flutter_lottie.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -49,9 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
     });
   }
 
-  void onViewCreatedFile(LottieController controller) {
-
-  }
+  void onViewCreatedFile(LottieController controller) {}
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +70,10 @@ class _WelcomePageState extends State<WelcomePage> {
                 child: new Container(
                   width: size,
                   height: size,
-                  color: Colors.white,
-                  child: LottieView.fromFile(
-                    filePath: "static/file/rejection2.json",
-                    autoPlay: true,
-                    loop: true,
-                    reverse: false,
-                    onViewCreated: onViewCreatedFile,
-                  ),
+                  child: new FlareActor("static/file/flare_flutter.flr",
+                      alignment: Alignment.topCenter,
+                      fit: BoxFit.fill,
+                      animation: "Placeholder"),
                 ),
               )
             ],

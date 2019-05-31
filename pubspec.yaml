@@ -34,6 +34,7 @@ dependencies:
   rxdart: ^0.22.0
   android_intent: ^0.3.0
   webview_flutter: ^0.3.7+1
+  flare_flutter: ^1.5.0
   flutter_localizations:
     sdk: flutter
   flutter_lottie:
@@ -100,6 +101,7 @@ flutter:
     - static/images/default_img.png
     - static/file/rejection.json
     - static/file/rejection2.json
+    - static/file/flare_flutter.flr
 
   fonts:
     - family: wxcIconFont
