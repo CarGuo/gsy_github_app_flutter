@@ -101,7 +101,7 @@ flutter:
     - static/images/default_img.png
     - static/file/rejection.json
     - static/file/rejection2.json
-    - static/file/flare_flutter.flr
+    - static/file/flare_flutter_2.flr
 
   fonts:
     - family: wxcIconFont
