@@ -1,12 +1,5 @@
 
-###（待处理）
-
-* 仓库Pulse。
-* markdown点击跳转。
-* webview点击跳转。
-* markdown htmlview 表格。
-* 版本信息列表
-* 监听滚动，设置底部和顶部隐藏显示
+### 请直接看 github release 
 
 ### 1.1.9
 
