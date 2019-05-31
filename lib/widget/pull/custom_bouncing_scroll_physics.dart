@@ -26,9 +26,9 @@ class CustomBouncingScrollPhysics extends ScrollPhysics {
 
     /// -2 是因为有时候会只到 iosRefreshHeight - 1
     /// 会导致触发重新又从0开始的问题
-    if (position.pixels.abs() >= (refreshHeight - 2)) {
+    /*if (position.pixels.abs() >= (refreshHeight - 2)) {
       return 0;
-    }
+    }*/
     final double overscrollPastStart =
         max(position.minScrollExtent - position.pixels, 0.0);
     final double overscrollPastEnd =
@@ -44,8 +44,6 @@ class CustomBouncingScrollPhysics extends ScrollPhysics {
         : frictionFactor(overscrollPast / position.viewportDimension);
 
     final double direction = offset.sign;
-
-    print("easing $easing overscrollPastStart $overscrollPastStart");
 
     return direction * _applyFriction(overscrollPast, offset.abs(), friction);
   }
