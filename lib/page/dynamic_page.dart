@@ -46,6 +46,7 @@ class _DynamicPageState extends State<DynamicPage>
 
   @override
   requestRefresh() async {
+    await Future.delayed(Duration(seconds: 1));
     return await dynamicBloc.requestRefresh(_getStore().state.userInfo?.login);
   }
 
