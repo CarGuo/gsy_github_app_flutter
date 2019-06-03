@@ -8,12 +8,19 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:redux/redux.dart';
 
+
+const String user_profile_name = "名字";
+const String user_profile_email = "邮箱";
+const String user_profile_link = "链接";
+const String user_profile_org = "公司";
+const String user_profile_location = "位置";
+const String user_profile_info = "简介";
+
 /**
  * 用户信息中心
  * Created by guoshuyu
  * Date: 2018-08-08
  */
-
 class UserProfileInfo extends StatefulWidget {
   UserProfileInfo();
 
@@ -22,7 +29,8 @@ class UserProfileInfo extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfileInfo> {
-  _renderItem(IconData leftIcon, String title, String value, VoidCallback onPressed) {
+  _renderItem(
+      IconData leftIcon, String title, String value, VoidCallback onPressed) {
     return new GSYCardItem(
       child: new RawMaterialButton(
         onPressed: onPressed,
@@ -50,13 +58,6 @@ class _UserProfileState extends State<UserProfileInfo> {
     );
   }
 
-  static const String user_profile_name = "名字";
-  static const String user_profile_email = "邮箱";
-  static const String user_profile_link = "链接";
-  static const String user_profile_org = "公司";
-  static const String user_profile_location = "位置";
-  static const String user_profile_info = "简介";
-
   _showEditDialog(String title, String value, String key, Store store) {
     String content = value ?? "";
     CommonUtils.showEditDialog(context, title, (title) {}, (res) {
@@ -69,32 +70,53 @@ class _UserProfileState extends State<UserProfileInfo> {
 
       UserDao.updateUserDao({key: content}, store).then((res) {
         Navigator.of(context).pop();
-        if(res != null && res.result) {
+        if (res != null && res.result) {
           Navigator.of(context).pop();
         }
       });
-    }, titleController: new TextEditingController(), valueController: new TextEditingController(text: value), needTitle: false);
+    },
+        titleController: new TextEditingController(),
+        valueController: new TextEditingController(text: value),
+        needTitle: false);
   }
 
   List<Widget> _renderList(User userInfo, Store store) {
     return [
-      _renderItem(Icons.info, CommonUtils.getLocale(context).user_profile_name, userInfo.name ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_name, userInfo.name, "name", store);
+      _renderItem(Icons.info, CommonUtils.getLocale(context).user_profile_name,
+          userInfo.name ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_name,
+            userInfo.name, "name", store);
       }),
-      _renderItem(Icons.email, CommonUtils.getLocale(context).user_profile_email, userInfo.email ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_email, userInfo.email, "email", store);
+      _renderItem(
+          Icons.email,
+          CommonUtils.getLocale(context).user_profile_email,
+          userInfo.email ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_email,
+            userInfo.email, "email", store);
       }),
-      _renderItem(Icons.link, CommonUtils.getLocale(context).user_profile_link, userInfo.blog ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_link, userInfo.blog, "blog", store);
+      _renderItem(Icons.link, CommonUtils.getLocale(context).user_profile_link,
+          userInfo.blog ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_link,
+            userInfo.blog, "blog", store);
       }),
-      _renderItem(Icons.group, CommonUtils.getLocale(context).user_profile_org, userInfo.company ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_org, userInfo.company, "company", store);
+      _renderItem(Icons.group, CommonUtils.getLocale(context).user_profile_org,
+          userInfo.company ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_org,
+            userInfo.company, "company", store);
       }),
-      _renderItem(Icons.location_on, CommonUtils.getLocale(context).user_profile_location, userInfo.location ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_location, userInfo.location, "location", store);
+      _renderItem(
+          Icons.location_on,
+          CommonUtils.getLocale(context).user_profile_location,
+          userInfo.location ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_location,
+            userInfo.location, "location", store);
       }),
-      _renderItem(Icons.message, CommonUtils.getLocale(context).user_profile_info, userInfo.bio ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_info, userInfo.bio, "bio", store);
+      _renderItem(
+          Icons.message,
+          CommonUtils.getLocale(context).user_profile_info,
+          userInfo.bio ?? "---", () {
+        _showEditDialog(CommonUtils.getLocale(context).user_profile_info,
+            userInfo.bio, "bio", store);
       }),
     ];
   }

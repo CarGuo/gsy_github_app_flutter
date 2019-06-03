@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
 
   /// 不退出
   Future<bool> _dialogExitApp(BuildContext context) async {
+    ///如果是 android 回到桌面
     if (Platform.isAndroid) {
       AndroidIntent intent = AndroidIntent(
         action: 'android.intent.action.MAIN',
@@ -52,6 +53,7 @@ class HomePage extends StatelessWidget {
       _renderTab(GSYICons.MAIN_QS, CommonUtils.getLocale(context).home_trend),
       _renderTab(GSYICons.MAIN_MY, CommonUtils.getLocale(context).home_my),
     ];
+    ///增加返回按键监听
     return WillPopScope(
       onWillPop: () {
         return _dialogExitApp(context);

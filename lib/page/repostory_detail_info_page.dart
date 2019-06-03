@@ -38,20 +38,29 @@ class ReposDetailInfoPage extends StatefulWidget {
   ReposDetailInfoPageState createState() => ReposDetailInfoPageState();
 }
 
+///页面 KeepAlive ，同时支持 动画Ticker
 class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     with
         AutomaticKeepAliveClientMixin<ReposDetailInfoPage>,
         GSYListState<ReposDetailInfoPage>,
         TickerProviderStateMixin {
+
+  ///滑动监听
   final ScrollController scrollController = new ScrollController();
 
+  ///当前显示tab
   int selectIndex = 0;
+
+  ///初始化 header 默认大小，后面动态调整
   double headerSize = 270;
 
-  ReposDetailInfoPageState();
-
+  /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIKey =
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+
+  ///动画控制器
+  AnimationController animationController;
+
 
   @override
   showRefreshLoading() {
@@ -150,8 +159,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   @override
   bool get needHeader => false;
 
-  AnimationController animationController;
-
   @override
   void initState() {
     super.initState();
@@ -178,6 +185,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     );
   }
 
+  ///绘制内置Header，支持部分停靠支持
   List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
     return <Widget>[
       ///头部信息
@@ -202,9 +210,10 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         ),
       ),
 
-      ///动态放大缩小的选择案件
+      ///动态放大缩小的tab控件
       SliverPersistentHeader(
         pinned: true,
+        /// SliverPersistentHeaderDelegate 的实现
         delegate: GSYSliverHeaderDelegate(
             maxHeight: 60,
             minHeight: 60,

@@ -37,12 +37,13 @@ class ReleasePage extends StatefulWidget {
 
 class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClientMixin<ReleasePage>, GSYListState<ReleasePage> {
 
+  ///配置标题了右侧的更多显示
   final OptionControl titleOptionControl = new OptionControl();
 
+  ///显示tag还是relase
   int selectIndex = 0;
 
-  _ReleasePageState();
-
+  ///绘制item
   _renderEventItem(index) {
     ReleaseItemViewModel releaseItemViewModel = ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return new ReleaseItem(
@@ -69,6 +70,7 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
     );
   }
 
+  ///打开外部url
   _launchURL() async {
     String url = _getUrl();
     if (await canLaunch(url)) {

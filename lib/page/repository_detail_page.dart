@@ -1,4 +1,3 @@
-import 'package:bezier/bezier.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
@@ -17,9 +16,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:gsy_github_app_flutter/widget/repos_header_item.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:vector_math/vector_math.dart';
 
 /**
  * 仓库详情
@@ -27,8 +24,10 @@ import 'package:vector_math/vector_math.dart';
  * Date: 2018-07-18
  */
 class RepositoryDetailPage extends StatefulWidget {
+  ///用户名
   final String userName;
 
+  ///仓库名
   final String reposName;
 
   RepositoryDetailPage(this.userName, this.reposName);
@@ -38,33 +37,45 @@ class RepositoryDetailPage extends StatefulWidget {
 }
 
 class _RepositoryDetailPageState extends State<RepositoryDetailPage>
-    with SingleTickerProviderStateMixin {
-  ReposHeaderViewModel reposHeaderViewModel = new ReposHeaderViewModel();
 
+    ///混入动画需求的 Ticker
+    with
+        SingleTickerProviderStateMixin {
+  /// 仓库底部状态，如 star、watch 等等
   BottomStatusModel bottomStatusModel;
 
+  /// 仓库底部状态，如 star、watch 控件的显示
   final TarWidgetControl tarBarControl = new TarWidgetControl();
 
+  ///仓库的详情数据实体
   final ReposDetailModel reposDetailModel = new ReposDetailModel();
 
+  ///配置标题栏右侧控件显示
   final OptionControl titleOptionControl = new OptionControl();
 
+  /// 文件列表页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailFileListPageState> fileListKey =
       new GlobalKey<RepositoryDetailFileListPageState>();
 
+  /// 详情信息页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<ReposDetailInfoPageState> infoListKey =
       new GlobalKey<ReposDetailInfoPageState>();
 
+  /// readme 页面的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailReadmePageState> readmeKey =
       new GlobalKey<RepositoryDetailReadmePageState>();
 
+  /// issue 列表页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailIssuePageState> issueListKey =
       new GlobalKey<RepositoryDetailIssuePageState>();
 
+  ///动画控制器，用于底部发布 issue 按键动画
   AnimationController animationController;
 
+  ///分支数据列表
   List<String> branchList = new List();
 
+  ///获取网络端仓库的star等状态
   _getReposStatus() async {
     var result = await ReposDao.getRepositoryStatusDao(
         widget.userName, widget.reposName);
@@ -84,6 +95,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     });
   }
 
+  ///获取分支数据
   _getBranchList() async {
     var result =
         await ReposDao.getBranchesDao(widget.userName, widget.reposName);
@@ -98,6 +110,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     this._getReposStatus();
   }
 
+  ///绘制底部状态 item
   _renderBottomItem(var text, var icon, var onPressed) {
     return new FlatButton(
         onPressed: onPressed,
@@ -112,10 +125,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         ));
   }
 
+  ///绘制底部状态
   _getBottomWidget() {
+    ///根据网络返回数据，返回底部状态数据
     List<Widget> bottomWidget = (bottomStatusModel == null)
         ? []
         : <Widget>[
+            /// star
             _renderBottomItem(
                 bottomStatusModel.starText, bottomStatusModel.starIcon, () {
               CommonUtils.showLoadingDialog(context);
@@ -126,6 +142,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                 Navigator.pop(context);
               });
             }),
+
+            /// watch
             _renderBottomItem(
                 bottomStatusModel.watchText, bottomStatusModel.watchIcon, () {
               CommonUtils.showLoadingDialog(context);
@@ -136,6 +154,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                 Navigator.pop(context);
               });
             }),
+
+            ///fork
             _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
               CommonUtils.showLoadingDialog(context);
               return ReposDao.createForkDao(widget.userName, widget.reposName)
@@ -148,8 +168,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     return bottomWidget;
   }
 
-  ///无奈之举，只能pageView配合tabbar，通过control同步
-  ///TabView 配合tabbar 在四个页面上问题太多
+  ///渲染 Tab 的 Item
   _renderTabItem() {
     var itemList = [
       CommonUtils.getLocale(context).repos_tab_info,
@@ -174,6 +193,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     return list;
   }
 
+  ///title 显示更多弹出item
   _getMoreOtherItem(Repository repository) {
     return [
       ///Release Page
@@ -223,6 +243,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     ];
   }
 
+  ///创建 issue
   _createIssue() {
     String title = "";
     String content = "";
@@ -267,19 +288,24 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     super.initState();
     _getBranchList();
     _refresh();
-    animationController =
-        new AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+
+    ///悬浮按键动画控制器
+    animationController = new AnimationController(
+        vsync: this, duration: Duration(milliseconds: 800));
     animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
+    ///跨 tab 共享状态
     return new ScopedModel<ReposDetailModel>(
       model: reposDetailModel,
       child: new ScopedModelDescendant<ReposDetailModel>(
         builder: (context, child, model) {
           Widget widgetContent = new GSYCommonOptionWidget(titleOptionControl,
               otherList: _getMoreOtherItem(model.repository));
+
+          ///绘制顶部 tab 控件
           return new GSYTabBarWidget(
             type: GSYTabBarWidget.TOP_TAB,
             tabItems: _renderTabItem(),
@@ -309,9 +335,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
               reposDetailModel.setCurrentIndex(index);
             },
 
+            ///悬浮按键，增加出现动画
             floatingActionButton: ScaleTransition(
               //scale: CurvedAnimation(parent: animationController, curve: Curves.bounceInOut),
-              scale: CurvedAnimation(parent: animationController, curve: CurveBezier()),
+              scale: CurvedAnimation(
+                  parent: animationController, curve: CurveBezier()),
               child: FloatingActionButton(
                 onPressed: () {
                   _createIssue();
@@ -320,8 +348,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                 backgroundColor: Theme.of(context).primaryColor,
               ),
             ),
+
+            ///悬浮按键位置
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
+
+            ///底部bar，增加对悬浮按键的缺省容器处理
             bottomBar: GSYBottomAppBar(
                 color: Color(GSYColors.white),
                 fabLocation: FloatingActionButtonLocation.endDocked,
@@ -342,6 +374,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   }
 }
 
+///底部状态实体
 class BottomStatusModel {
   final String watchText;
   final String starText;
@@ -354,6 +387,7 @@ class BottomStatusModel {
       this.starIcon, this.watch, this.star);
 }
 
+///仓库详情数据实体，包含有当前index，仓库数据，分支等等
 class ReposDetailModel extends Model {
   static ReposDetailModel of(BuildContext context) =>
       ScopedModel.of<ReposDetailModel>(context);

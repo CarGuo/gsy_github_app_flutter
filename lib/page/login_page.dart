@@ -51,7 +51,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    ///共享 store
     return new StoreBuilder<GSYState>(builder: (context, store) {
+      /// 触摸收起键盘
       return new GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -61,8 +63,9 @@ class _LoginPageState extends State<LoginPage> {
           body: new Container(
             color: Theme.of(context).primaryColor,
             child: new Center(
-              //防止overFlow的现象
+              ///防止overFlow的现象
               child: SafeArea(
+                ///同时弹出键盘不遮挡
                 child: SingleChildScrollView(
                   child: new Card(
                     elevation: 5.0,

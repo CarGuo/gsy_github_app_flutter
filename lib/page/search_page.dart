@@ -13,6 +13,7 @@ import 'package:gsy_github_app_flutter/widget/repos_item.dart';
 import 'package:gsy_github_app_flutter/widget/user_item.dart';
 
 /**
+ * 搜索页面
  * Created by guoshuyu
  * on 2018/7/24.
  */
@@ -21,37 +22,53 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMixin<SearchPage>, GSYListState<SearchPage> {
+class _SearchPageState extends State<SearchPage>
+    with AutomaticKeepAliveClientMixin<SearchPage>, GSYListState<SearchPage> {
+  ///搜索仓库还是人
   int selectIndex = 0;
 
+  ///搜索文件
   String searchText;
+
+  ///排序类型
   String type = searchFilterType[0].value;
+
+  ///排序
   String sort = sortType[0].value;
+
+  ///过滤语言
   String language = searchLanguageType[0].value;
 
-  _renderEventItem(index) {
+  ///绘制item
+  _renderItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
     if (selectIndex == 0) {
       ReposViewModel reposViewModel = ReposViewModel.fromMap(data);
       return new ReposItem(reposViewModel, onPressed: () {
-        NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
+        NavigatorUtils.goReposDetail(
+            context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
     } else if (selectIndex == 1) {
       return new UserItem(UserItemViewModel.fromMap(data), onPressed: () {
-        NavigatorUtils.goPerson(context, UserItemViewModel.fromMap(data).userName);
+        NavigatorUtils.goPerson(
+            context, UserItemViewModel.fromMap(data).userName);
       });
     }
   }
 
+  ///切换tab
   _resolveSelectIndex() {
     clearData();
     showRefreshLoading();
   }
 
+  ///获取搜索数据
   _getDataLogic() async {
-    return await ReposDao.searchRepositoryDao(searchText, language, type, sort, selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
+    return await ReposDao.searchRepositoryDao(searchText, language, type, sort,
+        selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
   }
 
+  ///清空过滤数据
   _clearSelect(List<FilterModel> list) {
     for (FilterModel model in list) {
       model.select = false;
@@ -93,18 +110,23 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
+
+      ///右侧 Drawer
       endDrawer: new GSYSearchDrawer(
         (String type) {
+          ///排序类型
           this.type = type;
           Navigator.pop(context);
           _resolveSelectIndex();
         },
         (String sort) {
+          ///排序状态
           this.sort = sort;
           Navigator.pop(context);
           _resolveSelectIndex();
         },
         (String language) {
+          ///过滤语言
           this.language = language;
           Navigator.pop(context);
           _resolveSelectIndex();
@@ -120,7 +142,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
             if (searchText == null || searchText.trim().length == 0) {
               return;
             }
-            if(isLoading) {
+            if (isLoading) {
               return;
             }
             _resolveSelectIndex();
@@ -128,7 +150,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
             if (searchText == null || searchText.trim().length == 0) {
               return;
             }
-            if(isLoading) {
+            if (isLoading) {
               return;
             }
             _resolveSelectIndex();
@@ -136,7 +158,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
             if (searchText == null || searchText.trim().length == 0) {
               return;
             }
-            if(isLoading) {
+            if (isLoading) {
               return;
             }
             this.selectIndex = selectIndex;
@@ -144,7 +166,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
           })),
       body: GSYPullLoadWidget(
         pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderEventItem(index),
+        (BuildContext context, int index) => _renderItem(index),
         handleRefresh,
         onLoadMore,
         refreshKey: refreshIndicatorKey,
@@ -153,6 +175,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
   }
 }
 
+///实现 PreferredSizeWidget 实现自定义 appbar bottom 控件
 class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
   final SelectItemChanged onChanged;
 
@@ -162,7 +185,8 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
 
   final VoidCallback onSubmitPressed;
 
-  SearchBottom(this.onChanged, this.onSubmitted, this.onSubmitPressed, this.selectItemChanged);
+  SearchBottom(this.onChanged, this.onSubmitted, this.onSubmitPressed,
+      this.selectItemChanged);
 
   @override
   Widget build(BuildContext context) {

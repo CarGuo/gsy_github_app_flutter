@@ -16,6 +16,7 @@ import 'package:gsy_github_app_flutter/widget/issue_header_item.dart';
 import 'package:gsy_github_app_flutter/widget/issue_item.dart';
 
 /**
+ * Issue 详情页面
  * Created by guoshuyu
  * on 2018/7/21.
  */
@@ -42,20 +43,24 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         GSYListState<IssueDetailPage> {
   int selectIndex = 0;
 
+  ///头部信息数据是否加载成功，成功了就可以显示底部状态
   bool headerStatus = false;
 
+  /// issue 的头部数据显示
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
 
+  ///控制编辑时issue的title
   TextEditingController issueInfoTitleControl = new TextEditingController();
 
+  ///控制编辑时issue的content
   TextEditingController issueInfoValueControl = new TextEditingController();
 
-  final TextEditingController issueInfoCommitValueControl =
-      new TextEditingController();
-
+  ///标题栏右侧显示控制
   final OptionControl titleOptionControl = new OptionControl();
 
+  ///绘制item
   _renderEventItem(index) {
+    ///第一个绘制的是头部
     if (index == 0) {
       return new IssueHeaderItem(issueHeaderViewModel, onPressed: () {});
     }
@@ -113,7 +118,9 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     );
   }
 
+  ///获取页面数据
   _getDataLogic() async {
+    ///刷新时同时更新头部信息
     if (page <= 1) {
       _getHeaderInfo();
     }
@@ -122,6 +129,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         page: page, needDb: page <= 1);
   }
 
+  ///获取头部数据
   _getHeaderInfo() {
     IssueDao.getIssueInfoDao(widget.userName, widget.reposName, widget.issueNum)
         .then((res) {
@@ -137,6 +145,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     });
   }
 
+  ///数据转化显示
   _resolveHeaderInfo(res) {
     Issue issue = res.data;
     setState(() {
@@ -146,6 +155,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     });
   }
 
+  ///编辑回复
   _editCommit(id, content) {
     Navigator.pop(context);
     String contentData = content;
@@ -179,6 +189,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     );
   }
 
+  ///删除回复
   _deleteCommit(id) {
     Navigator.pop(context);
     CommonUtils.showLoadingDialog(context);
@@ -191,6 +202,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     });
   }
 
+  ///编译 issue
   _editIssue() {
     String title = issueHeaderViewModel.issueComment;
     String content = issueHeaderViewModel.issueDesHtml;
@@ -234,6 +246,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     );
   }
 
+  ///回复 issue
   _replyIssue() {
     //回复 Info
     issueInfoTitleControl = new TextEditingController(text: "");
@@ -269,6 +282,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     );
   }
 
+  ///获取底部状态控件显示
   _getBottomWidget() {
     List<Widget> bottomWidget = (!headerStatus)
         ? []

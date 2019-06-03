@@ -28,6 +28,7 @@ class _DynamicPageState extends State<DynamicPage>
         WidgetsBindingObserver {
   final DynamicBloc dynamicBloc = new DynamicBloc();
 
+  ///控制列表滚动和监听
   final ScrollController scrollController = new ScrollController();
 
   /// 模拟IOS下拉显示刷新
@@ -64,7 +65,9 @@ class _DynamicPageState extends State<DynamicPage>
   @override
   void initState() {
     super.initState();
+    ///监听生命周期，主要判断页面 resumed 的时候触发刷新
     WidgetsBinding.instance.addObserver(this);
+    ///获取网络端新版信息
     ReposDao.getNewsVersion(context, false);
   }
 
@@ -82,6 +85,7 @@ class _DynamicPageState extends State<DynamicPage>
     super.didChangeDependencies();
   }
 
+  ///监听生命周期，主要判断页面 resumed 的时候触发刷新
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -110,6 +114,8 @@ class _DynamicPageState extends State<DynamicPage>
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
+        ///BlocProvider 用于管理 bloc 共享，如果不需要共享可以不用
+        ///直接 StreamBuilder 配合即可
         return BlocProvider<DynamicBloc>(
           bloc: dynamicBloc,
           child: GSYPullLoadWidget(

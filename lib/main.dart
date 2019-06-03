@@ -113,6 +113,8 @@ class _GSYLocalizations extends State<GSYLocalizations> {
   @override
   void initState() {
     super.initState();
+
+    ///Stream演示event bus
     stream = eventBus.on<HttpErrorEvent>().listen((event) {
       errorHandleFunction(event.code, event.message);
     });
@@ -127,6 +129,7 @@ class _GSYLocalizations extends State<GSYLocalizations> {
     }
   }
 
+  ///网络错误提醒
   errorHandleFunction(int code, message) {
     switch (code) {
       case Code.NETWORK_ERROR:
