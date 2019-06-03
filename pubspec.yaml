@@ -35,6 +35,7 @@ dependencies:
   android_intent: ^0.3.0
   webview_flutter: ^0.3.7+1
   flare_flutter: ^1.5.0
+  bezier: ^1.1.2
   flutter_localizations:
     sdk: flutter
   flutter_lottie:
