@@ -32,11 +32,14 @@ class _NotifyPageState extends State<NotifyPage>
 
   _NotifyPageState();
 
+  ///绘制 Item
   _renderItem(index) {
     Model.Notification notification = pullLoadWidgetControl.dataList[index];
     if (selectIndex != 0) {
       return _renderEventItem(notification);
     }
+
+    ///只有未读消息支持 Slidable 滑动效果
     return new Slidable(
       key: ValueKey<String>(index.toString() + "_" + selectIndex.toString()),
       controller: slidableController,
@@ -63,6 +66,7 @@ class _NotifyPageState extends State<NotifyPage>
     );
   }
 
+  ///绘制实际的内容数据item
   _renderEventItem(Model.Notification notification) {
     EventViewModel eventViewModel =
         EventViewModel.fromNotify(context, notification);
@@ -85,6 +89,7 @@ class _NotifyPageState extends State<NotifyPage>
     }, needImage: false);
   }
 
+  ///切换tab
   _resolveSelectIndex() {
     clearData();
     showRefreshLoading();

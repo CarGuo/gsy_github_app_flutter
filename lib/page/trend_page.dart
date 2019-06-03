@@ -31,15 +31,22 @@ class _TrendPageState extends State<TrendPage>
     with
         AutomaticKeepAliveClientMixin<TrendPage>,
         SingleTickerProviderStateMixin {
+
+
+  ///显示数据时间
   TrendTypeModel selectTime = null;
 
+  ///显示过滤语言
   TrendTypeModel selectType = null;
 
+  /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIndicatorKey =
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
+  ///滚动控制与监听
   final ScrollController scrollController = new ScrollController();
 
+  ///bloc
   final TrendBloc trendBloc = new TrendBloc();
 
   ///显示刷新
@@ -50,6 +57,7 @@ class _TrendPageState extends State<TrendPage>
     });
   }
 
+  ///绘制tiem
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
     return new ReposItem(reposViewModel, onPressed: () {
@@ -58,6 +66,7 @@ class _TrendPageState extends State<TrendPage>
     });
   }
 
+  ///绘制头部可选item
   _renderHeader(Store<GSYState> store, Radius radius) {
     if (selectTime == null && selectType == null) {
       return Container();
@@ -117,6 +126,7 @@ class _TrendPageState extends State<TrendPage>
     );
   }
 
+  ///或者头部可选弹出item容器
   _renderHeaderPopItem(String data, List<TrendTypeModel> list,
       PopupMenuItemSelected<TrendTypeModel> onSelected) {
     return new Expanded(
@@ -131,6 +141,7 @@ class _TrendPageState extends State<TrendPage>
     );
   }
 
+  ///或者头部可选弹出item
   _renderHeaderPopItemChild(List<TrendTypeModel> data) {
     List<PopupMenuEntry<TrendTypeModel>> list = new List();
     for (TrendTypeModel item in data) {
@@ -209,8 +220,10 @@ class _TrendPageState extends State<TrendPage>
           body: StreamBuilder<List<TrendingRepoModel>>(
               stream: trendBloc.stream,
               builder: (context, snapShot) {
+                ///下拉刷新
                 return new NestedScrollViewRefreshIndicator(
                   key: refreshIndicatorKey,
+                  ///嵌套滚动
                   child: NestedScrollView(
                     controller: scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -235,12 +248,14 @@ class _TrendPageState extends State<TrendPage>
     );
   }
 
+  ///嵌套可滚动头部
   List<Widget> _sliverBuilder(
       BuildContext context, bool innerBoxIsScrolled, Store store) {
     return <Widget>[
-      ///动态放大缩小的选择案件
+      ///动态头部
       SliverPersistentHeader(
         pinned: true,
+        ///SliverPersistentHeaderDelegate 实现
         delegate: GSYSliverHeaderDelegate(
             maxHeight: 65,
             minHeight: 65,
@@ -268,6 +283,7 @@ class _TrendPageState extends State<TrendPage>
   }
 }
 
+///趋势数据过滤显示item
 class TrendTypeModel {
   final String name;
   final String value;
@@ -275,6 +291,7 @@ class TrendTypeModel {
   TrendTypeModel(this.name, this.value);
 }
 
+///趋势数据时间过滤
 trendTime(BuildContext context) {
   return [
     new TrendTypeModel(CommonUtils.getLocale(context).trend_day, "daily"),
@@ -283,6 +300,7 @@ trendTime(BuildContext context) {
   ];
 }
 
+///趋势数据语言过滤
 trendType(BuildContext context) {
   return [
     TrendTypeModel(CommonUtils.getLocale(context).trend_all, null),

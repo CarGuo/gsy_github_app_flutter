@@ -32,6 +32,7 @@ class _MyPageState extends BasePersonState<MyPage> {
     return StoreProvider.of(context);
   }
 
+  ///从全局状态中获取我的用户名
   _getUserName() {
     if (_getStore()?.state?.userInfo == null) {
       return null;
@@ -39,6 +40,7 @@ class _MyPageState extends BasePersonState<MyPage> {
     return _getStore()?.state?.userInfo?.login;
   }
 
+  ///从全局状态中获取我的用户类型
   getUserType() {
     if (_getStore()?.state?.userInfo == null) {
       return null;
@@ -46,6 +48,7 @@ class _MyPageState extends BasePersonState<MyPage> {
     return _getStore()?.state?.userInfo?.type;
   }
 
+  ///更新通知图标颜色
   _refreshNotify() {
     UserDao.getNotifyDao(false, false, 0).then((res) {
       Color newColor;
@@ -91,8 +94,12 @@ class _MyPageState extends BasePersonState<MyPage> {
           //todo getUserOrg(_getUserName());
         }
       });*/
+      ///通过 redux 提交更新用户数据行为
+      ///触发网络请求更新
       _getStore().dispatch(FetchUserAction());
+      ///获取用户组织信息
       getUserOrg(_getUserName());
+      ///获取用户仓库前100个star统计数据
       ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
         if (res != null && res.result) {
           if (isShow) {

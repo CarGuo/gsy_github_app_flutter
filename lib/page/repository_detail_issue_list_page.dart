@@ -22,25 +22,34 @@ class RepositoryDetailIssuePage extends StatefulWidget {
 
   final String reposName;
 
-  RepositoryDetailIssuePage(this.userName, this.reposName, {Key key}) : super(key: key);
+  RepositoryDetailIssuePage(this.userName, this.reposName, {Key key})
+      : super(key: key);
 
   @override
   RepositoryDetailIssuePageState createState() =>
       RepositoryDetailIssuePageState();
 }
 
+///页面 KeepAlive ，同时支持 动画Ticker
 class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     with
         AutomaticKeepAliveClientMixin<RepositoryDetailIssuePage>,
         GSYListState<RepositoryDetailIssuePage>,
         SingleTickerProviderStateMixin {
+  /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIKey =
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
+  ///搜索 issue 文本
   String searchText;
+
+  ///过滤 issue 状态
   String issueState;
+
+  ///显示 issue 状态 tag index
   int selectIndex;
 
+  ///滑动控制器
   final ScrollController scrollController = new ScrollController();
 
   @override
@@ -51,7 +60,8 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     });
   }
 
-  _renderEventItem(index) {
+  ///绘制issue item
+  _renderIssueItem(index) {
     IssueItemViewModel issueItemViewModel =
         IssueItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return new IssueItem(
@@ -63,6 +73,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     );
   }
 
+  ///切换显示状态
   _resolveSelectIndex() {
     clearData();
     switch (selectIndex) {
@@ -76,6 +87,8 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
         issueState = "closed";
         break;
     }
+
+    ///回滚到最初位置
     scrollController
         .animateTo(0,
             duration: Duration(milliseconds: 100), curve: Curves.bounceIn)
@@ -84,6 +97,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     });
   }
 
+  ///获取数据
   _getDataLogic(String searchString) async {
     if (searchString == null || searchString.trim().length == 0) {
       return await IssueDao.getRepositoryIssueDao(
@@ -131,9 +145,11 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
         elevation: 0.0,
         backgroundColor: Color(GSYColors.mainBackgroundColor),
       ),
+
+      ///支持嵌套滚动
       body: GSYNestedPullLoadWidget(
         pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderEventItem(index),
+        (BuildContext context, int index) => _renderIssueItem(index),
         handleRefresh,
         onLoadMore,
         refreshKey: refreshIKey,
@@ -145,12 +161,15 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     );
   }
 
+  ///绘制内置Header，支持部分停靠支持
   List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
     double height = 60;
     return <Widget>[
-      ///动态放大缩小的选择案件
+      ///头部信息显示
       SliverPersistentHeader(
         pinned: true,
+
+        /// SliverPersistentHeaderDelegate 的实现
         delegate: GSYSliverHeaderDelegate(
             maxHeight: height,
             minHeight: height,

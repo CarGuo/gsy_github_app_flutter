@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
@@ -17,6 +15,7 @@ import 'package:gsy_github_app_flutter/widget/push_header.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 
 /**
+ * 提交信息详情页
  * Created by guoshuyu
  * Date: 2018-07-27
  */
@@ -38,8 +37,10 @@ class PushDetailPage extends StatefulWidget {
 
 class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAliveClientMixin<PushDetailPage>, GSYListState<PushDetailPage> {
 
+  ///提价信息页面的头部数据实体
   PushHeaderViewModel pushHeaderViewModel = new PushHeaderViewModel();
 
+  ///配置标题了右侧的更多显示
   final OptionControl titleOptionControl = new OptionControl();
 
   _PushDetailPageState();
@@ -51,6 +52,7 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
     }
     isLoading = true;
     page = 1;
+    ///获取提交信息
     var res = await _getDataLogic();
     if (res != null && res.result) {
       PushCommit pushCommit = res.data;
@@ -68,6 +70,7 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
     return null;
   }
 
+  ///绘制头部和提交item
   _renderEventItem(index) {
     if (index == 0) {
       return new PushHeader(pushHeaderViewModel);
