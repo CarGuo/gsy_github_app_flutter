@@ -36,6 +36,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.0"
+  bezier:
+    dependency: "direct main"
+    description:
+      name: bezier
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   build:
     dependency: transitive
     description:

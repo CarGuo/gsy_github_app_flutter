@@ -1,3 +1,4 @@
+import 'package:bezier/bezier.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
@@ -10,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/repository_detail_issue_list_page.da
 import 'package:gsy_github_app_flutter/page/repository_detail_readme_page.dart';
 import 'package:gsy_github_app_flutter/page/repository_file_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repostory_detail_info_page.dart';
+import 'package:gsy_github_app_flutter/widget/anima/curves_bezier.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
@@ -17,6 +19,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:gsy_github_app_flutter/widget/repos_header_item.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:vector_math/vector_math.dart';
 
 /**
  * 仓库详情
@@ -265,7 +268,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     _getBranchList();
     _refresh();
     animationController =
-        new AnimationController(vsync: this, duration: Duration(seconds: 2));
+        new AnimationController(vsync: this, duration: Duration(milliseconds: 800));
     animationController.forward();
   }
 
@@ -305,8 +308,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             onPageChanged: (index) {
               reposDetailModel.setCurrentIndex(index);
             },
+
             floatingActionButton: ScaleTransition(
-              scale: CurvedAnimation(parent: animationController, curve: Curves.fastLinearToSlowEaseIn),
+              //scale: CurvedAnimation(parent: animationController, curve: Curves.bounceInOut),
+              scale: CurvedAnimation(parent: animationController, curve: CurveBezier()),
               child: FloatingActionButton(
                 onPressed: () {
                   _createIssue();
