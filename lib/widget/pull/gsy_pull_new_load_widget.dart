@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'dart:math';
 
 import 'custom_bouncing_scroll_physics.dart';
+import 'gsy_flare_mutli_pull_controller.dart';
 import 'gsy_flare_pull_controller.dart';
 
 const double iosRefreshHeight = 140;
@@ -43,6 +44,7 @@ class GSYPullLoadWidget extends StatefulWidget {
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
     with GSYFlarePullController {
+    //with GSYFlarePullMutliController {
   ScrollController _scrollController;
 
   bool isRefreshing = false;
@@ -307,6 +309,11 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   ) {
     pulledExtentFlare = pulledExtent * 0.6;
     playAuto = refreshState == IOS.RefreshIndicatorMode.refresh;
+    /*if(refreshState == IOS.RefreshIndicatorMode.refresh) {
+      onRefreshing();
+    } else {
+      onRefreshEnd();
+    }*/
     return Align(
       alignment: Alignment.bottomCenter,
       child: new Container(
@@ -316,11 +323,15 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
         ///动态大小处理
         height:
             pulledExtent > iosRefreshHeight ? pulledExtent : iosRefreshHeight,
-        child: FlareActor("static/file/loading_world_now.flr",
+        child: FlareActor(
+            //"static/file/Space-Demo.flr",
+            "static/file/loading_world_now.flr",
             alignment: Alignment.topCenter,
             fit: BoxFit.cover,
             controller: this,
-            animation: "Earth Moving"),
+            animation: "Earth Moving"
+            //animation: "idle"
+        ),
       ),
     );
   }
