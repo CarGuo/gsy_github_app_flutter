@@ -35,8 +35,15 @@ With the use and feedback of the project, will user experience and function opti
 * ### [Flutter 完整开发实战详解(十一、全面深入理解Stream)](https://juejin.im/post/5cc2acf86fb9a0321f042041)
 * ### [Flutter 完整开发实战详解(十二、全面深入理解状态管理设计)](https://juejin.im/post/5cc816866fb9a03231209c7c)
 * ### [Flutter 完整开发实战详解(十三、全面深入触摸和滑动原理)](https://juejin.im/post/5cd54839f265da03b2044c32)
+* ### [Flutter 完整开发实战详解(十四、混合开发打包 Android 篇)](https://juejin.im/post/5cf527036fb9a07ed911acd8)
+
+----
 
 * ### [Flutter 番外篇之面试知识点集锦](https://juejin.im/post/5cd9875ae51d453d022cb662)
+* ### [Flutter 开发实战与前景展望 - RTC Dev Meetup](https://juejin.im/post/5ce7ddf95188257a2b1eac8a)
+* ### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
+
+----
 
 
 [![GitHub stars](https://img.shields.io/github/stars/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/stargazers)
@@ -134,9 +141,11 @@ With the use and feedback of the project, will user experience and function opti
 | **path_provider**          | **path**       |
 | **permission_handler**     | **permission**         |
 | **scope_model**            | **like redux**    |
+| **lottie**                 | **svg**    |
+| **flare**                  | **flare**    |
 
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg" width="426px"/>
+![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg)
 
 
 ### LICENSE
