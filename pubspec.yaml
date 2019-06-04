@@ -34,8 +34,12 @@ dependencies:
   rxdart: ^0.22.0
   android_intent: ^0.3.0
   webview_flutter: ^0.3.7+1
-  flare_flutter: ^1.5.0
   bezier: ^1.1.2
+  flare_flutter:
+    git:
+      url: https://github.com/CarSmallGuo/Flare-Flutter.git
+      path: flare_flutter
+      ref: master
   flutter_localizations:
     sdk: flutter
   flutter_lottie:
