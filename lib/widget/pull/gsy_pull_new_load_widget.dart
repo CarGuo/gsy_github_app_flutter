@@ -300,6 +300,9 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   @override
   bool get getPlayAuto => playAuto;
 
+  @override
+  double  get refreshTriggerPullDistance => iosRefreshHeight;
+
   Widget buildSimpleRefreshIndicator(
     BuildContext context,
     IOS.RefreshIndicatorMode refreshState,

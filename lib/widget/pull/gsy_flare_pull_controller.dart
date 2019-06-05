@@ -6,7 +6,6 @@ mixin GSYFlarePullController implements FlareController {
   ActorAnimation _pullAnimation;
 
   double pulledExtentFlare = 0;
-  double _refreshTriggerPullDistance = 140;
   double _speed = 2.0;
   double _rockTime = 0.0;
 
@@ -25,7 +24,10 @@ mixin GSYFlarePullController implements FlareController {
       _pullAnimation.apply(_rockTime % _pullAnimation.duration, artboard, 1.0);
       return true;
     }
-    double animationPosition = pulledExtentFlare / _refreshTriggerPullDistance;
+    var pullExtent = (pulledExtentFlare > refreshTriggerPullDistance)
+        ? pulledExtentFlare - refreshTriggerPullDistance
+        : pulledExtentFlare;
+    double animationPosition = pullExtent / refreshTriggerPullDistance;
     animationPosition *= animationPosition;
     _rockTime = _pullAnimation.duration * animationPosition;
     _pullAnimation.apply(_rockTime, artboard, 1.0);
@@ -33,4 +35,6 @@ mixin GSYFlarePullController implements FlareController {
   }
 
   bool get getPlayAuto;
+
+  double get refreshTriggerPullDistance => 140;
 }
