@@ -180,7 +180,9 @@
 
 [版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
 
+
 ![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg)
+
 
 ### LICENSE
 ```
