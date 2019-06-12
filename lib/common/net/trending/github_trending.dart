@@ -23,7 +23,7 @@ class GitHubTrending {
 }
 
 const TAGS = {
-  "meta": {"start": '<span class="d-inline-block', "end": '</span>'},
+  "meta": {"start": '<span class="d-inline-block float-sm-right"', "end": '</span>'},
   "starCount": {"start": '<a class="muted-link d-inline-block mr-3"', "flag": '/stargazers">', "end": '</a>'},
   "forkCount": {"start": '<a class="muted-link d-inline-block mr-3"', "flag": '/network', "end": '</a>'}
 };
