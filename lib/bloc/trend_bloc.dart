@@ -41,9 +41,7 @@ class TrendBloc {
     if (res.next != null) {
       var resNext = await res.next;
       if (resNext != null && resNext.result) {
-        if (res != null && res.result) {
-          _subject.add(res.data);
-        }
+          _subject.add(resNext.data);
       }
     }
   }
