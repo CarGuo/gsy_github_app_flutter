@@ -15,6 +15,7 @@ import 'package:gsy_github_app_flutter/page/home_page.dart';
 import 'package:gsy_github_app_flutter/page/login_page.dart';
 import 'package:gsy_github_app_flutter/page/welcome_page.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 
@@ -25,6 +26,7 @@ void main() {
   runZoned(() {
     runApp(FlutterReduxApp());
     PaintingBinding.instance.imageCache.maximumSize = 100;
+    Provider.debugCheckInvalidValueType = null;
   }, onError: (Object obj, StackTrace stack) {
     print(obj);
     print(stack);
