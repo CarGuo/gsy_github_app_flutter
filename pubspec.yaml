@@ -35,6 +35,7 @@ dependencies:
   android_intent: ^0.3.0
   webview_flutter: ^0.3.7+1
   bezier: ^1.1.2
+  provider: ^3.0.0+1
   flare_flutter:
     git:
       url: https://github.com/CarSmallGuo/Flare-Flutter.git
