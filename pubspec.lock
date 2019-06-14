@@ -201,17 +201,17 @@ packages:
     dependency: transitive
     description:
       path: flare_dart
-      ref: dev
-      resolved-ref: "396cd88df7638b86e55b4467364fa2c41cde1558"
-      url: "git://github.com/2d-inc/Flare-Flutter.git"
+      ref: master
+      resolved-ref: c7a59c9cff8887abb89f2c36b3911f5fbdf189c8
+      url: "git://github.com/CarSmallGuo/Flare-Flutter.git"
     source: git
     version: "1.4.1"
   flare_flutter:
     dependency: "direct main"
     description:
       path: flare_flutter
-      ref: master
-      resolved-ref: "7a305914e10a63fbbddbcc8fc473d62da319a7bc"
+      ref: c7a59c9cff8887abb89f2c36b3911f5fbdf189c8
+      resolved-ref: c7a59c9cff8887abb89f2c36b3911f5fbdf189c8
       url: "https://github.com/CarSmallGuo/Flare-Flutter.git"
     source: git
     version: "1.5.1"
