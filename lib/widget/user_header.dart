@@ -252,8 +252,10 @@ class UserHeaderBottom extends StatelessWidget {
   final User userInfo;
   final String beStaredCount;
   final Radius radius;
+  final List honorList;
 
-  UserHeaderBottom(this.userInfo, this.beStaredCount, this.radius);
+  UserHeaderBottom(
+      this.userInfo, this.beStaredCount, this.radius, this.honorList);
 
   ///底部状态栏
   _getBottomItem(String title, var value, onPressed) {
@@ -357,7 +359,11 @@ class UserHeaderBottom extends StatelessWidget {
             _getBottomItem(
               CommonUtils.getLocale(context).user_tab_honor,
               beStaredCount,
-              () {},
+              () {
+                if (honorList != null) {
+                  NavigatorUtils.goHonorListPage(context, honorList);
+                }
+              },
             ),
           ],
         ),
