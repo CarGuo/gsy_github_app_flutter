@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
@@ -14,6 +15,7 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/user_header.dart';
 import 'package:gsy_github_app_flutter/widget/user_item.dart';
+import 'package:provider/provider.dart';
 
 /**
  * Created by guoshuyu
@@ -29,6 +31,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   final List<UserOrg> orgList = new List();
+
+  final HonorModel honorModel = HonorModel();
 
   @override
   showRefreshLoading() {
@@ -95,7 +99,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       User userInfo, Color notifyColor, String beStaredCount, refreshCallBack) {
     double headerSize = 210;
     double bottomSize = 70;
-    double chartSize =    (userInfo.login != null && userInfo.type == "Organization") ? 70 : 215;
+    double chartSize =
+        (userInfo.login != null && userInfo.type == "Organization") ? 70 : 215;
     return <Widget>[
       ///头部信息
       SliverPersistentHeader(
@@ -145,7 +150,18 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               return SizedBox.expand(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 10, left: 0, right: 0),
-                  child: UserHeaderBottom(userInfo, beStaredCount, radius),
+                  /// MultiProvider 共享 HonorModel 状态
+                  child: MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider(builder: (_) => honorModel),
+                    ],
+                    child: Consumer<HonorModel>(
+                      builder: (context, honorModel, _) {
+                        return UserHeaderBottom(userInfo,
+                            honorModel.beStaredCount?.toString() ?? "---", radius, honorModel.honorList);
+                      },
+                    ),
+                  ),
                 ),
               );
             }),
@@ -173,5 +189,39 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             }),
       ),
     ];
+  }
+
+  ///获取用户仓库前100个star统计数据
+  getHonor(name) {
+    ReposDao.getUserRepository100StatusDao(name).then((res) {
+      if (res != null && res.result) {
+        if (isShow) {
+          ///提交到  Provider  HonorMode
+          honorModel.beStaredCount = res.data["stared"];
+          honorModel.honorList = res.data["list"];
+        }
+      }
+    });
+  }
+}
+
+/// Provider  HonorModel
+class HonorModel extends ChangeNotifier {
+  int _beStaredCount;
+
+  int get beStaredCount => _beStaredCount;
+
+  set beStaredCount(int value) {
+    _beStaredCount = value;
+    notifyListeners();
+  }
+
+  List _honorList;
+
+  List get honorList => _honorList;
+
+  set honorList(List value) {
+    _honorList = value;
+    notifyListeners();
   }
 }

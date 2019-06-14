@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
 import 'package:gsy_github_app_flutter/page/gsy_webview.dart';
 import 'package:gsy_github_app_flutter/page/home_page.dart';
+import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
 import 'package:gsy_github_app_flutter/page/issue_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/login_page.dart';
 import 'package:gsy_github_app_flutter/page/notify_page.dart';
@@ -58,6 +59,12 @@ class NavigatorUtils {
         context,
         new SizeRoute(
             widget: pageContainer(RepositoryDetailPage(userName, reposName))));
+  }
+
+  ///荣耀列表
+  static Future goHonorListPage(BuildContext context, List list) {
+    return Navigator.push(
+        context, new SizeRoute(widget: pageContainer(HonorListPage(list))));
   }
 
   ///仓库版本列表
@@ -231,6 +238,7 @@ class NavigatorUtils {
         barrierDismissible: barrierDismissible,
         builder: (context) {
           return MediaQuery(
+
               ///不受系统字体缩放影响
               data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
                   .copyWith(textScaleFactor: 1),

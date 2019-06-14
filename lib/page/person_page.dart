@@ -88,15 +88,7 @@ class _PersonState extends BasePersonState<PersonPage> {
     ///获取当前用户的关注状态
     _getFocusStatus();
     ///获取用户仓库前100个star统计数据
-    ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
-      if (res != null && res.result) {
-        if (isShow) {
-          setState(() {
-            beStaredCount = res.data.toString();
-          });
-        }
-      }
-    });
+    getHonor(_getUserName());
     return null;
   }
 

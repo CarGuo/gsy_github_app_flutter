@@ -100,15 +100,7 @@ class _MyPageState extends BasePersonState<MyPage> {
       ///获取用户组织信息
       getUserOrg(_getUserName());
       ///获取用户仓库前100个star统计数据
-      ReposDao.getUserRepository100StatusDao(_getUserName()).then((res) {
-        if (res != null && res.result) {
-          if (isShow) {
-            setState(() {
-              beStaredCount = res.data.toString();
-            });
-          }
-        }
-      });
+      getHonor(_getUserName());
       _refreshNotify();
     }
     return await _getDataLogic();
