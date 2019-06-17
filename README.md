@@ -66,6 +66,7 @@
 * ### [Flutter 完整开发实战详解(十二、全面深入理解状态管理设计)](https://juejin.im/post/5cc816866fb9a03231209c7c)
 * ### [Flutter 完整开发实战详解(十三、全面深入触摸和滑动原理)](https://juejin.im/post/5cd54839f265da03b2044c32)
 * ### [Flutter 完整开发实战详解(十四、混合开发打包 Android 篇)](https://juejin.im/post/5cf527036fb9a07ed911acd8)
+* ### [Flutter 完整开发实战详解(十五、全面理解State与Provider)](https://juejin.im/post/5d0634c7f265da1b91639232)
 
 ----
 
