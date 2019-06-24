@@ -10,13 +10,14 @@
 
 ## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。项目涉及各种常用控件、网络、数据库、设计模式、主题切换、多语言、Redux等。在开发学习过程中，提供丰富的同款对比：
 
+* ### 简单学习演示项目 ( https://github.com/CarGuo/GSYFlutterDemo )
 * ### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppWeex ）
 * ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 * ### 同款Android Kotlin版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
 
 
 ```!
-基于Flutter开发，适配Android与IOS。目前初版，持续完善中。
+基于Flutter开发，适配Android与IOS。
 
 项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
 
@@ -75,7 +76,7 @@
 * ### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
 
 ----
-
+- ## [Flutter 独立简单学习演示项目](https://github.com/CarGuo/GSYFlutterDemo)
 - ## [Flutter 完整开发实战详解 Gitbook 预览下载](https://github.com/CarGuo/GSYFlutterBook)
 - ## [所有运行问题请点击这里](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
 
