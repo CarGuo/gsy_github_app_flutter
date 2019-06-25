@@ -1,6 +1,10 @@
 name: gsy_github_app_flutter
 description: Github Application
 
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
