@@ -12,32 +12,31 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  shared_preferences: ^0.5.1+1
-  fluttertoast: ^3.0.1
+  shared_preferences: ^0.5.3+2
+  fluttertoast: ^3.1.0
   json_annotation: ^2.4.0
   flutter_redux: ^0.5.3
-  device_info: ^0.4.0+1
-  connectivity: ^0.4.3+1
-  url_launcher: ^5.0.2
+  device_info: ^0.4.0+2
+  connectivity: ^0.4.3+2
+  url_launcher: ^5.0.3
   flutter_markdown: ^0.2.0
-  share: ^0.6.0+1
+  share: ^0.6.1+1
   flutter_spinkit: ^3.1.0
   flutter_webview_plugin: ^0.3.5
-  sqflite: ^1.1.5
+  sqflite: ^1.1.6
   pub_semver: ^1.4.2
-  flutter_statusbar: ^0.0.1
   flutter_svg: ^0.13.0+1
-  flutter_slidable: ^0.5.0
-  dio: ^2.1.4
+  flutter_slidable: ^0.5.3
+  dio: ^2.1.11
   event_bus:  ^1.1.0
-  flutter_cache_manager: ^0.3.2
-  path_provider: ^0.5.0+1
-  permission_handler: 3.0.2
+  flutter_cache_manager: ^1.0,0
+  path_provider: ^1.1.2
+  permission_handler: 3.1.0
   scoped_model: ^1.0.1
-  package_info: ^0.4.0+3
+  package_info: ^0.4.0+4
   rxdart: ^0.22.0
-  android_intent: ^0.3.0
-  webview_flutter: ^0.3.7+1
+  android_intent: ^0.3.1+1
+  webview_flutter: ^0.3.9+1
   bezier: ^1.1.2
   provider: ^3.0.0+1
   flare_flutter:

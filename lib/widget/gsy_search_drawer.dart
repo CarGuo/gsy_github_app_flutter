@@ -28,14 +28,15 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.only(top: CommonUtils.sStaticBarHeight),
-      child: Container(
-        color: Color(GSYColors.white),
-        child: new SingleChildScrollView(
-          child: new Column(
-            children: _renderList(),
+    return new SafeArea(
+      child: new Container(
+        color: Theme.of(context).primaryColor,
+        child: Container(
+          color: Color(GSYColors.white),
+          child: new SingleChildScrollView(
+            child: new Column(
+              children: _renderList(),
+            ),
           ),
         ),
       ),
@@ -63,7 +64,8 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     list.add(_renderTitle(CommonUtils.getLocale(context).search_language));
     for (int i = 0; i < searchLanguageType.length; i++) {
       FilterModel model = searchLanguageType[i];
-      list.add(_renderItem(model, searchLanguageType, i, widget.languageCallback));
+      list.add(
+          _renderItem(model, searchLanguageType, i, widget.languageCallback));
       list.add(_renderDivider());
     }
     return list;
@@ -92,7 +94,8 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     );
   }
 
-  _renderItem(FilterModel model, List<FilterModel> list, int index, SearchSelectItemChanged<String> select) {
+  _renderItem(FilterModel model, List<FilterModel> list, int index,
+      SearchSelectItemChanged<String> select) {
     return new Stack(
       children: <Widget>[
         new Container(
@@ -103,7 +106,9 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Center(child: new Checkbox(value: model.select, onChanged: (value) {})),
+                new Center(
+                    child: new Checkbox(
+                        value: model.select, onChanged: (value) {})),
                 new Center(child: Text(model.name)),
               ],
             ),
