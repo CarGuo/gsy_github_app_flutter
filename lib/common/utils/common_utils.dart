@@ -21,7 +21,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_statusbar/flutter_statusbar.dart';
 
 /**
  * 通用逻辑
@@ -38,13 +37,6 @@ class CommonUtils {
   static final double HOURS_LIMIT = 24 * MINUTES_LIMIT;
 
   static final double DAYS_LIMIT = 30 * HOURS_LIMIT;
-
-  static double sStaticBarHeight = 0.0;
-
-  static void initStatusBarHeight(context) async {
-    sStaticBarHeight =
-        await FlutterStatusbar.height / MediaQuery.of(context).devicePixelRatio;
-  }
 
   static String getDateStr(DateTime date) {
     if (date == null || date.toString() == null) {

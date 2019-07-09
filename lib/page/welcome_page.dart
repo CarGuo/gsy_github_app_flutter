@@ -37,7 +37,6 @@ class _WelcomePageState extends State<WelcomePage> {
 
     ///防止多次进入
     Store<GSYState> store = StoreProvider.of(context);
-    CommonUtils.initStatusBarHeight(context);
     new Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {
