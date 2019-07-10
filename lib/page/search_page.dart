@@ -145,9 +145,10 @@ class _SearchPageState extends State<SearchPage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Container(
+      ///填充剩下半圆颜色
       color: endAnima ? Theme.of(context).primaryColor : Colors.transparent,
       child: CRAnimation(
-        minR: MediaQuery.of(context).size.height - 50,
+        minR: MediaQuery.of(context).size.height - 8,
         maxR: 0,
         offset: Offset(MediaQuery.of(context).size.width - 50,
             MediaQuery.of(context).padding.top - 10),
