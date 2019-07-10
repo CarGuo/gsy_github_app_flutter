@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
@@ -23,7 +26,10 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage>
-    with AutomaticKeepAliveClientMixin<SearchPage>, GSYListState<SearchPage> {
+    with
+        AutomaticKeepAliveClientMixin<SearchPage>,
+        GSYListState<SearchPage>,
+        SingleTickerProviderStateMixin {
   ///搜索仓库还是人
   int selectIndex = 0;
 
@@ -38,6 +44,10 @@ class _SearchPageState extends State<SearchPage>
 
   ///过滤语言
   String language = searchLanguageType[0].value;
+
+  AnimationController controller;
+  Animation animation;
+  bool endAnima = false;
 
   ///绘制item
   _renderItem(index) {
@@ -95,6 +105,31 @@ class _SearchPageState extends State<SearchPage>
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeInCubic,
+    )..addListener(() {
+        setState(() {});
+      });
+
+    Future.delayed(new Duration(seconds: 0), () {
+      controller.forward().then((_) {
+        setState(() {
+          endAnima = true;
+        });
+      });
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _clearSelect(sortType);
@@ -103,73 +138,95 @@ class _SearchPageState extends State<SearchPage>
     searchLanguageType[0].select = true;
     _clearSelect(searchFilterType);
     searchFilterType[0].select = true;
+    controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return new Scaffold(
-      resizeToAvoidBottomPadding: false,
+    return new Container(
+      color: endAnima ? Theme.of(context).primaryColor : Colors.transparent,
+      child: CRAnimation(
+        minR: MediaQuery.of(context).size.height - 50,
+        maxR: 0,
+        offset: Offset(MediaQuery.of(context).size.width - 50,
+            MediaQuery.of(context).padding.top - 10),
+        animation: animation,
+        child: new Scaffold(
+          resizeToAvoidBottomPadding: false,
 
-      ///右侧 Drawer
-      endDrawer: new GSYSearchDrawer(
-        (String type) {
-          ///排序类型
-          this.type = type;
-          Navigator.pop(context);
-          _resolveSelectIndex();
-        },
-        (String sort) {
-          ///排序状态
-          this.sort = sort;
-          Navigator.pop(context);
-          _resolveSelectIndex();
-        },
-        (String language) {
-          ///过滤语言
-          this.language = language;
-          Navigator.pop(context);
-          _resolveSelectIndex();
-        },
-      ),
-      backgroundColor: Color(GSYColors.mainBackgroundColor),
-      appBar: new AppBar(
-          title: new Text(CommonUtils.getLocale(context).search_title),
-          bottom: new SearchBottom((value) {
-            searchText = value;
-          }, (value) {
-            searchText = value;
-            if (searchText == null || searchText.trim().length == 0) {
-              return;
-            }
-            if (isLoading) {
-              return;
-            }
-            _resolveSelectIndex();
-          }, () {
-            if (searchText == null || searchText.trim().length == 0) {
-              return;
-            }
-            if (isLoading) {
-              return;
-            }
-            _resolveSelectIndex();
-          }, (selectIndex) {
-            if (searchText == null || searchText.trim().length == 0) {
-              return;
-            }
-            if (isLoading) {
-              return;
-            }
-            this.selectIndex = selectIndex;
-            _resolveSelectIndex();
-          })),
-      body: GSYPullLoadWidget(
-        pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderItem(index),
-        handleRefresh,
-        onLoadMore,
-        refreshKey: refreshIndicatorKey,
+          ///右侧 Drawer
+          endDrawer: new GSYSearchDrawer(
+            (String type) {
+              ///排序类型
+              this.type = type;
+              Navigator.pop(context);
+              _resolveSelectIndex();
+            },
+            (String sort) {
+              ///排序状态
+              this.sort = sort;
+              Navigator.pop(context);
+              _resolveSelectIndex();
+            },
+            (String language) {
+              ///过滤语言
+              this.language = language;
+              Navigator.pop(context);
+              _resolveSelectIndex();
+            },
+          ),
+          appBar: new AppBar(
+              leading: IconButton(
+                highlightColor: Colors.transparent,
+                icon: const BackButtonIcon(),
+                onPressed: () {
+                  setState(() {
+                    endAnima = false;
+                  });
+                  controller.reverse().then((_) {
+                    Navigator.maybePop(context);
+                  });
+                },
+              ),
+              title: new Text(CommonUtils.getLocale(context).search_title),
+              bottom: new SearchBottom((value) {
+                searchText = value;
+              }, (value) {
+                searchText = value;
+                if (searchText == null || searchText.trim().length == 0) {
+                  return;
+                }
+                if (isLoading) {
+                  return;
+                }
+                _resolveSelectIndex();
+              }, () {
+                if (searchText == null || searchText.trim().length == 0) {
+                  return;
+                }
+                if (isLoading) {
+                  return;
+                }
+                _resolveSelectIndex();
+              }, (selectIndex) {
+                if (searchText == null || searchText.trim().length == 0) {
+                  return;
+                }
+                if (isLoading) {
+                  return;
+                }
+                this.selectIndex = selectIndex;
+                _resolveSelectIndex();
+              })),
+          body: GSYPullLoadWidget(
+            pullLoadWidgetControl,
+            (BuildContext context, int index) => _renderItem(index),
+            handleRefresh,
+            onLoadMore,
+            refreshKey: refreshIndicatorKey,
+          ),
+        ),
       ),
     );
   }
@@ -209,5 +266,88 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize {
     return new Size.fromHeight(100.0);
+  }
+}
+
+class CRAnimation extends StatelessWidget {
+  final Offset offset;
+
+  final double minR;
+
+  final double maxR;
+
+  final Widget child;
+
+  final Animation<double> animation;
+
+  CRAnimation({
+    @required this.child,
+    @required this.animation,
+    this.offset,
+    this.minR,
+    this.maxR,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (_, __) {
+        return ClipPath(
+          clipper: AnimationClipper(
+            value: animation.value,
+            minR: minR,
+            maxR: maxR,
+            offset: offset,
+          ),
+          child: this.child,
+        );
+      },
+    );
+  }
+}
+
+class AnimationClipper extends CustomClipper<Path> {
+  final double value;
+
+  final double minR;
+
+  final double maxR;
+
+  final Offset offset;
+
+  AnimationClipper({
+    this.value,
+    this.offset,
+    this.minR,
+    this.maxR,
+  });
+
+  @override
+  bool shouldReclip(old) => true;
+
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    var offset = this.offset ?? Offset(size.width / 2, size.height / 2);
+
+    var maxRadius = minR ?? radiusSize(size, offset);
+
+    var minRadius = maxR ?? 0;
+
+    var radius = lerpDouble(minRadius, maxRadius, value);
+    var rect = Rect.fromCircle(
+      radius: radius,
+      center: offset,
+    );
+
+    path.addOval(rect);
+    return path;
+  }
+
+  double radiusSize(Size size, Offset offset) {
+    final height = max(offset.dy, size.height - offset.dy);
+    final width = max(offset.dx, size.width - offset.dx);
+    return sqrt(width * width + height * height);
   }
 }

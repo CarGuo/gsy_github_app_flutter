@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/router/size_route.dart';
+import 'package:gsy_github_app_flutter/common/router/anima_route.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
@@ -138,7 +138,29 @@ class NavigatorUtils {
 
   ///搜索
   static Future goSearchPage(BuildContext context) {
-    return NavigatorRouter(context, new SearchPage());
+    return showGeneralDialog(
+      context: context,
+      pageBuilder: (BuildContext buildContext, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        return Builder(builder: (BuildContext context) {
+          return pageContainer(SearchPage());
+        });
+      },
+      barrierDismissible: false,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Color(0x01000000),
+      transitionDuration: const Duration(milliseconds: 150),
+      transitionBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
+        );
+      },
+    );
   }
 
   ///提交详情
