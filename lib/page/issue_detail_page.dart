@@ -135,7 +135,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         .then((res) {
       if (res != null && res.result) {
         _resolveHeaderInfo(res);
-        return res.next;
+        return res.next?.call();
       }
       return new Future.value(null);
     }).then((res) {

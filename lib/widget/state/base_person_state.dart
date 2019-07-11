@@ -80,7 +80,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             orgList.clear();
             orgList.addAll(res.data);
           });
-          return res.next;
+          return res.next?.call();
         }
         return new Future.value(null);
       }).then((res) {

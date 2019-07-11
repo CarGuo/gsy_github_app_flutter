@@ -19,24 +19,25 @@ class DynamicPage extends StatefulWidget {
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin<DynamicPage>, WidgetsBindingObserver {
+class _DynamicPageState extends State<DynamicPage>
+    with AutomaticKeepAliveClientMixin<DynamicPage>, WidgetsBindingObserver {
   final DynamicBloc dynamicBloc = new DynamicBloc();
 
   ///控制列表滚动和监听
   final ScrollController scrollController = new ScrollController();
 
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   /// 模拟IOS下拉显示刷新
   showRefreshLoading() {
     ///直接触发下拉
     new Future.delayed(const Duration(milliseconds: 500), () {
-      scrollController.animateTo(-141, duration: Duration(milliseconds: 600), curve: Curves.linear);
+      scrollController.animateTo(-141,
+          duration: Duration(milliseconds: 600), curve: Curves.linear);
       return true;
     });
   }
-
 
   ///下拉刷新数据
   Future<void> requestRefresh() async {
@@ -66,13 +67,6 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-
-    ///请求更新
-    if (dynamicBloc.getDataLength() == 0) {
-      dynamicBloc.changeNeedHeaderStatus(false);
-      showRefreshLoading();
-    }
-
     ///监听生命周期，主要判断页面 resumed 的时候触发刷新
     WidgetsBinding.instance.addObserver(this);
 
@@ -80,11 +74,17 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
     ReposDao.getNewsVersion(context, false);
   }
 
-
   @override
   void didChangeDependencies() {
+    ///请求更新
     if (dynamicBloc.getDataLength() == 0) {
-      showRefreshLoading();
+      dynamicBloc.changeNeedHeaderStatus(false);
+      ///先读数据库
+      dynamicBloc.requestRefresh(_getStore().state.userInfo?.login,
+          doNextFlag: false).then((_) {
+        showRefreshLoading();
+      });
+
     }
     super.didChangeDependencies();
   }
@@ -102,7 +102,6 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   @override
   bool get wantKeepAlive => true;
 
-
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -114,15 +113,16 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return GSYPullLoadWidget(
-        dynamicBloc.pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderEventItem(dynamicBloc.dataList[index]),
-        requestRefresh,
-        requestLoadMore,
-        refreshKey: refreshIndicatorKey,
-        scrollController: scrollController,
+      dynamicBloc.pullLoadWidgetControl,
+      (BuildContext context, int index) =>
+          _renderEventItem(dynamicBloc.dataList[index]),
+      requestRefresh,
+      requestLoadMore,
+      refreshKey: refreshIndicatorKey,
+      scrollController: scrollController,
 
-        ///使用ios模式的下拉刷新
-        userIos: true,
-      );
+      ///使用ios模式的下拉刷新
+      userIos: true,
+    );
   }
 }

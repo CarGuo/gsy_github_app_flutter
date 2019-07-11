@@ -68,7 +68,7 @@ class _PersonState extends BasePersonState<PersonPage> {
     if (userResult != null && userResult.result) {
       _resolveUserInfo(userResult);
       if (userResult.next != null) {
-        userResult.next.then((resNext) {
+        userResult.next().then((resNext) {
           _resolveUserInfo(resNext);
         });
       }
@@ -80,7 +80,7 @@ class _PersonState extends BasePersonState<PersonPage> {
     resolveRefreshResult(res);
     resolveDataResult(res);
     if (res.next != null) {
-      var resNext = await res.next;
+      var resNext = await res.next();
       resolveRefreshResult(resNext);
       resolveDataResult(resNext);
     }

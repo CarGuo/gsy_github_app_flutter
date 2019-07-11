@@ -123,7 +123,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           widget.titleOptionControl.url = result.data.htmlUrl;
         });
         ReposDetailModel.of(context).repository = result.data;
-        return result.next;
+        return result.next();
       }
       return new Future.value(null);
     }).then((result) {

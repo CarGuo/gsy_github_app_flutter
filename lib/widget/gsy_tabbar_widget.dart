@@ -57,7 +57,6 @@ class GSYTabBarWidget extends StatefulWidget {
         type,
         tabViews,
         indicatorColor,
-        title,
         drawer,
         floatingActionButton,
         tarWidgetControl,
@@ -73,8 +72,6 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
 
   final Color _indicatorColor;
 
-  final Widget _title;
-
   final Widget _drawer;
 
   final Widget _floatingActionButton;
@@ -89,7 +86,6 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     this._type,
     this._tabViews,
     this._indicatorColor,
-    this._title,
     this._drawer,
     this._floatingActionButton,
     this._tarWidgetControl,
@@ -125,7 +121,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
             _tarWidgetControl == null ? null : _tarWidgetControl.footerButton,
         appBar: new AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: _title,
+          title: widget.title,
           bottom: new TabBar(
               controller: _tabController,
               tabs: widget.tabItems,
@@ -153,7 +149,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
         drawer: _drawer,
         appBar: new AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: _title,
+          title: widget.title,
         ),
         body: new PageView(
           controller: _pageController,

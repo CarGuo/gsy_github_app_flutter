@@ -302,9 +302,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       model: reposDetailModel,
       child: new ScopedModelDescendant<ReposDetailModel>(
         builder: (context, child, model) {
-          Widget widgetContent = new GSYCommonOptionWidget(titleOptionControl,
-              otherList: _getMoreOtherItem(model.repository));
+          Widget widgetContent = (model.repository != null && model.repository.htmlUrl != null)
+              ? new GSYCommonOptionWidget(titleOptionControl,
+                  otherList: _getMoreOtherItem(model.repository))
+              : Container();
 
+          print(widgetContent);
           ///绘制顶部 tab 控件
           return new GSYTabBarWidget(
             type: GSYTabBarWidget.TOP_TAB,

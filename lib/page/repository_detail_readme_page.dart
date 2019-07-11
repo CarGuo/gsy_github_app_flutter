@@ -41,7 +41,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
           setState(() {
             markdownData = res.data;
           });
-          return res.next;
+          return res.next?.call();
         }
       }
       return new Future.value(null);
