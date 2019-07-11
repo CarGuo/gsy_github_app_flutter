@@ -39,7 +39,7 @@ class TrendBloc {
   ///请求next，是否有网络
   doNext(res) async {
     if (res.next != null) {
-      var resNext = await res.next;
+      var resNext = await res.next();
       if (resNext != null && resNext.result) {
           _subject.add(resNext.data);
       }

@@ -74,7 +74,7 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
     resolveRefreshResult(res);
     resolveDataResult(res);
     if (res.next != null) {
-      var resNext = await res.next;
+      var resNext = await res.next();
       resolveRefreshResult(resNext);
       resolveDataResult(resNext);
     }

@@ -126,7 +126,7 @@ class UserDao {
       if (user == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(user, true, next: next());
+      DataResult dataResult = new DataResult(user, true, next: next);
       return dataResult;
     }
     return await next();
@@ -194,7 +194,7 @@ class UserDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -231,7 +231,7 @@ class UserDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -364,7 +364,7 @@ class UserDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();

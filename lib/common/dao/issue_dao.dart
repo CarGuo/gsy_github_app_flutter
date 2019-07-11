@@ -57,7 +57,7 @@ class IssueDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -122,7 +122,7 @@ class IssueDao {
       if (issue == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(issue, true, next: next());
+      DataResult dataResult = new DataResult(issue, true, next: next);
       return dataResult;
     }
     return await next();
@@ -162,7 +162,7 @@ class IssueDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();

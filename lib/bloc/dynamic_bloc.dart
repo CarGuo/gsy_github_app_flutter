@@ -12,12 +12,14 @@ class DynamicBloc {
 
   int _page = 1;
 
-  requestRefresh(String userName) async {
+  requestRefresh(String userName, {doNextFlag = true}) async {
     pageReset();
     var res = await EventDao.getEventReceived(userName, page: _page, needDb: true);
     changeLoadMoreStatus(getLoadMoreStatus(res));
     refreshData(res);
-    await doNext(res);
+    if(doNextFlag) {
+      await doNext(res);
+    }
     return res;
   }
 
@@ -44,7 +46,7 @@ class DynamicBloc {
 
   doNext(res) async {
     if (res.next != null) {
-      var resNext = await res.next;
+      var resNext = await res.next();
       if (resNext != null && resNext.result) {
         changeLoadMoreStatus(getLoadMoreStatus(resNext));
         refreshData(resNext);

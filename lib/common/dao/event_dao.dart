@@ -42,7 +42,7 @@ class EventDao {
       if (dbList == null || dbList.length == 0) {
         return await next();
       }
-      DataResult dataResult = new DataResult(dbList, true, next: next());
+      DataResult dataResult = new DataResult(dbList, true, next: next);
       return dataResult;
     }
     return await next();
@@ -79,7 +79,7 @@ class EventDao {
       if (dbList == null || dbList.length == 0) {
         return await next();
       }
-      DataResult dataResult = new DataResult(dbList, true, next: next());
+      DataResult dataResult = new DataResult(dbList, true, next: next);
       return dataResult;
     }
     return await next();

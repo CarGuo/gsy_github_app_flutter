@@ -78,7 +78,7 @@ class ReposDao {
       if (list == null || list.length == 0) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
   }
@@ -123,7 +123,7 @@ class ReposDao {
       if (repository == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(repository, true, next: next());
+      DataResult dataResult = new DataResult(repository, true, next: next);
       return dataResult;
     }
     return await next();
@@ -164,7 +164,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -224,7 +224,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -338,7 +338,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -378,7 +378,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -419,7 +419,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -458,7 +458,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -497,7 +497,7 @@ class ReposDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next());
+      DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -588,7 +588,7 @@ class ReposDao {
       if (readme == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(readme, true, next: next());
+      DataResult dataResult = new DataResult(readme, true, next: next);
       return dataResult;
     }
     return await next();
