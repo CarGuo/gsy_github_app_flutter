@@ -671,9 +671,8 @@ class ReposDao {
         url,
         null,
         {
-          "Accept": (needHtml
-              ? 'application/vnd.github.html,application/vnd.github.VERSION.raw'
-              : "")
+          "Accept":
+              'application/vnd.github.html,application/vnd.github.VERSION.raw'
         },
         null);
     if (res != null && res.result && res.data.length > 0) {
