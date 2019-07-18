@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/router/anima_route.dart';
-import 'package:gsy_github_app_flutter/page/code_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
 import 'package:gsy_github_app_flutter/page/gsy_webview.dart';
@@ -109,27 +108,6 @@ class NavigatorUtils {
         ));
   }
 
-  ///文件代码详情
-  static gotoCodeDetailPage(BuildContext context,
-      {String title,
-      String userName,
-      String reposName,
-      String path,
-      String data,
-      String branch,
-      String htmlUrl}) {
-    NavigatorRouter(
-        context,
-        new CodeDetailPage(
-          title: title,
-          userName: userName,
-          reposName: reposName,
-          path: path,
-          data: data,
-          branch: branch,
-          htmlUrl: htmlUrl,
-        ));
-  }
 
   ///仓库详情通知
   static Future goNotifyPage(BuildContext context) {

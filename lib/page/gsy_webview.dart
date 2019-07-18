@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -24,15 +21,23 @@ class GSYWebView extends StatelessWidget {
     }
     optionControl.url = url;
     return new Row(children: [
-      new Expanded(child: new Container()),
+      new Expanded(
+          child: new Container(
+        child: new Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      )),
       GSYCommonOptionWidget(optionControl),
     ]);
   }
 
   final FocusNode focusNode = new FocusNode();
+
   @override
   Widget build(BuildContext context) {
-    /*return Scaffold(
+    return Scaffold(
       appBar: new AppBar(
         title: _renderTitle(),
       ),
@@ -42,7 +47,7 @@ class GSYWebView extends StatelessWidget {
             focusNode: focusNode,
           ),
           WebView(
-              initialUrl: new Uri.dataFromString(html, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(),
+              initialUrl: url,
               javascriptMode: JavascriptMode.unrestricted,
               javascriptChannels: Set.from([
                 JavascriptChannel(
@@ -55,19 +60,9 @@ class GSYWebView extends StatelessWidget {
               ]))
         ],
       ),
-    );*/
-    return new WebviewScaffold(
-      withJavascript: true,
-      url: url,
-      scrollBar: true,
-      withLocalUrl: true,
-      appBar: new AppBar(
-        title: _renderTitle(),
-      ),
     );
   }
 }
-
 
 ///测试 html 代码，不管
 final testhtml = "<!DOCTYPE html>"

@@ -101,17 +101,6 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       );
     }
 
-    if (Config.USE_NATIVE_WEBVIEW && Platform.isAndroid) {
-      return Scaffold(
-        appBar: AppBar(
-          title: new Text(widget.title),
-        ),
-        body: WebView(
-          initialUrl: data,
-          javascriptMode: JavascriptMode.unrestricted,
-        ),
-      );
-    }
     return Scaffold(
       appBar: AppBar(
         title: new Text(widget.title),
