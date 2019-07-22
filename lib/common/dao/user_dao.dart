@@ -15,6 +15,7 @@ import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
+import 'package:gsy_github_app_flutter/common/redux/locale_redux.dart';
 import 'package:gsy_github_app_flutter/common/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:redux/redux.dart';
@@ -71,6 +72,8 @@ class UserDao {
     String localeIndex = await LocalStorage.get(Config.LOCALE);
     if (localeIndex != null && localeIndex.length != 0) {
       CommonUtils.changeLocale(store, int.parse(localeIndex));
+    } else {
+      store.dispatch(RefreshLocaleAction(store.state.platformLocale));
     }
 
     return new DataResult(res.data, (res.result && (token != null)));
