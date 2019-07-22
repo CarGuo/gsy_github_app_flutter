@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
@@ -144,6 +146,19 @@ class CommonUtils {
 
   static getThemeData(Color color) {
     return ThemeData(primarySwatch: color, platform: TargetPlatform.android);
+  }
+
+
+  static showLanguageDialog(BuildContext context, Store store) {
+    List<String> list = [
+      CommonUtils.getLocale(context).home_language_default,
+      CommonUtils.getLocale(context).home_language_zh,
+      CommonUtils.getLocale(context).home_language_en,
+    ];
+    CommonUtils.showCommitOptionDialog(context, list, (index) {
+      CommonUtils.changeLocale(store, index);
+      LocalStorage.save(Config.LOCALE, index.toString());
+    }, height: 150.0);
   }
 
   /**

@@ -19,7 +19,10 @@ class GSYLocalizations {
   };
 
   GSYStringBase get currentLocalized {
-    return _localizedValues[locale.languageCode];
+    if(_localizedValues.containsKey(locale.languageCode)) {
+      return _localizedValues[locale.languageCode];
+    }
+    return _localizedValues["en"];
   }
 
   ///通过 Localizations 加载当前的 GSYLocalizations

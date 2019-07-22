@@ -58,6 +58,7 @@ abstract class GSYStringBase {
   String home_language_default;
   String home_language_zh;
   String home_language_en;
+  String switch_language;
 
   String home_theme_default;
 

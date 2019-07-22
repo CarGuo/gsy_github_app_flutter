@@ -75,6 +75,8 @@ class GSYStringEn extends GSYStringBase {
   String home_language_zh= "中文";
   @override
   String home_language_en= "English";
+  @override
+  String switch_language= "select language";
 
   @override
   String home_theme_default = "Default";
