@@ -68,7 +68,7 @@ class FlutterReduxApp extends StatelessWidget {
             theme: store.state.themeData,
             routes: {
               WelcomePage.sName: (context) {
-                store.state.platformLocale = Localizations.localeOf(context);
+                store.state.platformLocale = WidgetsBinding.instance.window.locale;
                 return WelcomePage();
               },
               HomePage.sName: (context) {
