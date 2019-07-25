@@ -232,15 +232,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_lottie:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "3adb18f2e2a45b8dbdebc0437e9a4db3f6ff32b8"
-      resolved-ref: "3adb18f2e2a45b8dbdebc0437e9a4db3f6ff32b8"
-      url: "https://github.com/CarSmallGuo/flutter_lottie.git"
-    source: git
-    version: "0.2.0"
   flutter_markdown:
     dependency: "direct main"
     description:

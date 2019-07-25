@@ -46,10 +46,6 @@ dependencies:
       ref: c7a59c9cff8887abb89f2c36b3911f5fbdf189c8
   flutter_localizations:
     sdk: flutter
-  flutter_lottie:
-    git:
-      url: https://github.com/CarSmallGuo/flutter_lottie.git
-      ref: 3adb18f2e2a45b8dbdebc0437e9a4db3f6ff32b8
   photo_view:
     git:
       url: https://github.com/CarSmallGuo/photo_view.git
