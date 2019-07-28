@@ -34,9 +34,8 @@ class ReleasePage extends StatefulWidget {
   _ReleasePageState createState() => _ReleasePageState();
 }
 
-
-class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClientMixin<ReleasePage>, GSYListState<ReleasePage> {
-
+class _ReleasePageState extends State<ReleasePage>
+    with AutomaticKeepAliveClientMixin<ReleasePage>, GSYListState<ReleasePage> {
   ///配置标题了右侧的更多显示
   final OptionControl titleOptionControl = new OptionControl();
 
@@ -45,23 +44,21 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
 
   ///绘制item
   _renderEventItem(index) {
-    ReleaseItemViewModel releaseItemViewModel = ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
+    ReleaseItemViewModel releaseItemViewModel =
+        ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return new ReleaseItem(
       releaseItemViewModel,
       onPressed: () {
-        if (selectIndex == 0) {
-          if (Platform.isIOS) {
-            NavigatorUtils.gotoCodeDetailPage(
-              context,
-              title: releaseItemViewModel.actionTitle,
-              userName: widget.userName,
-              reposName: widget.reposName,
-              data: HtmlUtils.generateHtml(releaseItemViewModel.actionTargetHtml, backgroundColor: GSYColors.webDraculaBackgroundColorString),
-            );
-          } else {
-            String html = HtmlUtils.generateHtml(releaseItemViewModel.actionTargetHtml, backgroundColor: GSYColors.miWhiteString, userBR: false);
-            CommonUtils.launchWebView(context, releaseItemViewModel.actionTitle, html);
-          }
+        ///没有 release 提示就不要了
+        if (selectIndex == 0 &&
+            releaseItemViewModel.actionTargetHtml != null &&
+            releaseItemViewModel.actionTargetHtml.length > 0) {
+          String html = HtmlUtils.generateHtml(
+              releaseItemViewModel.actionTargetHtml,
+              backgroundColor: GSYColors.miWhiteString,
+              userBR: false);
+          CommonUtils.launchWebView(
+              context, releaseItemViewModel.actionTitle, html);
         }
       },
       onLongPress: () {
@@ -76,7 +73,10 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      Fluttertoast.showToast(msg: CommonUtils.getLocale(context).option_web_launcher_error + ": " + url);
+      Fluttertoast.showToast(
+          msg: CommonUtils.getLocale(context).option_web_launcher_error +
+              ": " +
+              url);
     }
   }
 
@@ -90,7 +90,9 @@ class _ReleasePageState extends State<ReleasePage> with AutomaticKeepAliveClient
   }
 
   _getDataLogic() async {
-    return await ReposDao.getRepositoryReleaseDao(widget.userName, widget.reposName, page, needHtml: Platform.isAndroid, release: selectIndex == 0);
+    return await ReposDao.getRepositoryReleaseDao(
+        widget.userName, widget.reposName, page,
+        needHtml: true, release: selectIndex == 0);
   }
 
   @override

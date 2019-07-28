@@ -50,17 +50,7 @@ class HomeDrawer extends StatelessWidget {
     }, colorList: CommonUtils.getThemeListColor());
   }
 
-  showLanguageDialog(BuildContext context, Store store) {
-    List<String> list = [
-      CommonUtils.getLocale(context).home_language_default,
-      CommonUtils.getLocale(context).home_language_zh,
-      CommonUtils.getLocale(context).home_language_en,
-    ];
-    CommonUtils.showCommitOptionDialog(context, list, (index) {
-      CommonUtils.changeLocale(store, index);
-      LocalStorage.save(Config.LOCALE, index.toString());
-    }, height: 150.0);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +153,7 @@ class HomeDrawer extends StatelessWidget {
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
-                              showLanguageDialog(context, store);
+                              CommonUtils.showLanguageDialog(context, store);
                             }),
                         new ListTile(
                             title: new Text(
