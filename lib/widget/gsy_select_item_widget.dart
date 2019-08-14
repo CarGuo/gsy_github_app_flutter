@@ -10,7 +10,8 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 
 typedef void SelectItemChanged<int>(int value);
 
-class GSYSelectItemWidget extends StatefulWidget implements PreferredSizeWidget {
+class GSYSelectItemWidget extends StatefulWidget
+    implements PreferredSizeWidget {
   final List<String> itemNames;
 
   final SelectItemChanged selectItemChanged;
@@ -47,25 +48,34 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   _GSYSelectItemWidgetState();
 
   _renderItem(String name, int index) {
-    var style = index == selectIndex ? GSYConstant.middleTextWhite : GSYConstant.middleSubLightText;
+    var style = index == selectIndex
+        ? GSYConstant.middleTextWhite
+        : GSYConstant.middleSubLightText;
     return new Expanded(
-      child: RawMaterialButton(
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-          padding: EdgeInsets.all(10.0),
-          child: new Text(
-            name,
-            style: style,
-            textAlign: TextAlign.center,
-          ),
-          onPressed: () {
-            if (selectIndex != index) {
-              widget.selectItemChanged?.call(index);
-            }
-            setState(() {
-              selectIndex = index;
-            });
-          }),
+      child: AnimatedSwitcher(
+        transitionBuilder: (child, anim) {
+          return ScaleTransition(child: child, scale: anim);
+        },
+        duration: Duration(milliseconds: 300),
+        child: RawMaterialButton(
+            key: ValueKey(index == selectIndex),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+            padding: EdgeInsets.all(10.0),
+            child: new Text(
+              name,
+              style: style,
+              textAlign: TextAlign.center,
+            ),
+            onPressed: () {
+              if (selectIndex != index) {
+                widget.selectItemChanged?.call(index);
+              }
+              setState(() {
+                selectIndex = index;
+              });
+            }),
+      ),
     );
   }
 
@@ -76,7 +86,10 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         list.add(_renderItem(widget.itemNames[i], i));
       } else {
         list.add(_renderItem(widget.itemNames[i], i));
-        list.add(new Container(width: 1.0, height: 25.0, color: Color(GSYColors.subLightTextColor)));
+        list.add(new Container(
+            width: 1.0,
+            height: 25.0,
+            color: Color(GSYColors.subLightTextColor)));
       }
     }
     return list;
@@ -88,9 +101,10 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         elevation: widget.elevation,
         margin: widget.margin,
         color: Theme.of(context).primaryColor,
-        shape: widget.shape ?? new RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        ),
+        shape: widget.shape ??
+            new RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            ),
         child: new Row(
           children: _renderList(),
         ));
