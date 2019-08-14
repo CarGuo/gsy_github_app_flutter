@@ -226,7 +226,7 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter

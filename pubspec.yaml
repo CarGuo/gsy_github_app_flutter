@@ -29,7 +29,7 @@ dependencies:
   flutter_slidable: ^0.5.3
   dio: ^2.1.11
   event_bus:  ^1.1.0
-  flutter_cache_manager: ^1.0,0
+  flutter_cache_manager: ^1.1.1
   path_provider: ^1.1.2
   permission_handler: 3.1.0
   scoped_model: ^1.0.1
