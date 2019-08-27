@@ -63,9 +63,9 @@ class CommonUtils {
     var cur = DateTime.now();
     Duration subTime;
     if (date.timeZoneOffset != cur.timeZoneOffset) {
-      subTime = DateTime.now().difference(date.subtract(cur.timeZoneOffset));
+      subTime = cur.difference(date.subtract(cur.timeZoneOffset));
     } else {
-      subTime = DateTime.now().difference(date);
+      subTime = cur.difference(date);
     }
 
     if (subTime.inMilliseconds < MILLIS_LIMIT) {
