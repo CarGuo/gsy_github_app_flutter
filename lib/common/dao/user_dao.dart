@@ -73,7 +73,6 @@ class UserDao {
     if (localeIndex != null && localeIndex.length != 0) {
       CommonUtils.changeLocale(store, int.parse(localeIndex));
     } else {
-      CommonUtils.curLocale = store.state.platformLocale;
       store.dispatch(RefreshLocaleAction(store.state.platformLocale));
     }
 

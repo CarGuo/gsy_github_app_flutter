@@ -40,8 +40,6 @@ class CommonUtils {
 
   static final double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
-  static Locale curLocale;
-
   static String getDateStr(DateTime date) {
     if (date == null || date.toString() == null) {
       return "";
@@ -60,38 +58,19 @@ class CommonUtils {
 
   ///日期格式转换
   static String getNewsTimeStr(DateTime date) {
-    var cur = DateTime.now();
-    Duration subTime;
-    if (date.timeZoneOffset != cur.timeZoneOffset) {
-      subTime = cur.difference(date.subtract(cur.timeZoneOffset));
-    } else {
-      subTime = cur.difference(date);
-    }
+    int subTime =
+        DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
 
-    if (subTime.inMilliseconds < MILLIS_LIMIT) {
-      return (curLocale != null)
-          ? (curLocale.languageCode != "zh") ? "right now" : "刚刚"
-          : "刚刚";
-    } else if (subTime.inMilliseconds < SECONDS_LIMIT) {
-      return (subTime.inMilliseconds / MILLIS_LIMIT).round().toString() +
-          ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " seconds ago" : " 秒前"
-              : " 秒前");
-    } else if (subTime.inMilliseconds < MINUTES_LIMIT) {
-      return (subTime.inMilliseconds / SECONDS_LIMIT).round().toString() +
-          ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " min ago" : " 分钟前"
-              : " 分钟前");
-    } else if (subTime.inMilliseconds < HOURS_LIMIT) {
-      return (subTime.inMilliseconds / MINUTES_LIMIT).round().toString() +
-          ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " hours ago" : " 小时前"
-              : " 小时前");
-    } else if (subTime.inMilliseconds < DAYS_LIMIT) {
-      return (subTime.inMilliseconds / HOURS_LIMIT).round().toString() +
-          ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " days ago" : " 天前"
-              : " 天前");
+    if (subTime < MILLIS_LIMIT) {
+      return "刚刚";
+    } else if (subTime < SECONDS_LIMIT) {
+      return (subTime / MILLIS_LIMIT).round().toString() + " 秒前";
+    } else if (subTime < MINUTES_LIMIT) {
+      return (subTime / SECONDS_LIMIT).round().toString() + " 分钟前";
+    } else if (subTime < HOURS_LIMIT) {
+      return (subTime / MINUTES_LIMIT).round().toString() + " 小时前";
+    } else if (subTime < DAYS_LIMIT) {
+      return (subTime / HOURS_LIMIT).round().toString() + " 天前";
     } else {
       return getDateStr(date);
     }
@@ -169,6 +148,7 @@ class CommonUtils {
     return ThemeData(primarySwatch: color, platform: TargetPlatform.android);
   }
 
+
   static showLanguageDialog(BuildContext context, Store store) {
     List<String> list = [
       CommonUtils.getLocale(context).home_language_default,
@@ -194,7 +174,6 @@ class CommonUtils {
         locale = Locale('en', 'US');
         break;
     }
-    curLocale = locale;
     store.dispatch(RefreshLocaleAction(locale));
   }
 
