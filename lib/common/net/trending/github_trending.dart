@@ -23,9 +23,9 @@ class GitHubTrending {
 }
 
 const TAGS = {
-  "meta": {"start": '<span class="d-inline-block float-sm-right"', "end": '</span>'},
-  "starCount": {"start": '<a class="muted-link d-inline-block mr-3"', "flag": '/stargazers">', "end": '</a>'},
-  "forkCount": {"start": '<a class="muted-link d-inline-block mr-3"', "flag": '/network', "end": '</a>'}
+  "meta": {"start": '<span class="d-inline-block float-sm-right"', "end": '</span>end'},
+  "starCount": {"start": '<span aria-label="star">', "flag": '/span>', "end": '</a>'},
+  "forkCount": {"start": '<span aria-label="fork">', "flag": '/span>', "end": '</a>'}
 };
 
 class TrendingUtil {
@@ -42,7 +42,7 @@ class TrendingUtil {
 
       parseRepoBaseInfo(repo, html);
 
-      var metaNoteContent = parseContentWithNote(html, 'class="f6 text-gray mt-2">', '<\/div>');
+      var metaNoteContent = parseContentWithNote(html, 'class="f6 text-gray mt-2">', '<\/div>') + "end";
       repo.meta = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["meta"]);
       repo.starCount = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["starCount"]);
       repo.forkCount = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["forkCount"]);
@@ -93,13 +93,13 @@ class TrendingUtil {
   static parseRepoLabelWithTag(repo, noteContent, tag) {
     var startFlag;
     if (TAGS["starCount"] == tag || TAGS["forkCount"] == tag) {
-      startFlag = tag["start"] + ' href="/' + repo.fullName + tag["flag"];
+      startFlag = tag["start"];
     } else {
       startFlag = tag["start"];
     }
     var content = parseContentWithNote(noteContent, startFlag, tag["end"]);
-    if(content.indexOf('</svg>') != -1 && (content.indexOf('</svg>') + '</svg>'.length <= content.length)) {
-      var metaContent = content.substring(content.indexOf('</svg>') + '</svg>'.length, content.length);
+    if(content.indexOf('</span>') != -1 && (content.indexOf('</span>') + '</span>'.length <= content.length)) {
+      var metaContent = content.substring(content.indexOf('</span>') + '</span>'.length, content.length);
       return trim(metaContent);
     } else {
       return trim(content);
