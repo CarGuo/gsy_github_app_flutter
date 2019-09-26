@@ -24,6 +24,12 @@ import 'common/utils/navigator_utils.dart';
 
 void main() {
   runZoned(() {
+    ErrorWidget.builder = (FlutterErrorDetails details) {
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+      return Container(
+          color: Colors.transparent
+      );
+    };
     runApp(FlutterReduxApp());
     PaintingBinding.instance.imageCache.maximumSize = 100;
     Provider.debugCheckInvalidValueType = null;
