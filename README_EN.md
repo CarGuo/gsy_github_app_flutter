@@ -39,6 +39,7 @@ With the use and feedback of the project, will user experience and function opti
 * ### [Flutter 完整开发实战详解(十五、全面理解State与Provider)](https://juejin.im/post/5d0634c7f265da1b91639232)
 * ### [Flutter 完整开发实战详解(十六、详解自定义布局实战)](https://juejin.im/post/5d1af0aee51d454fbf540a52)
 * ### [Flutter 完整开发实战详解(十七、 实用技巧与填坑二)](https://juejin.im/post/5d6cb579f265da03da24aeb9)
+* ### [Flutter 完整开发实战详解(十八、 神奇的ScrollPhysics与Simulation)](https://juejin.im/post/5d9067026fb9a04df00ece14)
 
 ----
 * ### [全网最全 Flutter 与 React Native 深入对比分析](https://juejin.im/post/5d0bac156fb9a07ec56e7f15)
