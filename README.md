@@ -79,8 +79,8 @@
 * ### [目前各种主流状态管理演示Demo](https://github.com/CarGuo/state_manager_demo)
 
 ----
-- ## [Flutter 独立简单学习演示项目](https://github.com/CarGuo/GSYFlutterDemo)
-- ## [Flutter 完整开发实战详解 Gitbook 预览下载](https://github.com/CarGuo/GSYFlutterBook)
+- ## [Flutter 独立简单学习演示项目](https://github.com/CarGuo/gsy_flutter_demo)
+- ## [Flutter 完整开发实战详解 Gitbook 预览下载](https://github.com/CarGuo/gsy_flutter_book)
 - ## [所有运行问题请点击这里](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
 
 ## 编译运行流程
