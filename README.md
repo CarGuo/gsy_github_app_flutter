@@ -81,7 +81,7 @@
 ----
 - ## [Flutter 独立简单学习演示项目](https://github.com/CarGuo/gsy_flutter_demo)
 - ## [Flutter 完整开发实战详解 Gitbook 预览下载](https://github.com/CarGuo/gsy_flutter_book)
-- ## [所有运行问题请点击这里](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
+- ## [所有运行问题请点击这里](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)
 
 ## 编译运行流程
 
