@@ -31,8 +31,6 @@ void main() {
       );
     };
     runApp(FlutterReduxApp());
-    PaintingBinding.instance.imageCache.maximumSize = 100;
-    Provider.debugCheckInvalidValueType = null;
   }, onError: (Object obj, StackTrace stack) {
     print(obj);
     print(stack);

@@ -16,7 +16,7 @@ class LogsInterceptors extends InterceptorsWrapper {
         print('请求参数: ' + options.data.toString());
       }
     }
-    return options;
+    return Future.value(options);
   }
 
   @override
@@ -26,7 +26,7 @@ class LogsInterceptors extends InterceptorsWrapper {
         print('返回参数: ' + response.toString());
       }
     }
-    return response; // continue
+    return Future.value(response); // continue
   }
 
   @override
@@ -35,8 +35,6 @@ class LogsInterceptors extends InterceptorsWrapper {
       print('请求异常: ' + err.toString());
       print('请求异常信息: ' + err.response?.toString() ?? "");
     }
-    return err;
+    return Future.value(err); // continue;
   }
-
-
 }
