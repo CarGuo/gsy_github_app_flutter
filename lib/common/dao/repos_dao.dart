@@ -177,10 +177,10 @@ class ReposDao {
     String urls = Address.resolveStarRepos(userName, reposName);
     String urlw = Address.resolveWatcherRepos(userName, reposName);
     var resS = await httpManager.netFetch(
-        urls, null, null, new Options(contentType: ContentType.text),
+        urls, null, null, new Options(contentType: "text"),
         noTip: true);
     var resW = await httpManager.netFetch(
-        urlw, null, null, new Options(contentType: ContentType.text),
+        urlw, null, null, new Options(contentType: "text"),
         noTip: true);
     var data = {"star": resS.result, "watch": resW.result};
     return new DataResult(data, true);
@@ -243,7 +243,7 @@ class ReposDao {
       isHtml
           ? {"Accept": 'application/vnd.github.html'}
           : {"Accept": 'application/vnd.github.VERSION.raw'},
-      new Options(contentType: text ? ContentType.text : ContentType.json),
+      new Options(contentType: text ? "text" : "json"),
     );
     if (res != null && res.result) {
       if (text) {
@@ -283,7 +283,7 @@ class ReposDao {
         null,
         null,
         new Options(
-            method: !star ? 'PUT' : 'DELETE', contentType: ContentType.text));
+            method: !star ? 'PUT' : 'DELETE', contentType: "text"));
     return Future<DataResult>(() {
       return new DataResult(null, res.result);
     });
@@ -299,7 +299,7 @@ class ReposDao {
         null,
         null,
         new Options(
-            method: !watch ? 'PUT' : 'DELETE', contentType: ContentType.text));
+            method: !watch ? 'PUT' : 'DELETE', contentType: "text"));
     return new DataResult(null, res.result);
   }
 
@@ -509,7 +509,7 @@ class ReposDao {
   static createForkDao(userName, reposName) async {
     String url = Address.createFork(userName, reposName);
     var res = await httpManager.netFetch(url, null, null,
-        new Options(method: "POST", contentType: ContentType.text));
+        new Options(method: "POST", contentType: "text"));
     return new DataResult(null, res.result);
   }
 
@@ -572,7 +572,7 @@ class ReposDao {
           url,
           null,
           {"Accept": 'application/vnd.github.VERSION.raw'},
-          new Options(contentType: ContentType.text));
+          new Options(contentType: "text"));
       //var res = await httpManager.netFetch(url, null, {"Accept": 'application/vnd.github.html'}, new Options(contentType: ContentType.text));
       if (res != null && res.result) {
         if (needDb) {
