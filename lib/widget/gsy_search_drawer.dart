@@ -54,7 +54,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
       list.add(_renderItem(model, searchFilterType, i, widget.typeCallback));
       list.add(_renderDivider());
     }
-    list.add(_renderTitle(CommonUtils.getLocale(context).search_type));
+    list.add(_renderTitle(CommonUtils.getLocale(context).search_sort));
 
     for (int i = 0; i < sortType.length; i++) {
       FilterModel model = sortType[i];
