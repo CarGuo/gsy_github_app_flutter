@@ -8,7 +8,7 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
  */
 class LogsInterceptors extends InterceptorsWrapper {
   @override
-  onRequest(RequestOptions options) {
+  onRequest(RequestOptions options) async {
     if (Config.DEBUG) {
       print("请求url：${options.path}");
       print('请求头: ' + options.headers.toString());
@@ -16,25 +16,25 @@ class LogsInterceptors extends InterceptorsWrapper {
         print('请求参数: ' + options.data.toString());
       }
     }
-    return Future.value(options);
+    return options;
   }
 
   @override
-  onResponse(Response response) {
+  onResponse(Response response) async {
     if (Config.DEBUG) {
       if (response != null) {
         print('返回参数: ' + response.toString());
       }
     }
-    return Future.value(response); // continue
+    return response; // continue
   }
 
   @override
-  onError(DioError err) {
+  onError(DioError err) async {
     if (Config.DEBUG) {
       print('请求异常: ' + err.toString());
       print('请求异常信息: ' + err.response?.toString() ?? "");
     }
-    return Future.value(err); // continue;
+    return err; // continue;
   }
 }
