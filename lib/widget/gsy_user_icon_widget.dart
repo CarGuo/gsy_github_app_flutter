@@ -28,7 +28,7 @@ class GSYUserIconWidget extends StatelessWidget {
             placeholder: AssetImage(
               GSYICons.DEFAULT_USER_ICON,
             ),
-            image: NetworkCacheImage(image),
+            image: NetworkImage(image),
             //预览图
             fit: BoxFit.fitWidth,
             width: width,
