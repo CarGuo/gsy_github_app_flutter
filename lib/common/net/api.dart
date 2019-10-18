@@ -37,7 +37,7 @@ class HttpManager {
   ///[ params] 请求参数
   ///[ header] 外加头
   ///[ option] 配置
-  netFetch(url, params, Map<String, dynamic> header, Options option, {noTip = false}) async {
+  Future<ResultData> netFetch(url, params, Map<String, dynamic> header, Options option, {noTip = false}) async {
     Map<String, dynamic> headers = new HashMap();
     if (header != null) {
       headers.addAll(header);

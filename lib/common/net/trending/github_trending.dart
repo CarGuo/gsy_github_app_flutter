@@ -13,7 +13,7 @@ import 'package:gsy_github_app_flutter/common/net/result_data.dart';
  */
 class GitHubTrending {
   fetchTrending(url) async {
-    var res = await httpManager.netFetch(url, null, null, new Options(contentType: "text"));
+    var res = await httpManager.netFetch(url, null, null, new Options(contentType: "text/plain; charset=utf-8"));
     if (res != null && res.result && res.data != null) {
       return new ResultData(TrendingUtil.htmlToRepo(res.data), true, Code.SUCCESS);
     } else {
