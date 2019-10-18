@@ -15,3 +15,5 @@ build/
 .gradle/
 
 ignoreConfig.dart
+
+flutter_export_environment.sh
