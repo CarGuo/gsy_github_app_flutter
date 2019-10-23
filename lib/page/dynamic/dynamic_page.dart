@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/bloc/dynamic_bloc.dart';
+import 'package:gsy_github_app_flutter/page/dynamic/dynamic_bloc.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
-import 'package:gsy_github_app_flutter/widget/event_item.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 import 'package:redux/redux.dart';
 
@@ -52,7 +52,7 @@ class _DynamicPageState extends State<DynamicPage>
 
   _renderEventItem(Event e) {
     EventViewModel eventViewModel = EventViewModel.fromEventMap(e);
-    return new EventItem(
+    return new GSYEventItem(
       eventViewModel,
       onPressed: () {
         EventUtils.ActionUtils(context, e, "");

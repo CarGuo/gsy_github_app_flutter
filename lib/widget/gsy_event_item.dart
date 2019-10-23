@@ -14,14 +14,14 @@ import 'package:gsy_github_app_flutter/common/model/Notification.dart' as Model;
  * Created by guoshuyu
  * Date: 2018-07-16
  */
-class EventItem extends StatelessWidget {
+class GSYEventItem extends StatelessWidget {
   final EventViewModel eventViewModel;
 
   final VoidCallback onPressed;
 
   final bool needImage;
 
-  EventItem(this.eventViewModel, {this.onPressed, this.needImage = true})
+  GSYEventItem(this.eventViewModel, {this.onPressed, this.needImage = true})
       : super();
 
   @override

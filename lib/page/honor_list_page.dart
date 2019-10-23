@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/widget/repos_item.dart';
+import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 
 /**
  * 荣耀list

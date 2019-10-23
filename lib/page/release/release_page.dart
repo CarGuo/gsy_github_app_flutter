@@ -12,7 +12,7 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:gsy_github_app_flutter/widget/release_item.dart';
+import 'package:gsy_github_app_flutter/page/release/widget/release_item.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /**

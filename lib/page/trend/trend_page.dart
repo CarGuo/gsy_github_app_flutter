@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/bloc/trend_bloc.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_bloc.dart';
 import 'package:gsy_github_app_flutter/common/model/TrendingRepoModel.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -13,7 +13,7 @@ import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
-import 'package:gsy_github_app_flutter/widget/repos_item.dart';
+import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 import 'package:redux/redux.dart';
 
 /**

@@ -8,15 +8,15 @@ import 'package:gsy_github_app_flutter/page/common_list_page.dart';
 import 'package:gsy_github_app_flutter/page/gsy_webview.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
-import 'package:gsy_github_app_flutter/page/issue_detail_page.dart';
+import 'package:gsy_github_app_flutter/page/issue/issue_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';
 import 'package:gsy_github_app_flutter/page/notify_page.dart';
-import 'package:gsy_github_app_flutter/page/person_page.dart';
+import 'package:gsy_github_app_flutter/page/user/person_page.dart';
 import 'package:gsy_github_app_flutter/page/photoview_page.dart';
-import 'package:gsy_github_app_flutter/page/push_detail_page.dart';
-import 'package:gsy_github_app_flutter/page/release_page.dart';
-import 'package:gsy_github_app_flutter/page/repository_detail_page.dart';
-import 'package:gsy_github_app_flutter/page/search_page.dart';
+import 'package:gsy_github_app_flutter/page/push/push_detail_page.dart';
+import 'package:gsy_github_app_flutter/page/release/release_page.dart';
+import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
+import 'package:gsy_github_app_flutter/page/search/search_page.dart';
 import 'package:gsy_github_app_flutter/page/user_profile_page.dart';
 
 /**
