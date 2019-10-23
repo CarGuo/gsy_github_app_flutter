@@ -1,5 +1,5 @@
-import 'package:gsy_github_app_flutter/common/model/ReleaseAsset.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/model/ReleaseAsset.dart';
+import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /**

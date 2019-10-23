@@ -1,6 +1,7 @@
-import 'package:gsy_github_app_flutter/common/model/NotificationSubject.dart';
-import 'package:gsy_github_app_flutter/common/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/NotificationSubject.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'Repository.dart';
 
 /**
  * Created by guoshuyu

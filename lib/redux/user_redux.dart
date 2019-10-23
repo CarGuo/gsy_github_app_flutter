@@ -1,5 +1,5 @@
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/middleware/epic.dart';
 import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';

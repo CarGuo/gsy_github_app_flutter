@@ -9,7 +9,7 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:gsy_github_app_flutter/common/model/Notification.dart' as Model;
+import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 
 /**
  * 通知消息

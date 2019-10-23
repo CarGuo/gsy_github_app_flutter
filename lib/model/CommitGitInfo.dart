@@ -1,4 +1,4 @@
-import 'package:gsy_github_app_flutter/common/model/CommitGitUser.dart';
+import 'package:gsy_github_app_flutter/model/CommitGitUser.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /**
