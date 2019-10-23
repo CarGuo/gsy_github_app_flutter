@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -46,7 +45,6 @@ class CodeDetailPageWeb extends StatefulWidget {
 }
 
 class _CodeDetailPageState extends State<CodeDetailPageWeb> {
-
   String data;
 
   _CodeDetailPageState(this.data);

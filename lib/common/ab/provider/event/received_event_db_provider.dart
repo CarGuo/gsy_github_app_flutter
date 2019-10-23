@@ -63,10 +63,12 @@ class ReceivedEventDbProvider extends BaseDbProvider {
     List<Map> maps = await db.query(name, columns: [columnId, columnData]);
     List<Event> list = new List();
     if (maps.length > 0) {
-      ReceivedEventDbProvider provider = ReceivedEventDbProvider.fromMap(maps.first);
+      ReceivedEventDbProvider provider =
+          ReceivedEventDbProvider.fromMap(maps.first);
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data);
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

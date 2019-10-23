@@ -22,11 +22,11 @@ class SqlManager {
   static init() async {
     // open the database
     var databasesPath = await getDatabasesPath();
-    var userRes= await UserDao.getUserInfoLocal();
+    var userRes = await UserDao.getUserInfoLocal();
     String dbName = _NAME;
-    if(userRes != null && userRes.result) {
+    if (userRes != null && userRes.result) {
       User user = userRes.data;
-      if(user != null && user.login != null) {
+      if (user != null && user.login != null) {
         dbName = user.login + "_" + _NAME;
       }
     }
@@ -34,7 +34,8 @@ class SqlManager {
     if (Platform.isIOS) {
       path = databasesPath + "/" + dbName;
     }
-    _database = await openDatabase(path, version: _VERSION, onCreate: (Database db, int version) async {
+    _database = await openDatabase(path, version: _VERSION,
+        onCreate: (Database db, int version) async {
       // When creating the db, create the table
       //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
     });
@@ -45,7 +46,8 @@ class SqlManager {
    */
   static isTableExits(String tableName) async {
     await getCurrentDatabase();
-    var res = await _database.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
+    var res = await _database.rawQuery(
+        "select * from Sqlite_master where type = 'table' and name = '$tableName'");
     return res != null && res.length > 0;
   }
 
@@ -59,7 +61,7 @@ class SqlManager {
 
   ///关闭
   static close() {
-      _database?.close();
-      _database = null;
+    _database?.close();
+    _database = null;
   }
 }

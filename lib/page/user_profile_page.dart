@@ -135,7 +135,7 @@ class _UserProfileState extends State<UserProfileInfo> {
                       style: GSYConstant.normalTextWhite,
                     )))),
         body: new Container(
-          color: Color(GSYColors.white),
+          color: GSYColors.white,
           child: new SingleChildScrollView(
             child: new Column(
               children: _renderList(store.state.userInfo, store),

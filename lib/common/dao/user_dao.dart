@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/user/user_followed_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/user/user_follower_db_provider.dart';
@@ -39,7 +37,8 @@ class UserDao {
     };
     httpManager.clearAuthorization();
 
-    var res = await httpManager.netFetch(Address.getAuthorization(), json.encode(requestParams), null, new Options(method: "post"));
+    var res = await httpManager.netFetch(Address.getAuthorization(),
+        json.encode(requestParams), null, new Options(method: "post"));
     var resultData = null;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
@@ -98,9 +97,11 @@ class UserDao {
     next() async {
       var res;
       if (userName == null) {
-        res = await httpManager.netFetch(Address.getMyUserInfo(), null, null, null);
+        res = await httpManager.netFetch(
+            Address.getMyUserInfo(), null, null, null);
       } else {
-        res = await httpManager.netFetch(Address.getUserInfo(userName), null, null, null);
+        res = await httpManager.netFetch(
+            Address.getUserInfo(userName), null, null, null);
       }
       if (res != null && res.result) {
         String starred = "---";
@@ -173,7 +174,8 @@ class UserDao {
     UserFollowerDbProvider provider = new UserFollowerDbProvider();
 
     next() async {
-      String url = Address.getUserFollower(userName) + Address.getPageParams("?", page);
+      String url =
+          Address.getUserFollower(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<User> list = new List();
@@ -210,7 +212,8 @@ class UserDao {
   static getFollowedListDao(userName, page, {needDb = false}) async {
     UserFollowedDbProvider provider = new UserFollowedDbProvider();
     next() async {
-      String url = Address.getUserFollow(userName) + Address.getPageParams("?", page);
+      String url =
+          Address.getUserFollow(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<User> list = new List();
@@ -246,7 +249,8 @@ class UserDao {
    */
   static getNotifyDao(bool all, bool participating, page) async {
     String tag = (!all && !participating) ? '?' : "&";
-    String url = Address.getNotifation(all, participating) + Address.getPageParams(tag, page);
+    String url = Address.getNotifation(all, participating) +
+        Address.getPageParams(tag, page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
       List<Notification> list = new List();
@@ -268,7 +272,8 @@ class UserDao {
    */
   static setNotificationAsReadDao(id) async {
     String url = Address.setNotificationAsRead(id);
-    var res = await httpManager.netFetch(url, null, null, new Options(method: "PATCH"), noTip: true);
+    var res = await httpManager
+        .netFetch(url, null, null, new Options(method: "PATCH"), noTip: true);
     return res;
   }
 
@@ -277,7 +282,8 @@ class UserDao {
    */
   static setAllNotificationAsReadDao() async {
     String url = Address.setAllNotificationAsRead();
-    var res = await httpManager.netFetch(url, null, null, new Options(method: "PUT"));
+    var res =
+        await httpManager.netFetch(url, null, null, new Options(method: "PUT"));
     return new DataResult(res.data, res.result);
   }
 
@@ -295,7 +301,9 @@ class UserDao {
    */
   static doFollowDao(name, bool followed) async {
     String url = Address.doFollow(name);
-    var res = await httpManager.netFetch(url, null, null, new Options(method: !followed ? "PUT" : "DELETE"), noTip: true);
+    var res = await httpManager.netFetch(
+        url, null, null, new Options(method: !followed ? "PUT" : "DELETE"),
+        noTip: true);
     return new DataResult(res.data, res.result);
   }
 
@@ -325,7 +333,8 @@ class UserDao {
    */
   static updateUserDao(params, Store store) async {
     String url = Address.getMyUserInfo();
-    var res = await httpManager.netFetch(url, params, null, new Options(method: "PATCH"));
+    var res = await httpManager.netFetch(
+        url, params, null, new Options(method: "PATCH"));
     if (res != null && res.result) {
       var localResult = await getUserInfoLocal();
       User newUser = User.fromJson(res.data);
@@ -343,7 +352,8 @@ class UserDao {
   static getUserOrgsDao(userName, page, {needDb = false}) async {
     UserOrgsDbProvider provider = new UserOrgsDbProvider();
     next() async {
-      String url = Address.getUserOrgs(userName) + Address.getPageParams("?", page);
+      String url =
+          Address.getUserOrgs(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<UserOrg> list = new List();

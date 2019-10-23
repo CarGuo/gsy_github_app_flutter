@@ -37,18 +37,22 @@ class GSYCommonOptionWidget extends StatelessWidget {
     return list;
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> list = [
-      new GSYOptionModel(CommonUtils.getLocale(context).option_web, CommonUtils.getLocale(context).option_web, (model) {
+      new GSYOptionModel(CommonUtils.getLocale(context).option_web,
+          CommonUtils.getLocale(context).option_web, (model) {
         CommonUtils.launchOutURL(control.url, context);
       }),
-      new GSYOptionModel(CommonUtils.getLocale(context).option_copy, CommonUtils.getLocale(context).option_copy, (model) {
+      new GSYOptionModel(CommonUtils.getLocale(context).option_copy,
+          CommonUtils.getLocale(context).option_copy, (model) {
         CommonUtils.copy(control.url ?? "", context);
       }),
-      new GSYOptionModel(CommonUtils.getLocale(context).option_share, CommonUtils.getLocale(context).option_share, (model) {
-        Share.share(CommonUtils.getLocale(context).option_share_title + control.url ?? "");
+      new GSYOptionModel(CommonUtils.getLocale(context).option_share,
+          CommonUtils.getLocale(context).option_share, (model) {
+        Share.share(
+            CommonUtils.getLocale(context).option_share_title + control.url ??
+                "");
       }),
     ];
     if (otherList != null && otherList.length > 0) {

@@ -22,11 +22,21 @@ class EventUtils {
         if (event.payload.refType == "repository") {
           actionStr = "Created repository " + event.repo.name;
         } else {
-          actionStr = "Created " + event.payload.refType + " " + event.payload.ref + " at " + event.repo.name;
+          actionStr = "Created " +
+              event.payload.refType +
+              " " +
+              event.payload.ref +
+              " at " +
+              event.repo.name;
         }
         break;
       case "DeleteEvent":
-        actionStr = "Delete " + event.payload.refType + " " + event.payload.ref + " at " + event.repo.name;
+        actionStr = "Delete " +
+            event.payload.refType +
+            " " +
+            event.payload.ref +
+            " at " +
+            event.repo.name;
         break;
       case "ForkEvent":
         String oriRepo = event.repo.name;
@@ -44,11 +54,19 @@ class EventUtils {
         actionStr = event.payload.action + " repository from an installation ";
         break;
       case "IssueCommentEvent":
-        actionStr = event.payload.action + " comment on issue " + event.payload.issue.number.toString() + " in " + event.repo.name;
+        actionStr = event.payload.action +
+            " comment on issue " +
+            event.payload.issue.number.toString() +
+            " in " +
+            event.repo.name;
         des = event.payload.comment.body;
         break;
       case "IssuesEvent":
-        actionStr = event.payload.action + " issue " + event.payload.issue.number.toString() + " in " + event.repo.name;
+        actionStr = event.payload.action +
+            " issue " +
+            event.payload.issue.number.toString() +
+            " in " +
+            event.repo.name;
         des = event.payload.issue.title;
         break;
 
@@ -78,10 +96,13 @@ class EventUtils {
         actionStr = event.payload.action + " pull request " + event.repo.name;
         break;
       case "PullRequestReviewEvent":
-        actionStr = event.payload.action + " pull request review at" + event.repo.name;
+        actionStr =
+            event.payload.action + " pull request review at" + event.repo.name;
         break;
       case "PullRequestReviewCommentEvent":
-        actionStr = event.payload.action + " pull request review comment at" + event.repo.name;
+        actionStr = event.payload.action +
+            " pull request review comment at" +
+            event.repo.name;
         break;
 
       case "PushEvent":
@@ -111,7 +132,11 @@ class EventUtils {
         }
         break;
       case "ReleaseEvent":
-        actionStr = event.payload.action + " release " + event.payload.release.tagName + " at " + event.repo.name;
+        actionStr = event.payload.action +
+            " release " +
+            event.payload.release.tagName +
+            " at " +
+            event.repo.name;
         break;
       case "WatchEvent":
         actionStr = event.payload.action + " " + event.repo.name;
@@ -136,7 +161,8 @@ class EventUtils {
         if (forkName.toLowerCase() == currentRepository.toLowerCase()) {
           return;
         }
-        NavigatorUtils.goReposDetail(context, event.actor.login, repositoryName);
+        NavigatorUtils.goReposDetail(
+            context, event.actor.login, repositoryName);
         break;
       case 'PushEvent':
         if (event.payload.commits == null) {
@@ -145,14 +171,18 @@ class EventUtils {
           }
           NavigatorUtils.goReposDetail(context, owner, repositoryName);
         } else if (event.payload.commits.length == 1) {
-          NavigatorUtils.goPushDetailPage(context, owner, repositoryName, event.payload.commits[0].sha, true);
+          NavigatorUtils.goPushDetailPage(context, owner, repositoryName,
+              event.payload.commits[0].sha, true);
         } else {
           List<String> list = new List();
           for (int i = 0; i < event.payload.commits.length; i++) {
-            list.add(event.payload.commits[i].message + " " + event.payload.commits[i].sha.substring(0, 4));
+            list.add(event.payload.commits[i].message +
+                " " +
+                event.payload.commits[i].sha.substring(0, 4));
           }
           CommonUtils.showCommitOptionDialog(context, list, (index) {
-            NavigatorUtils.goPushDetailPage(context, owner, repositoryName, event.payload.commits[index].sha, true);
+            NavigatorUtils.goPushDetailPage(context, owner, repositoryName,
+                event.payload.commits[index].sha, true);
           });
         }
         break;
@@ -162,7 +192,9 @@ class EventUtils {
         break;
       case 'IssueCommentEvent':
       case 'IssuesEvent':
-        NavigatorUtils.goIssueDetail(context, owner, repositoryName, event.payload.issue.number.toString(), needRightLocalIcon: true);
+        NavigatorUtils.goIssueDetail(context, owner, repositoryName,
+            event.payload.issue.number.toString(),
+            needRightLocalIcon: true);
         break;
       default:
         if (fullName.toLowerCase() == currentRepository.toLowerCase()) {

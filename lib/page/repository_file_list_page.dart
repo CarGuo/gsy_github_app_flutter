@@ -177,10 +177,10 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
-      backgroundColor: Color(GSYColors.mainBackgroundColor),
+      backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         flexibleSpace: _renderHeader(),
-        backgroundColor: Color(GSYColors.mainBackgroundColor),
+        backgroundColor: GSYColors.mainBackgroundColor,
         leading: new Container(),
         elevation: 0.0,
       ),

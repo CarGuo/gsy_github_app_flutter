@@ -87,9 +87,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
       } else {
         list.add(_renderItem(widget.itemNames[i], i));
         list.add(new Container(
-            width: 1.0,
-            height: 25.0,
-            color: Color(GSYColors.subLightTextColor)));
+            width: 1.0, height: 25.0, color: GSYColors.subLightTextColor));
       }
     }
     return list;

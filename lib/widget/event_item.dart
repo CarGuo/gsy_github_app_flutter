@@ -21,11 +21,13 @@ class EventItem extends StatelessWidget {
 
   final bool needImage;
 
-  EventItem(this.eventViewModel, {this.onPressed, this.needImage = true}) : super();
+  EventItem(this.eventViewModel, {this.onPressed, this.needImage = true})
+      : super();
 
   @override
   Widget build(BuildContext context) {
-    Widget des = (eventViewModel.actionDes == null || eventViewModel.actionDes.length == 0)
+    Widget des = (eventViewModel.actionDes == null ||
+            eventViewModel.actionDes.length == 0)
         ? new Container()
         : new Container(
             child: new Text(
@@ -51,19 +53,24 @@ class EventItem extends StatelessWidget {
           child: new FlatButton(
               onPressed: onPressed,
               child: new Padding(
-                padding: new EdgeInsets.only(left: 0.0, top: 10.0, right: 0.0, bottom: 10.0),
+                padding: new EdgeInsets.only(
+                    left: 0.0, top: 10.0, right: 0.0, bottom: 10.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     new Row(
                       children: <Widget>[
                         userImage,
-                        new Expanded(child: new Text(eventViewModel.actionUser, style: GSYConstant.smallTextBold)),
-                        new Text(eventViewModel.actionTime, style: GSYConstant.smallSubText),
+                        new Expanded(
+                            child: new Text(eventViewModel.actionUser,
+                                style: GSYConstant.smallTextBold)),
+                        new Text(eventViewModel.actionTime,
+                            style: GSYConstant.smallSubText),
                       ],
                     ),
                     new Container(
-                        child: new Text(eventViewModel.actionTarget, style: GSYConstant.smallTextBold),
+                        child: new Text(eventViewModel.actionTarget,
+                            style: GSYConstant.smallTextBold),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
                     des,
@@ -101,8 +108,11 @@ class EventViewModel {
     actionTime = CommonUtils.getNewsTimeStr(eventMap.updateAt);
     actionUser = eventMap.repository.fullName;
     String type = eventMap.subject.type;
-    String status = eventMap.unread ? CommonUtils.getLocale(context).notify_unread : CommonUtils.getLocale(context).notify_readed;
-    actionDes = eventMap.reason + "${CommonUtils.getLocale(context).notify_type}：$type，${CommonUtils.getLocale(context).notify_status}：$status";
+    String status = eventMap.unread
+        ? CommonUtils.getLocale(context).notify_unread
+        : CommonUtils.getLocale(context).notify_readed;
+    actionDes = eventMap.reason +
+        "${CommonUtils.getLocale(context).notify_type}：$type，${CommonUtils.getLocale(context).notify_status}：$status";
     actionTarget = eventMap.subject.title;
   }
 }

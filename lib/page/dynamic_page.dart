@@ -67,6 +67,7 @@ class _DynamicPageState extends State<DynamicPage>
   @override
   void initState() {
     super.initState();
+
     ///监听生命周期，主要判断页面 resumed 的时候触发刷新
     WidgetsBinding.instance.addObserver(this);
 
@@ -79,12 +80,13 @@ class _DynamicPageState extends State<DynamicPage>
     ///请求更新
     if (dynamicBloc.getDataLength() == 0) {
       dynamicBloc.changeNeedHeaderStatus(false);
+
       ///先读数据库
-      dynamicBloc.requestRefresh(_getStore().state.userInfo?.login,
-          doNextFlag: false).then((_) {
+      dynamicBloc
+          .requestRefresh(_getStore().state.userInfo?.login, doNextFlag: false)
+          .then((_) {
         showRefreshLoading();
       });
-
     }
     super.didChangeDependencies();
   }

@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
           new MyPage(),
         ],
         backgroundColor: GSYColors.primarySwatch,
-        indicatorColor: Color(GSYColors.white),
+        indicatorColor: GSYColors.white,
         title: GSYTitleBar(
           GSYLocalizations.of(context).currentLocalized.app_name,
           iconData: GSYICons.MAIN_SEARCH,

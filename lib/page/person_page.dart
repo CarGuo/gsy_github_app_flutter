@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
@@ -63,6 +62,7 @@ class _PersonState extends BasePersonState<PersonPage> {
     }
     isLoading = true;
     page = 1;
+
     ///获取网络用户数据
     var userResult = await UserDao.getUserInfo(userName, needDb: true);
     if (userResult != null && userResult.result) {
@@ -75,6 +75,7 @@ class _PersonState extends BasePersonState<PersonPage> {
     } else {
       return null;
     }
+
     ///获取用户动态或者组织成员
     var res = await _getDataLogic();
     resolveRefreshResult(res);
@@ -85,8 +86,10 @@ class _PersonState extends BasePersonState<PersonPage> {
       resolveDataResult(resNext);
     }
     isLoading = false;
+
     ///获取当前用户的关注状态
     _getFocusStatus();
+
     ///获取用户仓库前100个star统计数据
     getHonor(_getUserName());
     return null;

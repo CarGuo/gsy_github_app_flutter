@@ -54,7 +54,7 @@ class _WelcomePageState extends State<WelcomePage> {
       builder: (context, store) {
         double size = 200;
         return new Container(
-          color: Color(GSYColors.white),
+          color: GSYColors.white,
           child: Stack(
             children: <Widget>[
               new Center(

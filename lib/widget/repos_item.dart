@@ -28,7 +28,7 @@ class ReposItem extends StatelessWidget {
           icon,
           text,
           GSYConstant.smallSubText,
-          Color(GSYColors.subTextColor),
+          GSYColors.subTextColor,
           15.0,
           padding: 5.0,
           textWidth: flex == 4
@@ -78,7 +78,7 @@ class ReposItem extends StatelessWidget {
                                 GSYICons.REPOS_ITEM_USER,
                                 reposViewModel.ownerName,
                                 GSYConstant.smallSubLightText,
-                                Color(GSYColors.subLightTextColor),
+                                GSYColors.subLightTextColor,
                                 10.0,
                                 padding: 3.0,
                               ),

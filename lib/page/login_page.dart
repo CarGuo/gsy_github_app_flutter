@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                     elevation: 5.0,
                     shape: new RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    color: Color(GSYColors.cardWhite),
+                    color: GSYColors.cardWhite,
                     margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                     child: new Padding(
                       padding: new EdgeInsets.only(
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                           new GSYFlexButton(
                             text: CommonUtils.getLocale(context).login_text,
                             color: Theme.of(context).primaryColor,
-                            textColor: Color(GSYColors.textWhite),
+                            textColor: GSYColors.textWhite,
                             onPress: () {
                               if (_userName == null || _userName.length == 0) {
                                 return;
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text(
                               CommonUtils.getLocale(context).switch_language,
                               style: TextStyle(
-                                  color: Color(GSYColors.subTextColor)),
+                                  color: GSYColors.subTextColor),
                             ),
                           ),
                           new Padding(padding: new EdgeInsets.all(15.0)),

@@ -24,7 +24,8 @@ class IssueEditDialog extends StatefulWidget {
 
   final bool needTitle;
 
-  IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged, this.onPressed,
+  IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged,
+      this.onPressed,
       {this.titleController, this.valueController, this.needTitle = true});
 
   @override
@@ -42,7 +43,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
             child: new GSYInputWidget(
               onChanged: widget.onTitleChanged,
               controller: widget.titleController,
-              hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
+              hintText:
+                  CommonUtils.getLocale(context).issue_edit_issue_title_tip,
               obscureText: false,
             ))
         : new Container();
@@ -58,7 +60,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
         itemBuilder: (context, index) {
           return new RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0, bottom: 5.0),
+              padding:
+                  EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0, bottom: 5.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
               child: Icon(FAST_INPUT_LIST[index].iconData, size: 16.0),
               onPressed: () {
@@ -69,7 +72,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                 }
                 newText = newText + text;
                 setState(() {
-                  widget.valueController.value = new TextEditingValue(text: newText);
+                  widget.valueController.value =
+                      new TextEditingValue(text: newText);
                 });
                 widget.onContentChanged?.call(newText);
               });
@@ -89,6 +93,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               color: Colors.black12,
+
               ///触摸收起键盘
               child: new GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -98,7 +103,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                 child: new Center(
                   child: new GSYCardItem(
                     margin: EdgeInsets.only(left: 50.0, right: 50.0),
-                    shape: new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     child: new Padding(
                       padding: new EdgeInsets.all(12.0),
                       child: new Column(
@@ -106,9 +112,11 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                         children: <Widget>[
                           ///dialog标题
                           new Padding(
-                              padding: new EdgeInsets.only(top: 5.0, bottom: 15.0),
+                              padding:
+                                  new EdgeInsets.only(top: 5.0, bottom: 15.0),
                               child: new Center(
-                                child: new Text(widget.dialogTitle, style: GSYConstant.normalTextBold),
+                                child: new Text(widget.dialogTitle,
+                                    style: GSYConstant.normalTextBold),
                               )),
 
                           ///标题输入框
@@ -118,11 +126,17 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                           new Container(
                             height: MediaQuery.of(context).size.width * 3 / 4,
                             decoration: new BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                              color: Color(GSYColors.white),
-                              border: new Border.all(color: Color(GSYColors.subTextColor), width: .3),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0)),
+                              color: GSYColors.white,
+                              border: new Border.all(
+                                  color: GSYColors.subTextColor, width: .3),
                             ),
-                            padding: new EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
+                            padding: new EdgeInsets.only(
+                                left: 20.0,
+                                top: 12.0,
+                                right: 20.0,
+                                bottom: 12.0),
                             child: new Column(
                               children: <Widget>[
                                 new Expanded(
@@ -132,7 +146,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                     onChanged: widget.onContentChanged,
                                     controller: widget.valueController,
                                     decoration: new InputDecoration.collapsed(
-                                      hintText: CommonUtils.getLocale(context).issue_edit_issue_title_tip,
+                                      hintText: CommonUtils.getLocale(context)
+                                          .issue_edit_issue_title_tip,
                                       hintStyle: GSYConstant.middleSubText,
                                     ),
                                     style: GSYConstant.middleText,
@@ -151,22 +166,34 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                               ///取消
                               new Expanded(
                                   child: new RawMaterialButton(
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       padding: EdgeInsets.all(4.0),
-                                      constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                                      child: new Text(CommonUtils.getLocale(context).app_cancel, style: GSYConstant.normalSubText),
+                                      constraints: const BoxConstraints(
+                                          minWidth: 0.0, minHeight: 0.0),
+                                      child: new Text(
+                                          CommonUtils.getLocale(context)
+                                              .app_cancel,
+                                          style: GSYConstant.normalSubText),
                                       onPressed: () {
                                         Navigator.pop(context);
                                       })),
-                              new Container(width: 0.3, height: 25.0, color: Color(GSYColors.subTextColor)),
+                              new Container(
+                                  width: 0.3,
+                                  height: 25.0,
+                                  color: GSYColors.subTextColor),
 
                               ///确定
                               new Expanded(
                                   child: new RawMaterialButton(
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       padding: EdgeInsets.all(4.0),
-                                      constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                                      child: new Text(CommonUtils.getLocale(context).app_ok, style: GSYConstant.normalTextBold),
+                                      constraints: const BoxConstraints(
+                                          minWidth: 0.0, minHeight: 0.0),
+                                      child: new Text(
+                                          CommonUtils.getLocale(context).app_ok,
+                                          style: GSYConstant.normalTextBold),
                                       onPressed: widget.onPressed)),
                             ],
                           )

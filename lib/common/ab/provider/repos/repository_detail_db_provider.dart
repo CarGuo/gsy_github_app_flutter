@@ -24,7 +24,10 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   RepositoryDetailDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String dataMapString) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnData: dataMapString};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnData: dataMapString
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -51,12 +54,14 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
     return name;
   }
 
-
   Future _getProvider(Database db, String fullName) async {
-    List<Map<String, dynamic>> maps =
-    await db.query(name, columns: [columnId, columnFullName, columnData], where: "$columnFullName = ?", whereArgs: [fullName]);
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnFullName, columnData],
+        where: "$columnFullName = ?",
+        whereArgs: [fullName]);
     if (maps.length > 0) {
-      RepositoryDetailDbProvider provider = RepositoryDetailDbProvider.fromMap(maps.first);
+      RepositoryDetailDbProvider provider =
+          RepositoryDetailDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -67,7 +72,8 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
+      await db
+          .delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
     }
     return await db.insert(name, toMap(fullName, dataMapString));
   }
@@ -77,15 +83,12 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
-
-
       ///使用 compute 的 Isolate 优化 json decode
-      var mapData = await compute(CodeUtils.decodeMapResult, provider.data as String);
+      var mapData =
+          await compute(CodeUtils.decodeMapResult, provider.data as String);
 
       return Repository.fromJson(mapData);
     }
     return null;
   }
-
-
 }

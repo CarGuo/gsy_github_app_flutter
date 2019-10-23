@@ -1,13 +1,12 @@
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart' as IOS;
+import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
+    as IOS;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'dart:math';
 
 import 'custom_bouncing_scroll_physics.dart';
-import 'gsy_flare_mutli_pull_controller.dart';
 import 'gsy_flare_pull_controller.dart';
 
 const double iosRefreshHeight = 140;
@@ -44,9 +43,10 @@ class GSYPullLoadWidget extends StatefulWidget {
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
     with GSYFlarePullController {
-    //with GSYFlarePullMutliController {
+  //with GSYFlarePullMutliController {
 
-  final GlobalKey<IOS.CupertinoSliverRefreshControlState> sliverRefreshKey = GlobalKey<IOS.CupertinoSliverRefreshControlState>();
+  final GlobalKey<IOS.CupertinoSliverRefreshControlState> sliverRefreshKey =
+      GlobalKey<IOS.CupertinoSliverRefreshControlState>();
 
   ScrollController _scrollController;
 
@@ -212,7 +212,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
             SliverSafeArea(
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                     return _getItem(index);
                   },
                   childCount: _getListCount(),
@@ -312,7 +312,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   bool get getPlayAuto => playAuto;
 
   @override
-  double  get refreshTriggerPullDistance => iosRefreshHeight;
+  double get refreshTriggerPullDistance => iosRefreshHeight;
 
   Widget buildSimpleRefreshIndicator(
     BuildContext context,
@@ -345,7 +345,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
             controller: this,
             animation: "Earth Moving"
             //animation: "idle"
-        ),
+            ),
       ),
     );
   }

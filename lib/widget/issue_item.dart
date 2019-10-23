@@ -28,11 +28,16 @@ class IssueItem extends StatelessWidget {
   ///是否需要限制内容行数
   final bool limitComment;
 
-  IssueItem(this.issueItemViewModel, {this.onPressed, this.onLongPress, this.hideBottom = false, this.limitComment = true});
+  IssueItem(this.issueItemViewModel,
+      {this.onPressed,
+      this.onLongPress,
+      this.hideBottom = false,
+      this.limitComment = true});
 
   ///issue 底部状态
   _renderBottomContainer() {
-    Color issueStateColor = issueItemViewModel.state == "open" ? Colors.green : Colors.red;
+    Color issueStateColor =
+        issueItemViewModel.state == "open" ? Colors.green : Colors.red;
     return (hideBottom)
         ? new Container()
         : new Row(
@@ -53,7 +58,8 @@ class IssueItem extends StatelessWidget {
 
               ///issue标号
               new Expanded(
-                child: new Text(issueItemViewModel.issueTag, style: GSYConstant.smallSubText),
+                child: new Text(issueItemViewModel.issueTag,
+                    style: GSYConstant.smallSubText),
               ),
 
               ///评论数
@@ -61,7 +67,7 @@ class IssueItem extends StatelessWidget {
                 GSYICons.ISSUE_ITEM_COMMENT,
                 issueItemViewModel.commentCount,
                 GSYConstant.smallSubText,
-                Color(GSYColors.subTextColor),
+                GSYColors.subTextColor,
                 15.0,
                 padding: 2.0,
               ),
@@ -91,43 +97,50 @@ class IssueItem extends StatelessWidget {
         onTap: onPressed,
         onLongPress: onLongPress,
         child: new Padding(
-          padding: new EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 8.0),
-          child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            ///头像
-            new GSYUserIconWidget(
-                width: 30.0,
-                height: 30.0,
-                image: issueItemViewModel.actionUserPic,
-                onPressed: () {
-                  NavigatorUtils.goPerson(context, issueItemViewModel.actionUser);
-                }),
-            new Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  new Row(
+          padding: new EdgeInsets.only(
+              left: 5.0, top: 5.0, right: 10.0, bottom: 8.0),
+          child: new Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ///头像
+                new GSYUserIconWidget(
+                    width: 30.0,
+                    height: 30.0,
+                    image: issueItemViewModel.actionUserPic,
+                    onPressed: () {
+                      NavigatorUtils.goPerson(
+                          context, issueItemViewModel.actionUser);
+                    }),
+                new Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      ///用户名
-                      new Expanded(child: new Text(issueItemViewModel.actionUser, style: GSYConstant.smallTextBold)),
-                      new Text(
-                        issueItemViewModel.actionTime,
-                        style: GSYConstant.smallSubText,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      new Row(
+                        children: <Widget>[
+                          ///用户名
+                          new Expanded(
+                              child: new Text(issueItemViewModel.actionUser,
+                                  style: GSYConstant.smallTextBold)),
+                          new Text(
+                            issueItemViewModel.actionTime,
+                            style: GSYConstant.smallSubText,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
+
+                      ///评论内容
+                      _renderCommentText(),
+                      new Padding(
+                        padding: new EdgeInsets.only(
+                            left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
+                      ),
+                      _renderBottomContainer(),
                     ],
                   ),
-
-                  ///评论内容
-                  _renderCommentText(),
-                  new Padding(
-                    padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
-                  ),
-                  _renderBottomContainer(),
-                ],
-              ),
-            ),
-          ]),
+                ),
+              ]),
         ),
       ),
     );

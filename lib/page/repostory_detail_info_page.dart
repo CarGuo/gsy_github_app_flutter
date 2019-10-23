@@ -44,7 +44,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         AutomaticKeepAliveClientMixin<ReposDetailInfoPage>,
         GSYListState<ReposDetailInfoPage>,
         TickerProviderStateMixin {
-
   ///滑动监听
   final ScrollController scrollController = new ScrollController();
 
@@ -60,7 +59,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   ///动画控制器
   AnimationController animationController;
-
 
   @override
   showRefreshLoading() {
@@ -213,6 +211,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       ///动态放大缩小的tab控件
       SliverPersistentHeader(
         pinned: true,
+
         /// SliverPersistentHeaderDelegate 的实现
         delegate: GSYSliverHeaderDelegate(
             maxHeight: 60,

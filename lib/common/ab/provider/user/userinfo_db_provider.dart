@@ -1,6 +1,3 @@
-
-
-
 import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
@@ -57,8 +54,10 @@ class UserInfoDbProvider extends BaseDbProvider {
   }
 
   Future _getUserProvider(Database db, String userName) async {
-    List<Map<String, dynamic>> maps =
-    await db.query(name, columns: [columnId, columnUserName, columnData], where: "$columnUserName = ?", whereArgs: [userName]);
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnUserName, columnData],
+        where: "$columnUserName = ?",
+        whereArgs: [userName]);
     if (maps.length > 0) {
       UserInfoDbProvider provider = UserInfoDbProvider.fromMap(maps.first);
       return provider;
@@ -71,7 +70,8 @@ class UserInfoDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var userProvider = await _getUserProvider(db, userName);
     if (userProvider != null) {
-      await db.delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
+      await db
+          .delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
     }
     return await db.insert(name, toMap(userName, eventMapString));
   }
@@ -81,10 +81,9 @@ class UserInfoDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var userProvider = await _getUserProvider(db, userName);
     if (userProvider != null) {
-
-
       ///使用 compute 的 Isolate 优化 json decode
-      var mapData = await compute(CodeUtils.decodeMapResult, userProvider.data as String);
+      var mapData =
+          await compute(CodeUtils.decodeMapResult, userProvider.data as String);
       return User.fromJson(mapData);
     }
     return null;

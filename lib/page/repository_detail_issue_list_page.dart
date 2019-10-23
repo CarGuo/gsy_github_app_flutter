@@ -132,7 +132,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
-      backgroundColor: Color(GSYColors.mainBackgroundColor),
+      backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         leading: new Container(),
         flexibleSpace: GSYSearchInputWidget((value) {
@@ -143,7 +143,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
           _resolveSelectIndex();
         }),
         elevation: 0.0,
-        backgroundColor: Color(GSYColors.mainBackgroundColor),
+        backgroundColor: GSYColors.mainBackgroundColor,
       ),
 
       ///支持嵌套滚动

@@ -150,6 +150,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               return SizedBox.expand(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 10, left: 0, right: 0),
+
                   /// MultiProvider 共享 HonorModel 状态
                   child: MultiProvider(
                     providers: [
@@ -157,8 +158,11 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
                     ],
                     child: Consumer<HonorModel>(
                       builder: (context, honorModel, _) {
-                        return UserHeaderBottom(userInfo,
-                            honorModel.beStaredCount?.toString() ?? "---", radius, honorModel.honorList);
+                        return UserHeaderBottom(
+                            userInfo,
+                            honorModel.beStaredCount?.toString() ?? "---",
+                            radius,
+                            honorModel.honorList);
                       },
                     ),
                   ),

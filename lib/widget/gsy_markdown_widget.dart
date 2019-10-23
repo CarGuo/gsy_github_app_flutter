@@ -32,13 +32,13 @@ class GSYMarkdownWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: codeBackground,
                 border: new Border.all(
-                    color: Color(GSYColors.subTextColor), width: 0.3)))
+                    color: GSYColors.subTextColor, width: 0.3)))
         .copyWith(
             blockquoteDecoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                color: Color(GSYColors.subTextColor),
+                color: GSYColors.subTextColor,
                 border: new Border.all(
-                    color: Color(GSYColors.subTextColor), width: 0.3)),
+                    color: GSYColors.subTextColor, width: 0.3)),
             blockquote: GSYConstant.smallTextWhite);
   }
 
@@ -87,10 +87,10 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getBackgroundColor(context) {
-    Color background = Color(GSYColors.white);
+    Color background = GSYColors.white;
     switch (style) {
       case DARK_LIGHT:
-        background = Color(GSYColors.primaryLightValue);
+        background = GSYColors.primaryLightValue;
         break;
       case DARK_THEME:
         background = Theme.of(context).primaryColor;
@@ -153,7 +153,7 @@ class GSYMarkdownWidget extends StatelessWidget {
               String srcString = srcMatch.group(0);
               if (srcString != null && srcString.contains("http")) {
                 String newSrc = srcString.substring(
-                    srcString.indexOf("http"), srcString.length - 1) +
+                        srcString.indexOf("http"), srcString.length - 1) +
                     "?raw=true";
 
                 ///增加点击
@@ -164,7 +164,7 @@ class GSYMarkdownWidget extends StatelessWidget {
           mdDataCode = mdDataCode.replaceAll(imageTag, match);
         }
       }
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
     return mdDataCode;

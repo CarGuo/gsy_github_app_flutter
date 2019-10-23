@@ -23,7 +23,7 @@ class PushHeader extends StatelessWidget {
       icon,
       text,
       GSYConstant.smallSubLightText,
-      Color(GSYColors.subLightTextColor),
+      GSYColors.subLightTextColor,
       15.0,
       padding: 0.0,
     );
@@ -45,12 +45,14 @@ class PushHeader extends StatelessWidget {
                 children: <Widget>[
                   ///用户头像
                   new GSYUserIconWidget(
-                      padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
+                      padding: const EdgeInsets.only(
+                          top: 0.0, right: 5.0, left: 0.0),
                       width: 40.0,
                       height: 40.0,
                       image: pushHeaderViewModel.actionUserPic,
                       onPressed: () {
-                        NavigatorUtils.goPerson(context, pushHeaderViewModel.actionUser);
+                        NavigatorUtils.goPerson(
+                            context, pushHeaderViewModel.actionUser);
                       }),
                   new Expanded(
                     child: Column(
@@ -59,11 +61,14 @@ class PushHeader extends StatelessWidget {
                         ///变化状态
                         new Row(
                           children: <Widget>[
-                            _getIconItem(GSYICons.PUSH_ITEM_EDIT, pushHeaderViewModel.editCount),
+                            _getIconItem(GSYICons.PUSH_ITEM_EDIT,
+                                pushHeaderViewModel.editCount),
                             new Container(width: 8.0),
-                            _getIconItem(GSYICons.PUSH_ITEM_ADD, pushHeaderViewModel.addCount),
+                            _getIconItem(GSYICons.PUSH_ITEM_ADD,
+                                pushHeaderViewModel.addCount),
                             new Container(width: 8.0),
-                            _getIconItem(GSYICons.PUSH_ITEM_MIN, pushHeaderViewModel.deleteCount),
+                            _getIconItem(GSYICons.PUSH_ITEM_MIN,
+                                pushHeaderViewModel.deleteCount),
                             new Container(width: 8.0),
                           ],
                         ),
@@ -89,7 +94,8 @@ class PushHeader extends StatelessWidget {
                             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
                         new Padding(
-                          padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
+                          padding: new EdgeInsets.only(
+                              left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                         ),
                       ],
                     ),

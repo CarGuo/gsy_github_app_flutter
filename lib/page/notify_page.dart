@@ -122,7 +122,7 @@ class _NotifyPageState extends State<NotifyPage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scaffold(
-      backgroundColor: Color(GSYColors.mainBackgroundColor),
+      backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         title: GSYTitleBar(
           CommonUtils.getLocale(context).notify_title,

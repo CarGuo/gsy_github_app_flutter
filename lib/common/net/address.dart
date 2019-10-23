@@ -166,12 +166,18 @@ class Address {
 
   ///仓库路径下的内容 get
   static reposDataDir(reposOwner, repos, path, [branch = 'master']) {
-    return "${host}repos/$reposOwner/$repos/contents/$path" + ((branch == null) ? "" : ("?ref=" + branch));
+    return "${host}repos/$reposOwner/$repos/contents/$path" +
+        ((branch == null) ? "" : ("?ref=" + branch));
   }
 
   ///README 文件地址 get
   static readmeFile(reposNameFullName, curBranch) {
-    return host + "repos/" + reposNameFullName + "/" + "readme" + ((curBranch == null) ? "" : ("?ref=" + curBranch));
+    return host +
+        "repos/" +
+        reposNameFullName +
+        "/" +
+        "readme" +
+        ((curBranch == null) ? "" : ("?ref=" + curBranch));
   }
 
   ///我的用户信息 GET
@@ -247,7 +253,8 @@ class Address {
 
   ///通知 get
   static getNotifation(all, participating) {
-    if ((all == null && participating == null) || (all == false && participating == false)) {
+    if ((all == null && participating == null) ||
+        (all == false && participating == false)) {
       return "${host}notifications";
     }
     all ??= false;

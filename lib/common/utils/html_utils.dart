@@ -6,21 +6,38 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
  */
 
 class HtmlUtils {
-  static generateCode2HTml(String mdData, {String backgroundColor = GSYColors.miWhiteString, String lang = 'java', userBR = true}) {
+  static generateCode2HTml(String mdData,
+      {String backgroundColor = GSYColors.miWhiteString,
+      String lang = 'java',
+      userBR = true}) {
     String currentData = (mdData != null && mdData.indexOf("<code>") == -1)
-        ? "<body>\n" + "<pre class=\"pre\">\n" + "<code lang='$lang'>\n" + mdData + "</code>\n" + "</pre>\n" + "</body>\n"
-        : "<body>\n" + "<pre class=\"pre\">\n" + mdData + "</pre>\n" + "</body>\n";
-    return generateHtml(currentData, backgroundColor: backgroundColor, userBR: userBR);
+        ? "<body>\n" +
+            "<pre class=\"pre\">\n" +
+            "<code lang='$lang'>\n" +
+            mdData +
+            "</code>\n" +
+            "</pre>\n" +
+            "</body>\n"
+        : "<body>\n" +
+            "<pre class=\"pre\">\n" +
+            mdData +
+            "</pre>\n" +
+            "</body>\n";
+    return generateHtml(currentData,
+        backgroundColor: backgroundColor, userBR: userBR);
   }
 
-  static generateHtml(String mdData, {String backgroundColor = GSYColors.webDraculaBackgroundColorString, userBR = true}) {
+  static generateHtml(String mdData,
+      {String backgroundColor = GSYColors.webDraculaBackgroundColorString,
+      userBR = true}) {
     if (mdData == null) {
       return "";
     }
     String mdDataCode = mdData;
-    String regExCode = "<[\\s]*?code[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?code[\\s]*?>";
-    String regExPre = "<[\\s]*?pre[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?pre[\\s]*?>";
-
+    String regExCode =
+        "<[\\s]*?code[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?code[\\s]*?>";
+    String regExPre =
+        "<[\\s]*?pre[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?pre[\\s]*?>";
 
     try {
       RegExp exp = new RegExp(regExCode);
@@ -62,21 +79,30 @@ class HtmlUtils {
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
         String capture = m.group(0);
-        if (capture.indexOf("http://") < 0 && capture.indexOf("https://") < 0 && capture.indexOf("#") != 0) {
-          mdDataCode = mdDataCode.replaceAll(m.group(0), "gsygithub://" + capture);
+        if (capture.indexOf("http://") < 0 &&
+            capture.indexOf("https://") < 0 &&
+            capture.indexOf("#") != 0) {
+          mdDataCode =
+              mdDataCode.replaceAll(m.group(0), "gsygithub://" + capture);
         }
       }
     } catch (e) {
       print(e);
     }
 
-    return generateCodeHtml(mdDataCode, false, backgroundColor: backgroundColor, actionColor: GSYColors.actionBlueString, userBR: userBR);
+    return generateCodeHtml(mdDataCode, false,
+        backgroundColor: backgroundColor,
+        actionColor: GSYColors.actionBlueString,
+        userBR: userBR);
   }
 
   /**
    * style for mdHTml
    */
-  static generateCodeHtml(mdHTML, wrap, {backgroundColor = GSYColors.white, String actionColor = GSYColors.actionBlueString, userBR = true}) {
+  static generateCodeHtml(mdHTML, wrap,
+      {backgroundColor = GSYColors.white,
+      String actionColor = GSYColors.actionBlueString,
+      userBR = true}) {
     return "<html>\n" +
         "<head>\n" +
         "<meta charset=\"utf-8\" />\n" +
@@ -185,16 +211,25 @@ class HtmlUtils {
         curRemoveNumber = removeStartLine + normalLineNum + removeLineNum;
         normalLineNum++;
       }
-      lineNumberStr =
-          getDiffLineNumber(curRemoveNumber == -1 ? "" : (curRemoveNumber.toString() + ""), curAddNumber == -1 ? "" : (curAddNumber.toString() + ""));
-      source = source + "\n" + "<div " + classStr + ">" + (wrap ? "" : lineNumberStr + getBlank(1)) + line + "</div>";
+      lineNumberStr = getDiffLineNumber(
+          curRemoveNumber == -1 ? "" : (curRemoveNumber.toString() + ""),
+          curAddNumber == -1 ? "" : (curAddNumber.toString() + ""));
+      source = source +
+          "\n" +
+          "<div " +
+          classStr +
+          ">" +
+          (wrap ? "" : lineNumberStr + getBlank(1)) +
+          line +
+          "</div>";
     }
     return source;
   }
 
   static getRemoveStartLine(line) {
     try {
-      return int.parse(line.substring(line.indexOf("-") + 1, line.indexOf(",")));
+      return int.parse(
+          line.substring(line.indexOf("-") + 1, line.indexOf(",")));
     } catch (e) {
       return 1;
     }
@@ -202,7 +237,8 @@ class HtmlUtils {
 
   static getAddStartLine(line) {
     try {
-      return int.parse(line.substring(line.indexOf("+") + 1, line.indexOf(",", line.indexOf("+"))));
+      return int.parse(line.substring(
+          line.indexOf("+") + 1, line.indexOf(",", line.indexOf("+"))));
     } catch (e) {
       return 1;
     }
@@ -210,7 +246,11 @@ class HtmlUtils {
 
   static getDiffLineNumber(String removeNumber, String addNumber) {
     int minLength = 4;
-    return getBlank(minLength - removeNumber.length) + removeNumber + getBlank(1) + getBlank(minLength - addNumber.length) + addNumber;
+    return getBlank(minLength - removeNumber.length) +
+        removeNumber +
+        getBlank(1) +
+        getBlank(minLength - addNumber.length) +
+        addNumber;
   }
 
   static getBlank(num) {
@@ -228,7 +268,8 @@ class HtmlUtils {
       int endLang = res.data.indexOf("\" data-path=\"");
       String lang;
       if (startLang >= 0 && endLang >= 0) {
-        String tmpLang = res.data.substring(startLang + startTag.length, endLang);
+        String tmpLang =
+            res.data.substring(startLang + startTag.length, endLang);
         if (tmpLang != null) {
           lang = formName(tmpLang.toLowerCase());
         }
@@ -239,7 +280,9 @@ class HtmlUtils {
       if ('markdown' == lang) {
         return generateHtml(res.data, backgroundColor: GSYColors.miWhiteString);
       } else {
-        return generateCode2HTml(res.data, backgroundColor: GSYColors.webDraculaBackgroundColorString, lang: lang);
+        return generateCode2HTml(res.data,
+            backgroundColor: GSYColors.webDraculaBackgroundColorString,
+            lang: lang);
       }
     } else {
       return "<h1>" + "Not Support" + "</h1>";

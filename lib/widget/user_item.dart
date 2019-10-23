@@ -16,7 +16,8 @@ class UserItem extends StatelessWidget {
 
   final bool needImage;
 
-  UserItem(this.userItemViewModel, {this.onPressed, this.needImage = true}) : super();
+  UserItem(this.userItemViewModel, {this.onPressed, this.needImage = true})
+      : super();
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +39,14 @@ class UserItem extends StatelessWidget {
       child: new FlatButton(
         onPressed: onPressed,
         child: new Padding(
-          padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
+          padding: new EdgeInsets.only(
+              left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
           child: new Row(
             children: <Widget>[
               userImage,
-              new Expanded(child: new Text(userItemViewModel.userName, style: GSYConstant.smallTextBold)),
+              new Expanded(
+                  child: new Text(userItemViewModel.userName,
+                      style: GSYConstant.smallTextBold)),
             ],
           ),
         ),
