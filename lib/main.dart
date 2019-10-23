@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
 import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
-import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
+import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';

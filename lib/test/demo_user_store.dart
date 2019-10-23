@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
-import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
+import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 
 class DemoUseStorePage extends StatelessWidget {
   @override
