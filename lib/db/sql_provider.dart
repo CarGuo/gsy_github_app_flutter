@@ -6,7 +6,7 @@ import 'dart:convert';
  * Created by guoshuyu
  * Date: 2018-08-03
  */
-import 'package:gsy_github_app_flutter/common/ab/sql_manager.dart';
+import 'package:gsy_github_app_flutter/db/sql_manager.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 

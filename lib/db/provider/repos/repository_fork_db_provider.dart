@@ -2,40 +2,40 @@ import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/Repository.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
- * 用户收藏表
+ * 仓库分支表
  * Created by guoshuyu
  * Date: 2018-08-07
  */
 
-class UserStaredDbProvider extends BaseDbProvider {
-  final String name = 'UserStared';
+class RepositoryForkDbProvider extends BaseDbProvider {
+  final String name = 'RepositoryFork';
 
   final String columnId = "_id";
-  final String columnUserName = "userName";
+  final String columnFullName = "fullName";
   final String columnData = "data";
 
   int id;
-  String userName;
+  String fullName;
   String data;
 
-  UserStaredDbProvider();
+  RepositoryForkDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String data) {
-    Map<String, dynamic> map = {columnUserName: fullName, columnData: data};
+    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
     return map;
   }
 
-  UserStaredDbProvider.fromMap(Map map) {
+  RepositoryForkDbProvider.fromMap(Map map) {
     id = map[columnId];
-    userName = map[columnUserName];
+    fullName = map[columnFullName];
     data = map[columnData];
   }
 
@@ -43,7 +43,7 @@ class UserStaredDbProvider extends BaseDbProvider {
   tableSqlString() {
     return tableBaseString(name, columnId) +
         '''
-        $columnUserName text not null,
+        $columnFullName text not null,
         $columnData text not null)
       ''';
   }
@@ -53,34 +53,35 @@ class UserStaredDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String userName) async {
+  Future _getProvider(Database db, String fullName) async {
     List<Map<String, dynamic>> maps = await db.query(name,
-        columns: [columnId, columnUserName, columnData],
-        where: "$columnUserName = ?",
-        whereArgs: [userName]);
+        columns: [columnId, columnFullName, columnData],
+        where: "$columnFullName = ?",
+        whereArgs: [fullName]);
     if (maps.length > 0) {
-      UserStaredDbProvider provider = UserStaredDbProvider.fromMap(maps.first);
+      RepositoryForkDbProvider provider =
+          RepositoryForkDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
   }
 
   ///插入到数据库
-  Future insert(String userName, String dataMapString) async {
+  Future insert(String fullName, String dataMapString) async {
     Database db = await getDataBase();
-    var provider = await _getProvider(db, userName);
+    var provider = await _getProvider(db, fullName);
     if (provider != null) {
       await db
-          .delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
+          .delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
     }
-    return await db.insert(name, toMap(userName, dataMapString));
+    return await db.insert(name, toMap(fullName, dataMapString));
   }
 
   ///获取事件数据
-  Future<List<Repository>> geData(String userName) async {
+  Future<List<Repository>> geData(String fullName) async {
     Database db = await getDataBase();
 
-    var provider = await _getProvider(db, userName);
+    var provider = await _getProvider(db, fullName);
     if (provider != null) {
       List<Repository> list = new List();
 

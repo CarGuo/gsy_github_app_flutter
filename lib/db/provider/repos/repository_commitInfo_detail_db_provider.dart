@@ -1,4 +1,4 @@
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 
 /**
  * 仓库提交信息详情表

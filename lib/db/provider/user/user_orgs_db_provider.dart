@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
+import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
- * 用户关注表
+ * 用户组织表
  * Created by guoshuyu
  * Date: 2018-08-07
  */
-class UserFollowedDbProvider extends BaseDbProvider {
-  final String name = 'UserFollowed';
+
+class UserOrgsDbProvider extends BaseDbProvider {
+  final String name = 'UserOrgs';
 
   final String columnId = "_id";
   final String columnUserName = "userName";
@@ -21,7 +23,7 @@ class UserFollowedDbProvider extends BaseDbProvider {
   String userName;
   String data;
 
-  UserFollowedDbProvider();
+  UserOrgsDbProvider();
 
   Map<String, dynamic> toMap(String userName, String data) {
     Map<String, dynamic> map = {columnUserName: userName, columnData: data};
@@ -31,7 +33,7 @@ class UserFollowedDbProvider extends BaseDbProvider {
     return map;
   }
 
-  UserFollowedDbProvider.fromMap(Map map) {
+  UserOrgsDbProvider.fromMap(Map map) {
     id = map[columnId];
     userName = map[columnUserName];
     data = map[columnData];
@@ -57,8 +59,7 @@ class UserFollowedDbProvider extends BaseDbProvider {
         where: "$columnUserName = ?",
         whereArgs: [userName]);
     if (maps.length > 0) {
-      UserFollowedDbProvider provider =
-          UserFollowedDbProvider.fromMap(maps.first);
+      UserOrgsDbProvider provider = UserOrgsDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -75,13 +76,13 @@ class UserFollowedDbProvider extends BaseDbProvider {
     return await db.insert(name, toMap(userName, dataMapString));
   }
 
-  ///获取事件数据
-  Future<List<User>> geData(String userName) async {
+  ///获取数据
+  Future<List<UserOrg>> geData(String userName) async {
     Database db = await getDataBase();
 
     var provider = await _getProvider(db, userName);
     if (provider != null) {
-      List<User> list = new List();
+      List<UserOrg> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
@@ -89,7 +90,7 @@ class UserFollowedDbProvider extends BaseDbProvider {
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {
-          list.add(User.fromJson(item));
+          list.add(UserOrg.fromJson(item));
         }
       }
       return list;
