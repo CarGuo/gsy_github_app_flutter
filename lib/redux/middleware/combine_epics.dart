@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:gsy_github_app_flutter/common/redux/middleware/epic.dart';
-import 'package:gsy_github_app_flutter/common/redux/middleware/epic_store.dart';
+import 'package:gsy_github_app_flutter/redux/middleware/epic.dart';
+import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 import 'package:rxdart/streams.dart';
 
 /// Combines a list of [Epic]s into one.

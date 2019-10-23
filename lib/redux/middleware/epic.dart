@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:gsy_github_app_flutter/common/redux/middleware/epic_store.dart';
+import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 
 
 /// A function that transforms one stream of actions into another

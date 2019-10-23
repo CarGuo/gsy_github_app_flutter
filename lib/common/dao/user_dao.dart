@@ -13,8 +13,8 @@ import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
-import 'package:gsy_github_app_flutter/common/redux/locale_redux.dart';
-import 'package:gsy_github_app_flutter/common/redux/user_redux.dart';
+import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
+import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:redux/redux.dart';
 
