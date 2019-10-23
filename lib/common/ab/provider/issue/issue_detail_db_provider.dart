@@ -28,7 +28,11 @@ class IssueDetailDbProvider extends BaseDbProvider {
   IssueDetailDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String number, String data) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnData: data, columnNumber: number};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnData: data,
+      columnNumber: number
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -59,9 +63,12 @@ class IssueDetailDbProvider extends BaseDbProvider {
 
   Future _getProvider(Database db, String fullName, String number) async {
     List<Map<String, dynamic>> maps = await db.query(name,
-        columns: [columnId, columnFullName, columnNumber, columnData], where: "$columnFullName = ? and $columnNumber = ?", whereArgs: [fullName, number]);
+        columns: [columnId, columnFullName, columnNumber, columnData],
+        where: "$columnFullName = ? and $columnNumber = ?",
+        whereArgs: [fullName, number]);
     if (maps.length > 0) {
-      RepositoryDetailDbProvider provider = RepositoryDetailDbProvider.fromMap(maps.first);
+      RepositoryDetailDbProvider provider =
+          RepositoryDetailDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -72,7 +79,9 @@ class IssueDetailDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, number);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ? and $columnNumber = ?", whereArgs: [fullName, number]);
+      await db.delete(name,
+          where: "$columnFullName = ? and $columnNumber = ?",
+          whereArgs: [fullName, number]);
     }
     return await db.insert(name, toMap(fullName, number, dataMapString));
   }
@@ -82,12 +91,11 @@ class IssueDetailDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, number);
     if (provider != null) {
-
       ///使用 compute 的 Isolate 优化 json decode
-      var mapData = await compute(CodeUtils.decodeMapResult, provider.data as String);
+      var mapData =
+          await compute(CodeUtils.decodeMapResult, provider.data as String);
       return Issue.fromJson(mapData);
     }
     return null;
   }
-
 }

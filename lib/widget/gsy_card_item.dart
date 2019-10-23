@@ -13,17 +13,28 @@ class GSYCardItem extends StatelessWidget {
   final RoundedRectangleBorder shape;
   final double elevation;
 
-
-  GSYCardItem({@required this.child, this.margin, this.color, this.shape, this.elevation = 5.0});
+  GSYCardItem(
+      {@required this.child,
+      this.margin,
+      this.color,
+      this.shape,
+      this.elevation = 5.0});
 
   @override
   Widget build(BuildContext context) {
     EdgeInsets margin = this.margin;
     RoundedRectangleBorder shape = this.shape;
     Color color = this.color;
-    margin ??= EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0);
-    shape ??= new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));
-    color ??= new Color(GSYColors.cardWhite);
-    return new Card(elevation: elevation, shape: shape, color: color, margin: margin, child: child);
+    margin ??=
+        EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0);
+    shape ??= new RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)));
+    color ??= GSYColors.cardWhite;
+    return new Card(
+        elevation: elevation,
+        shape: shape,
+        color: color,
+        margin: margin,
+        child: child);
   }
 }

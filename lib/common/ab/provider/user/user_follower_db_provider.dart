@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
@@ -55,10 +54,13 @@ class UserFollowerDbProvider extends BaseDbProvider {
   }
 
   Future _getProvider(Database db, String userName) async {
-    List<Map<String, dynamic>> maps =
-    await db.query(name, columns: [columnId, columnUserName, columnData], where: "$columnUserName = ?", whereArgs: [userName]);
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnUserName, columnData],
+        where: "$columnUserName = ?",
+        whereArgs: [userName]);
     if (maps.length > 0) {
-      UserFollowerDbProvider provider = UserFollowerDbProvider.fromMap(maps.first);
+      UserFollowerDbProvider provider =
+          UserFollowerDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -69,7 +71,8 @@ class UserFollowerDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, userName);
     if (provider != null) {
-      await db.delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
+      await db
+          .delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
     }
     return await db.insert(name, toMap(userName, dataMapString));
   }
@@ -82,9 +85,9 @@ class UserFollowerDbProvider extends BaseDbProvider {
     if (provider != null) {
       List<User> list = new List();
 
-
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data as String);
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data as String);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

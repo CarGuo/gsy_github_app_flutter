@@ -118,7 +118,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
           icon,
           text,
           GSYConstant.smallText,
-          Color(GSYColors.primaryValue),
+          GSYColors.primaryValue,
           15.0,
           padding: 5.0,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -329,7 +329,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                   key: fileListKey),
             ],
             backgroundColor: GSYColors.primarySwatch,
-            indicatorColor: Color(GSYColors.white),
+            indicatorColor: GSYColors.white,
             title: new GSYTitleBar(
               widget.reposName,
               rightWidget: widgetContent,
@@ -358,7 +358,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
 
             ///底部bar，增加对悬浮按键的缺省容器处理
             bottomBar: GSYBottomAppBar(
-                color: Color(GSYColors.white),
+                color: GSYColors.white,
                 fabLocation: FloatingActionButtonLocation.endDocked,
                 shape: CircularNotchedRectangle(),
                 rowContents: (tarBarControl.footerButton == null)

@@ -101,7 +101,7 @@ class _TrendPageState extends State<TrendPage>
               });
             }),
             new Container(
-                height: 10.0, width: 0.5, color: Color(GSYColors.white)),
+                height: 10.0, width: 0.5, color: GSYColors.white),
             _renderHeaderPopItem(selectType.name, trendType(context),
                 (TrendTypeModel result) {
               if (trendBloc.isLoading) {
@@ -214,7 +214,7 @@ class _TrendPageState extends State<TrendPage>
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return new Scaffold(
-          backgroundColor: Color(GSYColors.mainBackgroundColor),
+          backgroundColor: GSYColors.mainBackgroundColor,
 
           ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
           body: StreamBuilder<List<TrendingRepoModel>>(

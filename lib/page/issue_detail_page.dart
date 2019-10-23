@@ -77,16 +77,16 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                 child: new Container(
                   decoration: new BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      color: Color(GSYColors.white),
+                      color: GSYColors.white,
                       border: new Border.all(
-                          color: Color(GSYColors.subTextColor), width: 0.3)),
+                          color: GSYColors.subTextColor, width: 0.3)),
                   margin: EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       new GSYFlexButton(
-                        color: Color(GSYColors.white),
+                        color: GSYColors.white,
                         text: CommonUtils.getLocale(context)
                             .issue_edit_issue_edit_commit,
                         onPress: () {
@@ -94,7 +94,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                         },
                       ),
                       new GSYFlexButton(
-                        color: Color(GSYColors.white),
+                        color: GSYColors.white,
                         text: CommonUtils.getLocale(context)
                             .issue_edit_issue_delete_commit,
                         onPress: () {
@@ -102,7 +102,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                         },
                       ),
                       new GSYFlexButton(
-                        color: Color(GSYColors.white),
+                        color: GSYColors.white,
                         text: CommonUtils.getLocale(context)
                             .issue_edit_issue_copy_commit,
                         onPress: () {
@@ -295,9 +295,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                   style: GSYConstant.smallText),
             ),
             new Container(
-                width: 0.3,
-                height: 30.0,
-                color: Color(GSYColors.subLightTextColor)),
+                width: 0.3, height: 30.0, color: GSYColors.subLightTextColor),
             new FlatButton(
               onPressed: () {
                 _editIssue();
@@ -306,9 +304,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                   style: GSYConstant.smallText),
             ),
             new Container(
-                width: 0.3,
-                height: 30.0,
-                color: Color(GSYColors.subLightTextColor)),
+                width: 0.3, height: 30.0, color: GSYColors.subLightTextColor),
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);
@@ -328,9 +324,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                         : CommonUtils.getLocale(context).issue_close,
                     style: GSYConstant.smallText)),
             new Container(
-                width: 0.3,
-                height: 30.0,
-                color: Color(GSYColors.subLightTextColor)),
+                width: 0.3, height: 30.0, color: GSYColors.subLightTextColor),
             new FlatButton(
                 onPressed: () {
                   CommonUtils.showLoadingDialog(context);

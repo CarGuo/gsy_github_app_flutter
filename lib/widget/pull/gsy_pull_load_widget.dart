@@ -19,10 +19,13 @@ class GSYPullLoadWidget extends StatefulWidget {
 
   final Key refreshKey;
 
-  GSYPullLoadWidget(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, {this.refreshKey});
+  GSYPullLoadWidget(
+      this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
+      {this.refreshKey});
 
   @override
-  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
+  _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState(this.control,
+      this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
@@ -36,27 +39,30 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   GSYPullLoadWidgetControl control;
 
-  _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh, this.onLoadMore, this.refreshKey);
+  _GSYPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh,
+      this.onLoadMore, this.refreshKey);
 
   final ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
-    this.control.needLoadMore?.addListener((){
+    this.control.needLoadMore?.addListener(() {
       ///延迟两秒等待确认
       try {
-        Future.delayed(Duration(seconds: 2), (){
-           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        Future.delayed(Duration(seconds: 2), () {
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
           _scrollController.notifyListeners();
         });
-      } catch(e) {
+      } catch (e) {
         print(e);
       }
     });
+
     ///增加滑动监听
     _scrollController.addListener(() {
       ///判断当前滑动位置是不是到达底部，触发加载更多回调
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         if (this.control.needLoadMore.value) {
           this.onLoadMore?.call();
         }
@@ -73,7 +79,9 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     if (control.needHeader) {
       ///如果需要头部，用Item 0 的 Widget 作为ListView的头部
       ///列表数量大于0时，因为头部和底部加载更多选项，需要对列表数据总数+2
-      return (control.dataList.length > 0) ? control.dataList.length + 2 : control.dataList.length + 1;
+      return (control.dataList.length > 0)
+          ? control.dataList.length + 2
+          : control.dataList.length + 1;
     } else {
       ///如果不需要头部，在没有数据时，固定返回数量1用于空页面呈现
       if (control.dataList.length == 0) {
@@ -81,16 +89,22 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
       }
 
       ///如果有数据,因为部加载更多选项，需要对列表数据总数+1
-      return (control.dataList.length > 0) ? control.dataList.length + 1 : control.dataList.length;
+      return (control.dataList.length > 0)
+          ? control.dataList.length + 1
+          : control.dataList.length;
     }
   }
 
   ///根据配置状态返回实际列表渲染Item
   _getItem(int index) {
-    if (!control.needHeader && index == control.dataList.length && control.dataList.length != 0) {
+    if (!control.needHeader &&
+        index == control.dataList.length &&
+        control.dataList.length != 0) {
       ///如果不需要头部，并且数据不为0，当index等于数据长度时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (control.needHeader && index == _getListCount() - 1 && control.dataList.length != 0) {
+    } else if (control.needHeader &&
+        index == _getListCount() - 1 &&
+        control.dataList.length != 0) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
     } else if (!control.needHeader && control.dataList.length == 0) {
@@ -137,10 +151,14 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
         children: <Widget>[
           FlatButton(
             onPressed: () {},
-            child: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 70.0, height: 70.0),
+            child: new Image(
+                image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+                width: 70.0,
+                height: 70.0),
           ),
           Container(
-            child: Text(CommonUtils.getLocale(context).app_empty, style: GSYConstant.normalText),
+            child: Text(CommonUtils.getLocale(context).app_empty,
+                style: GSYConstant.normalText),
           ),
         ],
       ),
@@ -151,23 +169,26 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
     Widget bottomWidget = (control.needLoadMore.value)
-        ? new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            ///loading框
-            new SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
-            new Container(
-              width: 5.0,
-            ),
+        ? new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+                ///loading框
+                new SpinKitRotatingCircle(
+                    color: Theme.of(context).primaryColor),
+                new Container(
+                  width: 5.0,
+                ),
 
-            ///加载中文本
-            new Text(
-              CommonUtils.getLocale(context).load_more_text,
-              style: TextStyle(
-                color: Color(0xFF121917),
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          ])
+                ///加载中文本
+                new Text(
+                  CommonUtils.getLocale(context).load_more_text,
+                  style: TextStyle(
+                    color: Color(0xFF121917),
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ])
 
         /// 不需要加载
         : new Container();

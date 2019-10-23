@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
@@ -28,8 +27,13 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
 
   TrendRepositoryDbProvider();
 
-  Map<String, dynamic> toMap(String language, String since, String dataMapString) {
-    Map<String, dynamic> map = {columnLanguageType: language, columnSince: since, columnData: dataMapString};
+  Map<String, dynamic> toMap(
+      String language, String since, String dataMapString) {
+    Map<String, dynamic> map = {
+      columnLanguageType: language,
+      columnSince: since,
+      columnData: dataMapString
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -76,11 +80,12 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
         whereArgs: [language, since]);
     List<TrendingRepoModel> list = new List();
     if (maps.length > 0) {
-      TrendRepositoryDbProvider provider = TrendRepositoryDbProvider.fromMap(maps.first);
-
+      TrendRepositoryDbProvider provider =
+          TrendRepositoryDbProvider.fromMap(maps.first);
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data);
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

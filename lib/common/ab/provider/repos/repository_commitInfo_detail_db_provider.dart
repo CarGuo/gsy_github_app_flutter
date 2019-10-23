@@ -19,7 +19,11 @@ class RepositoryCommitInfoDetailDbProvider extends BaseDbProvider {
   final String columnData = "data";
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {columnFullName: fullName, columnSha: sha, columnData: data};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnSha: sha,
+      columnData: data
+    };
     if (id != null) {
       map[columnId] = id;
     }

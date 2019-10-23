@@ -53,10 +53,13 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
   }
 
   Future _getProvider(Database db, String fullName) async {
-    List<Map<String, dynamic>> maps =
-    await db.query(name, columns: [columnId, columnFullName, columnData], where: "$columnFullName = ?", whereArgs: [fullName]);
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnFullName, columnData],
+        where: "$columnFullName = ?",
+        whereArgs: [fullName]);
     if (maps.length > 0) {
-      RepositoryWatcherDbProvider provider = RepositoryWatcherDbProvider.fromMap(maps.first);
+      RepositoryWatcherDbProvider provider =
+          RepositoryWatcherDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -67,7 +70,8 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
+      await db
+          .delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
     }
     return await db.insert(name, toMap(fullName, dataMapString));
   }
@@ -81,7 +85,8 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
       List<User> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data as String);
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data as String);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

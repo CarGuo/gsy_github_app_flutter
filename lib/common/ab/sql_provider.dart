@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 /**
  * 数据库表
  * Created by guoshuyu
@@ -45,11 +46,3 @@ abstract class BaseDbProvider {
     return await SqlManager.getCurrentDatabase();
   }
 }
-
-
-
-
-
-
-
-

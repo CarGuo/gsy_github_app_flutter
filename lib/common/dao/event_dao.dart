@@ -6,17 +6,18 @@ import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
 import 'package:gsy_github_app_flutter/common/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
-import 'package:redux/redux.dart';
 
 class EventDao {
-  static getEventReceived(String userName, {page = 1, bool needDb = false}) async {
+  static getEventReceived(String userName,
+      {page = 1, bool needDb = false}) async {
     if (userName == null) {
       return null;
     }
     ReceivedEventDbProvider provider = new ReceivedEventDbProvider();
 
     next() async {
-      String url = Address.getEventReceived(userName) + Address.getPageParams("?", page);
+      String url =
+          Address.getEventReceived(userName) + Address.getPageParams("?", page);
 
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
@@ -54,7 +55,8 @@ class EventDao {
   static getEventDao(userName, {page = 0, bool needDb = false}) async {
     UserEventDbProvider provider = new UserEventDbProvider();
     next() async {
-      String url = Address.getEvent(userName) + Address.getPageParams("?", page);
+      String url =
+          Address.getEvent(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<Event> list = new List();

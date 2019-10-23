@@ -29,14 +29,17 @@ class PushDetailPage extends StatefulWidget {
 
   final bool needHomeIcon;
 
-  PushDetailPage(this.sha, this.userName, this.reposName, {this.needHomeIcon = false});
+  PushDetailPage(this.sha, this.userName, this.reposName,
+      {this.needHomeIcon = false});
 
   @override
   _PushDetailPageState createState() => _PushDetailPageState();
 }
 
-class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAliveClientMixin<PushDetailPage>, GSYListState<PushDetailPage> {
-
+class _PushDetailPageState extends State<PushDetailPage>
+    with
+        AutomaticKeepAliveClientMixin<PushDetailPage>,
+        GSYListState<PushDetailPage> {
   ///提价信息页面的头部数据实体
   PushHeaderViewModel pushHeaderViewModel = new PushHeaderViewModel();
 
@@ -52,6 +55,7 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
     }
     isLoading = true;
     page = 1;
+
     ///获取提交信息
     var res = await _getDataLogic();
     if (res != null && res.result) {
@@ -75,24 +79,31 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
     if (index == 0) {
       return new PushHeader(pushHeaderViewModel);
     }
-    PushCodeItemViewModel itemViewModel = PushCodeItemViewModel.fromMap(pullLoadWidgetControl.dataList[index - 1]);
+    PushCodeItemViewModel itemViewModel = PushCodeItemViewModel.fromMap(
+        pullLoadWidgetControl.dataList[index - 1]);
     return new PushCodeItem(itemViewModel, () {
-      String html = HtmlUtils.generateCode2HTml(HtmlUtils.parseDiffSource(itemViewModel.patch, false),
-          backgroundColor: GSYColors.webDraculaBackgroundColorString, lang: '', userBR: false);
+      String html = HtmlUtils.generateCode2HTml(
+          HtmlUtils.parseDiffSource(itemViewModel.patch, false),
+          backgroundColor: GSYColors.webDraculaBackgroundColorString,
+          lang: '',
+          userBR: false);
       NavigatorUtils.gotoCodeDetailPlatform(
         context,
         title: itemViewModel.name,
         reposName: widget.reposName,
         userName: widget.userName,
         path: itemViewModel.patch,
-        data: new Uri.dataFromString(html, mimeType: 'text/html', encoding: Encoding.getByName("utf-8")).toString(),
+        data: new Uri.dataFromString(html,
+                mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+            .toString(),
         branch: "",
       );
     });
   }
 
   _getDataLogic() async {
-    return await ReposDao.getReposCommitsInfoDao(widget.userName, widget.reposName, widget.sha);
+    return await ReposDao.getReposCommitsInfoDao(
+        widget.userName, widget.reposName, widget.sha);
   }
 
   @override
@@ -115,7 +126,9 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget widgetContent = (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(titleOptionControl);
+    Widget widgetContent = (widget.needHomeIcon)
+        ? null
+        : new GSYCommonOptionWidget(titleOptionControl);
     return new Scaffold(
       appBar: new AppBar(
         title: GSYTitleBar(
@@ -124,7 +137,8 @@ class _PushDetailPageState extends State<PushDetailPage> with AutomaticKeepAlive
           needRightLocalIcon: widget.needHomeIcon,
           iconData: GSYICons.HOME,
           onPressed: () {
-            NavigatorUtils.goReposDetail(context, widget.userName, widget.reposName);
+            NavigatorUtils.goReposDetail(
+                context, widget.userName, widget.reposName);
           },
         ),
       ),

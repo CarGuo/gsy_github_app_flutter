@@ -23,8 +23,13 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
 
   RepositoryDetailReadmeDbProvider();
 
-  Map<String, dynamic> toMap(String fullName, String branch, String dataMapString) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnBranch: branch, columnData: dataMapString};
+  Map<String, dynamic> toMap(
+      String fullName, String branch, String dataMapString) {
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnBranch: branch,
+      columnData: dataMapString
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -37,6 +42,7 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
     branch = map[columnBranch];
     data = map[columnData];
   }
+
   @override
   tableSqlString() {
     return tableBaseString(name, columnId) +
@@ -52,12 +58,14 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
     return name;
   }
 
-
   Future _getProvider(Database db, String fullName, String branch) async {
-    List<Map<String, dynamic>> maps =
-    await db.query(name, columns: [columnId, columnFullName, columnData], where: "$columnFullName = ? and $columnBranch = ?", whereArgs: [fullName, branch]);
+    List<Map<String, dynamic>> maps = await db.query(name,
+        columns: [columnId, columnFullName, columnData],
+        where: "$columnFullName = ? and $columnBranch = ?",
+        whereArgs: [fullName, branch]);
     if (maps.length > 0) {
-      RepositoryDetailReadmeDbProvider provider = RepositoryDetailReadmeDbProvider.fromMap(maps.first);
+      RepositoryDetailReadmeDbProvider provider =
+          RepositoryDetailReadmeDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -68,7 +76,9 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, branch);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ? and $columnBranch = ?", whereArgs: [fullName, branch]);
+      await db.delete(name,
+          where: "$columnFullName = ? and $columnBranch = ?",
+          whereArgs: [fullName, branch]);
     }
     return await db.insert(name, toMap(fullName, branch, dataMapString));
   }
@@ -82,5 +92,4 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
     }
     return null;
   }
-
 }

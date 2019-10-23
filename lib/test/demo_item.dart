@@ -74,7 +74,7 @@ class DemoItem extends StatelessWidget {
                         child: new Text(
                           "这是一点描述",
                           style: TextStyle(
-                            color: Color(GSYColors.subTextColor),
+                            color: Colors.blueGrey,
                             fontSize: 14.0,
                           ),
                           ///最长三行，超过 ... 显示

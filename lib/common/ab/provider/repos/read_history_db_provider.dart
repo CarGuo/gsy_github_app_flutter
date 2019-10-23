@@ -28,7 +28,11 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   ReadHistoryDbProvider();
 
   Map<String, dynamic> toMap(String fullName, DateTime readDate, String data) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnReadDate: readDate.millisecondsSinceEpoch, columnData: data};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnReadDate: readDate.millisecondsSinceEpoch,
+      columnData: data
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -77,18 +81,21 @@ class ReadHistoryDbProvider extends BaseDbProvider {
       whereArgs: [fullName],
     );
     if (maps.length > 0) {
-      ReadHistoryDbProvider provider = ReadHistoryDbProvider.fromMap(maps.first);
+      ReadHistoryDbProvider provider =
+          ReadHistoryDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
   }
 
   ///插入到数据库
-  Future insert(String fullName, DateTime dateTime, String dataMapString) async {
+  Future insert(
+      String fullName, DateTime dateTime, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProviderInsert(db, fullName);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
+      await db
+          .delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
     }
     return await db.insert(name, toMap(fullName, dateTime, dataMapString));
   }
@@ -100,7 +107,8 @@ class ReadHistoryDbProvider extends BaseDbProvider {
     if (provider != null) {
       List<Repository> list = new List();
       for (var providerMap in provider) {
-        ReadHistoryDbProvider provider = ReadHistoryDbProvider.fromMap(providerMap);
+        ReadHistoryDbProvider provider =
+            ReadHistoryDbProvider.fromMap(providerMap);
 
         ///使用 compute 的 Isolate 优化 json decode
         var mapData = await compute(CodeUtils.decodeMapResult, provider.data);

@@ -20,14 +20,16 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
   final String reposName;
 
-  RepositoryDetailReadmePage(this.userName, this.reposName, {Key key}) : super(key: key);
+  RepositoryDetailReadmePage(this.userName, this.reposName, {Key key})
+      : super(key: key);
 
   @override
-  RepositoryDetailReadmePageState createState() => RepositoryDetailReadmePageState();
+  RepositoryDetailReadmePageState createState() =>
+      RepositoryDetailReadmePageState();
 }
 
-
-class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> with AutomaticKeepAliveClientMixin {
+class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
+    with AutomaticKeepAliveClientMixin {
   bool isShow = false;
 
   String markdownData;
@@ -35,7 +37,9 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
   RepositoryDetailReadmePageState();
 
   refreshReadme() {
-    ReposDao.getRepositoryDetailReadmeDao(widget.userName, widget.reposName, ReposDetailModel.of(context).currentBranch).then((res) {
+    ReposDao.getRepositoryDetailReadmeDao(widget.userName, widget.reposName,
+            ReposDetailModel.of(context).currentBranch)
+        .then((res) {
       if (res != null && res.result) {
         if (isShow) {
           setState(() {
@@ -84,9 +88,13 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage> 
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
+                  new SpinKitDoubleBounce(
+                      color: Theme.of(context).primaryColor),
                   new Container(width: 10.0),
-                  new Container(child: new Text(CommonUtils.getLocale(context).loading_text, style: GSYConstant.middleText)),
+                  new Container(
+                      child: new Text(
+                          CommonUtils.getLocale(context).loading_text,
+                          style: GSYConstant.middleText)),
                 ],
               ),
             ),

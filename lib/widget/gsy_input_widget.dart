@@ -14,7 +14,15 @@ class GSYInputWidget extends StatefulWidget {
 
   final TextEditingController controller;
 
-  GSYInputWidget({Key key, this.hintText, this.iconData, this.onChanged, this.textStyle, this.controller, this.obscureText = false}) : super(key: key);
+  GSYInputWidget(
+      {Key key,
+      this.hintText,
+      this.iconData,
+      this.onChanged,
+      this.textStyle,
+      this.controller,
+      this.obscureText = false})
+      : super(key: key);
 
   @override
   _GSYInputWidgetState createState() => new _GSYInputWidgetState();
@@ -22,7 +30,6 @@ class GSYInputWidget extends StatefulWidget {
 
 /// State for [GSYInputWidget] widgets.
 class _GSYInputWidgetState extends State<GSYInputWidget> {
-
   _GSYInputWidgetState() : super();
 
   @override

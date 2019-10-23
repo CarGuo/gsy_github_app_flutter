@@ -37,7 +37,9 @@ class HttpManager {
   ///[ params] 请求参数
   ///[ header] 外加头
   ///[ option] 配置
-  Future<ResultData> netFetch(url, params, Map<String, dynamic> header, Options option, {noTip = false}) async {
+  Future<ResultData> netFetch(
+      url, params, Map<String, dynamic> header, Options option,
+      {noTip = false}) async {
     Map<String, dynamic> headers = new HashMap();
     if (header != null) {
       headers.addAll(header);
@@ -57,10 +59,14 @@ class HttpManager {
       } else {
         errorResponse = new Response(statusCode: 666);
       }
-      if (e.type == DioErrorType.CONNECT_TIMEOUT || e.type == DioErrorType.RECEIVE_TIMEOUT) {
+      if (e.type == DioErrorType.CONNECT_TIMEOUT ||
+          e.type == DioErrorType.RECEIVE_TIMEOUT) {
         errorResponse.statusCode = Code.NETWORK_TIMEOUT;
       }
-      return new ResultData(Code.errorHandleFunction(errorResponse.statusCode, e.message, noTip), false, errorResponse.statusCode);
+      return new ResultData(
+          Code.errorHandleFunction(errorResponse.statusCode, e.message, noTip),
+          false,
+          errorResponse.statusCode);
     }
 
     Response response;
@@ -69,7 +75,7 @@ class HttpManager {
     } on DioError catch (e) {
       return resultError(e);
     }
-    if(response.data is DioError) {
+    if (response.data is DioError) {
       return resultError(response.data);
     }
     return response.data;

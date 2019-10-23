@@ -1,4 +1,3 @@
-
 /**
  * 网络结果数据
  * Created by guoshuyu

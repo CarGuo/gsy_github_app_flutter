@@ -6,8 +6,6 @@ import 'package:dio/dio.dart';
  * on 2019/3/23.
  */
 class HeaderInterceptors extends InterceptorsWrapper {
-
-
   @override
   onRequest(RequestOptions options) async {
     ///超时

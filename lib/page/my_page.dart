@@ -23,7 +23,7 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends BasePersonState<MyPage> {
   String beStaredCount = '---';
 
-  Color notifyColor = const Color(GSYColors.subTextColor);
+  Color notifyColor = GSYColors.subTextColor;
 
   Store<GSYState> _getStore() {
     if (context == null) {
@@ -53,9 +53,9 @@ class _MyPageState extends BasePersonState<MyPage> {
     UserDao.getNotifyDao(false, false, 0).then((res) {
       Color newColor;
       if (res != null && res.result && res.data.length > 0) {
-        newColor = Color(GSYColors.actionBlue);
+        newColor = GSYColors.actionBlue;
       } else {
-        newColor = Color(GSYColors.subLightTextColor);
+        newColor =GSYColors.subLightTextColor;
       }
       if (isShow) {
         setState(() {

@@ -3,7 +3,6 @@ import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
 mixin GSYFlarePullMutliController implements FlareController {
-
   ActorAnimation _loadingAnimation;
   ActorAnimation _successAnimation;
   ActorAnimation _pullAnimation;
@@ -11,7 +10,6 @@ mixin GSYFlarePullMutliController implements FlareController {
 
   double pulledExtentFlare = 0;
   bool _isSurround = false;
-
 
   double _refreshTriggerPullDistance = 140;
 

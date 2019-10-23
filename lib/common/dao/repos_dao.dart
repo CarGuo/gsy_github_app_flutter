@@ -176,12 +176,8 @@ class ReposDao {
   static getRepositoryStatusDao(userName, reposName) async {
     String urls = Address.resolveStarRepos(userName, reposName);
     String urlw = Address.resolveWatcherRepos(userName, reposName);
-    var resS = await httpManager.netFetch(
-        urls, null, null, null,
-        noTip: true);
-    var resW = await httpManager.netFetch(
-        urlw, null, null, null,
-        noTip: true);
+    var resS = await httpManager.netFetch(urls, null, null, null, noTip: true);
+    var resW = await httpManager.netFetch(urlw, null, null, null, noTip: true);
     var data = {"star": resS.result, "watch": resW.result};
     return new DataResult(data, true);
   }
@@ -279,11 +275,7 @@ class ReposDao {
       userName, reposName, star) async {
     String url = Address.resolveStarRepos(userName, reposName);
     var res = await httpManager.netFetch(
-        url,
-        null,
-        null,
-        new Options(
-            method: !star ? 'PUT' : 'DELETE'));
+        url, null, null, new Options(method: !star ? 'PUT' : 'DELETE'));
     return Future<DataResult>(() {
       return new DataResult(null, res.result);
     });
@@ -295,11 +287,7 @@ class ReposDao {
   static doRepositoryWatchDao(userName, reposName, watch) async {
     String url = Address.resolveWatcherRepos(userName, reposName);
     var res = await httpManager.netFetch(
-        url,
-        null,
-        null,
-        new Options(
-            method: !watch ? 'PUT' : 'DELETE'));
+        url, null, null, new Options(method: !watch ? 'PUT' : 'DELETE'));
     return new DataResult(null, res.result);
   }
 
@@ -508,8 +496,8 @@ class ReposDao {
    */
   static createForkDao(userName, reposName) async {
     String url = Address.createFork(userName, reposName);
-    var res = await httpManager.netFetch(url, null, null,
-        new Options(method: "POST"));
+    var res = await httpManager.netFetch(
+        url, null, null, new Options(method: "POST"));
     return new DataResult(null, res.result);
   }
 

@@ -8,7 +8,6 @@ import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
  * on 2019/3/23.
  */
 class TokenInterceptors extends InterceptorsWrapper {
-
   String _token;
 
   @override
@@ -24,9 +23,8 @@ class TokenInterceptors extends InterceptorsWrapper {
     return options;
   }
 
-
   @override
-  onResponse(Response response) async{
+  onResponse(Response response) async {
     try {
       var responseJson = response.data;
       if (response.statusCode == 201 && responseJson["token"] != null) {

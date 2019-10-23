@@ -29,7 +29,11 @@ class IssueCommentDbProvider extends BaseDbProvider {
   IssueCommentDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String number, String data) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnData: data, columnNumber: number};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnData: data,
+      columnNumber: number
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -61,9 +65,12 @@ class IssueCommentDbProvider extends BaseDbProvider {
 
   Future _getProvider(Database db, String fullName, String number) async {
     List<Map<String, dynamic>> maps = await db.query(name,
-        columns: [columnId, columnFullName, columnNumber, columnData], where: "$columnFullName = ? and $columnNumber = ?", whereArgs: [fullName, number]);
+        columns: [columnId, columnFullName, columnNumber, columnData],
+        where: "$columnFullName = ? and $columnNumber = ?",
+        whereArgs: [fullName, number]);
     if (maps.length > 0) {
-      IssueCommentDbProvider provider = IssueCommentDbProvider.fromMap(maps.first);
+      IssueCommentDbProvider provider =
+          IssueCommentDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -74,7 +81,9 @@ class IssueCommentDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, number);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ? and $columnNumber = ?", whereArgs: [fullName, number]);
+      await db.delete(name,
+          where: "$columnFullName = ? and $columnNumber = ?",
+          whereArgs: [fullName, number]);
     }
     return await db.insert(name, toMap(fullName, number, dataMapString));
   }
@@ -88,7 +97,8 @@ class IssueCommentDbProvider extends BaseDbProvider {
       List<Issue> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data as String);
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data as String);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

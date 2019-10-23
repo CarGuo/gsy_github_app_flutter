@@ -50,7 +50,7 @@ class IssueHeaderItem extends StatelessWidget {
           GSYICons.ISSUE_ITEM_COMMENT,
           issueHeaderViewModel.commentCount,
           GSYConstant.smallTextWhite,
-          Color(GSYColors.white),
+          GSYColors.white,
           15.0,
           padding: 2.0,
         ),

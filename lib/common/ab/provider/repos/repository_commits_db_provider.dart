@@ -27,7 +27,11 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
   RepositoryCommitsDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String branch, String data) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnBranch: branch, columnData: data};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnBranch: branch,
+      columnData: data
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -58,9 +62,12 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
 
   Future _getProvider(Database db, String fullName, String branch) async {
     List<Map<String, dynamic>> maps = await db.query(name,
-        columns: [columnId, columnFullName, columnBranch, columnData], where: "$columnFullName = ? and $columnBranch = ?", whereArgs: [fullName, branch]);
+        columns: [columnId, columnFullName, columnBranch, columnData],
+        where: "$columnFullName = ? and $columnBranch = ?",
+        whereArgs: [fullName, branch]);
     if (maps.length > 0) {
-      RepositoryCommitsDbProvider provider = RepositoryCommitsDbProvider.fromMap(maps.first);
+      RepositoryCommitsDbProvider provider =
+          RepositoryCommitsDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -71,7 +78,9 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, branch);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ? and $columnBranch = ?", whereArgs: [fullName, branch]);
+      await db.delete(name,
+          where: "$columnFullName = ? and $columnBranch = ?",
+          whereArgs: [fullName, branch]);
     }
     return await db.insert(name, toMap(fullName, branch, dataMapString));
   }
@@ -85,8 +94,8 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
       List<RepoCommit> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data as String);
-
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data as String);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

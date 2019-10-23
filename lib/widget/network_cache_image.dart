@@ -15,7 +15,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   /// Creates an object that fetches the image at the given URL.
   ///
   /// The arguments must not be null.
-  const NetworkCacheImage(this.url, { this.scale = 1.0, this.headers })
+  const NetworkCacheImage(this.url, {this.scale = 1.0, this.headers})
       : assert(url != null),
         assert(scale != null);
 
@@ -53,12 +53,13 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
     /// add this start
     /// flutter_cache_manager DefaultCacheManager
     final fileInfo = await DefaultCacheManager().getFileFromCache(key.url);
-    if(fileInfo != null && fileInfo.file != null) {
+    if (fileInfo != null && fileInfo.file != null) {
       final Uint8List cacheBytes = await fileInfo.file.readAsBytes();
       if (cacheBytes != null) {
         return PaintingBinding.instance.instantiateImageCodec(cacheBytes);
       }
     }
+
     /// add this end
 
     final Uri resolved = Uri.base.resolve(key.url);
@@ -68,7 +69,8 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
     });
     final HttpClientResponse response = await request.close();
     if (response.statusCode != HttpStatus.ok)
-      throw Exception('HTTP request failed, statusCode: ${response?.statusCode}, $resolved');
+      throw Exception(
+          'HTTP request failed, statusCode: ${response?.statusCode}, $resolved');
 
     final Uint8List bytes = await consolidateHttpClientResponseBytes(response);
     if (bytes.lengthInBytes == 0)
@@ -76,6 +78,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
 
     /// add this start
     await DefaultCacheManager().putFile(key.url, bytes);
+
     /// add this edn
 
     return PaintingBinding.instance.instantiateImageCodec(bytes);
@@ -83,11 +86,9 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
 
   @override
   bool operator ==(dynamic other) {
-    if (other.runtimeType != runtimeType)
-      return false;
+    if (other.runtimeType != runtimeType) return false;
     final NetworkCacheImage typedOther = other;
-    return url == typedOther.url
-        && scale == typedOther.scale;
+    return url == typedOther.url && scale == typedOther.scale;
   }
 
   @override

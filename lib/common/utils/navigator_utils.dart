@@ -108,7 +108,6 @@ class NavigatorUtils {
         ));
   }
 
-
   ///仓库详情通知
   static Future goNotifyPage(BuildContext context) {
     return NavigatorRouter(context, new NotifyPage());

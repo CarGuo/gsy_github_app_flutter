@@ -32,7 +32,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
       child: new Container(
         color: Theme.of(context).primaryColor,
         child: Container(
-          color: Color(GSYColors.white),
+          color: GSYColors.white,
           child: new SingleChildScrollView(
             child: new Column(
               children: _renderList(),
@@ -88,7 +88,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   _renderDivider() {
     return Container(
-      color: Color(GSYColors.subTextColor),
+      color: GSYColors.subTextColor,
       width: itemWidth,
       height: 0.3,
     );

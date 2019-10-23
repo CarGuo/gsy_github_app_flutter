@@ -9,7 +9,8 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
  * Created by guoshuyu
  * Date: 2018-07-20
  */
-mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClientMixin<T> {
+mixin GSYListState<T extends StatefulWidget>
+    on State<T>, AutomaticKeepAliveClientMixin<T> {
   bool isShow = false;
 
   bool isLoading = false;
@@ -22,9 +23,11 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
 
   final List dataList = new List();
 
-  final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
+  final GSYPullLoadWidgetControl pullLoadWidgetControl =
+      new GSYPullLoadWidgetControl();
 
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   _lockToAwait() async {
     ///if loading, lock to await
@@ -37,6 +40,7 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
         }
       });
     }
+
     await doDelayed();
   }
 
@@ -62,7 +66,7 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
   @protected
   Future<Null> handleRefresh() async {
     if (isLoading) {
-      if(isRefreshing) {
+      if (isRefreshing) {
         return null;
       }
       await _lockToAwait();
@@ -86,7 +90,7 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
   @protected
   Future<Null> onLoadMore() async {
     if (isLoading) {
-      if(isLoadMoring) {
+      if (isLoadMoring) {
         return null;
       }
       await _lockToAwait();
@@ -112,7 +116,9 @@ mixin GSYListState<T extends StatefulWidget> on State<T>, AutomaticKeepAliveClie
   resolveDataResult(res) {
     if (isShow) {
       setState(() {
-        pullLoadWidgetControl.needLoadMore.value = (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
+        pullLoadWidgetControl.needLoadMore.value = (res != null &&
+            res.data != null &&
+            res.data.length == Config.PAGE_SIZE);
       });
     }
   }

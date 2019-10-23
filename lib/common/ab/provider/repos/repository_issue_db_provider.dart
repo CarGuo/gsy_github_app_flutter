@@ -27,7 +27,11 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
   RepositoryIssueDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String state, String data) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnState: state, columnData: data};
+    Map<String, dynamic> map = {
+      columnFullName: fullName,
+      columnState: state,
+      columnData: data
+    };
     if (id != null) {
       map[columnId] = id;
     }
@@ -62,7 +66,8 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
         where: "$columnFullName = ? and $columnState = ?",
         whereArgs: [fullName, state]);
     if (maps.length > 0) {
-      RepositoryIssueDbProvider provider = RepositoryIssueDbProvider.fromMap(maps.first);
+      RepositoryIssueDbProvider provider =
+          RepositoryIssueDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
@@ -73,7 +78,9 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, state);
     if (provider != null) {
-      await db.delete(name, where: "$columnFullName = ? and $columnState = ?", whereArgs: [fullName, state]);
+      await db.delete(name,
+          where: "$columnFullName = ? and $columnState = ?",
+          whereArgs: [fullName, state]);
     }
     return await db.insert(name, toMap(fullName, state, dataMapString));
   }
@@ -87,7 +94,8 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
       List<Issue> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
-      List<dynamic> eventMap = await compute(CodeUtils.decodeListResult, provider.data as String);
+      List<dynamic> eventMap =
+          await compute(CodeUtils.decodeListResult, provider.data as String);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

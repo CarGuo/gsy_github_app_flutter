@@ -98,7 +98,7 @@ class UserHeaderItem extends StatelessWidget {
           constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
           child: Icon(
             Icons.more_horiz,
-            color: Color(GSYColors.white),
+            color: GSYColors.white,
             size: 18.0,
           )));
     }
@@ -170,7 +170,7 @@ class UserHeaderItem extends StatelessWidget {
                           userInfo.company ??
                               CommonUtils.getLocale(context).nothing_now,
                           GSYConstant.smallSubLightText,
-                          Color(GSYColors.subLightTextColor),
+                          GSYColors.subLightTextColor,
                           10.0,
                           padding: 3.0,
                         ),
@@ -181,7 +181,7 @@ class UserHeaderItem extends StatelessWidget {
                           userInfo.location ??
                               CommonUtils.getLocale(context).nothing_now,
                           GSYConstant.smallSubLightText,
-                          Color(GSYColors.subLightTextColor),
+                          GSYColors.subLightTextColor,
                           10.0,
                           padding: 3.0,
                         ),
@@ -210,7 +210,7 @@ class UserHeaderItem extends StatelessWidget {
                       (userInfo.blog == null)
                           ? GSYConstant.smallSubLightText
                           : GSYConstant.smallActionLightText,
-                      Color(GSYColors.subLightTextColor),
+                      GSYColors.subLightTextColor,
                       10.0,
                       padding: 3.0,
                       textWidth: MediaQuery.of(context).size.width - 50,
@@ -317,7 +317,7 @@ class UserHeaderBottom extends StatelessWidget {
                 width: 0.3,
                 height: 40.0,
                 alignment: Alignment.center,
-                color: Color(GSYColors.subLightTextColor)),
+                color: GSYColors.subLightTextColor),
             _getBottomItem(
               CommonUtils.getLocale(context).user_tab_fans,
               userInfo.followers,
@@ -331,7 +331,7 @@ class UserHeaderBottom extends StatelessWidget {
                 width: 0.3,
                 height: 40.0,
                 alignment: Alignment.center,
-                color: Color(GSYColors.subLightTextColor)),
+                color: GSYColors.subLightTextColor),
             _getBottomItem(
               CommonUtils.getLocale(context).user_tab_focus,
               userInfo.following,
@@ -345,7 +345,7 @@ class UserHeaderBottom extends StatelessWidget {
                 width: 0.3,
                 height: 40.0,
                 alignment: Alignment.center,
-                color: Color(GSYColors.subLightTextColor)),
+                color: GSYColors.subLightTextColor),
             _getBottomItem(
               CommonUtils.getLocale(context).user_tab_star,
               userInfo.starred,
@@ -359,7 +359,7 @@ class UserHeaderBottom extends StatelessWidget {
                 width: 0.3,
                 height: 40.0,
                 alignment: Alignment.center,
-                color: Color(GSYColors.subLightTextColor)),
+                color: GSYColors.subLightTextColor),
             _getBottomItem(
               CommonUtils.getLocale(context).user_tab_honor,
               beStaredCount,
@@ -391,7 +391,7 @@ class UserHeaderChart extends StatelessWidget {
         ? new Card(
             margin:
                 EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 0.0),
-            color: Color(GSYColors.white),
+            color: GSYColors.white,
             child: new SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: new Container(
@@ -406,13 +406,13 @@ class UserHeaderChart extends StatelessWidget {
                   height: height - 10,
                   allowDrawingOutsideViewBox: true,
                   placeholderBuilder: (BuildContext context) => new Container(
-                        height: height,
-                        width: width,
-                        child: Center(
-                          child: SpinKitRipple(
-                              color: Theme.of(context).primaryColor),
-                        ),
-                      ),
+                    height: height,
+                    width: width,
+                    child: Center(
+                      child:
+                          SpinKitRipple(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
                 ),
               ),
             ),

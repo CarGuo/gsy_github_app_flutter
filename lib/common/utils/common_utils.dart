@@ -309,7 +309,7 @@ class CommonUtils {
                       children: <Widget>[
                         new Container(
                             child:
-                                SpinKitCubeGrid(color: Color(GSYColors.white))),
+                                SpinKitCubeGrid(color: GSYColors.white)),
                         new Container(height: 10.0),
                         new Container(
                             child: new Text(
@@ -369,7 +369,7 @@ class CommonUtils {
               padding: new EdgeInsets.all(4.0),
               margin: new EdgeInsets.all(20.0),
               decoration: new BoxDecoration(
-                color: Color(GSYColors.white),
+                color: GSYColors.white,
                 //用一个BoxDecoration装饰器提供背景图片
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
@@ -384,7 +384,7 @@ class CommonUtils {
                           ? colorList[index]
                           : Theme.of(context).primaryColor,
                       text: commitMaps[index],
-                      textColor: Color(GSYColors.white),
+                      textColor: GSYColors.white,
                       onPress: () {
                         Navigator.pop(context);
                         onTap(index);

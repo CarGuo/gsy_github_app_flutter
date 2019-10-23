@@ -8,7 +8,6 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 
 /**
  * 仓库详情信息头控件
@@ -48,7 +47,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                 GSYConstant.smallSubLightText.copyWith(shadows: [
                   BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
                 ]),
-                Color(GSYColors.subLightTextColor),
+                GSYColors.subLightTextColor,
                 15.0,
                 padding: 3.0,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -315,7 +314,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                       ),
                     ),
                     new Divider(
-                      color: Color(GSYColors.subTextColor),
+                      color: GSYColors.subTextColor,
                     ),
                     new Padding(
                         padding: new EdgeInsets.all(0.0),
@@ -346,7 +345,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                               width: 0.3,
                               height: 25.0,
                               decoration: BoxDecoration(
-                                  color: Color(GSYColors.subLightTextColor),
+                                  color: GSYColors.subLightTextColor,
                                   boxShadow: [
                                     BoxShadow(
                                         color: Colors.grey,
@@ -375,7 +374,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                               width: 0.3,
                               height: 25.0,
                               decoration: BoxDecoration(
-                                  color: Color(GSYColors.subLightTextColor),
+                                  color: GSYColors.subLightTextColor,
                                   boxShadow: [
                                     BoxShadow(
                                         color: Colors.grey,
@@ -404,7 +403,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                               width: 0.3,
                               height: 25.0,
                               decoration: BoxDecoration(
-                                  color: Color(GSYColors.subLightTextColor),
+                                  color: GSYColors.subLightTextColor,
                                   boxShadow: [
                                     BoxShadow(
                                         color: Colors.grey,

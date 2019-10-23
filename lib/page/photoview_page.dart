@@ -33,15 +33,20 @@ class PhotoViewPage extends StatelessWidget {
               if (res != null) {
                 Fluttertoast.showToast(msg: res);
                 if (Platform.isAndroid) {
-                  const updateAlbum = const MethodChannel('com.shuyu.gsygithub.gsygithubflutter/UpdateAlbumPlugin');
-                  updateAlbum.invokeMethod('updateAlbum', { 'path': res, 'name': CommonUtils.splitFileNameByPath(res)});
+                  const updateAlbum = const MethodChannel(
+                      'com.shuyu.gsygithub.gsygithubflutter/UpdateAlbumPlugin');
+                  updateAlbum.invokeMethod('updateAlbum', {
+                    'path': res,
+                    'name': CommonUtils.splitFileNameByPath(res)
+                  });
                 }
               }
             });
           },
         ),
         appBar: new AppBar(
-          title: GSYTitleBar("", rightWidget: new GSYCommonOptionWidget(optionControl)),
+          title: GSYTitleBar("",
+              rightWidget: new GSYCommonOptionWidget(optionControl)),
         ),
         body: new Container(
           color: Colors.black,
@@ -50,8 +55,12 @@ class PhotoViewPage extends StatelessWidget {
             loadingChild: Container(
               child: new Stack(
                 children: <Widget>[
-                  new Center(child: new Image.asset(GSYICons.DEFAULT_IMAGE, height: 180.0, width: 180.0)),
-                  new Center(child: new SpinKitFoldingCube(color: Colors.white30, size: 60.0)),
+                  new Center(
+                      child: new Image.asset(GSYICons.DEFAULT_IMAGE,
+                          height: 180.0, width: 180.0)),
+                  new Center(
+                      child: new SpinKitFoldingCube(
+                          color: Colors.white30, size: 60.0)),
                 ],
               ),
             ),
