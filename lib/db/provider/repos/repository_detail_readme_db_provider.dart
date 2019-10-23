@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**

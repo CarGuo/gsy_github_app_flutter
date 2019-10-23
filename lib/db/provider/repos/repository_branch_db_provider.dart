@@ -1,12 +1,12 @@
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 
 /**
- * 仓库pulse表
+ * 仓库分支表
  * Created by guoshuyu
  * Date: 2018-08-07
  */
 
-class RepositoryPulseDbProvider extends BaseDbProvider {
+class RepositoryBranchDbProvider extends BaseDbProvider {
   final String name = 'RepositoryPulse';
   final String columnId = "_id";
   final String columnFullName = "fullName";
@@ -24,7 +24,7 @@ class RepositoryPulseDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryPulseDbProvider.fromMap(Map map) {
+  RepositoryBranchDbProvider.fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     data = map[columnData];

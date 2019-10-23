@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/common/ab/provider/issue/issue_comment_db_provider.dart';
-import 'package:gsy_github_app_flutter/common/ab/provider/issue/issue_detail_db_provider.dart';
-import 'package:gsy_github_app_flutter/common/ab/provider/repos/repository_issue_db_provider.dart';
+import 'package:gsy_github_app_flutter/db/provider/issue/issue_comment_db_provider.dart';
+import 'package:gsy_github_app_flutter/db/provider/issue/issue_detail_db_provider.dart';
+import 'package:gsy_github_app_flutter/db/provider/repos/repository_issue_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
 import 'package:gsy_github_app_flutter/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';

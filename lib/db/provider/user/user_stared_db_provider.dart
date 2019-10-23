@@ -2,40 +2,40 @@ import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
-import 'package:gsy_github_app_flutter/model/Event.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
+import 'package:gsy_github_app_flutter/model/Repository.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
- * 仓库活跃事件表
+ * 用户收藏表
  * Created by guoshuyu
  * Date: 2018-08-07
  */
 
-class RepositoryEventDbProvider extends BaseDbProvider {
-  final String name = 'RepositoryEvent';
+class UserStaredDbProvider extends BaseDbProvider {
+  final String name = 'UserStared';
 
   final String columnId = "_id";
-  final String columnFullName = "fullName";
+  final String columnUserName = "userName";
   final String columnData = "data";
 
   int id;
-  String fullName;
+  String userName;
   String data;
 
-  RepositoryEventDbProvider();
+  UserStaredDbProvider();
 
   Map<String, dynamic> toMap(String fullName, String data) {
-    Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
+    Map<String, dynamic> map = {columnUserName: fullName, columnData: data};
     if (id != null) {
       map[columnId] = id;
     }
     return map;
   }
 
-  RepositoryEventDbProvider.fromMap(Map map) {
+  UserStaredDbProvider.fromMap(Map map) {
     id = map[columnId];
-    fullName = map[columnFullName];
+    userName = map[columnUserName];
     data = map[columnData];
   }
 
@@ -43,7 +43,7 @@ class RepositoryEventDbProvider extends BaseDbProvider {
   tableSqlString() {
     return tableBaseString(name, columnId) +
         '''
-        $columnFullName text not null,
+        $columnUserName text not null,
         $columnData text not null)
       ''';
   }
@@ -53,37 +53,36 @@ class RepositoryEventDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String fullName) async {
+  Future _getProvider(Database db, String userName) async {
     List<Map<String, dynamic>> maps = await db.query(name,
-        columns: [columnId, columnFullName, columnData],
-        where: "$columnFullName = ?",
-        whereArgs: [fullName]);
+        columns: [columnId, columnUserName, columnData],
+        where: "$columnUserName = ?",
+        whereArgs: [userName]);
     if (maps.length > 0) {
-      RepositoryEventDbProvider provider =
-          RepositoryEventDbProvider.fromMap(maps.first);
+      UserStaredDbProvider provider = UserStaredDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
   }
 
   ///插入到数据库
-  Future insert(String fullName, String dataMapString) async {
+  Future insert(String userName, String dataMapString) async {
     Database db = await getDataBase();
-    var provider = await _getProvider(db, fullName);
+    var provider = await _getProvider(db, userName);
     if (provider != null) {
       await db
-          .delete(name, where: "$columnFullName = ?", whereArgs: [fullName]);
+          .delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
     }
-    return await db.insert(name, toMap(fullName, dataMapString));
+    return await db.insert(name, toMap(userName, dataMapString));
   }
 
   ///获取事件数据
-  Future<List<Event>> getEvents(String fullName) async {
+  Future<List<Repository>> geData(String userName) async {
     Database db = await getDataBase();
 
-    var provider = await _getProvider(db, fullName);
+    var provider = await _getProvider(db, userName);
     if (provider != null) {
-      List<Event> list = new List();
+      List<Repository> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
@@ -91,7 +90,7 @@ class RepositoryEventDbProvider extends BaseDbProvider {
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {
-          list.add(Event.fromJson(item));
+          list.add(Repository.fromJson(item));
         }
       }
       return list;

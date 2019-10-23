@@ -2,34 +2,34 @@ import 'dart:async';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/ab/sql_provider.dart';
-import 'package:gsy_github_app_flutter/model/Issue.dart';
+import 'package:gsy_github_app_flutter/db/sql_provider.dart';
+import 'package:gsy_github_app_flutter/model/RepoCommit.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
- * 仓库issue表
+ * 仓库提交信息表
  * Created by guoshuyu
  * Date: 2018-08-07
  */
 
-class RepositoryIssueDbProvider extends BaseDbProvider {
-  final String name = 'RepositoryIssue';
+class RepositoryCommitsDbProvider extends BaseDbProvider {
+  final String name = 'RepositoryCommits';
+  final String columnId = "_id";
+  final String columnFullName = "fullName";
+  final String columnBranch = "branch";
+  final String columnData = "data";
+
   int id;
   String fullName;
   String data;
-  String state;
+  String branch;
 
-  final String columnId = "_id";
-  final String columnFullName = "fullName";
-  final String columnState = "state";
-  final String columnData = "data";
+  RepositoryCommitsDbProvider();
 
-  RepositoryIssueDbProvider();
-
-  Map<String, dynamic> toMap(String fullName, String state, String data) {
+  Map<String, dynamic> toMap(String fullName, String branch, String data) {
     Map<String, dynamic> map = {
       columnFullName: fullName,
-      columnState: state,
+      columnBranch: branch,
       columnData: data
     };
     if (id != null) {
@@ -38,10 +38,10 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryIssueDbProvider.fromMap(Map map) {
+  RepositoryCommitsDbProvider.fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
-    state = map[columnState];
+    branch = map[columnBranch];
     data = map[columnData];
   }
 
@@ -50,7 +50,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
     return tableBaseString(name, columnId) +
         '''
         $columnFullName text not null,
-        $columnState text not null,
+        $columnBranch text not null,
         $columnData text not null)
       ''';
   }
@@ -60,38 +60,38 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String fullName, String state) async {
+  Future _getProvider(Database db, String fullName, String branch) async {
     List<Map<String, dynamic>> maps = await db.query(name,
-        columns: [columnId, columnFullName, columnState, columnData],
-        where: "$columnFullName = ? and $columnState = ?",
-        whereArgs: [fullName, state]);
+        columns: [columnId, columnFullName, columnBranch, columnData],
+        where: "$columnFullName = ? and $columnBranch = ?",
+        whereArgs: [fullName, branch]);
     if (maps.length > 0) {
-      RepositoryIssueDbProvider provider =
-          RepositoryIssueDbProvider.fromMap(maps.first);
+      RepositoryCommitsDbProvider provider =
+          RepositoryCommitsDbProvider.fromMap(maps.first);
       return provider;
     }
     return null;
   }
 
   ///插入到数据库
-  Future insert(String fullName, String state, String dataMapString) async {
+  Future insert(String fullName, String branch, String dataMapString) async {
     Database db = await getDataBase();
-    var provider = await _getProvider(db, fullName, state);
+    var provider = await _getProvider(db, fullName, branch);
     if (provider != null) {
       await db.delete(name,
-          where: "$columnFullName = ? and $columnState = ?",
-          whereArgs: [fullName, state]);
+          where: "$columnFullName = ? and $columnBranch = ?",
+          whereArgs: [fullName, branch]);
     }
-    return await db.insert(name, toMap(fullName, state, dataMapString));
+    return await db.insert(name, toMap(fullName, branch, dataMapString));
   }
 
   ///获取事件数据
-  Future<List<Issue>> getData(String fullName, String branch) async {
+  Future<List<RepoCommit>> getData(String fullName, String branch) async {
     Database db = await getDataBase();
 
     var provider = await _getProvider(db, fullName, branch);
     if (provider != null) {
-      List<Issue> list = new List();
+      List<RepoCommit> list = new List();
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
@@ -99,7 +99,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {
-          list.add(Issue.fromJson(item));
+          list.add(RepoCommit.fromJson(item));
         }
       }
       return list;
