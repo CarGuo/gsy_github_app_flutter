@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/common/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/redux/middleware/epic_middleware.dart';
 import 'package:gsy_github_app_flutter/common/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/redux/theme_redux.dart';
@@ -26,8 +27,11 @@ class GSYState {
   ///当前手机平台默认语言
   Locale platformLocale;
 
+  ///是否登录
+  bool login;
+
   ///构造方法
-  GSYState({this.userInfo, this.themeData, this.locale});
+  GSYState({this.userInfo, this.themeData, this.locale, this.login});
 }
 
 ///创建 Reducer
@@ -43,12 +47,13 @@ GSYState appReducer(GSYState state, action) {
 
     ///通过 LocaleReducer 将 GSYState 内的 locale 和 action 关联在一起
     locale: LocaleReducer(state.locale, action),
+    login: LoginReducer(state.login, action),
   );
 }
 
-
-
 final List<Middleware<GSYState>> middleware = [
   EpicMiddleware<GSYState>(UserInfoEpic()),
+  EpicMiddleware<GSYState>(LoginEpic()),
   UserInfoMiddleware(),
+  LoginMiddleware(),
 ];

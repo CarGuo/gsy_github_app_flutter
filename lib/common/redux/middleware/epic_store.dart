@@ -15,4 +15,8 @@ class EpicStore<State> {
   State get state => _store.state;
 
   Stream<State> get onChange => _store.onChange;
+
+  void dispatch(dynamic action) {
+    _store.dispatch(action);
+  }
 }

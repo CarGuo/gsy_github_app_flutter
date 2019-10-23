@@ -54,7 +54,7 @@ class UserInfoEpic implements EpicClass<GSYState> {
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
     return Observable(actions)
         // to UpdateUserAction actions
-        .ofType(TypeToken<FetchUserAction>())
+        .whereType<FetchUserAction>()
         // Don't start  until the 10ms
         .debounce(((_) => TimerStream(true, const Duration(milliseconds: 10))))
         .switchMap((action) => _loadUserInfo());

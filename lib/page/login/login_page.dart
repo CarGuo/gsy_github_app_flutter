@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
+import 'package:gsy_github_app_flutter/common/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
 
@@ -118,19 +116,8 @@ class _LoginPageState extends State<LoginPage> {
                               if (_password == null || _password.length == 0) {
                                 return;
                               }
-                              CommonUtils.showLoadingDialog(context);
-                              UserDao.login(
-                                      _userName.trim(), _password.trim(), store)
-                                  .then((res) {
-                                Navigator.pop(context);
-                                if (res != null && res.result) {
-                                  new Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    NavigatorUtils.goHome(context);
-                                    return true;
-                                  });
-                                }
-                              });
+                              store.dispatch(
+                                  LoginAction(context, _userName, _password));
                             },
                           ),
                           new Padding(padding: new EdgeInsets.all(15.0)),
@@ -140,8 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: Text(
                               CommonUtils.getLocale(context).switch_language,
-                              style: TextStyle(
-                                  color: GSYColors.subTextColor),
+                              style: TextStyle(color: GSYColors.subTextColor),
                             ),
                           ),
                           new Padding(padding: new EdgeInsets.all(15.0)),
