@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/redux/middleware/epic_middleware.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';

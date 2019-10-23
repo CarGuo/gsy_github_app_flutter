@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**

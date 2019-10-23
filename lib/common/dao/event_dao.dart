@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:gsy_github_app_flutter/common/ab/provider/event/received_event_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/ab/provider/event/user_event_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
-import 'package:gsy_github_app_flutter/common/model/Event.dart';
+import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 

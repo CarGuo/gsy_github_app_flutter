@@ -1,7 +1,8 @@
-import 'package:gsy_github_app_flutter/common/model/EventPayload.dart';
-import 'package:gsy_github_app_flutter/common/model/Repository.dart';
-import 'package:gsy_github_app_flutter/common/model/User.dart';
+import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'EventPayload.dart';
+import 'Repository.dart';
 
 /**
  * Created by guoshuyu
