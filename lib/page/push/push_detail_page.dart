@@ -10,8 +10,8 @@ import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:gsy_github_app_flutter/widget/push_coed_item.dart';
-import 'package:gsy_github_app_flutter/widget/push_header.dart';
+import 'package:gsy_github_app_flutter/page/push/widget/push_coed_item.dart';
+import 'package:gsy_github_app_flutter/page/push/widget/push_header.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 
 /**

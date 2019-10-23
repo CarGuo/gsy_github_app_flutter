@@ -5,7 +5,7 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_markdown_widget.dart';
+import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 
 /**

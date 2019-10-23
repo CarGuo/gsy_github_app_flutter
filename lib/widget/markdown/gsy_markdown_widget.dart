@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'package:gsy_github_app_flutter/widget/syntax_high_lighter.dart';
+import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart';
 
 /**
  * 代码详情

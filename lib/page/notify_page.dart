@@ -3,7 +3,7 @@ import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/widget/event_item.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
@@ -70,7 +70,7 @@ class _NotifyPageState extends State<NotifyPage>
   _renderEventItem(Model.Notification notification) {
     EventViewModel eventViewModel =
         EventViewModel.fromNotify(context, notification);
-    return new EventItem(eventViewModel, onPressed: () {
+    return new GSYEventItem(eventViewModel, onPressed: () {
       if (notification.unread) {
         UserDao.setNotificationAsReadDao(notification.id.toString());
       }

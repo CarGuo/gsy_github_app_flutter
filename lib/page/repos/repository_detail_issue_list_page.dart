@@ -8,8 +8,8 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_w
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_search_input_widget.dart';
-import 'package:gsy_github_app_flutter/widget/issue_item.dart';
+import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_input_widget.dart';
+import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 
 /**

@@ -7,15 +7,15 @@ import 'package:gsy_github_app_flutter/common/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/page/repository_detail_page.dart';
-import 'package:gsy_github_app_flutter/widget/event_item.dart';
+import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
-import 'package:gsy_github_app_flutter/widget/repos_header_item.dart';
+import 'package:gsy_github_app_flutter/page/repos/widget/repos_header_item.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /**
@@ -72,7 +72,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   _renderEventItem(index) {
     if (selectIndex == 1) {
       ///提交
-      return new EventItem(
+      return new GSYEventItem(
         EventViewModel.fromCommitMap(pullLoadWidgetControl.dataList[index]),
         onPressed: () {
           RepoCommit model = pullLoadWidgetControl.dataList[index];
@@ -82,7 +82,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         needImage: false,
       );
     }
-    return new EventItem(
+    return new GSYEventItem(
       EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
       onPressed: () {
         EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index],
