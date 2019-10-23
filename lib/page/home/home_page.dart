@@ -12,7 +12,7 @@ import 'package:gsy_github_app_flutter/page/my_page.dart';
 import 'package:gsy_github_app_flutter/page/trend_page.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:gsy_github_app_flutter/widget/home_drawer.dart';
+import 'package:gsy_github_app_flutter/page/home/widget/home_drawer.dart';
 
 /**
  * 主页

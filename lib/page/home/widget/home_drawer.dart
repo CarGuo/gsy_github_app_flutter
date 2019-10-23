@@ -9,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/model/User.dart';
 import 'package:gsy_github_app_flutter/common/redux/gsy_state.dart';
+import 'package:gsy_github_app_flutter/common/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -204,9 +205,7 @@ class HomeDrawer extends StatelessWidget {
                               color: Colors.redAccent,
                               textColor: GSYColors.textWhite,
                               onPress: () {
-                                UserDao.clearAll(store);
-                                SqlManager.close();
-                                NavigatorUtils.goLogin(context);
+                                store.dispatch(LogoutAction(context));
                               },
                             ),
                             onTap: () {}),
