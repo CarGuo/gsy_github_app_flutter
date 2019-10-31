@@ -27,16 +27,17 @@ class GitHubTrending {
 const TAGS = {
   "meta": {
     "start": '<span class="d-inline-block float-sm-right"',
+    "flag": '/svg>',
     "end": '</span>end'
   },
   "starCount": {
-    "start": '<span aria-label="star">',
-    "flag": '/span>',
+    "start": '<svg aria-label="star"',
+    "flag": '/svg>',
     "end": '</a>'
   },
   "forkCount": {
-    "start": '<span aria-label="fork">',
-    "flag": '/span>',
+    "start": '<svg aria-label="repo-forked"',
+    "flag": '/svg>',
     "end": '</a>'
   }
 };
@@ -120,10 +121,10 @@ class TrendingUtil {
       startFlag = tag["start"];
     }
     var content = parseContentWithNote(noteContent, startFlag, tag["end"]);
-    if (content.indexOf('</span>') != -1 &&
-        (content.indexOf('</span>') + '</span>'.length <= content.length)) {
+    if (tag["flag"] != null && content.indexOf(tag["flag"]) != -1 &&
+        (content.indexOf(tag["flag"]) + tag["flag"].length <= content.length)) {
       var metaContent = content.substring(
-          content.indexOf('</span>') + '</span>'.length, content.length);
+          content.indexOf(tag["flag"]) + tag["flag"].length, content.length);
       return trim(metaContent);
     } else {
       return trim(content);
