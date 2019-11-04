@@ -182,7 +182,7 @@ packages:
       name: dio
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.0.3"
+    version: "3.0.4"
   event_bus:
     dependency: "direct main"
     description:
@@ -203,14 +203,14 @@ packages:
       name: flare_dart
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   flare_flutter:
     dependency: "direct main"
     description:
       name: flare_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.6.2"
+    version: "1.6.4"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -222,7 +222,7 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.3"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -262,7 +262,7 @@ packages:
       name: flutter_svg
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.14.2"
+    version: "0.14.3"
   flutter_webview_plugin:
     dependency: "direct main"
     description:
@@ -451,7 +451,7 @@ packages:
       name: path_provider
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.3.0"
+    version: "1.4.0"
   pedantic:
     dependency: transitive
     description:
@@ -502,7 +502,7 @@ packages:
       name: provider
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.0+1"
   pub_semver:
     dependency: "direct main"
     description:
@@ -537,7 +537,7 @@ packages:
       name: rxdart
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.22.3"
+    version: "0.22.5"
   scoped_model:
     dependency: "direct main"
     description:
@@ -551,7 +551,7 @@ packages:
       name: share
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.2+3"
+    version: "0.6.3+1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -598,7 +598,7 @@ packages:
       name: sqflite
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.7+1"
+    version: "1.1.7+2"
   stack_trace:
     dependency: transitive
     description:
@@ -696,7 +696,7 @@ packages:
       name: webview_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.14+1"
+    version: "0.3.15+1"
   xml:
     dependency: transitive
     description:
