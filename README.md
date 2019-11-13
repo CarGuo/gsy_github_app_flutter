@@ -119,7 +119,7 @@
 
 ### 下载
 
-#### Apk下载链接： [Apk下载链接](https://www.pgyer.com/vj2B)
+#### Apk下载链接： [Apk下载链接](https://www.pgyer.com/guqa)
 
 
 | 类型          | 二维码                                      |
