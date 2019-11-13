@@ -41,6 +41,7 @@ class FlutterReduxApp extends StatelessWidget {
   /// initialState 初始化 State
   final store = new Store<GSYState>(
     appReducer,
+    ///拦截器
     middleware: middleware,
 
     ///初始化数据
@@ -54,21 +55,24 @@ class FlutterReduxApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// 使用 flutter_redux 做全局状态共享
     /// 通过 StoreProvider 应用 store
     return new StoreProvider(
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
+        ///使用 StoreBuilder 获取 store 中的 theme 、locale
         return new MaterialApp(
-
             ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GSYLocalizationsDelegate.delegate,
             ],
-            locale: store.state.locale,
             supportedLocales: [store.state.locale],
+            locale: store.state.locale,
             theme: store.state.themeData,
+            ///命名式路由
+            /// "/" 和 MaterialApp 的 home 参数一个效果
             routes: {
               WelcomePage.sName: (context) {
                 store.state.platformLocale = WidgetsBinding.instance.window.locale;
