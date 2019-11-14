@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
@@ -164,14 +165,14 @@ class CommonUtils {
     return ThemeData(primarySwatch: color, platform: TargetPlatform.android);
   }
 
-  static showLanguageDialog(BuildContext context, Store store) {
+  static showLanguageDialog(BuildContext context) {
     List<String> list = [
       CommonUtils.getLocale(context).home_language_default,
       CommonUtils.getLocale(context).home_language_zh,
       CommonUtils.getLocale(context).home_language_en,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
-      CommonUtils.changeLocale(store, index);
+      CommonUtils.changeLocale(StoreProvider.of<GSYState>(context), index);
       LocalStorage.save(Config.LOCALE, index.toString());
     }, height: 150.0);
   }
