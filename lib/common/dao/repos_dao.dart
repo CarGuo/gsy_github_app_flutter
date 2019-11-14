@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/common/net/transformer.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/read_history_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/repository_commits_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/repository_detail_db_provider.dart';
@@ -17,6 +19,7 @@ import 'package:gsy_github_app_flutter/db/provider/user/user_repos_db_provider.d
 import 'package:gsy_github_app_flutter/db/provider/user/user_stared_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
+import 'package:gsy_github_app_flutter/model/Branch.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/model/FileModel.dart';
 import 'package:gsy_github_app_flutter/model/PushCommit.dart';
@@ -515,6 +518,14 @@ class ReposDao {
       }
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
+
+        ///测试代码
+        Serializer<Branch> serializerForType = serializers.serializerForType(Branch);
+        var test =  serializers.deserializeWith<Branch>(serializerForType, data);
+        /// 反序列化
+        Map result = serializers.serializeWith(serializerForType, test);
+        print("###### $test ${result}");
+
         list.add(data['name']);
       }
       return new DataResult(list, true);

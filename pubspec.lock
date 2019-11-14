@@ -15,6 +15,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.38.5"
+  analyzer_plugin:
+    dependency: transitive
+    description:
+      name: analyzer_plugin
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.1"
   android_intent:
     dependency: "direct main"
     description:
@@ -93,12 +100,19 @@ packages:
     source: hosted
     version: "4.2.2"
   built_value:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: built_value
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "6.7.1"
+    version: "6.8.2"
+  built_value_generator:
+    dependency: "direct dev"
+    description:
+      name: built_value_generator
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.8.2"
   charcode:
     dependency: transitive
     description:

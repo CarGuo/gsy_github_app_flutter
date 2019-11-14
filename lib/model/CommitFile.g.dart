@@ -8,16 +8,17 @@ part of 'CommitFile.dart';
 
 CommitFile _$CommitFileFromJson(Map<String, dynamic> json) {
   return CommitFile(
-      json['sha'] as String,
-      json['filename'] as String,
-      json['status'] as String,
-      json['additions'] as int,
-      json['deletions'] as int,
-      json['changes'] as int,
-      json['blob_url'] as String,
-      json['raw_url'] as String,
-      json['contents_url'] as String,
-      json['patch'] as String);
+    json['sha'] as String,
+    json['filename'] as String,
+    json['status'] as String,
+    json['additions'] as int,
+    json['deletions'] as int,
+    json['changes'] as int,
+    json['blob_url'] as String,
+    json['raw_url'] as String,
+    json['contents_url'] as String,
+    json['patch'] as String,
+  );
 }
 
 Map<String, dynamic> _$CommitFileToJson(CommitFile instance) =>
@@ -31,5 +32,5 @@ Map<String, dynamic> _$CommitFileToJson(CommitFile instance) =>
       'blob_url': instance.blobUrl,
       'raw_url': instance.rawUrl,
       'contents_url': instance.contentsUrl,
-      'patch': instance.patch
+      'patch': instance.patch,
     };

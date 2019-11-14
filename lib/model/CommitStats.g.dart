@@ -8,12 +8,15 @@ part of 'CommitStats.dart';
 
 CommitStats _$CommitStatsFromJson(Map<String, dynamic> json) {
   return CommitStats(
-      json['total'] as int, json['additions'] as int, json['deletions'] as int);
+    json['total'] as int,
+    json['additions'] as int,
+    json['deletions'] as int,
+  );
 }
 
 Map<String, dynamic> _$CommitStatsToJson(CommitStats instance) =>
     <String, dynamic>{
       'total': instance.total,
       'additions': instance.additions,
-      'deletions': instance.deletions
+      'deletions': instance.deletions,
     };

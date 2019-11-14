@@ -8,21 +8,22 @@ part of 'IssueEvent.dart';
 
 IssueEvent _$IssueEventFromJson(Map<String, dynamic> json) {
   return IssueEvent(
-      json['id'] as int,
-      json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
-      json['updated_at'] == null
-          ? null
-          : DateTime.parse(json['updated_at'] as String),
-      json['author_association'] as String,
-      json['body'] as String,
-      json['body_html'] as String,
-      json['event'] as String,
-      json['html_url'] as String);
+    json['id'] as int,
+    json['user'] == null
+        ? null
+        : User.fromJson(json['user'] as Map<String, dynamic>),
+    json['created_at'] == null
+        ? null
+        : DateTime.parse(json['created_at'] as String),
+    json['updated_at'] == null
+        ? null
+        : DateTime.parse(json['updated_at'] as String),
+    json['author_association'] as String,
+    json['body'] as String,
+    json['body_html'] as String,
+    json['event'] as String,
+    json['html_url'] as String,
+  );
 }
 
 Map<String, dynamic> _$IssueEventToJson(IssueEvent instance) =>
@@ -35,5 +36,5 @@ Map<String, dynamic> _$IssueEventToJson(IssueEvent instance) =>
       'body': instance.body,
       'body_html': instance.bodyHtml,
       'event': instance.type,
-      'html_url': instance.htmlUrl
+      'html_url': instance.htmlUrl,
     };

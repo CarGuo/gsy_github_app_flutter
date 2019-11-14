@@ -8,7 +8,10 @@ part of 'NotificationSubject.dart';
 
 NotificationSubject _$NotificationSubjectFromJson(Map<String, dynamic> json) {
   return NotificationSubject(
-      json['title'] as String, json['url'] as String, json['type'] as String);
+    json['title'] as String,
+    json['url'] as String,
+    json['type'] as String,
+  );
 }
 
 Map<String, dynamic> _$NotificationSubjectToJson(
@@ -16,5 +19,5 @@ Map<String, dynamic> _$NotificationSubjectToJson(
     <String, dynamic>{
       'title': instance.title,
       'url': instance.url,
-      'type': instance.type
+      'type': instance.type,
     };
