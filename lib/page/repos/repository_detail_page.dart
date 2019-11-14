@@ -224,7 +224,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         }
         CommonUtils.showCommitOptionDialog(context, branchList, (value) {
           setState(() {
-            reposDetailModel.setCurrentBranch(branchList[value]);
+            reposDetailModel.currentBranch = branchList[value];
           });
           if (infoListKey.currentState != null &&
               infoListKey.currentState.mounted) {
@@ -335,7 +335,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
               rightWidget: widgetContent,
             ),
             onPageChanged: (index) {
-              reposDetailModel.setCurrentIndex(index);
+              reposDetailModel.currentIndex = index;
             },
 
             ///悬浮按键，增加出现动画
@@ -397,28 +397,26 @@ class ReposDetailModel extends Model {
 
   int _currentIndex = 0;
 
-  int get currentIndex => _currentIndex;
-
   String _currentBranch = "master";
-
-  String get currentBranch => _currentBranch;
 
   Repository _repository = Repository.empty();
 
-  Repository get repository => _repository;
 
+  Repository get repository => _repository;
   set repository(Repository data) {
     _repository = data;
     notifyListeners();
   }
 
-  void setCurrentBranch(String branch) {
-    _currentBranch = branch;
+  int get currentIndex => _currentIndex;
+  set currentIndex(int data) {
+    _currentIndex = data;
     notifyListeners();
   }
 
-  void setCurrentIndex(int index) {
-    _currentIndex = index;
+  String get currentBranch => _currentBranch;
+  set currentBranch(String data) {
+    _currentBranch = data;
     notifyListeners();
   }
 }
