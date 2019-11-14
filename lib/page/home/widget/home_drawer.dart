@@ -176,7 +176,7 @@ class HomeDrawer extends StatelessWidget {
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
-                              CommonUtils.showLanguageDialog(context, store);
+                              CommonUtils.showLanguageDialog(context);
                             }),
                         new ListTile(
                             title: new Text(
