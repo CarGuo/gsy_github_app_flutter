@@ -51,5 +51,5 @@ Map<String, dynamic> _$EventPayloadToJson(EventPayload instance) =>
       'pusher_type': instance.pusherType,
       'release': instance.release,
       'issue': instance.issue,
-      'comment': instance.comment
+      'comment': instance.comment,
     };

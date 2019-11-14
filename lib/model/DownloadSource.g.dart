@@ -7,8 +7,12 @@ part of 'DownloadSource.dart';
 // **************************************************************************
 
 DownloadSource _$DownloadSourceFromJson(Map<String, dynamic> json) {
-  return DownloadSource(json['url'] as String, json['isSourceCode'] as bool,
-      json['name'] as String, json['size'] as int);
+  return DownloadSource(
+    json['url'] as String,
+    json['isSourceCode'] as bool,
+    json['name'] as String,
+    json['size'] as int,
+  );
 }
 
 Map<String, dynamic> _$DownloadSourceToJson(DownloadSource instance) =>
@@ -16,5 +20,5 @@ Map<String, dynamic> _$DownloadSourceToJson(DownloadSource instance) =>
       'url': instance.url,
       'isSourceCode': instance.isSourceCode,
       'name': instance.name,
-      'size': instance.size
+      'size': instance.size,
     };
