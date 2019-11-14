@@ -26,13 +26,8 @@ bool _loginResult(bool result, LoginSuccessAction action) {
   return action.success;
 }
 
-
-class LoginAction {
-  final BuildContext context;
-  final String username;
-  final String password;
-
-  LoginAction(this.context, this.username, this.password);
+bool _logoutResult(bool result, LogoutAction action) {
+  return true;
 }
 
 class LoginSuccessAction {
@@ -44,16 +39,19 @@ class LoginSuccessAction {
 
 class LogoutAction {
   final BuildContext context;
+
   LogoutAction(this.context);
 }
 
-bool _logoutResult(bool result, LogoutAction action) {
-  return true;
+class LoginAction {
+  final BuildContext context;
+  final String username;
+  final String password;
+
+  LoginAction(this.context, this.username, this.password);
 }
 
-
 class LoginMiddleware implements MiddlewareClass<GSYState> {
-
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
     if (action is LogoutAction) {
@@ -71,11 +69,9 @@ class LoginEpic implements EpicClass<GSYState> {
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
     return Observable(actions)
         .whereType<LoginAction>()
-        .switchMap((action) => _loginIn(action, store))
-        .debounce(
-            ((result) => TimerStream(result, const Duration(seconds: 1))));
+        .debounce((result) => TimerStream(result, const Duration(seconds: 2)))
+        .switchMap((action) => _loginIn(action, store));
   }
-
 
   Stream<dynamic> _loginIn(
       LoginAction action, EpicStore<GSYState> store) async* {
