@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
@@ -44,7 +45,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               onChanged: widget.onTitleChanged,
               controller: widget.titleController,
               hintText:
-                  CommonUtils.getLocale(context).issue_edit_issue_title_tip,
+                  GSYLocalizations.i18n(context).issue_edit_issue_title_tip,
               obscureText: false,
             ))
         : new Container();
@@ -146,7 +147,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                     onChanged: widget.onContentChanged,
                                     controller: widget.valueController,
                                     decoration: new InputDecoration.collapsed(
-                                      hintText: CommonUtils.getLocale(context)
+                                      hintText: GSYLocalizations.i18n(context)
                                           .issue_edit_issue_title_tip,
                                       hintStyle: GSYConstant.middleSubText,
                                     ),
@@ -172,7 +173,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       child: new Text(
-                                          CommonUtils.getLocale(context)
+                                          GSYLocalizations.i18n(context)
                                               .app_cancel,
                                           style: GSYConstant.normalSubText),
                                       onPressed: () {
@@ -192,7 +193,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       child: new Text(
-                                          CommonUtils.getLocale(context).app_ok,
+                                          GSYLocalizations.i18n(context).app_ok,
                                           style: GSYConstant.normalTextBold),
                                       onPressed: widget.onPressed)),
                             ],

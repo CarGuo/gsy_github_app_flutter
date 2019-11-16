@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -52,7 +53,7 @@ class _NotifyPageState extends State<NotifyPage>
       ),
       secondaryActions: <Widget>[
         new IconSlideAction(
-          caption: CommonUtils.getLocale(context).notify_readed,
+          caption: GSYLocalizations.i18n(context).notify_readed,
           color: Colors.redAccent,
           icon: Icons.delete,
           onTap: () {
@@ -125,7 +126,7 @@ class _NotifyPageState extends State<NotifyPage>
       backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         title: GSYTitleBar(
-          CommonUtils.getLocale(context).notify_title,
+          GSYLocalizations.i18n(context).notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
           needRightLocalIcon: true,
           onPressed: () {
@@ -138,9 +139,9 @@ class _NotifyPageState extends State<NotifyPage>
         ),
         bottom: new GSYSelectItemWidget(
           [
-            CommonUtils.getLocale(context).notify_tab_unread,
-            CommonUtils.getLocale(context).notify_tab_part,
-            CommonUtils.getLocale(context).notify_tab_all,
+            GSYLocalizations.i18n(context).notify_tab_unread,
+            GSYLocalizations.i18n(context).notify_tab_part,
+            GSYLocalizations.i18n(context).notify_tab_all,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

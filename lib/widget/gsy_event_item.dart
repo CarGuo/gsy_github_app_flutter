@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -109,10 +110,10 @@ class EventViewModel {
     actionUser = eventMap.repository.fullName;
     String type = eventMap.subject.type;
     String status = eventMap.unread
-        ? CommonUtils.getLocale(context).notify_unread
-        : CommonUtils.getLocale(context).notify_readed;
+        ? GSYLocalizations.i18n(context).notify_unread
+        : GSYLocalizations.i18n(context).notify_readed;
     actionDes = eventMap.reason +
-        "${CommonUtils.getLocale(context).notify_type}：$type，${CommonUtils.getLocale(context).notify_status}：$status";
+        "${GSYLocalizations.i18n(context).notify_type}：$type，${GSYLocalizations.i18n(context).notify_status}：$status";
     actionTarget = eventMap.subject.title;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
@@ -74,7 +75,7 @@ class _ReleasePageState extends State<ReleasePage>
       await launch(url);
     } else {
       Fluttertoast.showToast(
-          msg: CommonUtils.getLocale(context).option_web_launcher_error +
+          msg: GSYLocalizations.i18n(context).option_web_launcher_error +
               ": " +
               url);
     }
@@ -130,8 +131,8 @@ class _ReleasePageState extends State<ReleasePage>
         ),
         bottom: new GSYSelectItemWidget(
           [
-            CommonUtils.getLocale(context).release_tab_release,
-            CommonUtils.getLocale(context).release_tab_tag,
+            GSYLocalizations.i18n(context).release_tab_release,
+            GSYLocalizations.i18n(context).release_tab_tag,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

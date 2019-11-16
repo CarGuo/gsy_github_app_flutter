@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/FileModel.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -85,7 +86,7 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
   ///头部列表点击
   _resolveHeaderClick(index) {
     if (isLoading) {
-      Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+      Fluttertoast.showToast(msg: GSYLocalizations.i18n(context).loading_text);
       return;
     }
     if (headerList[index] != ".") {
@@ -109,7 +110,7 @@ class RepositoryDetailFileListPageState extends State<RepositoryDetailFileListPa
   _resolveItemClick(FileItemViewModel fileItemViewModel) {
     if (fileItemViewModel.type == "dir") {
       if (isLoading) {
-        Fluttertoast.showToast(msg: CommonUtils.getLocale(context).loading_text);
+        Fluttertoast.showToast(msg: GSYLocalizations.i18n(context).loading_text);
         return;
       }
       this.setState(() {

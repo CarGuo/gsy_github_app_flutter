@@ -49,9 +49,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
-      _renderTab(GSYICons.MAIN_DT, CommonUtils.getLocale(context).home_dynamic),
-      _renderTab(GSYICons.MAIN_QS, CommonUtils.getLocale(context).home_trend),
-      _renderTab(GSYICons.MAIN_MY, CommonUtils.getLocale(context).home_my),
+      _renderTab(GSYICons.MAIN_DT, GSYLocalizations.i18n(context).home_dynamic),
+      _renderTab(GSYICons.MAIN_QS, GSYLocalizations.i18n(context).home_trend),
+      _renderTab(GSYICons.MAIN_MY, GSYLocalizations.i18n(context).home_my),
     ];
     ///增加返回按键监听
     return WillPopScope(

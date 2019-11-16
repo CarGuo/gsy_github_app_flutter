@@ -1,4 +1,5 @@
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
     as IOS;
 import 'package:flutter/material.dart';
@@ -263,7 +264,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
                 height: 70.0),
           ),
           Container(
-            child: Text(CommonUtils.getLocale(context).app_empty,
+            child: Text(GSYLocalizations.i18n(context).app_empty,
                 style: GSYConstant.normalText),
           ),
         ],
@@ -287,7 +288,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
 
                 ///加载中文本
                 new Text(
-                  CommonUtils.getLocale(context).load_more_text,
+                  GSYLocalizations.i18n(context).load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
                     fontSize: 14.0,

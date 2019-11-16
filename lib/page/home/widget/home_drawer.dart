@@ -28,8 +28,8 @@ class HomeDrawer extends StatelessWidget {
     NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) => AboutDialog(
-              applicationName: CommonUtils.getLocale(context).app_name,
-              applicationVersion: CommonUtils.getLocale(context).app_version +
+              applicationName: GSYLocalizations.i18n(context).app_name,
+              applicationVersion: GSYLocalizations.i18n(context).app_version +
                   ": " +
                   versionName,
               applicationIcon: new Image(
@@ -42,13 +42,13 @@ class HomeDrawer extends StatelessWidget {
 
   showThemeDialog(BuildContext context, Store store) {
     List<String> list = [
-      CommonUtils.getLocale(context).home_theme_default,
-      CommonUtils.getLocale(context).home_theme_1,
-      CommonUtils.getLocale(context).home_theme_2,
-      CommonUtils.getLocale(context).home_theme_3,
-      CommonUtils.getLocale(context).home_theme_4,
-      CommonUtils.getLocale(context).home_theme_5,
-      CommonUtils.getLocale(context).home_theme_6,
+      GSYLocalizations.i18n(context).home_theme_default,
+      GSYLocalizations.i18n(context).home_theme_1,
+      GSYLocalizations.i18n(context).home_theme_2,
+      GSYLocalizations.i18n(context).home_theme_3,
+      GSYLocalizations.i18n(context).home_theme_4,
+      GSYLocalizations.i18n(context).home_theme_5,
+      GSYLocalizations.i18n(context).home_theme_6,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.pushTheme(store, index);
@@ -105,14 +105,14 @@ class HomeDrawer extends StatelessWidget {
                         ),
                         new ListTile(
                             title: new Text(
-                              CommonUtils.getLocale(context).home_reply,
+                              GSYLocalizations.i18n(context).home_reply,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
                               String content = "";
                               CommonUtils.showEditDialog(
                                   context,
-                                  CommonUtils.getLocale(context).home_reply,
+                                  GSYLocalizations.i18n(context).home_reply,
                                   (title) {}, (res) {
                                 content = res;
                               }, () {
@@ -123,7 +123,7 @@ class HomeDrawer extends StatelessWidget {
                                 IssueDao.createIssueDao(
                                     "CarGuo", "GSYGithubAppFlutter", {
                                   "title":
-                                      CommonUtils.getLocale(context).home_reply,
+                                      GSYLocalizations.i18n(context).home_reply,
                                   "body": content
                                 }).then((result) {
                                   Navigator.pop(context);
@@ -136,13 +136,13 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              CommonUtils.getLocale(context).home_history,
+                              GSYLocalizations.i18n(context).home_history,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
                               NavigatorUtils.gotoCommonList(
                                   context,
-                                  CommonUtils.getLocale(context).home_history,
+                                  GSYLocalizations.i18n(context).home_history,
                                   "repository",
                                   "history",
                                   userName: "",
@@ -154,7 +154,7 @@ class HomeDrawer extends StatelessWidget {
                                 child: new Material(
                                     color: Colors.transparent,
                                     child: new Text(
-                                      CommonUtils.getLocale(context)
+                                      GSYLocalizations.i18n(context)
                                           .home_user_info,
                                       style: GSYConstant.normalTextBold,
                                     ))),
@@ -163,7 +163,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              CommonUtils.getLocale(context).home_change_theme,
+                              GSYLocalizations.i18n(context).home_change_theme,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -171,7 +171,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              CommonUtils.getLocale(context)
+                              GSYLocalizations.i18n(context)
                                   .home_change_language,
                               style: GSYConstant.normalText,
                             ),
@@ -180,7 +180,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              CommonUtils.getLocale(context).home_check_update,
+                              GSYLocalizations.i18n(context).home_check_update,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -201,7 +201,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new GSYFlexButton(
-                              text: CommonUtils.getLocale(context).Login_out,
+                              text: GSYLocalizations.i18n(context).Login_out,
                               color: Colors.redAccent,
                               textColor: GSYColors.textWhite,
                               onPress: () {

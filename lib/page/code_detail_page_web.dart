@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
@@ -90,7 +91,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
                 new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                 new Container(width: 10.0),
                 new Container(
-                    child: new Text(CommonUtils.getLocale(context).loading_text,
+                    child: new Text(GSYLocalizations.i18n(context).loading_text,
                         style: GSYConstant.middleText)),
               ],
             ),

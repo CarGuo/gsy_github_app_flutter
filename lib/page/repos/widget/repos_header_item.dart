@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -111,14 +112,14 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///仓库创建和提交状态信息
   _getInfoText(BuildContext context) {
     String createStr = widget.reposHeaderViewModel.repositoryIsFork
-        ? CommonUtils.getLocale(context).repos_fork_at +
+        ? GSYLocalizations.i18n(context).repos_fork_at +
             widget.reposHeaderViewModel.repositoryParentName +
             '\n'
-        : CommonUtils.getLocale(context).repos_create_at +
+        : GSYLocalizations.i18n(context).repos_create_at +
             widget.reposHeaderViewModel.created_at +
             "\n";
 
-    String updateStr = CommonUtils.getLocale(context).repos_last_commit +
+    String updateStr = GSYLocalizations.i18n(context).repos_last_commit +
         widget.reposHeaderViewModel.push_at;
 
     return createStr +
@@ -423,16 +424,16 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                                   return;
                                 }
                                 List<String> list = [
-                                  CommonUtils.getLocale(context)
+                                  GSYLocalizations.i18n(context)
                                           .repos_all_issue_count +
                                       widget.reposHeaderViewModel.allIssueCount
                                           .toString(),
-                                  CommonUtils.getLocale(context)
+                                  GSYLocalizations.i18n(context)
                                           .repos_open_issue_count +
                                       widget
                                           .reposHeaderViewModel.openIssuesCount
                                           .toString(),
-                                  CommonUtils.getLocale(context)
+                                  GSYLocalizations.i18n(context)
                                           .repos_close_issue_count +
                                       (widget.reposHeaderViewModel
                                                   .allIssueCount -

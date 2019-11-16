@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -82,40 +83,40 @@ class _UserProfileState extends State<UserProfileInfo> {
 
   List<Widget> _renderList(User userInfo, Store store) {
     return [
-      _renderItem(Icons.info, CommonUtils.getLocale(context).user_profile_name,
+      _renderItem(Icons.info, GSYLocalizations.i18n(context).user_profile_name,
           userInfo.name ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_name,
+        _showEditDialog(GSYLocalizations.i18n(context).user_profile_name,
             userInfo.name, "name", store);
       }),
       _renderItem(
           Icons.email,
-          CommonUtils.getLocale(context).user_profile_email,
+          GSYLocalizations.i18n(context).user_profile_email,
           userInfo.email ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_email,
+        _showEditDialog(GSYLocalizations.i18n(context).user_profile_email,
             userInfo.email, "email", store);
       }),
-      _renderItem(Icons.link, CommonUtils.getLocale(context).user_profile_link,
+      _renderItem(Icons.link, GSYLocalizations.i18n(context).user_profile_link,
           userInfo.blog ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_link,
+        _showEditDialog(GSYLocalizations.i18n(context).user_profile_link,
             userInfo.blog, "blog", store);
       }),
-      _renderItem(Icons.group, CommonUtils.getLocale(context).user_profile_org,
+      _renderItem(Icons.group, GSYLocalizations.i18n(context).user_profile_org,
           userInfo.company ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_org,
+        _showEditDialog(GSYLocalizations.i18n(context).user_profile_org,
             userInfo.company, "company", store);
       }),
       _renderItem(
           Icons.location_on,
-          CommonUtils.getLocale(context).user_profile_location,
+          GSYLocalizations.i18n(context).user_profile_location,
           userInfo.location ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_location,
+        _showEditDialog(GSYLocalizations.i18n(context).user_profile_location,
             userInfo.location, "location", store);
       }),
       _renderItem(
           Icons.message,
-          CommonUtils.getLocale(context).user_profile_info,
+          GSYLocalizations.i18n(context).user_profile_info,
           userInfo.bio ?? "---", () {
-        _showEditDialog(CommonUtils.getLocale(context).user_profile_info,
+        _showEditDialog(GSYLocalizations.i18n(context).user_profile_info,
             userInfo.bio, "bio", store);
       }),
     ];
@@ -131,7 +132,7 @@ class _UserProfileState extends State<UserProfileInfo> {
                 child: new Material(
                     color: Colors.transparent,
                     child: new Text(
-                      CommonUtils.getLocale(context).home_user_info,
+                      GSYLocalizations.i18n(context).home_user_info,
                       style: GSYConstant.normalTextWhite,
                     )))),
         body: new Container(

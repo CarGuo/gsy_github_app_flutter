@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             height: 90.0),
                         new Padding(padding: new EdgeInsets.all(10.0)),
                         new GSYInputWidget(
-                          hintText: CommonUtils.getLocale(context)
+                          hintText: GSYLocalizations.i18n(context)
                               .login_username_hint_text,
                           iconData: GSYICons.LOGIN_USER,
                           onChanged: (String value) {
@@ -71,7 +72,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                         ),
                         new Padding(padding: new EdgeInsets.all(10.0)),
                         new GSYInputWidget(
-                          hintText: CommonUtils.getLocale(context)
+                          hintText: GSYLocalizations.i18n(context)
                               .login_password_hint_text,
                           iconData: GSYICons.LOGIN_PW,
                           obscureText: true,
@@ -82,7 +83,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                         ),
                         new Padding(padding: new EdgeInsets.all(30.0)),
                         new GSYFlexButton(
-                          text: CommonUtils.getLocale(context).login_text,
+                          text: GSYLocalizations.i18n(context).login_text,
                           color: Theme.of(context).primaryColor,
                           textColor: GSYColors.textWhite,
                           onPress: loginIn,
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             CommonUtils.showLanguageDialog(context);
                           },
                           child: Text(
-                            CommonUtils.getLocale(context).switch_language,
+                            GSYLocalizations.i18n(context).switch_language,
                             style: TextStyle(color: GSYColors.subTextColor),
                           ),
                         ),

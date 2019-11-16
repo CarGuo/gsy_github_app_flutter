@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -171,10 +172,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   ///渲染 Tab 的 Item
   _renderTabItem() {
     var itemList = [
-      CommonUtils.getLocale(context).repos_tab_info,
-      CommonUtils.getLocale(context).repos_tab_readme,
-      CommonUtils.getLocale(context).repos_tab_issue,
-      CommonUtils.getLocale(context).repos_tab_file,
+      GSYLocalizations.i18n(context).repos_tab_info,
+      GSYLocalizations.i18n(context).repos_tab_readme,
+      GSYLocalizations.i18n(context).repos_tab_issue,
+      GSYLocalizations.i18n(context).repos_tab_file,
     ];
     renderItem(String item, int i) {
       return new Container(
@@ -197,8 +198,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   _getMoreOtherItem(Repository repository) {
     return [
       ///Release Page
-      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_release,
-          CommonUtils.getLocale(context).repos_option_release, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context).repos_option_release,
+          GSYLocalizations.i18n(context).repos_option_release, (model) {
         String releaseUrl = "";
         String tagUrl = "";
         if (infoListKey == null || infoListKey.currentState == null) {
@@ -217,8 +218,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       }),
 
       ///Branch Page
-      new GSYOptionModel(CommonUtils.getLocale(context).repos_option_branch,
-          CommonUtils.getLocale(context).repos_option_branch, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context).repos_option_branch,
+          GSYLocalizations.i18n(context).repos_option_branch, (model) {
         if (branchList.length == 0) {
           return;
         }
@@ -248,20 +249,20 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     String title = "";
     String content = "";
     CommonUtils.showEditDialog(
-        context, CommonUtils.getLocale(context).issue_edit_issue, (titleValue) {
+        context, GSYLocalizations.i18n(context).issue_edit_issue, (titleValue) {
       title = titleValue;
     }, (contentValue) {
       content = contentValue;
     }, () {
       if (title == null || title.trim().length == 0) {
         Fluttertoast.showToast(
-            msg: CommonUtils.getLocale(context)
+            msg: GSYLocalizations.i18n(context)
                 .issue_edit_issue_title_not_be_null);
         return;
       }
       if (content == null || content.trim().length == 0) {
         Fluttertoast.showToast(
-            msg: CommonUtils.getLocale(context)
+            msg: GSYLocalizations.i18n(context)
                 .issue_edit_issue_content_not_be_null);
         return;
       }
