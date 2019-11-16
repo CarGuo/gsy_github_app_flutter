@@ -311,7 +311,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
           print(widgetContent);
           ///绘制顶部 tab 控件
           return new GSYTabBarWidget(
-            type: GSYTabBarWidget.TOP_TAB,
+            type: TabType.top,
             tabItems: _renderTabItem(),
             resizeToAvoidBottomPadding: false,
             tabViews: [
