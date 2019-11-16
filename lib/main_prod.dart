@@ -19,7 +19,6 @@ void main() {
       config: EnvConfig.fromJson(config),
     ));
   }, onError: (Object obj, StackTrace stack) {
-    print(obj);
-    print(stack);
+    ///do not thing
   });
 }

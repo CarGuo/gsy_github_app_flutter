@@ -53,6 +53,7 @@ class HomePage extends StatelessWidget {
       _renderTab(GSYICons.MAIN_QS, GSYLocalizations.i18n(context).home_trend),
       _renderTab(GSYICons.MAIN_MY, GSYLocalizations.i18n(context).home_my),
     ];
+
     ///增加返回按键监听
     return WillPopScope(
       onWillPop: () {
@@ -60,7 +61,7 @@ class HomePage extends StatelessWidget {
       },
       child: new GSYTabBarWidget(
         drawer: new HomeDrawer(),
-        type: GSYTabBarWidget.BOTTOM_TAB,
+        type: TabType.bottom,
         tabItems: tabs,
         tabViews: [
           new DynamicPage(),

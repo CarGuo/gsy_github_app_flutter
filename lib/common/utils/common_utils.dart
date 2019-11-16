@@ -182,6 +182,9 @@ class CommonUtils {
    */
   static changeLocale(Store<GSYState> store, int index) {
     Locale locale = store.state.platformLocale;
+    if(Config.DEBUG) {
+      print(store.state.platformLocale);
+    }
     switch (index) {
       case 1:
         locale = Locale('zh', 'CH');

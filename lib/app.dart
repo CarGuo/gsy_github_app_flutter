@@ -53,6 +53,8 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
+        store.state.platformLocale =
+            WidgetsBinding.instance.window.locale;
         return new MaterialApp(
 
             ///多语言实现代理
@@ -69,8 +71,6 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             /// "/" 和 MaterialApp 的 home 参数一个效果
             routes: {
               WelcomePage.sName: (context) {
-                store.state.platformLocale =
-                    WidgetsBinding.instance.window.locale;
                 return WelcomePage();
               },
               HomePage.sName: (context) {
