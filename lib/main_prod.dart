@@ -6,15 +6,13 @@ import 'package:gsy_github_app_flutter/app.dart';
 import 'package:gsy_github_app_flutter/env/config_wrapper.dart';
 import 'package:gsy_github_app_flutter/env/env_config.dart';
 
-import 'env/dev.dart';
+import 'env/prod.dart';
 
 void main() {
   runZoned(() {
     ErrorWidget.builder = (FlutterErrorDetails details) {
       Zone.current.handleUncaughtError(details.exception, details.stack);
-      return Container(
-          color: Colors.transparent
-      );
+      return Container(color: Colors.transparent);
     };
     runApp(ConfigWrapper(
       child: FlutterReduxApp(),

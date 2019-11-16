@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:share/share.dart';
@@ -40,18 +41,18 @@ class GSYCommonOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> list = [
-      new GSYOptionModel(CommonUtils.getLocale(context).option_web,
-          CommonUtils.getLocale(context).option_web, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context).option_web,
+          GSYLocalizations.i18n(context).option_web, (model) {
         CommonUtils.launchOutURL(control.url, context);
       }),
-      new GSYOptionModel(CommonUtils.getLocale(context).option_copy,
-          CommonUtils.getLocale(context).option_copy, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context).option_copy,
+          GSYLocalizations.i18n(context).option_copy, (model) {
         CommonUtils.copy(control.url ?? "", context);
       }),
-      new GSYOptionModel(CommonUtils.getLocale(context).option_share,
-          CommonUtils.getLocale(context).option_share, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context).option_share,
+          GSYLocalizations.i18n(context).option_share, (model) {
         Share.share(
-            CommonUtils.getLocale(context).option_share_title + control.url ??
+            GSYLocalizations.i18n(context).option_share_title + control.url ??
                 "");
       }),
     ];

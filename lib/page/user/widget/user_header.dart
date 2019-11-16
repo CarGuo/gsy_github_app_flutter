@@ -75,7 +75,7 @@ class UserHeaderItem extends StatelessWidget {
 
     int length = orgList.length > 3 ? 3 : orgList.length;
 
-    list.add(new Text(CommonUtils.getLocale(context).user_orgs_title + ":",
+    list.add(new Text(GSYLocalizations.i18n(context).user_orgs_title + ":",
         style: GSYConstant.smallSubLightText));
 
     for (int i = 0; i < length; i++) {
@@ -88,7 +88,7 @@ class UserHeaderItem extends StatelessWidget {
                 context,
                 userInfo.login +
                     " " +
-                    CommonUtils.getLocale(context).user_orgs_title,
+                    GSYLocalizations.i18n(context).user_orgs_title,
                 "org",
                 "user_orgs",
                 userName: userInfo.login);
@@ -168,7 +168,7 @@ class UserHeaderItem extends StatelessWidget {
                         new GSYIConText(
                           GSYICons.USER_ITEM_COMPANY,
                           userInfo.company ??
-                              CommonUtils.getLocale(context).nothing_now,
+                              GSYLocalizations.i18n(context).nothing_now,
                           GSYConstant.smallSubLightText,
                           GSYColors.subLightTextColor,
                           10.0,
@@ -179,7 +179,7 @@ class UserHeaderItem extends StatelessWidget {
                         new GSYIConText(
                           GSYICons.USER_ITEM_LOCATION,
                           userInfo.location ??
-                              CommonUtils.getLocale(context).nothing_now,
+                              GSYLocalizations.i18n(context).nothing_now,
                           GSYConstant.smallSubLightText,
                           GSYColors.subLightTextColor,
                           10.0,
@@ -206,7 +206,7 @@ class UserHeaderItem extends StatelessWidget {
                     child: new GSYIConText(
                       GSYICons.USER_ITEM_LINK,
                       userInfo.blog ??
-                          CommonUtils.getLocale(context).nothing_now,
+                          GSYLocalizations.i18n(context).nothing_now,
                       (userInfo.blog == null)
                           ? GSYConstant.smallSubLightText
                           : GSYConstant.smallActionLightText,
@@ -235,7 +235,7 @@ class UserHeaderItem extends StatelessWidget {
               ///用户创建时长
               new Container(
                   child: new Text(
-                    CommonUtils.getLocale(context).user_create_at +
+                    GSYLocalizations.i18n(context).user_create_at +
                         CommonUtils.getDateStr(userInfo.created_at),
                     style: GSYConstant.smallSubLightText,
                     overflow: TextOverflow.ellipsis,
@@ -319,7 +319,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              CommonUtils.getLocale(context).user_tab_fans,
+              GSYLocalizations.i18n(context).user_tab_fans,
               userInfo.followers,
               () {
                 NavigatorUtils.gotoCommonList(
@@ -333,7 +333,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              CommonUtils.getLocale(context).user_tab_focus,
+              GSYLocalizations.i18n(context).user_tab_focus,
               userInfo.following,
               () {
                 NavigatorUtils.gotoCommonList(
@@ -347,7 +347,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              CommonUtils.getLocale(context).user_tab_star,
+              GSYLocalizations.i18n(context).user_tab_star,
               userInfo.starred,
               () {
                 NavigatorUtils.gotoCommonList(
@@ -361,7 +361,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              CommonUtils.getLocale(context).user_tab_honor,
+              GSYLocalizations.i18n(context).user_tab_honor,
               beStaredCount,
               () {
                 if (honorList != null) {
@@ -433,8 +433,8 @@ class UserHeaderChart extends StatelessWidget {
           new Container(
               child: new Text(
                 (userInfo.type == "Organization")
-                    ? CommonUtils.getLocale(context).user_dynamic_group
-                    : CommonUtils.getLocale(context).user_dynamic_title,
+                    ? GSYLocalizations.i18n(context).user_dynamic_group
+                    : GSYLocalizations.i18n(context).user_dynamic_title,
                 style: GSYConstant.normalTextBold,
                 overflow: TextOverflow.ellipsis,
               ),

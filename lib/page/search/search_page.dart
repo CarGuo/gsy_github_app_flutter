@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
@@ -189,7 +190,7 @@ class _SearchPageState extends State<SearchPage>
                   });
                 },
               ),
-              title: new Text(CommonUtils.getLocale(context).search_title),
+              title: new Text(GSYLocalizations.i18n(context).search_title),
               bottom: new SearchBottom((value) {
                 searchText = value;
               }, (value) {
@@ -252,8 +253,8 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
         GSYSearchInputWidget(onChanged, onSubmitted, onSubmitPressed),
         new GSYSelectItemWidget(
           [
-            CommonUtils.getLocale(context).search_tab_repos,
-            CommonUtils.getLocale(context).search_tab_user,
+            GSYLocalizations.i18n(context).search_tab_repos,
+            GSYLocalizations.i18n(context).search_tab_user,
           ],
           selectItemChanged,
           elevation: 0.0,

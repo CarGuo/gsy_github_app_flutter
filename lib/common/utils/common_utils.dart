@@ -14,7 +14,7 @@ import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
 import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
-import 'package:gsy_github_app_flutter/common/style/gsy_string_base.dart';
+import 'package:gsy_github_app_flutter/common/localization/gsy_string_base.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
@@ -167,9 +167,9 @@ class CommonUtils {
 
   static showLanguageDialog(BuildContext context) {
     List<String> list = [
-      CommonUtils.getLocale(context).home_language_default,
-      CommonUtils.getLocale(context).home_language_zh,
-      CommonUtils.getLocale(context).home_language_en,
+      GSYLocalizations.i18n(context).home_language_default,
+      GSYLocalizations.i18n(context).home_language_zh,
+      GSYLocalizations.i18n(context).home_language_en,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.changeLocale(StoreProvider.of<GSYState>(context), index);
@@ -192,10 +192,6 @@ class CommonUtils {
     }
     curLocale = locale;
     store.dispatch(RefreshLocaleAction(locale));
-  }
-
-  static GSYStringBase getLocale(BuildContext context) {
-    return GSYLocalizations.of(context).currentLocalized;
   }
 
   static List<Color> getThemeListColor() {
@@ -225,7 +221,7 @@ class CommonUtils {
   static copy(String data, BuildContext context) {
     Clipboard.setData(new ClipboardData(text: data));
     Fluttertoast.showToast(
-        msg: CommonUtils.getLocale(context).option_share_copy_success);
+        msg: GSYLocalizations.i18n(context).option_share_copy_success);
   }
 
   static launchUrl(context, String url) {
@@ -281,7 +277,7 @@ class CommonUtils {
       await launch(url);
     } else {
       Fluttertoast.showToast(
-          msg: CommonUtils.getLocale(context).option_web_launcher_error +
+          msg: GSYLocalizations.i18n(context).option_web_launcher_error +
               ": " +
               url);
     }
@@ -314,7 +310,7 @@ class CommonUtils {
                         new Container(height: 10.0),
                         new Container(
                             child: new Text(
-                                CommonUtils.getLocale(context).loading_text,
+                                GSYLocalizations.i18n(context).loading_text,
                                 style: GSYConstant.normalTextWhite)),
                       ],
                     ),
@@ -404,20 +400,20 @@ class CommonUtils {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(CommonUtils.getLocale(context).app_version_title),
+            title: new Text(GSYLocalizations.i18n(context).app_version_title),
             content: new Text(contentMsg),
             actions: <Widget>[
               new FlatButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: new Text(CommonUtils.getLocale(context).app_cancel)),
+                  child: new Text(GSYLocalizations.i18n(context).app_cancel)),
               new FlatButton(
                   onPressed: () {
                     launch(Address.updateUrl);
                     Navigator.pop(context);
                   },
-                  child: new Text(CommonUtils.getLocale(context).app_ok)),
+                  child: new Text(GSYLocalizations.i18n(context).app_ok)),
             ],
           );
         });

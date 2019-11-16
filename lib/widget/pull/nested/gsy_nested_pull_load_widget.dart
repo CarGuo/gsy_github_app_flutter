@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 
@@ -152,7 +153,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
                 height: 70.0),
           ),
           Container(
-            child: Text(CommonUtils.getLocale(context).app_empty,
+            child: Text(GSYLocalizations.i18n(context).app_empty,
                 style: GSYConstant.normalText),
           ),
         ],
@@ -176,7 +177,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
                 ///加载中文本
                 new Text(
-                  CommonUtils.getLocale(context).load_more_text,
+                  GSYLocalizations.i18n(context).load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
                     fontSize: 14.0,

@@ -1,6 +1,7 @@
 class Config {
+  static bool DEBUG = true;
+
   static const PAGE_SIZE = 20;
-  static const DEBUG = true;
 
   /// //////////////////////////////////////常量////////////////////////////////////// ///
   static const TOKEN_KEY = "token";

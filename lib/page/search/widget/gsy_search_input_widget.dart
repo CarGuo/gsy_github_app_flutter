@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 
@@ -39,7 +40,7 @@ class GSYSearchInputWidget extends StatelessWidget {
               child: new TextField(
                   autofocus: false,
                   decoration: new InputDecoration.collapsed(
-                    hintText: CommonUtils.getLocale(context).repos_issue_search,
+                    hintText: GSYLocalizations.i18n(context).repos_issue_search,
                     hintStyle: GSYConstant.middleSubText,
                   ),
                   style: GSYConstant.middleText,
