@@ -17,7 +17,7 @@ dependencies:
   flutter_redux: ^0.5.3
   package_info: 0.4.0+6
   connectivity: 0.4.4
-  flutter_markdown: ^0.2.0
+  flutter_markdown: ^0.3.0
   share: ^0.6.2+3
   flutter_spinkit: ^4.0.0
   flutter_webview_plugin: ^0.3.8
