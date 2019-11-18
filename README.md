@@ -38,6 +38,8 @@
 > 2、 Scoped Model：目前在 RepositoryDetailPage 出使用
 >
 > 3、 Redux：目前在 MyPage ，UserInfo、Theme、Localization 等上面使用。
+>
+> 4、 LoginPage：另类的 BLoC 模式。
 > 
 > **列表显示有多个，其中：**
 > 
