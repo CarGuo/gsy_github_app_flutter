@@ -25,7 +25,7 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final Widget bottomBar;
 
-  final TarWidgetControl tarWidgetControl;
+  final List<Widget> footerButtons;
 
   final ValueChanged<int> onPageChanged;
 
@@ -42,7 +42,7 @@ class GSYTabBarWidget extends StatefulWidget {
     this.floatingActionButtonLocation,
     this.floatingActionButton,
     this.resizeToAvoidBottomPadding = true,
-    this.tarWidgetControl,
+    this.footerButtons,
     this.onPageChanged,
   }) : super(key: key);
 
@@ -79,9 +79,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
         floatingActionButton:
             SafeArea(child: widget.floatingActionButton ?? Container()),
         floatingActionButtonLocation: widget.floatingActionButtonLocation,
-        persistentFooterButtons: widget.tarWidgetControl == null
-            ? null
-            : widget.tarWidgetControl.footerButton,
+        persistentFooterButtons: widget.footerButtons,
         appBar: new AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: widget.title,
@@ -140,10 +138,6 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
           ),
         ));
   }
-}
-
-class TarWidgetControl {
-  List<Widget> footerButton = [];
 }
 
 enum TabType { top, bottom }
