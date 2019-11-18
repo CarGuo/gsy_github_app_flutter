@@ -2,11 +2,9 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/page/search/search_bloc.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_drawer.dart';
@@ -30,20 +28,7 @@ class _SearchPageState extends State<SearchPage>
         AutomaticKeepAliveClientMixin<SearchPage>,
         GSYListState<SearchPage>,
         SingleTickerProviderStateMixin {
-  ///搜索仓库还是人
-  int selectIndex = 0;
-
-  ///搜索文件
-  String searchText;
-
-  ///排序类型
-  String type = searchFilterType[0].value;
-
-  ///排序
-  String sort = sortType[0].value;
-
-  ///过滤语言
-  String language = searchLanguageType[0].value;
+  final SearchBLoC searchBLoC = new SearchBLoC();
 
   AnimationController controller;
   Animation animation;
@@ -52,13 +37,13 @@ class _SearchPageState extends State<SearchPage>
   ///绘制item
   _renderItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
-    if (selectIndex == 0) {
+    if (searchBLoC.selectIndex == 0) {
       ReposViewModel reposViewModel = ReposViewModel.fromMap(data);
       return new ReposItem(reposViewModel, onPressed: () {
         NavigatorUtils.goReposDetail(
             context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
-    } else if (selectIndex == 1) {
+    } else if (searchBLoC.selectIndex == 1) {
       return new UserItem(UserItemViewModel.fromMap(data), onPressed: () {
         NavigatorUtils.goPerson(
             context, UserItemViewModel.fromMap(data).userName);
@@ -74,8 +59,7 @@ class _SearchPageState extends State<SearchPage>
 
   ///获取搜索数据
   _getDataLogic() async {
-    return await ReposDao.searchRepositoryDao(searchText, language, type, sort,
-        selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
+    return await searchBLoC.getDataLogic(page);
   }
 
   ///清空过滤数据
@@ -102,6 +86,17 @@ class _SearchPageState extends State<SearchPage>
   @override
   requestRefresh() async {
     return await _getDataLogic();
+  }
+
+  _search() {
+    if (searchBLoC.searchText == null ||
+        searchBLoC.searchText.trim().length == 0) {
+      return;
+    }
+    if (isLoading) {
+      return;
+    }
+    _resolveSelectIndex();
   }
 
   @override
@@ -160,19 +155,19 @@ class _SearchPageState extends State<SearchPage>
           endDrawer: new GSYSearchDrawer(
             (String type) {
               ///排序类型
-              this.type = type;
+              searchBLoC.type = type;
               Navigator.pop(context);
               _resolveSelectIndex();
             },
             (String sort) {
               ///排序状态
-              this.sort = sort;
+              searchBLoC.sort = sort;
               Navigator.pop(context);
               _resolveSelectIndex();
             },
             (String language) {
               ///过滤语言
-              this.language = language;
+              searchBLoC.language = language;
               Navigator.pop(context);
               _resolveSelectIndex();
             },
@@ -191,35 +186,25 @@ class _SearchPageState extends State<SearchPage>
                 },
               ),
               title: new Text(GSYLocalizations.i18n(context).search_title),
-              bottom: new SearchBottom((value) {
-                searchText = value;
-              }, (value) {
-                searchText = value;
-                if (searchText == null || searchText.trim().length == 0) {
-                  return;
-                }
-                if (isLoading) {
-                  return;
-                }
-                _resolveSelectIndex();
-              }, () {
-                if (searchText == null || searchText.trim().length == 0) {
-                  return;
-                }
-                if (isLoading) {
-                  return;
-                }
-                _resolveSelectIndex();
-              }, (selectIndex) {
-                if (searchText == null || searchText.trim().length == 0) {
-                  return;
-                }
-                if (isLoading) {
-                  return;
-                }
-                this.selectIndex = selectIndex;
-                _resolveSelectIndex();
-              })),
+              bottom: new SearchBottom(
+                  textEditingController: searchBLoC.textEditingController,
+                  onSubmitted: (_) {
+                    _search();
+                  },
+                  onSubmitPressed: () {
+                    _search();
+                  },
+                  selectItemChanged: (selectIndex) {
+                    if (searchBLoC.searchText == null ||
+                        searchBLoC.searchText.trim().length == 0) {
+                      return;
+                    }
+                    if (isLoading) {
+                      return;
+                    }
+                    searchBLoC.selectIndex = selectIndex;
+                    _resolveSelectIndex();
+                  })),
           body: GSYPullLoadWidget(
             pullLoadWidgetControl,
             (BuildContext context, int index) => _renderItem(index),
@@ -235,22 +220,27 @@ class _SearchPageState extends State<SearchPage>
 
 ///实现 PreferredSizeWidget 实现自定义 appbar bottom 控件
 class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
-  final SelectItemChanged onChanged;
-
   final SelectItemChanged onSubmitted;
 
   final SelectItemChanged selectItemChanged;
 
   final VoidCallback onSubmitPressed;
+  final TextEditingController textEditingController;
 
-  SearchBottom(this.onChanged, this.onSubmitted, this.onSubmitPressed,
-      this.selectItemChanged);
+  SearchBottom(
+      {this.onSubmitted,
+      this.onSubmitPressed,
+      this.selectItemChanged,
+      this.textEditingController});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GSYSearchInputWidget(onChanged, onSubmitted, onSubmitPressed),
+        GSYSearchInputWidget(
+            controller: textEditingController,
+            onSubmitted: onSubmitted,
+            onSubmitPressed: onSubmitPressed),
         new GSYSelectItemWidget(
           [
             GSYLocalizations.i18n(context).search_tab_repos,

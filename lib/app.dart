@@ -70,12 +70,15 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             /// "/" 和 MaterialApp 的 home 参数一个效果
             routes: {
               WelcomePage.sName: (context) {
+                _context = context;
                 return WelcomePage();
               },
               HomePage.sName: (context) {
+                _context = context;
                 return NavigatorUtils.pageContainer(new HomePage());
               },
               LoginPage.sName: (context) {
+                _context = context;
                 return NavigatorUtils.pageContainer(new LoginPage());
               },
               PhotoViewPage.sName: (context) {
@@ -89,6 +92,8 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
 
 abstract class HttpErrorListener extends State<FlutterReduxApp> {
   StreamSubscription stream;
+
+  BuildContext _context;
 
   @override
   void initState() {
@@ -114,28 +119,28 @@ abstract class HttpErrorListener extends State<FlutterReduxApp> {
     switch (code) {
       case Code.NETWORK_ERROR:
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context).network_error);
+            msg: GSYLocalizations.i18n(_context).network_error);
         break;
       case 401:
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context).network_error_401);
+            msg: GSYLocalizations.i18n(_context).network_error_401);
         break;
       case 403:
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context).network_error_403);
+            msg: GSYLocalizations.i18n(_context).network_error_403);
         break;
       case 404:
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context).network_error_404);
+            msg: GSYLocalizations.i18n(_context).network_error_404);
         break;
       case Code.NETWORK_TIMEOUT:
         //超时
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context).network_error_timeout);
+            msg: GSYLocalizations.i18n(_context).network_error_timeout);
         break;
       default:
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context).network_error_unknown +
+            msg: GSYLocalizations.i18n(_context).network_error_unknown +
                 " " +
                 message);
         break;
