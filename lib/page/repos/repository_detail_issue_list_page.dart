@@ -112,7 +112,6 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -141,11 +140,10 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
       backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         leading: new Container(),
-        flexibleSpace: GSYSearchInputWidget((value) {
+        flexibleSpace: GSYSearchInputWidget(onSubmitted: (value) {
           this.searchText = value;
-        }, (value) {
           _resolveSelectIndex();
-        }, () {
+        }, onSubmitPressed: () {
           _resolveSelectIndex();
         }),
         elevation: 0.0,
