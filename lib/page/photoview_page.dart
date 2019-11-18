@@ -17,12 +17,13 @@ import 'package:photo_view/photo_view.dart';
  */
 
 class PhotoViewPage extends StatelessWidget {
-  final String url;
+  static const String sName = "PhotoViewPage";
 
-  PhotoViewPage(this.url);
+  PhotoViewPage();
 
   @override
   Widget build(BuildContext context) {
+    final String url = ModalRoute.of(context).settings.arguments;
     return new Scaffold(
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.file_download),
