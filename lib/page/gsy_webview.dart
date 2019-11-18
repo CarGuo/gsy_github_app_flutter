@@ -11,7 +11,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 class GSYWebView extends StatelessWidget {
   final String url;
   final String title;
-  final OptionControl optionControl = new OptionControl();
 
   GSYWebView(this.url, this.title);
 
@@ -19,7 +18,6 @@ class GSYWebView extends StatelessWidget {
     if (url == null || url.length == 0) {
       return new Text(title);
     }
-    optionControl.url = url;
     return new Row(children: [
       new Expanded(
           child: new Container(
@@ -29,7 +27,7 @@ class GSYWebView extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       )),
-      GSYCommonOptionWidget(optionControl),
+      GSYCommonOptionWidget(url: url),
     ]);
   }
 

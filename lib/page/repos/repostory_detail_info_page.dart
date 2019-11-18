@@ -29,10 +29,7 @@ class ReposDetailInfoPage extends StatefulWidget {
 
   final String reposName;
 
-  final OptionControl titleOptionControl;
-
-  ReposDetailInfoPage(this.userName, this.reposName, this.titleOptionControl,
-      {Key key})
+  ReposDetailInfoPage(this.userName, this.reposName, {Key key})
       : super(key: key);
 
   @override
@@ -118,9 +115,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             ReposDetailModel.of(context).currentBranch)
         .then((result) {
       if (result != null && result.result) {
-        setState(() {
-          widget.titleOptionControl.url = result.data.htmlUrl;
-        });
         ReposDetailModel.of(context).repository = result.data;
         return result.next();
       }
@@ -130,9 +124,6 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         if (!isShow) {
           return;
         }
-        setState(() {
-          widget.titleOptionControl.url = result.data.htmlUrl;
-        });
         ReposDetailModel.of(context).repository = result.data;
       }
     });

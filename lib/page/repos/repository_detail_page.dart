@@ -46,9 +46,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   ///仓库的详情数据实体
   final ReposDetailModel reposDetailModel = new ReposDetailModel();
 
-  ///配置标题栏右侧控件显示
-  final OptionControl titleOptionControl = new OptionControl();
-
   /// 文件列表页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailFileListPageState> fileListKey =
       new GlobalKey<RepositoryDetailFileListPageState>();
@@ -268,7 +265,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         builder: (context, child, model) {
           Widget widgetContent =
               (model.repository != null && model.repository.htmlUrl != null)
-                  ? new GSYCommonOptionWidget(titleOptionControl,
+                  ? new GSYCommonOptionWidget(url: model.repository?.htmlUrl,
                       otherList: _getMoreOtherItem(model.repository))
                   : Container();
 
@@ -280,7 +277,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             //footerButtons: model.footerButtons,
             tabViews: [
               new ReposDetailInfoPage(
-                  widget.userName, widget.reposName, titleOptionControl,
+                  widget.userName, widget.reposName,
                   key: infoListKey),
               new RepositoryDetailReadmePage(widget.userName, widget.reposName,
                   key: readmeKey),
