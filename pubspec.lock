@@ -248,7 +248,7 @@ packages:
       name: flutter_markdown
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.0"
+    version: "0.3.0"
   flutter_redux:
     dependency: "direct main"
     description:
