@@ -525,7 +525,7 @@ class ReposDao {
         var test =  serializers.deserializeWith<Branch>(serializerForType, data);
         /// 反序列化
         Map result = serializers.serializeWith(serializerForType, test);
-        print("###### $test ${result}");
+        //print("###### $test ${result}");
 
         list.add(data['name']);
       }

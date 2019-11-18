@@ -30,7 +30,6 @@ class GSYInputWidget extends StatefulWidget {
 
 /// State for [GSYInputWidget] widgets.
 class _GSYInputWidgetState extends State<GSYInputWidget> {
-  _GSYInputWidgetState() : super();
 
   @override
   Widget build(BuildContext context) {
