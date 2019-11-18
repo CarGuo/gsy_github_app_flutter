@@ -31,8 +31,6 @@ class _NotifyPageState extends State<NotifyPage>
 
   int selectIndex = 0;
 
-  _NotifyPageState();
-
   ///绘制 Item
   _renderItem(index) {
     Model.Notification notification = pullLoadWidgetControl.dataList[index];
