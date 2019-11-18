@@ -31,28 +31,11 @@ class GSYNestedPullLoadWidget extends StatefulWidget {
       {this.refreshKey, this.headerSliverBuilder, this.scrollController});
 
   @override
-  _GSYNestedPullLoadWidgetState createState() => _GSYNestedPullLoadWidgetState(
-      this.control,
-      this.itemBuilder,
-      this.onRefresh,
-      this.onLoadMore,
-      this.refreshKey);
+  _GSYNestedPullLoadWidgetState createState() =>
+      _GSYNestedPullLoadWidgetState();
 }
 
 class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
-  final IndexedWidgetBuilder itemBuilder;
-
-  final RefreshCallback onLoadMore;
-
-  final RefreshCallback onRefresh;
-
-  final Key refreshKey;
-
-  GSYPullLoadWidgetControl control;
-
-  _GSYNestedPullLoadWidgetState(this.control, this.itemBuilder, this.onRefresh,
-      this.onLoadMore, this.refreshKey);
-
   @override
   void initState() {
     super.initState();
@@ -63,43 +46,44 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   ///比如多个头部，是否需要空页面，是否需要显示加载更多。
   _getListCount() {
     ///是否需要头部
-    if (control.needHeader) {
+    if (widget.control.needHeader) {
       ///如果需要头部，用Item 0 的 Widget 作为ListView的头部
       ///列表数量大于0时，因为头部和底部加载更多选项，需要对列表数据总数+2
-      return (control.dataList.length > 0)
-          ? control.dataList.length + 2
-          : control.dataList.length + 1;
+      return (widget.control.dataList.length > 0)
+          ? widget.control.dataList.length + 2
+          : widget.control.dataList.length + 1;
     } else {
       ///如果不需要头部，在没有数据时，固定返回数量1用于空页面呈现
-      if (control.dataList.length == 0) {
+      if (widget.control.dataList.length == 0) {
         return 1;
       }
 
       ///如果有数据,因为部加载更多选项，需要对列表数据总数+1
-      return (control.dataList.length > 0)
-          ? control.dataList.length + 1
-          : control.dataList.length;
+      return (widget.control.dataList.length > 0)
+          ? widget.control.dataList.length + 1
+          : widget.control.dataList.length;
     }
   }
 
   ///根据配置状态返回实际列表渲染Item
   _getItem(int index) {
-    if (!control.needHeader &&
-        index == control.dataList.length &&
-        control.dataList.length != 0) {
+    if (!widget.control.needHeader &&
+        index == widget.control.dataList.length &&
+        widget.control.dataList.length != 0) {
       ///如果不需要头部，并且数据不为0，当index等于数据长度时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (control.needHeader &&
+    } else if (widget.control.needHeader &&
         index == _getListCount() - 1 &&
-        control.dataList.length != 0) {
+        widget.control.dataList.length != 0) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (!control.needHeader && control.dataList.length == 0) {
+    } else if (!widget.control.needHeader &&
+        widget.control.dataList.length == 0) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {
       ///回调外部正常渲染Item，如果这里有需要，可以直接返回相对位置的index
-      return itemBuilder(context, index);
+      return widget.itemBuilder(context, index);
     }
   }
 
@@ -107,20 +91,20 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   Widget build(BuildContext context) {
     return new NestedScrollViewRefreshIndicator(
       ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
-      key: refreshKey,
+      key: widget.refreshKey,
       child: NestedScrollView(
         ///滑动监听
         controller: widget.scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         headerSliverBuilder: widget.headerSliverBuilder,
         body: NotificationListener(
-          onNotification: (ScrollNotification p){
-            if (p.metrics.pixels >=
-                p.metrics.maxScrollExtent) {
-              if (this.control.needLoadMore.value) {
-                this.onLoadMore?.call();
+          onNotification: (ScrollNotification p) {
+            if (p.metrics.pixels >= p.metrics.maxScrollExtent) {
+              if (widget.control.needLoadMore.value) {
+                widget.onLoadMore?.call();
               }
             }
+            return false;
           },
           child: ListView.builder(
             itemBuilder: (_, index) {
@@ -134,7 +118,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
       ),
 
       ///下拉刷新触发，返回的是一个Future
-      onRefresh: onRefresh,
+      onRefresh: widget.onRefresh,
     );
   }
 
@@ -164,7 +148,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   ///上拉加载更多
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
-    Widget bottomWidget = (control.needLoadMore.value)
+    Widget bottomWidget = (widget.control.needLoadMore.value)
         ? new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
