@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/repos/repository_detail_issue_list_p
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_readme_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_file_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repostory_detail_info_page.dart';
+import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
 import 'package:gsy_github_app_flutter/widget/anima/curves_bezier.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
@@ -38,14 +39,7 @@ class RepositoryDetailPage extends StatefulWidget {
 }
 
 class _RepositoryDetailPageState extends State<RepositoryDetailPage>
-
-    ///混入动画需求的 Ticker
-    with
-        SingleTickerProviderStateMixin {
-
-  ///仓库的详情数据实体
-  final ReposDetailModel reposDetailModel = new ReposDetailModel();
-
+    with SingleTickerProviderStateMixin {
   /// 文件列表页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailFileListPageState> fileListKey =
       new GlobalKey<RepositoryDetailFileListPageState>();
@@ -65,9 +59,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   ///动画控制器，用于底部发布 issue 按键动画
   AnimationController animationController;
 
+  ///仓库的详情数据实体
+  ReposDetailModel reposDetailModel;
+
   _refresh() {
-    reposDetailModel.getReposStatus(
-        widget.userName, widget.reposName, _getBottomWidget);
+    reposDetailModel.getReposStatus(_getBottomWidget);
   }
 
   ///绘制底部状态 item
@@ -92,11 +88,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         ? []
         : <Widget>[
             /// star
-            _renderBottomItem(
-                reposDetailModel.bottomModel.starText, reposDetailModel.bottomModel.starIcon, () {
+            _renderBottomItem(reposDetailModel.bottomModel.starText,
+                reposDetailModel.bottomModel.starIcon, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryStarDao(
-                      widget.userName, widget.reposName, reposDetailModel.bottomModel.star)
+              return ReposDao.doRepositoryStarDao(widget.userName,
+                      widget.reposName, reposDetailModel.bottomModel.star)
                   .then((result) {
                 _refresh();
                 Navigator.pop(context);
@@ -104,8 +100,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             }),
 
             /// watch
-            _renderBottomItem(
-                reposDetailModel.bottomModel.watchText, reposDetailModel.bottomModel.watchIcon, () {
+            _renderBottomItem(reposDetailModel.bottomModel.watchText,
+                reposDetailModel.bottomModel.watchIcon, () {
               CommonUtils.showLoadingDialog(context);
               return ReposDao.doRepositoryWatchDao(widget.userName,
                       widget.reposName, reposDetailModel.bottomModel.watch)
@@ -182,10 +178,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         if (reposDetailModel.branchList.length == 0) {
           return;
         }
-        CommonUtils.showCommitOptionDialog(context, reposDetailModel.branchList, (value) {
-          setState(() {
-            reposDetailModel.currentBranch = reposDetailModel.branchList[value];
-          });
+        CommonUtils.showCommitOptionDialog(context, reposDetailModel.branchList,
+            (value) {
+          reposDetailModel.currentBranch = reposDetailModel.branchList[value];
           if (infoListKey.currentState != null &&
               infoListKey.currentState.mounted) {
             infoListKey.currentState.showRefreshLoading();
@@ -246,7 +241,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   @override
   void initState() {
     super.initState();
-    reposDetailModel.getBranchList(widget.userName, widget.reposName);
+
+    ///仓库的详情数据实体
+    reposDetailModel ??= new ReposDetailModel(
+        userName: widget.userName, reposName: widget.reposName);
+
+    reposDetailModel.getBranchList();
 
     _refresh();
 
@@ -265,7 +265,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         builder: (context, child, model) {
           Widget widgetContent =
               (model.repository != null && model.repository.htmlUrl != null)
-                  ? new GSYCommonOptionWidget(url: model.repository?.htmlUrl,
+                  ? new GSYCommonOptionWidget(
+                      url: model.repository?.htmlUrl,
                       otherList: _getMoreOtherItem(model.repository))
                   : Container();
 
@@ -276,8 +277,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             resizeToAvoidBottomPadding: false,
             //footerButtons: model.footerButtons,
             tabViews: [
-              new ReposDetailInfoPage(
-                  widget.userName, widget.reposName,
+              new ReposDetailInfoPage(widget.userName, widget.reposName,
                   key: infoListKey),
               new RepositoryDetailReadmePage(widget.userName, widget.reposName,
                   key: readmeKey),
@@ -354,93 +354,4 @@ class BottomStatusModel {
 
   BottomStatusModel(this.watchText, this.starText, this.watchIcon,
       this.starIcon, this.watch, this.star);
-}
-
-///仓库详情数据实体，包含有当前index，仓库数据，分支等等
-class ReposDetailModel extends Model {
-  static ReposDetailModel of(BuildContext context) =>
-      ScopedModel.of<ReposDetailModel>(context);
-
-  int _currentIndex = 0;
-
-  String _currentBranch = "master";
-
-  Repository _repository = Repository.empty();
-
-  BottomStatusModel _bottomModel;
-
-  List<Widget> _footerButtons;
-
-  List<String> _branchList;
-
-  Repository get repository => _repository;
-
-  set repository(Repository data) {
-    _repository = data;
-    notifyListeners();
-  }
-
-  int get currentIndex => _currentIndex;
-
-  set currentIndex(int data) {
-    _currentIndex = data;
-    notifyListeners();
-  }
-
-  String get currentBranch => _currentBranch;
-
-  set currentBranch(String data) {
-    _currentBranch = data;
-    notifyListeners();
-  }
-
-  BottomStatusModel get bottomModel => _bottomModel;
-
-  set bottomModel(BottomStatusModel data) {
-    _bottomModel = data;
-    notifyListeners();
-  }
-
-  List<Widget> get footerButtons => _footerButtons;
-
-  set footerButtons(List<Widget> data) {
-    _footerButtons = data;
-    notifyListeners();
-  }
-
-  List<String> get branchList => _branchList;
-
-  set branchList(List<String> data) {
-    _branchList = data;
-    notifyListeners();
-  }
-
-  ///获取网络端仓库的star等状态
-  getReposStatus(
-      String userName, String reposName, List<Widget> getBottomWidget()) async {
-    var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
-    String watchText = result.data["watch"] ? "UnWatch" : "Watch";
-    String starText = result.data["star"] ? "UnStar" : "Star";
-    IconData watchIcon = result.data["watch"]
-        ? GSYICons.REPOS_ITEM_WATCHED
-        : GSYICons.REPOS_ITEM_WATCH;
-    IconData starIcon = result.data["star"]
-        ? GSYICons.REPOS_ITEM_STARED
-        : GSYICons.REPOS_ITEM_STAR;
-    BottomStatusModel model = new BottomStatusModel(watchText, starText,
-        watchIcon, starIcon, result.data["watch"], result.data["star"]);
-    bottomModel = model;
-    footerButtons = getBottomWidget();
-  }
-
-  ///获取分支数据
-  getBranchList(
-    String userName,
-    String reposName,
-  ) async {
-    var result = await ReposDao.getBranchesDao(userName, reposName);
-    if (result != null && result.result) {
-      branchList = result.data;
-    }
-  }
 }

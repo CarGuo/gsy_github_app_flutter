@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
@@ -108,6 +107,12 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     return await IssueDao.searchRepositoryIssue(
         searchString, widget.userName, widget.reposName, this.issueState,
         page: this.page);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
   }
 
   @override
