@@ -43,10 +43,7 @@ class _PushDetailPageState extends State<PushDetailPage>
   ///提价信息页面的头部数据实体
   PushHeaderViewModel pushHeaderViewModel = new PushHeaderViewModel();
 
-  ///配置标题了右侧的更多显示
-  final OptionControl titleOptionControl = new OptionControl();
-
-  _PushDetailPageState();
+  String htmlUrl;
 
   @override
   Future<Null> handleRefresh() async {
@@ -66,7 +63,7 @@ class _PushDetailPageState extends State<PushDetailPage>
           pushHeaderViewModel = PushHeaderViewModel.forMap(pushCommit);
           pullLoadWidgetControl.dataList.addAll(pushCommit.files);
           pullLoadWidgetControl.needLoadMore.value = false;
-          titleOptionControl.url = pushCommit.htmlUrl;
+          htmlUrl = pushCommit.htmlUrl;
         });
       }
     }
@@ -126,9 +123,8 @@ class _PushDetailPageState extends State<PushDetailPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget widgetContent = (widget.needHomeIcon)
-        ? null
-        : new GSYCommonOptionWidget(titleOptionControl);
+    Widget widgetContent =
+        (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(url: htmlUrl);
     return new Scaffold(
       appBar: new AppBar(
         title: GSYTitleBar(

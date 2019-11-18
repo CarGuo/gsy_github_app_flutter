@@ -47,6 +47,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///头部信息数据是否加载成功，成功了就可以显示底部状态
   bool headerStatus = false;
 
+  String htmlUrl;
+
   /// issue 的头部数据显示
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
 
@@ -55,9 +57,6 @@ class _IssueDetailPageState extends State<IssueDetailPage>
 
   ///控制编辑时issue的content
   TextEditingController issueInfoValueControl = new TextEditingController();
-
-  ///标题栏右侧显示控制
-  final OptionControl titleOptionControl = new OptionControl();
 
   ///绘制item
   _renderEventItem(index) {
@@ -151,7 +150,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     Issue issue = res.data;
     setState(() {
       issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue);
-      titleOptionControl.url = issue.htmlUrl;
+      htmlUrl = issue.htmlUrl;
       headerStatus = true;
     });
   }
@@ -367,9 +366,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget widgetContent = (widget.needHomeIcon)
-        ? null
-        : new GSYCommonOptionWidget(titleOptionControl);
+    Widget widgetContent =
+        (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(url: htmlUrl);
     return new Scaffold(
       persistentFooterButtons: _getBottomWidget(),
       appBar: new AppBar(

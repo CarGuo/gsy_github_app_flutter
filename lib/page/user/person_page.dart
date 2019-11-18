@@ -42,8 +42,6 @@ class _PersonState extends BasePersonState<PersonPage> {
 
   final List<UserOrg> orgList = new List();
 
-  final OptionControl titleOptionControl = new OptionControl();
-
   _PersonState(this.userName);
 
   ///处理用户信息显示
@@ -51,7 +49,6 @@ class _PersonState extends BasePersonState<PersonPage> {
     if (isShow) {
       setState(() {
         userInfo = res.data;
-        titleOptionControl.url = res.data.html_url;
       });
     }
   }
@@ -151,7 +148,9 @@ class _PersonState extends BasePersonState<PersonPage> {
         appBar: new AppBar(
             title: GSYTitleBar(
           (userInfo != null && userInfo.login != null) ? userInfo.login : "",
-          rightWidget: GSYCommonOptionWidget(titleOptionControl),
+          rightWidget: GSYCommonOptionWidget(
+            url: userInfo?.html_url,
+          ),
         )),
         floatingActionButton: new FloatingActionButton(
             child: new Text(focus),
