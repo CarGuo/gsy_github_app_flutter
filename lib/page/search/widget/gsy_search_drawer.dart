@@ -24,7 +24,6 @@ class GSYSearchDrawer extends StatefulWidget {
 }
 
 class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
-  _GSYSearchDrawerState();
 
   final double itemWidth = 200.0;
 

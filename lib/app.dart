@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
 import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
+import 'package:gsy_github_app_flutter/page/photoview_page.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -53,8 +53,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
-        store.state.platformLocale =
-            WidgetsBinding.instance.window.locale;
+        store.state.platformLocale = WidgetsBinding.instance.window.locale;
         return new MaterialApp(
 
             ///多语言实现代理
@@ -78,6 +77,9 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
               },
               LoginPage.sName: (context) {
                 return NavigatorUtils.pageContainer(new LoginPage());
+              },
+              PhotoViewPage.sName: (context) {
+                return PhotoViewPage();
               },
             });
       }),
