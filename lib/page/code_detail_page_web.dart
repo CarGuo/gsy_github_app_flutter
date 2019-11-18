@@ -73,7 +73,6 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
           initialData: widget.data,
           future: _getData(),
           builder: (context, result) {
-            print("FFFFFFFFF ${result.data}");
             if (result.data == null || result.data.isEmpty) {
               return new Center(
                 child: new Container(
