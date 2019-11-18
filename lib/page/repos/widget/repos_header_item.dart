@@ -218,14 +218,18 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                                       offset: Offset(0.5, 0.5))
                                 ])),
 
-                        ///仓库名
-                        new Text(widget.reposHeaderViewModel.repositoryName,
-                            style: GSYConstant.normalTextMitWhiteBold.copyWith(
-                                shadows: [
+                        ///仓库名,
+                        new Expanded(
+                            child: new Text(
+                                widget.reposHeaderViewModel.repositoryName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GSYConstant.normalTextMitWhiteBold
+                                    .copyWith(shadows: [
                                   BoxShadow(
                                       color: Colors.black,
                                       offset: Offset(0.5, 0.5))
-                                ])),
+                                ])))
                       ],
                     ),
                     new Row(

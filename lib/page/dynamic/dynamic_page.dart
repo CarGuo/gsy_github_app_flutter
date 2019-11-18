@@ -41,7 +41,6 @@ class _DynamicPageState extends State<DynamicPage>
 
   ///下拉刷新数据
   Future<void> requestRefresh() async {
-    //await Future.delayed(Duration(seconds: 1));
     return await dynamicBloc.requestRefresh(_getStore().state.userInfo?.login);
   }
 
