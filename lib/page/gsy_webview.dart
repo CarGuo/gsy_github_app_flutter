@@ -53,7 +53,7 @@ class GSYWebView extends StatelessWidget {
                 JavascriptChannel(
                     name: 'Print',
                     onMessageReceived: (JavascriptMessage message) {
-                      print("FFFFFF");
+                      ///print("FFFFFF");
                       print(message.message);
                       FocusScope.of(context).requestFocus(focusNode);
                     })
