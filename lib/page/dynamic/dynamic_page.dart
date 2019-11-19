@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/page/dynamic/dynamic_bloc.dart';
@@ -15,11 +17,13 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class DynamicPage extends StatefulWidget {
+  DynamicPage({Key key}) : super(key: key);
+
   @override
-  _DynamicPageState createState() => _DynamicPageState();
+  DynamicPageState createState() => DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage>
+class DynamicPageState extends State<DynamicPage>
     with AutomaticKeepAliveClientMixin<DynamicPage>, WidgetsBindingObserver {
   final DynamicBloc dynamicBloc = new DynamicBloc();
 
@@ -29,14 +33,36 @@ class _DynamicPageState extends State<DynamicPage>
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
+  bool _ignoring = true;
+
   /// 模拟IOS下拉显示刷新
   showRefreshLoading() {
     ///直接触发下拉
     new Future.delayed(const Duration(milliseconds: 500), () {
-      scrollController.animateTo(-141,
-          duration: Duration(milliseconds: 600), curve: Curves.linear);
+      scrollController
+          .animateTo(-141,
+              duration: Duration(milliseconds: 600), curve: Curves.linear)
+          .then((_) {
+        setState(() {
+          _ignoring = false;
+        });
+      });
       return true;
     });
+  }
+
+  scrollToTop() {
+    if (scrollController.offset <= 0) {
+      scrollController
+          .animateTo(0,
+              duration: Duration(milliseconds: 600), curve: Curves.linear)
+          .then((_) {
+        showRefreshLoading();
+      });
+    } else {
+      scrollController.animateTo(0,
+          duration: Duration(milliseconds: 600), curve: Curves.linear);
+    }
   }
 
   ///下拉刷新数据
@@ -113,7 +139,7 @@ class _DynamicPageState extends State<DynamicPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return GSYPullLoadWidget(
+    var content = GSYPullLoadWidget(
       dynamicBloc.pullLoadWidgetControl,
       (BuildContext context, int index) =>
           _renderEventItem(dynamicBloc.dataList[index]),
@@ -124,6 +150,10 @@ class _DynamicPageState extends State<DynamicPage>
 
       ///使用ios模式的下拉刷新
       userIos: true,
+    );
+    return IgnorePointer(
+      ignoring: _ignoring,
+      child: content,
     );
   }
 }

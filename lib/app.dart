@@ -90,9 +90,12 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   }
 }
 
-abstract class HttpErrorListener extends State<FlutterReduxApp> {
+mixin HttpErrorListener on State<FlutterReduxApp> {
   StreamSubscription stream;
 
+  ///这里为什么用 _context 你理解吗？
+  ///因为此时 State 的 context 是 FlutterReduxApp 而不是 MaterialApp
+  ///所以如果直接用 context 是会获取不到 MaterialApp 的 Localizations 哦。
   BuildContext _context;
 
   @override

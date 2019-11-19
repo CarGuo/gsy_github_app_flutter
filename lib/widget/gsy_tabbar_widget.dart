@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_tabs.dart' as GSYTab;
 
 ///支持顶部和顶部的TabBar控件
 ///配合AutomaticKeepAliveClientMixin可以keep住
@@ -28,6 +29,8 @@ class GSYTabBarWidget extends StatefulWidget {
   final List<Widget> footerButtons;
 
   final ValueChanged<int> onPageChanged;
+  final ValueChanged<int> onDoublePress;
+  final ValueChanged<int> onSinglePress;
 
   GSYTabBarWidget({
     Key key,
@@ -39,6 +42,8 @@ class GSYTabBarWidget extends StatefulWidget {
     this.title,
     this.drawer,
     this.bottomBar,
+    this.onDoublePress,
+    this.onSinglePress,
     this.floatingActionButtonLocation,
     this.floatingActionButton,
     this.resizeToAvoidBottomPadding = true,
@@ -56,11 +61,12 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
 
   TabController _tabController;
 
+  int _index = 0;
+
   @override
   void initState() {
     super.initState();
-    _tabController =
-        new TabController(vsync: this, length: widget.tabItems.length);
+    _tabController = new TabController(vsync: this, length: widget.tabItems.length);
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
@@ -68,6 +74,31 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  _navigationPageChanged(index) {
+    if (_index == index) {
+      return;
+    }
+    _index = index;
+    _tabController.animateTo(index);
+    widget.onPageChanged?.call(index);
+  }
+
+  _navigationTapClick(index) {
+    if (_index == index) {
+      return;
+    }
+    _index = index;
+    widget.onPageChanged?.call(index);
+
+    ///不想要动画
+    _pageController.jumpTo(MediaQuery.of(context).size.width * index);
+    widget.onSinglePress?.call(index);
+  }
+
+  _navigationDoubleTapClick(index) {
+    widget.onDoublePress?.call(index);
   }
 
   @override
@@ -87,19 +118,12 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
               controller: _tabController,
               tabs: widget.tabItems,
               indicatorColor: widget.indicatorColor,
-              onTap: (index) {
-                widget.onPageChanged?.call(index);
-                _pageController
-                    .jumpTo(MediaQuery.of(context).size.width * index);
-              }),
+              onTap: _navigationTapClick),
         ),
         body: new PageView(
           controller: _pageController,
           children: widget.tabViews,
-          onPageChanged: (index) {
-            _tabController.animateTo(index);
-            widget.onPageChanged?.call(index);
-          },
+          onPageChanged: _navigationPageChanged,
         ),
         bottomNavigationBar: widget.bottomBar,
       );
@@ -115,25 +139,20 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
         body: new PageView(
           controller: _pageController,
           children: widget.tabViews,
-          onPageChanged: (index) {
-            _tabController.animateTo(index);
-            widget.onPageChanged?.call(index);
-          },
+          onPageChanged: _navigationPageChanged,
         ),
         bottomNavigationBar: new Material(
           //为了适配主题风格，包一层Material实现风格套用
           color: Theme.of(context).primaryColor, //底部导航栏主题颜色
           child: new SafeArea(
-            child: new TabBar(
+            child: new GSYTab.TabBar(
               //TabBar导航标签，底部导航放到Scaffold的bottomNavigationBar中
-              controller: _tabController, //配置控制器
+              controller: _tabController,
+              //配置控制器
               tabs: widget.tabItems,
               indicatorColor: widget.indicatorColor,
-              onTap: (index) {
-                widget.onPageChanged?.call(index);
-                _pageController
-                    .jumpTo(MediaQuery.of(context).size.width * index);
-              }, //tab标签的下划线颜色
+              onDoubleTap: _navigationDoubleTapClick,
+              onTap: _navigationTapClick, //tab标签的下划线颜色
             ),
           ),
         ));
