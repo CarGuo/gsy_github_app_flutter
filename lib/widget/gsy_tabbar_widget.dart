@@ -98,6 +98,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
   }
 
   _navigationDoubleTapClick(index) {
+    _navigationTapClick(index);
     widget.onDoublePress?.call(index);
   }
 

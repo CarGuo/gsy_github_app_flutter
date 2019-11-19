@@ -1051,6 +1051,7 @@ class _TabBarState extends State<TabBar> {
     final int tabCount = widget.tabs.length;
     for (int index = 0; index < tabCount; index += 1) {
       wrappedTabs[index] = GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () { _handleTap(index); },
         onDoubleTap:(){ _handleDoubleTap(index); },
         child: Padding(
