@@ -5,7 +5,6 @@ import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/dynamic/dynamic_page.dart';
 import 'package:gsy_github_app_flutter/page/my_page.dart';
@@ -19,8 +18,17 @@ import 'package:gsy_github_app_flutter/page/home/widget/home_drawer.dart';
  * Created by guoshuyu
  * Date: 2018-07-16
  */
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static final String sName = "home";
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<DynamicPageState> dynamicKey = new GlobalKey();
+  final GlobalKey<TrendPageState> trendKey = new GlobalKey();
+  final GlobalKey<MyPageState> myKey = new GlobalKey();
 
   /// 不退出
   Future<bool> _dialogExitApp(BuildContext context) async {
@@ -64,10 +72,23 @@ class HomePage extends StatelessWidget {
         type: TabType.bottom,
         tabItems: tabs,
         tabViews: [
-          new DynamicPage(),
-          new TrendPage(),
-          new MyPage(),
+          new DynamicPage(key: dynamicKey),
+          new TrendPage(key: trendKey),
+          new MyPage(key: myKey),
         ],
+        onDoublePress: (index) {
+          switch (index) {
+            case 0:
+              dynamicKey.currentState.scrollToTop();
+              break;
+            case 1:
+              trendKey.currentState.scrollToTop();
+              break;
+            case 2:
+              myKey.currentState.scrollToTop();
+              break;
+          }
+        },
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: GSYColors.white,
         title: GSYTitleBar(

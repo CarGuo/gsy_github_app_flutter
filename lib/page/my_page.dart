@@ -15,11 +15,14 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class MyPage extends StatefulWidget {
+  MyPage({Key key}) : super(key: key);
   @override
-  _MyPageState createState() => _MyPageState();
+  MyPageState createState() => MyPageState();
 }
 
-class _MyPageState extends BasePersonState<MyPage> {
+class MyPageState extends BasePersonState<MyPage> {
+  final ScrollController scrollController = ScrollController();
+
   String beStaredCount = '---';
 
   Color notifyColor = GSYColors.subTextColor;
@@ -54,7 +57,7 @@ class _MyPageState extends BasePersonState<MyPage> {
       if (res != null && res.result && res.data.length > 0) {
         newColor = GSYColors.actionBlue;
       } else {
-        newColor =GSYColors.subLightTextColor;
+        newColor = GSYColors.subLightTextColor;
       }
       if (isShow) {
         setState(() {
@@ -62,6 +65,20 @@ class _MyPageState extends BasePersonState<MyPage> {
         });
       }
     });
+  }
+
+  scrollToTop() {
+    if (scrollController.offset <= 0) {
+      scrollController
+          .animateTo(0,
+              duration: Duration(milliseconds: 600), curve: Curves.linear)
+          .then((_) {
+        showRefreshLoading();
+      });
+    } else {
+      scrollController.animateTo(0,
+          duration: Duration(milliseconds: 600), curve: Curves.linear);
+    }
   }
 
   @override
@@ -93,11 +110,14 @@ class _MyPageState extends BasePersonState<MyPage> {
           //todo getUserOrg(_getUserName());
         }
       });*/
+
       ///通过 redux 提交更新用户数据行为
       ///触发网络请求更新
       _getStore().dispatch(FetchUserAction());
+
       ///获取用户组织信息
       getUserOrg(_getUserName());
+
       ///获取用户仓库前100个star统计数据
       getHonor(_getUserName());
       _refreshNotify();
@@ -132,11 +152,12 @@ class _MyPageState extends BasePersonState<MyPage> {
         return GSYNestedPullLoadWidget(
           pullLoadWidgetControl,
           (BuildContext context, int index) => renderItem(
-                  index, store.state.userInfo, beStaredCount, notifyColor, () {
-                _refreshNotify();
-              }, orgList),
+              index, store.state.userInfo, beStaredCount, notifyColor, () {
+            _refreshNotify();
+          }, orgList),
           handleRefresh,
           onLoadMore,
+          scrollController: scrollController,
           refreshKey: refreshIKey,
           headerSliverBuilder: (context, _) {
             return sliverBuilder(

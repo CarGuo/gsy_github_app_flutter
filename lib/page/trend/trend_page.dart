@@ -24,16 +24,16 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class TrendPage extends StatefulWidget {
+  TrendPage({Key key}) : super(key: key);
+
   @override
-  _TrendPageState createState() => _TrendPageState();
+  TrendPageState createState() => TrendPageState();
 }
 
-class _TrendPageState extends State<TrendPage>
+class TrendPageState extends State<TrendPage>
     with
         AutomaticKeepAliveClientMixin<TrendPage>,
         SingleTickerProviderStateMixin {
-
-
   ///显示数据时间
   TrendTypeModel selectTime = null;
 
@@ -56,6 +56,20 @@ class _TrendPageState extends State<TrendPage>
       refreshIndicatorKey.currentState.show().then((e) {});
       return true;
     });
+  }
+
+  scrollToTop() {
+    if (scrollController.offset <= 0) {
+      scrollController
+          .animateTo(0,
+              duration: Duration(milliseconds: 600), curve: Curves.linear)
+          .then((_) {
+        _showRefreshLoading();
+      });
+    } else {
+      scrollController.animateTo(0,
+          duration: Duration(milliseconds: 600), curve: Curves.linear);
+    }
   }
 
   ///绘制tiem
@@ -101,8 +115,7 @@ class _TrendPageState extends State<TrendPage>
                 _showRefreshLoading();
               });
             }),
-            new Container(
-                height: 10.0, width: 0.5, color: GSYColors.white),
+            new Container(height: 10.0, width: 0.5, color: GSYColors.white),
             _renderHeaderPopItem(selectType.name, trendType(context),
                 (TrendTypeModel result) {
               if (trendBloc.isLoading) {
@@ -224,6 +237,7 @@ class _TrendPageState extends State<TrendPage>
                 ///下拉刷新
                 return new NestedScrollViewRefreshIndicator(
                   key: refreshIndicatorKey,
+
                   ///嵌套滚动
                   child: NestedScrollView(
                     controller: scrollController,
@@ -256,6 +270,7 @@ class _TrendPageState extends State<TrendPage>
       ///动态头部
       SliverPersistentHeader(
         pinned: true,
+
         ///SliverPersistentHeaderDelegate 实现
         delegate: GSYSliverHeaderDelegate(
             maxHeight: 65,

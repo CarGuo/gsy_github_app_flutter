@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/db/sql_manager.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
