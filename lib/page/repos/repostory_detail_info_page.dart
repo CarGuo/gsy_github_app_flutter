@@ -115,7 +115,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     ReposDao.getRepositoryDetailDao(widget.userName, widget.reposName,
             ReposDetailModel.of(context).currentBranch)
         .then((result) {
-      if (result != null && result.result) {
+      if (result != null && result.result && result.next != null) {
         ReposDetailModel.of(context).repository = result.data;
         return result.next();
       }

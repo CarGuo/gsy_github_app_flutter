@@ -6,6 +6,7 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/transformer.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/read_history_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/repository_commits_db_provider.dart';
@@ -94,6 +95,10 @@ class ReposDao {
       {needDb = true}) async {
     String fullName = userName + "/" + reposName;
     RepositoryDetailDbProvider provider = new RepositoryDetailDbProvider();
+
+    var result = await getRepository(userName, reposName);
+
+    print("###### ${result.data}");
 
     next() async {
       String url =
@@ -521,8 +526,10 @@ class ReposDao {
         var data = dataList[i];
 
         ///测试代码
-        Serializer<Branch> serializerForType = serializers.serializerForType(Branch);
-        var test =  serializers.deserializeWith<Branch>(serializerForType, data);
+        Serializer<Branch> serializerForType =
+            serializers.serializerForType(Branch);
+        var test = serializers.deserializeWith<Branch>(serializerForType, data);
+
         /// 反序列化
         Map result = serializers.serializeWith(serializerForType, test);
         //print("###### $test ${result}");

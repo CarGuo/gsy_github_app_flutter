@@ -42,6 +42,7 @@ dependencies:
   android_intent: 0.3.0
   shared_preferences: 0.5.3+4
   built_value: ^6.8.2
+  graphql: ^2.0.0
   flutter_localizations:
     sdk: flutter
   photo_view:
