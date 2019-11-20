@@ -28,6 +28,7 @@ import 'package:gsy_github_app_flutter/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/model/Release.dart';
 import 'package:gsy_github_app_flutter/model/RepoCommit.dart';
 import 'package:gsy_github_app_flutter/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
@@ -36,7 +37,6 @@ import 'package:gsy_github_app_flutter/common/net/trending/github_trending.dart'
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pub_semver/pub_semver.dart';
-import 'package:redux/redux.dart';
 
 /**
  * Created by guoshuyu
@@ -93,46 +93,33 @@ class ReposDao {
    */
   static getRepositoryDetailDao(userName, reposName, branch,
       {needDb = true}) async {
-    String fullName = userName + "/" + reposName;
+    String fullName = userName + "/" + reposName + "v2";
     RepositoryDetailDbProvider provider = new RepositoryDetailDbProvider();
 
-    var result = await getRepository(userName, reposName);
-
-    print("###### ${result.data}");
-
     next() async {
-      String url =
-          Address.getReposDetail(userName, reposName) + "?ref=" + branch;
-      var res = await httpManager.netFetch(url, null,
-          {"Accept": 'application/vnd.github.mercy-preview+json'}, null);
-      if (res != null && res.result && res.data.length > 0) {
-        var data = res.data;
-        if (data == null || data.length == 0) {
+      var result = await getRepository(userName, reposName);
+      if (result != null && result.data != null) {
+        var data = result.data["repository"];
+        if (data == null) {
           return new DataResult(null, false);
         }
-        Repository repository = Repository.fromJson(data);
-        var issueResult =
-            await ReposDao.getRepositoryIssueStatusDao(userName, reposName);
-        if (issueResult != null && issueResult.result) {
-          repository.allIssueCount = int.parse(issueResult.data);
-        }
+        var repositoryQL = RepositoryQL.fromMap(data);
         if (needDb) {
-          provider.insert(fullName, json.encode(repository.toJson()));
+          provider.insert(fullName, json.encode(data));
         }
-        saveHistoryDao(
-            fullName, DateTime.now(), json.encode(repository.toJson()));
-        return new DataResult(repository, true);
+        saveHistoryDao(fullName, DateTime.now(), json.encode(data));
+        return new DataResult(repositoryQL, true);
       } else {
         return new DataResult(null, false);
       }
     }
 
     if (needDb) {
-      Repository repository = await provider.getRepository(fullName);
-      if (repository == null) {
+      RepositoryQL repositoryQL = await provider.getRepository(fullName);
+      if (repositoryQL == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(repository, true, next: next);
+      DataResult dataResult = new DataResult(repositoryQL, true, next: next);
       return dataResult;
     }
     return await next();
@@ -295,6 +282,7 @@ class ReposDao {
    */
   static doRepositoryWatchDao(userName, reposName, watch) async {
     String url = Address.resolveWatcherRepos(userName, reposName);
+    print("##### $watch");
     var res = await httpManager.netFetch(
         url, null, null, new Options(method: !watch ? 'PUT' : 'DELETE'));
     return new DataResult(null, res.result);

@@ -31,14 +31,13 @@ releaseClient() {
   _innerClient = null;
 }
 
-Future<QueryResult> getRepository( String owner, String name) async {
+Future<QueryResult> getRepository(String owner, String name) async {
   final QueryOptions _options = QueryOptions(
-    document: readRepository,
-    variables: <String, dynamic>{
-      'owner': owner,
-      'name': name,
-    },
-    pollInterval: 4,
-  );
+      document: readRepository,
+      variables: <String, dynamic>{
+        'owner': owner,
+        'name': name,
+      },
+      fetchPolicy: FetchPolicy.noCache);
   return await _innerClient.query(_options);
 }

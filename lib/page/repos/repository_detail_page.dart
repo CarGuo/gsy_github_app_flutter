@@ -6,7 +6,7 @@ import 'package:gsy_github_app_flutter/common/localization/default_localizations
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_issue_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_readme_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_file_list_page.dart';
@@ -62,68 +62,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   ///仓库的详情数据实体
   ReposDetailModel reposDetailModel;
 
-  _refresh() {
-    reposDetailModel.getReposStatus(_getBottomWidget);
-  }
-
-  ///绘制底部状态 item
-  _renderBottomItem(var text, var icon, var onPressed) {
-    return new FlatButton(
-        onPressed: onPressed,
-        child: new GSYIConText(
-          icon,
-          text,
-          GSYConstant.smallText,
-          GSYColors.primaryValue,
-          15.0,
-          padding: 5.0,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ));
-  }
-
-  ///绘制底部状态
-  List<Widget> _getBottomWidget() {
-    ///根据网络返回数据，返回底部状态数据
-    List<Widget> bottomWidget = (reposDetailModel.bottomModel == null)
-        ? []
-        : <Widget>[
-            /// star
-            _renderBottomItem(reposDetailModel.bottomModel.starText,
-                reposDetailModel.bottomModel.starIcon, () {
-              CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryStarDao(widget.userName,
-                      widget.reposName, reposDetailModel.bottomModel.star)
-                  .then((result) {
-                _refresh();
-                Navigator.pop(context);
-              });
-            }),
-
-            /// watch
-            _renderBottomItem(reposDetailModel.bottomModel.watchText,
-                reposDetailModel.bottomModel.watchIcon, () {
-              CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryWatchDao(widget.userName,
-                      widget.reposName, reposDetailModel.bottomModel.watch)
-                  .then((result) {
-                _refresh();
-                Navigator.pop(context);
-              });
-            }),
-
-            ///fork
-            _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
-              CommonUtils.showLoadingDialog(context);
-              return ReposDao.createForkDao(widget.userName, widget.reposName)
-                  .then((result) {
-                _refresh();
-                Navigator.pop(context);
-              });
-            }),
-          ];
-    return bottomWidget;
-  }
-
   ///渲染 Tab 的 Item
   _renderTabItem() {
     var itemList = [
@@ -150,7 +88,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   }
 
   ///title 显示更多弹出item
-  _getMoreOtherItem(Repository repository) {
+  _getMoreOtherItem(RepositoryQL repository) {
     return [
       ///Release Page
       new GSYOptionModel(GSYLocalizations.i18n(context).repos_option_release,
@@ -247,8 +185,6 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         userName: widget.userName, reposName: widget.reposName);
 
     reposDetailModel.getBranchList();
-
-    _refresh();
 
     ///悬浮按键动画控制器
     animationController = new AnimationController(
@@ -349,9 +285,7 @@ class BottomStatusModel {
   final String starText;
   final IconData watchIcon;
   final IconData starIcon;
-  final bool star;
-  final bool watch;
 
   BottomStatusModel(this.watchText, this.starText, this.watchIcon,
-      this.starIcon, this.watch, this.star);
+      this.starIcon);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../repository_detail_page.dart';
@@ -20,7 +21,7 @@ class ReposDetailModel extends Model {
 
   String _currentBranch = "master";
 
-  Repository _repository = Repository.empty();
+  RepositoryQL _repository;
 
   BottomStatusModel _bottomModel;
 
@@ -28,11 +29,11 @@ class ReposDetailModel extends Model {
 
   List<String> _branchList;
 
-  Repository get repository => _repository;
+  RepositoryQL get repository => _repository;
 
   ///#################################################///
 
-  set repository(Repository data) {
+  set repository(RepositoryQL data) {
     _repository = data;
     notifyListeners();
   }
@@ -76,17 +77,17 @@ class ReposDetailModel extends Model {
 
   ///获取网络端仓库的star等状态
   getReposStatus(List<Widget> getBottomWidget()) async {
-    var result = await ReposDao.getRepositoryStatusDao(userName, reposName);
-    String watchText = result.data["watch"] ? "UnWatch" : "Watch";
-    String starText = result.data["star"] ? "UnStar" : "Star";
-    IconData watchIcon = result.data["watch"]
+    String watchText =
+        repository.isSubscription == "SUBSCRIBED" ? "UnWatch" : "Watch";
+    String starText = repository.isStared ? "UnStar" : "Star";
+    IconData watchIcon = repository.isSubscription == "SUBSCRIBED"
         ? GSYICons.REPOS_ITEM_WATCHED
         : GSYICons.REPOS_ITEM_WATCH;
-    IconData starIcon = result.data["star"]
+    IconData starIcon = repository.isStared
         ? GSYICons.REPOS_ITEM_STARED
         : GSYICons.REPOS_ITEM_STAR;
-    BottomStatusModel model = new BottomStatusModel(watchText, starText,
-        watchIcon, starIcon, result.data["watch"], result.data["star"]);
+    BottomStatusModel model =
+        new BottomStatusModel(watchText, starText, watchIcon, starIcon);
     bottomModel = model;
     footerButtons = getBottomWidget();
   }

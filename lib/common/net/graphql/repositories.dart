@@ -30,13 +30,6 @@ fragment comparisonFields on Repository {
       name
     }
     forkCount,
-    forks(first:20) {
-      nodes {
-        owner {
-          login
-        }
-      }
-    }
     viewerHasStarred,
     viewerSubscription,
     hasIssuesEnabled,
