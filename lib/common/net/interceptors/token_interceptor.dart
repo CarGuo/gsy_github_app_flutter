@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 
 /**
  * Token拦截器
@@ -17,6 +18,7 @@ class TokenInterceptors extends InterceptorsWrapper {
       var authorizationCode = await getAuthorization();
       if (authorizationCode != null) {
         _token = authorizationCode;
+        initClient(_token);
       }
     }
     options.headers["Authorization"] = _token;
@@ -41,6 +43,7 @@ class TokenInterceptors extends InterceptorsWrapper {
   clearAuthorization() {
     this._token = null;
     LocalStorage.remove(Config.TOKEN_KEY);
+    releaseClient();
   }
 
   ///获取授权token

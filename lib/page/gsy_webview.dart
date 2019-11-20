@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -8,30 +11,38 @@ import 'package:webview_flutter/webview_flutter.dart';
  * Created by guoshuyu
  * on 2018/7/27.
  */
-class GSYWebView extends StatelessWidget {
+
+class GSYWebView extends StatefulWidget {
   final String url;
   final String title;
 
   GSYWebView(this.url, this.title);
 
+  @override
+  _GSYWebViewState createState() => _GSYWebViewState();
+}
+
+class _GSYWebViewState extends State<GSYWebView> {
   _renderTitle() {
-    if (url == null || url.length == 0) {
-      return new Text(title);
+    if (widget.url == null || widget.url.length == 0) {
+      return new Text(widget.title);
     }
     return new Row(children: [
       new Expanded(
           child: new Container(
         child: new Text(
-          title,
+          widget.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
       )),
-      GSYCommonOptionWidget(url: url),
+      GSYCommonOptionWidget(url: widget.url),
     ]);
   }
 
   final FocusNode focusNode = new FocusNode();
+
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +56,13 @@ class GSYWebView extends StatelessWidget {
             focusNode: focusNode,
           ),
           WebView(
-              initialUrl: url,
+              initialUrl: widget.url,
               javascriptMode: JavascriptMode.unrestricted,
+              onPageFinished: (_) {
+                setState(() {
+                  isLoading = false;
+                });
+              },
               javascriptChannels: Set.from([
                 JavascriptChannel(
                     name: 'Print',
@@ -55,7 +71,27 @@ class GSYWebView extends StatelessWidget {
                       print(message.message);
                       FocusScope.of(context).requestFocus(focusNode);
                     })
-              ]))
+              ])),
+          if (isLoading)
+            new Center(
+              child: new Container(
+                width: 200.0,
+                height: 200.0,
+                padding: new EdgeInsets.all(4.0),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new SpinKitDoubleBounce(
+                        color: Theme.of(context).primaryColor),
+                    new Container(width: 10.0),
+                    new Container(
+                        child: new Text(
+                            GSYLocalizations.i18n(context).loading_text,
+                            style: GSYConstant.middleText)),
+                  ],
+                ),
+              ),
+            )
         ],
       ),
     );
