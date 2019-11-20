@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -12,6 +13,7 @@ import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
@@ -115,9 +117,13 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     ReposDao.getRepositoryDetailDao(widget.userName, widget.reposName,
             ReposDetailModel.of(context).currentBranch)
         .then((result) {
-      if (result != null && result.result && result.next != null) {
+      if (result != null && result.result) {
         ReposDetailModel.of(context).repository = result.data;
-        return result.next();
+        ReposDetailModel.of(context).getReposStatus(_getBottomWidget);
+        if (result.next != null) {
+          return result.next();
+        }
+        return null;
       }
       return new Future.value(null);
     }).then((result) {
@@ -126,8 +132,67 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           return;
         }
         ReposDetailModel.of(context).repository = result.data;
+        ReposDetailModel.of(context).getReposStatus(_getBottomWidget);
       }
     });
+  }
+
+  ///绘制底部状态
+  List<Widget> _getBottomWidget() {
+    ///根据网络返回数据，返回底部状态数据
+    List<Widget> bottomWidget = ( ReposDetailModel.of(context).bottomModel == null)
+        ? []
+        : <Widget>[
+      /// star
+      _renderBottomItem( ReposDetailModel.of(context).bottomModel.starText,
+          ReposDetailModel.of(context).bottomModel.starIcon, () {
+            CommonUtils.showLoadingDialog(context);
+            return ReposDao.doRepositoryStarDao(widget.userName,
+                widget.reposName,  ReposDetailModel.of(context).repository.isStared)
+                .then((result) {
+              showRefreshLoading();
+              Navigator.pop(context);
+            });
+          }),
+
+      /// watch
+      _renderBottomItem( ReposDetailModel.of(context).bottomModel.watchText,
+          ReposDetailModel.of(context).bottomModel.watchIcon, () {
+            CommonUtils.showLoadingDialog(context);
+            return ReposDao.doRepositoryWatchDao(widget.userName,
+                widget.reposName,  ReposDetailModel.of(context).repository.isSubscription == "SUBSCRIBED")
+                .then((result) {
+              showRefreshLoading();
+              Navigator.pop(context);
+            });
+          }),
+
+      ///fork
+      _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
+        CommonUtils.showLoadingDialog(context);
+        return ReposDao.createForkDao(widget.userName, widget.reposName)
+            .then((result) {
+          showRefreshLoading();
+          Navigator.pop(context);
+        });
+      }),
+    ];
+    return bottomWidget;
+  }
+
+  ///绘制底部状态 item
+  _renderBottomItem(var text, var icon, var onPressed) {
+    return new FlatButton(
+        onPressed: onPressed,
+        child: new GSYIConText(
+          icon,
+          text,
+          GSYConstant.smallText,
+          GSYColors.primaryValue,
+          15.0,
+          padding: 5.0,
+          mainAxisAlignment: MainAxisAlignment.center,
+        ));
   }
 
   @override

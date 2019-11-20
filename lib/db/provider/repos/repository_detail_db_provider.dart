@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**
@@ -79,15 +80,14 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   }
 
   ///获取详情
-  Future<Repository> getRepository(String fullName) async {
+  Future<RepositoryQL> getRepository(String fullName) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
       ///使用 compute 的 Isolate 优化 json decode
       var mapData =
           await compute(CodeUtils.decodeMapResult, provider.data as String);
-
-      return Repository.fromJson(mapData);
+      return RepositoryQL.fromMap(mapData);
     }
     return null;
   }
