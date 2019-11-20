@@ -41,6 +41,8 @@
 >
 > 4、 LoginPage：另类的 BLoC 模式。
 > 
+> 5、 ReposDao.getRepositoryDetailDao 使用 graphQL
+> 
 > **列表显示有多个，其中：**
 > 
 > 1、**gsy_pull_load_widget.dart.dart**
