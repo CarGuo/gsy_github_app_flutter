@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/Repository.dart';
 import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
@@ -163,7 +164,8 @@ class ReposViewModel {
     repositoryFork = data.forkCount.toString();
     repositoryWatch = data.watcherCount.toString();
     repositoryType = data.language ?? '---';
-    repositoryDes = data.shortDescriptionHTML ?? '---';
+    repositoryDes =
+        CommonUtils.removeTextTag(data.shortDescriptionHTML) ?? '---';
   }
 
   ReposViewModel.fromTrendMap(model) {
@@ -178,6 +180,6 @@ class ReposViewModel {
     repositoryFork = model.forkCount;
     repositoryWatch = model.meta;
     repositoryType = model.language;
-    repositoryDes = model.description;
+    repositoryDes = CommonUtils.removeTextTag(model.description);
   }
 }

@@ -274,7 +274,9 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                     ///仓库描述
                     new Container(
                         child: new Text(
-                          widget.reposHeaderViewModel.repositoryDes ?? "---",
+                          CommonUtils.removeTextTag(
+                                  widget.reposHeaderViewModel.repositoryDes) ??
+                              "---",
                           style: GSYConstant.smallSubLightText.copyWith(
                               shadows: [
                                 BoxShadow(
