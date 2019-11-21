@@ -58,8 +58,9 @@ class ReposDao {
     next() async {
       String url = Address.trendingApi(since, languageType);
       var result = await httpManager.netFetch(
-          url, null, {"api-token": Config.API_TOKEN}, null);
-      if (result != null && result.result && result.data.length > 0) {
+          url, null, {"api-token": Config.API_TOKEN}, null,
+          noTip: true);
+      if (result != null && result.result && result.data is List) {
         List<TrendingRepoModel> list = new List();
         var data = result.data;
         if (data == null || data.length == 0) {
