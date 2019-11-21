@@ -69,7 +69,6 @@ class LoginEpic implements EpicClass<GSYState> {
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
     return Observable(actions)
         .whereType<LoginAction>()
-        .debounce((result) => TimerStream(result, const Duration(seconds: 2)))
         .switchMap((action) => _loginIn(action, store));
   }
 
