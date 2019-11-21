@@ -48,7 +48,7 @@ class GSYColors {
 ///文本样式
 class GSYConstant {
   static const String app_default_share_url =
-      "https://github.com/CarGuo/GSYGithubAppFlutter";
+      "https://github.com/CarGuo/gsy_github_app_flutter";
 
   static const lagerTextSize = 30.0;
   static const bigTextSize = 23.0;
@@ -215,7 +215,7 @@ class GSYICons {
   static const String DEFAULT_USER_ICON = 'static/images/logo.png';
   static const String DEFAULT_IMAGE = 'static/images/default_img.png';
   static const String DEFAULT_REMOTE_PIC =
-      'https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/static/images/logo.png';
+      'https://raw.githubusercontent.com/CarGuo/gsy_github_app_flutter/master/static/images/logo.png';
 
   static const IconData HOME =
       const IconData(0xe624, fontFamily: GSYICons.FONT_FAMILY);

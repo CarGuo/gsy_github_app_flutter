@@ -715,7 +715,7 @@ class ReposDao {
     if (Platform.isIOS) {
       return;
     }
-    var res = await getRepositoryReleaseDao("CarGuo", 'GSYGithubAppFlutter', 1,
+    var res = await getRepositoryReleaseDao("CarGuo", 'gsy_github_app_flutter', 1,
         needHtml: false);
     if (res != null && res.result && res.data.length > 0) {
       Release release = res.data[0];
