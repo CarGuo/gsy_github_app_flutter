@@ -114,7 +114,7 @@ class ReposDao {
    */
   static getRepositoryDetailDao(userName, reposName, branch,
       {needDb = true}) async {
-    String fullName = userName + "/" + reposName + "v2";
+    String fullName = userName + "/" + reposName + "v3";
     RepositoryDetailDbProvider provider = new RepositoryDetailDbProvider();
 
     next() async {
@@ -811,7 +811,7 @@ class ReposDao {
    */
   static getHistoryDao(page) async {
     ReadHistoryDbProvider provider = new ReadHistoryDbProvider();
-    List<Repository> list = await provider.geData(page);
+    List<RepositoryQL> list = await provider.geData(page);
     if (list == null || list.length <= 0) {
       return new DataResult(null, false);
     }

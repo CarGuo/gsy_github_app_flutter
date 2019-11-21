@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
@@ -152,6 +153,17 @@ class ReposViewModel {
     repositoryWatch = data.openIssuesCount.toString();
     repositoryType = data.language ?? '---';
     repositoryDes = data.description ?? '---';
+  }
+
+  ReposViewModel.fromQL(RepositoryQL data) {
+    ownerName = data.ownerName;
+    ownerPic = data.ownerAvatarUrl;
+    repositoryName = data.reposName;
+    repositoryStar = data.starCount.toString();
+    repositoryFork = data.forkCount.toString();
+    repositoryWatch = data.watcherCount.toString();
+    repositoryType = data.language ?? '---';
+    repositoryDes = data.shortDescriptionHTML ?? '---';
   }
 
   ReposViewModel.fromTrendMap(model) {

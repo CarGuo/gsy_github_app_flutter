@@ -8,6 +8,7 @@ class RepositoryQL {
   final String ownerAvatarUrl;
   final String license;
   final int forkCount;
+  final int starCount;
   final int watcherCount;
   final bool isFork;
   final bool isStared;
@@ -32,6 +33,7 @@ class RepositoryQL {
     this.ownerAvatarUrl,
     this.license,
     this.forkCount,
+    this.starCount,
     this.watcherCount,
     this.isFork,
     this.isStared,
@@ -71,6 +73,7 @@ class RepositoryQL {
       forkCount: map["forkCount"],
       watcherCount: map["watchers"]["totalCount"],
       isFork: map["isFork"],
+      starCount: map["stargazers"]["totalCount"],
       isStared: map["viewerHasStarred"],
       isSubscription: map["viewerSubscription"],
       language: (map["languages"] != null)
@@ -127,6 +130,7 @@ class RepositoryQL {
         "name": repositoryQL.license,
       },
       "forkCount": repositoryQL.forkCount,
+      "stargazers": {"totalSize": repositoryQL.starCount},
       "watcherCount": {
         "watchers": repositoryQL.watcherCount,
       },
