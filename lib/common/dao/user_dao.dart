@@ -28,6 +28,7 @@ class UserDao {
     if (Config.DEBUG) {
       print("base64Str login " + base64Str);
     }
+
     await LocalStorage.save(Config.USER_NAME_KEY, userName);
     await LocalStorage.save(Config.USER_BASIC_CODE, base64Str);
 
@@ -77,13 +78,6 @@ class UserDao {
       CommonUtils.curLocale = store.state.platformLocale;
       store.dispatch(RefreshLocaleAction(store.state.platformLocale));
     }
-
-    String generateMd5(String data) {
-      var content = new Utf8Encoder().convert(data);
-      var digest = md5.convert(content);
-      return hex.encode(digest.bytes);
-    }
-    Config.API_TOKEN = generateMd5("${NetConfig.CLIENT_SECRET}:${ NetConfig.CLIENT_SECRET}");
 
     return new DataResult(res.data, (res.result && (token != null)));
   }
