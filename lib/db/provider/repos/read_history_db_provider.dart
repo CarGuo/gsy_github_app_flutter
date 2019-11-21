@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/model/Repository.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
@@ -14,7 +14,7 @@ import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
  */
 
 class ReadHistoryDbProvider extends BaseDbProvider {
-  final String name = 'ReadHistory';
+  final String name = 'ReadHistoryV2';
   final String columnId = "_id";
   final String columnFullName = "fullName";
   final String columnReadDate = "readDate";
@@ -101,11 +101,11 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<Repository>> geData(int page) async {
+  Future<List<RepositoryQL>> geData(int page) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, page);
     if (provider != null) {
-      List<Repository> list = new List();
+      List<RepositoryQL> list = new List();
       for (var providerMap in provider) {
         ReadHistoryDbProvider provider =
             ReadHistoryDbProvider.fromMap(providerMap);
@@ -113,7 +113,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
         ///使用 compute 的 Isolate 优化 json decode
         var mapData = await compute(CodeUtils.decodeMapResult, provider.data);
 
-        list.add(Repository.fromJson(mapData));
+        list.add(RepositoryQL.fromMap(mapData));
       }
       return list;
     }

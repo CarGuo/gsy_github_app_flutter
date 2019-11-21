@@ -141,7 +141,7 @@ class HomeDrawer extends StatelessWidget {
                               NavigatorUtils.gotoCommonList(
                                   context,
                                   GSYLocalizations.i18n(context).home_history,
-                                  "repository",
+                                  "repositoryql",
                                   "history",
                                   userName: "",
                                   reposName: "");

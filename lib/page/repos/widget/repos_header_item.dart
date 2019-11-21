@@ -504,7 +504,7 @@ class ReposHeaderViewModel {
     this.topics = map.topics;
     this.openIssuesCount = map.issuesOpen;
     this.repositoryStar =
-        map.watcherCount != null ? map.watcherCount.toString() : "";
+        map.starCount != null ? map.starCount.toString() : "";
     this.repositoryFork = map.forkCount != null ? map.forkCount.toString() : "";
     this.repositoryWatch =
         map.watcherCount != null ? map.watcherCount.toString() : "";

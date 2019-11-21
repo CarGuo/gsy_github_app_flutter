@@ -30,6 +30,9 @@ fragment comparisonFields on Repository {
       name
     }
     forkCount,
+  	stargazers{
+      totalCount
+    }
     viewerHasStarred,
     viewerSubscription,
     hasIssuesEnabled,
