@@ -76,7 +76,9 @@ class RepositoryQL {
       starCount: map["stargazers"]["totalCount"],
       isStared: map["viewerHasStarred"],
       isSubscription: map["viewerSubscription"],
-      language: (map["languages"] != null)
+      language: (map["languages"] != null &&
+              map["languages"]["nodes"] != null &&
+              map["languages"]["nodes"].length > 0)
           ? map["languages"]["nodes"][0]["name"]
           : null,
       size: map["languages"]["totalSize"],
