@@ -1,6 +1,9 @@
 class Config {
   static bool DEBUG = true;
 
+
+  static String API_TOKEN = "";
+
   static const PAGE_SIZE = 20;
 
   /// //////////////////////////////////////常量////////////////////////////////////// ///

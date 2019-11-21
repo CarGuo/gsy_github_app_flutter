@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_followed_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_follower_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/userinfo_db_provider.dart';
@@ -75,6 +77,13 @@ class UserDao {
       CommonUtils.curLocale = store.state.platformLocale;
       store.dispatch(RefreshLocaleAction(store.state.platformLocale));
     }
+
+    String generateMd5(String data) {
+      var content = new Utf8Encoder().convert(data);
+      var digest = md5.convert(content);
+      return hex.encode(digest.bytes);
+    }
+    Config.API_TOKEN = generateMd5("${NetConfig.CLIENT_SECRET}:${ NetConfig.CLIENT_SECRET}");
 
     return new DataResult(res.data, (res.result && (token != null)));
   }

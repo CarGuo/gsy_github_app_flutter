@@ -56,36 +56,56 @@ class ReposDao {
     String languageTypeDb = languageType ?? "*";
 
     next() async {
-      String url = Address.trending(since, languageType);
-      var res = await new GitHubTrending().fetchTrending(url);
-      if (res != null && res.result && res.data.length > 0) {
+      String url = Address.trendingApi(since, languageType);
+      var result = await httpManager.netFetch(
+          url, null, {"api-token": Config.API_TOKEN}, null);
+      if (result != null && result.result && result.data.length > 0) {
         List<TrendingRepoModel> list = new List();
-        var data = res.data;
+        var data = result.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
         }
         if (needDb) {
-          provider.insert(languageTypeDb, since, json.encode(data));
+          provider.insert(languageTypeDb + "V2", since, json.encode(data));
         }
         for (int i = 0; i < data.length; i++) {
-          TrendingRepoModel model = data[i];
+          TrendingRepoModel model = TrendingRepoModel.fromJson(data[i]);
           list.add(model);
         }
         return new DataResult(list, true);
       } else {
-        return new DataResult(null, false);
+        String url = Address.trending(since, languageType);
+        var res = await new GitHubTrending().fetchTrending(url);
+        if (res != null && res.result && res.data.length > 0) {
+          List<TrendingRepoModel> list = new List();
+          var data = res.data;
+          if (data == null || data.length == 0) {
+            return new DataResult(null, false);
+          }
+          if (needDb) {
+            provider.insert(languageTypeDb + "V2", since, json.encode(data));
+          }
+          for (int i = 0; i < data.length; i++) {
+            TrendingRepoModel model = data[i];
+            list.add(model);
+          }
+          return new DataResult(list, true);
+        } else {
+          return new DataResult(null, false);
+        }
       }
     }
 
     if (needDb) {
       List<TrendingRepoModel> list =
-          await provider.getData(languageTypeDb, since);
+          await provider.getData(languageTypeDb + "V2", since);
       if (list == null || list.length == 0) {
         return await next();
       }
       DataResult dataResult = new DataResult(list, true, next: next);
       return dataResult;
     }
+    return await next();
   }
 
   /**

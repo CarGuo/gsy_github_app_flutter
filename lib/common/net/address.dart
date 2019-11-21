@@ -280,6 +280,14 @@ class Address {
     return "https://github.com/trending?since=$since";
   }
 
+  ///趋势 get
+  static trendingApi(since, languageType) {
+    if (languageType != null) {
+      return "https://guoshuyu.cn/github/trend/list?languageType=$languageType&since=${since}";
+    }
+    return "https://guoshuyu.cn/github/trend/list?since=$since";
+  }
+
   ///处理分页参数
   static getPageParams(tab, page, [pageSize = Config.PAGE_SIZE]) {
     if (page != null) {
