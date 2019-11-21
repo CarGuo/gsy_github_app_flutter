@@ -257,13 +257,17 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                         new Container(width: 5.3, height: 1.0),
 
                         ///仓库协议
-                        new Text(widget.reposHeaderViewModel.license ?? "--",
-                            style: GSYConstant.smallSubLightText.copyWith(
-                                shadows: [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(0.5, 0.5))
-                                ])),
+                        new Expanded(
+                            child: new Text(
+                                widget.reposHeaderViewModel.license ?? "--",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GSYConstant.smallSubLightText.copyWith(
+                                    shadows: [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          offset: Offset(0.5, 0.5))
+                                    ]))),
                       ],
                     ),
 
@@ -503,8 +507,7 @@ class ReposHeaderViewModel {
     this.allIssueCount = map.issuesTotal;
     this.topics = map.topics;
     this.openIssuesCount = map.issuesOpen;
-    this.repositoryStar =
-        map.starCount != null ? map.starCount.toString() : "";
+    this.repositoryStar = map.starCount != null ? map.starCount.toString() : "";
     this.repositoryFork = map.forkCount != null ? map.forkCount.toString() : "";
     this.repositoryWatch =
         map.watcherCount != null ? map.watcherCount.toString() : "";
