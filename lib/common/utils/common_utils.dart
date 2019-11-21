@@ -116,6 +116,22 @@ class CommonUtils {
     return appPath;
   }
 
+  static String removeTextTag(String description) {
+    if (description != null) {
+      String reg = "<g-emoji.*?>.+?</g-emoji>";
+      RegExp tag = new RegExp(reg);
+      Iterable<Match> tags = tag.allMatches(description);
+      for (Match m in tags) {
+        String match = m
+            .group(0)
+            .replaceAll(new RegExp("<g-emoji.*?>"), "")
+            .replaceAll(new RegExp("</g-emoji>"), "");
+        description = description.replaceAll(new RegExp(m.group(0)), match);
+      }
+    }
+    return description;
+  }
+
   static saveImage(String url) async {
     Future<String> _findPath(String imageUrl) async {
       final file = await DefaultCacheManager().getSingleFile(url);
@@ -182,7 +198,7 @@ class CommonUtils {
    */
   static changeLocale(Store<GSYState> store, int index) {
     Locale locale = store.state.platformLocale;
-    if(Config.DEBUG) {
+    if (Config.DEBUG) {
       print(store.state.platformLocale);
     }
     switch (index) {
@@ -308,8 +324,7 @@ class CommonUtils {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         new Container(
-                            child:
-                                SpinKitCubeGrid(color: GSYColors.white)),
+                            child: SpinKitCubeGrid(color: GSYColors.white)),
                         new Container(height: 10.0),
                         new Container(
                             child: new Text(
