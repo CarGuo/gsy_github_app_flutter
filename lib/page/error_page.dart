@@ -72,7 +72,7 @@ class ErrorPage extends StatelessWidget {
                           }
                           CommonUtils.showLoadingDialog(context);
                           IssueDao.createIssueDao(
-                              "CarGuo", "GSYGithubAppFlutter", {
+                              "CarGuo", "gsy_github_app_flutter", {
                             "title": GSYLocalizations.i18n(context).home_reply,
                             "body": content
                           }).then((result) {
