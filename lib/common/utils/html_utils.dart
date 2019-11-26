@@ -108,6 +108,7 @@ class HtmlUtils {
         "<meta charset=\"utf-8\" />\n" +
         "<title></title>\n" +
         "<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>" +
+        "<meta name=\“app-mobile-web-app-capable\”  content=\“yes\" /> " +
         "<link href=\"https:\/\/cdn.bootcss.com/highlight.js/9.12.0/styles/dracula.min.css\" rel=\"stylesheet\">\n" +
         "<script src=\"https:\/\/cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js\"></script>  " +
         "<script>hljs.configure({'useBR': " +
@@ -215,7 +216,6 @@ class HtmlUtils {
           curRemoveNumber == -1 ? "" : (curRemoveNumber.toString() + ""),
           curAddNumber == -1 ? "" : (curAddNumber.toString() + ""));
       source = source +
-          "\n" +
           "<div " +
           classStr +
           ">" +
