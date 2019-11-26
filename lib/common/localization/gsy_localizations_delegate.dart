@@ -16,7 +16,7 @@ class GSYLocalizationsDelegate extends LocalizationsDelegate<GSYLocalizations> {
   @override
   bool isSupported(Locale locale) {
     ///支持中文和英语
-    return ['en', 'zh'].contains(locale.languageCode);
+    return true;
   }
 
   ///根据locale，创建一个对象用于提供当前locale下的文本显示
