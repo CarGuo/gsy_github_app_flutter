@@ -109,6 +109,8 @@ abstract class GSYStringBase {
 
   String get home_my;
 
+  String get trend_user_title;
+
   String get trend_day;
 
   String get trend_week;
