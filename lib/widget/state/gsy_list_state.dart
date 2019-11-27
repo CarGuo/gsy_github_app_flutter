@@ -118,7 +118,7 @@ mixin GSYListState<T extends StatefulWidget>
       setState(() {
         pullLoadWidgetControl.needLoadMore.value = (res != null &&
             res.data != null &&
-            res.data.length == Config.PAGE_SIZE);
+            res.data.length >= Config.PAGE_SIZE);
       });
     }
   }

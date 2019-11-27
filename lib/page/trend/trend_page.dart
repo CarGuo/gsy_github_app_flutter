@@ -258,6 +258,15 @@ class TrendPageState extends State<TrendPage>
                   onRefresh: requestRefresh,
                 );
               }),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              NavigatorUtils.goTrendUserPage(context);
+            },
+            child: Icon(
+              Icons.person,
+              size: 30,
+            ),
+          ),
         );
       },
     );

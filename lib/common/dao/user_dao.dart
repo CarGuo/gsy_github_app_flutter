@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:convert/convert.dart';
-import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_followed_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_follower_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/userinfo_db_provider.dart';
@@ -10,7 +10,8 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
-import 'package:gsy_github_app_flutter/model/Notification.dart';
+import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
+import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
@@ -256,13 +257,13 @@ class UserDao {
         Address.getPageParams(tag, page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<Notification> list = new List();
+      List<Model.Notification> list = new List();
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult([], true);
       }
       for (int i = 0; i < data.length; i++) {
-        list.add(Notification.fromJson(data[i]));
+        list.add(Model.Notification.fromJson(data[i]));
       }
       return new DataResult(list, true);
     } else {
@@ -385,5 +386,26 @@ class UserDao {
       return dataResult;
     }
     return await next();
+  }
+
+  static searchTrendUserDao(String location,
+      {String cursor, ValueChanged valueChanged}) async {
+    var result = await getTrendUser(location, cursor: cursor);
+    if (result != null && result.data != null) {
+      var endCursor = result.data["search"]["pageInfo"]["endCursor"];
+      var dataList = result.data["search"]["user"];
+      if (dataList == null || dataList.length == 0) {
+        return new DataResult(null, false);
+      }
+      var dataResult = List();
+      valueChanged?.call(endCursor);
+      dataList.forEach((item) {
+        var userModel = SearchUserQL.fromMap(item["user"]);
+        dataResult.add(userModel);
+      });
+      return new DataResult(dataResult, true);
+    } else {
+      return new DataResult(null, false);
+    }
   }
 }

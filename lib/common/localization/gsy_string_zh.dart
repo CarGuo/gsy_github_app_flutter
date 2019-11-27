@@ -127,6 +127,8 @@ class GSYStringZh extends GSYStringBase {
   String home_my = "我的";
 
   @override
+  String trend_user_title = "中国用户趋势";
+  @override
   String trend_day = '今日';
   @override
   String trend_week = '本周';

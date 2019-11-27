@@ -11,6 +11,8 @@ import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
 import 'package:gsy_github_app_flutter/page/issue/issue_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';
 import 'package:gsy_github_app_flutter/page/notify_page.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_page.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
 import 'package:gsy_github_app_flutter/page/user/person_page.dart';
 import 'package:gsy_github_app_flutter/page/photoview_page.dart';
 import 'package:gsy_github_app_flutter/page/push/push_detail_page.dart';
@@ -138,6 +140,12 @@ class NavigatorUtils {
   ///仓库详情通知
   static Future goNotifyPage(BuildContext context) {
     return NavigatorRouter(context, new NotifyPage());
+  }
+
+
+  ///用户趋势
+  static Future goTrendUserPage(BuildContext context) {
+    return NavigatorRouter(context, new TrendUserPage());
   }
 
   ///搜索

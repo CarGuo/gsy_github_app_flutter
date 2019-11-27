@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/repositories.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/users.dart';
 
 GraphQLClient _client(token) {
   final HttpLink _httpLink = HttpLink(
@@ -38,6 +38,22 @@ Future<QueryResult> getRepository(String owner, String name) async {
         'owner': owner,
         'name': name,
       },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient.query(_options);
+}
+
+Future<QueryResult> getTrendUser(String location, {String cursor}) async {
+  var variables = cursor == null
+      ? <String, dynamic>{
+          'location': "location:${location} sort:followers",
+        }
+      : <String, dynamic>{
+          'location': "location:${location} sort:followers",
+          'after': cursor,
+        };
+  final QueryOptions _options = QueryOptions(
+      document: cursor == null ? readTrendUser : readTrendUserByCursor,
+      variables: variables,
       fetchPolicy: FetchPolicy.noCache);
   return await _innerClient.query(_options);
 }

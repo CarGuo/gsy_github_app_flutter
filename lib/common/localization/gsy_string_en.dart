@@ -124,7 +124,8 @@ class GSYStringEn extends GSYStringBase {
   String home_trend = "Trend";
   @override
   String home_my = "My";
-
+  @override
+  String trend_user_title = "China User Trend";
   @override
   String trend_day = 'today';
   @override
