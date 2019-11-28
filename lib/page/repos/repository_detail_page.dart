@@ -243,6 +243,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                   parent: animationController, curve: CurveBezier()),
               child: FloatingActionButton(
                 onPressed: () {
+                  if (model.repository?.hasIssuesEnabled == false) {
+                    Fluttertoast.showToast(
+                        msg: GSYLocalizations.i18n(context)
+                            .repos_no_support_issue);
+                    return;
+                  }
                   _createIssue();
                 },
                 child: Icon(Icons.add),
@@ -286,6 +292,6 @@ class BottomStatusModel {
   final IconData watchIcon;
   final IconData starIcon;
 
-  BottomStatusModel(this.watchText, this.starText, this.watchIcon,
-      this.starIcon);
+  BottomStatusModel(
+      this.watchText, this.starText, this.watchIcon, this.starIcon);
 }
