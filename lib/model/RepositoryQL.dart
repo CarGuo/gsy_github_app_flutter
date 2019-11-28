@@ -13,6 +13,7 @@ class RepositoryQL {
   final bool isFork;
   final bool isStared;
   final bool hasIssuesEnabled;
+  final String defaultBranch;
   final String isSubscription;
   final String language;
   final int size;
@@ -39,6 +40,7 @@ class RepositoryQL {
     this.isFork,
     this.isStared,
     this.hasIssuesEnabled,
+    this.defaultBranch,
     this.isSubscription,
     this.language,
     this.size,
@@ -67,6 +69,7 @@ class RepositoryQL {
       issuesClosed: map["issuesClosed"]["totalCount"],
       issuesOpen: map["issuesOpen"]["totalCount"],
       issuesTotal: map["issues"]["totalCount"],
+      defaultBranch: map["defaultBranchRef"]["name"],
       reposName: map["name"],
       hasIssuesEnabled: map["hasIssuesEnabled"],
       reposFullName: map["nameWithOwner"],
@@ -116,6 +119,9 @@ class RepositoryQL {
       },
       "issuesTotal": {
         "totalCount": repositoryQL.issuesTotal,
+      },
+      "defaultBranchRef": {
+        "name": repositoryQL.defaultBranch,
       },
       "name": repositoryQL.reposName,
       "hasIssuesEnabled": repositoryQL.hasIssuesEnabled,

@@ -37,6 +37,9 @@ fragment comparisonFields on Repository {
     viewerHasStarred,
     viewerSubscription,
     hasIssuesEnabled,
+    defaultBranchRef {
+      name
+    },
     watchers {
       totalCount,
     }
