@@ -33,6 +33,7 @@ fragment comparisonFields on Repository {
   	stargazers{
       totalCount
     }
+    hasIssuesEnabled,
     viewerHasStarred,
     viewerSubscription,
     hasIssuesEnabled,

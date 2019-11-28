@@ -179,6 +179,8 @@ abstract class GSYStringBase {
 
   String get repos_issue_search;
 
+  String get repos_no_support_issue;
+
   String get issue_reply;
 
   String get issue_edit;

@@ -70,13 +70,13 @@ class GSYStringEn extends GSYStringBase {
   @override
   String home_change_theme = "Theme";
   @override
-  String home_language_default= "Default";
+  String home_language_default = "Default";
   @override
-  String home_language_zh= "中文";
+  String home_language_zh = "中文";
   @override
-  String home_language_en= "English";
+  String home_language_en = "English";
   @override
-  String switch_language= "select language";
+  String switch_language = "select language";
 
   @override
   String home_theme_default = "Default";
@@ -197,6 +197,9 @@ class GSYStringEn extends GSYStringBase {
 
   @override
   String repos_issue_search = "Search";
+
+  @override
+  String repos_no_support_issue = "No Supprot Issue";
 
   @override
   String issue_reply = "reply";

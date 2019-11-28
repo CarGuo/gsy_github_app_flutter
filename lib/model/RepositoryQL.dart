@@ -12,6 +12,7 @@ class RepositoryQL {
   final int watcherCount;
   final bool isFork;
   final bool isStared;
+  final bool hasIssuesEnabled;
   final String isSubscription;
   final String language;
   final int size;
@@ -37,6 +38,7 @@ class RepositoryQL {
     this.watcherCount,
     this.isFork,
     this.isStared,
+    this.hasIssuesEnabled,
     this.isSubscription,
     this.language,
     this.size,
@@ -66,6 +68,7 @@ class RepositoryQL {
       issuesOpen: map["issuesOpen"]["totalCount"],
       issuesTotal: map["issues"]["totalCount"],
       reposName: map["name"],
+      hasIssuesEnabled: map["hasIssuesEnabled"],
       reposFullName: map["nameWithOwner"],
       ownerName: map["owner"]["login"],
       ownerAvatarUrl: map["owner"]["avatarUrl"],
@@ -115,6 +118,7 @@ class RepositoryQL {
         "totalCount": repositoryQL.issuesTotal,
       },
       "name": repositoryQL.reposName,
+      "hasIssuesEnabled": repositoryQL.hasIssuesEnabled,
       "nameWithOwner": repositoryQL.reposFullName,
       "owner": {
         "login": repositoryQL.ownerName,
