@@ -118,6 +118,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             ReposDetailModel.of(context).currentBranch)
         .then((result) {
       if (result != null && result.result) {
+        ReposDetailModel.of(context).currentBranch = result.data.defaultBranch;
         ReposDetailModel.of(context).repository = result.data;
         ReposDetailModel.of(context).getReposStatus(_getBottomWidget);
         if (result.next != null) {
