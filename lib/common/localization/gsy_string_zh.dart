@@ -201,6 +201,9 @@ class GSYStringZh extends GSYStringBase {
   String repos_issue_search = "搜索";
 
   @override
+  String repos_no_support_issue = "该项目没有开启 Issue";
+
+  @override
   String issue_reply = "回复";
   @override
   String issue_edit = "编辑";
