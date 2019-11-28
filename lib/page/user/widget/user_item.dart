@@ -41,8 +41,11 @@ class UserItem extends StatelessWidget {
 
     return new Container(
       child: new GSYCardItem(
-        color:
-            me.login == userItemViewModel.login ? Colors.amber : Colors.white,
+        color: me.login == userItemViewModel.login
+            ? Colors.amber
+            : (userItemViewModel.login == "CarGuo")
+                ? Colors.pink
+                : Colors.white,
         child: new FlatButton(
           onPressed: onPressed,
           child: new Padding(
