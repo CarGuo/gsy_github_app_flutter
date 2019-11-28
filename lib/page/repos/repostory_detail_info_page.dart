@@ -118,7 +118,11 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             ReposDetailModel.of(context).currentBranch)
         .then((result) {
       if (result != null && result.result) {
-        ReposDetailModel.of(context).currentBranch = result.data.defaultBranch;
+        if (result.data.defaultBranch != null &&
+            result.data.defaultBranch.length > 0) {
+          ReposDetailModel.of(context).currentBranch =
+              result.data.defaultBranch;
+        }
         ReposDetailModel.of(context).repository = result.data;
         ReposDetailModel.of(context).getReposStatus(_getBottomWidget);
         if (result.next != null) {
@@ -141,43 +145,50 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   ///绘制底部状态
   List<Widget> _getBottomWidget() {
     ///根据网络返回数据，返回底部状态数据
-    List<Widget> bottomWidget = ( ReposDetailModel.of(context).bottomModel == null)
+    List<Widget> bottomWidget = (ReposDetailModel.of(context).bottomModel ==
+            null)
         ? []
         : <Widget>[
-      /// star
-      _renderBottomItem( ReposDetailModel.of(context).bottomModel.starText,
-          ReposDetailModel.of(context).bottomModel.starIcon, () {
-            CommonUtils.showLoadingDialog(context);
-            return ReposDao.doRepositoryStarDao(widget.userName,
-                widget.reposName,  ReposDetailModel.of(context).repository.isStared)
-                .then((result) {
-              showRefreshLoading();
-              Navigator.pop(context);
-            });
-          }),
+            /// star
+            _renderBottomItem(ReposDetailModel.of(context).bottomModel.starText,
+                ReposDetailModel.of(context).bottomModel.starIcon, () {
+              CommonUtils.showLoadingDialog(context);
+              return ReposDao.doRepositoryStarDao(
+                      widget.userName,
+                      widget.reposName,
+                      ReposDetailModel.of(context).repository.isStared)
+                  .then((result) {
+                showRefreshLoading();
+                Navigator.pop(context);
+              });
+            }),
 
-      /// watch
-      _renderBottomItem( ReposDetailModel.of(context).bottomModel.watchText,
-          ReposDetailModel.of(context).bottomModel.watchIcon, () {
-            CommonUtils.showLoadingDialog(context);
-            return ReposDao.doRepositoryWatchDao(widget.userName,
-                widget.reposName,  ReposDetailModel.of(context).repository.isSubscription == "SUBSCRIBED")
-                .then((result) {
-              showRefreshLoading();
-              Navigator.pop(context);
-            });
-          }),
+            /// watch
+            _renderBottomItem(
+                ReposDetailModel.of(context).bottomModel.watchText,
+                ReposDetailModel.of(context).bottomModel.watchIcon, () {
+              CommonUtils.showLoadingDialog(context);
+              return ReposDao.doRepositoryWatchDao(
+                      widget.userName,
+                      widget.reposName,
+                      ReposDetailModel.of(context).repository.isSubscription ==
+                          "SUBSCRIBED")
+                  .then((result) {
+                showRefreshLoading();
+                Navigator.pop(context);
+              });
+            }),
 
-      ///fork
-      _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
-        CommonUtils.showLoadingDialog(context);
-        return ReposDao.createForkDao(widget.userName, widget.reposName)
-            .then((result) {
-          showRefreshLoading();
-          Navigator.pop(context);
-        });
-      }),
-    ];
+            ///fork
+            _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
+              CommonUtils.showLoadingDialog(context);
+              return ReposDao.createForkDao(widget.userName, widget.reposName)
+                  .then((result) {
+                showRefreshLoading();
+                Navigator.pop(context);
+              });
+            }),
+          ];
     return bottomWidget;
   }
 

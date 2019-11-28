@@ -69,7 +69,7 @@ class RepositoryQL {
       issuesClosed: map["issuesClosed"]["totalCount"],
       issuesOpen: map["issuesOpen"]["totalCount"],
       issuesTotal: map["issues"]["totalCount"],
-      defaultBranch: map["defaultBranchRef"]["name"],
+      defaultBranch: map["defaultBranchRef"] != null ? map["defaultBranchRef"]["name"] : null,
       reposName: map["name"],
       hasIssuesEnabled: map["hasIssuesEnabled"],
       reposFullName: map["nameWithOwner"],
