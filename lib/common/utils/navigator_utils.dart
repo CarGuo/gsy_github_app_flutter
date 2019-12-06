@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/router/anima_route.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
+import 'package:gsy_github_app_flutter/page/debug/debug_data_page.dart';
 import 'package:gsy_github_app_flutter/page/gsy_webview.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
@@ -79,6 +80,11 @@ class NavigatorUtils {
     NavigatorRouter(context, new PersonPage(userName));
   }
 
+  ///请求数据调试页面
+  static goDebugDataPage(BuildContext context) {
+    return NavigatorRouter(context, new DebugDataPage());
+  }
+
   ///仓库详情
   static Future goReposDetail(
       BuildContext context, String userName, String reposName) {
@@ -141,7 +147,6 @@ class NavigatorUtils {
   static Future goNotifyPage(BuildContext context) {
     return NavigatorRouter(context, new NotifyPage());
   }
-
 
   ///用户趋势
   static Future goTrendUserPage(BuildContext context) {
@@ -235,7 +240,6 @@ class NavigatorUtils {
     );
   }
 
-
   ///用户配置
   static gotoUserProfileInfo(BuildContext context) {
     NavigatorRouter(context, new UserProfileInfo());
@@ -250,6 +254,7 @@ class NavigatorUtils {
   ///Page页面的容器，做一次通用自定义
   static Widget pageContainer(widget) {
     return MediaQuery(
+
         ///不受系统字体缩放影响
         data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
             .copyWith(textScaleFactor: 1),

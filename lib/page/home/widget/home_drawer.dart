@@ -191,6 +191,9 @@ class HomeDrawer extends StatelessWidget {
                                   .home_about,
                               style: GSYConstant.normalText,
                             ),
+                            onLongPress: (){
+                              NavigatorUtils.goDebugDataPage(context);
+                            },
                             onTap: () {
                               PackageInfo.fromPlatform().then((value) {
                                 print(value);

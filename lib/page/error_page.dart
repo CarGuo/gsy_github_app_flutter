@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 
-class ErrorPage extends StatelessWidget {
+class ErrorPage extends StatefulWidget {
   final String errorMessage;
+  final FlutterErrorDetails details;
+
+  ErrorPage(this.errorMessage, this.details);
+
+  @override
+  ErrorPageState createState() => ErrorPageState();
+}
+
+class ErrorPageState extends State<ErrorPage> {
+  static List<Map<String, dynamic>> sErrorStack =
+      new List<Map<String, dynamic>>();
+  static List<String> sErrorName = new List<String>();
 
   final TextEditingController textEditingController =
       new TextEditingController();
 
-  ErrorPage(this.errorMessage);
+  addError(FlutterErrorDetails details) {
+    try {
+      var map = Map<String, dynamic>();
+      map["error"] = details.toString();
+      LogsInterceptors.addLogic(
+          sErrorName, details.exception.runtimeType.toString());
+      LogsInterceptors.addLogic(sErrorStack, map);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +82,7 @@ class ErrorPage extends StatelessWidget {
                   new FlatButton(
                       color: GSYColors.white.withAlpha(100),
                       onPressed: () {
-                        String content = errorMessage;
+                        String content = widget.errorMessage;
                         textEditingController.text = content;
                         CommonUtils.showEditDialog(
                             context,

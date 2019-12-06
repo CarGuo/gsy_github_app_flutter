@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
 import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
+import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
 import 'package:gsy_github_app_flutter/page/photoview_page.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
@@ -71,6 +72,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             routes: {
               WelcomePage.sName: (context) {
                 _context = context;
+                DebugLabel.showDebugLabel(context);
                 return WelcomePage();
               },
               HomePage.sName: (context) {
