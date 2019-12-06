@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -191,6 +192,16 @@ class CommonUtils {
       CommonUtils.changeLocale(StoreProvider.of<GSYState>(context), index);
       LocalStorage.save(Config.LOCALE, index.toString());
     }, height: 150.0);
+  }
+
+  ///获取设备信息
+  static Future<String> getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      return "";
+    }
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    return iosInfo.model;
   }
 
   /**
