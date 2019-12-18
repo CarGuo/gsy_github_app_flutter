@@ -83,11 +83,9 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: isLand == false
-          ? new AppBar(
-              title: GSYTitleBar(widget.title),
-            )
-          : null,
+      appBar: new AppBar(
+        title: GSYTitleBar(widget.title),
+      ),
       body: FutureBuilder<String>(
         initialData: widget.data,
         future: _getData(),
@@ -123,17 +121,19 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         child: Icon(
             isLand ? Icons.screen_lock_landscape : Icons.screen_lock_portrait),
         onPressed: () {
-          if (isLand) {
-            isLand = false;
-            SystemChrome.setPreferredOrientations([
-              DeviceOrientation.portraitUp,
-            ]);
-          } else {
-            isLand = true;
-            SystemChrome.setPreferredOrientations([
-              DeviceOrientation.landscapeLeft,
-            ]);
-          }
+          setState(() {
+            if (isLand) {
+              isLand = !isLand;
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitUp,
+              ]);
+            } else {
+              isLand = !isLand;
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.landscapeLeft,
+              ]);
+            }
+          });
         },
       ),
     );
