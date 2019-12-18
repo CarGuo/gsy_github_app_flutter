@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -46,6 +48,8 @@ class CodeDetailPageWeb extends StatefulWidget {
 }
 
 class _CodeDetailPageState extends State<CodeDetailPageWeb> {
+  bool isLand = false;
+
   Future<String> _getData() async {
     if (widget.data != null) {
       return widget.data;
@@ -64,41 +68,74 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: GSYTitleBar(widget.title),
-        ),
-        body: FutureBuilder<String>(
-          initialData: widget.data,
-          future: _getData(),
-          builder: (context, result) {
-            if (result.data == null || result.data.isEmpty) {
-              return new Center(
-                child: new Container(
-                  width: 200.0,
-                  height: 200.0,
-                  padding: new EdgeInsets.all(4.0),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new SpinKitDoubleBounce(
-                          color: Theme.of(context).primaryColor),
-                      new Container(width: 10.0),
-                      new Container(
-                          child: new Text(
-                              GSYLocalizations.i18n(context).loading_text,
-                              style: GSYConstant.middleText)),
-                    ],
-                  ),
+      appBar: isLand == false
+          ? new AppBar(
+              title: GSYTitleBar(widget.title),
+            )
+          : null,
+      body: FutureBuilder<String>(
+        initialData: widget.data,
+        future: _getData(),
+        builder: (context, result) {
+          if (result.data == null || result.data.isEmpty) {
+            return new Center(
+              child: new Container(
+                width: 200.0,
+                height: 200.0,
+                padding: new EdgeInsets.all(4.0),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new SpinKitDoubleBounce(
+                        color: Theme.of(context).primaryColor),
+                    new Container(width: 10.0),
+                    new Container(
+                        child: new Text(
+                            GSYLocalizations.i18n(context).loading_text,
+                            style: GSYConstant.middleText)),
+                  ],
                 ),
-              );
-            }
-            return WebView(
-              initialUrl: result.data,
-              javascriptMode: JavascriptMode.unrestricted,
+              ),
             );
-          },
-        ));
+          }
+          return WebView(
+            initialUrl: result.data,
+            javascriptMode: JavascriptMode.unrestricted,
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+            isLand ? Icons.screen_lock_landscape : Icons.screen_lock_portrait),
+        onPressed: () {
+          if (isLand) {
+            isLand = false;
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+            ]);
+          } else {
+            isLand = true;
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.landscapeLeft,
+            ]);
+          }
+        },
+      ),
+    );
   }
 }
