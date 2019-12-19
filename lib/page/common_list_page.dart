@@ -142,7 +142,7 @@ class _CommonListPageState extends State<CommonListPage>
     return new Scaffold(
       appBar: new AppBar(
           title: new Text(
-        widget.title,
+        widget.title ?? "",
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       )),
