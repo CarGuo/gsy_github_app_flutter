@@ -83,6 +83,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                 _context = context;
                 return NavigatorUtils.pageContainer(new LoginPage());
               },
+              ///使用 ModalRoute.of(context).settings.arguments; 获取参数
               PhotoViewPage.sName: (context) {
                 return PhotoViewPage();
               },
