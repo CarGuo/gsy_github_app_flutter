@@ -90,7 +90,7 @@
 
 ## 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 **1.9.1**)，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 **1.9.1+hotfix.6**，1.12.x 版本请切换到 `dev_next` 分支)，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
@@ -112,8 +112,8 @@
 
 4、运行之前请注意下
 
->### 1、本地Flutter SDK 版本 1.9.1 以上。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
-
+>### 1、本地Flutter SDK 版本 1.9.1+hotfix.6 。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
+>### ps 1.12.x 版本请切换到 dev_next 分支
 
 ## 项目结构图
 
@@ -155,7 +155,8 @@
 
 ### 第三方框架
 
->当前 Flutter SDK 版本  1.9.1
+>当前 Flutter SDK 版本  1.9.1+hotfix.6
+>ps 1.12.x 版本请切换到 dev_next 分支
 
 | 库                          | 功能             |
 | -------------------------- | -------------- |
