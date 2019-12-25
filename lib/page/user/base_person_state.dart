@@ -154,7 +154,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
                   /// MultiProvider 共享 HonorModel 状态
                   child: MultiProvider(
                     providers: [
-                      ChangeNotifierProvider(builder: (_) => honorModel),
+                      ChangeNotifierProvider(create: (_) => honorModel),
                     ],
                     child: Consumer<HonorModel>(
                       builder: (context, honorModel, _) {

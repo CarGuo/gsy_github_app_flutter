@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -34,54 +35,79 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   }
 
   @override
-  ImageStreamCompleter load(NetworkCacheImage key) {
+  ImageStreamCompleter load(NetworkCacheImage key, DecoderCallback decode) {
+    // Ownership of this controller is handed off to [_loadAsync]; it is that
+    // method's responsibility to close the controller's stream when the image
+    // has been loaded or an error is thrown.
+    final StreamController<ImageChunkEvent> chunkEvents =
+        StreamController<ImageChunkEvent>();
+
     return MultiFrameImageStreamCompleter(
-      codec: _loadAsync(key),
+      codec: _loadAsync(key, chunkEvents, decode),
+      chunkEvents: chunkEvents.stream,
       scale: key.scale,
-      informationCollector: () sync* {
-        yield DiagnosticsProperty<ImageProvider>('Image provider', this);
-        yield DiagnosticsProperty<NetworkCacheImage>('Image key', key);
+      informationCollector: () {
+        return <DiagnosticsNode>[
+          DiagnosticsProperty<ImageProvider>('Image provider', this),
+          DiagnosticsProperty<NetworkCacheImage>('Image key', key),
+        ];
       },
     );
   }
 
   static final HttpClient _httpClient = HttpClient();
 
-  Future<ui.Codec> _loadAsync(NetworkCacheImage key) async {
-    assert(key == this);
+  Future<ui.Codec> _loadAsync(
+    NetworkCacheImage key,
+    StreamController<ImageChunkEvent> chunkEvents,
+    DecoderCallback decode,
+  ) async {
+    try {
+      assert(key == this);
 
-    /// add this start
-    /// flutter_cache_manager DefaultCacheManager
-    final fileInfo = await DefaultCacheManager().getFileFromCache(key.url);
-    if (fileInfo != null && fileInfo.file != null) {
-      final Uint8List cacheBytes = await fileInfo.file.readAsBytes();
-      if (cacheBytes != null) {
-        return PaintingBinding.instance.instantiateImageCodec(cacheBytes);
+      /// add this start
+      /// flutter_cache_manager DefaultCacheManager
+      final fileInfo = await DefaultCacheManager().getFileFromCache(key.url);
+      if (fileInfo != null && fileInfo.file != null) {
+        final Uint8List cacheBytes = await fileInfo.file.readAsBytes();
+        if (cacheBytes != null) {
+          return PaintingBinding.instance.instantiateImageCodec(cacheBytes);
+        }
       }
+
+      /// add this end
+
+      final Uri resolved = Uri.base.resolve(key.url);
+      final HttpClientRequest request = await _httpClient.getUrl(resolved);
+      headers?.forEach((String name, String value) {
+        request.headers.add(name, value);
+      });
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode != HttpStatus.ok)
+        throw NetworkImageLoadException(
+            statusCode: response.statusCode, uri: resolved);
+
+      final Uint8List bytes = await consolidateHttpClientResponseBytes(
+        response,
+        onBytesReceived: (int cumulative, int total) {
+          chunkEvents.add(ImageChunkEvent(
+            cumulativeBytesLoaded: cumulative,
+            expectedTotalBytes: total,
+          ));
+        },
+      );
+      if (bytes.lengthInBytes == 0)
+        throw Exception('NetworkImage is an empty file: $resolved');
+
+      /// add this start
+      await DefaultCacheManager().putFile(key.url, bytes);
+
+      /// add this edn
+
+      return decode(bytes);
+    } finally {
+      chunkEvents.close();
     }
-
-    /// add this end
-
-    final Uri resolved = Uri.base.resolve(key.url);
-    final HttpClientRequest request = await _httpClient.getUrl(resolved);
-    headers?.forEach((String name, String value) {
-      request.headers.add(name, value);
-    });
-    final HttpClientResponse response = await request.close();
-    if (response.statusCode != HttpStatus.ok)
-      throw Exception(
-          'HTTP request failed, statusCode: ${response?.statusCode}, $resolved');
-
-    final Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-    if (bytes.lengthInBytes == 0)
-      throw Exception('NetworkCacheImage is an empty file: $resolved');
-
-    /// add this start
-    await DefaultCacheManager().putFile(key.url, bytes);
-
-    /// add this edn
-
-    return PaintingBinding.instance.instantiateImageCodec(bytes);
   }
 
   @override

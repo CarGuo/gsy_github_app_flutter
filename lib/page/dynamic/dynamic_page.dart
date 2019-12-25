@@ -43,9 +43,9 @@ class DynamicPageState extends State<DynamicPage>
           .animateTo(-141,
               duration: Duration(milliseconds: 600), curve: Curves.linear)
           .then((_) {
-        setState(() {
+        /*setState(() {
           _ignoring = false;
-        });
+        });*/
       });
       return true;
     });
@@ -67,7 +67,14 @@ class DynamicPageState extends State<DynamicPage>
 
   ///下拉刷新数据
   Future<void> requestRefresh() async {
-    return await dynamicBloc.requestRefresh(_getStore().state.userInfo?.login);
+    await dynamicBloc
+        .requestRefresh(_getStore().state.userInfo?.login)
+        .catchError((e) {
+      print(e);
+    });
+    setState(() {
+      _ignoring = false;
+    });
   }
 
   ///上拉更多请求数据
