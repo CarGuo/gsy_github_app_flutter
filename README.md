@@ -110,6 +110,7 @@
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
 | **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
+| **GooglePlay**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/googleplay.png) |
 | **iOS暂无下载** | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
 
 
