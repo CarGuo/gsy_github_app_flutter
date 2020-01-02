@@ -22,6 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4B43CF9723BDED980094FB3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 627667392E82CDFAE68C51AEBD0893F4;
+			remoteInfo = flutter_webview_plugin;
+		};
 		4B51211D211F395B00E0C9B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
@@ -35,20 +42,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = FE03FE86639A72DA4B3E03B276CF9787;
 			remoteInfo = device_info;
-		};
-		4B512121211F395B00E0C9B3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2AC289AB40D998EA7DBA2D915D4D9018;
-			remoteInfo = flutter_statusbar;
-		};
-		4B512123211F395B00E0C9B3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F5F68C588E60E4B9DF08A7029A63E587;
-			remoteInfo = flutter_webview_plugin;
 		};
 		4B512125211F395B00E0C9B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -119,20 +112,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7F4A134A788874481521861A1A2475B4;
 			remoteInfo = android_intent;
-		};
-		4BDA3ACC22744C9D0035B197 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BBF38E206C5E3F3031B3BFCC78590C98;
-			remoteInfo = flutter_lottie;
-		};
-		4BDA3ACE22744C9D0035B197 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B51210C211F395A00E0C9B3 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 15BEE6F3351D521C7880D028F6D09C21;
-			remoteInfo = "lottie-ios";
 		};
 		4BDA3AD022744C9D0035B197 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -213,12 +192,9 @@
 				4BDA3ACB22744C9D0035B197 /* android_intent.framework */,
 				4B51211E211F395B00E0C9B3 /* connectivity.framework */,
 				4B512120211F395B00E0C9B3 /* device_info.framework */,
-				4BDA3ACD22744C9D0035B197 /* flutter_lottie.framework */,
-				4B512122211F395B00E0C9B3 /* flutter_statusbar.framework */,
-				4B512124211F395B00E0C9B3 /* flutter_webview_plugin.framework */,
+				4B43CF9823BDED980094FB3A /* flutter_webview_plugin.framework */,
 				4B512126211F395B00E0C9B3 /* fluttertoast.framework */,
 				4B512128211F395B00E0C9B3 /* FMDB.framework */,
-				4BDA3ACF22744C9D0035B197 /* Lottie.framework */,
 				4B51212C211F395B00E0C9B3 /* package_info.framework */,
 				4BDB48ED21A2AEFF00E882C1 /* path_provider.framework */,
 				4BDB48EF21A2AEFF00E882C1 /* permission_handler.framework */,
@@ -342,7 +318,7 @@
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = B29J9885S3;
+						DevelopmentTeam = 8F3DX65RJ6;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
@@ -374,6 +350,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4B43CF9823BDED980094FB3A /* flutter_webview_plugin.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = flutter_webview_plugin.framework;
+			remoteRef = 4B43CF9723BDED980094FB3A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		4B51211E211F395B00E0C9B3 /* connectivity.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -386,20 +369,6 @@
 			fileType = wrapper.framework;
 			path = device_info.framework;
 			remoteRef = 4B51211F211F395B00E0C9B3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4B512122211F395B00E0C9B3 /* flutter_statusbar.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = flutter_statusbar.framework;
-			remoteRef = 4B512121211F395B00E0C9B3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4B512124211F395B00E0C9B3 /* flutter_webview_plugin.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = flutter_webview_plugin.framework;
-			remoteRef = 4B512123211F395B00E0C9B3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4B512126211F395B00E0C9B3 /* fluttertoast.framework */ = {
@@ -470,20 +439,6 @@
 			fileType = wrapper.framework;
 			path = android_intent.framework;
 			remoteRef = 4BDA3ACA22744C9D0035B197 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4BDA3ACD22744C9D0035B197 /* flutter_lottie.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = flutter_lottie.framework;
-			remoteRef = 4BDA3ACC22744C9D0035B197 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4BDA3ACF22744C9D0035B197 /* Lottie.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Lottie.framework;
-			remoteRef = 4BDA3ACE22744C9D0035B197 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4BDA3AD122744C9D0035B197 /* webview_flutter.framework */ = {
@@ -764,7 +719,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B29J9885S3;
+				DEVELOPMENT_TEAM = 8F3DX65RJ6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -776,7 +731,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shuyu.GSYGithubAppFlutter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shuyu.GSYGithubAppBundle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -796,7 +751,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B29J9885S3;
+				DEVELOPMENT_TEAM = 8F3DX65RJ6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -808,7 +763,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shuyu.GSYGithubAppFlutter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shuyu.GSYGithubAppBundle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
