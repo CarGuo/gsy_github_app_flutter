@@ -15,9 +15,6 @@
 * ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 * ### 同款Android Kotlin版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
 
-![](http://img.cdn.guoshuyu.cn/WeChat-Code)
-
-
 * ### [如果克隆太慢，可尝试码云地址下载](https://gitee.com/CarGuo/GSYGithubAppFlutter)
 
 ```!
@@ -29,6 +26,8 @@
 
 随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
 ```
+
+![](http://img.cdn.guoshuyu.cn/WeChat-Code)
 
 -----
 
