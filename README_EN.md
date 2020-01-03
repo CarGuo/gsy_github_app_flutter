@@ -82,22 +82,24 @@ With the use and feedback of the project, will user experience and function opti
 
 >### Local Flutter SDK version  1.9.1 or more. 2. Does the third-party package version in pubspec. yaml correspond to the third-party package version in pubspec. lock?
 
+### Download
+
+#### Apk Link： [Apk Link](https://www.pgyer.com/guqa)
+
+
+| 类型          | 二维码                                      |
+| ----------- | ---------------------------------------- |
+| **Apk**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
+| **GooglePlay**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/googleplay.png) |
+| **iOS null** | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+
+
 
 ## Project Structure
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
-
-### 下载
-
-#### Apk Download Link： [ Apk Download Link](https://www.pgyer.com/vj2B)
-
-
-| Type          | Apk QR code                                    |
-| ----------- | ---------------------------------------- |
-| **Apk QR code**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **IOS Null** |  |
 
 
 

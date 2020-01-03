@@ -96,12 +96,6 @@
 >### 1、本地Flutter SDK 版本 1.9.1+hotfix.6 。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
 >### ps 1.12.x 版本请切换到 dev_next 分支
 
-## 项目结构图
-
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
-
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
-
 ### 下载
 
 #### Apk下载链接： [Apk下载链接](https://www.pgyer.com/guqa)
@@ -112,6 +106,14 @@
 | **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
 | **GooglePlay**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/googleplay.png) |
 | **iOS暂无下载** | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+
+
+
+## 项目结构图
+
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
+
+![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
 
 
 

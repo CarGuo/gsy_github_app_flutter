@@ -9,7 +9,7 @@ class GSYStringEn extends GSYStringBase {
   String welcomeMessage = "Welcome To Flutter";
 
   @override
-  String app_name = "GSYGithubAppFlutter";
+  String app_name = "GSYGithubApp";
 
   @override
   String app_ok = "ok";
