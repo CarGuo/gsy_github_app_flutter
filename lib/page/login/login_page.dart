@@ -9,8 +9,10 @@ import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/widget/animated_background.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
+import 'package:gsy_github_app_flutter/widget/particle/particle_widget.dart';
 
 /**
  * 登录页
@@ -38,81 +40,85 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
       child: Scaffold(
         body: new Container(
           color: Theme.of(context).primaryColor,
-          child: new Center(
-            ///防止overFlow的现象
-            child: SafeArea(
-              ///同时弹出键盘不遮挡
-              child: SingleChildScrollView(
-                child: new Card(
-                  elevation: 5.0,
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  color: GSYColors.cardWhite,
-                  margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: new Padding(
-                    padding: new EdgeInsets.only(
-                        left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
-                    child: new Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        new Image(
-                            image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
-                            width: 90.0,
-                            height: 90.0),
-                        new Padding(padding: new EdgeInsets.all(10.0)),
-                        new GSYInputWidget(
-                          hintText: GSYLocalizations.i18n(context)
-                              .login_username_hint_text,
-                          iconData: GSYICons.LOGIN_USER,
-                          onChanged: (String value) {
-                            _userName = value;
-                          },
-                          controller: userController,
-                        ),
-                        new Padding(padding: new EdgeInsets.all(10.0)),
-                        new GSYInputWidget(
-                          hintText: GSYLocalizations.i18n(context)
-                              .login_password_hint_text,
-                          iconData: GSYICons.LOGIN_PW,
-                          obscureText: true,
-                          onChanged: (String value) {
-                            _password = value;
-                          },
-                          controller: pwController,
-                        ),
-                        new Padding(padding: new EdgeInsets.all(30.0)),
-                        new GSYFlexButton(
-                          text: GSYLocalizations.i18n(context).login_text,
-                          color: Theme.of(context).primaryColor,
-                          textColor: GSYColors.textWhite,
-                          onPress: loginIn,
-                        ),
-                        new Padding(padding: new EdgeInsets.all(15.0)),
-                        InkWell(
-                          onTap: () {
-                            CommonUtils.showLanguageDialog(context);
-                          },
-                          child: Text(
-                            GSYLocalizations.i18n(context).switch_language,
-                            style: TextStyle(color: GSYColors.subTextColor),
+          child: Stack(children: <Widget>[
+            Positioned.fill(child: AnimatedBackground()),
+            Positioned.fill(child: ParticlesWidget(30)),
+            new Center(
+              ///防止overFlow的现象
+              child: SafeArea(
+                ///同时弹出键盘不遮挡
+                child: SingleChildScrollView(
+                  child: new Card(
+                    elevation: 5.0,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    color: GSYColors.cardWhite,
+                    margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+                    child: new Padding(
+                      padding: new EdgeInsets.only(
+                          left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          new Image(
+                              image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+                              width: 90.0,
+                              height: 90.0),
+                          new Padding(padding: new EdgeInsets.all(10.0)),
+                          new GSYInputWidget(
+                            hintText: GSYLocalizations.i18n(context)
+                                .login_username_hint_text,
+                            iconData: GSYICons.LOGIN_USER,
+                            onChanged: (String value) {
+                              _userName = value;
+                            },
+                            controller: userController,
                           ),
-                        ),
-                        new Padding(padding: new EdgeInsets.all(15.0)),
-                      ],
+                          new Padding(padding: new EdgeInsets.all(10.0)),
+                          new GSYInputWidget(
+                            hintText: GSYLocalizations.i18n(context)
+                                .login_password_hint_text,
+                            iconData: GSYICons.LOGIN_PW,
+                            obscureText: true,
+                            onChanged: (String value) {
+                              _password = value;
+                            },
+                            controller: pwController,
+                          ),
+                          new Padding(padding: new EdgeInsets.all(30.0)),
+                          new GSYFlexButton(
+                            text: GSYLocalizations.i18n(context).login_text,
+                            color: Theme.of(context).primaryColor,
+                            textColor: GSYColors.textWhite,
+                            onPress: loginIn,
+                          ),
+                          new Padding(padding: new EdgeInsets.all(15.0)),
+                          InkWell(
+                            onTap: () {
+                              CommonUtils.showLanguageDialog(context);
+                            },
+                            child: Text(
+                              GSYLocalizations.i18n(context).switch_language,
+                              style: TextStyle(color: GSYColors.subTextColor),
+                            ),
+                          ),
+                          new Padding(padding: new EdgeInsets.all(15.0)),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
+            )
+          ]),
         ),
       ),
     );
   }
 }
 
-mixin  LoginBLoC on State<LoginPage> {
+mixin LoginBLoC on State<LoginPage> {
   final TextEditingController userController = new TextEditingController();
 
   final TextEditingController pwController = new TextEditingController();

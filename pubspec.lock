@@ -608,6 +608,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.3"
+  simple_animations:
+    dependency: "direct main"
+    description:
+      name: simple_animations
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.3.4"
   sky_engine:
     dependency: transitive
     description: flutter
