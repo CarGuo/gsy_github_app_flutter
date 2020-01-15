@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/widget/mole_widget.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -47,7 +48,6 @@ class _WelcomePageState extends State<WelcomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<GSYState>(
@@ -60,6 +60,10 @@ class _WelcomePageState extends State<WelcomePage> {
               new Center(
                 child: new Image(
                     image: new AssetImage('static/images/welcome.png')),
+              ),
+              Align(
+                alignment:Alignment(0.0, 0.8),
+                child: Mole(),
               ),
               new Align(
                 alignment: Alignment.bottomCenter,
