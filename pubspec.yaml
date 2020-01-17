@@ -110,3 +110,6 @@ flutter:
     - family: wxcIconFont
       fonts:
         - asset: static/font/iconfont.ttf
+    - family: google_kavivanar
+      fonts:
+        - asset: static/font/google_kavivanar.ttf
