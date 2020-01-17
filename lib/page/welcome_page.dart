@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/widget/diff_scale_text.dart';
 import 'package:gsy_github_app_flutter/widget/mole_widget.dart';
 import 'package:redux/redux.dart';
 
@@ -26,6 +27,9 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   bool hadInit = false;
 
+  String text = "Welcome";
+  double fontSize = 46;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -36,6 +40,12 @@ class _WelcomePageState extends State<WelcomePage> {
 
     ///防止多次进入
     Store<GSYState> store = StoreProvider.of(context);
+    new Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
+      setState(() {
+        text = "GSYGithubApp";
+        fontSize = 41;
+      });
+    });
     new Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {
@@ -53,30 +63,45 @@ class _WelcomePageState extends State<WelcomePage> {
     return StoreBuilder<GSYState>(
       builder: (context, store) {
         double size = 200;
-        return new Container(
-          color: GSYColors.white,
-          child: Stack(
-            children: <Widget>[
-              new Center(
-                child: new Image(
-                    image: new AssetImage('static/images/welcome.png')),
-              ),
-              Align(
-                alignment:Alignment(0.0, 0.8),
-                child: Mole(),
-              ),
-              new Align(
-                alignment: Alignment.bottomCenter,
-                child: new Container(
-                  width: size,
-                  height: size,
-                  child: new FlareActor("static/file/flare_flutter_logo_.flr",
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.fill,
-                      animation: "Placeholder"),
+        return Material(
+          child: new Container(
+            color: GSYColors.white,
+            child: Stack(
+              children: <Widget>[
+                new Center(
+                  child: new Image(
+                      image: new AssetImage('static/images/welcome.png')),
                 ),
-              )
-            ],
+                Align(
+                  alignment: Alignment(0.0, 0.3),
+                  child: DiffScaleText(
+                    text: text,
+                    textStyle: TextStyle(
+                      fontFamily: "google_kavivanar",
+                      fontSize: fontSize,
+                      //fontStyle: FontStyle.italic,
+                      color: GSYColors.primaryValue,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment(0.0, 0.8),
+                  child: Mole(),
+                ),
+                new Align(
+                  alignment: Alignment.bottomCenter,
+                  child: new Container(
+                    width: size,
+                    height: size,
+                    child: new FlareActor("static/file/flare_flutter_logo_.flr",
+                        alignment: Alignment.topCenter,
+                        fit: BoxFit.fill,
+                        animation: "Placeholder"),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
