@@ -9,7 +9,7 @@ class GSYStringZh extends GSYStringBase {
   String welcomeMessage = "Welcome To Flutter";
 
   @override
-  String app_name = "GSYGithubAppFlutter";
+  String app_name = "GSYGithubApp";
 
   @override
   String app_ok = "确定";
@@ -50,7 +50,10 @@ class GSYStringZh extends GSYStringBase {
   String option_share_copy_success = "已经复制到粘贴板";
 
   @override
-  String login_text = "登录";
+  String login_text = "账号登录";
+
+  @override
+  String oauth_text = "安全登陆";
 
   @override
   String Login_out = "退出登录";
@@ -70,14 +73,14 @@ class GSYStringZh extends GSYStringBase {
   @override
   String home_change_theme = "切换主题";
   @override
-  String home_language_default= "默认";
+  String home_language_default = "默认";
   @override
-  String home_language_zh= "中文";
+  String home_language_zh = "中文";
   @override
-  String home_language_en= "English";
+  String home_language_en = "English";
 
   @override
-  String switch_language= "切换语言";
+  String switch_language = "切换语言";
 
   @override
   String home_theme_default = "默认主题";

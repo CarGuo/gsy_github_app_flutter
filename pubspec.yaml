@@ -26,6 +26,7 @@ dependencies:
   path_provider: ^1.5.1
   permission_handler: 3.2.2
   scoped_model: ^1.0.1
+  flutter_webview_plugin: 0.3.10+1
   webview_flutter: ^0.3.18+1
   bezier: ^1.1.2
   provider: ^4.0.0
@@ -43,6 +44,7 @@ dependencies:
   built_value: 6.8.2
   graphql: 2.1.0
   flutter_json_widget: 1.0.2
+  simple_animations: 1.3.4
   flutter_localizations:
     sdk: flutter
   photo_view:
@@ -108,3 +110,6 @@ flutter:
     - family: wxcIconFont
       fonts:
         - asset: static/font/iconfont.ttf
+    - family: google_kavivanar
+      fonts:
+        - asset: static/font/google_kavivanar.ttf
