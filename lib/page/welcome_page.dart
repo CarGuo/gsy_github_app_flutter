@@ -41,7 +41,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
     ///防止多次进入
     Store<GSYState> store = StoreProvider.of(context);
-    new Future.delayed(const Duration(seconds: 0), () {
+    new Future.delayed(const Duration( milliseconds: 500), () {
       setState(() {
         text = "Welcome";
         fontSize = 60;
