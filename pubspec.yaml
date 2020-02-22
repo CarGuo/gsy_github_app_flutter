@@ -1,6 +1,6 @@
 name: gsy_github_app_flutter
 description: Github Application
-version: 1.6.8+30
+version: 1.7.0+32
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
