@@ -41,9 +41,11 @@ class GSYSearchInputWidget extends StatelessWidget {
               child: new TextField(
                   autofocus: false,
                   controller: controller,
-                  decoration: new InputDecoration.collapsed(
+                  decoration: new InputDecoration(
                     hintText: GSYLocalizations.i18n(context).repos_issue_search,
                     hintStyle: GSYConstant.middleSubText,
+                    border: InputBorder.none,
+                    isDense: true,
                   ),
                   style: GSYConstant.middleText
                       .copyWith(textBaseline: TextBaseline.alphabetic),

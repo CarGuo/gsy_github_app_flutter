@@ -146,10 +146,12 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                     maxLines: 999,
                                     onChanged: widget.onContentChanged,
                                     controller: widget.valueController,
-                                    decoration: new InputDecoration.collapsed(
+                                    decoration: new InputDecoration(
                                       hintText: GSYLocalizations.i18n(context)
                                           .issue_edit_issue_title_tip,
                                       hintStyle: GSYConstant.middleSubText,
+                                      isDense: true,
+                                      border: InputBorder.none,
                                     ),
                                     style: GSYConstant.middleText,
                                   ),

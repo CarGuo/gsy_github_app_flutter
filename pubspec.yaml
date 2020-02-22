@@ -27,7 +27,7 @@ dependencies:
   permission_handler: 3.2.2
   scoped_model: ^1.0.1
   flutter_webview_plugin: 0.3.10+1
-  webview_flutter: ^0.3.18+1
+  webview_flutter: ^0.3.19+8
   bezier: ^1.1.2
   provider: ^4.0.0
   flare_flutter: ^1.8.3
@@ -35,10 +35,11 @@ dependencies:
   json_annotation: 3.0.1
   package_info: 0.4.0+13
   connectivity: 0.4.6+1
-  flutter_markdown: 0.3.2
+  flutter_markdown: 0.3.3
   rxdart: 0.22.3
   device_info: 0.4.1+4
   url_launcher: 5.4.1
+  google_fonts: 0.3.9
   android_intent: 0.3.4+8
   shared_preferences: 0.5.6
   built_value: 6.8.2
