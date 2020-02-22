@@ -28,7 +28,7 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   bool hadInit = false;
 
-  String text = "Welcome";
+  String text = "";
   double fontSize = 76;
 
   @override
@@ -41,6 +41,12 @@ class _WelcomePageState extends State<WelcomePage> {
 
     ///防止多次进入
     Store<GSYState> store = StoreProvider.of(context);
+    new Future.delayed(const Duration(seconds: 0), () {
+      setState(() {
+        text = "Welcome";
+        fontSize = 60;
+      });
+    });
     new Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
       setState(() {
         text = "GSYGithubApp";
