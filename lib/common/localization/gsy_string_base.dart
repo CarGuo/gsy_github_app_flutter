@@ -43,6 +43,8 @@ abstract class GSYStringBase {
 
   String get login_text;
 
+  String get oauth_text;
+
   String get Login_out;
 
   String get home_reply;

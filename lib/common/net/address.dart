@@ -1,4 +1,5 @@
 import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 
 ///地址数据
 class Address {
@@ -269,6 +270,12 @@ class Address {
   ///put
   static setAllNotificationAsRead() {
     return "${host}notifications";
+  }
+
+  static getOAuthUrl() {
+    return "https://github.com/login/oauth/authorize?client_id"
+        "=${NetConfig.CLIENT_ID}&state=app&"
+        "redirect_uri=gsygithubapp://authed";
   }
 
   ///趋势 get

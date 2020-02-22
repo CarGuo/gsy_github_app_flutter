@@ -53,6 +53,9 @@ class GSYStringEn extends GSYStringBase {
   String login_text = "Login";
 
   @override
+  String oauth_text = "OAuth";
+
+  @override
   String Login_out = "Logout";
 
   @override

@@ -54,6 +54,7 @@ GSYState appReducer(GSYState state, action) {
 final List<Middleware<GSYState>> middleware = [
   EpicMiddleware<GSYState>(UserInfoEpic()),
   EpicMiddleware<GSYState>(LoginEpic()),
+  EpicMiddleware<GSYState>(OAuthEpic()),
   UserInfoMiddleware(),
   LoginMiddleware(),
 ];

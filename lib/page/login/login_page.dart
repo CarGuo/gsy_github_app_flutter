@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/net/address.dart';
+import 'package:gsy_github_app_flutter/common/net/api.dart';
+import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -86,12 +90,34 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             },
                             controller: pwController,
                           ),
-                          new Padding(padding: new EdgeInsets.all(30.0)),
-                          new GSYFlexButton(
-                            text: GSYLocalizations.i18n(context).login_text,
-                            color: Theme.of(context).primaryColor,
-                            textColor: GSYColors.textWhite,
-                            onPress: loginIn,
+                          new Padding(padding: new EdgeInsets.all(10.0)),
+                          Container(
+                            height: 50,
+                            child: Row(
+                              children: <Widget>[
+                                new Expanded(
+                                  child: new GSYFlexButton(
+                                    text: GSYLocalizations.i18n(context)
+                                        .login_text,
+                                    color: Theme.of(context).primaryColor,
+                                    textColor: GSYColors.textWhite,
+                                    onPress: loginIn,
+                                  ),
+                                ),
+                                new SizedBox(
+                                  width: 10,
+                                ),
+                                new Expanded(
+                                  child: new GSYFlexButton(
+                                    text: GSYLocalizations.i18n(context)
+                                        .oauth_text,
+                                    color: Theme.of(context).primaryColor,
+                                    textColor: GSYColors.textWhite,
+                                    onPress: oauthLogin,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           new Padding(padding: new EdgeInsets.all(15.0)),
                           InkWell(
@@ -166,5 +192,15 @@ mixin LoginBLoC on State<LoginPage> {
     ///通过 redux 去执行登陆流程
     StoreProvider.of<GSYState>(context)
         .dispatch(LoginAction(context, _userName, _password));
+  }
+
+  oauthLogin() async {
+    String code = await NavigatorUtils.goLoginWebView(context,
+        Address.getOAuthUrl(), "${GSYLocalizations.i18n(context).oauth_text}");
+
+    if (code != null && code.length > 0) {
+      ///通过 redux 去执行登陆流程
+      StoreProvider.of<GSYState>(context).dispatch(OAuthAction(context, code));
+    }
   }
 }
