@@ -20,7 +20,7 @@ dependencies:
   flutter_markdown: 0.3.0
   share: ^0.6.2+3
   flutter_spinkit: ^4.0.0
-  flutter_webview_plugin: ^0.3.8
+  flutter_webview_plugin: 0.3.10+1
   sqflite: ^1.1.7+1
   pub_semver: ^1.4.2
   flutter_svg: ^0.14.2
@@ -32,7 +32,7 @@ dependencies:
   permission_handler: 3.2.2
   scoped_model: ^1.0.1
   rxdart: ^0.22.3
-  webview_flutter: ^0.3.9+1
+  webview_flutter: 0.3.17
   bezier: ^1.1.2
   provider: ^3.1.0
   flare_flutter: ^1.6.1

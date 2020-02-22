@@ -290,7 +290,7 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.8"
+    version: "0.3.10+1"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -752,7 +752,7 @@ packages:
       name: webview_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.15+1"
+    version: "0.3.17"
   xml:
     dependency: transitive
     description:
@@ -769,4 +769,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.5.0 <3.0.0"
-  flutter: ">=1.9.1 <2.0.0"
+  flutter: ">=1.9.1+hotfix.5 <2.0.0"

@@ -51,6 +51,13 @@ class LoginAction {
   LoginAction(this.context, this.username, this.password);
 }
 
+class OAuthAction {
+  final BuildContext context;
+  final String code;
+
+  OAuthAction(this.context, this.code);
+}
+
 class LoginMiddleware implements MiddlewareClass<GSYState> {
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
@@ -77,6 +84,23 @@ class LoginEpic implements EpicClass<GSYState> {
     CommonUtils.showLoadingDialog(action.context);
     var res = await UserDao.login(
         action.username.trim(), action.password.trim(), store);
+    Navigator.pop(action.context);
+    yield LoginSuccessAction(action.context, (res != null && res.result));
+  }
+}
+
+class OAuthEpic implements EpicClass<GSYState> {
+  @override
+  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
+    return Observable(actions)
+        .whereType<OAuthAction>()
+        .switchMap((action) => _loginIn(action, store));
+  }
+
+  Stream<dynamic> _loginIn(
+      OAuthAction action, EpicStore<GSYState> store) async* {
+    CommonUtils.showLoadingDialog(action.context);
+    var res = await UserDao.oauth(action.code, store);
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }
