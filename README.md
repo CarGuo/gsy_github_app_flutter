@@ -70,7 +70,7 @@
 
 ## 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 **1.12**)，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 **1.12.13-hotfix8**)，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
@@ -92,8 +92,8 @@
 
 4、运行之前请注意下
 
->### 1、本地Flutter SDK 版本 1.12  。2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
->### ps 1.12.x 版本请切换到 dev_next 分支
+>### 1、本地Flutter SDK 版本 1.12.13-hotfix8 。 2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
+
 
 ### 下载
 
@@ -113,7 +113,6 @@
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
 
 ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
-
 
 
 
@@ -138,7 +137,7 @@
 
 ### 第三方框架
 
->当前 Flutter SDK 版本 1.12 
+>当前 Flutter SDK 版本 1.12.13-hotfix8
 
 | 库                          | 功能             |
 | -------------------------- | -------------- |
