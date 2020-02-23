@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.d
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/test/demo_tab_page.dart';
 
+import '../../common/style/gsy_style.dart';
 import '../error_page.dart';
 
 ///请求数据调
@@ -22,11 +23,7 @@ class _DebugDataPageState extends State<DebugDataPage> {
     return new Tab(
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Text(text,
-              style: new TextStyle(
-                  fontSize: 12, fontWeight: FontWeight.bold))
-        ],
+        children: <Widget>[new Text(text, style: new TextStyle(fontSize: 11))],
       ),
     );
   }
@@ -58,7 +55,6 @@ class _DebugDataPageState extends State<DebugDataPage> {
         ],
         indicatorColor: GSYColors.primaryValue,
         onTap: (index) {
-          print("FFFFFFFFFFFFF");
           setState(() {
             tabIndex = index;
           });
@@ -89,70 +85,98 @@ class _DebugDataListState extends State<DebugDataList>
       color: GSYColors.white,
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
-        itemBuilder: (context, index) => InkWell(
-          child: Card(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              child: new Text(
-                widget.titles[index] ?? "",
-                style: TextStyle(fontSize: 15),
+        itemBuilder: (context, i) {
+          var index = widget.dataList.length - i - 1;
+          return InkWell(
+            child: Card(
+              child: Row(
+                children: <Widget>[
+                  new Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(right: 5),
+                    height: 24,
+                    width: 24,
+                    decoration: BoxDecoration(
+                      color: GSYColors.primaryValue,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    child: new Text(
+                      index.toString(),
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white.withAlpha(200),
+                      ),
+                    ),
+                  ),
+                  new Expanded(
+                      child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    child: new Text(
+                      widget.titles[index] ?? "",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ))
+                ],
               ),
             ),
-          ),
-          onLongPress: () {
-            try {
-              Clipboard.setData(
-                  new ClipboardData(text: "${widget.titles[index]}"));
-              Fluttertoast.showToast(msg: "复制链接成功");
-            } catch (e) {
-              print(e);
-            }
-          },
-          onDoubleTap: () {
-            try {
-              Clipboard.setData(
-                  new ClipboardData(text: "${widget.dataList[index]}"));
-              Fluttertoast.showToast(msg: "复制数据成功");
-            } catch (e) {
-              print(e);
-            }
-          },
-          onTap: () {
-            showBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Material(
-                    color: Colors.transparent,
-                    child: new Stack(
-                      children: <Widget>[
-                        new Container(
-                          padding: EdgeInsets.only(top: 30),
-                          color: Colors.white,
-                          child: SingleChildScrollView(
-                              child: JsonViewerWidget(widget.dataList[index])),
-                        ),
-                        Transform.translate(
-                          offset: Offset(0, -10),
-                          child: new Container(
-                            alignment: Alignment.topCenter,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                size: 30,
-                                color: Colors.black,
+            onLongPress: () {
+              try {
+                Clipboard.setData(
+                    new ClipboardData(text: "${widget.titles[index]}"));
+                Fluttertoast.showToast(msg: "复制链接成功");
+              } catch (e) {
+                print(e);
+              }
+            },
+            onDoubleTap: () {
+              try {
+                Clipboard.setData(
+                    new ClipboardData(text: "${widget.dataList[index]}"));
+                Fluttertoast.showToast(msg: "复制数据成功");
+              } catch (e) {
+                print(e);
+              }
+            },
+            onTap: () {
+              showBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Material(
+                      color: Colors.transparent,
+                      child: new Stack(
+                        children: <Widget>[
+                          new Container(
+                            padding: EdgeInsets.only(top: 30),
+                            color: Colors.white,
+                            child: SingleChildScrollView(
+                                child:
+                                    JsonViewerWidget(widget.dataList[index])),
+                          ),
+                          Transform.translate(
+                            offset: Offset(0, -10),
+                            child: new Container(
+                              alignment: Alignment.topCenter,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 30,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
-          },
-        ),
+                        ],
+                      ),
+                    );
+                  });
+            },
+          );
+        },
         itemCount: widget.titles.length,
       ),
     );
