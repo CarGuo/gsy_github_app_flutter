@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui show Codec;
 
+import 'package:flutter/painting.dart' as image_provider;
+
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 /**
@@ -58,6 +60,40 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   static final HttpClient _httpClient = HttpClient();
 
   Future<ui.Codec> _loadAsync(
+      NetworkCacheImage key,
+      StreamController<ImageChunkEvent> chunkEvents,
+      DecoderCallback decode,
+      ) async {
+    try {
+      assert(key == this);
+
+      final Uri resolved = Uri.base.resolve(key.url);
+      final HttpClientRequest request = await _httpClient.getUrl(resolved);
+      headers?.forEach((String name, String value) {
+        request.headers.add(name, value);
+      });
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode != HttpStatus.ok)
+        throw image_provider.NetworkImageLoadException(statusCode: response.statusCode, uri: resolved);
+
+      final Uint8List bytes = await consolidateHttpClientResponseBytes(
+        response,
+        onBytesReceived: (int cumulative, int total) {
+          chunkEvents.add(ImageChunkEvent(
+            cumulativeBytesLoaded: cumulative,
+            expectedTotalBytes: total,
+          ));
+        },
+      );
+      if (bytes.lengthInBytes == 0)
+        throw Exception('NetworkImage is an empty file: $resolved');
+      return decode(bytes);
+    } finally {
+      chunkEvents.close();
+    }
+  }
+
+  /*Future<ui.Codec> _loadAsync(
     NetworkCacheImage key,
     StreamController<ImageChunkEvent> chunkEvents,
     DecoderCallback decode,
@@ -108,7 +144,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
     } finally {
       chunkEvents.close();
     }
-  }
+  }*/
 
   @override
   bool operator ==(dynamic other) {
