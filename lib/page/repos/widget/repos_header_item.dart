@@ -90,7 +90,9 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   _renderTopicGroup(BuildContext context) {
     if (widget.reposHeaderViewModel.topics == null ||
         widget.reposHeaderViewModel.topics.length == 0) {
-      return Container();
+      return Container(
+        key: layoutTopicContainerKey,
+      );
     }
     List<Widget> list = new List();
     for (int i = 0; i < widget.reposHeaderViewModel.topics.length; i++) {
@@ -100,7 +102,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
     return new Container(
       key: layoutTopicContainerKey,
       alignment: Alignment.topLeft,
-      margin: EdgeInsets.only(top: 5.0),
+      //margin: EdgeInsets.only(top: 5.0),
       child: Wrap(
         spacing: 10.0,
         runSpacing: 5.0,
@@ -141,27 +143,24 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       RenderBox renderBox2 =
           layoutTopicContainerKey.currentContext?.findRenderObject();
 
-      /// 最后面的一个tag
-      RenderBox renderBox3 =
-          layoutLastTopicKey.currentContext?.findRenderObject();
-      double overflow = ((renderBox3?.localToGlobal(Offset.zero)?.dy ?? 0) -
-              (renderBox2?.localToGlobal(Offset.zero)?.dy ?? 0)) -
-          (layoutLastTopicKey.currentContext?.size?.height ?? 0);
-      var newSize;
-      if (overflow > 0) {
-        newSize = layoutKey.currentContext.size.height + overflow;
-      } else {
-        newSize = layoutKey.currentContext.size.height + 10.0;
+      var dy = renderBox2
+          ?.localToGlobal(Offset.zero,
+              ancestor: layoutKey.currentContext.findRenderObject())
+          ?.dy ?? 0;
+      var sizeTagContainer = layoutTopicContainerKey?.currentContext?.size ?? null;
+      var headerSize = layoutKey?.currentContext?.size;
+      if(dy > 0 && headerSize != null && sizeTagContainer != null) {
+        /// 20是 card 的上下 padding
+        var newSize = dy + sizeTagContainer.height + 20;
+        if (widgetHeight != newSize && newSize > 0) {
+          print("widget?.layoutListener?.call");
+          widgetHeight = newSize;
+          widget?.layoutListener
+              ?.call(Size(layoutKey.currentContext.size.width, widgetHeight));
+        }
       }
-      if (Config.DEBUG) {
-        print("newSize $newSize overflow $overflow");
-      }
-      if (widgetHeight != newSize && newSize > 0) {
-        print("widget?.layoutListener?.call");
-        widgetHeight = newSize;
-        widget?.layoutListener
-            ?.call(Size(layoutKey.currentContext.size.width, widgetHeight));
-      }
+
+
     });
   }
 
