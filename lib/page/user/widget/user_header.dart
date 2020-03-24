@@ -32,7 +32,7 @@ class UserHeaderItem extends StatelessWidget {
   UserHeaderItem(this.userInfo, this.beStaredCount, this.themeColor,
       {this.notifyColor, this.refreshCallBack, this.orgList});
 
-  ///通知ICon
+  ///通知Icon
   _getNotifyIcon(BuildContext context, Color color) {
     if (notifyColor == null) {
       return Container();
@@ -105,6 +105,95 @@ class UserHeaderItem extends StatelessWidget {
     return Row(children: list);
   }
 
+  _renderImg(context) {
+    return new RawMaterialButton(
+        onPressed: () {
+          if (userInfo.avatar_url != null) {
+            NavigatorUtils.gotoPhotoViewPage(context, userInfo.avatar_url);
+          }
+        },
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: const EdgeInsets.all(0.0),
+        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+        child: new ClipOval(
+          child: new FadeInImage.assetNetwork(
+            placeholder: GSYICons.DEFAULT_USER_ICON,
+            //预览图
+            fit: BoxFit.fitWidth,
+            image: userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
+            width: 80.0,
+            height: 80.0,
+          ),
+        ));
+  }
+
+  _renderUserInfo(context) {
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        new Row(
+          children: <Widget>[
+            ///用户名
+            new Text(userInfo.login ?? "",
+                style: GSYConstant.largeTextWhiteBold),
+            _getNotifyIcon(context, notifyColor),
+          ],
+        ),
+        new Text(userInfo.name == null ? "" : userInfo.name,
+            style: GSYConstant.smallSubLightText),
+
+        ///用户组织
+        new GSYIConText(
+          GSYICons.USER_ITEM_COMPANY,
+          userInfo.company ?? GSYLocalizations.i18n(context).nothing_now,
+          GSYConstant.smallSubLightText,
+          GSYColors.subLightTextColor,
+          10.0,
+          padding: 3.0,
+        ),
+
+        ///用户位置
+        new GSYIConText(
+          GSYICons.USER_ITEM_LOCATION,
+          userInfo.location ?? GSYLocalizations.i18n(context).nothing_now,
+          GSYConstant.smallSubLightText,
+          GSYColors.subLightTextColor,
+          10.0,
+          padding: 3.0,
+        ),
+      ],
+    );
+  }
+
+  _renderBlog(context) {
+    return new Container(
+
+        ///用户博客
+        child: new RawMaterialButton(
+          onPressed: () {
+            if (userInfo.blog != null) {
+              CommonUtils.launchOutURL(userInfo.blog, context);
+            }
+          },
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: const EdgeInsets.all(0.0),
+          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+          child: new GSYIConText(
+            GSYICons.USER_ITEM_LINK,
+            userInfo.blog ?? GSYLocalizations.i18n(context).nothing_now,
+            (userInfo.blog == null)
+                ? GSYConstant.smallSubLightText
+                : GSYConstant.smallActionLightText,
+            GSYColors.subLightTextColor,
+            10.0,
+            padding: 3.0,
+            textWidth: MediaQuery.of(context).size.width - 50,
+          ),
+        ),
+        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+        alignment: Alignment.topLeft);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new GSYCardItem(
@@ -126,98 +215,14 @@ class UserHeaderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ///用户头像
-                  new RawMaterialButton(
-                      onPressed: () {
-                        if (userInfo.avatar_url != null) {
-                          NavigatorUtils.gotoPhotoViewPage(
-                              context, userInfo.avatar_url);
-                        }
-                      },
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      padding: const EdgeInsets.all(0.0),
-                      constraints:
-                          const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                      child: new ClipOval(
-                        child: new FadeInImage.assetNetwork(
-                          placeholder: GSYICons.DEFAULT_USER_ICON,
-                          //预览图
-                          fit: BoxFit.fitWidth,
-                          image: userInfo.avatar_url ??
-                              GSYICons.DEFAULT_REMOTE_PIC,
-                          width: 80.0,
-                          height: 80.0,
-                        ),
-                      )),
+                  _renderImg(context),
                   new Padding(padding: EdgeInsets.all(10.0)),
                   new Expanded(
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        new Row(
-                          children: <Widget>[
-                            ///用户名
-                            new Text(userInfo.login ?? "",
-                                style: GSYConstant.largeTextWhiteBold),
-                            _getNotifyIcon(context, notifyColor),
-                          ],
-                        ),
-                        new Text(userInfo.name == null ? "" : userInfo.name,
-                            style: GSYConstant.smallSubLightText),
-
-                        ///用户组织
-                        new GSYIConText(
-                          GSYICons.USER_ITEM_COMPANY,
-                          userInfo.company ??
-                              GSYLocalizations.i18n(context).nothing_now,
-                          GSYConstant.smallSubLightText,
-                          GSYColors.subLightTextColor,
-                          10.0,
-                          padding: 3.0,
-                        ),
-
-                        ///用户位置
-                        new GSYIConText(
-                          GSYICons.USER_ITEM_LOCATION,
-                          userInfo.location ??
-                              GSYLocalizations.i18n(context).nothing_now,
-                          GSYConstant.smallSubLightText,
-                          GSYColors.subLightTextColor,
-                          10.0,
-                          padding: 3.0,
-                        ),
-                      ],
-                    ),
+                    child: _renderUserInfo(context),
                   ),
                 ],
               ),
-              new Container(
-
-                  ///用户博客
-                  child: new RawMaterialButton(
-                    onPressed: () {
-                      if (userInfo.blog != null) {
-                        CommonUtils.launchOutURL(userInfo.blog, context);
-                      }
-                    },
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: const EdgeInsets.all(0.0),
-                    constraints:
-                        const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                    child: new GSYIConText(
-                      GSYICons.USER_ITEM_LINK,
-                      userInfo.blog ??
-                          GSYLocalizations.i18n(context).nothing_now,
-                      (userInfo.blog == null)
-                          ? GSYConstant.smallSubLightText
-                          : GSYConstant.smallActionLightText,
-                      GSYColors.subLightTextColor,
-                      10.0,
-                      padding: 3.0,
-                      textWidth: MediaQuery.of(context).size.width - 50,
-                    ),
-                  ),
-                  margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
-                  alignment: Alignment.topLeft),
+              _renderBlog(context),
 
               ///组织
               _renderOrgs(context, orgList),
@@ -243,9 +248,6 @@ class UserHeaderItem extends StatelessWidget {
                   margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                   alignment: Alignment.topLeft),
               new Padding(padding: EdgeInsets.only(bottom: 5.0)),
-              /*new Divider(
-                color: Color(GSYColors.subLightTextColor),
-              ),*/
             ],
           ),
         ));
