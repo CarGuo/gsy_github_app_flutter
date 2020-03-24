@@ -19,6 +19,10 @@ import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
  * on 2018/7/24.
  */
 class SearchPage extends StatefulWidget {
+  final Offset centerPosition;
+
+  SearchPage(this.centerPosition);
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -145,8 +149,7 @@ class _SearchPageState extends State<SearchPage>
       child: CRAnimation(
         minR: MediaQuery.of(context).size.height - 8,
         maxR: 0,
-        offset: Offset(MediaQuery.of(context).size.width - 50,
-            MediaQuery.of(context).padding.top - 10),
+        offset: widget.centerPosition,
         animation: animation,
         child: new Scaffold(
           resizeToAvoidBottomPadding: false,

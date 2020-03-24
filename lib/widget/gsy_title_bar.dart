@@ -10,15 +10,17 @@ class GSYTitleBar extends StatelessWidget {
 
   final IconData iconData;
 
-  final VoidCallback onPressed;
+  final ValueChanged onRightIconPressed;
 
   final bool needRightLocalIcon;
 
   final Widget rightWidget;
 
+  final GlobalKey rightKey = GlobalKey();
+
   GSYTitleBar(this.title,
       {this.iconData,
-      this.onPressed,
+      this.onRightIconPressed,
       this.needRightLocalIcon = false,
       this.rightWidget});
 
@@ -30,9 +32,20 @@ class GSYTitleBar extends StatelessWidget {
           ? new IconButton(
               icon: new Icon(
                 iconData,
+                key: rightKey,
                 size: 19.0,
               ),
-              onPressed: onPressed)
+              onPressed: () {
+                RenderBox renderBox2 =
+                    rightKey.currentContext?.findRenderObject();
+                var position = renderBox2.localToGlobal(Offset.zero);
+                var size = renderBox2.size;
+                var centerPosition = Offset(
+                  position.dx + size.width / 2,
+                  position.dy + size.height / 2,
+                );
+                onRightIconPressed?.call(centerPosition);
+              })
           : new Container();
     }
     return Container(

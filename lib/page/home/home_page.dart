@@ -95,8 +95,8 @@ class _HomePageState extends State<HomePage> {
           GSYLocalizations.of(context).currentLocalized.app_name,
           iconData: GSYICons.MAIN_SEARCH,
           needRightLocalIcon: true,
-          onPressed: () {
-            NavigatorUtils.goSearchPage(context);
+          onRightIconPressed: (centerPosition) {
+            NavigatorUtils.goSearchPage(context, centerPosition);
           },
         ),
       ),

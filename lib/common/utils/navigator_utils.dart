@@ -155,13 +155,13 @@ class NavigatorUtils {
   }
 
   ///搜索
-  static Future goSearchPage(BuildContext context) {
+  static Future goSearchPage(BuildContext context, Offset centerPosition) {
     return showGeneralDialog(
       context: context,
       pageBuilder: (BuildContext buildContext, Animation<double> animation,
           Animation<double> secondaryAnimation) {
         return Builder(builder: (BuildContext context) {
-          return pageContainer(SearchPage());
+          return pageContainer(SearchPage(centerPosition));
         });
       },
       barrierDismissible: false,

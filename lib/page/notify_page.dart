@@ -127,7 +127,7 @@ class _NotifyPageState extends State<NotifyPage>
           GSYLocalizations.i18n(context).notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
           needRightLocalIcon: true,
-          onPressed: () {
+          onRightIconPressed: (_) {
             CommonUtils.showLoadingDialog(context);
             UserDao.setAllNotificationAsReadDao().then((res) {
               Navigator.pop(context);

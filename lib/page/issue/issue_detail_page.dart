@@ -376,7 +376,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
           rightWidget: widgetContent,
           needRightLocalIcon: widget.needHomeIcon,
           iconData: GSYICons.HOME,
-          onPressed: () {
+          onRightIconPressed: (_) {
             NavigatorUtils.goReposDetail(
                 context, widget.userName, widget.reposName);
           },
