@@ -44,3 +44,31 @@ query getUserDetail($name:String!){
     }
   }
 }
+
+query GetStars($name: String!, $owner: String!, $after: String) {
+  repository(name: $name, owner: $owner) {
+    createdAt
+      stargazers(first: 100, after: $after) {
+        edges {
+           node {
+              id
+              login
+              name
+              avatarUrl
+              __typename
+           }
+           starredAt
+           __typename
+        }
+        pageInfo {
+          startCursor
+           endCursor
+           hasNextPage
+            __typename↵     
+           }
+           totalCount
+           __typename
+        }
+        __typename
+    }
+}
