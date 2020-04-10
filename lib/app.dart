@@ -152,7 +152,7 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
       case Code.GITHUB_API_REFUSED:
         //超时
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_timeout);
+            msg: GSYLocalizations.i18n(_context).github_refused);
         break;
       default:
         Fluttertoast.showToast(
