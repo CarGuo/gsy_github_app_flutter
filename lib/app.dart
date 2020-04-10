@@ -139,6 +139,7 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
       case 404:
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(_context).network_error_404);
+        break;
       case 422:
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(_context).network_error_422);
