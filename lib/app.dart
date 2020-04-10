@@ -125,41 +125,40 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
   errorHandleFunction(int code, message) {
     switch (code) {
       case Code.NETWORK_ERROR:
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error);
+        showToast(GSYLocalizations.i18n(_context).network_error);
         break;
       case 401:
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_401);
+        showToast(GSYLocalizations.i18n(_context).network_error_401);
         break;
       case 403:
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_403);
+        showToast(GSYLocalizations.i18n(_context).network_error_403);
         break;
       case 404:
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_404);
+        showToast(GSYLocalizations.i18n(_context).network_error_404);
         break;
       case 422:
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_422);
+        showToast(GSYLocalizations.i18n(_context).network_error_422);
         break;
       case Code.NETWORK_TIMEOUT:
         //超时
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_timeout);
+        showToast(GSYLocalizations.i18n(_context).network_error_timeout);
         break;
       case Code.GITHUB_API_REFUSED:
-        //超时
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).github_refused);
+        //Github API 异常
+        showToast(GSYLocalizations.i18n(_context).github_refused);
         break;
       default:
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(_context).network_error_unknown +
-                " " +
-                message);
+        showToast(GSYLocalizations.i18n(_context).network_error_unknown +
+            " " +
+            message);
         break;
     }
+  }
+
+  showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_LONG);
   }
 }
