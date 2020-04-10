@@ -12,11 +12,17 @@ class Code {
   ///网络返回数据格式化一次
   static const NETWORK_JSON_EXCEPTION = -3;
 
+  ///Github APi Connection refused
+  static const GITHUB_API_REFUSED = -4;
+
   static const SUCCESS = 200;
 
   static errorHandleFunction(code, message, noTip) {
     if (noTip) {
       return message;
+    }
+    if(message != null && message is String && message.contains("Connection refused")) {
+      code = GITHUB_API_REFUSED;
     }
     eventBus.fire(new HttpErrorEvent(code, message));
     return message;

@@ -83,6 +83,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                 _context = context;
                 return NavigatorUtils.pageContainer(new LoginPage());
               },
+
               ///使用 ModalRoute.of(context).settings.arguments; 获取参数
               PhotoViewPage.sName: (context) {
                 return PhotoViewPage();
@@ -138,8 +139,16 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
       case 404:
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(_context).network_error_404);
+      case 422:
+        Fluttertoast.showToast(
+            msg: GSYLocalizations.i18n(_context).network_error_422);
         break;
       case Code.NETWORK_TIMEOUT:
+        //超时
+        Fluttertoast.showToast(
+            msg: GSYLocalizations.i18n(_context).network_error_timeout);
+        break;
+      case Code.GITHUB_API_REFUSED:
         //超时
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(_context).network_error_timeout);

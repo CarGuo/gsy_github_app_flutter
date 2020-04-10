@@ -98,7 +98,7 @@ class GSYStringZh extends GSYStringBase {
   String home_theme_6 = "主题6";
 
   @override
-  String login_username_hint_text = "请输入github用户名";
+  String login_username_hint_text = "github用户名，清不要用邮箱";
   @override
   String login_password_hint_text = "请输入密码";
   @override
@@ -111,12 +111,15 @@ class GSYStringZh extends GSYStringBase {
   @override
   String network_error_404 = "404错误";
   @override
+  String network_error_422 = "请求实体异常，请确保 Github ClientId 等信息正确。";
+  @override
   String network_error_timeout = "请求超时";
   @override
   String network_error_unknown = "其他异常";
   @override
   String network_error = "网络错误";
-
+  @override
+  String github_refused = "Github Api 出现异常[Connection refused]，建议换个网络环境或者稍后再试";
   @override
   String load_more_not = "没有更多数据";
   @override

@@ -30,7 +30,12 @@ class LogsInterceptors extends InterceptorsWrapper {
     }
     try {
       addLogic(sRequestHttpUrl, options.path ?? "");
-      var data = options.data ?? Map<String, dynamic>();
+      var data;
+      if (options.data is Map) {
+        data = options.data;
+      } else {
+        data = Map<String, dynamic>();
+      }
       var map = {
         "header:": {...options.headers},
       };
@@ -39,6 +44,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       }
       addLogic(sHttpRequest, map);
     } catch (e) {
+      print("########2");
       print(e);
     }
     return options;
@@ -85,7 +91,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   onError(DioError err) async {
     if (Config.DEBUG) {
       print('请求异常: ' + err.toString());
-      print('请求异常信息: ' + err.response?.toString() ?? "");
+      print('请求异常信息: ' + (err.response?.toString() ?? ""));
     }
     try {
       addLogic(sHttpErrorUrl, err.request.path ?? "null");
