@@ -30,19 +30,17 @@ class TrendPage extends StatefulWidget {
   TrendPageState createState() => TrendPageState();
 }
 
-class TrendPageState extends State<TrendPage>
-    with
-        AutomaticKeepAliveClientMixin<TrendPage>,
-        SingleTickerProviderStateMixin {
+class TrendPageState extends State<TrendPage> with AutomaticKeepAliveClientMixin<TrendPage>, SingleTickerProviderStateMixin {
   ///显示数据时间
   TrendTypeModel selectTime = null;
+  int selectTimeIndex = 0;
 
   ///显示过滤语言
   TrendTypeModel selectType = null;
+  int selectTypeIndex = 0;
 
   /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
-  final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIndicatorKey =
-      new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+  final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIndicatorKey = new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   ///滚动控制与监听
   final ScrollController scrollController = new ScrollController();
@@ -60,15 +58,11 @@ class TrendPageState extends State<TrendPage>
 
   scrollToTop() {
     if (scrollController.offset <= 0) {
-      scrollController
-          .animateTo(0,
-              duration: Duration(milliseconds: 600), curve: Curves.linear)
-          .then((_) {
+      scrollController.animateTo(0, duration: Duration(milliseconds: 600), curve: Curves.linear).then((_) {
         _showRefreshLoading();
       });
     } else {
-      scrollController.animateTo(0,
-          duration: Duration(milliseconds: 600), curve: Curves.linear);
+      scrollController.animateTo(0, duration: Duration(milliseconds: 600), curve: Curves.linear);
     }
   }
 
@@ -76,8 +70,7 @@ class TrendPageState extends State<TrendPage>
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
     return new ReposItem(reposViewModel, onPressed: () {
-      NavigatorUtils.goReposDetail(
-          context, reposViewModel.ownerName, reposViewModel.repositoryName);
+      NavigatorUtils.goReposDetail(context, reposViewModel.ownerName, reposViewModel.repositoryName);
     });
   }
 
@@ -86,6 +79,8 @@ class TrendPageState extends State<TrendPage>
     if (selectTime == null && selectType == null) {
       return Container();
     }
+    var trendTimeList = trendTime(context);
+    var trendTypeList = trendType(context);
     return new GSYCardItem(
       color: store.state.themeData.primaryColor,
       margin: EdgeInsets.all(0.0),
@@ -93,43 +88,34 @@ class TrendPageState extends State<TrendPage>
         borderRadius: BorderRadius.all(radius),
       ),
       child: new Padding(
-        padding:
-            new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
+        padding: new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: new Row(
           children: <Widget>[
-            _renderHeaderPopItem(selectTime.name, trendTime(context),
-                (TrendTypeModel result) {
+            _renderHeaderPopItem(selectTime.name, trendTimeList, (TrendTypeModel result) {
               if (trendBloc.isLoading) {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context).loading_text);
+                Fluttertoast.showToast(msg: GSYLocalizations.i18n(context).loading_text);
                 return;
               }
-              scrollController
-                  .animateTo(0,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.bounceInOut)
-                  .then((_) {
+              scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.bounceInOut).then((_) {
                 setState(() {
                   selectTime = result;
+                  selectTimeIndex = trendTimeList.indexOf(result);
+                  print("##### ${selectTimeIndex}");
                 });
                 _showRefreshLoading();
               });
             }),
             new Container(height: 10.0, width: 0.5, color: GSYColors.white),
-            _renderHeaderPopItem(selectType.name, trendType(context),
-                (TrendTypeModel result) {
+            _renderHeaderPopItem(selectType.name, trendTypeList, (TrendTypeModel result) {
               if (trendBloc.isLoading) {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context).loading_text);
+                Fluttertoast.showToast(msg: GSYLocalizations.i18n(context).loading_text);
                 return;
               }
-              scrollController
-                  .animateTo(0,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.bounceInOut)
-                  .then((_) {
+              scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.bounceInOut).then((_) {
                 setState(() {
                   selectType = result;
+                  selectTypeIndex = trendTypeList.indexOf(result);
+                  print("##### ${selectTimeIndex}");
                 });
                 _showRefreshLoading();
               });
@@ -141,12 +127,10 @@ class TrendPageState extends State<TrendPage>
   }
 
   ///或者头部可选弹出item容器
-  _renderHeaderPopItem(String data, List<TrendTypeModel> list,
-      PopupMenuItemSelected<TrendTypeModel> onSelected) {
+  _renderHeaderPopItem(String data, List<TrendTypeModel> list, PopupMenuItemSelected<TrendTypeModel> onSelected) {
     return new Expanded(
       child: new PopupMenuButton<TrendTypeModel>(
-        child: new Center(
-            child: new Text(data, style: GSYConstant.middleTextWhite)),
+        child: new Center(child: new Text(data, style: GSYConstant.middleTextWhite)),
         onSelected: onSelected,
         itemBuilder: (BuildContext context) {
           return _renderHeaderPopItemChild(list);
@@ -182,22 +166,23 @@ class TrendPageState extends State<TrendPage>
         selectType = trendType(context)[0];
       });
       _showRefreshLoading();
+    } else {
+      if (selectTimeIndex >= 0) {
+        selectTime = trendTime(context)[selectTimeIndex];
+      }
+      if (selectTypeIndex >= 0) {
+        selectType = trendType(context)[selectTypeIndex];
+      }
+      setState(() {});
     }
     super.didChangeDependencies();
   }
 
   ///空页面
   Widget _buildEmpty() {
-    var statusBar =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
-    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
-        .padding
-        .bottom;
-    var height = MediaQuery.of(context).size.height -
-        statusBar -
-        bottomArea -
-        kBottomNavigationBarHeight -
-        kToolbarHeight;
+    var statusBar = MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.bottom;
+    var height = MediaQuery.of(context).size.height - statusBar - bottomArea - kBottomNavigationBarHeight - kToolbarHeight;
     return SingleChildScrollView(
       child: new Container(
         height: height,
@@ -207,14 +192,10 @@ class TrendPageState extends State<TrendPage>
           children: <Widget>[
             FlatButton(
               onPressed: () {},
-              child: new Image(
-                  image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
-                  width: 70.0,
-                  height: 70.0),
+              child: new Image(image: new AssetImage(GSYICons.DEFAULT_USER_ICON), width: 70.0, height: 70.0),
             ),
             Container(
-              child: Text(GSYLocalizations.i18n(context).app_empty,
-                  style: GSYConstant.normalText),
+              child: Text(GSYLocalizations.i18n(context).app_empty, style: GSYConstant.normalText),
             ),
           ],
         ),
@@ -273,8 +254,7 @@ class TrendPageState extends State<TrendPage>
   }
 
   ///嵌套可滚动头部
-  List<Widget> _sliverBuilder(
-      BuildContext context, bool innerBoxIsScrolled, Store store) {
+  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled, Store store) {
     return <Widget>[
       ///动态头部
       SliverPersistentHeader(
@@ -290,15 +270,13 @@ class TrendPageState extends State<TrendPage>
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),
-            builder: (BuildContext context, double shrinkOffset,
-                bool overlapsContent) {
+            builder: (BuildContext context, double shrinkOffset, bool overlapsContent) {
               ///根据数值计算偏差
               var lr = 10 - shrinkOffset / 65 * 10;
               var radius = Radius.circular(4 - shrinkOffset / 65 * 4);
               return SizedBox.expand(
                 child: Padding(
-                  padding:
-                      EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
+                  padding: EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
                   child: _renderHeader(store, radius),
                 ),
               );
@@ -317,7 +295,7 @@ class TrendTypeModel {
 }
 
 ///趋势数据时间过滤
-trendTime(BuildContext context) {
+List<TrendTypeModel> trendTime(BuildContext context) {
   return [
     new TrendTypeModel(GSYLocalizations.i18n(context).trend_day, "daily"),
     new TrendTypeModel(GSYLocalizations.i18n(context).trend_week, "weekly"),
@@ -326,7 +304,7 @@ trendTime(BuildContext context) {
 }
 
 ///趋势数据语言过滤
-trendType(BuildContext context) {
+List<TrendTypeModel> trendType(BuildContext context) {
   return [
     TrendTypeModel(GSYLocalizations.i18n(context).trend_all, null),
     TrendTypeModel("Java", "Java"),
