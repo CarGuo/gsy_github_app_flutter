@@ -111,7 +111,7 @@ class GSYStringZh extends GSYStringBase {
   @override
   String network_error_404 = "404错误";
   @override
-  String network_error_422 = "请求实体异常，请确保 Github ClientId 等信息正确。";
+  String network_error_422 = "请求实体异常，请确保 Github ClientId 、账号秘密等信息正确。";
   @override
   String network_error_timeout = "请求超时";
   @override

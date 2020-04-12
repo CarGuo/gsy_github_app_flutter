@@ -111,7 +111,7 @@ class GSYStringEn extends GSYStringBase {
   @override
   String network_error_404 = "Http 404";
   @override
-  String network_error_422 = "Request Body Error，Please Check Github ClientId";
+  String network_error_422 = "Request Body Error，Please Check Github ClientId or Account/PW";
   @override
   String network_error_timeout = "Http timeout";
   @override
