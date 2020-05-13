@@ -35,7 +35,7 @@ dependencies:
   json_annotation: 3.0.1
   package_info: 0.4.0+13
   connectivity: 0.4.6+1
-  flutter_markdown: 0.3.3
+  flutter_markdown: 0.3.5
   rxdart: 0.22.3
   device_info: 0.4.1+4
   url_launcher: 5.4.1
