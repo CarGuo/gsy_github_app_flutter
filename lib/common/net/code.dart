@@ -21,7 +21,7 @@ class Code {
     if (noTip) {
       return message;
     }
-    if(message != null && message is String && message.contains("Connection refused")) {
+    if(message != null && message is String && (message.contains("Connection refused") || message.contains("Connection reset"))) {
       code = GITHUB_API_REFUSED;
     }
     eventBus.fire(new HttpErrorEvent(code, message));

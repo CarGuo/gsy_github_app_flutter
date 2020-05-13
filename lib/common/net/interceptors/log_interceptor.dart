@@ -44,7 +44,6 @@ class LogsInterceptors extends InterceptorsWrapper {
       }
       addLogic(sHttpRequest, map);
     } catch (e) {
-      print("########2");
       print(e);
     }
     return options;
