@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
-
+import 'epic_store.dart';
 
 /// A function that transforms one stream of actions into another
 /// stream of actions.
@@ -52,8 +51,10 @@ import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 ///             .then((results) => new SearchResultsAction(results))
 ///             .catchError((error) => new SearchErrorAction(error)));
 ///     }
-typedef Stream<dynamic> Epic<State>(
-    Stream<dynamic> actions, EpicStore<State> store);
+typedef Epic<State> = Stream<dynamic> Function(
+  Stream<dynamic> actions,
+  EpicStore<State> store,
+);
 
 /// A class that acts as an [Epic], transforming one stream of actions into
 /// another stream of actions. Generally, [Epic] functions are simpler, but
@@ -63,7 +64,7 @@ typedef Stream<dynamic> Epic<State>(
 ///
 ///     class ExampleEpic extends EpicClass<State> {
 ///       @override
-///       Stream<dynamic> map(Stream<dynamic> actions, EpicStore<State> store) {
+///       Stream<dynamic> call(Stream<dynamic> actions, EpicStore<State> store) {
 ///         return actions
 ///           .where((action) => action is PerformSearchAction)
 ///           .asyncMap((action) =>
@@ -117,7 +118,7 @@ class TypedEpic<State, Action> extends EpicClass<State> {
   @override
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<State> store) {
     return epic(
-      actions.transform(new StreamTransformer<dynamic, Action>.fromHandlers(
+      actions.transform(StreamTransformer<dynamic, Action>.fromHandlers(
         handleData: (dynamic action, EventSink<Action> sink) {
           if (action is Action) {
             sink.add(action);

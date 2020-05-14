@@ -1,10 +1,11 @@
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'middleware/epic_store.dart';
+
 
 /**
  * 用户相关Redux
@@ -33,12 +34,9 @@ class UpdateUserAction {
   UpdateUserAction(this.userInfo);
 }
 
-class FetchUserAction {
-}
-
+class FetchUserAction {}
 
 class UserInfoMiddleware implements MiddlewareClass<GSYState> {
-
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
     if (action is UpdateUserAction) {
@@ -49,21 +47,19 @@ class UserInfoMiddleware implements MiddlewareClass<GSYState> {
   }
 }
 
-class UserInfoEpic implements EpicClass<GSYState> {
-  @override
-  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
-    return Observable(actions)
-        // to UpdateUserAction actions
-        .whereType<FetchUserAction>()
-        // Don't start  until the 10ms
-        .debounce(((_) => TimerStream(true, const Duration(milliseconds: 10))))
-        .switchMap((action) => _loadUserInfo());
-  }
-
+Stream<dynamic> userInfoEpic(
+    Stream<dynamic> actions, EpicStore<GSYState> store) {
   // Use the async* function to make easier
   Stream<dynamic> _loadUserInfo() async* {
     print("*********** userInfoEpic _loadUserInfo ***********");
     var res = await UserDao.getUserInfo(null);
     yield UpdateUserAction(res.data);
   }
+
+  return actions
+      // to UpdateUserAction actions
+      .whereType<FetchUserAction>()
+      // Don't start  until the 10ms
+      .debounce(((_) => TimerStream(true, const Duration(milliseconds: 10))))
+      .switchMap((action) => _loadUserInfo());
 }

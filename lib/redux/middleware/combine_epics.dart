@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:gsy_github_app_flutter/redux/middleware/epic.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 import 'package:rxdart/streams.dart';
+
+import 'epic.dart';
+import 'epic_store.dart';
 
 /// Combines a list of [Epic]s into one.
 ///
@@ -23,6 +24,7 @@ import 'package:rxdart/streams.dart';
 ///     ]);
 Epic<State> combineEpics<State>(List<Epic<State>> epics) {
   return (Stream<dynamic> actions, EpicStore<State> store) {
-    return new MergeStream<dynamic>(epics.map((epic) => epic(actions, store)));
+    return MergeStream<dynamic>(
+        epics.map((epic) => epic(actions, store)).toList());
   };
 }

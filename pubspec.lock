@@ -134,6 +134,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.2"
+  clock:
+    dependency: transitive
+    description:
+      name: clock
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   code_builder:
     dependency: transitive
     description:
@@ -203,14 +210,21 @@ packages:
       name: dio
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.0.7"
+    version: "3.0.9"
   event_bus:
     dependency: "direct main"
     description:
       name: event_bus
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
+  file:
+    dependency: transitive
+    description:
+      name: file
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.1.0"
   fixnum:
     dependency: transitive
     description:
@@ -224,14 +238,14 @@ packages:
       name: flare_dart
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.4"
   flare_flutter:
     dependency: "direct main"
     description:
       name: flare_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.8.3"
+    version: "2.0.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -243,7 +257,7 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.3"
+    version: "1.2.2"
   flutter_json_widget:
     dependency: "direct main"
     description:
@@ -283,14 +297,14 @@ packages:
       name: flutter_spinkit
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.1.1+1"
+    version: "4.1.2+1"
   flutter_svg:
     dependency: "direct main"
     description:
       name: flutter_svg
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.15.0"
+    version: "0.17.4"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -302,14 +316,14 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.10+1"
+    version: "0.3.11"
   fluttertoast:
     dependency: "direct main"
     description:
       name: fluttertoast
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.1.3"
+    version: "4.0.1"
   front_end:
     dependency: transitive
     description:
@@ -331,20 +345,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.9"
+  gql:
+    dependency: transitive
+    description:
+      name: gql
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.12.3"
   graphql:
     dependency: "direct main"
     description:
       name: graphql
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.0"
-  graphql_parser:
-    dependency: transitive
-    description:
-      name: graphql_parser
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.4"
+    version: "3.0.1"
   graphs:
     dependency: transitive
     description:
@@ -365,7 +379,7 @@ packages:
       name: http
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.12.0+2"
+    version: "0.12.1"
   http_multi_server:
     dependency: transitive
     description:
@@ -526,7 +540,21 @@ packages:
       name: path_provider
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.5.1"
+    version: "1.6.8"
+  path_provider_macos:
+    dependency: transitive
+    description:
+      name: path_provider_macos
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.4+2"
+  path_provider_platform_interface:
+    dependency: transitive
+    description:
+      name: path_provider_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.2"
   pedantic:
     dependency: transitive
     description:
@@ -584,14 +612,14 @@ packages:
       name: provider
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.5+1"
   pub_semver:
     dependency: "direct main"
     description:
       name: pub_semver
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.2"
+    version: "1.4.4"
   pubspec_parse:
     dependency: transitive
     description:
@@ -619,7 +647,7 @@ packages:
       name: rxdart
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.22.3"
+    version: "0.23.1"
   scoped_model:
     dependency: "direct main"
     description:
@@ -633,7 +661,7 @@ packages:
       name: share
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.3+5"
+    version: "0.6.4+2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -708,7 +736,14 @@ packages:
       name: sqflite
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0+1"
+  sqflite_common:
+    dependency: transitive
+    description:
+      name: sqflite_common
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   stack_trace:
     dependency: transitive
     description:
@@ -841,7 +876,7 @@ packages:
       name: webview_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.19+8"
+    version: "0.3.21"
   xml:
     dependency: transitive
     description:
@@ -857,5 +892,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.7.0 <3.0.0"
+  dart: ">=2.7.2 <3.0.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"

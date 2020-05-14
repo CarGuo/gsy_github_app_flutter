@@ -16,7 +16,8 @@ class EpicStore<State> {
 
   Stream<State> get onChange => _store.onChange;
 
-  void dispatch(dynamic action) {
-    _store.dispatch(action);
+  /// through to the reducer.
+  dynamic dispatch(dynamic action) {
+    return _store.dispatch(action);
   }
 }

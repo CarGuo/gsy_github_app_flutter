@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/db/sql_manager.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
+import 'middleware/epic_store.dart';
 
 /**
  * 登录相关Redux
@@ -71,14 +70,7 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
   }
 }
 
-class LoginEpic implements EpicClass<GSYState> {
-  @override
-  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
-    return Observable(actions)
-        .whereType<LoginAction>()
-        .switchMap((action) => _loginIn(action, store));
-  }
-
+Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   Stream<dynamic> _loginIn(
       LoginAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
@@ -87,16 +79,12 @@ class LoginEpic implements EpicClass<GSYState> {
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }
+  return actions
+      .whereType<LoginAction>()
+      .switchMap((action) => _loginIn(action, store));
 }
 
-class OAuthEpic implements EpicClass<GSYState> {
-  @override
-  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<GSYState> store) {
-    return Observable(actions)
-        .whereType<OAuthAction>()
-        .switchMap((action) => _loginIn(action, store));
-  }
-
+Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   Stream<dynamic> _loginIn(
       OAuthAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
@@ -104,4 +92,7 @@ class OAuthEpic implements EpicClass<GSYState> {
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }
+  return actions
+      .whereType<OAuthAction>()
+      .switchMap((action) => _loginIn(action, store));
 }

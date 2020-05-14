@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic_middleware.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
 import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
 import 'package:redux/redux.dart';
+
+import 'middleware/epic_middleware.dart';
 
 /**
  * Redux全局State
@@ -52,9 +53,9 @@ GSYState appReducer(GSYState state, action) {
 }
 
 final List<Middleware<GSYState>> middleware = [
-  EpicMiddleware<GSYState>(UserInfoEpic()),
-  EpicMiddleware<GSYState>(LoginEpic()),
-  EpicMiddleware<GSYState>(OAuthEpic()),
+  EpicMiddleware<GSYState>(loginEpic),
+  EpicMiddleware<GSYState>(userInfoEpic),
+  EpicMiddleware<GSYState>(oauthEpic),
   UserInfoMiddleware(),
   LoginMiddleware(),
 ];

@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:gsy_github_app_flutter/redux/middleware/epic.dart';
-import 'package:gsy_github_app_flutter/redux/middleware/epic_store.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/transformers.dart';
+
+import 'epic.dart';
+import 'epic_store.dart';
 
 /// A [Redux](https://pub.dartlang.org/packages/redux) middleware that passes
 /// a stream of dispatched actions to the given [Epic].
@@ -19,9 +20,9 @@ import 'package:rxdart/transformers.dart';
 ///       initialState: [], middleware: [epicMiddleware]);
 class EpicMiddleware<State> extends MiddlewareClass<State> {
   final StreamController<dynamic> _actions =
-      new StreamController<dynamic>.broadcast();
+      StreamController<dynamic>.broadcast();
   final StreamController<Epic<State>> _epics =
-      new StreamController.broadcast(sync: true);
+      StreamController.broadcast(sync: true);
 
   final bool supportAsyncGenerators;
   Epic<State> _epic;
@@ -31,12 +32,10 @@ class EpicMiddleware<State> extends MiddlewareClass<State> {
       : _epic = epic;
 
   @override
-  call(Store<State> store, dynamic action, NextDispatcher next) {
+  void call(Store<State> store, dynamic action, NextDispatcher next) {
     if (!_isSubscribed) {
       _epics.stream
-          .transform<dynamic>(
-              new SwitchMapStreamTransformer<Epic<State>, dynamic>(
-                  (epic) => epic(_actions.stream, new EpicStore(store))))
+          .switchMap<dynamic>((epic) => epic(_actions.stream, EpicStore(store)))
           .listen(store.dispatch);
 
       _epics.add(_epic);
@@ -50,7 +49,7 @@ class EpicMiddleware<State> extends MiddlewareClass<State> {
       // Future.delayed is an ugly hack to support async* functions.
       //
       // See: https://github.com/dart-lang/sdk/issues/33818
-      new Future.delayed(Duration.zero, () {
+      Future.delayed(Duration.zero, () {
         _actions.add(action);
       });
     } else {
