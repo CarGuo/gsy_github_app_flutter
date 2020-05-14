@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_bloc.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -283,14 +284,34 @@ class TrendPageState extends State<TrendPage>
                   onRefresh: requestRefresh,
                 );
               }),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              NavigatorUtils.goTrendUserPage(context);
-            },
-            child: Icon(
-              Icons.person,
-              size: 30,
-            ),
+          floatingActionButton: trendUserButton(),
+        );
+      },
+    );
+  }
+
+  trendUserButton() {
+    final double size = 56.0;
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      openBuilder: (BuildContext context, VoidCallback _) {
+        return NavigatorUtils.pageContainer(new TrendUserPage());
+      },
+      closedElevation: 6.0,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(size / 2),
+        ),
+      ),
+      closedColor: Theme.of(context).colorScheme.secondary,
+      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+        return SizedBox(
+          width: size,
+          height: size,
+          child: Icon(
+            Icons.person,
+            size: 30,
+            color: Colors.white,
           ),
         );
       },
