@@ -60,8 +60,8 @@ With the use and feedback of the project, will user experience and function opti
 ### 3、 Github App  Authorization callback URL must be `gsygithubapp://authed`
 
 <div>
-<img src="https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/register0.jpg" width="426px"/>
-<img src="https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/register1.jpg" width="426px"/>
+<img src="./register0.png" width="426px"/>
+<img src="./register1.jpg" width="426px"/>
 </div>
 
 4、Be careful

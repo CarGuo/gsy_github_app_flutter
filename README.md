@@ -94,7 +94,7 @@
 ### 3、如果使用安全登录（授权登录），那么在上述注册 Github App 的 Authorization callback URL 一栏必须填入 `gsygithubapp://authed`
 
 <div>
-<img src="./register0.jpg" width="426px"/>
+<img src="./register0.png" width="426px"/>
 <img src="./register1.jpg" width="426px"/>
 </div>
 
