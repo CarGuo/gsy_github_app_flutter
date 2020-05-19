@@ -1,4 +1,4 @@
-![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/logo.png)
+![](./logo.png)
 
 
 [![GitHub stars](https://img.shields.io/github/stars/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/stargazers)
@@ -94,8 +94,8 @@
 ### 3、如果使用安全登录（授权登录），那么在上述注册 Github App 的 Authorization callback URL 一栏必须填入 `gsygithubapp://authed`
 
 <div>
-<img src="https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/register0.jpg" width="426px"/>
-<img src="https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/register1.jpg" width="426px"/>
+<img src="./register0.jpg" width="426px"/>
+<img src="./register1.jpg" width="426px"/>
 </div>
 
 4、运行之前请注意下
@@ -110,17 +110,17 @@
 
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
-| **Apk二维码**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **GooglePlay**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/googleplay.png) |
-| **iOS暂无下载** | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+| **Apk二维码**  | ![](./download.png) |
+| **GooglePlay**  | ![](./googleplay.png) |
+| **iOS暂无下载** | ![](./ios_wait.png) |
 
 
 
 ## 项目结构图
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
+![](./framework2.png)
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
+![](./folder.png)
 
 
 
@@ -132,15 +132,15 @@
 
 ### 示例图片
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios.gif)
+![](./ios.gif)
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/theme.gif)
+![](./theme.gif)
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/1.jpg" width="426px"/>
+<img src="./1.jpg" width="426px"/>
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/2.jpg" width="426px"/>
+<img src="./2.jpg" width="426px"/>
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/3.jpg" width="426px"/>
+<img src="./3.jpg" width="426px"/>
 
 
 ### 第三方框架
@@ -181,7 +181,7 @@
 [版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
 
 
-![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/thanks.jpg)
+![](./thanks.jpg)
 
 
 ### LICENSE

@@ -1,4 +1,4 @@
-![](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/logo.png)
+![](./logo.png)
 
 ## An open source Github client App developed by Flutter，Provide richer functionality and comparison with the same program by other language:
 
@@ -75,32 +75,32 @@ With the use and feedback of the project, will user experience and function opti
 
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
-| **Apk**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/download.png) |
-| **GooglePlay**  | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/googleplay.png) |
-| **iOS null** | ![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios_wait.png) |
+| **Apk**  | ![](./download.png) |
+| **GooglePlay**  | ![](./googleplay.png) |
+| **iOS null** | ![](./ios_wait.png) |
 
 
 
 ## Project Structure
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/framework2.png)
+![](./framework2.png)
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/folder.png)
+![](./folder.png)
 
 
 
 
 ### Demo
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/ios.gif)
+![](./ios.gif)
 
-![](https://raw.githubusercontent.com/CarGuo/GSYGithubAppFlutter/master/theme.gif)
+![](./theme.gif)
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/1.jpg" width="426px"/>
+<img src="./1.jpg" width="426px"/>
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/2.jpg" width="426px"/>
+<img src="./2.jpg" width="426px"/>
 
-<img src="https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/3.jpg" width="426px"/>
+<img src="./3.jpg" width="426px"/>
 
 
 ### Third-party framework
