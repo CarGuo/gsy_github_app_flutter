@@ -71,10 +71,11 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   ///渲染时间Item或者提交Item
   _renderEventItem(index) {
-    if (selectIndex == 1) {
+    var item = pullLoadWidgetControl.dataList[index];
+    if (selectIndex == 1 && item is RepoCommit) {
       ///提交
       return new GSYEventItem(
-        EventViewModel.fromCommitMap(pullLoadWidgetControl.dataList[index]),
+        EventViewModel.fromCommitMap(item),
         onPressed: () {
           RepoCommit model = pullLoadWidgetControl.dataList[index];
           NavigatorUtils.goPushDetailPage(
