@@ -154,7 +154,7 @@ packages:
       name: collection
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.14.11"
+    version: "1.14.12"
   connectivity:
     dependency: "direct main"
     description:
@@ -400,7 +400,7 @@ packages:
       name: intl
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.16.0"
+    version: "0.16.1"
   io:
     dependency: transitive
     description:
@@ -668,7 +668,7 @@ packages:
       name: shared_preferences
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.6"
+    version: "0.5.7+3"
   shared_preferences_macos:
     dependency: transitive
     description:
