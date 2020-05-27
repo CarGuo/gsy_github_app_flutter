@@ -158,7 +158,7 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
   showToast(String message) {
     Fluttertoast.showToast(
         msg: message,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.CENTER,
         toastLength: Toast.LENGTH_LONG);
   }
 }
