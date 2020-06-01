@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -37,7 +39,7 @@ class ErrorPageState extends State<ErrorPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    double width = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
     return Container(
       color: GSYColors.primaryValue,
       child: new Center(
