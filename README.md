@@ -16,8 +16,7 @@
 * ### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppWeex ）
 * ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 * ### 同款Android Kotlin版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
-
-### GSY新书：[《Flutter开发实战详解》](https://item.jd.com/12883054.html)上架啦
+* ### GSY新书：[《Flutter开发实战详解》](https://item.jd.com/12883054.html)上架啦
 
 [![](http://img.cdn.guoshuyu.cn/WechatIMG65.jpeg)](https://item.jd.com/12883054.html)
 
