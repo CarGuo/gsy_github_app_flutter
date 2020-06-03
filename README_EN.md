@@ -2,6 +2,8 @@
 
 ## An open source Github client App developed by Flutter，Provide richer functionality and comparison with the same program by other language:
 
+[![](http://img.cdn.guoshuyu.cn/WechatIMG65.jpeg)](https://item.jd.com/12883054.html)
+
 * ### Weex Version （ https://github.com/CarGuo/GSYGithubAppWeex ）
 * ### ReactNative Version （ https://github.com/CarGuo/GSYGithubApp ）
 * ### Android Kotlin Version（ https://github.com/CarGuo/GSYGithubAppKotlin ）
