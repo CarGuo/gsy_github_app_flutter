@@ -99,8 +99,8 @@
 ### 3、如果使用安全登录（授权登录），那么在上述注册 Github App 的 Authorization callback URL 一栏必须填入 `gsygithubapp://authed`
 
 <div>
-<img src="./register0.png" width="426px"/>
-<img src="./register1.jpg" width="426px"/>
+<img src="http://img.cdn.guoshuyu.cn/register0.png" width="426px"/>
+<img src="http://img.cdn.guoshuyu.cn/register1.jpg" width="426px"/>
 </div>
 
 4、运行之前请注意下
@@ -186,7 +186,7 @@
 [版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
 
 
-![](./thanks.jpg)
+![](http://img.cdn.guoshuyu.cn/thanks.jpg)
 
 
 ### LICENSE
