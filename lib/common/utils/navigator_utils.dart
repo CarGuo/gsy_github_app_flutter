@@ -11,7 +11,7 @@ import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
 import 'package:gsy_github_app_flutter/page/issue/issue_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';
-import 'package:gsy_github_app_flutter/page/login_webview.dart';
+import 'package:gsy_github_app_flutter/page/login/login_webview.dart';
 import 'package:gsy_github_app_flutter/page/notify_page.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_page.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
