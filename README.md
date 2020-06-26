@@ -141,7 +141,7 @@
 
 ![](./theme.gif)
 
-![](http://img.cdn.guoshuyu.cn/showapp1.jpg")
+![](1.jpg")
 ![](http://img.cdn.guoshuyu.cn/showapp2.jpg")
 ![](http://img.cdn.guoshuyu.cn/showapp3.jpg")
 
