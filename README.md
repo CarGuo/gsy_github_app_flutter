@@ -141,9 +141,9 @@
 
 ![](./theme.gif)
 
-![](http://img.cdn.guoshuyu.cn/show-app-1.jpg")
-![](http://img.cdn.guoshuyu.cn/show-app-2.jpg")
-![](http://img.cdn.guoshuyu.cn/show-app-3.jpg")
+![](http://img.cdn.guoshuyu.cn/showapp1.jpg")
+![](http://img.cdn.guoshuyu.cn/showapp2.jpg")
+![](http://img.cdn.guoshuyu.cn/showapp3.jpg")
 
 
 ### 第三方框架
