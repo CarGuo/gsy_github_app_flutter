@@ -141,7 +141,7 @@
 
 ![](./theme.gif)
 
-<img src="http://img.cdn.guoshuyu.cn/showapp1.png" width="426px"/>
+<img src="http://img.cdn.guoshuyu.cn/showapp1.jpg" width="426px"/>
 
 <img src="http://img.cdn.guoshuyu.cn/showapp2.jpg" width="426px"/>
 
