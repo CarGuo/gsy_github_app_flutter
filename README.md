@@ -117,7 +117,7 @@
 | ----------- | ---------------------------------------- |
 | **Apk二维码**  | ![](./download.png) |
 | **GooglePlay**  | ![](./googleplay.png) |
-| **iOS暂无下载** | ![](./ios_wait.png) |
+| **iOS暂无下载** | |
 
 
 
@@ -141,11 +141,9 @@
 
 ![](./theme.gif)
 
-<img src="./1.jpg" width="426px"/>
-
-<img src="./2.jpg" width="426px"/>
-
-<img src="./3.jpg" width="426px"/>
+![](http://img.cdn.guoshuyu.cn/show-app-1.jpg")
+![](http://img.cdn.guoshuyu.cn/show-app-2.jpg")
+![](http://img.cdn.guoshuyu.cn/show-app-3.jpg")
 
 
 ### 第三方框架
