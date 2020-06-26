@@ -38,7 +38,7 @@
 随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
 ```
 
-![](http://img.cdn.guoshuyu.cn/WeChat-Code)
+![](http://img.cdn.guoshuyu.cn/wechat_qq.png)
 
 -----
 
