@@ -59,6 +59,9 @@ class GSYStringZh extends GSYStringBase {
   String Login_out = "退出登录";
 
   @override
+  String Login_deprecated = "账号密码登陆的 API 将被 Github 弃用，建议使用尝试使用授权登陆。";
+
+  @override
   String home_reply = "问题反馈";
   @override
   String home_change_language = "语言切换";

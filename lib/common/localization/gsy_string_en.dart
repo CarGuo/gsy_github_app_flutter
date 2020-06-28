@@ -60,6 +60,9 @@ class GSYStringEn extends GSYStringBase {
   String Login_out = "Logout";
 
   @override
+  String Login_deprecated = "The API via password authentication will remove on November 13, 2020 by Github";
+
+  @override
   String home_reply = "Feedback";
   @override
   String home_change_language = "Language";

@@ -47,6 +47,8 @@ abstract class GSYStringBase {
 
   String get Login_out;
 
+  String get Login_deprecated;
+
   String get home_reply;
 
   String get home_change_language;

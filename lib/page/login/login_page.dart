@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
@@ -184,6 +185,11 @@ mixin LoginBLoC on State<LoginPage> {
   }
 
   loginIn() async {
+    Fluttertoast.showToast(
+        msg: GSYLocalizations.i18n(context).Login_deprecated,
+        gravity: ToastGravity.CENTER,
+        toastLength: Toast.LENGTH_LONG);
+
     if (_userName == null || _userName.isEmpty) {
       return;
     }

@@ -154,7 +154,7 @@ packages:
       name: collection
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.14.12"
+    version: "1.14.11"
   connectivity:
     dependency: "direct main"
     description:
@@ -400,7 +400,7 @@ packages:
       name: intl
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.16.1"
+    version: "0.16.0"
   io:
     dependency: transitive
     description:
