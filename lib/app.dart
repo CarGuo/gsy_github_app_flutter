@@ -29,7 +29,7 @@ class FlutterReduxApp extends StatefulWidget {
 }
 
 class _FlutterReduxAppState extends State<FlutterReduxApp>
-    with HttpErrorListener {
+    with HttpErrorListener, NavigatorObserver {
   /// 创建Store，引用 GSYState 中的 appReducer 实现 Reducer 方法
   /// initialState 初始化 State
   final store = new Store<GSYState>(
@@ -45,6 +45,19 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
         locale: Locale('zh', 'CH')),
   );
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 0), () {
+      /// 通过 with NavigatorObserver ，在这里可以获取可以往上获取到
+      /// MaterialApp 和 StoreProvider 的 context
+      /// 还可以获取到 navigator;
+      /// 比如在这里增加一个监听，如果 token 失效就退回登陆页。
+      navigator.context;
+      navigator;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +79,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             supportedLocales: [store.state.locale],
             locale: store.state.locale,
             theme: store.state.themeData,
+            navigatorObservers: [this],
 
             ///命名式路由
             /// "/" 和 MaterialApp 的 home 参数一个效果
