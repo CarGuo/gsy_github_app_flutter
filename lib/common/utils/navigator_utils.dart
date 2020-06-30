@@ -93,13 +93,14 @@ class NavigatorUtils {
     return Navigator.push(
         context,
         new SizeRoute(
-            widget: pageContainer(RepositoryDetailPage(userName, reposName))));
+            widget: pageContainer(
+                RepositoryDetailPage(userName, reposName), context)));
   }
 
   ///荣耀列表
   static Future goHonorListPage(BuildContext context, List list) {
-    return Navigator.push(
-        context, new SizeRoute(widget: pageContainer(HonorListPage(list))));
+    return Navigator.push(context,
+        new SizeRoute(widget: pageContainer(HonorListPage(list), context)));
   }
 
   ///仓库版本列表
@@ -161,7 +162,7 @@ class NavigatorUtils {
       pageBuilder: (BuildContext buildContext, Animation<double> animation,
           Animation<double> secondaryAnimation) {
         return Builder(builder: (BuildContext context) {
-          return pageContainer(SearchPage(centerPosition));
+          return pageContainer(SearchPage(centerPosition), context);
         });
       },
       barrierDismissible: false,
@@ -253,17 +254,18 @@ class NavigatorUtils {
 
   ///公共打开方式
   static NavigatorRouter(BuildContext context, Widget widget) {
-    return Navigator.push(context,
-        new CupertinoPageRoute(builder: (context) => pageContainer(widget)));
+    return Navigator.push(
+        context,
+        new CupertinoPageRoute(
+            builder: (context) => pageContainer(widget, context)));
   }
 
   ///Page页面的容器，做一次通用自定义
-  static Widget pageContainer(widget) {
+  static Widget pageContainer(widget, BuildContext context) {
     return MediaQuery(
 
         ///不受系统字体缩放影响
-        data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
-            .copyWith(textScaleFactor: 1),
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: widget);
   }
 

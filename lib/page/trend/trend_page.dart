@@ -86,7 +86,7 @@ class TrendPageState extends State<TrendPage>
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
         return NavigatorUtils.pageContainer(RepositoryDetailPage(
-            reposViewModel.ownerName, reposViewModel.repositoryName));
+            reposViewModel.ownerName, reposViewModel.repositoryName), context);
       },
       tappable: true,
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
@@ -295,7 +295,7 @@ class TrendPageState extends State<TrendPage>
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return NavigatorUtils.pageContainer(new TrendUserPage());
+        return NavigatorUtils.pageContainer(new TrendUserPage(), context);
       },
       closedElevation: 6.0,
       closedShape: RoundedRectangleBorder(

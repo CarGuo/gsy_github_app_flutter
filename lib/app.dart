@@ -91,11 +91,11 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
               },
               HomePage.sName: (context) {
                 _context = context;
-                return NavigatorUtils.pageContainer(new HomePage());
+                return NavigatorUtils.pageContainer(new HomePage(), context);
               },
               LoginPage.sName: (context) {
                 _context = context;
-                return NavigatorUtils.pageContainer(new LoginPage());
+                return NavigatorUtils.pageContainer(new LoginPage(), context);
               },
 
               ///使用 ModalRoute.of(context).settings.arguments; 获取参数
