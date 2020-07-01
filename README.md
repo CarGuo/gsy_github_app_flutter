@@ -102,9 +102,9 @@
 <img src="http://img.cdn.guoshuyu.cn/register1.jpg" width="426px"/>
 </div>
 
-4、运行之前请注意下
+### 4、运行之前请注意下
 
->### 1、本地Flutter SDK 版本 1.17.1 。 2、pubspec.yaml 中的第三方包版本和 pubspec.lock 中的是否对应的上
+>### 1、本地 Flutter SDK 版本 1.17 ； 2、是否执行过 `flutter pub get`；3、 网络等问题参考: [如果出现登陆失败或者请求失败 ](https://github.com/CarGuo/gsy_github_app_flutter/issues/643)
 
 
 ### 下载
