@@ -44,13 +44,15 @@ class UserDao {
       await LocalStorage.save(Config.TOKEN_KEY, _token);
 
 
-      var resultData = await getUserInfo(null);
-      if (Config.DEBUG) {
+      resultData = await getUserInfo(null);
+      if (Config.DEBUG ) {
         print("user result " + resultData.result.toString());
         print(resultData.data);
         print(res.data.toString());
       }
-      store.dispatch(new UpdateUserAction(resultData.data));
+      if(resultData.result == true) {
+        store.dispatch(new UpdateUserAction(resultData.data));
+      }
     }
 
     return new DataResult(resultData, res.result);
