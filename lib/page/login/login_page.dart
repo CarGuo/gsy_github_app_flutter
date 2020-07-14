@@ -189,7 +189,7 @@ mixin LoginBLoC on State<LoginPage> {
         msg: GSYLocalizations.i18n(context).Login_deprecated,
         gravity: ToastGravity.CENTER,
         toastLength: Toast.LENGTH_LONG);
-
+    return;
     if (_userName == null || _userName.isEmpty) {
       return;
     }
