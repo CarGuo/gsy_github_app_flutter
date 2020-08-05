@@ -154,7 +154,7 @@ packages:
       name: collection
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.14.11"
+    version: "1.14.12"
   connectivity:
     dependency: "direct main"
     description:
@@ -276,7 +276,7 @@ packages:
       name: flutter_markdown
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.5"
+    version: "0.4.3"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -400,7 +400,7 @@ packages:
       name: intl
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.16.0"
+    version: "0.16.1"
   io:
     dependency: transitive
     description:
@@ -893,4 +893,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.7.2 <3.0.0"
-  flutter: ">=1.12.13+hotfix.5 <2.0.0"
+  flutter: ">=1.17.0 <2.0.0"
