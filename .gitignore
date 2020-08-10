@@ -9,12 +9,48 @@ build/
 .flutter-plugins
 .flutter-plugins-dependencies
 
-*.iml
-
-.idea/
-
 .gradle/
 
 ignoreConfig.dart
 
 flutter_export_environment.sh
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+.pub-cache/
+/build/
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

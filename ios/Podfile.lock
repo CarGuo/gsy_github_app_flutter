@@ -1,6 +1,4 @@
 PODS:
-  - android_intent (0.0.1):
-    - Flutter
   - connectivity (0.0.1):
     - Flutter
     - Reachability
@@ -11,40 +9,29 @@ PODS:
     - Flutter
   - fluttertoast (0.0.2):
     - Flutter
-  - FMDB (2.7.2):
-    - FMDB/standard (= 2.7.2)
-  - FMDB/standard (2.7.2)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - package_info (0.0.1):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - path_provider_macos (0.0.1):
-    - Flutter
-  - permission_handler (3.2.2):
+  - "permission_handler (5.0.1+1)":
     - Flutter
   - Reachability (3.2)
   - share (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
-  - shared_preferences_macos (0.0.1):
-    - Flutter
-  - shared_preferences_web (0.0.1):
-    - Flutter
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
   - url_launcher (0.0.1):
     - Flutter
-  - url_launcher_macos (0.0.1):
-    - Flutter
-  - url_launcher_web (0.0.1):
-    - Flutter
   - webview_flutter (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - android_intent (from `.symlinks/plugins/android_intent/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
@@ -52,16 +39,11 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
-  - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
-  - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
@@ -70,8 +52,6 @@ SPEC REPOS:
     - Reachability
 
 EXTERNAL SOURCES:
-  android_intent:
-    :path: ".symlinks/plugins/android_intent/ios"
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
   device_info:
@@ -86,52 +66,36 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
-  path_provider_macos:
-    :path: ".symlinks/plugins/path_provider_macos/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  shared_preferences_macos:
-    :path: ".symlinks/plugins/shared_preferences_macos/ios"
-  shared_preferences_web:
-    :path: ".symlinks/plugins/shared_preferences_web/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
-  url_launcher_macos:
-    :path: ".symlinks/plugins/url_launcher_macos/ios"
-  url_launcher_web:
-    :path: ".symlinks/plugins/url_launcher_web/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  android_intent: f144b3783d533cc5bc2cd04cdbd1dc2b6950bd69
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
-  device_info: cbf09d2ec12aa7110e0b09fabe54b5bd6c8efe74
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
-  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
-  permission_handler: d59f41439f5bc6c4d1005f3355e98f05ddc68ece
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
-  shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
-  url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
-  url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
-PODFILE CHECKSUM: 083258d7f5e80b42ea9bfee905fe93049bc04c64
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
 COCOAPODS: 1.7.5

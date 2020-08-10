@@ -20,9 +20,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
 import 'package:gsy_github_app_flutter/page/issue/issue_edit_dIalog.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -101,13 +101,13 @@ class CommonUtils {
     } else {
       appDir = await getExternalStorageDirectory();
     }
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
-    if (permission != PermissionStatus.granted) {
-      Map<PermissionGroup, PermissionStatus> permissions =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.storage]);
-      if (permissions[PermissionGroup.storage] != PermissionStatus.granted) {
+
+    var status = await Permission.storage.status;
+    if (status != PermissionStatus.granted) {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+      ].request();
+      if (statuses[Permission.storage] != PermissionStatus.granted) {
         return null;
       }
     }
