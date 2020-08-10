@@ -43,7 +43,7 @@ With the use and feedback of the project, will user experience and function opti
 
 ### Operation instructions
 
-1. Configure the Flutter development environment (Tag of the current version of Flutter SDK  **1.17.1** ).
+1. Configure the Flutter development environment (Tag of the current version of Flutter SDK  **1.20.1** ).
 
 2. Clone code, execute `Packages get'to install third-party packages.
 
@@ -68,7 +68,7 @@ With the use and feedback of the project, will user experience and function opti
 
 4、Be careful
 
->### Local Flutter SDK version  1.17.1 or more. 2. Does the third-party package version in pubspec. yaml correspond to the third-party package version in pubspec. lock?
+>### Local Flutter SDK version  1.20.1 or more. 2. Does the third-party package version in pubspec. yaml correspond to the third-party package version in pubspec. lock?
 
 ### Download
 
@@ -107,7 +107,7 @@ With the use and feedback of the project, will user experience and function opti
 
 ### Third-party framework
 
->Current Flutter SDK version **1.17.1**
+>Current Flutter SDK version **1.20.1**
 
 | 库                          | 功能             |
 | -------------------------- | -------------- |
