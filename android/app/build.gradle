@@ -16,7 +16,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -30,9 +30,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 35
-        versionName "1.7.3"
+        targetSdkVersion 29
+        versionCode 36
+        versionName "1.7.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
