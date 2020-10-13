@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/widget/particle/particle_model.dart';
 import 'package:gsy_github_app_flutter/widget/particle/particle_painter.dart';
-import 'package:simple_animations/simple_animations/rendering.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:supercharged/supercharged.dart';
 
 class ParticlesWidget extends StatefulWidget {
   final int numberOfParticles;
@@ -21,27 +22,26 @@ class _ParticlesWidgetState extends State<ParticlesWidget> {
 
   @override
   void initState() {
-    List.generate(widget.numberOfParticles, (index) {
-      particles.add(ParticleModel(random, defaultMilliseconds: 2000));
-    });
+    widget.numberOfParticles.times(() => particles.add(ParticleModel(random)));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Rendering(
-      startTime: Duration(seconds: 50),
-      onTick: _simulateParticles,
-      builder: (context, time) {
-        _simulateParticles(time);
+    return LoopAnimation(
+      tween: ConstantTween(1),
+      builder: (context, child, _) {
+        _simulateParticles();
         return CustomPaint(
-          painter: ParticlePainter(particles, time),
+          painter: ParticlePainter(particles),
         );
       },
     );
   }
 
-  _simulateParticles(Duration time) {
-    particles.forEach((particle) => particle.maintainRestart(time));
+  _simulateParticles() {
+    particles
+        .forEach((particle) => particle.checkIfParticleNeedsToBeRestarted());
   }
+
 }

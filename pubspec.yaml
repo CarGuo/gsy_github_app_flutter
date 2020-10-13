@@ -45,8 +45,9 @@ dependencies:
   shared_preferences: 0.5.12
   built_value: 6.8.2
   flutter_json_widget: 1.0.2
-  simple_animations: 1.3.4
+  simple_animations: 2.2.2
   animations: 1.1.2
+  supercharged: 1.10.0
   flutter_localizations:
     sdk: flutter
   photo_view:

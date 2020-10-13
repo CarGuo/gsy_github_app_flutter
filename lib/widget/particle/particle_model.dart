@@ -1,43 +1,52 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:simple_animations/simple_animations/animation_progress.dart';
-import 'package:simple_animations/simple_animations/multi_track_tween.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:supercharged/supercharged.dart';
+
+
+enum ParticleOffsetProps { x, y }
 
 class ParticleModel {
-  Animatable tween;
+  MultiTween<ParticleOffsetProps> tween;
   double size;
-  AnimationProgress animationProgress;
+  Duration duration;
+  Duration startTime;
   Random random;
-  int defaultMilliseconds;
 
-  ParticleModel(this.random, {this.defaultMilliseconds = 500}) {
-    restart();
+  ParticleModel(this.random) {
+    _restart();
+    _shuffle();
   }
 
-  restart({Duration time = Duration.zero}) {
+  _restart({Duration time = Duration.zero}) {
     final startPosition = Offset(-0.2 + 1.4 * random.nextDouble(), 1.2);
-
     final endPosition = Offset(-0.2 + 1.4 * random.nextDouble(), -0.2);
 
-    final duration =
-        Duration(milliseconds: defaultMilliseconds + random.nextInt(1000));
+    tween = MultiTween<ParticleOffsetProps>()
+      ..add(ParticleOffsetProps.x, startPosition.dx.tweenTo(endPosition.dx))
+      ..add(ParticleOffsetProps.y, startPosition.dy.tweenTo(endPosition.dy));
 
-    tween = MultiTrackTween([
-      Track("x").add(
-          duration, Tween(begin: startPosition.dx, end: endPosition.dx),
-          curve: Curves.easeInOutSine),
-      Track("y").add(
-          duration, Tween(begin: startPosition.dy, end: endPosition.dy),
-          curve: Curves.easeIn),
-    ]);
-    animationProgress = AnimationProgress(duration: duration, startTime: time);
+    duration = 3000.milliseconds + random.nextInt(6000).milliseconds;
+    startTime = DateTime.now().duration();
     size = 0.2 + random.nextDouble() * 0.4;
   }
 
-  maintainRestart(Duration time) {
-    if (animationProgress.progress(time) == 1.0) {
-      restart(time: time);
+  void _shuffle() {
+    startTime -= (this.random.nextDouble() * duration.inMilliseconds)
+        .round()
+        .milliseconds;
+  }
+
+  checkIfParticleNeedsToBeRestarted() {
+    if (progress() == 1.0) {
+      _restart();
     }
+  }
+
+  double progress() {
+    return ((DateTime.now().duration() - startTime) / duration)
+        .clamp(0.0, 1.0)
+        .toDouble();
   }
 }
