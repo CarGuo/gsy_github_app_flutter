@@ -19,7 +19,7 @@ class DemoUseStorePage extends StatelessWidget {
       builder: (context, userInfo) {
         return new Text(
           userInfo.name,
-          style: Theme.of(context).textTheme.display1,
+          style: Theme.of(context).textTheme.headline4,
         );
       },
     );

@@ -5,7 +5,6 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 
 import 'custom_bouncing_scroll_physics.dart';
 import 'gsy_flare_pull_controller.dart';

@@ -54,9 +54,9 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    TextStyle centerStyle = Theme.of(context).textTheme?.title ??
-        Theme.of(context).appBarTheme.textTheme?.title ??
-        Theme.of(context).primaryTextTheme.title;
+    TextStyle centerStyle = Theme.of(context).textTheme?.headline6 ??
+        Theme.of(context).appBarTheme.textTheme?.headline6 ??
+        Theme.of(context).primaryTextTheme.headline6;
 
     Widget title = this.title;
     if (title != null) {

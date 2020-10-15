@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 
 ///通用下上刷新控件
 class GSYPullLoadWidget extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:gsy_github_app_flutter/common/localization/gsy_string_base.dart';
-import 'package:gsy_github_app_flutter/common/localization/gsy_string_base.dart';
 
 /**
  * Created by guoshuyu

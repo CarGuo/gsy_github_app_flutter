@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/model/Repository.dart';
 import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:scoped_model/scoped_model.dart';
 

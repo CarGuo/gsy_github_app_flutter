@@ -15,7 +15,6 @@ import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
 import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
-import 'package:gsy_github_app_flutter/common/localization/gsy_string_base.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';

@@ -8,7 +8,6 @@ import 'dart:ui' as ui show Codec;
 
 import 'package:flutter/painting.dart' as image_provider;
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 /**
  * Created by guoshuyu

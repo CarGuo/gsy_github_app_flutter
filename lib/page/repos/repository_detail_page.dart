@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -15,7 +14,6 @@ import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart'
 import 'package:gsy_github_app_flutter/widget/anima/curves_bezier.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
