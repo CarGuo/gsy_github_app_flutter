@@ -16,7 +16,7 @@ class ConfigWrapper extends StatelessWidget {
 
   static EnvConfig of(BuildContext context) {
     final _InheritedConfig inheritedConfig =
-    context.inheritFromWidgetOfExactType(_InheritedConfig);
+    context.dependOnInheritedWidgetOfExactType<_InheritedConfig>();
     return inheritedConfig.config;
   }
 

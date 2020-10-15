@@ -9,6 +9,7 @@ class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
       {@required this.minHeight,
       @required this.maxHeight,
       @required this.snapConfig,
+      @required this.vSyncs,
       this.child,
       this.builder,
       this.changeSize = false});
@@ -17,6 +18,7 @@ class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double maxHeight;
   final Widget child;
   final Builder builder;
+  final TickerProvider vSyncs;
   final bool changeSize;
   final FloatingHeaderSnapConfiguration snapConfig;
   AnimationController animationController;
@@ -35,6 +37,9 @@ class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     }
     return child;
   }
+
+  @override
+  TickerProvider get vsync => vSyncs;
 
   @override
   bool shouldRebuild(GSYSliverHeaderDelegate oldDelegate) {

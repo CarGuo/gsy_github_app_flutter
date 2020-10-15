@@ -352,8 +352,7 @@ class CupertinoSliverRefreshControl extends StatefulWidget {
   @visibleForTesting
   static RefreshIndicatorMode state(BuildContext context) {
     final CupertinoSliverRefreshControlState state =
-        context.ancestorStateOfType(
-            const TypeMatcher<CupertinoSliverRefreshControlState>());
+        context.findAncestorStateOfType<CupertinoSliverRefreshControlState>();
     return state.refreshState;
   }
 

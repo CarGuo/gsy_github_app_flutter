@@ -109,8 +109,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             maxHeight: headerSize,
             minHeight: headerSize,
             changeSize: true,
+            vSyncs: this,
             snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),
@@ -139,8 +139,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             maxHeight: bottomSize,
             minHeight: bottomSize,
             changeSize: true,
+            vSyncs: this,
             snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),
@@ -177,8 +177,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             maxHeight: chartSize,
             minHeight: chartSize,
             changeSize: true,
+            vSyncs: this,
             snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),

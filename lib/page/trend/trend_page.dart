@@ -330,8 +330,8 @@ class TrendPageState extends State<TrendPage>
             maxHeight: 65,
             minHeight: 65,
             changeSize: true,
+            vSyncs: this,
             snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),

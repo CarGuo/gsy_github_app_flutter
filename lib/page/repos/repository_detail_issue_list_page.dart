@@ -208,8 +208,8 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
             maxHeight: height,
             minHeight: height,
             changeSize: true,
+            vSyncs: this,
             snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),

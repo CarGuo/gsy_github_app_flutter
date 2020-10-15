@@ -260,8 +260,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         delegate: GSYSliverHeaderDelegate(
           maxHeight: headerSize,
           minHeight: headerSize,
+          vSyncs: this,
           snapConfig: FloatingHeaderSnapConfiguration(
-            vsync: this,
             curve: Curves.bounceInOut,
             duration: const Duration(milliseconds: 10),
           ),
@@ -286,8 +286,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             maxHeight: 60,
             minHeight: 60,
             changeSize: true,
+            vSyncs: this,
             snapConfig: FloatingHeaderSnapConfiguration(
-              vsync: this,
               curve: Curves.bounceInOut,
               duration: const Duration(milliseconds: 10),
             ),
