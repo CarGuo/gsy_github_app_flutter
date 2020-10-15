@@ -49,7 +49,7 @@ class _DemoTextFieldPageState extends State<DemoTextFieldPage> {
             )),
           ),
           inputFormatters: [
-            WhitelistingTextInputFormatter(RegExp('^[0-9]*\$'))
+            FilteringTextInputFormatter.allow(RegExp('^[0-9]*\$'))
           ],
         ),
       ),
