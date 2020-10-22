@@ -34,7 +34,7 @@ dependencies:
   flutter_cache_manager: 1.4.2
   provider: 4.3.2+2
   permission_handler: 5.0.1+1
-  json_annotation: 3.0.1
+  json_annotation: 3.1.0
   package_info: 0.4.3
   connectivity: 0.4.9+3
   flutter_markdown: 0.4.4
@@ -43,7 +43,7 @@ dependencies:
   google_fonts: 1.1.0
   android_intent: 0.3.7+4
   shared_preferences: 0.5.12
-  built_value: 6.8.2
+  built_value: 7.1.0
   flutter_json_widget: 1.0.2
   simple_animations: 2.2.2
   animations: 1.1.2
@@ -56,9 +56,9 @@ dependencies:
       ref: master
 
 dev_dependencies:
-  built_value_generator: 6.8.2
-  build_runner: ^1.7.2
-  json_serializable: 3.2.0
+  built_value_generator: 7.1.0
+  build_runner: ^1.10.2
+  json_serializable: 3.5.0
 #  flutter_test:
 #    sdk: flutter
 

@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart' as Cache;
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
@@ -134,7 +134,7 @@ class CommonUtils {
 
   static saveImage(String url) async {
     Future<String> _findPath(String imageUrl) async {
-      final file = await DefaultCacheManager().getSingleFile(url);
+      final file = await Cache.DefaultCacheManager().getSingleFile(url);
       if (file == null) {
         return null;
       }
