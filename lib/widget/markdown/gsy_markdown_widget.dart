@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -31,14 +33,14 @@ class GSYMarkdownWidget extends StatelessWidget {
             codeblockDecoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: codeBackground,
-                border: new Border.all(
-                    color: GSYColors.subTextColor, width: 0.3)))
+                border:
+                    new Border.all(color: GSYColors.subTextColor, width: 0.3)))
         .copyWith(
             blockquoteDecoration: new BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 color: GSYColors.subTextColor,
-                border: new Border.all(
-                    color: GSYColors.subTextColor, width: 0.3)),
+                border:
+                    new Border.all(color: GSYColors.subTextColor, width: 0.3)),
             blockquote: GSYConstant.smallTextWhite);
   }
 
@@ -180,8 +182,22 @@ class GSYMarkdownWidget extends StatelessWidget {
           styleSheet: _getStyle(context),
           syntaxHighlighter: new GSYHighlighter(),
           data: _getMarkDownData(markdownData),
-          onTapLink: (String source) {
-            CommonUtils.launchUrl(context, source);
+          imageBuilder: (Uri uri, String title, String alt) {
+            if (uri == null || uri.toString().isEmpty) return const SizedBox();
+            final List<String> parts = uri.toString().split('#');
+            double width;
+            double height;
+            if (parts.length == 2) {
+              final List<String> dimensions = parts.last.split('x');
+              if (dimensions.length == 2) {
+                width = double.parse(dimensions[0]);
+                height = double.parse(dimensions[1]);
+              }
+            }
+            return kDefaultImageBuilder(uri, "", width, height);
+          },
+          onTapLink: (String text, String href, String title) {
+            CommonUtils.launchUrl(context, href);
           },
         ),
       ),
@@ -196,4 +212,45 @@ class GSYHighlighter extends SyntaxHighlighter {
     showSource = showSource.replaceAll("&gt;", ">");
     return new DartSyntaxHighlighter().format(showSource);
   }
+}
+
+Widget kDefaultImageBuilder(
+  Uri uri,
+  String imageDirectory,
+  double width,
+  double height,
+) {
+  if (uri.scheme == null || uri.scheme.isEmpty) {
+    return SizedBox();
+  }
+  if (uri.scheme == 'http' || uri.scheme == 'https') {
+    return Image.network(uri.toString(), width: width, height: height);
+  } else if (uri.scheme == 'data') {
+    return _handleDataSchemeUri(uri, width, height);
+  } else if (uri.scheme == "resource") {
+    return Image.asset(uri.path, width: width, height: height);
+  } else {
+    Uri fileUri = imageDirectory != null
+        ? Uri.parse(imageDirectory + uri.toString())
+        : uri;
+    if (fileUri.scheme == 'http' || fileUri.scheme == 'https') {
+      return Image.network(fileUri.toString(), width: width, height: height);
+    } else {
+      return Image.file(File.fromUri(fileUri), width: width, height: height);
+    }
+  }
+}
+
+Widget _handleDataSchemeUri(Uri uri, final double width, final double height) {
+  final String mimeType = uri.data.mimeType;
+  if (mimeType.startsWith('image/')) {
+    return Image.memory(
+      uri.data.contentAsBytes(),
+      width: width,
+      height: height,
+    );
+  } else if (mimeType.startsWith('text/')) {
+    return Text(uri.data.contentAsString());
+  }
+  return const SizedBox();
 }

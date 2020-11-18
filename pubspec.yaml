@@ -37,7 +37,7 @@ dependencies:
   json_annotation: 3.1.0
   package_info: 0.4.3
   connectivity: 0.4.9+3
-  flutter_markdown: 0.4.4
+  flutter_markdown: 0.5.0
   device_info: 0.4.2+8
   url_launcher: 5.7.2
   google_fonts: 1.1.0
@@ -48,6 +48,7 @@ dependencies:
   simple_animations: 2.2.2
   animations: 1.1.2
   supercharged: 1.10.0
+  auto_size_text: 2.1.0
   flutter_localizations:
     sdk: flutter
   photo_view:

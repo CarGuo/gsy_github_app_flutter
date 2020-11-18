@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
@@ -153,7 +154,11 @@ class _PersonState extends BasePersonState<PersonPage> {
           ),
         )),
         floatingActionButton: new FloatingActionButton(
-            child: new Text(focus),
+            child: AutoSizeText(
+              focus,
+              minFontSize: 8,
+              maxLines: 1,
+            ),
             onPressed: () {
               ///非组织成员可以关注
               if (focus == '') {

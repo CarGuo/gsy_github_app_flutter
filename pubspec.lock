@@ -50,6 +50,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.2"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   bezier:
     dependency: "direct main"
     description:
@@ -325,7 +332,7 @@ packages:
       name: flutter_markdown
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.4"
+    version: "0.5.0"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -484,7 +491,7 @@ packages:
       name: markdown
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.8"
+    version: "3.0.0"
   matcher:
     dependency: transitive
     description:
