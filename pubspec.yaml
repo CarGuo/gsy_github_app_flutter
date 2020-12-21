@@ -24,7 +24,7 @@ dependencies:
   path_provider: ^1.6.18
   scoped_model: ^1.0.1
   flutter_webview_plugin: 0.3.11
-  webview_flutter: 1.0.1
+  webview_flutter: 1.0.7
   bezier: ^1.1.5
   flare_flutter: ^2.0.6
   # 固定版本
