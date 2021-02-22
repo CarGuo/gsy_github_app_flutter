@@ -101,7 +101,7 @@ class GSYStringZh extends GSYStringBase {
   String home_theme_6 = "主题6";
 
   @override
-  String login_username_hint_text = "github用户名，清不要用邮箱";
+  String login_username_hint_text = "github用户名，请不要用邮箱";
   @override
   String login_password_hint_text = "请输入密码";
   @override
