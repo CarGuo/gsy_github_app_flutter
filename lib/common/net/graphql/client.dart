@@ -1,10 +1,12 @@
 import 'package:graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/repositories.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/users.dart';
+import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:path_provider/path_provider.dart';
 
-GraphQLClient _client(token) {
+Future<GraphQLClient> _client(token) async {
   final HttpLink _httpLink = HttpLink(
-    uri: 'https://api.github.com/graphql',
+    'https://api.github.com/graphql',
   );
 
   final AuthLink _authLink = AuthLink(
@@ -12,19 +14,18 @@ GraphQLClient _client(token) {
   );
 
   final Link _link = _authLink.concat(_httpLink);
-
+  var path = await CommonUtils.getApplicationDocumentsPath();
+  final store = await HiveStore.open(path: path);
   return GraphQLClient(
-    cache: OptimisticCache(
-      dataIdFromObject: typenameDataIdFromObject,
-    ),
+    cache: GraphQLCache(store: store),
     link: _link,
   );
 }
 
 GraphQLClient _innerClient;
 
-initClient(token) {
-  _innerClient ??= _client(token);
+initClient(token) async {
+  _innerClient ??= await _client(token);
 }
 
 releaseClient() {
@@ -33,7 +34,7 @@ releaseClient() {
 
 Future<QueryResult> getRepository(String owner, String name) async {
   final QueryOptions _options = QueryOptions(
-      document: readRepository,
+      document: gql(readRepository),
       variables: <String, dynamic>{
         'owner': owner,
         'name': name,
@@ -52,7 +53,7 @@ Future<QueryResult> getTrendUser(String location, {String cursor}) async {
           'after': cursor,
         };
   final QueryOptions _options = QueryOptions(
-      document: cursor == null ? readTrendUser : readTrendUserByCursor,
+      document: gql(cursor == null ? readTrendUser : readTrendUserByCursor),
       variables: variables,
       fetchPolicy: FetchPolicy.noCache);
   return await _innerClient.query(_options);

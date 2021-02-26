@@ -66,7 +66,8 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: widget.tabItems.length);
+    _tabController =
+        new TabController(vsync: this, length: widget.tabItems.length);
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
@@ -107,7 +108,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     if (widget.type == TabType.top) {
       ///顶部tab bar
       return new Scaffold(
-        resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+        resizeToAvoidBottomInset: widget.resizeToAvoidBottomPadding,
         floatingActionButton:
             SafeArea(child: widget.floatingActionButton ?? Container()),
         floatingActionButtonLocation: widget.floatingActionButtonLocation,

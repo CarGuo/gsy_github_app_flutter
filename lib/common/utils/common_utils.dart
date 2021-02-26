@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart' as Cache;
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
@@ -116,6 +115,19 @@ class CommonUtils {
     return appPath;
   }
 
+  static getApplicationDocumentsPath() async {
+    Directory appDir;
+    if (Platform.isIOS) {
+      appDir = await getApplicationDocumentsDirectory();
+    } else {
+      appDir = await getApplicationSupportDirectory();
+    }
+    String appDocPath = appDir.path + "/gsygithubappflutter";
+    Directory appPath = Directory(appDocPath);
+    await appPath.create(recursive: true);
+    return appPath.path;
+  }
+
   static String removeTextTag(String description) {
     if (description != null) {
       String reg = "<g-emoji.*?>.+?</g-emoji>";
@@ -132,7 +144,7 @@ class CommonUtils {
     return description;
   }
 
-  static saveImage(String url) async {
+  /*static saveImage(String url) async {
     Future<String> _findPath(String imageUrl) async {
       final file = await Cache.DefaultCacheManager().getSingleFile(url);
       if (file == null) {
@@ -148,7 +160,7 @@ class CommonUtils {
     }
 
     return _findPath(url);
-  }
+  }*/
 
   static splitFileNameByPath(String path) {
     return path.substring(path.lastIndexOf("/"));

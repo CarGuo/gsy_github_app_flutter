@@ -28,7 +28,7 @@ class PhotoViewPage extends StatelessWidget {
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.file_download),
           onPressed: () {
-            CommonUtils.saveImage(url).then((res) {
+           /* CommonUtils.saveImage(url).then((res) {
               if (res != null) {
                 Fluttertoast.showToast(msg: res);
                 if (Platform.isAndroid) {
@@ -40,7 +40,7 @@ class PhotoViewPage extends StatelessWidget {
                   });
                 }
               }
-            });
+            });*/
           },
         ),
         appBar: new AppBar(

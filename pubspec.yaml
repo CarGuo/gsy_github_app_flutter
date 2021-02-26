@@ -5,6 +5,20 @@ version: 1.7.0+32
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+
+dependency_overrides:
+  analyzer: 0.40.1
+  pub_semver: 1.4.2
+  glob: 1.0.3
+  crypto: 3.0.0
+  #convert: 1.0.0
+  rxdart: 0.25.0
+  http: 0.13.0
+  gql_http_link: 0.3.2
+  string_scanner: 1.1.0
+  args: 1.0.0
+  http_parser: 4.0.0
+
 dependencies:
   flutter:
     sdk: flutter
@@ -12,43 +26,47 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  fluttertoast: ^7.1.1
-  share: ^0.6.5+2
+  fluttertoast: ^8.0.1-nullsafety.0
+  share: ^2.0.0
   flutter_spinkit: ^4.1.2+1
-  sqflite: ^1.3.1+1
-  pub_semver: ^1.4.4
-  flutter_svg: 0.19.0
-  flutter_slidable: ^0.5.7
-  dio: ^3.0.10
+  sqflite: 2.0.0
+  pub_semver: 2.0.0
+  flutter_svg: 0.21.0-nullsafety.0
+  flutter_slidable: ^0.6.0-nullsafety.0
+  dio: # https://github.com/flutterchina/dio/issues/1002
+    git:
+      url: git@github.com:harsimranmaan/dio.git
+      ref: null-safety
+      path: dio
   event_bus:  ^1.1.1
-  path_provider: ^1.6.18
+  path_provider: 2.0.0
   scoped_model: ^1.0.1
   flutter_webview_plugin: 0.3.11
-  webview_flutter: 1.0.7
+  webview_flutter: 2.0.0
   bezier: ^1.1.5
   flare_flutter: ^2.0.6
   # 固定版本
-  flutter_redux: 0.6.0
-  rxdart: 0.24.1
-  graphql: 3.1.0
-  flutter_cache_manager: 1.4.2
-  provider: 4.3.2+2
-  permission_handler: 5.0.1+1
-  json_annotation: 3.1.0
-  package_info: 0.4.3
-  connectivity: 0.4.9+3
-  flutter_markdown: 0.5.0
-  device_info: 0.4.2+8
-  url_launcher: 5.7.2
-  google_fonts: 1.1.0
-  android_intent: 0.3.7+4
-  shared_preferences: 0.5.12
-  built_value: 7.1.0
+  flutter_redux: 0.7.0
+  rxdart: 0.26.0-nullsafety.1
+  graphql: 4.0.2-beta.1
+  #flutter_cache_manager: 3.0.0-nullsafety.0
+  provider: 5.0.0-nullsafety.5
+  permission_handler: 5.0.1+2
+  json_annotation: 4.0.0
+  package_info: 2.0.0
+  connectivity: 3.0.0
+  flutter_markdown: 0.6.0
+  device_info:  2.0.0
+  url_launcher: 6.0.1
+  google_fonts: 2.0.0-nullsafety.0
+  android_intent: 2.0.0
+  shared_preferences: 2.0.1
+  built_value: 8.0.0
   flutter_json_widget: 1.0.2
-  simple_animations: 2.4.2
-  supercharged: 1.12.0
-  animations: 1.1.2
-  auto_size_text: 2.1.0
+  simple_animations: 3.0.0-nullsafety.4
+  supercharged: 2.0.0-nullsafety.2
+  animations: 2.0.0
+  auto_size_text: 3.0.0-nullsafety.0
   flutter_localizations:
     sdk: flutter
   photo_view:
@@ -57,9 +75,9 @@ dependencies:
       ref: master
 
 dev_dependencies:
-  built_value_generator: 7.1.0
-  build_runner: ^1.10.2
-  json_serializable: 3.5.0
+  built_value_generator: 8.0.0
+  build_runner: ^1.11.5
+  json_serializable: 4.0.1
 #  flutter_test:
 #    sdk: flutter
 

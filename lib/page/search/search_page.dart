@@ -152,8 +152,7 @@ class _SearchPageState extends State<SearchPage>
         offset: widget.centerPosition,
         animation: animation,
         child: new Scaffold(
-          resizeToAvoidBottomPadding: false,
-
+          resizeToAvoidBottomInset: false,
           ///右侧 Drawer
           endDrawer: new GSYSearchDrawer(
             (String type) {
