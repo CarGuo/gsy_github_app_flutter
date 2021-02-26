@@ -150,7 +150,7 @@ class IssueItem extends StatelessWidget {
 class IssueItemViewModel {
   String actionTime = "---";
   String actionUser = "---";
-  String actionUserPic = "---";
+  String actionUserPic ;
   String issueComment = "---";
   String commentCount = "---";
   String state = "---";

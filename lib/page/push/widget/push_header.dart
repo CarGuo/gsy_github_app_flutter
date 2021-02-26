@@ -112,7 +112,7 @@ class PushHeader extends StatelessWidget {
 
 class PushHeaderViewModel {
   String actionUser = "---";
-  String actionUserPic = "---";
+  String actionUserPic;
   String pushDes = "---";
   String pushTime = "---";
   String editCount = "---";
@@ -124,7 +124,7 @@ class PushHeaderViewModel {
 
   PushHeaderViewModel.forMap(PushCommit pushMap) {
     String name = "---";
-    String pic = "---";
+    String pic;
     if (pushMap.committer != null) {
       name = pushMap.committer.login;
     } else if (pushMap.commit != null && pushMap.commit.author != null) {

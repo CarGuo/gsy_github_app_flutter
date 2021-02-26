@@ -23,6 +23,7 @@ class GSYUserIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("###### $image");
     return new RawMaterialButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding:
@@ -33,7 +34,7 @@ class GSYUserIconWidget extends StatelessWidget {
             placeholder: AssetImage(
               GSYICons.DEFAULT_USER_ICON,
             ),
-            image: NetworkImage(image),
+            image: NetworkImage(image ?? GSYICons.DEFAULT_REMOTE_PIC),
             //预览图
             fit: BoxFit.fitWidth,
             width: width,
