@@ -45,7 +45,9 @@ class CommonUtils {
   static String getDateStr(DateTime date) {
     if (date == null || date.toString() == null) {
       return "";
-    } else if (date.toString().length < 10) {
+    } else if (date
+        .toString()
+        .length < 10) {
       return date.toString();
     }
     return date.toString().substring(0, 10);
@@ -61,7 +63,9 @@ class CommonUtils {
   ///日期格式转换
   static String getNewsTimeStr(DateTime date) {
     int subTimes =
-        DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
+        DateTime
+            .now()
+            .millisecondsSinceEpoch - date.millisecondsSinceEpoch;
 
     if (subTimes < MILLIS_LIMIT) {
       return (curLocale != null)
@@ -190,14 +194,23 @@ class CommonUtils {
   }
 
   static getThemeData(Color color) {
-    return ThemeData(primarySwatch: color, platform: TargetPlatform.android);
+    return ThemeData(primarySwatch: color,
+        platform: TargetPlatform.android,
+        appBarTheme: AppBarTheme(brightness: Brightness.dark),
+    );
   }
 
   static showLanguageDialog(BuildContext context) {
     List<String> list = [
-      GSYLocalizations.i18n(context).home_language_default,
-      GSYLocalizations.i18n(context).home_language_zh,
-      GSYLocalizations.i18n(context).home_language_en,
+      GSYLocalizations
+          .i18n(context)
+          .home_language_default,
+      GSYLocalizations
+          .i18n(context)
+          .home_language_zh,
+      GSYLocalizations
+          .i18n(context)
+          .home_language_en,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.changeLocale(StoreProvider.of<GSYState>(context), index);
@@ -262,7 +275,9 @@ class CommonUtils {
   static copy(String data, BuildContext context) {
     Clipboard.setData(new ClipboardData(text: data));
     Fluttertoast.showToast(
-        msg: GSYLocalizations.i18n(context).option_share_copy_success);
+        msg: GSYLocalizations
+            .i18n(context)
+            .option_share_copy_success);
   }
 
   static launchUrl(context, String url) {
@@ -307,7 +322,7 @@ class CommonUtils {
       NavigatorUtils.goGSYWebView(
           context,
           new Uri.dataFromString(url,
-                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+              mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
               .toString(),
           title);
     }
@@ -318,7 +333,9 @@ class CommonUtils {
       await launch(url);
     } else {
       Fluttertoast.showToast(
-          msg: GSYLocalizations.i18n(context).option_web_launcher_error +
+          msg: GSYLocalizations
+              .i18n(context)
+              .option_web_launcher_error +
               ": " +
               url);
     }
@@ -350,7 +367,9 @@ class CommonUtils {
                         new Container(height: 10.0),
                         new Container(
                             child: new Text(
-                                GSYLocalizations.i18n(context).loading_text,
+                                GSYLocalizations
+                                    .i18n(context)
+                                    .loading_text,
                                 style: GSYConstant.normalTextWhite)),
                       ],
                     ),
@@ -360,16 +379,15 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showEditDialog(
-    BuildContext context,
-    String dialogTitle,
-    ValueChanged<String> onTitleChanged,
-    ValueChanged<String> onContentChanged,
-    VoidCallback onPressed, {
-    TextEditingController titleController,
-    TextEditingController valueController,
-    bool needTitle = true,
-  }) {
+  static Future<Null> showEditDialog(BuildContext context,
+      String dialogTitle,
+      ValueChanged<String> onTitleChanged,
+      ValueChanged<String> onContentChanged,
+      VoidCallback onPressed, {
+        TextEditingController titleController,
+        TextEditingController valueController,
+        bool needTitle = true,
+      }) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
@@ -388,14 +406,13 @@ class CommonUtils {
   }
 
   ///列表item dialog
-  static Future<Null> showCommitOptionDialog(
-    BuildContext context,
-    List<String> commitMaps,
-    ValueChanged<int> onTap, {
-    width = 250.0,
-    height = 400.0,
-    List<Color> colorList,
-  }) {
+  static Future<Null> showCommitOptionDialog(BuildContext context,
+      List<String> commitMaps,
+      ValueChanged<int> onTap, {
+        width = 250.0,
+        height = 400.0,
+        List<Color> colorList,
+      }) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
@@ -419,7 +436,9 @@ class CommonUtils {
                       fontSize: 14.0,
                       color: colorList != null
                           ? colorList[index]
-                          : Theme.of(context).primaryColor,
+                          : Theme
+                          .of(context)
+                          .primaryColor,
                       text: commitMaps[index],
                       textColor: GSYColors.white,
                       onPress: () {
@@ -434,26 +453,32 @@ class CommonUtils {
   }
 
   ///版本更新
-  static Future<Null> showUpdateDialog(
-      BuildContext context, String contentMsg) {
+  static Future<Null> showUpdateDialog(BuildContext context,
+      String contentMsg) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(GSYLocalizations.i18n(context).app_version_title),
+            title: new Text(GSYLocalizations
+                .i18n(context)
+                .app_version_title),
             content: new Text(contentMsg),
             actions: <Widget>[
               new FlatButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYLocalizations.i18n(context).app_cancel)),
+                  child: new Text(GSYLocalizations
+                      .i18n(context)
+                      .app_cancel)),
               new FlatButton(
                   onPressed: () {
                     launch(Address.updateUrl);
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYLocalizations.i18n(context).app_ok)),
+                  child: new Text(GSYLocalizations
+                      .i18n(context)
+                      .app_ok)),
             ],
           );
         });
