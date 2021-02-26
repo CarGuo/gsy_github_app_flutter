@@ -22,7 +22,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) async {
     if (Config.DEBUG) {
-      print("请求url：${options.path}");
+      print("请求url：${options.path} ${options.method}");
       print('请求头: ' + options.headers.toString());
       if (options.data != null) {
         print('请求参数: ' + options.data.toString());

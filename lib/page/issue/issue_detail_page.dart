@@ -287,59 +287,70 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     List<Widget> bottomWidget = (!headerStatus)
         ? []
         : <Widget>[
-            new FlatButton(
-              onPressed: () {
-                _replyIssue();
-              },
-              child: new Text(GSYLocalizations.i18n(context).issue_reply,
-                  style: GSYConstant.smallText),
-            ),
-            new Container(
-                width: 0.3, height: 30.0, color: GSYColors.subLightTextColor),
-            new FlatButton(
-              onPressed: () {
-                _editIssue();
-              },
-              child: new Text(GSYLocalizations.i18n(context).issue_edit,
-                  style: GSYConstant.smallText),
-            ),
-            new Container(
-                width: 0.3, height: 30.0, color: GSYColors.subLightTextColor),
-            new FlatButton(
-                onPressed: () {
-                  CommonUtils.showLoadingDialog(context);
-                  IssueDao.editIssueDao(
-                      widget.userName, widget.reposName, widget.issueNum, {
-                    "state": (issueHeaderViewModel.state == "closed")
-                        ? 'open'
-                        : 'closed'
-                  }).then((result) {
-                    _getHeaderInfo();
-                    Navigator.pop(context);
-                  });
-                },
-                child: new Text(
-                    (issueHeaderViewModel.state == 'closed')
-                        ? GSYLocalizations.i18n(context).issue_open
-                        : GSYLocalizations.i18n(context).issue_close,
-                    style: GSYConstant.smallText)),
-            new Container(
-                width: 0.3, height: 30.0, color: GSYColors.subLightTextColor),
-            new FlatButton(
-                onPressed: () {
-                  CommonUtils.showLoadingDialog(context);
-                  IssueDao.lockIssueDao(widget.userName, widget.reposName,
-                          widget.issueNum, issueHeaderViewModel.locked)
-                      .then((result) {
-                    _getHeaderInfo();
-                    Navigator.pop(context);
-                  });
-                },
-                child: new Text(
-                    (issueHeaderViewModel.locked)
-                        ? GSYLocalizations.i18n(context).issue_unlock
-                        : GSYLocalizations.i18n(context).issue_lock,
-                    style: GSYConstant.smallText)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                new FlatButton(
+                  onPressed: () {
+                    _replyIssue();
+                  },
+                  child: new Text(GSYLocalizations.i18n(context).issue_reply,
+                      style: GSYConstant.smallText),
+                ),
+                new Container(
+                    width: 0.3,
+                    height: 30.0,
+                    color: GSYColors.subLightTextColor),
+                new FlatButton(
+                  onPressed: () {
+                    _editIssue();
+                  },
+                  child: new Text(GSYLocalizations.i18n(context).issue_edit,
+                      style: GSYConstant.smallText),
+                ),
+                new Container(
+                    width: 0.3,
+                    height: 30.0,
+                    color: GSYColors.subLightTextColor),
+                new FlatButton(
+                    onPressed: () {
+                      CommonUtils.showLoadingDialog(context);
+                      IssueDao.editIssueDao(
+                          widget.userName, widget.reposName, widget.issueNum, {
+                        "state": (issueHeaderViewModel.state == "closed")
+                            ? 'open'
+                            : 'closed'
+                      }).then((result) {
+                        _getHeaderInfo();
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: new Text(
+                        (issueHeaderViewModel.state == 'closed')
+                            ? GSYLocalizations.i18n(context).issue_open
+                            : GSYLocalizations.i18n(context).issue_close,
+                        style: GSYConstant.smallText)),
+                new Container(
+                    width: 0.3,
+                    height: 30.0,
+                    color: GSYColors.subLightTextColor),
+                new FlatButton(
+                    onPressed: () {
+                      CommonUtils.showLoadingDialog(context);
+                      IssueDao.lockIssueDao(widget.userName, widget.reposName,
+                              widget.issueNum, issueHeaderViewModel.locked)
+                          .then((result) {
+                        _getHeaderInfo();
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: new Text(
+                        (issueHeaderViewModel.locked)
+                            ? GSYLocalizations.i18n(context).issue_unlock
+                            : GSYLocalizations.i18n(context).issue_lock,
+                        style: GSYConstant.smallText)),
+              ],
+            )
           ];
     return bottomWidget;
   }

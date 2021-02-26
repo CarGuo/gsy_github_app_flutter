@@ -303,7 +303,6 @@ class ReposDao {
    */
   static doRepositoryWatchDao(userName, reposName, watch) async {
     String url = Address.resolveWatcherRepos(userName, reposName);
-    print("##### $watch");
     var res = await httpManager.netFetch(
         url, null, null, new Options(method: !watch ? 'PUT' : 'DELETE'));
     return new DataResult(null, res.result);

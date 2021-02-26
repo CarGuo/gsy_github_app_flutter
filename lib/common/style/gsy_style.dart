@@ -215,7 +215,7 @@ class GSYICons {
   static const String DEFAULT_USER_ICON = 'static/images/logo.png';
   static const String DEFAULT_IMAGE = 'static/images/default_img.png';
   static const String DEFAULT_REMOTE_PIC =
-      'https://raw.githubusercontent.com/CarGuo/gsy_github_app_flutter/master/static/images/logo.png';
+      'http://img.cdn.guoshuyu.cn/gsy_github_app_logo.png';
 
   static const IconData HOME =
       const IconData(0xe624, fontFamily: GSYICons.FONT_FAMILY);
