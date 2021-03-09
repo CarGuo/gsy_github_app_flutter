@@ -2,6 +2,8 @@ flutter build apk --target-platform android-arm64 -t lib/main_prod.dart
 
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
+sudo gem install cocoapods -v 1.9.3
+
 query getUserDetail($name:String!){
   user(login: $name) {
     login,
