@@ -242,12 +242,10 @@ packages:
   dio:
     dependency: "direct main"
     description:
-      path: dio
-      ref: null-safety
-      resolved-ref: d3a208de4bf217663eaa3c83c33cf8d64daaaf56
-      url: "git@github.com:harsimranmaan/dio.git"
-    source: git
-    version: "3.0.10"
+      name: dio
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.0-beta6"
   event_bus:
     dependency: "direct main"
     description:
@@ -374,7 +372,7 @@ packages:
       name: google_fonts
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0-nullsafety.0"
+    version: "2.0.0"
   gql:
     dependency: transitive
     description:

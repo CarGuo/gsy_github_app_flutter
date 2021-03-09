@@ -33,11 +33,7 @@ dependencies:
   pub_semver: 2.0.0
   flutter_svg: 0.21.0-nullsafety.0
   flutter_slidable: ^0.6.0-nullsafety.0
-  dio: # https://github.com/flutterchina/dio/issues/1002
-    git:
-      url: git@github.com:harsimranmaan/dio.git
-      ref: null-safety
-      path: dio
+  dio: 4.0.0-beta6
   event_bus:  ^1.1.1
   path_provider: 2.0.0
   scoped_model: ^1.0.1
@@ -58,7 +54,7 @@ dependencies:
   flutter_markdown: 0.6.0
   device_info:  2.0.0
   url_launcher: 6.0.1
-  google_fonts: 2.0.0-nullsafety.0
+  google_fonts: 2.0.0
   android_intent: 2.0.0
   shared_preferences: 2.0.1
   built_value: 8.0.0
