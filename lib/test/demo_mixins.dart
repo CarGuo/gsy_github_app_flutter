@@ -17,7 +17,7 @@ abstract class Base {
   }
 }
 
-class A extends Base {
+mixin A on Base {
   a() {
     print("A.a()");
     //super.a();
@@ -29,7 +29,7 @@ class A extends Base {
   }
 }
 
-class A2 extends Base {
+mixin A2 on Base {
   a() {
     print("A2.a()");
     super.a();

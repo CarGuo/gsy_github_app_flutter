@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
   }
 }
 
-abstract class LoginBLoC extends State<LoginPage> {
+mixin LoginBLoC on State<LoginPage> {
   final TextEditingController userController = new TextEditingController();
 
   final TextEditingController pwController = new TextEditingController();
