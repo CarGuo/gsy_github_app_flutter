@@ -265,14 +265,17 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             curve: Curves.bounceInOut,
             duration: const Duration(milliseconds: 10),
           ),
-          child: new ReposHeaderItem(
-            ReposHeaderViewModel.fromHttpMap(widget.userName, widget.reposName,
-                ReposDetailModel.of(context).repository),
-            layoutListener: (size) {
-              setState(() {
-                headerSize = size.height;
-              });
-            },
+          child: OverflowBox(
+            maxHeight: 1000,
+            child: new ReposHeaderItem(
+              ReposHeaderViewModel.fromHttpMap(widget.userName, widget.reposName,
+                  ReposDetailModel.of(context).repository),
+              layoutListener: (size) {
+                setState(() {
+                  headerSize = size.height;
+                });
+              },
+            ),
           ),
         ),
       ),
