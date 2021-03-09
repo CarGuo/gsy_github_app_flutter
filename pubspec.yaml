@@ -3,16 +3,16 @@ description: Github Application
 version: 1.7.0+32
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 
 dependency_overrides:
-  analyzer: 0.40.1
-  pub_semver: 1.4.2
-  glob: 2.0.0
-  crypto: 3.0.0
-  args: 1.0.0
+  analyzer: 1.1.0
   web_socket_channel: 2.0.0
+  #pub_semver: 1.4.2
+  #glob: 2.0.0
+  #crypto: 3.0.0
+  #args: 1.0.0
   #string_scanner: 1.1.0
   #convert: 1.0.0
   #rxdart: 0.25.0
