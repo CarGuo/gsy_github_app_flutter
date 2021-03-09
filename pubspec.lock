@@ -379,56 +379,56 @@ packages:
       name: gql
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.12.4"
+    version: "0.13.0-nullsafety.2"
   gql_dedupe_link:
     dependency: transitive
     description:
       name: gql_dedupe_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.10"
+    version: "2.0.0-nullsafety.1"
   gql_error_link:
     dependency: transitive
     description:
       name: gql_error_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.1-alpha+1601131172858"
+    version: "0.2.0-nullsafety.1"
   gql_exec:
     dependency: transitive
     description:
       name: gql_exec
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.5"
+    version: "0.3.0-nullsafety.2"
   gql_http_link:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: gql_http_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.2"
+    version: "0.4.0-nullsafety.1"
   gql_link:
     dependency: transitive
     description:
       name: gql_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.1"
+    version: "0.4.0-nullsafety.2"
   gql_transform_link:
     dependency: transitive
     description:
       name: gql_transform_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.5"
+    version: "0.2.0-nullsafety.1"
   graphql:
     dependency: "direct main"
     description:
       name: graphql
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.2-beta.1"
+    version: "5.0.0-nullsafety.1+readmefix"
   graphs:
     dependency: transitive
     description:
@@ -442,7 +442,7 @@ packages:
       name: hive
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.4+1"
+    version: "2.0.0"
   http:
     dependency: "direct overridden"
     description:
@@ -547,7 +547,7 @@ packages:
       name: normalize
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.7"
+    version: "0.5.0-nullsafety.0"
   package_config:
     dependency: transitive
     description:
@@ -947,13 +947,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
-  uuid_enhanced:
+  uuid:
     dependency: transitive
     description:
-      name: uuid_enhanced
+      name: uuid
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.0.2"
+    version: "3.0.1"
   vector_math:
     dependency: transitive
     description:
@@ -969,19 +969,12 @@ packages:
     source: hosted
     version: "0.9.7+15"
   web_socket_channel:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: web_socket_channel
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.0"
-  websocket:
-    dependency: transitive
-    description:
-      name: websocket
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.0.5"
+    version: "2.0.0"
   webview_flutter:
     dependency: "direct main"
     description:

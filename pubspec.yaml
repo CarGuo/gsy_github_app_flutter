@@ -14,10 +14,11 @@ dependency_overrides:
   #convert: 1.0.0
   rxdart: 0.25.0
   http: 0.13.0
-  gql_http_link: 0.3.2
+  #gql_http_link: 0.3.2
   string_scanner: 1.1.0
   args: 1.0.0
   http_parser: 4.0.0
+  web_socket_channel: 2.0.0
 
 dependencies:
   flutter:
@@ -43,8 +44,8 @@ dependencies:
   flare_flutter: ^2.0.6
   # 固定版本
   flutter_redux: 0.7.0
-  rxdart: 0.26.0-nullsafety.1
-  graphql: 4.0.2-beta.1
+  rxdart: 0.26.0
+  graphql: 5.0.0-nullsafety.1+readmefix
   #flutter_cache_manager: 3.0.0-nullsafety.0
   provider: 5.0.0-nullsafety.5
   permission_handler: 5.0.1+2
