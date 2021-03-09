@@ -40,7 +40,7 @@ class _MoleState extends State<Mole> {
       tween: ConstantTween(1),
       builder: (context, child, value) {
         return Stack(
-          clipBehavior: Clip.antiAlias,
+          clipBehavior: Clip.none,
           children: [
             if (_moleIsVisible)
               GestureDetector(onTap: () => _hitMole(), child: _mole()),

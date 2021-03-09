@@ -60,8 +60,8 @@ dependencies:
   shared_preferences: 2.0.1
   built_value: 8.0.0
   flutter_json_widget: 1.0.2
-  simple_animations: 3.0.0-nullsafety.4
-  supercharged: 2.0.0-nullsafety.2
+  simple_animations: 3.0.1
+  supercharged: 2.0.0
   animations: 2.0.0
   auto_size_text: 3.0.0-nullsafety.0
   flutter_localizations:
