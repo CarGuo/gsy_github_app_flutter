@@ -332,7 +332,7 @@ packages:
       name: flutter_spinkit
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.1.2+1"
+    version: "5.0.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -1018,5 +1018,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.12.0-259.9.beta <3.0.0"
-  flutter: ">=1.24.0-10"
+  dart: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0"

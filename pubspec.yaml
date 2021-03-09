@@ -28,7 +28,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   fluttertoast: ^8.0.1-nullsafety.0
   share: ^2.0.0
-  flutter_spinkit: ^4.1.2+1
+  flutter_spinkit: ^5.0.0
   sqflite: 2.0.0
   pub_semver: 2.0.0
   flutter_svg: 0.21.0-nullsafety.0
