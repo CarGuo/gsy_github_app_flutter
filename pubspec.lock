@@ -444,7 +444,7 @@ packages:
     source: hosted
     version: "2.0.0"
   http:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: http
       url: "https://pub.flutter-io.cn"
@@ -458,7 +458,7 @@ packages:
     source: hosted
     version: "2.2.0"
   http_parser:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: http_parser
       url: "https://pub.flutter-io.cn"
@@ -498,7 +498,7 @@ packages:
       name: json_serializable
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.1"
+    version: "4.0.2"
   logging:
     dependency: transitive
     description:
@@ -724,7 +724,7 @@ packages:
       name: rxdart
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.25.0"
+    version: "0.26.0"
   scoped_model:
     dependency: "direct main"
     description:
