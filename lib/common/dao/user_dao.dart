@@ -218,7 +218,7 @@ class UserDao {
           Address.getUserFollower(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<User> list = new List();
+        List<User> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -256,7 +256,7 @@ class UserDao {
           Address.getUserFollow(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<User> list = new List();
+        List<User> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -293,7 +293,7 @@ class UserDao {
         Address.getPageParams(tag, page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<Model.Notification> list = new List();
+      List<Model.Notification> list = [];
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult([], true);
@@ -354,7 +354,7 @@ class UserDao {
     String url = Address.getMember(userName) + Address.getPageParams("?", page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<User> list = new List();
+      List<User> list = [];
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
@@ -396,7 +396,7 @@ class UserDao {
           Address.getUserOrgs(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<UserOrg> list = new List();
+        List<UserOrg> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -433,7 +433,7 @@ class UserDao {
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
       }
-      var dataResult = List();
+      var dataResult = [];
       valueChanged?.call(endCursor);
       dataList.forEach((item) {
         var userModel = SearchUserQL.fromMap(item["user"]);

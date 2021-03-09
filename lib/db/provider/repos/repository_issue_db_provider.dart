@@ -91,7 +91,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
 
     var provider = await _getProvider(db, fullName, branch);
     if (provider != null) {
-      List<Issue> list = new List();
+      List<Issue> list = [];
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =

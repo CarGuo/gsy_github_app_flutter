@@ -2,7 +2,6 @@ import 'package:graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/repositories.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/users.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future<GraphQLClient> _client(token) async {
   final HttpLink _httpLink = HttpLink(

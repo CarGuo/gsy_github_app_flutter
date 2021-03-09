@@ -80,7 +80,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   }
 
   _renderList() {
-    List<Widget> list = new List();
+    List<Widget> list = [];
     for (int i = 0; i < widget.itemNames.length; i++) {
       if (i == widget.itemNames.length - 1) {
         list.add(_renderItem(widget.itemNames[i], i));

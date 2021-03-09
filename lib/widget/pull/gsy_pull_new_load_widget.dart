@@ -255,7 +255,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () {},
             child: new Image(
                 image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
@@ -353,7 +353,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
 
 class GSYPullLoadWidgetControl extends ChangeNotifier {
   ///数据，对齐增减，不能替换
-  List _dataList = new List();
+  List _dataList = [];
 
   get dataList => _dataList;
 

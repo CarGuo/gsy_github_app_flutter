@@ -44,7 +44,7 @@ class IssueDao {
           },
           null);
       if (res != null && res.result) {
-        List<Issue> list = new List();
+        List<Issue> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -91,7 +91,7 @@ class IssueDao {
         Address.repositoryIssueSearch(qu) + Address.getPageParams("&", page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
-      List<Issue> list = new List();
+      List<Issue> list = [];
       var data = res.data["items"];
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
@@ -154,7 +154,7 @@ class IssueDao {
       var res = await httpManager.netFetch(
           url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
       if (res != null && res.result) {
-        List<Issue> list = new List();
+        List<Issue> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);

@@ -61,7 +61,7 @@ class ReceivedEventDbProvider extends BaseDbProvider {
   Future<List<Event>> getEvents() async {
     Database db = await getDataBase();
     List<Map> maps = await db.query(name, columns: [columnId, columnData]);
-    List<Event> list = new List();
+    List<Event> list = [];
     if (maps.length > 0) {
       ReceivedEventDbProvider provider =
           ReceivedEventDbProvider.fromMap(maps.first);

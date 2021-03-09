@@ -128,7 +128,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () {},
             child: new Image(
                 image: new AssetImage(GSYICons.DEFAULT_USER_ICON),

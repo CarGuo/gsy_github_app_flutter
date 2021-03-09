@@ -10,7 +10,7 @@ import 'package:gsy_github_app_flutter/page/error_page.dart';
 import 'env/prod.dart';
 
 void main() {
-  runZoned(() {
+  runZonedGuarded(() {
     ErrorWidget.builder = (FlutterErrorDetails details) {
       Zone.current.handleUncaughtError(details.exception, details.stack);
       return ErrorPage(
@@ -21,7 +21,7 @@ void main() {
       child: FlutterReduxApp(),
       config: EnvConfig.fromJson(config),
     ));
-  }, onError: (Object obj, StackTrace stack) {
+  }, (Object obj, StackTrace stack) {
     ///do not thing
   });
 }

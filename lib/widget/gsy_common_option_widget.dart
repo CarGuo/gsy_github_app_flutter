@@ -29,7 +29,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
   }
 
   _renderHeaderPopItemChild(List<GSYOptionModel> data) {
-    List<PopupMenuEntry<GSYOptionModel>> list = new List();
+    List<PopupMenuEntry<GSYOptionModel>> list = [];
     for (GSYOptionModel item in data) {
       list.add(PopupMenuItem<GSYOptionModel>(
         value: item,

@@ -174,7 +174,7 @@ class TrendPageState extends State<TrendPage>
 
   ///或者头部可选弹出item
   _renderHeaderPopItemChild(List<TrendTypeModel> data) {
-    List<PopupMenuEntry<TrendTypeModel>> list = new List();
+    List<PopupMenuEntry<TrendTypeModel>> list = [];
     for (TrendTypeModel item in data) {
       list.add(PopupMenuItem<TrendTypeModel>(
         value: item,
@@ -230,7 +230,7 @@ class TrendPageState extends State<TrendPage>
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {},
               child: new Image(
                   image: new AssetImage(GSYICons.DEFAULT_USER_ICON),

@@ -18,9 +18,8 @@ class ErrorPage extends StatefulWidget {
 }
 
 class ErrorPageState extends State<ErrorPage> {
-  static List<Map<String, dynamic>> sErrorStack =
-      new List<Map<String, dynamic>>();
-  static List<String> sErrorName = new List<String>();
+  static List<Map<String, dynamic>> sErrorStack = [];
+  static List<String> sErrorName = [];
 
   final TextEditingController textEditingController =
       new TextEditingController();
@@ -39,7 +38,8 @@ class ErrorPageState extends State<ErrorPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
+    double width =
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
     return Container(
       color: GSYColors.primaryValue,
       child: new Center(
@@ -81,44 +81,51 @@ class ErrorPageState extends State<ErrorPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new FlatButton(
-                      color: GSYColors.white.withAlpha(100),
-                      onPressed: () {
-                        String content = widget.errorMessage;
-                        textEditingController.text = content;
-                        CommonUtils.showEditDialog(
-                            context,
-                            GSYLocalizations.i18n(context).home_reply,
-                            (title) {}, (res) {
-                          content = res;
-                        }, () {
-                          if (content == null || content.length == 0) {
-                            return;
-                          }
-                          CommonUtils.showLoadingDialog(context);
-                          IssueDao.createIssueDao(
-                              "CarGuo", "gsy_github_app_flutter", {
-                            "title": GSYLocalizations.i18n(context).home_reply,
-                            "body": content
-                          }).then((result) {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          });
-                        },
-                            titleController: new TextEditingController(),
-                            valueController: textEditingController,
-                            needTitle: false);
+                  new TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: ButtonStyleButton.allOrNull<Color>(
+                          GSYColors.white.withAlpha(100)),
+                    ),
+                    onPressed: () {
+                      String content = widget.errorMessage;
+                      textEditingController.text = content;
+                      CommonUtils.showEditDialog(
+                          context,
+                          GSYLocalizations.i18n(context).home_reply,
+                          (title) {}, (res) {
+                        content = res;
+                      }, () {
+                        if (content == null || content.length == 0) {
+                          return;
+                        }
+                        CommonUtils.showLoadingDialog(context);
+                        IssueDao.createIssueDao(
+                            "CarGuo", "gsy_github_app_flutter", {
+                          "title": GSYLocalizations.i18n(context).home_reply,
+                          "body": content
+                        }).then((result) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
                       },
-                      child: Text("Report")),
+                          titleController: new TextEditingController(),
+                          valueController: textEditingController,
+                          needTitle: false);
+                    },
+                    child: Text("Report"),
+                  ),
                   new SizedBox(
                     width: 40,
                   ),
-                  new FlatButton(
-                      color: GSYColors.white.withAlpha(100),
+                  new TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: ButtonStyleButton.allOrNull<Color>(
+                            Colors.white.withAlpha(100)),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Back"))
+                      child: Text("Back")),
                 ],
               )
             ],

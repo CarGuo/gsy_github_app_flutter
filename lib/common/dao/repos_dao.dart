@@ -61,7 +61,7 @@ class ReposDao {
           url, null, {"api-token": Config.API_TOKEN}, null,
           noTip: true);
       if (result != null && result.result && result.data is List) {
-        List<TrendingRepoModel> list = new List();
+        List<TrendingRepoModel> list =[];
         var data = result.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -78,7 +78,7 @@ class ReposDao {
         String url = Address.trending(since, languageType);
         var res = await new GitHubTrending().fetchTrending(url);
         if (res != null && res.result && res.data.length > 0) {
-          List<TrendingRepoModel> list = new List();
+          List<TrendingRepoModel> list = [];
           var data = res.data;
           if (data == null || data.length == 0) {
             return new DataResult(null, false);
@@ -159,7 +159,7 @@ class ReposDao {
           Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<Event> list = new List();
+        List<Event> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -215,7 +215,7 @@ class ReposDao {
           branch;
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<RepoCommit> list = new List();
+        List<RepoCommit> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -262,7 +262,7 @@ class ReposDao {
       if (text) {
         return new DataResult(res.data, true);
       }
-      List<FileModel> list = new List();
+      List<FileModel> list = [];
       var data = res.data;
       if (data == null || data.length == 0) {
         return new DataResult(null, false);
@@ -321,7 +321,7 @@ class ReposDao {
           Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<User> list = new List();
+        List<User> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -361,7 +361,7 @@ class ReposDao {
           Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<User> list = new List();
+        List<User> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -401,7 +401,7 @@ class ReposDao {
           Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result && res.data.length > 0) {
-        List<Repository> list = new List();
+        List<Repository> list = [];
         var dataList = res.data;
         if (dataList == null || dataList.length == 0) {
           return new DataResult(null, false);
@@ -440,7 +440,7 @@ class ReposDao {
           Address.userStar(userName, sort) + Address.getPageParams("&", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result && res.data.length > 0) {
-        List<Repository> list = new List();
+        List<Repository> list = [];
         var dataList = res.data;
         if (dataList == null || dataList.length == 0) {
           return new DataResult(null, false);
@@ -479,7 +479,7 @@ class ReposDao {
           Address.userRepos(userName, sort) + Address.getPageParams("&", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result && res.data.length > 0) {
-        List<Repository> list = new List();
+        List<Repository> list = [];
         var dataList = res.data;
         if (dataList == null || dataList.length == 0) {
           return new DataResult(null, false);
@@ -525,7 +525,7 @@ class ReposDao {
     String url = Address.getbranches(userName, reposName);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<String> list = new List();
+      List<String> list = [];
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
@@ -556,7 +556,7 @@ class ReposDao {
   static getUserRepository100StatusDao(userName) async {
     String url = Address.userRepos(userName, 'pushed') + "&page=1&per_page=100";
     var res = await httpManager.netFetch(url, null, null, null);
-    List<Repository> honorList = List();
+    List<Repository> honorList = [];
     if (res != null && res.result && res.data.length > 0) {
       int stared = 0;
       for (int i = 0; i < res.data.length; i++) {
@@ -627,7 +627,7 @@ class ReposDao {
     var res = await httpManager.netFetch(url, null, null, null);
     if (type == null) {
       if (res != null && res.result && res.data["items"] != null) {
-        List<Repository> list = new List();
+        List<Repository> list = [];
         var dataList = res.data["items"];
         if (dataList == null || dataList.length == 0) {
           return new DataResult(null, false);
@@ -642,7 +642,7 @@ class ReposDao {
       }
     } else {
       if (res != null && res.result && res.data["items"] != null) {
-        List<User> list = new List();
+        List<User> list = [];
         var data = res.data["items"];
         if (data == null || data.length == 0) {
           return new DataResult(null, false);
@@ -691,7 +691,7 @@ class ReposDao {
         },
         null);
     if (res != null && res.result && res.data.length > 0) {
-      List<Release> list = new List();
+      List<Release> list = [];
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
@@ -790,7 +790,7 @@ class ReposDao {
         ? res.data["items"]
         : res.data;
     if (res != null && res.result && data != null && data.length > 0) {
-      List<Repository> list = new List();
+      List<Repository> list = [];
       var dataList = data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);

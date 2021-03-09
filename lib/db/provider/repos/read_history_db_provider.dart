@@ -105,7 +105,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
     Database db = await getDataBase();
     var provider = await _getProvider(db, page);
     if (provider != null) {
-      List<RepositoryQL> list = new List();
+      List<RepositoryQL> list = [];
       for (var providerMap in provider) {
         ReadHistoryDbProvider provider =
             ReadHistoryDbProvider.fromMap(providerMap);

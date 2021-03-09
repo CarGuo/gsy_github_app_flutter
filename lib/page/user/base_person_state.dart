@@ -30,7 +30,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIKey =
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
-  final List<UserOrg> orgList = new List();
+  final List<UserOrg> orgList = [];
 
   final HonorModel honorModel = HonorModel();
 

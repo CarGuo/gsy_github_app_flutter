@@ -21,7 +21,7 @@ class EventDao {
 
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<Event> list = new List();
+        List<Event> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return null;
@@ -59,7 +59,7 @@ class EventDao {
           Address.getEvent(userName) + Address.getPageParams("?", page);
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
-        List<Event> list = new List();
+        List<Event> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
           return new DataResult(list, true);

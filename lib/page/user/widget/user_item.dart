@@ -46,7 +46,7 @@ class UserItem extends StatelessWidget {
             : (userItemViewModel.login == "CarGuo")
                 ? Colors.pink
                 : Colors.white,
-        child: new FlatButton(
+        child: new TextButton(
           onPressed: onPressed,
           child: new Padding(
             padding: new EdgeInsets.only(

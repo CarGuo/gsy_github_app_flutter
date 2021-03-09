@@ -174,7 +174,7 @@ class EventUtils {
           NavigatorUtils.goPushDetailPage(context, owner, repositoryName,
               event.payload.commits[0].sha, true);
         } else {
-          List<String> list = new List();
+          List<String> list = [];
           for (int i = 0; i < event.payload.commits.length; i++) {
             list.add(event.payload.commits[i].message +
                 " " +

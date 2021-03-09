@@ -21,7 +21,7 @@ mixin GSYListState<T extends StatefulWidget>
 
   bool isLoadMoring = false;
 
-  final List dataList = new List();
+  final List dataList = [];
 
   final GSYPullLoadWidgetControl pullLoadWidgetControl =
       new GSYPullLoadWidgetControl();

@@ -290,7 +290,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                new FlatButton(
+                new TextButton(
                   onPressed: () {
                     _replyIssue();
                   },
@@ -301,7 +301,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     width: 0.3,
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
-                new FlatButton(
+                new TextButton(
                   onPressed: () {
                     _editIssue();
                   },
@@ -312,7 +312,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     width: 0.3,
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
-                new FlatButton(
+                new TextButton(
                     onPressed: () {
                       CommonUtils.showLoadingDialog(context);
                       IssueDao.editIssueDao(
@@ -334,7 +334,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     width: 0.3,
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
-                new FlatButton(
+                new TextButton(
                     onPressed: () {
                       CommonUtils.showLoadingDialog(context);
                       IssueDao.lockIssueDao(widget.userName, widget.reposName,

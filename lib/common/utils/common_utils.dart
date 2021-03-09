@@ -464,14 +464,14 @@ class CommonUtils {
                 .app_version_title),
             content: new Text(contentMsg),
             actions: <Widget>[
-              new FlatButton(
+              new TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   child: new Text(GSYLocalizations
                       .i18n(context)
                       .app_cancel)),
-              new FlatButton(
+              new TextButton(
                   onPressed: () {
                     launch(Address.updateUrl);
                     Navigator.pop(context);

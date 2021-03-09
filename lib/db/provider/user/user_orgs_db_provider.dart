@@ -82,7 +82,7 @@ class UserOrgsDbProvider extends BaseDbProvider {
 
     var provider = await _getProvider(db, userName);
     if (provider != null) {
-      List<UserOrg> list = new List();
+      List<UserOrg> list = [];
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =

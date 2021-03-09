@@ -60,7 +60,7 @@ class UserHeaderItem extends StatelessWidget {
     if (orgList == null || orgList.length == 0) {
       return new Container();
     }
-    List<Widget> list = new List();
+    List<Widget> list = [];
 
     renderOrgsItem(UserOrg orgs) {
       return GSYUserIconWidget(

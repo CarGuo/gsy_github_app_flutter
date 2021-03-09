@@ -82,7 +82,7 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
 
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
-      List<User> list = new List();
+      List<User> list = [];
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =

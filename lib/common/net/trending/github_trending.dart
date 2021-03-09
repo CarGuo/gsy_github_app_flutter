@@ -45,7 +45,7 @@ class TrendingUtil {
     try {
       responseData = responseData.replaceAll(new RegExp('\n'), '');
     } catch (e) {}
-    var repos = new List();
+    var repos = [];
     var splitWithH3 = responseData.split('<article');
     splitWithH3.removeAt(0);
     for (var i = 0; i < splitWithH3.length; i++) {
@@ -119,7 +119,8 @@ class TrendingUtil {
       startFlag = tag["start"];
     }
     var content = parseContentWithNote(noteContent, startFlag, tag["end"]);
-    if (tag["flag"] != null && content.indexOf(tag["flag"]) != -1 &&
+    if (tag["flag"] != null &&
+        content.indexOf(tag["flag"]) != -1 &&
         (content.indexOf(tag["flag"]) + tag["flag"].length <= content.length)) {
       var metaContent = content.substring(
           content.indexOf(tag["flag"]) + tag["flag"].length, content.length);
@@ -142,7 +143,7 @@ class TrendingUtil {
     if (splitWitSemicolon.length > 1) {
       repo.contributorsUrl = splitWitSemicolon[1];
     }
-    var contributors = new List<String>();
+    var contributors = [];
     for (var i = 0; i < splitWitSemicolon.length; i++) {
       String url = splitWitSemicolon[i];
       if (url.indexOf('http') != -1) {

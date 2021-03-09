@@ -8,16 +8,14 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
  * on 2019/3/23.
  */
 class LogsInterceptors extends InterceptorsWrapper {
-  static List<Map> sHttpResponses = new List<Map>();
-  static List<String> sResponsesHttpUrl = new List<String>();
+  static List<Map> sHttpResponses = [];
+  static List<String> sResponsesHttpUrl = [];
 
-  static List<Map<String, dynamic>> sHttpRequest =
-      new List<Map<String, dynamic>>();
-  static List<String> sRequestHttpUrl = new List<String>();
+  static List<Map<String, dynamic>> sHttpRequest = [];
+  static List<String> sRequestHttpUrl = [];
 
-  static List<Map<String, dynamic>> sHttpError =
-      new List<Map<String, dynamic>>();
-  static List<String> sHttpErrorUrl = new List<String>();
+  static List<Map<String, dynamic>> sHttpError = [];
+  static List<String> sHttpErrorUrl = [];
 
   @override
   onRequest(RequestOptions options) async {

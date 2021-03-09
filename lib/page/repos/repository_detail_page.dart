@@ -78,7 +78,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
           ));
     }
 
-    List<Widget> list = new List();
+    List<Widget> list = [];
     for (int i = 0; i < itemList.length; i++) {
       list.add(renderItem(itemList[i], i));
     }

@@ -56,7 +56,7 @@ class DemoItem extends StatelessWidget {
       ///卡片包装
       child: new Card(
            ///增加点击效果
-          child: new FlatButton(
+          child: new TextButton(
               onPressed: (){print("点击了哦");},
               child: new Padding(
                 padding: new EdgeInsets.only(left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),

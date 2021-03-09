@@ -43,7 +43,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   }
 
   _renderList() {
-    List<Widget> list = new List();
+    List<Widget> list = [];
     list.add(new Container(
       width: itemWidth,
     ));
@@ -113,7 +113,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
             ),
           ),
         ),
-        new FlatButton(
+        new TextButton(
           onPressed: () {
             setState(() {
               for (FilterModel model in list) {

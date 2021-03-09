@@ -1000,7 +1000,7 @@ class _TabBarState extends State<TabBar> {
 
     final TabBarTheme tabBarTheme = TabBarTheme.of(context);
 
-    final List<Widget> wrappedTabs = List<Widget>(widget.tabs.length);
+    final List<Widget> wrappedTabs = List.filled(widget.tabs.length, null);
     for (int i = 0; i < widget.tabs.length; i += 1) {
       wrappedTabs[i] = Center(
         heightFactor: 1.0,

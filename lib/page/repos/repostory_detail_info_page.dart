@@ -193,7 +193,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   ///绘制底部状态 item
   _renderBottomItem(var text, var icon, var onPressed) {
-    return new FlatButton(
+    return new TextButton(
         onPressed: onPressed,
         child: new GSYIConText(
           icon,

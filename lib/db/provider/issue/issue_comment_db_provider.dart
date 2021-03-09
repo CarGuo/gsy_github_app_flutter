@@ -94,7 +94,7 @@ class IssueCommentDbProvider extends BaseDbProvider {
 
     var provider = await _getProvider(db, fullName, number);
     if (provider != null) {
-      List<Issue> list = new List();
+      List<Issue> list = [];
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =

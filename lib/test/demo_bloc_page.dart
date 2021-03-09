@@ -70,9 +70,16 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                           return SizedBox(
                             height: 40,
                             width: constraints.maxWidth,
-                            child: new FlatButton(
-                                textColor: Colors.white,
-                                color: Theme.of(context).primaryColor,
+                            child: new TextButton(
+                                style: ButtonStyle(
+                                    textStyle:
+                                        ButtonStyleButton.allOrNull<TextStyle>(
+                                            TextStyle(
+                                      color: Colors.white,
+                                    )),
+                                    backgroundColor:
+                                        ButtonStyleButton.allOrNull<Color>(
+                                            Theme.of(context).primaryColor)),
                                 child: new Text("登陆",
                                     style: new TextStyle(fontSize: 14),
                                     textAlign: TextAlign.center,

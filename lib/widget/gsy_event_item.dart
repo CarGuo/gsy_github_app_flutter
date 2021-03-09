@@ -51,7 +51,7 @@ class GSYEventItem extends StatelessWidget {
         : Container();
     return new Container(
       child: new GSYCardItem(
-          child: new FlatButton(
+          child: new TextButton(
               onPressed: onPressed,
               child: new Padding(
                 padding: new EdgeInsets.only(

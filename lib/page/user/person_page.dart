@@ -41,7 +41,7 @@ class _PersonState extends BasePersonState<PersonPage> {
 
   User userInfo = User.empty();
 
-  final List<UserOrg> orgList = new List();
+  final List<UserOrg> orgList = [];
 
   _PersonState(this.userName);
 

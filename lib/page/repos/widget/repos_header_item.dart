@@ -93,7 +93,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         key: layoutTopicContainerKey,
       );
     }
-    List<Widget> list = new List();
+    List<Widget> list = [];
     for (int i = 0; i < widget.reposHeaderViewModel.topics.length; i++) {
       var item = widget.reposHeaderViewModel.topics[i];
       list.add(_renderTopicItem(context, item, i));

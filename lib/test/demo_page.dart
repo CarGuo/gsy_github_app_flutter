@@ -46,7 +46,7 @@ class _DemoPageState extends State<DemoPage> {
         ///才能获取到  Scaffold.of(builderContext) 的 ScaffoldState
         return FloatingActionButton(
           onPressed: () {
-            Scaffold.of(builderContext)
+            ScaffoldMessenger.of(builderContext)
                 .showSnackBar(SnackBar(content: new Text("SnackBar")));
           },
         );
