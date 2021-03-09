@@ -23,7 +23,6 @@ class GSYUserIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("###### $image");
     return new RawMaterialButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding:

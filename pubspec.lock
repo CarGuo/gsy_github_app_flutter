@@ -365,7 +365,7 @@ packages:
       name: glob
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -857,7 +857,7 @@ packages:
     source: hosted
     version: "1.2.0"
   string_scanner:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: string_scanner
       url: "https://pub.flutter-io.cn"
