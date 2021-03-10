@@ -199,7 +199,7 @@ class JsonViewerWidgetState extends State<JsonViewerWidget> {
 class JsonArrayViewerWidget extends StatefulWidget {
   final List<dynamic> jsonArray;
 
-  final bool notRoot;
+  final bool? notRoot;
 
   JsonArrayViewerWidget(this.jsonArray, {this.notRoot = false});
 
