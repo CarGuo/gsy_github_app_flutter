@@ -123,8 +123,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
     String updateStr = GSYLocalizations.i18n(context)!.repos_last_commit +
         widget.reposHeaderViewModel.push_at;
 
-    return createStr +
-        ((widget.reposHeaderViewModel.push_at != null) ? updateStr : '');
+    return createStr + updateStr;
   }
 
   ///顶部信息
@@ -361,8 +360,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
       var dy = renderBox2
               ?.localToGlobal(Offset.zero,
-                  ancestor: layoutKey.currentContext!.findRenderObject())
-              ?.dy ??
+                  ancestor: layoutKey.currentContext!.findRenderObject()).dy ??
           0;
       var sizeTagContainer =
           layoutTopicContainerKey.currentContext?.size ?? null;

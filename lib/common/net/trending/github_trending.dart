@@ -94,7 +94,7 @@ class TrendingUtil {
       repo.reposName = repo.fullName.split('/')[1];
     }
 
-    String description = parseContentWithNote(
+    String? description = parseContentWithNote(
         htmlBaseInfo, '<p class="col-9 text-gray my-1 pr-4">', '</p>');
     if (description != null) {
       String reg = "<g-emoji.*?>.+?</g-emoji>";
@@ -105,7 +105,7 @@ class TrendingUtil {
             .group(0)!
             .replaceAll(new RegExp("<g-emoji.*?>"), "")
             .replaceAll(new RegExp("</g-emoji>"), "");
-        description = description.replaceAll(new RegExp(m.group(0)!), match);
+        description = description?.replaceAll(new RegExp(m.group(0)!), match);
       }
     }
     repo.description = description;

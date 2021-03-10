@@ -98,7 +98,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<TrendingRepoModel> list =
+      List<TrendingRepoModel>? list =
           await provider.getData(languageTypeDb + "V2", since);
       if (list == null || list.length == 0) {
         return await next();

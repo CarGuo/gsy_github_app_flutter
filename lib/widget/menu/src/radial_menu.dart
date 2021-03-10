@@ -46,16 +46,14 @@ class RadialMenu<T> extends StatefulWidget {
     this.radius = 50.0,
     this.menuAnimationDuration = const Duration(milliseconds: 1000),
     this.progressAnimationDuration = const Duration(milliseconds: 1000),
-  })  : assert(radius != null),
-        assert(menuAnimationDuration != null),
-        assert(progressAnimationDuration != null),
+  })  :
         super(key: key);
 
   /// The list of possible items to select among.
   final List<RadialMenuItem<T>> items;
 
   /// Called when the user selects an item.
-  final ValueChanged<T> onSelected;
+  final ValueChanged<T>? onSelected;
 
   /// The radius of the arc used to lay out the items and draw the progress bar.
   ///

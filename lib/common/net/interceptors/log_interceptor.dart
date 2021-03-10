@@ -50,9 +50,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response) async {
     if (Config.DEBUG!) {
-      if (response != null) {
         print('返回参数: ' + response.toString());
-      }
     }
     if (response.data is Map || response.data is List) {
       try {

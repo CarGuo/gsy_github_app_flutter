@@ -123,7 +123,7 @@ class GSYMarkdownWidget extends StatelessWidget {
     String mdDataCode = markdownData;
     try {
       Iterable<Match> tags = exp.allMatches(markdownData);
-      if (tags != null && tags.length > 0) {
+      if (tags.length > 0) {
         for (Match m in tags) {
           String? imageMatch = m.group(0);
           if (imageMatch != null && !imageMatch.contains(".svg")) {
@@ -145,10 +145,10 @@ class GSYMarkdownWidget extends StatelessWidget {
 
       ///优化img标签的src资源
       tags = expImg.allMatches(markdownData);
-      if (tags != null && tags.length > 0) {
+      if (tags.length > 0) {
         for (Match m in tags) {
-          String imageTag = m.group(0)!;
-          String match = imageTag;
+          String? imageTag = m.group(0);
+          String? match = imageTag;
           if (imageTag != null) {
             Iterable<Match> srcTags = expSrc.allMatches(imageTag);
             for (Match srcMatch in srcTags) {
@@ -163,7 +163,7 @@ class GSYMarkdownWidget extends StatelessWidget {
               }
             }
           }
-          mdDataCode = mdDataCode.replaceAll(imageTag, match);
+          mdDataCode = mdDataCode.replaceAll(imageTag!, match!);
         }
       }
     } catch (e) {
@@ -182,7 +182,7 @@ class GSYMarkdownWidget extends StatelessWidget {
           styleSheet: _getStyle(context),
           syntaxHighlighter: new GSYHighlighter(),
           data: _getMarkDownData(markdownData!),
-          imageBuilder: (Uri uri, String? title, String? alt) {
+          imageBuilder: (Uri? uri, String? title, String? alt) {
             if (uri == null || uri.toString().isEmpty) return const SizedBox();
             final List<String> parts = uri.toString().split('#');
             double? width;
@@ -216,11 +216,11 @@ class GSYHighlighter extends SyntaxHighlighter {
 
 Widget kDefaultImageBuilder(
   Uri uri,
-  String imageDirectory,
+  String? imageDirectory,
   double? width,
   double? height,
 ) {
-  if (uri.scheme == null || uri.scheme.isEmpty) {
+  if (uri.scheme.isEmpty) {
     return SizedBox();
   }
   if (uri.scheme == 'http' || uri.scheme == 'https') {

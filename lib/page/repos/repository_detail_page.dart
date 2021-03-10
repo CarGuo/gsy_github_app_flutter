@@ -12,7 +12,6 @@ import 'package:gsy_github_app_flutter/page/repos/repository_detail_readme_page.
 import 'package:gsy_github_app_flutter/page/repos/repository_file_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repostory_detail_info_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
-import 'package:gsy_github_app_flutter/widget/anima/curves_bezier.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
@@ -93,7 +92,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
           GSYLocalizations.i18n(context)!.repos_option_release, (model) {
         String releaseUrl = "";
         String tagUrl = "";
-        if (infoListKey == null || infoListKey.currentState == null) {
+        if (infoListKey.currentState == null) {
           releaseUrl = GSYConstant.app_default_share_url;
           tagUrl = GSYConstant.app_default_share_url;
         } else {
@@ -114,9 +113,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         if (reposDetailModel!.branchList!.length == 0) {
           return;
         }
-        CommonUtils.showCommitOptionDialog(context, reposDetailModel!.branchList,
-            (value) {
-          reposDetailModel!.currentBranch = reposDetailModel!.branchList![value];
+        CommonUtils.showCommitOptionDialog(
+            context, reposDetailModel!.branchList, (value) {
+          reposDetailModel!.currentBranch =
+              reposDetailModel!.branchList![value];
           if (infoListKey.currentState != null &&
               infoListKey.currentState!.mounted) {
             infoListKey.currentState!.showRefreshLoading();
@@ -139,18 +139,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     String title = "";
     String content = "";
     CommonUtils.showEditDialog(
-        context, GSYLocalizations.i18n(context)!.issue_edit_issue, (titleValue) {
+        context, GSYLocalizations.i18n(context)!.issue_edit_issue,
+        (titleValue) {
       title = titleValue;
     }, (contentValue) {
       content = contentValue;
     }, () {
-      if (title == null || title.trim().length == 0) {
+      if (title.trim().length == 0) {
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(context)!
                 .issue_edit_issue_title_not_be_null);
         return;
       }
-      if (content == null || content.trim().length == 0) {
+      if (content.trim().length == 0) {
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(context)!
                 .issue_edit_issue_content_not_be_null);

@@ -71,7 +71,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<TrendingRepoModel>> getData(String language, String? since) async {
+  Future<List<TrendingRepoModel>>? getData(String language, String? since) async {
     Database db = await getDataBase();
     List<Map> maps = await db.query(name,
         columns: [columnId, columnLanguageType, columnSince, columnData],

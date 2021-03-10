@@ -43,7 +43,7 @@ class CommonUtils {
   static Locale? curLocale;
 
   static String getDateStr(DateTime? date) {
-    if (date == null || date.toString() == null) {
+    if (date == null || date.toString() == "") {
       return "";
     } else if (date
         .toString()
@@ -292,8 +292,7 @@ class CommonUtils {
       return;
     }
 
-    if (parseUrl != null &&
-        parseUrl.host == "github.com" &&
+    if (parseUrl.host == "github.com" &&
         parseUrl.path.length > 0) {
       List<String> pathnames = parseUrl.path.split("/");
       if (pathnames.length == 2) {
@@ -310,7 +309,7 @@ class CommonUtils {
           launchWebView(context, "", url);
         }
       }
-    } else if (url != null && url.startsWith("http")) {
+    } else if (url.startsWith("http")) {
       launchWebView(context, "", url);
     }
   }

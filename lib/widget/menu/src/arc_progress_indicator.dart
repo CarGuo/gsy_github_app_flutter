@@ -1,6 +1,5 @@
 import 'dart:math' as Math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Draws an [ActionIcon] and [_ArcProgressPainter] that represent an active action.

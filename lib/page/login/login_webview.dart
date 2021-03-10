@@ -8,8 +8,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 
 class LoginWebView extends StatefulWidget {
-  final String url;
-  final String title;
+  final String? url;
+  final String? title;
 
   LoginWebView(this.url, this.title);
 
@@ -19,14 +19,14 @@ class LoginWebView extends StatefulWidget {
 
 class _LoginWebViewState extends State<LoginWebView> {
   _renderTitle() {
-    if (widget.url == null || widget.url.length == 0) {
-      return new Text(widget.title);
+    if (widget.url == null || widget.url?.length == 0) {
+      return new Text(widget.title ?? "");
     }
     return new Row(children: [
       new Expanded(
           child: new Container(
             child: new Text(
-              widget.title,
+              widget.title ?? "",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -55,8 +55,7 @@ class _LoginWebViewState extends State<LoginWebView> {
               javascriptMode: JavascriptMode.unrestricted,
               initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
               navigationDelegate: (NavigationRequest navigation) {
-                if (navigation.url != null &&
-                    navigation.url.startsWith("gsygithubapp://authed")) {
+                if (navigation.url.startsWith("gsygithubapp://authed")) {
                   var code = Uri.parse(navigation.url).queryParameters["code"];
                   print("code ${code}");
                   Navigator.of(context).pop(code);

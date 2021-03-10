@@ -251,7 +251,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     //回复 Info
     issueInfoTitleControl = new TextEditingController(text: "");
     issueInfoValueControl = new TextEditingController(text: "");
-    String content = "";
+    String? content = "";
     CommonUtils.showEditDialog(
       context,
       GSYLocalizations.i18n(context)!.issue_reply_issue,
@@ -260,7 +260,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         content = replyContent;
       },
       () {
-        if (content == null || content.trim().length == 0) {
+        if (content == null || content?.trim().length == 0) {
           Fluttertoast.showToast(
               msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);

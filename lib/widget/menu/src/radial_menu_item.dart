@@ -21,13 +21,13 @@ class RadialMenuItem<T> extends StatelessWidget {
     this.iconColor,
     // this.iconSize: 24.0,
   })  : assert(child != null),
-        assert(size != null),
+
         super(key: key);
 
   /// The widget below this widget in the tree.
   ///
   /// Typically an [Icon] widget.
-  final Widget child;
+  final Widget? child;
 
   /// The value to return if the user selects this menu item.
   ///
@@ -68,7 +68,7 @@ class RadialMenuItem<T> extends StatelessWidget {
           data: new IconThemeData(
             color: _iconColor,
           ),
-          child: child,
+          child: child ?? Container(),
         ),
       );
     }

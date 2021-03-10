@@ -67,7 +67,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               onPressed: () {
                 String text = FAST_INPUT_LIST[index].content;
                 String newText = "";
-                if (widget.valueController!.value != null) {
+                if (widget.valueController?.value != null) {
                   newText = widget.valueController!.value.text;
                 }
                 newText = newText + text;

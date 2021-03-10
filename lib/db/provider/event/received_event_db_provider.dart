@@ -58,7 +58,7 @@ class ReceivedEventDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<Event>> getEvents() async {
+  Future<List<Event>>? getEvents() async {
     Database db = await getDataBase();
     List<Map> maps = await db.query(name, columns: [columnId, columnData]);
     List<Event> list = [];

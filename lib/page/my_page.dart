@@ -28,9 +28,6 @@ class MyPageState extends BasePersonState<MyPage> {
   Color notifyColor = GSYColors.subTextColor;
 
   Store<GSYState>? _getStore() {
-    if (context == null) {
-      return null;
-    }
     return StoreProvider.of(context);
   }
 

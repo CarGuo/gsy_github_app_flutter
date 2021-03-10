@@ -91,10 +91,7 @@ class NestedScrollViewRefreshIndicator extends StatefulWidget {
     this.color,
     this.backgroundColor,
     this.notificationPredicate = nestedScrollViewScrollNotificationPredicate,
-  })  : assert(child != null),
-        assert(onRefresh != null),
-        assert(notificationPredicate != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -152,11 +149,11 @@ class NestedScrollViewRefreshIndicatorState
   double? _dragOffset;
 
   static final Animatable<double> _threeQuarterTween =
-  Tween<double>(begin: 0.0, end: 0.75);
+      Tween<double>(begin: 0.0, end: 0.75);
   static final Animatable<double> _kDragSizeFactorLimitTween =
-  Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
+      Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
   static final Animatable<double> _oneToZeroTween =
-  Tween<double>(begin: 1.0, end: 0.0);
+      Tween<double>(begin: 1.0, end: 0.0);
 
   @override
   void initState() {
@@ -175,10 +172,10 @@ class NestedScrollViewRefreshIndicatorState
     final ThemeData theme = Theme.of(context);
     _valueColor = _positionController.drive(
       ColorTween(
-          begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
-          end: (widget.color ?? theme.accentColor).withOpacity(1.0))
+              begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
+              end: (widget.color ?? theme.accentColor).withOpacity(1.0))
           .chain(CurveTween(
-          curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
+              curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
     );
     super.didChangeDependencies();
   }
@@ -191,6 +188,7 @@ class NestedScrollViewRefreshIndicatorState
   }
 
   double maxContainerExtent = 0.0;
+
   bool _handleScrollNotification(ScrollNotification notification) {
     if (!widget.notificationPredicate(notification)) return false;
     maxContainerExtent = math.max(
@@ -253,7 +251,7 @@ class NestedScrollViewRefreshIndicatorState
           _dismiss(_RefreshIndicatorMode.canceled);
           break;
         default:
-        // do nothing
+          // do nothing
           break;
       }
     }
@@ -301,8 +299,8 @@ class NestedScrollViewRefreshIndicatorState
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     _positionController.value =
         newValue.clamp(0.0, 1.0); // this triggers various rebuilds
-    if (_mode == _RefreshIndicatorMode.drag && _valueColor!.value!.alpha == 0xFF)
-      _mode = _RefreshIndicatorMode.armed;
+    if (_mode == _RefreshIndicatorMode.drag &&
+        _valueColor!.value!.alpha == 0xFF) _mode = _RefreshIndicatorMode.armed;
   }
 
   // Stop showing the refresh indicator.
@@ -345,22 +343,21 @@ class NestedScrollViewRefreshIndicatorState
     _mode = _RefreshIndicatorMode.snap;
     _positionController
         .animateTo(1.0 / _kDragSizeFactorLimit,
-        duration: _kIndicatorSnapDuration)
+            duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
-        assert(widget.onRefresh != null);
         setState(() {
           // Show the indeterminate progress indicator.
           _mode = _RefreshIndicatorMode.refresh;
         });
 
-        final Future<void> refreshResult = widget.onRefresh();
+        final Future<void>? refreshResult = widget.onRefresh();
         assert(() {
           if (refreshResult == null)
             FlutterError.reportError(FlutterErrorDetails(
               exception: FlutterError('The onRefresh callback returned null.\n'
                   'The RefreshIndicator onRefresh callback must return a Future.'),
-              context:  DiagnosticsNode.message('when calling onRefresh'),
+              context: DiagnosticsNode.message('when calling onRefresh'),
               library: 'material library',
             ));
           return true;

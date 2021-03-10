@@ -9,7 +9,7 @@ class SearchBLoC {
   int selectIndex = 0;
 
   ///搜索文件
-  String get searchText {
+  String? get searchText {
     return textEditingController.text;
   }
 

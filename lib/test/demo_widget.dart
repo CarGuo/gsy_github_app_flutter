@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class DEMOWidget extends StatelessWidget {
-  final String text;
+  final String? text;
 
   DEMOWidget(this.text);
 
