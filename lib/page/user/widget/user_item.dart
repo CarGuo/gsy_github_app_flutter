@@ -15,7 +15,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 class UserItem extends StatelessWidget {
   final UserItemViewModel userItemViewModel;
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   final bool needImage;
 
@@ -24,7 +24,7 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var me = StoreProvider.of<GSYState>(context).state.userInfo;
+    var me = StoreProvider.of<GSYState>(context).state.userInfo!;
     Widget userImage = new IconButton(
         padding: EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
         icon: new ClipOval(
@@ -32,7 +32,7 @@ class UserItem extends StatelessWidget {
             placeholder: GSYICons.DEFAULT_USER_ICON,
             //预览图
             fit: BoxFit.fitWidth,
-            image: userItemViewModel.userPic,
+            image: userItemViewModel.userPic!,
             width: 40.0,
             height: 40.0,
           ),
@@ -56,7 +56,7 @@ class UserItem extends StatelessWidget {
                 if (userItemViewModel.index != null)
                   Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: new Text(userItemViewModel.index,
+                    child: new Text(userItemViewModel.index!,
                         style: GSYConstant.middleSubTextBold),
                   ),
                 userImage,
@@ -81,10 +81,10 @@ class UserItem extends StatelessWidget {
                         ],
                       ),
                       if (userItemViewModel.bio != null &&
-                          userItemViewModel.bio.isNotEmpty)
+                          userItemViewModel.bio!.isNotEmpty)
                         new Padding(
                           padding: EdgeInsets.only(top: 5),
-                          child: new Text(userItemViewModel.bio,
+                          child: new Text(userItemViewModel.bio!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GSYConstant.smallText),
@@ -92,7 +92,7 @@ class UserItem extends StatelessWidget {
                       if (userItemViewModel.lang != null)
                         new Padding(
                           padding: EdgeInsets.only(top: 5, right: 10),
-                          child: new Text(userItemViewModel.lang,
+                          child: new Text(userItemViewModel.lang!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GSYConstant.smallSubText),
@@ -110,13 +110,13 @@ class UserItem extends StatelessWidget {
 }
 
 class UserItemViewModel {
-  String userPic;
-  String userName;
-  String bio;
-  int followers;
-  String login;
-  String lang;
-  String index;
+  String? userPic;
+  String? userName;
+  String? bio;
+  int? followers;
+  String? login;
+  String? lang;
+  String? index;
 
   UserItemViewModel.fromMap(User user) {
     userName = user.login;
@@ -124,7 +124,7 @@ class UserItemViewModel {
     followers = user.followers;
   }
 
-  UserItemViewModel.fromQL(SearchUserQL user, int index) {
+  UserItemViewModel.fromQL(SearchUserQL user, int? index) {
     userName = user.name;
     userPic = user.avatarUrl;
     followers = user.followers;

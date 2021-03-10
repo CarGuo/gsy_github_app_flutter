@@ -3,10 +3,10 @@ import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
 mixin GSYFlarePullMutliController implements FlareController {
-  ActorAnimation _loadingAnimation;
-  ActorAnimation _successAnimation;
-  ActorAnimation _pullAnimation;
-  ActorAnimation _cometAnimation;
+  late ActorAnimation _loadingAnimation;
+  late ActorAnimation _successAnimation;
+  late ActorAnimation _pullAnimation;
+  late ActorAnimation _cometAnimation;
 
   double pulledExtentFlare = 0;
   bool _isSurround = false;

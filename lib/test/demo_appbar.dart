@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget leading;
+  final Widget? leading;
   final bool needLeading;
   final double leadingWidth;
-  final List<Widget> actions;
+  final List<Widget>? actions;
   final IconData backBtnIconData;
-  final VoidCallback backPress;
+  final VoidCallback? backPress;
   final Color iconColor;
   final Color textColor;
-  final Widget title;
+  final Widget? title;
 
   ImageAppbar(
       {this.leading,
@@ -38,7 +38,7 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
               color: iconColor,
               onPressed: () {
                 if (backPress != null) {
-                  backPress();
+                  backPress!();
                   return;
                 }
                 Navigator.maybePop(context);
@@ -54,14 +54,14 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    TextStyle centerStyle = Theme.of(context).textTheme?.headline6 ??
+    TextStyle? centerStyle = Theme.of(context).textTheme?.headline6 ??
         Theme.of(context).appBarTheme.textTheme?.headline6 ??
         Theme.of(context).primaryTextTheme.headline6;
 
-    Widget title = this.title;
+    Widget? title = this.title;
     if (title != null) {
       title = DefaultTextStyle(
-        style: centerStyle,
+        style: centerStyle!,
         softWrap: false,
         overflow: TextOverflow.ellipsis,
         child: title,

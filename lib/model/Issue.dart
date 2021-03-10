@@ -10,31 +10,31 @@ part 'Issue.g.dart';
 
 @JsonSerializable()
 class Issue {
-  int id;
-  int number;
-  String title;
-  String state;
-  bool locked;
+  int? id;
+  int? number;
+  String? title;
+  String? state;
+  bool? locked;
   @JsonKey(name: "comments")
-  int commentNum;
+  int? commentNum;
 
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
   @JsonKey(name: "updated_at")
-  DateTime updatedAt;
+  DateTime? updatedAt;
   @JsonKey(name: "closed_at")
-  DateTime closedAt;
-  String body;
+  DateTime? closedAt;
+  String? body;
   @JsonKey(name: "body_html")
-  String bodyHtml;
+  String? bodyHtml;
 
-  User user;
+  User? user;
   @JsonKey(name: "repository_url")
-  String repoUrl;
+  String? repoUrl;
   @JsonKey(name: "html_url")
-  String htmlUrl;
+  String? htmlUrl;
   @JsonKey(name: "closed_by")
-  User closeBy;
+  User? closeBy;
 
 
 

@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
  * on 2018/7/24.
  */
 class GSYTitleBar extends StatelessWidget {
-  final String title;
+  final String? title;
 
-  final IconData iconData;
+  final IconData? iconData;
 
-  final ValueChanged onRightIconPressed;
+  final ValueChanged? onRightIconPressed;
 
   final bool needRightLocalIcon;
 
-  final Widget rightWidget;
+  final Widget? rightWidget;
 
   final GlobalKey rightKey = GlobalKey();
 
@@ -26,7 +26,7 @@ class GSYTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = rightWidget;
+    Widget? widget = rightWidget;
     if (rightWidget == null) {
       widget = (needRightLocalIcon)
           ? new IconButton(
@@ -37,7 +37,7 @@ class GSYTitleBar extends StatelessWidget {
               ),
               onPressed: () {
                 RenderBox renderBox2 =
-                    rightKey.currentContext?.findRenderObject();
+                    rightKey.currentContext?.findRenderObject() as RenderBox;
                 var position = renderBox2.localToGlobal(Offset.zero);
                 var size = renderBox2.size;
                 var centerPosition = Offset(
@@ -53,12 +53,12 @@ class GSYTitleBar extends StatelessWidget {
         children: <Widget>[
           new Expanded(
             child: new Text(
-              title,
+              title!,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          widget
+          widget!
         ],
       ),
     );

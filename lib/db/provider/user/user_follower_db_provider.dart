@@ -19,13 +19,13 @@ class UserFollowerDbProvider extends BaseDbProvider {
   final String columnUserName = "userName";
   final String columnData = "data";
 
-  int id;
-  String userName;
-  String data;
+  int? id;
+  String? userName;
+  String? data;
 
   UserFollowerDbProvider();
 
-  Map<String, dynamic> toMap(String userName, String data) {
+  Map<String, dynamic> toMap(String? userName, String data) {
     Map<String, dynamic> map = {columnUserName: userName, columnData: data};
     if (id != null) {
       map[columnId] = id;
@@ -53,7 +53,7 @@ class UserFollowerDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String userName) async {
+  Future _getProvider(Database db, String? userName) async {
     List<Map<String, dynamic>> maps = await db.query(name,
         columns: [columnId, columnUserName, columnData],
         where: "$columnUserName = ?",
@@ -67,7 +67,7 @@ class UserFollowerDbProvider extends BaseDbProvider {
   }
 
   ///插入到数据库
-  Future insert(String userName, String dataMapString) async {
+  Future insert(String? userName, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, userName);
     if (provider != null) {
@@ -78,7 +78,7 @@ class UserFollowerDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<User>> geData(String userName) async {
+  Future<List<User>?> geData(String? userName) async {
     Database db = await getDataBase();
 
     var provider = await _getProvider(db, userName);
@@ -87,7 +87,7 @@ class UserFollowerDbProvider extends BaseDbProvider {
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
-          await compute(CodeUtils.decodeListResult, provider.data as String);
+          await compute(CodeUtils.decodeListResult as FutureOr<List<dynamic>> Function(String? data), provider.data as String?);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

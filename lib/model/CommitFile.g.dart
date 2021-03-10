@@ -8,16 +8,16 @@ part of 'CommitFile.dart';
 
 CommitFile _$CommitFileFromJson(Map<String, dynamic> json) {
   return CommitFile(
-    json['sha'] as String,
-    json['filename'] as String,
-    json['status'] as String,
-    json['additions'] as int,
-    json['deletions'] as int,
-    json['changes'] as int,
-    json['blob_url'] as String,
-    json['raw_url'] as String,
-    json['contents_url'] as String,
-    json['patch'] as String,
+    json['sha'] as String?,
+    json['filename'] as String?,
+    json['status'] as String?,
+    json['additions'] as int?,
+    json['deletions'] as int?,
+    json['changes'] as int?,
+    json['blob_url'] as String?,
+    json['raw_url'] as String?,
+    json['contents_url'] as String?,
+    json['patch'] as String?,
   );
 }
 

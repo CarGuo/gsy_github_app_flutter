@@ -8,8 +8,8 @@ part of 'Event.dart';
 
 Event _$EventFromJson(Map<String, dynamic> json) {
   return Event(
-    json['id'] as String,
-    json['type'] as String,
+    json['id'] as String?,
+    json['type'] as String?,
     json['actor'] == null
         ? null
         : User.fromJson(json['actor'] as Map<String, dynamic>),
@@ -22,7 +22,7 @@ Event _$EventFromJson(Map<String, dynamic> json) {
     json['payload'] == null
         ? null
         : EventPayload.fromJson(json['payload'] as Map<String, dynamic>),
-    json['public'] as bool,
+    json['public'] as bool?,
     json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),

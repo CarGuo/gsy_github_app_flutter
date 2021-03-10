@@ -71,12 +71,12 @@ class NavigatorUtils {
   }
 
   ///图片预览
-  static gotoPhotoViewPage(BuildContext context, String url) {
+  static gotoPhotoViewPage(BuildContext context, String? url) {
     Navigator.pushNamed(context, PhotoViewPage.sName, arguments: url);
   }
 
   ///个人中心
-  static goPerson(BuildContext context, String userName) {
+  static goPerson(BuildContext context, String? userName) {
     NavigatorRouter(context, new PersonPage(userName));
   }
 
@@ -87,7 +87,7 @@ class NavigatorUtils {
 
   ///仓库详情
   static Future goReposDetail(
-      BuildContext context, String userName, String reposName) {
+      BuildContext context, String? userName, String? reposName) {
     ///利用 SizeRoute 动画大小打开
     return Navigator.push(
         context,
@@ -97,14 +97,14 @@ class NavigatorUtils {
   }
 
   ///荣耀列表
-  static Future goHonorListPage(BuildContext context, List list) {
+  static Future goHonorListPage(BuildContext context, List? list) {
     return Navigator.push(context,
         new SizeRoute(widget: pageContainer(HonorListPage(list), context)));
   }
 
   ///仓库版本列表
-  static Future goReleasePage(BuildContext context, String userName,
-      String reposName, String releaseUrl, String tagUrl) {
+  static Future goReleasePage(BuildContext context, String? userName,
+      String? reposName, String releaseUrl, String tagUrl) {
     return NavigatorRouter(
         context,
         new ReleasePage(
@@ -117,7 +117,7 @@ class NavigatorUtils {
 
   ///issue详情
   static Future goIssueDetail(
-      BuildContext context, String userName, String reposName, String num,
+      BuildContext context, String? userName, String? reposName, String num,
       {bool needRightLocalIcon = false}) {
     return NavigatorRouter(
         context,
@@ -131,8 +131,8 @@ class NavigatorUtils {
 
   ///通用列表
   static gotoCommonList(
-      BuildContext context, String title, String showType, String dataType,
-      {String userName, String reposName}) {
+      BuildContext context, String? title, String showType, String dataType,
+      {String? userName, String? reposName}) {
     NavigatorRouter(
         context,
         new CommonListPage(
@@ -182,8 +182,8 @@ class NavigatorUtils {
   }
 
   ///提交详情
-  static Future goPushDetailPage(BuildContext context, String userName,
-      String reposName, String sha, bool needHomeIcon) {
+  static Future goPushDetailPage(BuildContext context, String? userName,
+      String? reposName, String? sha, bool needHomeIcon) {
     return NavigatorRouter(
         context,
         new PushDetailPage(
@@ -195,7 +195,7 @@ class NavigatorUtils {
   }
 
   ///全屏Web页面
-  static Future goGSYWebView(BuildContext context, String url, String title) {
+  static Future goGSYWebView(BuildContext context, String url, String? title) {
     return NavigatorRouter(context, new GSYWebView(url, title));
   }
 
@@ -206,13 +206,13 @@ class NavigatorUtils {
 
   ///文件代码详情Web
   static gotoCodeDetailPageWeb(BuildContext context,
-      {String title,
-      String userName,
-      String reposName,
-      String path,
-      String data,
-      String branch,
-      String htmlUrl}) {
+      {String? title,
+      String? userName,
+      String? reposName,
+      String? path,
+      String? data,
+      String? branch,
+      String? htmlUrl}) {
     NavigatorRouter(
         context,
         new CodeDetailPageWeb(
@@ -228,13 +228,13 @@ class NavigatorUtils {
 
   ///根据平台跳转文件代码详情Web
   static gotoCodeDetailPlatform(BuildContext context,
-      {String title,
-      String userName,
-      String reposName,
-      String path,
-      String data,
-      String branch,
-      String htmlUrl}) {
+      {String? title,
+      String? userName,
+      String? reposName,
+      String? path,
+      String? data,
+      String? branch,
+      String? htmlUrl}) {
     NavigatorUtils.gotoCodeDetailPageWeb(
       context,
       title: title,
@@ -269,10 +269,10 @@ class NavigatorUtils {
   }
 
   ///弹出 dialog
-  static Future<T> showGSYDialog<T>({
-    @required BuildContext context,
+  static Future<T?> showGSYDialog<T>({
+    required BuildContext context,
     bool barrierDismissible = true,
-    WidgetBuilder builder,
+    WidgetBuilder? builder,
   }) {
     return showDialog<T>(
         context: context,
@@ -281,9 +281,9 @@ class NavigatorUtils {
           return MediaQuery(
 
               ///不受系统字体缩放影响
-              data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+              data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
                   .copyWith(textScaleFactor: 1),
-              child: new SafeArea(child: builder(context)));
+              child: new SafeArea(child: builder!(context)));
         });
   }
 }

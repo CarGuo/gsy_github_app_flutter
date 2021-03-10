@@ -30,7 +30,7 @@ class _ParticlesWidgetState extends State<ParticlesWidget> {
   Widget build(BuildContext context) {
     return LoopAnimation(
       tween: ConstantTween(1),
-      builder: (context, child, _) {
+      builder: (context, child, dynamic _) {
         _simulateParticles();
         return CustomPaint(
           painter: ParticlePainter(particles),

@@ -8,7 +8,7 @@ part of 'License.dart';
 
 License _$LicenseFromJson(Map<String, dynamic> json) {
   return License(
-    json['name'] as String,
+    json['name'] as String?,
   );
 }
 

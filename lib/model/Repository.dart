@@ -12,91 +12,91 @@ part 'Repository.g.dart';
 
 @JsonSerializable()
 class Repository {
-  int id;
+  int? id;
 
-  int size;
+  int? size;
 
-  String name;
+  String? name;
 
   @JsonKey(name: "full_name")
-  String fullName;
+  String? fullName;
 
   @JsonKey(name: "html_url")
-  String htmlUrl;
+  String? htmlUrl;
 
-  String description;
+  String? description;
 
-  String language;
+  String? language;
 
   @JsonKey(name: "default_branch")
-  String defaultBranch;
+  String? defaultBranch;
 
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
 
   @JsonKey(name: "updated_at")
-  DateTime updatedAt;
+  DateTime? updatedAt;
 
   @JsonKey(name: "pushed_at")
-  DateTime pushedAt;
+  DateTime? pushedAt;
 
   @JsonKey(name: "git_url")
-  String gitUrl;
+  String? gitUrl;
 
   @JsonKey(name: "ssh_url")
-  String sshUrl;
+  String? sshUrl;
 
   @JsonKey(name: "clone_url")
-  String cloneUrl;
+  String? cloneUrl;
 
   @JsonKey(name: "svn_url")
-  String svnUrl;
+  String? svnUrl;
 
   @JsonKey(name: "stargazers_count")
-  int stargazersCount;
+  int? stargazersCount;
 
   @JsonKey(name: "watchers_count")
-  int watchersCount;
+  int? watchersCount;
 
   @JsonKey(name: "forks_count")
-  int forksCount;
+  int? forksCount;
 
   @JsonKey(name: "open_issues_count")
-  int openIssuesCount;
+  int? openIssuesCount;
 
   @JsonKey(name: "subscribers_count")
-  int subscribersCount;
+  int? subscribersCount;
 
   @JsonKey(name: "private")
-  bool private;
+  bool? private;
 
-  bool fork;
+  bool? fork;
   @JsonKey(name: "has_issues")
-  bool hasIssues;
+  bool? hasIssues;
   @JsonKey(name: "has_projects")
-  bool hasProjects;
+  bool? hasProjects;
 
   @JsonKey(name: "has_downloads")
-  bool hasDownloads;
+  bool? hasDownloads;
 
   @JsonKey(name: "has_wiki")
-  bool hasWiki;
+  bool? hasWiki;
 
   @JsonKey(name: "has_pages")
-  bool hasPages;
+  bool? hasPages;
 
-  User owner;
+  User? owner;
 
-  License license;
+  License? license;
 
-  Repository parent;
+  Repository? parent;
 
-  RepositoryPermissions permissions;
+  RepositoryPermissions? permissions;
 
-  List<String> topics;
+  List<String>? topics;
 
   ///issue总数，不参加序列化
-  int allIssueCount;
+  int? allIssueCount;
 
   Repository(
     this.id,

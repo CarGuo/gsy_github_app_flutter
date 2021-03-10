@@ -16,7 +16,7 @@ class ResponseInterceptors extends InterceptorsWrapper {
       var header = response.headers[Headers.contentTypeHeader];
       if ((header != null && header.toString().contains("text"))) {
         value = new ResultData(response.data, true, Code.SUCCESS);
-      } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      } else if (response.statusCode! >= 200 && response.statusCode! < 300) {
         value = new ResultData(response.data, true, Code.SUCCESS,
             headers: response.headers);
       }

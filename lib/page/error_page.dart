@@ -18,8 +18,8 @@ class ErrorPage extends StatefulWidget {
 }
 
 class ErrorPageState extends State<ErrorPage> {
-  static List<Map<String, dynamic>> sErrorStack = [];
-  static List<String> sErrorName = [];
+  static List<Map<String, dynamic>?> sErrorStack = [];
+  static List<String?> sErrorName = [];
 
   final TextEditingController textEditingController =
       new TextEditingController();
@@ -39,7 +39,7 @@ class ErrorPageState extends State<ErrorPage> {
   @override
   Widget build(BuildContext context) {
     double width =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
+        MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size.width;
     return Container(
       color: GSYColors.primaryValue,
       child: new Center(
@@ -91,7 +91,7 @@ class ErrorPageState extends State<ErrorPage> {
                       textEditingController.text = content;
                       CommonUtils.showEditDialog(
                           context,
-                          GSYLocalizations.i18n(context).home_reply,
+                          GSYLocalizations.i18n(context)!.home_reply,
                           (title) {}, (res) {
                         content = res;
                       }, () {
@@ -101,7 +101,7 @@ class ErrorPageState extends State<ErrorPage> {
                         CommonUtils.showLoadingDialog(context);
                         IssueDao.createIssueDao(
                             "CarGuo", "gsy_github_app_flutter", {
-                          "title": GSYLocalizations.i18n(context).home_reply,
+                          "title": GSYLocalizations.i18n(context)!.home_reply,
                           "body": content
                         }).then((result) {
                           Navigator.pop(context);

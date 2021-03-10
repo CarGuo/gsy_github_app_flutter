@@ -8,15 +8,15 @@ part of 'FileModel.dart';
 
 FileModel _$FileModelFromJson(Map<String, dynamic> json) {
   return FileModel(
-    json['name'] as String,
-    json['path'] as String,
-    json['sha'] as String,
-    json['size'] as int,
-    json['url'] as String,
-    json['html_url'] as String,
-    json['git_url'] as String,
-    json['download_url'] as String,
-    json['type'] as String,
+    json['name'] as String?,
+    json['path'] as String?,
+    json['sha'] as String?,
+    json['size'] as int?,
+    json['url'] as String?,
+    json['html_url'] as String?,
+    json['git_url'] as String?,
+    json['download_url'] as String?,
+    json['type'] as String?,
   );
 }
 

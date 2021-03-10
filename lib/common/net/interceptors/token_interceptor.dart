@@ -9,7 +9,7 @@ import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
  * on 2019/3/23.
  */
 class TokenInterceptors extends InterceptorsWrapper {
-  String _token;
+  String? _token;
 
   @override
   onRequest(RequestOptions options) async {

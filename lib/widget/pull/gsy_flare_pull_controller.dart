@@ -3,7 +3,7 @@ import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
 mixin GSYFlarePullController implements FlareController {
-  ActorAnimation _pullAnimation;
+  late ActorAnimation _pullAnimation;
 
   double pulledExtentFlare = 0;
   double _speed = 2.0;

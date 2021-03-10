@@ -18,7 +18,7 @@ import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 class GSYEventItem extends StatelessWidget {
   final EventViewModel eventViewModel;
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   final bool needImage;
 
@@ -28,11 +28,11 @@ class GSYEventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget des = (eventViewModel.actionDes == null ||
-            eventViewModel.actionDes.length == 0)
+            eventViewModel.actionDes!.length == 0)
         ? new Container()
         : new Container(
             child: new Text(
-              eventViewModel.actionDes,
+              eventViewModel.actionDes!,
               style: GSYConstant.smallSubText,
               maxLines: 3,
             ),
@@ -63,14 +63,14 @@ class GSYEventItem extends StatelessWidget {
                       children: <Widget>[
                         userImage,
                         new Expanded(
-                            child: new Text(eventViewModel.actionUser,
+                            child: new Text(eventViewModel.actionUser!,
                                 style: GSYConstant.smallTextBold)),
                         new Text(eventViewModel.actionTime,
                             style: GSYConstant.smallSubText),
                       ],
                     ),
                     new Container(
-                        child: new Text(eventViewModel.actionTarget,
+                        child: new Text(eventViewModel.actionTarget!,
                             style: GSYConstant.smallTextBold),
                         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
@@ -83,37 +83,37 @@ class GSYEventItem extends StatelessWidget {
 }
 
 class EventViewModel {
-  String actionUser;
-  String actionUserPic;
-  String actionDes;
-  String actionTime;
-  String actionTarget;
+  String? actionUser;
+  String? actionUserPic;
+  String? actionDes;
+  late String actionTime;
+  String? actionTarget;
 
   EventViewModel.fromEventMap(Event event) {
-    actionTime = CommonUtils.getNewsTimeStr(event.createdAt);
-    actionUser = event.actor.login;
-    actionUserPic = event.actor.avatar_url;
+    actionTime = CommonUtils.getNewsTimeStr(event.createdAt!);
+    actionUser = event.actor!.login;
+    actionUserPic = event.actor!.avatar_url;
     var other = EventUtils.getActionAndDes(event);
     actionDes = other["des"];
     actionTarget = other["actionStr"];
   }
 
   EventViewModel.fromCommitMap(RepoCommit eventMap) {
-    actionTime = CommonUtils.getNewsTimeStr(eventMap.commit.committer.date);
-    actionUser = eventMap.commit.committer.name;
-    actionDes = "sha:" + eventMap.sha;
-    actionTarget = eventMap.commit.message;
+    actionTime = CommonUtils.getNewsTimeStr(eventMap.commit!.committer!.date!);
+    actionUser = eventMap.commit!.committer!.name;
+    actionDes = "sha:" + eventMap.sha!;
+    actionTarget = eventMap.commit!.message;
   }
 
   EventViewModel.fromNotify(BuildContext context, Model.Notification eventMap) {
-    actionTime = CommonUtils.getNewsTimeStr(eventMap.updateAt);
-    actionUser = eventMap.repository.fullName;
-    String type = eventMap.subject.type;
-    String status = eventMap.unread
-        ? GSYLocalizations.i18n(context).notify_unread
-        : GSYLocalizations.i18n(context).notify_readed;
-    actionDes = eventMap.reason +
-        "${GSYLocalizations.i18n(context).notify_type}：$type，${GSYLocalizations.i18n(context).notify_status}：$status";
-    actionTarget = eventMap.subject.title;
+    actionTime = CommonUtils.getNewsTimeStr(eventMap.updateAt!);
+    actionUser = eventMap.repository!.fullName;
+    String? type = eventMap.subject!.type;
+    String status = eventMap.unread!
+        ? GSYLocalizations.i18n(context)!.notify_unread
+        : GSYLocalizations.i18n(context)!.notify_readed;
+    actionDes = eventMap.reason! +
+        "${GSYLocalizations.i18n(context)!.notify_type}：$type，${GSYLocalizations.i18n(context)!.notify_status}：$status";
+    actionTarget = eventMap.subject!.title;
   }
 }

@@ -10,12 +10,12 @@ part 'CommitGitInfo.g.dart';
 
 @JsonSerializable()
 class CommitGitInfo  {
-  String message;
-  String url;
+  String? message;
+  String? url;
   @JsonKey(name: "comment_count")
-  int commentCount;
-  CommitGitUser author;
-  CommitGitUser committer;
+  int? commentCount;
+  CommitGitUser? author;
+  CommitGitUser? committer;
 
   CommitGitInfo(
     this.message,

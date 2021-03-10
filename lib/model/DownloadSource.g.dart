@@ -8,10 +8,10 @@ part of 'DownloadSource.dart';
 
 DownloadSource _$DownloadSourceFromJson(Map<String, dynamic> json) {
   return DownloadSource(
-    json['url'] as String,
-    json['isSourceCode'] as bool,
-    json['name'] as String,
-    json['size'] as int,
+    json['url'] as String?,
+    json['isSourceCode'] as bool?,
+    json['name'] as String?,
+    json['size'] as int?,
   );
 }
 

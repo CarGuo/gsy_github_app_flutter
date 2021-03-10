@@ -40,9 +40,9 @@ class CommonUtils {
 
   static final double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
-  static Locale curLocale;
+  static Locale? curLocale;
 
-  static String getDateStr(DateTime date) {
+  static String getDateStr(DateTime? date) {
     if (date == null || date.toString() == null) {
       return "";
     } else if (date
@@ -69,27 +69,27 @@ class CommonUtils {
 
     if (subTimes < MILLIS_LIMIT) {
       return (curLocale != null)
-          ? (curLocale.languageCode != "zh") ? "right now" : "刚刚"
+          ? (curLocale!.languageCode != "zh") ? "right now" : "刚刚"
           : "刚刚";
     } else if (subTimes < SECONDS_LIMIT) {
       return (subTimes / MILLIS_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " seconds ago" : " 秒前"
+              ? (curLocale!.languageCode != "zh") ? " seconds ago" : " 秒前"
               : " 秒前");
     } else if (subTimes < MINUTES_LIMIT) {
       return (subTimes / SECONDS_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " min ago" : " 分钟前"
+              ? (curLocale!.languageCode != "zh") ? " min ago" : " 分钟前"
               : " 分钟前");
     } else if (subTimes < HOURS_LIMIT) {
       return (subTimes / MINUTES_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " hours ago" : " 小时前"
+              ? (curLocale!.languageCode != "zh") ? " hours ago" : " 小时前"
               : " 小时前");
     } else if (subTimes < DAYS_LIMIT) {
       return (subTimes / HOURS_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale.languageCode != "zh") ? " days ago" : " 天前"
+              ? (curLocale!.languageCode != "zh") ? " days ago" : " 天前"
               : " 天前");
     } else {
       return getDateStr(date);
@@ -97,7 +97,7 @@ class CommonUtils {
   }
 
   static getLocalPath() async {
-    Directory appDir;
+    Directory? appDir;
     if (Platform.isIOS) {
       appDir = await getApplicationDocumentsDirectory();
     } else {
@@ -113,7 +113,7 @@ class CommonUtils {
         return null;
       }
     }
-    String appDocPath = appDir.path + "/gsygithubappflutter";
+    String appDocPath = appDir!.path + "/gsygithubappflutter";
     Directory appPath = Directory(appDocPath);
     await appPath.create(recursive: true);
     return appPath;
@@ -132,17 +132,17 @@ class CommonUtils {
     return appPath.path;
   }
 
-  static String removeTextTag(String description) {
+  static String? removeTextTag(String? description) {
     if (description != null) {
       String reg = "<g-emoji.*?>.+?</g-emoji>";
       RegExp tag = new RegExp(reg);
       Iterable<Match> tags = tag.allMatches(description);
       for (Match m in tags) {
         String match = m
-            .group(0)
+            .group(0)!
             .replaceAll(new RegExp("<g-emoji.*?>"), "")
             .replaceAll(new RegExp("</g-emoji>"), "");
-        description = description.replaceAll(new RegExp(m.group(0)), match);
+        description = description!.replaceAll(new RegExp(m.group(0)!), match);
       }
     }
     return description;
@@ -170,7 +170,7 @@ class CommonUtils {
     return path.substring(path.lastIndexOf("/"));
   }
 
-  static getFullName(String repository_url) {
+  static getFullName(String? repository_url) {
     if (repository_url != null &&
         repository_url.substring(repository_url.length - 1) == "/") {
       repository_url = repository_url.substring(0, repository_url.length - 1);
@@ -194,7 +194,7 @@ class CommonUtils {
   }
 
   static getThemeData(Color color) {
-    return ThemeData(primarySwatch: color,
+    return ThemeData(primarySwatch: color as MaterialColor?,
         platform: TargetPlatform.android,
         appBarTheme: AppBarTheme(brightness: Brightness.dark),
     );
@@ -203,13 +203,13 @@ class CommonUtils {
   static showLanguageDialog(BuildContext context) {
     List<String> list = [
       GSYLocalizations
-          .i18n(context)
+          .i18n(context)!
           .home_language_default,
       GSYLocalizations
-          .i18n(context)
+          .i18n(context)!
           .home_language_zh,
       GSYLocalizations
-          .i18n(context)
+          .i18n(context)!
           .home_language_en,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
@@ -232,8 +232,8 @@ class CommonUtils {
    * 切换语言
    */
   static changeLocale(Store<GSYState> store, int index) {
-    Locale locale = store.state.platformLocale;
-    if (Config.DEBUG) {
+    Locale? locale = store.state.platformLocale;
+    if (Config.DEBUG!) {
       print(store.state.platformLocale);
     }
     switch (index) {
@@ -272,16 +272,16 @@ class CommonUtils {
     return image;
   }
 
-  static copy(String data, BuildContext context) {
+  static copy(String? data, BuildContext context) {
     Clipboard.setData(new ClipboardData(text: data));
     Fluttertoast.showToast(
         msg: GSYLocalizations
-            .i18n(context)
+            .i18n(context)!
             .option_share_copy_success);
   }
 
-  static launchUrl(context, String url) {
-    if (url == null && url.length == 0) return;
+  static launchUrl(context, String? url) {
+    if (url == null && url!.length == 0) return;
     Uri parseUrl = Uri.parse(url);
     bool isImage = isImageEnd(parseUrl.toString());
     if (parseUrl.toString().endsWith("?raw=true")) {
@@ -315,7 +315,7 @@ class CommonUtils {
     }
   }
 
-  static void launchWebView(BuildContext context, String title, String url) {
+  static void launchWebView(BuildContext context, String? title, String url) {
     if (url.startsWith("http")) {
       NavigatorUtils.goGSYWebView(context, url, title);
     } else {
@@ -328,16 +328,16 @@ class CommonUtils {
     }
   }
 
-  static launchOutURL(String url, BuildContext context) async {
-    if (await canLaunch(url)) {
+  static launchOutURL(String? url, BuildContext context) async {
+    if (url != null && await canLaunch(url)) {
       await launch(url);
     } else {
       Fluttertoast.showToast(
           msg: GSYLocalizations
-              .i18n(context)
+              .i18n(context)!
               .option_web_launcher_error +
               ": " +
-              url);
+              (url ?? ""));
     }
   }
 
@@ -368,7 +368,7 @@ class CommonUtils {
                         new Container(
                             child: new Text(
                                 GSYLocalizations
-                                    .i18n(context)
+                                    .i18n(context)!
                                     .loading_text,
                                 style: GSYConstant.normalTextWhite)),
                       ],
@@ -381,11 +381,11 @@ class CommonUtils {
 
   static Future<Null> showEditDialog(BuildContext context,
       String dialogTitle,
-      ValueChanged<String> onTitleChanged,
+      ValueChanged<String>? onTitleChanged,
       ValueChanged<String> onContentChanged,
       VoidCallback onPressed, {
-        TextEditingController titleController,
-        TextEditingController valueController,
+        TextEditingController? titleController,
+        TextEditingController? valueController,
         bool needTitle = true,
       }) {
     return NavigatorUtils.showGSYDialog(
@@ -407,11 +407,11 @@ class CommonUtils {
 
   ///列表item dialog
   static Future<Null> showCommitOptionDialog(BuildContext context,
-      List<String> commitMaps,
+      List<String>? commitMaps,
       ValueChanged<int> onTap, {
         width = 250.0,
         height = 400.0,
-        List<Color> colorList,
+        List<Color>? colorList,
       }) {
     return NavigatorUtils.showGSYDialog(
         context: context,
@@ -428,7 +428,7 @@ class CommonUtils {
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
               child: new ListView.builder(
-                  itemCount: commitMaps.length,
+                  itemCount: commitMaps!.length,
                   itemBuilder: (context, index) {
                     return GSYFlexButton(
                       maxLines: 1,
@@ -460,7 +460,7 @@ class CommonUtils {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(GSYLocalizations
-                .i18n(context)
+                .i18n(context)!
                 .app_version_title),
             content: new Text(contentMsg),
             actions: <Widget>[
@@ -469,7 +469,7 @@ class CommonUtils {
                     Navigator.pop(context);
                   },
                   child: new Text(GSYLocalizations
-                      .i18n(context)
+                      .i18n(context)!
                       .app_cancel)),
               new TextButton(
                   onPressed: () {
@@ -477,7 +477,7 @@ class CommonUtils {
                     Navigator.pop(context);
                   },
                   child: new Text(GSYLocalizations
-                      .i18n(context)
+                      .i18n(context)!
                       .app_ok)),
             ],
           );

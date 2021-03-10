@@ -7,30 +7,30 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart
  * on 2019/3/23.
  */
 class DynamicBloc {
-
-  final GSYPullLoadWidgetControl pullLoadWidgetControl = new GSYPullLoadWidgetControl();
+  final GSYPullLoadWidgetControl pullLoadWidgetControl =
+      new GSYPullLoadWidgetControl();
 
   int _page = 1;
 
-  requestRefresh(String userName, {doNextFlag = true}) async {
+  requestRefresh(String? userName, {doNextFlag = true}) async {
     pageReset();
-    var res = await EventDao.getEventReceived(userName, page: _page, needDb: true);
+    var res =
+        await EventDao.getEventReceived(userName, page: _page, needDb: true);
     changeLoadMoreStatus(getLoadMoreStatus(res));
     refreshData(res);
-    if(doNextFlag) {
+    if (doNextFlag) {
       await doNext(res);
     }
     return res;
   }
 
-  requestLoadMore(String userName) async {
+  requestLoadMore(String? userName) async {
     pageUp();
     var res = await EventDao.getEventReceived(userName, page: _page);
     changeLoadMoreStatus(getLoadMoreStatus(res));
     loadMoreData(res);
     return res;
   }
-
 
   pageReset() {
     _page = 1;
@@ -41,7 +41,9 @@ class DynamicBloc {
   }
 
   getLoadMoreStatus(res) {
-    return (res != null && res.data != null && res.data.length == Config.PAGE_SIZE);
+    return (res != null &&
+        res.data != null &&
+        res.data.length == Config.PAGE_SIZE);
   }
 
   doNext(res) async {
@@ -55,8 +57,8 @@ class DynamicBloc {
   }
 
   ///列表数据长度
-  int getDataLength() {
-    return pullLoadWidgetControl.dataList.length;
+  int? getDataLength() {
+    return pullLoadWidgetControl.dataList?.length;
   }
 
   ///修改加载更多

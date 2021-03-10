@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_json_widget/flutter_json_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/test/demo_tab_page.dart';
+import 'package:gsy_github_app_flutter/widget/flutter_json_widget.dart';
 
 import '../../common/style/gsy_style.dart';
 import '../error_page.dart';
@@ -63,9 +63,9 @@ class _DebugDataPageState extends State<DebugDataPage> {
 }
 
 class DebugDataList extends StatefulWidget {
-  final List<Map> dataList;
+  final List<Map?> dataList;
 
-  final List<String> titles;
+  final List<String?> titles;
 
   DebugDataList(this.titles, this.dataList);
 
@@ -152,7 +152,7 @@ class _DebugDataListState extends State<DebugDataList>
                             color: Colors.white,
                             child: SingleChildScrollView(
                                 child:
-                                    JsonViewerWidget(widget.dataList[index])),
+                                    JsonViewerWidget(widget.dataList[index] as Map<String, dynamic>)),
                           ),
                           Transform.translate(
                             offset: Offset(0, -10),

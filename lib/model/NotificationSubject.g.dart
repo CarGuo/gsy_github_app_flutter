@@ -8,9 +8,9 @@ part of 'NotificationSubject.dart';
 
 NotificationSubject _$NotificationSubjectFromJson(Map<String, dynamic> json) {
   return NotificationSubject(
-    json['title'] as String,
-    json['url'] as String,
-    json['type'] as String,
+    json['title'] as String?,
+    json['url'] as String?,
+    json['type'] as String?,
   );
 }
 

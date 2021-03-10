@@ -14,10 +14,10 @@ import 'package:sqflite/sqflite.dart';
 
 class RepositoryIssueDbProvider extends BaseDbProvider {
   final String name = 'RepositoryIssue';
-  int id;
-  String fullName;
-  String data;
-  String state;
+  int? id;
+  String? fullName;
+  String? data;
+  String? state;
 
   final String columnId = "_id";
   final String columnFullName = "fullName";
@@ -26,7 +26,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
 
   RepositoryIssueDbProvider();
 
-  Map<String, dynamic> toMap(String fullName, String state, String data) {
+  Map<String, dynamic> toMap(String? fullName, String state, String data) {
     Map<String, dynamic> map = {
       columnFullName: fullName,
       columnState: state,
@@ -60,7 +60,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String fullName, String state) async {
+  Future _getProvider(Database db, String? fullName, String state) async {
     List<Map<String, dynamic>> maps = await db.query(name,
         columns: [columnId, columnFullName, columnState, columnData],
         where: "$columnFullName = ? and $columnState = ?",
@@ -74,7 +74,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
   }
 
   ///插入到数据库
-  Future insert(String fullName, String state, String dataMapString) async {
+  Future insert(String? fullName, String state, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, state);
     if (provider != null) {
@@ -86,7 +86,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<Issue>> getData(String fullName, String branch) async {
+  Future<List<Issue>?> getData(String? fullName, String branch) async {
     Database db = await getDataBase();
 
     var provider = await _getProvider(db, fullName, branch);
@@ -95,7 +95,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
-          await compute(CodeUtils.decodeListResult, provider.data as String);
+          await compute(CodeUtils.decodeListResult as FutureOr<List<dynamic>> Function(String? data), provider.data as String?);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

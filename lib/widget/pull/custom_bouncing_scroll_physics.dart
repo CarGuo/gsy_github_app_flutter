@@ -7,11 +7,11 @@ class CustomBouncingScrollPhysics extends ScrollPhysics {
   final double refreshHeight;
 
   const CustomBouncingScrollPhysics(
-      {ScrollPhysics parent, this.refreshHeight = 140})
+      {ScrollPhysics? parent, this.refreshHeight = 140})
       : super(parent: parent);
 
   @override
-  CustomBouncingScrollPhysics applyTo(ScrollPhysics ancestor) {
+  CustomBouncingScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return CustomBouncingScrollPhysics(parent: buildParent(ancestor));
   }
 
@@ -65,7 +65,7 @@ class CustomBouncingScrollPhysics extends ScrollPhysics {
   double applyBoundaryConditions(ScrollMetrics position, double value) => 0.0;
 
   @override
-  Simulation createBallisticSimulation(
+  Simulation? createBallisticSimulation(
       ScrollMetrics position, double velocity) {
     final Tolerance tolerance = this.tolerance;
     if (velocity.abs() >= tolerance.velocity || position.outOfRange) {

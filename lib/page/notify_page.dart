@@ -51,7 +51,7 @@ class _NotifyPageState extends State<NotifyPage>
       ),
       secondaryActions: <Widget>[
         new IconSlideAction(
-          caption: GSYLocalizations.i18n(context).notify_readed,
+          caption: GSYLocalizations.i18n(context)!.notify_readed,
           color: Colors.redAccent,
           icon: Icons.delete,
           onTap: () {
@@ -70,15 +70,15 @@ class _NotifyPageState extends State<NotifyPage>
     EventViewModel eventViewModel =
         EventViewModel.fromNotify(context, notification);
     return new GSYEventItem(eventViewModel, onPressed: () {
-      if (notification.unread) {
+      if (notification.unread!) {
         UserDao.setNotificationAsReadDao(notification.id.toString());
       }
-      if (notification.subject.type == 'Issue') {
-        String url = notification.subject.url;
+      if (notification.subject!.type == 'Issue') {
+        String url = notification.subject!.url!;
         List<String> tmp = url.split("/");
         String number = tmp[tmp.length - 1];
-        String userName = notification.repository.owner.login;
-        String reposName = notification.repository.name;
+        String? userName = notification.repository!.owner!.login;
+        String? reposName = notification.repository!.name;
         NavigatorUtils.goIssueDetail(context, userName, reposName, number,
                 needRightLocalIcon: true)
             .then((res) {
@@ -124,7 +124,7 @@ class _NotifyPageState extends State<NotifyPage>
       backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         title: GSYTitleBar(
-          GSYLocalizations.i18n(context).notify_title,
+          GSYLocalizations.i18n(context)!.notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
           needRightLocalIcon: true,
           onRightIconPressed: (_) {
@@ -137,9 +137,9 @@ class _NotifyPageState extends State<NotifyPage>
         ),
         bottom: new GSYSelectItemWidget(
           [
-            GSYLocalizations.i18n(context).notify_tab_unread,
-            GSYLocalizations.i18n(context).notify_tab_part,
-            GSYLocalizations.i18n(context).notify_tab_all,
+            GSYLocalizations.i18n(context)!.notify_tab_unread,
+            GSYLocalizations.i18n(context)!.notify_tab_part,
+            GSYLocalizations.i18n(context)!.notify_tab_all,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

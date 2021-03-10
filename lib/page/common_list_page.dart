@@ -14,15 +14,15 @@ import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
  */
 
 class CommonListPage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
   final String showType;
 
   final String dataType;
 
-  final String title;
+  final String? title;
 
   CommonListPage(this.title, this.showType, this.dataType,
       {this.userName, this.reposName});

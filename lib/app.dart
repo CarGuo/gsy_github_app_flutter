@@ -54,7 +54,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       /// MaterialApp 和 StoreProvider 的 context
       /// 还可以获取到 navigator;
       /// 比如在这里增加一个监听，如果 token 失效就退回登陆页。
-      navigator.context;
+      navigator!.context;
       navigator;
     });
   }
@@ -67,7 +67,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
-        store.state.platformLocale = WidgetsBinding.instance.window.locale;
+        store.state.platformLocale = WidgetsBinding.instance!.window.locale;
         return new MaterialApp(
 
             ///多语言实现代理
@@ -76,7 +76,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
               GlobalWidgetsLocalizations.delegate,
               GSYLocalizationsDelegate.delegate,
             ],
-            supportedLocales: [store.state.locale],
+            supportedLocales: [store.state.locale!],
             locale: store.state.locale,
             theme: store.state.themeData,
             navigatorObservers: [this],
@@ -109,12 +109,12 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
 }
 
 mixin HttpErrorListener on State<FlutterReduxApp> {
-  StreamSubscription stream;
+  StreamSubscription? stream;
 
   ///这里为什么用 _context 你理解吗？
   ///因为此时 State 的 context 是 FlutterReduxApp 而不是 MaterialApp
   ///所以如果直接用 context 是会获取不到 MaterialApp 的 Localizations 哦。
-  BuildContext _context;
+  late BuildContext _context;
 
   @override
   void initState() {
@@ -130,39 +130,39 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
   void dispose() {
     super.dispose();
     if (stream != null) {
-      stream.cancel();
+      stream!.cancel();
       stream = null;
     }
   }
 
   ///网络错误提醒
-  errorHandleFunction(int code, message) {
+  errorHandleFunction(int? code, message) {
     switch (code) {
       case Code.NETWORK_ERROR:
-        showToast(GSYLocalizations.i18n(_context).network_error);
+        showToast(GSYLocalizations.i18n(_context)!.network_error);
         break;
       case 401:
-        showToast(GSYLocalizations.i18n(_context).network_error_401);
+        showToast(GSYLocalizations.i18n(_context)!.network_error_401);
         break;
       case 403:
-        showToast(GSYLocalizations.i18n(_context).network_error_403);
+        showToast(GSYLocalizations.i18n(_context)!.network_error_403);
         break;
       case 404:
-        showToast(GSYLocalizations.i18n(_context).network_error_404);
+        showToast(GSYLocalizations.i18n(_context)!.network_error_404);
         break;
       case 422:
-        showToast(GSYLocalizations.i18n(_context).network_error_422);
+        showToast(GSYLocalizations.i18n(_context)!.network_error_422);
         break;
       case Code.NETWORK_TIMEOUT:
         //超时
-        showToast(GSYLocalizations.i18n(_context).network_error_timeout);
+        showToast(GSYLocalizations.i18n(_context)!.network_error_timeout);
         break;
       case Code.GITHUB_API_REFUSED:
         //Github API 异常
-        showToast(GSYLocalizations.i18n(_context).github_refused);
+        showToast(GSYLocalizations.i18n(_context)!.github_refused);
         break;
       default:
-        showToast(GSYLocalizations.i18n(_context).network_error_unknown +
+        showToast(GSYLocalizations.i18n(_context)!.network_error_unknown +
             " " +
             message);
         break;

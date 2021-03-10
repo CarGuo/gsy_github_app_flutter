@@ -12,18 +12,18 @@ part 'CommitsComparison.g.dart';
 
 @JsonSerializable()
 class CommitsComparison{
-  String url;
+  String? url;
   @JsonKey(name: "html_url")
-  String htmlUrl;
+  String? htmlUrl;
   @JsonKey(name: "base_commit")
-  RepoCommit baseCommit;
+  RepoCommit? baseCommit;
   @JsonKey(name: "merge_base_commit")
-  RepoCommit mergeBaseCommit;
-  String status;
+  RepoCommit? mergeBaseCommit;
+  String? status;
   @JsonKey(name: "total_commits")
-  int totalCommits;
-  List<RepoCommit> commits;
-  List<CommitFile> files;
+  int? totalCommits;
+  List<RepoCommit>? commits;
+  List<CommitFile>? files;
 
   CommitsComparison(
     this.url,

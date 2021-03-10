@@ -22,16 +22,16 @@ import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 class PersonPage extends StatefulWidget {
   static final String sName = "person";
 
-  final String userName;
+  final String? userName;
 
-  PersonPage(this.userName, {Key key}) : super(key: key);
+  PersonPage(this.userName, {Key? key}) : super(key: key);
 
   @override
   _PersonState createState() => _PersonState(userName);
 }
 
 class _PersonState extends BasePersonState<PersonPage> {
-  final String userName;
+  final String? userName;
 
   String beStaredCount = "---";
 
@@ -39,7 +39,7 @@ class _PersonState extends BasePersonState<PersonPage> {
 
   String focus = "";
 
-  User userInfo = User.empty();
+  User? userInfo = User.empty();
 
   final List<UserOrg> orgList = [];
 
@@ -100,8 +100,8 @@ class _PersonState extends BasePersonState<PersonPage> {
     if (isShow) {
       setState(() {
         focus = (focusRes != null && focusRes.result)
-            ? GSYLocalizations.i18n(context).user_focus
-            : GSYLocalizations.i18n(context).user_un_focus;
+            ? GSYLocalizations.i18n(context)!.user_focus
+            : GSYLocalizations.i18n(context)!.user_un_focus;
         focusStatus = (focusRes != null && focusRes.result);
       });
     }
@@ -112,12 +112,12 @@ class _PersonState extends BasePersonState<PersonPage> {
     if (userInfo == null) {
       return new User.empty();
     }
-    return userInfo.login;
+    return userInfo!.login;
   }
 
   ///获取用户动态或者组织成员
   _getDataLogic() async {
-    if (userInfo.type == "Organization") {
+    if (userInfo!.type == "Organization") {
       return await UserDao.getMemberDao(_getUserName(), page);
     }
     getUserOrg(_getUserName());
@@ -148,7 +148,7 @@ class _PersonState extends BasePersonState<PersonPage> {
     return new Scaffold(
         appBar: new AppBar(
             title: GSYTitleBar(
-          (userInfo != null && userInfo.login != null) ? userInfo.login : "",
+          (userInfo != null && userInfo!.login != null) ? userInfo!.login : "",
           rightWidget: GSYCommonOptionWidget(
             url: userInfo?.html_url,
           ),
@@ -164,9 +164,9 @@ class _PersonState extends BasePersonState<PersonPage> {
               if (focus == '') {
                 return;
               }
-              if (userInfo.type == "Organization") {
+              if (userInfo!.type == "Organization") {
                 Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context).user_focus_no_support);
+                    msg: GSYLocalizations.i18n(context)!.user_focus_no_support);
                 return;
               }
               CommonUtils.showLoadingDialog(context);
@@ -178,13 +178,13 @@ class _PersonState extends BasePersonState<PersonPage> {
         body: GSYNestedPullLoadWidget(
           pullLoadWidgetControl,
           (BuildContext context, int index) =>
-              renderItem(index, userInfo, beStaredCount, null, null, orgList),
+              renderItem(index, userInfo!, beStaredCount, null, null, orgList),
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIKey,
           headerSliverBuilder: (context, _) {
             return sliverBuilder(
-                context, _, userInfo, null, beStaredCount, null);
+                context, _, userInfo!, null, beStaredCount, null);
           },
         ));
   }

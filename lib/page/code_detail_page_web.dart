@@ -16,19 +16,19 @@ import 'package:webview_flutter/webview_flutter.dart';
  */
 
 class CodeDetailPageWeb extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
-  final String path;
+  final String? path;
 
-  final String data;
+  final String? data;
 
-  final String title;
+  final String? title;
 
-  final String branch;
+  final String? branch;
 
-  final String htmlUrl;
+  final String? htmlUrl;
 
   CodeDetailPageWeb(
       {this.title,
@@ -46,7 +46,7 @@ class CodeDetailPageWeb extends StatefulWidget {
 class _CodeDetailPageState extends State<CodeDetailPageWeb> {
   bool isLand = false;
 
-  Future<String> _getData() async {
+  Future<String?> _getData() async {
     if (widget.data != null) {
       return widget.data;
     }
@@ -82,11 +82,11 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       appBar: new AppBar(
         title: GSYTitleBar(widget.title),
       ),
-      body: FutureBuilder<String>(
+      body: FutureBuilder<String?>(
         initialData: widget.data,
         future: _getData(),
         builder: (context, result) {
-          if (result.data == null || result.data.isEmpty) {
+          if (result.data == null || result.data!.isEmpty) {
             return new Center(
               child: new Container(
                 width: 200.0,
@@ -100,7 +100,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
                     new Container(width: 10.0),
                     new Container(
                         child: new Text(
-                            GSYLocalizations.i18n(context).loading_text,
+                            GSYLocalizations.i18n(context)!.loading_text,
                             style: GSYConstant.middleText)),
                   ],
                 ),

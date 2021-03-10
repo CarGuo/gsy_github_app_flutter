@@ -14,7 +14,7 @@ part 'License.g.dart';
 @JsonSerializable()
 class License {
 
-  String name;
+  String? name;
 
   License(this.name);
 

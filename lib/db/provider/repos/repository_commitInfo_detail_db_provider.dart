@@ -8,10 +8,10 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 
 class RepositoryCommitInfoDetailDbProvider extends BaseDbProvider {
   final String name = 'RepositoryCommitInfoDetail';
-  int id;
-  String fullName;
-  String data;
-  String sha;
+  int? id;
+  String? fullName;
+  String? data;
+  String? sha;
 
   final String columnId = "_id";
   final String columnFullName = "fullName";

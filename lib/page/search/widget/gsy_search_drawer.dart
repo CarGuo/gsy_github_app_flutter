@@ -11,9 +11,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 typedef void SearchSelectItemChanged<String>(String value);
 
 class GSYSearchDrawer extends StatefulWidget {
-  final SearchSelectItemChanged<String> typeCallback;
-  final SearchSelectItemChanged<String> sortCallback;
-  final SearchSelectItemChanged<String> languageCallback;
+  final SearchSelectItemChanged<String?> typeCallback;
+  final SearchSelectItemChanged<String?> sortCallback;
+  final SearchSelectItemChanged<String?> languageCallback;
 
   GSYSearchDrawer(this.typeCallback, this.sortCallback, this.languageCallback);
 
@@ -47,20 +47,20 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     list.add(new Container(
       width: itemWidth,
     ));
-    list.add(_renderTitle(GSYLocalizations.i18n(context).search_type));
+    list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_type));
     for (int i = 0; i < searchFilterType.length; i++) {
       FilterModel model = searchFilterType[i];
       list.add(_renderItem(model, searchFilterType, i, widget.typeCallback));
       list.add(_renderDivider());
     }
-    list.add(_renderTitle(GSYLocalizations.i18n(context).search_sort));
+    list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_sort));
 
     for (int i = 0; i < sortType.length; i++) {
       FilterModel model = sortType[i];
       list.add(_renderItem(model, sortType, i, widget.sortCallback));
       list.add(_renderDivider());
     }
-    list.add(_renderTitle(GSYLocalizations.i18n(context).search_language));
+    list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_language));
     for (int i = 0; i < searchLanguageType.length; i++) {
       FilterModel model = searchLanguageType[i];
       list.add(
@@ -94,7 +94,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   }
 
   _renderItem(FilterModel model, List<FilterModel> list, int index,
-      SearchSelectItemChanged<String> select) {
+      SearchSelectItemChanged<String?>? select) {
     return new Stack(
       children: <Widget>[
         new Container(
@@ -108,7 +108,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
                 new Center(
                     child: new Checkbox(
                         value: model.select, onChanged: (value) {})),
-                new Center(child: Text(model.name)),
+                new Center(child: Text(model.name!)),
               ],
             ),
           ),
@@ -133,9 +133,9 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 }
 
 class FilterModel {
-  String name;
-  String value;
-  bool select;
+  String? name;
+  String? value;
+  bool? select;
 
   FilterModel({this.name, this.value, this.select});
 }

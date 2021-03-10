@@ -34,8 +34,8 @@ class _SearchPageState extends State<SearchPage>
         SingleTickerProviderStateMixin {
   final SearchBLoC searchBLoC = new SearchBLoC();
 
-  AnimationController controller;
-  Animation animation;
+  late AnimationController controller;
+  Animation? animation;
   bool endAnima = false;
 
   ///绘制item
@@ -150,24 +150,24 @@ class _SearchPageState extends State<SearchPage>
         minR: MediaQuery.of(context).size.height - 8,
         maxR: 0,
         offset: widget.centerPosition,
-        animation: animation,
+        animation: animation as Animation<double>?,
         child: new Scaffold(
           resizeToAvoidBottomInset: false,
           ///右侧 Drawer
           endDrawer: new GSYSearchDrawer(
-            (String type) {
+            (String? type) {
               ///排序类型
               searchBLoC.type = type;
               Navigator.pop(context);
               _resolveSelectIndex();
             },
-            (String sort) {
+            (String? sort) {
               ///排序状态
               searchBLoC.sort = sort;
               Navigator.pop(context);
               _resolveSelectIndex();
             },
-            (String language) {
+            (String? language) {
               ///过滤语言
               searchBLoC.language = language;
               Navigator.pop(context);
@@ -187,7 +187,7 @@ class _SearchPageState extends State<SearchPage>
                   });
                 },
               ),
-              title: new Text(GSYLocalizations.i18n(context).search_title),
+              title: new Text(GSYLocalizations.i18n(context)!.search_title),
               bottom: new SearchBottom(
                   textEditingController: searchBLoC.textEditingController,
                   onSubmitted: (_) {
@@ -222,12 +222,12 @@ class _SearchPageState extends State<SearchPage>
 
 ///实现 PreferredSizeWidget 实现自定义 appbar bottom 控件
 class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
-  final SelectItemChanged onSubmitted;
+  final SelectItemChanged? onSubmitted;
 
-  final SelectItemChanged selectItemChanged;
+  final SelectItemChanged? selectItemChanged;
 
-  final VoidCallback onSubmitPressed;
-  final TextEditingController textEditingController;
+  final VoidCallback? onSubmitPressed;
+  final TextEditingController? textEditingController;
 
   SearchBottom(
       {this.onSubmitted,
@@ -245,8 +245,8 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
             onSubmitPressed: onSubmitPressed),
         new GSYSelectItemWidget(
           [
-            GSYLocalizations.i18n(context).search_tab_repos,
-            GSYLocalizations.i18n(context).search_tab_user,
+            GSYLocalizations.i18n(context)!.search_tab_repos,
+            GSYLocalizations.i18n(context)!.search_tab_user,
           ],
           selectItemChanged,
           elevation: 0.0,
@@ -263,19 +263,19 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class CRAnimation extends StatelessWidget {
-  final Offset offset;
+  final Offset? offset;
 
-  final double minR;
+  final double? minR;
 
-  final double maxR;
+  final double? maxR;
 
   final Widget child;
 
-  final Animation<double> animation;
+  final Animation<double>? animation;
 
   CRAnimation({
-    @required this.child,
-    @required this.animation,
+    required this.child,
+    required this.animation,
     this.offset,
     this.minR,
     this.maxR,
@@ -284,11 +284,11 @@ class CRAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animation,
+      animation: animation!,
       builder: (_, __) {
         return ClipPath(
           clipper: AnimationClipper(
-            value: animation.value,
+            value: animation!.value,
             minR: minR,
             maxR: maxR,
             offset: offset,
@@ -301,13 +301,13 @@ class CRAnimation extends StatelessWidget {
 }
 
 class AnimationClipper extends CustomClipper<Path> {
-  final double value;
+  final double? value;
 
-  final double minR;
+  final double? minR;
 
-  final double maxR;
+  final double? maxR;
 
-  final Offset offset;
+  final Offset? offset;
 
   AnimationClipper({
     this.value,
@@ -328,7 +328,7 @@ class AnimationClipper extends CustomClipper<Path> {
 
     var minRadius = maxR ?? 0;
 
-    var radius = lerpDouble(minRadius, maxRadius, value);
+    var radius = lerpDouble(minRadius, maxRadius, value!)!;
     var rect = Rect.fromCircle(
       radius: radius,
       center: offset,

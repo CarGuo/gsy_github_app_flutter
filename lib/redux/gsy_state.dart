@@ -17,19 +17,19 @@ import 'middleware/epic_middleware.dart';
 ///全局Redux store 的对象，保存State数据
 class GSYState {
   ///用户信息
-  User userInfo;
+  User? userInfo;
 
   ///主题数据
-  ThemeData themeData;
+  ThemeData? themeData;
 
   ///语言
-  Locale locale;
+  Locale? locale;
 
   ///当前手机平台默认语言
-  Locale platformLocale;
+  Locale? platformLocale;
 
   ///是否登录
-  bool login;
+  bool? login;
 
   ///构造方法
   GSYState({this.userInfo, this.themeData, this.locale, this.login});
@@ -53,9 +53,9 @@ GSYState appReducer(GSYState state, action) {
 }
 
 final List<Middleware<GSYState>> middleware = [
-  EpicMiddleware<GSYState>(loginEpic),
-  EpicMiddleware<GSYState>(userInfoEpic),
-  EpicMiddleware<GSYState>(oauthEpic),
-  UserInfoMiddleware(),
-  LoginMiddleware(),
+  EpicMiddleware<GSYState>(loginEpic) as dynamic Function(Store<GSYState>, dynamic, dynamic Function(dynamic)),
+  EpicMiddleware<GSYState>(userInfoEpic) as dynamic Function(Store<GSYState>, dynamic, dynamic Function(dynamic)),
+  EpicMiddleware<GSYState>(oauthEpic) as dynamic Function(Store<GSYState>, dynamic, dynamic Function(dynamic)),
+  UserInfoMiddleware() as dynamic Function(Store<GSYState>, dynamic, dynamic Function(dynamic)),
+  LoginMiddleware() as dynamic Function(Store<GSYState>, dynamic, dynamic Function(dynamic)),
 ];

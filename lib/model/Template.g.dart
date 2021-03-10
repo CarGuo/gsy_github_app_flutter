@@ -8,9 +8,9 @@ part of 'Template.dart';
 
 Template _$TemplateFromJson(Map<String, dynamic> json) {
   return Template(
-    json['name'] as String,
-    json['id'] as int,
-    json['push_id'] as int,
+    json['name'] as String?,
+    json['id'] as int?,
+    json['push_id'] as int?,
   );
 }
 

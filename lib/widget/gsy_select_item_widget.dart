@@ -14,9 +14,9 @@ class GSYSelectItemWidget extends StatefulWidget
     implements PreferredSizeWidget {
   final List<String> itemNames;
 
-  final SelectItemChanged selectItemChanged;
+  final SelectItemChanged? selectItemChanged;
 
-  final RoundedRectangleBorder shape;
+  final RoundedRectangleBorder? shape;
 
   final double elevation;
 

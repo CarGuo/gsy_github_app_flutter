@@ -57,9 +57,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
-      _renderTab(GSYICons.MAIN_DT, GSYLocalizations.i18n(context).home_dynamic),
-      _renderTab(GSYICons.MAIN_QS, GSYLocalizations.i18n(context).home_trend),
-      _renderTab(GSYICons.MAIN_MY, GSYLocalizations.i18n(context).home_my),
+      _renderTab(GSYICons.MAIN_DT, GSYLocalizations.i18n(context)!.home_dynamic),
+      _renderTab(GSYICons.MAIN_QS, GSYLocalizations.i18n(context)!.home_trend),
+      _renderTab(GSYICons.MAIN_MY, GSYLocalizations.i18n(context)!.home_my),
     ];
 
     ///增加返回按键监听
@@ -79,20 +79,20 @@ class _HomePageState extends State<HomePage> {
         onDoublePress: (index) {
           switch (index) {
             case 0:
-              dynamicKey.currentState.scrollToTop();
+              dynamicKey.currentState!.scrollToTop();
               break;
             case 1:
-              trendKey.currentState.scrollToTop();
+              trendKey.currentState!.scrollToTop();
               break;
             case 2:
-              myKey.currentState.scrollToTop();
+              myKey.currentState!.scrollToTop();
               break;
           }
         },
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: GSYColors.white,
         title: GSYTitleBar(
-          GSYLocalizations.of(context).currentLocalized.app_name,
+          GSYLocalizations.of(context)!.currentLocalized!.app_name,
           iconData: GSYICons.MAIN_SEARCH,
           needRightLocalIcon: true,
           onRightIconPressed: (centerPosition) {

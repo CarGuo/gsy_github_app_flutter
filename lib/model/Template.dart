@@ -6,13 +6,13 @@ part 'Template.g.dart';
 @JsonSerializable()
 class Template {
 
-  String name;
+  String? name;
 
-  int id;
+  int? id;
 
 
   @JsonKey(name: "push_id")
-  int pushId;
+  int? pushId;
 
   Template(this.name, this.id, this.pushId);
 

@@ -6,7 +6,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
  */
 
 class HtmlUtils {
-  static generateCode2HTml(String mdData,
+  static generateCode2HTml(String? mdData,
       {String backgroundColor = GSYColors.miWhiteString,
       String lang = 'java',
       userBR = true}) {
@@ -20,14 +20,14 @@ class HtmlUtils {
             "</body>\n"
         : "<body>\n" +
             "<pre class=\"pre\">\n" +
-            mdData +
+            mdData! +
             "</pre>\n" +
             "</body>\n";
     return generateHtml(currentData,
         backgroundColor: backgroundColor, userBR: userBR);
   }
 
-  static generateHtml(String mdData,
+  static generateHtml(String? mdData,
       {String backgroundColor = GSYColors.webDraculaBackgroundColorString,
       userBR = true}) {
     if (mdData == null) {
@@ -43,8 +43,8 @@ class HtmlUtils {
       RegExp exp = new RegExp(regExCode);
       Iterable<Match> tags = exp.allMatches(mdData);
       for (Match m in tags) {
-        String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
-        mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+        String match = m.group(0)!.replaceAll(new RegExp("\n"), "\n\r<br>");
+        mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
       }
     } catch (e) {
       print(e);
@@ -53,9 +53,9 @@ class HtmlUtils {
       RegExp exp = new RegExp(regExPre);
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
-        if (m.group(0).indexOf("<code>") < 0) {
-          String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
-          mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+        if (m.group(0)!.indexOf("<code>") < 0) {
+          String match = m.group(0)!.replaceAll(new RegExp("\n"), "\n\r<br>");
+          mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
         }
       }
     } catch (e) {
@@ -66,9 +66,9 @@ class HtmlUtils {
       RegExp exp = new RegExp("<pre>(([\\s\\S])*?)<\/pre>");
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
-        if (m.group(0).indexOf("<code>") < 0) {
-          String match = m.group(0).replaceAll(new RegExp("\n"), "\n\r<br>");
-          mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+        if (m.group(0)!.indexOf("<code>") < 0) {
+          String match = m.group(0)!.replaceAll(new RegExp("\n"), "\n\r<br>");
+          mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
         }
       }
     } catch (e) {
@@ -78,12 +78,12 @@ class HtmlUtils {
       RegExp exp = new RegExp("href=\"(.*?)\"");
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
-        String capture = m.group(0);
+        String capture = m.group(0)!;
         if (capture.indexOf("http://") < 0 &&
             capture.indexOf("https://") < 0 &&
             capture.indexOf("#") != 0) {
           mdDataCode =
-              mdDataCode.replaceAll(m.group(0), "gsygithub://" + capture);
+              mdDataCode.replaceAll(m.group(0)!, "gsygithub://" + capture);
         }
       }
     } catch (e) {
@@ -174,7 +174,7 @@ class HtmlUtils {
         "</html>";
   }
 
-  static parseDiffSource(String diffSource, bool wrap) {
+  static parseDiffSource(String? diffSource, bool wrap) {
     if (diffSource == null) {
       return "";
     }
@@ -187,7 +187,7 @@ class HtmlUtils {
     int normalLineNum = 0;
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i];
-      String lineNumberStr = "";
+      String? lineNumberStr = "";
       String classStr = "";
       int curAddNumber = -1;
       int curRemoveNumber = -1;
@@ -219,7 +219,7 @@ class HtmlUtils {
           "<div " +
           classStr +
           ">" +
-          (wrap ? "" : lineNumberStr + getBlank(1)) +
+          (wrap ? "" : lineNumberStr! + getBlank(1)) +
           line +
           "</div>";
     }
@@ -265,10 +265,10 @@ class HtmlUtils {
     if (res != null && res.result) {
       String startTag = "class=\"instapaper_body ";
       int startLang = res.data.indexOf(startTag);
-      int endLang = res.data.indexOf("\" data-path=\"");
-      String lang;
-      if (startLang >= 0 && endLang >= 0) {
-        String tmpLang =
+      int? endLang = res.data.indexOf("\" data-path=\"");
+      String? lang;
+      if (startLang >= 0 && endLang! >= 0) {
+        String? tmpLang =
             res.data.substring(startLang + startTag.length, endLang);
         if (tmpLang != null) {
           lang = formName(tmpLang.toLowerCase());

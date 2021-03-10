@@ -102,10 +102,10 @@ class TrendingUtil {
       Iterable<Match> tags = tag.allMatches(description);
       for (Match m in tags) {
         String match = m
-            .group(0)
+            .group(0)!
             .replaceAll(new RegExp("<g-emoji.*?>"), "")
             .replaceAll(new RegExp("</g-emoji>"), "");
-        description = description.replaceAll(new RegExp(m.group(0)), match);
+        description = description.replaceAll(new RegExp(m.group(0)!), match);
       }
     }
     repo.description = description;

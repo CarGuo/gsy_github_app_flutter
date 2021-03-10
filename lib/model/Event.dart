@@ -13,16 +13,16 @@ part 'Event.g.dart';
 
 @JsonSerializable()
 class Event {
-  String id;
-  String type;
-  User actor;
-  Repository repo;
-  User org;
-  EventPayload payload;
+  String? id;
+  String? type;
+  User? actor;
+  Repository? repo;
+  User? org;
+  EventPayload? payload;
   @JsonKey(name: "public")
-  bool isPublic;
+  bool? isPublic;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
 
   Event(
     this.id,

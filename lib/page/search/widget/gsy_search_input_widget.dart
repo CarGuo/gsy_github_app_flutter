@@ -7,11 +7,11 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
  * Date: 2018-07-20
  */
 class GSYSearchInputWidget extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
 
-  final VoidCallback onSubmitPressed;
+  final VoidCallback? onSubmitPressed;
 
   GSYSearchInputWidget(
       {this.controller, this.onSubmitted, this.onSubmitPressed});
@@ -40,7 +40,7 @@ class GSYSearchInputWidget extends StatelessWidget {
                   autofocus: false,
                   controller: controller,
                   decoration: new InputDecoration(
-                    hintText: GSYLocalizations.i18n(context).repos_issue_search,
+                    hintText: GSYLocalizations.i18n(context)!.repos_issue_search,
                     hintStyle: GSYConstant.middleSubText,
                     border: InputBorder.none,
                     isDense: true,

@@ -27,7 +27,7 @@ class IssueDao {
    */
   static getRepositoryIssueDao(userName, repository, state,
       {sort, direction, page = 0, needDb = false}) async {
-    String fullName = userName + "/" + repository;
+    String? fullName = userName + "/" + repository;
     String dbState = state ?? "*";
     RepositoryIssueDbProvider provider = new RepositoryIssueDbProvider();
 
@@ -62,7 +62,7 @@ class IssueDao {
     }
 
     if (needDb) {
-      List<Issue> list = await provider.getData(fullName, dbState);
+      List<Issue>? list = await provider.getData(fullName, dbState);
       if (list == null) {
         return await next();
       }
@@ -81,7 +81,7 @@ class IssueDao {
    * @param state 问题状态，all open closed
    */
   static searchRepositoryIssue(q, name, reposName, state, {page = 1}) async {
-    String qu;
+    String? qu;
     if (state == null || state == 'all') {
       qu = q + "+repo%3A${name}%2F${reposName}";
     } else {
@@ -109,7 +109,7 @@ class IssueDao {
    * issue的详请
    */
   static getIssueInfoDao(userName, repository, number, {needDb = true}) async {
-    String fullName = userName + "/" + repository;
+    String? fullName = userName + "/" + repository;
 
     IssueDetailDbProvider provider = new IssueDetailDbProvider();
 
@@ -129,7 +129,7 @@ class IssueDao {
     }
 
     if (needDb) {
-      Issue issue = await provider.getRepository(fullName, number);
+      Issue? issue = await provider.getRepository(fullName, number);
       if (issue == null) {
         return await next();
       }
@@ -144,7 +144,7 @@ class IssueDao {
    */
   static getIssueCommentDao(userName, repository, number,
       {page: 0, needDb = false}) async {
-    String fullName = userName + "/" + repository;
+    String? fullName = userName + "/" + repository;
     IssueCommentDbProvider provider = new IssueCommentDbProvider();
 
     next() async {
@@ -172,7 +172,7 @@ class IssueDao {
     }
 
     if (needDb) {
-      List<Issue> list = await provider.getData(fullName, number);
+      List<Issue>? list = await provider.getData(fullName, number);
       if (list == null) {
         return await next();
       }

@@ -16,18 +16,18 @@ class SqlManager {
 
   static const _NAME = "gsy_github_app_flutter.db";
 
-  static Database _database;
+  static Database? _database;
 
   ///初始化
   static init() async {
     // open the database
-    var databasesPath = await getDatabasesPath();
+    var databasesPath = await (getDatabasesPath() as FutureOr<String>);
     var userRes = await UserDao.getUserInfoLocal();
     String dbName = _NAME;
     if (userRes != null && userRes.result) {
-      User user = userRes.data;
+      User? user = userRes.data;
       if (user != null && user.login != null) {
-        dbName = user.login + "_" + _NAME;
+        dbName = user.login! + "_" + _NAME;
       }
     }
     String path = databasesPath + dbName;
@@ -46,13 +46,13 @@ class SqlManager {
    */
   static isTableExits(String tableName) async {
     await getCurrentDatabase();
-    var res = await _database.rawQuery(
+    var res = await _database!.rawQuery(
         "select * from Sqlite_master where type = 'table' and name = '$tableName'");
     return res != null && res.length > 0;
   }
 
   ///获取当前数据库对象
-  static Future<Database> getCurrentDatabase() async {
+  static Future<Database?> getCurrentDatabase() async {
     if (_database == null) {
       await init();
     }

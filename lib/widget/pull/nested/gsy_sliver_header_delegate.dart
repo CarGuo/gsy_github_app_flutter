@@ -6,22 +6,22 @@ import 'package:flutter/rendering.dart';
 ///动态头部处理
 class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   GSYSliverHeaderDelegate(
-      {@required this.minHeight,
-      @required this.maxHeight,
-      @required this.snapConfig,
-      @required this.vSyncs,
+      {required this.minHeight,
+      required this.maxHeight,
+      required this.snapConfig,
+      required this.vSyncs,
       this.child,
       this.builder,
       this.changeSize = false});
 
   final double minHeight;
   final double maxHeight;
-  final Widget child;
-  final Builder builder;
+  final Widget? child;
+  final Builder? builder;
   final TickerProvider vSyncs;
   final bool changeSize;
   final FloatingHeaderSnapConfiguration snapConfig;
-  AnimationController animationController;
+  AnimationController? animationController;
 
   @override
   double get minExtent => minHeight;
@@ -33,9 +33,9 @@ class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     if (builder != null) {
-      return builder(context, shrinkOffset, overlapsContent);
+      return builder!(context, shrinkOffset, overlapsContent);
     }
-    return child;
+    return child!;
   }
 
   @override

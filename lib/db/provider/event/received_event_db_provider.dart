@@ -17,8 +17,8 @@ class ReceivedEventDbProvider extends BaseDbProvider {
   final String columnId = "_id";
   final String columnData = "data";
 
-  int id;
-  String data;
+  int? id;
+  String? data;
 
   ReceivedEventDbProvider();
 
@@ -68,7 +68,7 @@ class ReceivedEventDbProvider extends BaseDbProvider {
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
-          await compute(CodeUtils.decodeListResult, provider.data);
+          await compute(CodeUtils.decodeListResult as FutureOr<List<dynamic>> Function(String? data), provider.data);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

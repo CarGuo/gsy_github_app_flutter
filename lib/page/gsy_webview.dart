@@ -14,7 +14,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class GSYWebView extends StatefulWidget {
   final String url;
-  final String title;
+  final String? title;
 
   GSYWebView(this.url, this.title);
 
@@ -25,13 +25,13 @@ class GSYWebView extends StatefulWidget {
 class _GSYWebViewState extends State<GSYWebView> {
   _renderTitle() {
     if (widget.url == null || widget.url.length == 0) {
-      return new Text(widget.title);
+      return new Text(widget.title!);
     }
     return new Row(children: [
       new Expanded(
           child: new Container(
         child: new Text(
-          widget.title,
+          widget.title!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -86,7 +86,7 @@ class _GSYWebViewState extends State<GSYWebView> {
                     new Container(width: 10.0),
                     new Container(
                         child: new Text(
-                            GSYLocalizations.i18n(context).loading_text,
+                            GSYLocalizations.i18n(context)!.loading_text,
                             style: GSYConstant.middleText)),
                   ],
                 ),

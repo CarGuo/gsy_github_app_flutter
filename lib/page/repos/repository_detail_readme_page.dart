@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 /**
  * Readme
@@ -16,11 +16,11 @@ import 'package:scoped_model/scoped_model.dart';
  */
 
 class RepositoryDetailReadmePage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
-  RepositoryDetailReadmePage(this.userName, this.reposName, {Key key})
+  RepositoryDetailReadmePage(this.userName, this.reposName, {Key? key})
       : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
     with AutomaticKeepAliveClientMixin {
   bool isShow = false;
 
-  String markdownData;
+  String? markdownData;
 
   RepositoryDetailReadmePageState();
 
@@ -93,7 +93,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
                   new Container(width: 10.0),
                   new Container(
                       child: new Text(
-                          GSYLocalizations.i18n(context).loading_text,
+                          GSYLocalizations.i18n(context)!.loading_text,
                           style: GSYConstant.middleText)),
                 ],
               ),

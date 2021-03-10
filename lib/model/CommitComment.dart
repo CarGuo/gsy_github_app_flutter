@@ -10,21 +10,21 @@ part 'CommitComment.g.dart';
 
 @JsonSerializable()
 class CommitComment{
-  int id;
-  String body;
-  String path;
-  int position;
-  int line;
+  int? id;
+  String? body;
+  String? path;
+  int? position;
+  int? line;
   @JsonKey(name: "commit_id")
-  String commitId;
+  String? commitId;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
   @JsonKey(name: "updated_at")
-  DateTime updatedAt;
+  DateTime? updatedAt;
   @JsonKey(name: "html_url")
-  String htmlUrl;
-  String url;
-  User user;
+  String? htmlUrl;
+  String? url;
+  User? user;
 
   CommitComment(
     this.id,

@@ -9,9 +9,9 @@ part 'NotificationSubject.g.dart';
 
 @JsonSerializable()
 class NotificationSubject {
-  String title;
-  String url;
-  String type;
+  String? title;
+  String? url;
+  String? type;
 
   NotificationSubject(this.title, this.url, this.type);
 

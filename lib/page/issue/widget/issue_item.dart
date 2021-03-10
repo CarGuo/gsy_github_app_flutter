@@ -17,10 +17,10 @@ class IssueItem extends StatelessWidget {
   final IssueItemViewModel issueItemViewModel;
 
   ///点击
-  final GestureTapCallback onPressed;
+  final GestureTapCallback? onPressed;
 
   ///长按
-  final GestureTapCallback onLongPress;
+  final GestureTapCallback? onLongPress;
 
   ///是否需要底部状态
   final bool hideBottom;
@@ -119,7 +119,7 @@ class IssueItem extends StatelessWidget {
                         children: <Widget>[
                           ///用户名
                           new Expanded(
-                              child: new Text(issueItemViewModel.actionUser,
+                              child: new Text(issueItemViewModel.actionUser!,
                                   style: GSYConstant.smallTextBold)),
                           new Text(
                             issueItemViewModel.actionTime,
@@ -149,11 +149,11 @@ class IssueItem extends StatelessWidget {
 
 class IssueItemViewModel {
   String actionTime = "---";
-  String actionUser = "---";
-  String actionUserPic ;
+  String? actionUser = "---";
+  String? actionUserPic ;
   String issueComment = "---";
   String commentCount = "---";
-  String state = "---";
+  String? state = "---";
   String issueTag = "---";
   String number = "---";
   String id = "";
@@ -162,11 +162,11 @@ class IssueItemViewModel {
 
   IssueItemViewModel.fromMap(Issue issueMap, {needTitle = true}) {
     String fullName = CommonUtils.getFullName(issueMap.repoUrl);
-    actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt);
-    actionUser = issueMap.user.login;
-    actionUserPic = issueMap.user.avatar_url;
+    actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt!);
+    actionUser = issueMap.user!.login;
+    actionUserPic = issueMap.user!.avatar_url;
     if (needTitle) {
-      issueComment = fullName + "- " + issueMap.title;
+      issueComment = fullName + "- " + issueMap.title!;
       commentCount = issueMap.commentNum.toString();
       state = issueMap.state;
       issueTag = "#" + issueMap.number.toString();

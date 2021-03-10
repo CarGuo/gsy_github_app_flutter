@@ -8,32 +8,32 @@ class GSYTabBarWidget extends StatefulWidget {
 
   final bool resizeToAvoidBottomPadding;
 
-  final List<Widget> tabItems;
+  final List<Widget>? tabItems;
 
-  final List<Widget> tabViews;
+  final List<Widget>? tabViews;
 
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
-  final Color indicatorColor;
+  final Color? indicatorColor;
 
-  final Widget title;
+  final Widget? title;
 
-  final Widget drawer;
+  final Widget? drawer;
 
-  final Widget floatingActionButton;
+  final Widget? floatingActionButton;
 
-  final FloatingActionButtonLocation floatingActionButtonLocation;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
-  final Widget bottomBar;
+  final Widget? bottomBar;
 
-  final List<Widget> footerButtons;
+  final List<Widget>? footerButtons;
 
-  final ValueChanged<int> onPageChanged;
-  final ValueChanged<int> onDoublePress;
-  final ValueChanged<int> onSinglePress;
+  final ValueChanged<int>? onPageChanged;
+  final ValueChanged<int>? onDoublePress;
+  final ValueChanged<int>? onSinglePress;
 
   GSYTabBarWidget({
-    Key key,
+    Key? key,
     this.type = TabType.top,
     this.tabItems,
     this.tabViews,
@@ -59,7 +59,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController();
 
-  TabController _tabController;
+  TabController? _tabController;
 
   int _index = 0;
 
@@ -67,13 +67,13 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
   void initState() {
     super.initState();
     _tabController =
-        new TabController(vsync: this, length: widget.tabItems.length);
+        new TabController(vsync: this, length: widget.tabItems!.length);
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 
@@ -82,7 +82,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
       return;
     }
     _index = index;
-    _tabController.animateTo(index);
+    _tabController!.animateTo(index);
     widget.onPageChanged?.call(index);
   }
 
@@ -118,13 +118,13 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
           title: widget.title,
           bottom: new TabBar(
               controller: _tabController,
-              tabs: widget.tabItems,
+              tabs: widget.tabItems!,
               indicatorColor: widget.indicatorColor,
               onTap: _navigationTapClick),
         ),
         body: new PageView(
           controller: _pageController,
-          children: widget.tabViews,
+          children: widget.tabViews!,
           onPageChanged: _navigationPageChanged,
         ),
         bottomNavigationBar: widget.bottomBar,
@@ -140,7 +140,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
         ),
         body: new PageView(
           controller: _pageController,
-          children: widget.tabViews,
+          children: widget.tabViews!,
           onPageChanged: _navigationPageChanged,
         ),
         bottomNavigationBar: new Material(
@@ -151,7 +151,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
               //TabBar导航标签，底部导航放到Scaffold的bottomNavigationBar中
               controller: _tabController,
               //配置控制器
-              tabs: widget.tabItems,
+              tabs: widget.tabItems!,
               indicatorColor: widget.indicatorColor,
               onDoubleTap: _navigationDoubleTapClick,
               onTap: _navigationTapClick, //tab标签的下划线颜色

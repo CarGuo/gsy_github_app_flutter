@@ -8,10 +8,10 @@ import 'package:supercharged/supercharged.dart';
 enum ParticleOffsetProps { x, y }
 
 class ParticleModel {
-  MultiTween<ParticleOffsetProps> tween;
-  double size;
-  Duration duration;
-  Duration startTime;
+  late MultiTween<ParticleOffsetProps> tween;
+  late double size;
+  late Duration duration;
+  late Duration startTime;
   Random random;
 
   ParticleModel(this.random) {

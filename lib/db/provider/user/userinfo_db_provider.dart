@@ -19,9 +19,9 @@ class UserInfoDbProvider extends BaseDbProvider {
   final String columnUserName = "userName";
   final String columnData = "data";
 
-  int id;
-  String userName;
-  String data;
+  int? id;
+  String? userName;
+  String? data;
 
   UserInfoDbProvider();
 
@@ -53,7 +53,7 @@ class UserInfoDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getUserProvider(Database db, String userName) async {
+  Future _getUserProvider(Database db, String? userName) async {
     List<Map<String, dynamic>> maps = await db.query(name,
         columns: [columnId, columnUserName, columnData],
         where: "$columnUserName = ?",
@@ -77,13 +77,13 @@ class UserInfoDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<User> getUserInfo(String userName) async {
+  Future<User?> getUserInfo(String? userName) async {
     Database db = await getDataBase();
     var userProvider = await _getUserProvider(db, userName);
     if (userProvider != null) {
       ///使用 compute 的 Isolate 优化 json decode
       var mapData =
-          await compute(CodeUtils.decodeMapResult, userProvider.data as String);
+          await compute(CodeUtils.decodeMapResult as FutureOr<Map<String, dynamic>> Function(String? data), userProvider.data as String?);
       return User.fromJson(mapData);
     }
     return null;

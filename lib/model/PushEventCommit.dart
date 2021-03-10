@@ -10,11 +10,11 @@ part 'PushEventCommit.g.dart';
 
 @JsonSerializable()
 class PushEventCommit {
-  String sha;
-  User author;
-  String message;
-  bool distinct;
-  String url;
+  String? sha;
+  User? author;
+  String? message;
+  bool? distinct;
+  String? url;
 
   PushEventCommit(
     this.sha,

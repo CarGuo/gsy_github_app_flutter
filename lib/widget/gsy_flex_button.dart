@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
  * Date: 2018-07-16
  */
 class GSYFlexButton extends StatelessWidget {
-  final String text;
+  final String? text;
 
-  final Color color;
+  final Color? color;
 
-  final Color textColor;
+  final Color? textColor;
 
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
 
   final double fontSize;
   final int maxLines;
@@ -20,7 +20,7 @@ class GSYFlexButton extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   GSYFlexButton(
-      {Key key,
+      {Key? key,
       this.text,
       this.color,
       this.textColor,
@@ -49,7 +49,7 @@ class GSYFlexButton extends StatelessWidget {
           direction: Axis.horizontal,
           children: <Widget>[
             new Expanded(
-              child: new Text(text,
+              child: new Text(text!,
                   style: new TextStyle(fontSize: fontSize),
                   textAlign: TextAlign.center,
                   maxLines: maxLines,

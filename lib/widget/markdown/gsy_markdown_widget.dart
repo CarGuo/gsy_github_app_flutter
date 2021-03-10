@@ -19,7 +19,7 @@ class GSYMarkdownWidget extends StatelessWidget {
 
   static const int DARK_THEME = 2;
 
-  final String markdownData;
+  final String? markdownData;
 
   final int style;
 
@@ -125,7 +125,7 @@ class GSYMarkdownWidget extends StatelessWidget {
       Iterable<Match> tags = exp.allMatches(markdownData);
       if (tags != null && tags.length > 0) {
         for (Match m in tags) {
-          String imageMatch = m.group(0);
+          String? imageMatch = m.group(0);
           if (imageMatch != null && !imageMatch.contains(".svg")) {
             String match = imageMatch.replaceAll("\)", "?raw=true)");
             if (!match.contains(".svg") && match.contains("http")) {
@@ -138,7 +138,7 @@ class GSYMarkdownWidget extends StatelessWidget {
             } else {
               match = "";
             }
-            mdDataCode = mdDataCode.replaceAll(m.group(0), match);
+            mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
           }
         }
       }
@@ -147,12 +147,12 @@ class GSYMarkdownWidget extends StatelessWidget {
       tags = expImg.allMatches(markdownData);
       if (tags != null && tags.length > 0) {
         for (Match m in tags) {
-          String imageTag = m.group(0);
+          String imageTag = m.group(0)!;
           String match = imageTag;
           if (imageTag != null) {
             Iterable<Match> srcTags = expSrc.allMatches(imageTag);
             for (Match srcMatch in srcTags) {
-              String srcString = srcMatch.group(0);
+              String? srcString = srcMatch.group(0);
               if (srcString != null && srcString.contains("http")) {
                 String newSrc = srcString.substring(
                         srcString.indexOf("http"), srcString.length - 1) +
@@ -181,12 +181,12 @@ class GSYMarkdownWidget extends StatelessWidget {
         child: new MarkdownBody(
           styleSheet: _getStyle(context),
           syntaxHighlighter: new GSYHighlighter(),
-          data: _getMarkDownData(markdownData),
-          imageBuilder: (Uri uri, String title, String alt) {
+          data: _getMarkDownData(markdownData!),
+          imageBuilder: (Uri uri, String? title, String? alt) {
             if (uri == null || uri.toString().isEmpty) return const SizedBox();
             final List<String> parts = uri.toString().split('#');
-            double width;
-            double height;
+            double? width;
+            double? height;
             if (parts.length == 2) {
               final List<String> dimensions = parts.last.split('x');
               if (dimensions.length == 2) {
@@ -196,7 +196,7 @@ class GSYMarkdownWidget extends StatelessWidget {
             }
             return kDefaultImageBuilder(uri, "", width, height);
           },
-          onTapLink: (String text, String href, String title) {
+          onTapLink: (String text, String? href, String title) {
             CommonUtils.launchUrl(context, href);
           },
         ),
@@ -217,8 +217,8 @@ class GSYHighlighter extends SyntaxHighlighter {
 Widget kDefaultImageBuilder(
   Uri uri,
   String imageDirectory,
-  double width,
-  double height,
+  double? width,
+  double? height,
 ) {
   if (uri.scheme == null || uri.scheme.isEmpty) {
     return SizedBox();
@@ -241,16 +241,16 @@ Widget kDefaultImageBuilder(
   }
 }
 
-Widget _handleDataSchemeUri(Uri uri, final double width, final double height) {
-  final String mimeType = uri.data.mimeType;
+Widget _handleDataSchemeUri(Uri uri, final double? width, final double? height) {
+  final String mimeType = uri.data!.mimeType;
   if (mimeType.startsWith('image/')) {
     return Image.memory(
-      uri.data.contentAsBytes(),
+      uri.data!.contentAsBytes(),
       width: width,
       height: height,
     );
   } else if (mimeType.startsWith('text/')) {
-    return Text(uri.data.contentAsString());
+    return Text(uri.data!.contentAsString());
   }
   return const SizedBox();
 }

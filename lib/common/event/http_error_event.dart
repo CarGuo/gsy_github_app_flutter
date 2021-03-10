@@ -4,7 +4,7 @@
  */
 
 class HttpErrorEvent {
-  final int code;
+  final int? code;
 
   final String message;
 

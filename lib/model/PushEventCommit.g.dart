@@ -8,13 +8,13 @@ part of 'PushEventCommit.dart';
 
 PushEventCommit _$PushEventCommitFromJson(Map<String, dynamic> json) {
   return PushEventCommit(
-    json['sha'] as String,
+    json['sha'] as String?,
     json['author'] == null
         ? null
         : User.fromJson(json['author'] as Map<String, dynamic>),
-    json['message'] as String,
-    json['distinct'] as bool,
-    json['url'] as String,
+    json['message'] as String?,
+    json['distinct'] as bool?,
+    json['url'] as String?,
   );
 }
 

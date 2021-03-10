@@ -37,14 +37,14 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   @override
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIKey.currentState.show().then((e) {});
+      refreshIKey.currentState!.show()!.then((e) {});
       return true;
     });
   }
 
   @protected
-  renderItem(index, User userInfo, String beStaredCount, Color notifyColor,
-      VoidCallback refreshCallBack, List<UserOrg> orgList) {
+  renderItem(index, User userInfo, String beStaredCount, Color? notifyColor,
+      VoidCallback? refreshCallBack, List<UserOrg> orgList) {
     if (userInfo.type == "Organization") {
       return new UserItem(
           UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]),
@@ -72,7 +72,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   bool get needHeader => true;
 
   @protected
-  getUserOrg(String userName) {
+  getUserOrg(String? userName) {
     if (page <= 1 && userName != null) {
       UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
         if (res != null && res.result) {
@@ -96,7 +96,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
 
   @protected
   List<Widget> sliverBuilder(BuildContext context, bool innerBoxIsScrolled,
-      User userInfo, Color notifyColor, String beStaredCount, refreshCallBack) {
+      User userInfo, Color? notifyColor, String beStaredCount, refreshCallBack) {
     double headerSize = 210;
     double bottomSize = 70;
     double chartSize =
@@ -211,20 +211,20 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
 
 /// Provider  HonorModel
 class HonorModel extends ChangeNotifier {
-  int _beStaredCount;
+  int? _beStaredCount;
 
-  int get beStaredCount => _beStaredCount;
+  int? get beStaredCount => _beStaredCount;
 
-  set beStaredCount(int value) {
+  set beStaredCount(int? value) {
     _beStaredCount = value;
     notifyListeners();
   }
 
-  List _honorList;
+  List? _honorList;
 
-  List get honorList => _honorList;
+  List? get honorList => _honorList;
 
-  set honorList(List value) {
+  set honorList(List? value) {
     _honorList = value;
     notifyListeners();
   }

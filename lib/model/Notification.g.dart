@@ -8,9 +8,9 @@ part of 'Notification.dart';
 
 Notification _$NotificationFromJson(Map<String, dynamic> json) {
   return Notification(
-    json['id'] as String,
-    json['unread'] as bool,
-    json['reason'] as String,
+    json['id'] as String?,
+    json['unread'] as bool?,
+    json['reason'] as String?,
     json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),

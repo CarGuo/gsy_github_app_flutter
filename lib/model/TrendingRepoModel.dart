@@ -8,20 +8,20 @@ part 'TrendingRepoModel.g.dart';
 
 @JsonSerializable()
 class TrendingRepoModel {
-  String fullName;
-  String url;
+  String? fullName;
+  String? url;
 
-  String description;
-  String language;
-  String meta;
-  List<String> contributors;
-  String contributorsUrl;
+  String? description;
+  String? language;
+  String? meta;
+  List<String>? contributors;
+  String? contributorsUrl;
 
-  String starCount;
-  String forkCount;
-  String name;
+  String? starCount;
+  String? forkCount;
+  String? name;
 
-  String reposName;
+  String? reposName;
 
   TrendingRepoModel(
     this.fullName,

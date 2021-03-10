@@ -8,7 +8,7 @@ import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 
 class EventDao {
-  static getEventReceived(String userName,
+  static getEventReceived(String? userName,
       {page = 1, bool needDb = false}) async {
     if (userName == null) {
       return null;
@@ -77,7 +77,7 @@ class EventDao {
     }
 
     if (needDb) {
-      List<Event> dbList = await provider.getEvents(userName);
+      List<Event>? dbList = await provider.getEvents(userName);
       if (dbList == null || dbList.length == 0) {
         return await next();
       }

@@ -12,8 +12,8 @@ class RadialMenuItem<T> extends StatelessWidget {
   ///
   /// The [child] argument is required.
   const RadialMenuItem({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.value,
     this.tooltip,
     this.size = _defaultButtonSize,
@@ -32,18 +32,18 @@ class RadialMenuItem<T> extends StatelessWidget {
   /// The value to return if the user selects this menu item.
   ///
   /// Eventually returned in a call to [RadialMenu.onSelected].
-  final T value;
+  final T? value;
 
   /// Text that describes the action that will occur when the button is pressed.
   ///
   /// This text is displayed when the user long-presses on the button and is
   /// used for accessibility.
-  final String tooltip;
+  final String? tooltip;
 
   /// The color to use when filling the button.
   ///
   /// Defaults to the primary color of the current theme.
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// The size of the button.
   ///
@@ -53,14 +53,14 @@ class RadialMenuItem<T> extends StatelessWidget {
   /// The color to use when painting the child icon.
   ///
   /// Defaults to the primary icon theme color.
-  final Color iconColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
-    final Color _iconColor =
+    final Color? _iconColor =
         iconColor ?? Theme.of(context).primaryIconTheme.color;
 
-    Widget result;
+    Widget? result;
 
     if (child != null) {
       result = new Center(
@@ -75,7 +75,7 @@ class RadialMenuItem<T> extends StatelessWidget {
 
     if (tooltip != null) {
       result = new Tooltip(
-        message: tooltip,
+        message: tooltip!,
         child: result,
       );
     }

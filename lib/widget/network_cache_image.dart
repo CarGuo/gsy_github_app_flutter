@@ -28,7 +28,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   final double scale;
 
   /// The HTTP headers that will be used with [HttpClient.get] to fetch image from network.
-  final Map<String, String> headers;
+  final Map<String, String>? headers;
 
   @override
   Future<NetworkCacheImage> obtainKey(ImageConfiguration configuration) {
@@ -77,7 +77,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
 
       final Uint8List bytes = await consolidateHttpClientResponseBytes(
         response,
-        onBytesReceived: (int cumulative, int total) {
+        onBytesReceived: (int cumulative, int? total) {
           chunkEvents.add(ImageChunkEvent(
             cumulativeBytesLoaded: cumulative,
             expectedTotalBytes: total,

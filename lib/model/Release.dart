@@ -11,30 +11,30 @@ part 'Release.g.dart';
 
 @JsonSerializable()
 class Release {
-  int id;
+  int? id;
   @JsonKey(name: "tag_name")
-  String tagName;
+  String? tagName;
   @JsonKey(name: "target_commitish")
-  String targetCommitish;
-  String name;
-  String body;
+  String? targetCommitish;
+  String? name;
+  String? body;
   @JsonKey(name: "body_html")
-  String bodyHtml;
+  String? bodyHtml;
   @JsonKey(name: "tarball_url")
-  String tarballUrl;
+  String? tarballUrl;
   @JsonKey(name: "zipball_url")
-  String zipballUrl;
+  String? zipballUrl;
 
-  bool draft;
+  bool? draft;
   @JsonKey(name: "prerelease")
-  bool preRelease;
+  bool? preRelease;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
   @JsonKey(name: "published_at")
-  DateTime publishedAt;
+  DateTime? publishedAt;
 
-  User author;
-  List<ReleaseAsset> assets;
+  User? author;
+  List<ReleaseAsset>? assets;
 
   Release(
     this.id,

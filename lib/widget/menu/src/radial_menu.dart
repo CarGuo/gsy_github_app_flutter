@@ -40,9 +40,9 @@ class RadialMenu<T> extends StatefulWidget {
   /// arguments must not be null (they all have defaults, so do not need to be
   /// specified).
   const RadialMenu({
-    Key key,
-    @required this.items,
-    @required this.onSelected,
+    Key? key,
+    required this.items,
+    required this.onSelected,
     this.radius = 50.0,
     this.menuAnimationDuration = const Duration(milliseconds: 1000),
     this.progressAnimationDuration = const Duration(milliseconds: 1000),
@@ -77,10 +77,10 @@ class RadialMenu<T> extends StatefulWidget {
 }
 
 class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
-  AnimationController _menuAnimationController;
-  AnimationController _progressAnimationController;
+  late AnimationController _menuAnimationController;
+  late AnimationController _progressAnimationController;
   bool _isOpen = false;
-  int _activeItemIndex;
+  int? _activeItemIndex;
 
   // todo: xqwzts: allow users to pass in their own calculator as a param.
   // and change this to the default: radialItemAngleCalculator.
@@ -190,14 +190,14 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
     }
 
     if (_activeItemIndex != null) {
-      children.add(_buildActiveAction(_activeItemIndex));
+      children.add(_buildActiveAction(_activeItemIndex!));
     }
 
     children.add(_buildCenterButton());
 
     return new AnimatedBuilder(
       animation: _menuAnimationController,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return new CustomMultiChildLayout(
           delegate: new _RadialMenuLayout(
             itemCount: widget.items.length,
@@ -226,14 +226,14 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
   final Animation<double> _progress;
 
   _RadialMenuLayout({
-    @required this.itemCount,
-    @required this.radius,
-    @required this.calculateItemAngle,
-    this.controller,
+    required this.itemCount,
+    required this.radius,
+    required this.calculateItemAngle,
+    required this.controller,
   }) : _progress = new Tween<double>(begin: 0.0, end: radius).animate(
             new CurvedAnimation(curve: Curves.elasticInOut, parent: controller));
 
-  Offset center;
+  late Offset center;
 
   @override
   void performLayout(Size size) {

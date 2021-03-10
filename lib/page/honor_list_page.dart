@@ -9,7 +9,7 @@ import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
  * on 2018/7/22.
  */
 class HonorListPage extends StatefulWidget {
-  final List list;
+  final List? list;
 
   HonorListPage(this.list);
 
@@ -31,15 +31,15 @@ class _HonorListPageState extends State<HonorListPage> {
     return new Scaffold(
       appBar: new AppBar(
           title: new Text(
-        GSYLocalizations.i18n(context).user_tab_honor,
+        GSYLocalizations.i18n(context)!.user_tab_honor,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       )),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          return _renderItem(widget.list[index]);
+          return _renderItem(widget.list![index]);
         },
-        itemCount: widget.list.length,
+        itemCount: widget.list!.length,
       ),
     );
   }

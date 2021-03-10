@@ -9,10 +9,10 @@ part 'DownloadSource.g.dart';
 
 @JsonSerializable()
 class DownloadSource {
-  String url;
-  bool isSourceCode;
-  String name;
-  int size;
+  String? url;
+  bool? isSourceCode;
+  String? name;
+  int? size;
 
   DownloadSource(
     this.url,

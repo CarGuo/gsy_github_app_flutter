@@ -30,7 +30,7 @@ class PushCodeItem extends StatelessWidget {
         ///修改文件名
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
         child: new ListTile(
-          title: new Text(pushCodeItemViewModel.name, style: GSYConstant.smallSubText),
+          title: new Text(pushCodeItemViewModel.name!, style: GSYConstant.smallSubText),
           leading: new Icon(
             GSYICons.REPOS_ITEM_FILE,
             size: 15.0,
@@ -45,16 +45,16 @@ class PushCodeItem extends StatelessWidget {
 }
 
 class PushCodeItemViewModel {
-  String path;
-  String name;
-  String patch;
+  late String path;
+  String? name;
+  String? patch;
 
-  String blob_url;
+  String? blob_url;
 
   PushCodeItemViewModel();
 
   PushCodeItemViewModel.fromMap(CommitFile map) {
-    String filename = map.fileName;
+    String filename = map.fileName!;
     List<String> nameSplit = filename.split("/");
     name = nameSplit[nameSplit.length - 1];
     path = filename;

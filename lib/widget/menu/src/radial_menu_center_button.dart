@@ -52,10 +52,10 @@ class RadialMenuCenterButton extends StatelessWidget {
   final Animation<double> _scale;
 
   RadialMenuCenterButton({
-    @required this.openCloseAnimationController,
-    @required this.activateAnimationController,
-    @required this.onPressed,
-    @required this.isOpen,
+    required this.openCloseAnimationController,
+    required this.activateAnimationController,
+    required this.onPressed,
+    required this.isOpen,
     this.iconColor = Colors.black,
     this.closedColor = Colors.white,
     this.openedColor = Colors.grey,

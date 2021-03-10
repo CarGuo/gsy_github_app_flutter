@@ -20,9 +20,9 @@ import 'package:url_launcher/url_launcher.dart';
  */
 
 class ReleasePage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
   final String releaseUrl;
   final String tagUrl;
 
@@ -47,7 +47,7 @@ class _ReleasePageState extends State<ReleasePage>
         ///没有 release 提示就不要了
         if (selectIndex == 0 &&
             releaseItemViewModel.actionTargetHtml != null &&
-            releaseItemViewModel.actionTargetHtml.length > 0) {
+            releaseItemViewModel.actionTargetHtml!.length > 0) {
           String html = HtmlUtils.generateHtml(
               releaseItemViewModel.actionTargetHtml,
               backgroundColor: GSYColors.miWhiteString,
@@ -69,7 +69,7 @@ class _ReleasePageState extends State<ReleasePage>
       await launch(url);
     } else {
       Fluttertoast.showToast(
-          msg: GSYLocalizations.i18n(context).option_web_launcher_error +
+          msg: GSYLocalizations.i18n(context)!.option_web_launcher_error +
               ": " +
               url);
     }
@@ -123,8 +123,8 @@ class _ReleasePageState extends State<ReleasePage>
         ),
         bottom: new GSYSelectItemWidget(
           [
-            GSYLocalizations.i18n(context).release_tab_release,
-            GSYLocalizations.i18n(context).release_tab_tag,
+            GSYLocalizations.i18n(context)!.release_tab_release,
+            GSYLocalizations.i18n(context)!.release_tab_tag,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

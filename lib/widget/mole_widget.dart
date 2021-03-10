@@ -98,8 +98,8 @@ class _MoleState extends State<Mole> {
 enum _MoleProps { x, y, scale }
 
 class MoleParticle {
-  Animatable<MultiTweenValues<_MoleProps>> tween;
-  Duration startTime;
+  late Animatable<MultiTweenValues<_MoleProps>> tween;
+  late Duration startTime;
   final duration = 600.milliseconds;
 
   MoleParticle() {
