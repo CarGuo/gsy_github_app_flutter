@@ -76,7 +76,9 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
               GlobalWidgetsLocalizations.delegate,
               GSYLocalizationsDelegate.delegate,
             ],
-            supportedLocales: [store.state.locale!],
+            supportedLocales: [
+              store.state.locale ?? store.state.platformLocale!
+            ],
             locale: store.state.locale,
             theme: store.state.themeData,
             navigatorObservers: [this],

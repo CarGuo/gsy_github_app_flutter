@@ -15,8 +15,8 @@ import 'middleware/epic_store.dart';
  * Date: 2018-07-16
  */
 final LoginReducer = combineReducers<bool?>([
-  TypedReducer<bool, LoginSuccessAction>(_loginResult) as bool? Function(bool?, dynamic),
-  TypedReducer<bool, LogoutAction>(_logoutResult) as bool? Function(bool?, dynamic),
+  TypedReducer<bool, LoginSuccessAction>(_loginResult) ,
+  TypedReducer<bool, LogoutAction>(_logoutResult),
 ]);
 
 bool _loginResult(bool result, LoginSuccessAction action) {

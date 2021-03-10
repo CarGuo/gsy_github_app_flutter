@@ -206,7 +206,7 @@ class _InheritedModel<T extends Model> extends InheritedWidget {
 /// Builds a child for a [ScopedModelDescendant].
 typedef Widget ScopedModelDescendantBuilder<T extends Model>(
   BuildContext context,
-  Widget child,
+  Widget? child,
   T? model,
 );
 
@@ -262,7 +262,7 @@ class ScopedModelDescendant<T extends Model> extends StatelessWidget {
     if (builder != null) {
        widget = builder?.call(
         context,
-        child!,
+        child,
         ScopedModel.of<T>(context, rebuildOnChange: rebuildOnChange),
       );
     }

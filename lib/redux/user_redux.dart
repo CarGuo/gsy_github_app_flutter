@@ -15,7 +15,7 @@ import 'middleware/epic_store.dart';
 
 /// redux 的 combineReducers, 通过 TypedReducer 将 UpdateUserAction 与 reducers 关联起来
 final UserReducer = combineReducers<User?>([
-  TypedReducer<User?, UpdateUserAction>(_updateLoaded) as User? Function(User?, dynamic),
+  TypedReducer<User?, UpdateUserAction>(_updateLoaded),
 ]);
 
 /// 如果有 UpdateUserAction 发起一个请求时

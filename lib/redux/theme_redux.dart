@@ -10,7 +10,7 @@ import 'package:redux/redux.dart';
 ///通过 flutter_redux 的 combineReducers，实现 Reducer 方法
 final ThemeDataReducer = combineReducers<ThemeData?>([
   ///将 Action 、处理 Action 的方法、State 绑定
-  TypedReducer<ThemeData?, RefreshThemeDataAction>(_refresh) as ThemeData? Function(ThemeData?, dynamic),
+  TypedReducer<ThemeData?, RefreshThemeDataAction>(_refresh),
 ]);
 
 ///定义处理 Action 行为的方法，返回新的 State

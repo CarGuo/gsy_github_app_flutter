@@ -91,9 +91,25 @@ class NavigatorUtils {
     ///利用 SizeRoute 动画大小打开
     return Navigator.push(
         context,
-        new SizeRoute(
-            widget: pageContainer(
-                RepositoryDetailPage(userName, reposName), context)));
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              RepositoryDetailPage(userName, reposName),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            double begin = 0;
+            double end = 1;
+            var curve = Curves.ease;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return Align(
+              child: SizeTransition(
+                sizeFactor: animation.drive(tween),
+                child: child,
+              ),
+            );
+          },
+        ));
   }
 
   ///荣耀列表

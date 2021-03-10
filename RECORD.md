@@ -4,6 +4,8 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dart migrate --skip-import-check
 
+flutter run --no-sound-null-safety
+
 query getUserDetail($name:String!){
   user(login: $name) {
     login,

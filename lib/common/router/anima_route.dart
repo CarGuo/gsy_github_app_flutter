@@ -17,13 +17,20 @@ class SizeRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
             Widget child,
-          ) =>
-              Align(
-            child: SizeTransition(
-              sizeFactor: animation,
-              child: child,
-            ),
-          ),
+          ) {
+            var begin = 0.0;
+            var end = 1.0;
+            var curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return Align(
+              child: SizeTransition(
+                sizeFactor: animation.drive(tween),
+                child: child,
+              ),
+            );
+          },
         );
 }
 

@@ -9,7 +9,7 @@ import 'package:redux/redux.dart';
  */
 
 final LocaleReducer = combineReducers<Locale?>([
-  TypedReducer<Locale?, RefreshLocaleAction>(_refresh) as Locale? Function(Locale?, dynamic),
+  TypedReducer<Locale?, RefreshLocaleAction>(_refresh),
 ]);
 
 Locale? _refresh(Locale? locale, RefreshLocaleAction action) {
