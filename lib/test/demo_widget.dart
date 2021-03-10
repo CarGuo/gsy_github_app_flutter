@@ -30,7 +30,7 @@ class DemoStateWidget extends StatefulWidget  {
 
 class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAliveClientMixin  {
 
-  String text;
+  String? text;
 
   _DemoStateWidgetState(this.text);
 

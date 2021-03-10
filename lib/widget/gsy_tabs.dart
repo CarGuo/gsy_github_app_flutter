@@ -224,6 +224,7 @@ class _TabLabelBarRenderer extends RenderFlex {
     }
     assert(textDirection != null);
     switch (textDirection) {
+      case null:
       case TextDirection.rtl:
         xOffsets.insert(0, size.width);
         break;
@@ -347,6 +348,7 @@ class _IndicatorPainter extends CustomPainter {
     double? tabLeft;
     double? tabRight;
     switch (_currentTextDirection) {
+      case null:
       case TextDirection.rtl:
         tabLeft = _currentTabOffsets![tabIndex + 1];
         tabRight = _currentTabOffsets![tabIndex];
@@ -359,12 +361,12 @@ class _IndicatorPainter extends CustomPainter {
 
     if (indicatorSize == TabBarIndicatorSize.label) {
       final double tabWidth = tabKeys![tabIndex].currentContext!.size!.width;
-      final double delta = ((tabRight! - tabLeft!) - tabWidth) / 2.0;
+      final double delta = ((tabRight - tabLeft) - tabWidth) / 2.0;
       tabLeft += delta;
       tabRight -= delta;
     }
 
-    return Rect.fromLTWH(tabLeft!, 0.0, tabRight! - tabLeft, tabBarSize.height);
+    return Rect.fromLTWH(tabLeft, 0.0, tabRight - tabLeft, tabBarSize.height);
   }
 
   @override

@@ -1,6 +1,3 @@
 analyzer:
-  language:
-    enableSuperMixins: true
   errors:
     mixin_inherits_from_not_object: ignore
-    mixin_references_super: ignore
