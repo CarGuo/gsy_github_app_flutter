@@ -122,7 +122,7 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
     //await _progressAnimationController.forward().orCancel;
     _closeMenu();
     if (widget.onSelected != null) {
-      widget.onSelected(widget.items[itemIndex].value);
+      widget.onSelected!(widget.items[itemIndex].value);
     }
   }
 
