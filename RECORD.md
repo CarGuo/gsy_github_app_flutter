@@ -6,6 +6,8 @@ dart migrate --skip-import-check
 
 flutter run --no-sound-null-safety
 
+https://flutter.cn/docs/development/tools/devtools/cli   http://localhost:9100
+
 query getUserDetail($name:String!){
   user(login: $name) {
     login,
