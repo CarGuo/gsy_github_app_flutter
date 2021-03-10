@@ -35,7 +35,7 @@ class DemoSqlManager {
    */
   static isTableExits(String tableName) async {
     await getCurrentDatabase();
-    var res = await _database!.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
+    var res = await _database?.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
     return res != null && res.length > 0;
   }
 

@@ -47,12 +47,10 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
           : Container();
     }
 
-    if (leading != null) {
-      leading = ConstrainedBox(
-        constraints: BoxConstraints.tightFor(width: leadingWidth),
-        child: leading,
-      );
-    }
+    leading = ConstrainedBox(
+      constraints: BoxConstraints.tightFor(width: leadingWidth),
+      child: leading,
+    );
 
     TextStyle? centerStyle = Theme.of(context).textTheme.headline6 ??
         Theme.of(context).appBarTheme.textTheme?.headline6 ??
