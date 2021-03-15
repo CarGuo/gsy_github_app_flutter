@@ -1,4 +1,4 @@
-flutter build apk --target-platform android-arm64 -t lib/main_prod.dart
+flutter build apk --target-platform android-arm64 -t lib/main_prod.dart --no-sound-null-safety
 
 flutter packages pub run build_runner build --delete-conflicting-outputs
 

@@ -1,9 +1,9 @@
-import 'package:flare_dart/math/mat2d.dart';
+import 'package:flare_flutter/base/animation/actor_animation.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
 mixin GSYFlarePullController implements FlareController {
-  late ActorAnimation _pullAnimation;
+  late ActorAnimation? _pullAnimation;
 
   double pulledExtentFlare = 0;
   double _speed = 2.0;
@@ -21,7 +21,7 @@ mixin GSYFlarePullController implements FlareController {
   bool advance(FlutterActorArtboard artboard, double elapsed) {
     if (getPlayAuto) {
       _rockTime += elapsed * _speed;
-      _pullAnimation.apply(_rockTime % _pullAnimation.duration, artboard, 1.0);
+      _pullAnimation?.apply(_rockTime % _pullAnimation!.duration, artboard, 1.0);
       return true;
     }
     var pullExtent = (pulledExtentFlare > refreshTriggerPullDistance)
@@ -29,8 +29,8 @@ mixin GSYFlarePullController implements FlareController {
         : pulledExtentFlare;
     double animationPosition = pullExtent / refreshTriggerPullDistance;
     animationPosition *= animationPosition;
-    _rockTime = _pullAnimation.duration * animationPosition;
-    _pullAnimation.apply(_rockTime, artboard, 1.0);
+    _rockTime = _pullAnimation!.duration * animationPosition;
+    _pullAnimation?.apply(_rockTime, artboard, 1.0);
     return true;
   }
 

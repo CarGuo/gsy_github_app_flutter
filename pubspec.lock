@@ -253,20 +253,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
-  flare_dart:
-    dependency: transitive
-    description:
-      name: flare_dart
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.3.4"
   flare_flutter:
     dependency: "direct main"
     description:
       name: flare_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.6"
+    version: "3.0.0-nullsafety.0"
   flutter:
     dependency: "direct main"
     description: flutter

@@ -39,7 +39,7 @@ dependencies:
   flutter_webview_plugin: 0.3.11
   webview_flutter: 2.0.0
   #bezier: ^1.1.5
-  flare_flutter: ^2.0.6
+  flare_flutter:  ^3.0.0-nullsafety.0
   # 固定版本
   flutter_redux: 0.7.0
   rxdart: 0.26.0

@@ -1,12 +1,12 @@
-import 'package:flare_dart/math/mat2d.dart';
+import 'package:flare_flutter/base/animation/actor_animation.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
 mixin GSYFlarePullMutliController implements FlareController {
-  late ActorAnimation _loadingAnimation;
-  late ActorAnimation _successAnimation;
-  late ActorAnimation _pullAnimation;
-  late ActorAnimation _cometAnimation;
+  late ActorAnimation? _loadingAnimation;
+  late ActorAnimation? _successAnimation;
+  late ActorAnimation? _pullAnimation;
+  late ActorAnimation? _cometAnimation;
 
   double pulledExtentFlare = 0;
   bool _isSurround = false;
@@ -33,22 +33,22 @@ mixin GSYFlarePullMutliController implements FlareController {
     double animationPosition = pulledExtentFlare / _refreshTriggerPullDistance;
     animationPosition *= animationPosition;
     _cometTime += elapsed;
-    _cometAnimation.apply(_cometTime % _cometAnimation.duration, artboard, 1.0);
-    _pullAnimation.apply(
-        _pullAnimation.duration * animationPosition, artboard, 1.0);
+    _cometAnimation?.apply(_cometTime % _cometAnimation!.duration, artboard, 1.0);
+    _pullAnimation?.apply(
+        _pullAnimation!.duration * animationPosition, artboard, 1.0);
     if (_isSurround) {
       _successTime += elapsed;
-      if (_successTime >= _successAnimation.duration) {
+      if (_successTime >= _successAnimation!.duration) {
         _loadingTime += elapsed;
       }
     } else {
       _successTime = _loadingTime = 0.0;
     }
-    if (_successTime >= _successAnimation.duration) {
-      _loadingAnimation.apply(
-          _loadingTime % _loadingAnimation.duration, artboard, 1.0);
+    if (_successTime >= _successAnimation!.duration) {
+      _loadingAnimation?.apply(
+          _loadingTime % _loadingAnimation!.duration, artboard, 1.0);
     } else if (_successTime > 0.0) {
-      _successAnimation.apply(_successTime, artboard, 1.0);
+      _successAnimation?.apply(_successTime, artboard, 1.0);
     }
     return true;
   }
