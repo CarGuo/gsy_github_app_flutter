@@ -8,6 +8,8 @@ flutter run --no-sound-null-safety
 
 https://flutter.cn/docs/development/tools/devtools/cli   http://localhost:9100
 
+sudo gem install -n /usr/local/bin cocoapods -v 1.9.3
+
 query getUserDetail($name:String!){
   user(login: $name) {
     login,
