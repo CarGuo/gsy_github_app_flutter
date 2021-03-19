@@ -9,20 +9,20 @@ part 'CommitFile.g.dart';
 
 @JsonSerializable()
 class CommitFile {
-  String sha;
+  String? sha;
   @JsonKey(name: "filename")
-  String fileName;
-  String status;
-  int additions;
-  int deletions;
-  int changes;
+  String? fileName;
+  String? status;
+  int? additions;
+  int? deletions;
+  int? changes;
   @JsonKey(name: "blob_url")
-  String blobUrl;
+  String? blobUrl;
   @JsonKey(name: "raw_url")
-  String rawUrl;
+  String? rawUrl;
   @JsonKey(name: "contents_url")
-  String contentsUrl;
-  String patch;
+  String? contentsUrl;
+  String? patch;
 
   CommitFile(
     this.sha,

@@ -1,5 +1,5 @@
 class Config {
-  static bool DEBUG = true;
+  static bool? DEBUG = true;
 
 
 

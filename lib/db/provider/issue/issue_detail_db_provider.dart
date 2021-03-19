@@ -20,14 +20,14 @@ class IssueDetailDbProvider extends BaseDbProvider {
   final String columnNumber = "number";
   final String columnData = "data";
 
-  int id;
-  String fullName;
-  String number;
-  String data;
+  int? id;
+  String? fullName;
+  String? number;
+  String? data;
 
   IssueDetailDbProvider();
 
-  Map<String, dynamic> toMap(String fullName, String number, String data) {
+  Map<String, dynamic> toMap(String? fullName, String number, String data) {
     Map<String, dynamic> map = {
       columnFullName: fullName,
       columnData: data,
@@ -61,7 +61,7 @@ class IssueDetailDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String fullName, String number) async {
+  Future _getProvider(Database db, String? fullName, String number) async {
     List<Map<String, dynamic>> maps = await db.query(name,
         columns: [columnId, columnFullName, columnNumber, columnData],
         where: "$columnFullName = ? and $columnNumber = ?",
@@ -75,7 +75,7 @@ class IssueDetailDbProvider extends BaseDbProvider {
   }
 
   ///插入到数据库
-  Future insert(String fullName, String number, String dataMapString) async {
+  Future insert(String? fullName, String number, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, number);
     if (provider != null) {
@@ -87,13 +87,13 @@ class IssueDetailDbProvider extends BaseDbProvider {
   }
 
   ///获取详情
-  Future<Issue> getRepository(String fullName, String number) async {
+  Future<Issue?> getRepository(String? fullName, String number) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, number);
     if (provider != null) {
       ///使用 compute 的 Isolate 优化 json decode
       var mapData =
-          await compute(CodeUtils.decodeMapResult, provider.data as String);
+          await compute(CodeUtils.decodeMapResult as Map<String, dynamic> Function(String? data), provider.data as String?);
       return Issue.fromJson(mapData);
     }
     return null;

@@ -16,6 +16,7 @@ import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
+import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -35,17 +36,17 @@ class UserDao {
         null,
         null,
         null);
-    var resultData = null;
+    dynamic resultData = null;
     if (res != null && res.result) {
       print("#### ${res.data}");
       var result = Uri.parse("gsy://oauth?" + res.data);
-      var token = result.queryParameters["access_token"];
+      var token = result.queryParameters["access_token"]!;
       var _token = 'token ' + token;
       await LocalStorage.save(Config.TOKEN_KEY, _token);
 
 
       resultData = await getUserInfo(null);
-      if (Config.DEBUG ) {
+      if (Config.DEBUG! ) {
         print("user result " + resultData.result.toString());
         print(resultData.data);
         print(res.data.toString());
@@ -55,14 +56,14 @@ class UserDao {
       }
     }
 
-    return new DataResult(resultData, res.result);
+    return new DataResult(resultData, res!.result);
   }
 
   static login(userName, password, store) async {
     String type = userName + ":" + password;
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
-    if (Config.DEBUG) {
+    if (Config.DEBUG!) {
       print("base64Str login " + base64Str);
     }
 
@@ -79,22 +80,22 @@ class UserDao {
 
     var res = await httpManager.netFetch(Address.getAuthorization(),
         json.encode(requestParams), null, new Options(method: "post"));
-    var resultData = null;
+    dynamic resultData = null;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
-      if (Config.DEBUG) {
+      if (Config.DEBUG!) {
         print("user result " + resultData.result.toString());
         print(resultData.data);
         print(res.data.toString());
       }
       store.dispatch(new UpdateUserAction(resultData.data));
     }
-    return new DataResult(resultData, res.result);
+    return new DataResult(resultData, res!.result);
   }
 
   ///初始化用户信息
-  static initUserInfo(Store store) async {
+  static initUserInfo(Store<GSYState> store) async {
     var token = await LocalStorage.get(Config.TOKEN_KEY);
     var res = await getUserInfoLocal();
     if (res != null && res.result && token != null) {
@@ -102,13 +103,13 @@ class UserDao {
     }
 
     ///读取主题
-    String themeIndex = await LocalStorage.get(Config.THEME_COLOR);
+    String? themeIndex = await LocalStorage.get(Config.THEME_COLOR);
     if (themeIndex != null && themeIndex.length != 0) {
       CommonUtils.pushTheme(store, int.parse(themeIndex));
     }
 
     ///切换语言
-    String localeIndex = await LocalStorage.get(Config.LOCALE);
+    String? localeIndex = await LocalStorage.get(Config.LOCALE);
     if (localeIndex != null && localeIndex.length != 0) {
       CommonUtils.changeLocale(store, int.parse(localeIndex));
     } else {
@@ -144,7 +145,7 @@ class UserDao {
             Address.getUserInfo(userName), null, null, null);
       }
       if (res != null && res.result) {
-        String starred = "---";
+        String? starred = "---";
         if (res.data["type"] != "Organization") {
           var countRes = await getUserStaredCountNet(res.data["login"]);
           if (countRes.result) {
@@ -167,7 +168,7 @@ class UserDao {
     }
 
     if (needDb) {
-      User user = await provider.getUserInfo(userName);
+      User? user = await provider.getUserInfo(userName);
       if (user == null) {
         return await next();
       }
@@ -191,7 +192,7 @@ class UserDao {
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.headers != null) {
       try {
-        List<String> link = res.headers['link'];
+        List<String>? link = res.headers['link'];
         if (link != null) {
           int indexStart = link[0].lastIndexOf("page=") + 5;
           int indexEnd = link[0].lastIndexOf(">");
@@ -236,7 +237,7 @@ class UserDao {
     }
 
     if (needDb) {
-      List<User> list = await provider.geData(userName);
+      List<User>? list = await provider.geData(userName);
       if (list == null) {
         return await next();
       }
@@ -274,7 +275,7 @@ class UserDao {
     }
 
     if (needDb) {
-      List<User> list = await provider.geData(userName);
+      List<User>? list = await provider.geData(userName);
       if (list == null) {
         return await next();
       }
@@ -324,7 +325,7 @@ class UserDao {
     String url = Address.setAllNotificationAsRead();
     var res =
         await httpManager.netFetch(url, null, null, new Options(method: "PUT"));
-    return new DataResult(res.data, res.result);
+    return new DataResult(res!.data, res.result);
   }
 
   /**
@@ -332,8 +333,8 @@ class UserDao {
    */
   static checkFollowDao(name) async {
     String url = Address.doFollow(name);
-    var res = await httpManager.netFetch(url, null, null, null, noTip: true);
-    return new DataResult(res.data, res.result);
+    var res = await httpManager.netFetch(url, null, null, null, noTip: true) ;
+    return new DataResult(res!.data, res.result);
   }
 
   /**
@@ -344,7 +345,7 @@ class UserDao {
     var res = await httpManager.netFetch(
         url, null, null, new Options(method: !followed ? "PUT" : "DELETE"),
         noTip: true);
-    return new DataResult(res.data, res.result);
+    return new DataResult(res!.data, res.result);
   }
 
   /**
@@ -414,7 +415,7 @@ class UserDao {
     }
 
     if (needDb) {
-      List<UserOrg> list = await provider.geData(userName);
+      List<UserOrg>? list = await provider.geData(userName);
       if (list == null) {
         return await next();
       }
@@ -425,11 +426,11 @@ class UserDao {
   }
 
   static searchTrendUserDao(String location,
-      {String cursor, ValueChanged valueChanged}) async {
+      {String? cursor, ValueChanged? valueChanged}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {
-      var endCursor = result.data["search"]["pageInfo"]["endCursor"];
-      var dataList = result.data["search"]["user"];
+      var endCursor = result.data!["search"]["pageInfo"]["endCursor"];
+      var dataList = result.data!["search"]["user"];
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
       }

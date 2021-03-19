@@ -12,18 +12,18 @@ class GSYNestedPullLoadWidget extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
 
   ///加载更多回调
-  final RefreshCallback onLoadMore;
+  final RefreshCallback? onLoadMore;
 
   ///下拉刷新回调
-  final RefreshCallback onRefresh;
+  final RefreshCallback? onRefresh;
 
   ///控制器，比如数据和一些配置
   final GSYPullLoadWidgetControl control;
 
-  final Key refreshKey;
-  final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
+  final Key? refreshKey;
+  final NestedScrollViewHeaderSliversBuilder? headerSliverBuilder;
 
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   GSYNestedPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
@@ -95,7 +95,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
         ///滑动监听
         controller: widget.scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        headerSliverBuilder: widget.headerSliverBuilder,
+        headerSliverBuilder: widget.headerSliverBuilder!,
         body: NotificationListener(
           onNotification: (ScrollNotification p) {
             if (p.metrics.pixels >= p.metrics.maxScrollExtent) {
@@ -117,7 +117,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
       ),
 
       ///下拉刷新触发，返回的是一个Future
-      onRefresh: widget.onRefresh,
+      onRefresh: widget.onRefresh ?? () async {},
     );
   }
 
@@ -136,7 +136,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
                 height: 70.0),
           ),
           Container(
-            child: Text(GSYLocalizations.i18n(context).app_empty,
+            child: Text(GSYLocalizations.i18n(context)!.app_empty,
                 style: GSYConstant.normalText),
           ),
         ],
@@ -160,7 +160,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
                 ///加载中文本
                 new Text(
-                  GSYLocalizations.i18n(context).load_more_text,
+                  GSYLocalizations.i18n(context)!.load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
                     fontSize: 14.0,

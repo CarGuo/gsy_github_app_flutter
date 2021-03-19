@@ -23,9 +23,9 @@ import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
  */
 
 class IssueDetailPage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
   final String issueNum;
 
@@ -47,7 +47,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///头部信息数据是否加载成功，成功了就可以显示底部状态
   bool headerStatus = false;
 
-  String htmlUrl;
+  String? htmlUrl;
 
   /// issue 的头部数据显示
   IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
@@ -87,7 +87,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     children: <Widget>[
                       new GSYFlexButton(
                         color: GSYColors.white,
-                        text: GSYLocalizations.i18n(context)
+                        text: GSYLocalizations.i18n(context)!
                             .issue_edit_issue_edit_commit,
                         onPress: () {
                           _editCommit(issue.id.toString(), issue.body);
@@ -95,7 +95,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                       ),
                       new GSYFlexButton(
                         color: GSYColors.white,
-                        text: GSYLocalizations.i18n(context)
+                        text: GSYLocalizations.i18n(context)!
                             .issue_edit_issue_delete_commit,
                         onPress: () {
                           _deleteCommit(issue.id.toString());
@@ -103,7 +103,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                       ),
                       new GSYFlexButton(
                         color: GSYColors.white,
-                        text: GSYLocalizations.i18n(context)
+                        text: GSYLocalizations.i18n(context)!
                             .issue_edit_issue_copy_commit,
                         onPress: () {
                           CommonUtils.copy(issue.body, context);
@@ -147,9 +147,9 @@ class _IssueDetailPageState extends State<IssueDetailPage>
 
   ///数据转化显示
   _resolveHeaderInfo(res) {
-    Issue issue = res.data;
+    Issue? issue = res.data;
     setState(() {
-      issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue);
+      issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue!);
       htmlUrl = issue.htmlUrl;
       headerStatus = true;
     });
@@ -158,20 +158,20 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///编辑回复
   _editCommit(id, content) {
     Navigator.pop(context);
-    String contentData = content;
+    String? contentData = content;
     issueInfoValueControl = new TextEditingController(text: contentData);
     //编译Issue Info
     CommonUtils.showEditDialog(
       context,
-      GSYLocalizations.i18n(context).issue_edit_issue,
+      GSYLocalizations.i18n(context)!.issue_edit_issue,
       null,
       (contentValue) {
         contentData = contentValue;
       },
       () {
-        if (contentData == null || contentData.trim().length == 0) {
+        if (contentData == null || contentData!.trim().length == 0) {
           Fluttertoast.showToast(
-              msg: GSYLocalizations.i18n(context)
+              msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);
           return;
         }
@@ -204,14 +204,14 @@ class _IssueDetailPageState extends State<IssueDetailPage>
 
   ///编译 issue
   _editIssue() {
-    String title = issueHeaderViewModel.issueComment;
-    String content = issueHeaderViewModel.issueDesHtml;
+    String? title = issueHeaderViewModel.issueComment;
+    String? content = issueHeaderViewModel.issueDesHtml;
     issueInfoTitleControl = new TextEditingController(text: title);
     issueInfoValueControl = new TextEditingController(text: content);
     //编译Issue Info
     CommonUtils.showEditDialog(
       context,
-      GSYLocalizations.i18n(context).issue_edit_issue,
+      GSYLocalizations.i18n(context)!.issue_edit_issue,
       (titleValue) {
         title = titleValue;
       },
@@ -219,15 +219,15 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         content = contentValue;
       },
       () {
-        if (title == null || title.trim().length == 0) {
+        if (title == null || title!.trim().length == 0) {
           Fluttertoast.showToast(
-              msg: GSYLocalizations.i18n(context)
+              msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_title_not_be_null);
           return;
         }
-        if (content == null || content.trim().length == 0) {
+        if (content == null || content!.trim().length == 0) {
           Fluttertoast.showToast(
-              msg: GSYLocalizations.i18n(context)
+              msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);
           return;
         }
@@ -251,18 +251,18 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     //回复 Info
     issueInfoTitleControl = new TextEditingController(text: "");
     issueInfoValueControl = new TextEditingController(text: "");
-    String content = "";
+    String? content = "";
     CommonUtils.showEditDialog(
       context,
-      GSYLocalizations.i18n(context).issue_reply_issue,
+      GSYLocalizations.i18n(context)!.issue_reply_issue,
       null,
       (replyContent) {
         content = replyContent;
       },
       () {
-        if (content == null || content.trim().length == 0) {
+        if (content == null || content?.trim().length == 0) {
           Fluttertoast.showToast(
-              msg: GSYLocalizations.i18n(context)
+              msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);
           return;
         }
@@ -294,7 +294,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                   onPressed: () {
                     _replyIssue();
                   },
-                  child: new Text(GSYLocalizations.i18n(context).issue_reply,
+                  child: new Text(GSYLocalizations.i18n(context)!.issue_reply,
                       style: GSYConstant.smallText),
                 ),
                 new Container(
@@ -305,7 +305,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                   onPressed: () {
                     _editIssue();
                   },
-                  child: new Text(GSYLocalizations.i18n(context).issue_edit,
+                  child: new Text(GSYLocalizations.i18n(context)!.issue_edit,
                       style: GSYConstant.smallText),
                 ),
                 new Container(
@@ -327,8 +327,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     },
                     child: new Text(
                         (issueHeaderViewModel.state == 'closed')
-                            ? GSYLocalizations.i18n(context).issue_open
-                            : GSYLocalizations.i18n(context).issue_close,
+                            ? GSYLocalizations.i18n(context)!.issue_open
+                            : GSYLocalizations.i18n(context)!.issue_close,
                         style: GSYConstant.smallText)),
                 new Container(
                     width: 0.3,
@@ -345,9 +345,9 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                       });
                     },
                     child: new Text(
-                        (issueHeaderViewModel.locked)
-                            ? GSYLocalizations.i18n(context).issue_unlock
-                            : GSYLocalizations.i18n(context).issue_lock,
+                        issueHeaderViewModel.locked!
+                            ? GSYLocalizations.i18n(context)!.issue_unlock
+                            : GSYLocalizations.i18n(context)!.issue_lock,
                         style: GSYConstant.smallText)),
               ],
             )
@@ -377,7 +377,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget widgetContent =
+    Widget? widgetContent =
         (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(url: htmlUrl);
     return new Scaffold(
       persistentFooterButtons: _getBottomWidget(),

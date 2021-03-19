@@ -18,22 +18,26 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
   Iterable<Object> serialize(Serializers serializers, Branch object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.name != null) {
+    Object? value;
+    value = object.name;
+    if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(object.name,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.tarballUrl != null) {
+    value = object.tarballUrl;
+    if (value != null) {
       result
         ..add('tarball_url')
-        ..add(serializers.serialize(object.tarballUrl,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.zipballUrl != null) {
+    value = object.zipballUrl;
+    if (value != null) {
       result
         ..add('zipball_url')
-        ..add(serializers.serialize(object.zipballUrl,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -48,7 +52,7 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'name':
           result.name = serializers.deserialize(value,
@@ -71,13 +75,13 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
 
 class _$Branch extends Branch {
   @override
-  final String name;
+  final String? name;
   @override
-  final String tarballUrl;
+  final String? tarballUrl;
   @override
-  final String zipballUrl;
+  final String? zipballUrl;
 
-  factory _$Branch([void Function(BranchBuilder) updates]) =>
+  factory _$Branch([void Function(BranchBuilder)? updates]) =>
       (new BranchBuilder()..update(updates)).build();
 
   _$Branch._({this.name, this.tarballUrl, this.zipballUrl}) : super._();
@@ -115,27 +119,28 @@ class _$Branch extends Branch {
 }
 
 class BranchBuilder implements Builder<Branch, BranchBuilder> {
-  _$Branch _$v;
+  _$Branch? _$v;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  String _tarballUrl;
-  String get tarballUrl => _$this._tarballUrl;
-  set tarballUrl(String tarballUrl) => _$this._tarballUrl = tarballUrl;
+  String? _tarballUrl;
+  String? get tarballUrl => _$this._tarballUrl;
+  set tarballUrl(String? tarballUrl) => _$this._tarballUrl = tarballUrl;
 
-  String _zipballUrl;
-  String get zipballUrl => _$this._zipballUrl;
-  set zipballUrl(String zipballUrl) => _$this._zipballUrl = zipballUrl;
+  String? _zipballUrl;
+  String? get zipballUrl => _$this._zipballUrl;
+  set zipballUrl(String? zipballUrl) => _$this._zipballUrl = zipballUrl;
 
   BranchBuilder();
 
   BranchBuilder get _$this {
-    if (_$v != null) {
-      _name = _$v.name;
-      _tarballUrl = _$v.tarballUrl;
-      _zipballUrl = _$v.zipballUrl;
+    final $v = _$v;
+    if ($v != null) {
+      _name = $v.name;
+      _tarballUrl = $v.tarballUrl;
+      _zipballUrl = $v.zipballUrl;
       _$v = null;
     }
     return this;
@@ -143,14 +148,12 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
 
   @override
   void replace(Branch other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Branch;
   }
 
   @override
-  void update(void Function(BranchBuilder) updates) {
+  void update(void Function(BranchBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

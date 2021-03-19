@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import '../repository_detail_page.dart';
 
 ///仓库详情数据实体，包含有当前index，仓库数据，分支等等
 class ReposDetailModel extends Model {
   static ReposDetailModel of(BuildContext context) =>
-      ScopedModel.of<ReposDetailModel>(context);
+      ScopedModel.of<ReposDetailModel>(context)!;
 
-  final String userName;
-  final String reposName;
+  final String? userName;
+  final String? reposName;
 
   ReposDetailModel({this.userName, this.reposName});
 
   int _currentIndex = 0;
 
-  String _currentBranch = "master";
+  String? _currentBranch = "master";
 
-  RepositoryQL _repository;
+  RepositoryQL? _repository;
 
-  BottomStatusModel _bottomModel;
+  BottomStatusModel? _bottomModel;
 
-  List<Widget> _footerButtons;
+  List<Widget>? _footerButtons;
 
-  List<String> _branchList;
+  List<String>? _branchList;
 
-  RepositoryQL get repository => _repository;
+  RepositoryQL? get repository => _repository;
 
   ///#################################################///
 
-  set repository(RepositoryQL data) {
+  set repository(RepositoryQL? data) {
     _repository = data;
     notifyListeners();
   }
@@ -44,30 +44,30 @@ class ReposDetailModel extends Model {
     notifyListeners();
   }
 
-  String get currentBranch => _currentBranch;
+  String? get currentBranch => _currentBranch;
 
-  set currentBranch(String data) {
+  set currentBranch(String? data) {
     _currentBranch = data;
     notifyListeners();
   }
 
-  BottomStatusModel get bottomModel => _bottomModel;
+  BottomStatusModel? get bottomModel => _bottomModel;
 
-  set bottomModel(BottomStatusModel data) {
+  set bottomModel(BottomStatusModel? data) {
     _bottomModel = data;
     notifyListeners();
   }
 
-  List<Widget> get footerButtons => _footerButtons;
+  List<Widget>? get footerButtons => _footerButtons;
 
-  set footerButtons(List<Widget> data) {
+  set footerButtons(List<Widget>? data) {
     _footerButtons = data;
     notifyListeners();
   }
 
-  List<String> get branchList => _branchList;
+  List<String>? get branchList => _branchList;
 
-  set branchList(List<String> data) {
+  set branchList(List<String>? data) {
     _branchList = data;
     notifyListeners();
   }
@@ -77,12 +77,12 @@ class ReposDetailModel extends Model {
   ///获取网络端仓库的star等状态
   getReposStatus(List<Widget> getBottomWidget()) async {
     String watchText =
-        repository.isSubscription == "SUBSCRIBED" ? "UnWatch" : "Watch";
-    String starText = repository.isStared ? "UnStar" : "Star";
-    IconData watchIcon = repository.isSubscription == "SUBSCRIBED"
+        repository!.isSubscription == "SUBSCRIBED" ? "UnWatch" : "Watch";
+    String starText = repository!.isStared! ? "UnStar" : "Star";
+    IconData watchIcon = repository!.isSubscription == "SUBSCRIBED"
         ? GSYICons.REPOS_ITEM_WATCHED
         : GSYICons.REPOS_ITEM_WATCH;
-    IconData starIcon = repository.isStared
+    IconData starIcon = repository!.isStared!
         ? GSYICons.REPOS_ITEM_STARED
         : GSYICons.REPOS_ITEM_STAR;
     BottomStatusModel model =

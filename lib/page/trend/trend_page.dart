@@ -26,7 +26,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class TrendPage extends StatefulWidget {
-  TrendPage({Key key}) : super(key: key);
+  TrendPage({Key? key}) : super(key: key);
 
   @override
   TrendPageState createState() => TrendPageState();
@@ -37,11 +37,11 @@ class TrendPageState extends State<TrendPage>
         AutomaticKeepAliveClientMixin<TrendPage>,
         SingleTickerProviderStateMixin {
   ///显示数据时间
-  TrendTypeModel selectTime = null;
+  TrendTypeModel? selectTime = null;
   int selectTimeIndex = 0;
 
   ///显示过滤语言
-  TrendTypeModel selectType = null;
+  TrendTypeModel? selectType = null;
   int selectTypeIndex = 0;
 
   /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
@@ -57,7 +57,7 @@ class TrendPageState extends State<TrendPage>
   ///显示刷新
   _showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIndicatorKey.currentState.show().then((e) {});
+      refreshIndicatorKey.currentState!.show()!.then((e) {});
       return true;
     });
   }
@@ -102,7 +102,7 @@ class TrendPageState extends State<TrendPage>
     var trendTimeList = trendTime(context);
     var trendTypeList = trendType(context);
     return new GSYCardItem(
-      color: store.state.themeData.primaryColor,
+      color: store.state.themeData!.primaryColor,
       margin: EdgeInsets.all(0.0),
       shape: new RoundedRectangleBorder(
         borderRadius: BorderRadius.all(radius),
@@ -112,11 +112,11 @@ class TrendPageState extends State<TrendPage>
             new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: new Row(
           children: <Widget>[
-            _renderHeaderPopItem(selectTime.name, trendTimeList,
+            _renderHeaderPopItem(selectTime!.name, trendTimeList,
                 (TrendTypeModel result) {
               if (trendBloc.isLoading) {
                 Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context).loading_text);
+                    msg: GSYLocalizations.i18n(context)!.loading_text);
                 return;
               }
               scrollController
@@ -132,11 +132,11 @@ class TrendPageState extends State<TrendPage>
               });
             }),
             new Container(height: 10.0, width: 0.5, color: GSYColors.white),
-            _renderHeaderPopItem(selectType.name, trendTypeList,
+            _renderHeaderPopItem(selectType!.name, trendTypeList,
                 (TrendTypeModel result) {
               if (trendBloc.isLoading) {
                 Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context).loading_text);
+                    msg: GSYLocalizations.i18n(context)!.loading_text);
                 return;
               }
               scrollController
@@ -214,8 +214,8 @@ class TrendPageState extends State<TrendPage>
   ///空页面
   Widget _buildEmpty() {
     var statusBar =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
-    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+        MediaQueryData.fromWindow(WidgetsBinding.instance!.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
         .padding
         .bottom;
     var height = MediaQuery.of(context).size.height -
@@ -238,7 +238,7 @@ class TrendPageState extends State<TrendPage>
                   height: 70.0),
             ),
             Container(
-              child: Text(GSYLocalizations.i18n(context).app_empty,
+              child: Text(GSYLocalizations.i18n(context)!.app_empty,
                   style: GSYConstant.normalText),
             ),
           ],
@@ -256,7 +256,7 @@ class TrendPageState extends State<TrendPage>
           backgroundColor: GSYColors.mainBackgroundColor,
 
           ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
-          body: StreamBuilder<List<TrendingRepoModel>>(
+          body: StreamBuilder<List<TrendingRepoModel>?>(
               stream: trendBloc.stream,
               builder: (context, snapShot) {
                 ///下拉刷新
@@ -270,14 +270,14 @@ class TrendPageState extends State<TrendPage>
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return _sliverBuilder(context, innerBoxIsScrolled, store);
                     },
-                    body: (snapShot.data == null || snapShot.data.length == 0)
+                    body: (snapShot.data == null || snapShot.data!.length == 0)
                         ? _buildEmpty()
                         : new ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return _renderItem(snapShot.data[index]);
+                              return _renderItem(snapShot.data![index]);
                             },
-                            itemCount: snapShot.data.length,
+                            itemCount: snapShot.data!.length,
                           ),
                   ),
                   onRefresh: requestRefresh,
@@ -344,7 +344,7 @@ class TrendPageState extends State<TrendPage>
                 child: Padding(
                   padding:
                       EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
-                  child: _renderHeader(store, radius),
+                  child: _renderHeader(store as Store<GSYState>, radius),
                 ),
               );
             }),
@@ -356,7 +356,7 @@ class TrendPageState extends State<TrendPage>
 ///趋势数据过滤显示item
 class TrendTypeModel {
   final String name;
-  final String value;
+  final String? value;
 
   TrendTypeModel(this.name, this.value);
 }
@@ -364,16 +364,16 @@ class TrendTypeModel {
 ///趋势数据时间过滤
 List<TrendTypeModel> trendTime(BuildContext context) {
   return [
-    new TrendTypeModel(GSYLocalizations.i18n(context).trend_day, "daily"),
-    new TrendTypeModel(GSYLocalizations.i18n(context).trend_week, "weekly"),
-    new TrendTypeModel(GSYLocalizations.i18n(context).trend_month, "monthly"),
+    new TrendTypeModel(GSYLocalizations.i18n(context)!.trend_day, "daily"),
+    new TrendTypeModel(GSYLocalizations.i18n(context)!.trend_week, "weekly"),
+    new TrendTypeModel(GSYLocalizations.i18n(context)!.trend_month, "monthly"),
   ];
 }
 
 ///趋势数据语言过滤
 List<TrendTypeModel> trendType(BuildContext context) {
   return [
-    TrendTypeModel(GSYLocalizations.i18n(context).trend_all, null),
+    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_all, null),
     TrendTypeModel("Java", "Java"),
     TrendTypeModel("Kotlin", "Kotlin"),
     TrendTypeModel("Dart", "Dart"),

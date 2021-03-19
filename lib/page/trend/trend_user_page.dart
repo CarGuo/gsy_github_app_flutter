@@ -15,7 +15,7 @@ class _TrendUserPageState extends State<TrendUserPage>
     with
         AutomaticKeepAliveClientMixin<TrendUserPage>,
         GSYListState<TrendUserPage> {
-  String endCursor;
+  String? endCursor;
 
   _renderItem(index) {
     if (pullLoadWidgetControl.dataList.length == 0) {
@@ -59,7 +59,7 @@ class _TrendUserPageState extends State<TrendUserPage>
     return Scaffold(
       appBar: new AppBar(
           title: new Text(
-        GSYLocalizations.i18n(context).trend_user_title,
+        GSYLocalizations.i18n(context)!.trend_user_title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       )),

@@ -18,7 +18,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 class ReposHeaderItem extends StatefulWidget {
   final ReposHeaderViewModel reposHeaderViewModel;
 
-  final ValueChanged<Size> layoutListener;
+  final ValueChanged<Size>? layoutListener;
 
   ReposHeaderItem(this.reposHeaderViewModel, {this.layoutListener}) : super();
 
@@ -58,7 +58,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   _renderTopicItem(BuildContext context, String item, index) {
     return new RawMaterialButton(
-        key: index == widget.reposHeaderViewModel.topics.length - 1
+        key: index == widget.reposHeaderViewModel.topics!.length - 1
             ? layoutLastTopicKey
             : null,
         onPressed: () {
@@ -88,14 +88,14 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///话题组控件
   _renderTopicGroup(BuildContext context) {
     if (widget.reposHeaderViewModel.topics == null ||
-        widget.reposHeaderViewModel.topics.length == 0) {
+        widget.reposHeaderViewModel.topics!.length == 0) {
       return Container(
         key: layoutTopicContainerKey,
       );
     }
     List<Widget> list = [];
-    for (int i = 0; i < widget.reposHeaderViewModel.topics.length; i++) {
-      var item = widget.reposHeaderViewModel.topics[i];
+    for (int i = 0; i < widget.reposHeaderViewModel.topics!.length; i++) {
+      var item = widget.reposHeaderViewModel.topics![i]!;
       list.add(_renderTopicItem(context, item, i));
     }
     return new Container(
@@ -112,19 +112,18 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   ///仓库创建和提交状态信息
   _getInfoText(BuildContext context) {
-    String createStr = widget.reposHeaderViewModel.repositoryIsFork
-        ? GSYLocalizations.i18n(context).repos_fork_at +
-            widget.reposHeaderViewModel.repositoryParentName +
+    String createStr = widget.reposHeaderViewModel.repositoryIsFork!
+        ? GSYLocalizations.i18n(context)!.repos_fork_at +
+            widget.reposHeaderViewModel.repositoryParentName! +
             '\n'
-        : GSYLocalizations.i18n(context).repos_create_at +
+        : GSYLocalizations.i18n(context)!.repos_create_at +
             widget.reposHeaderViewModel.created_at +
             "\n";
 
-    String updateStr = GSYLocalizations.i18n(context).repos_last_commit +
+    String updateStr = GSYLocalizations.i18n(context)!.repos_last_commit +
         widget.reposHeaderViewModel.push_at;
 
-    return createStr +
-        ((widget.reposHeaderViewModel.push_at != null) ? updateStr : '');
+    return createStr + updateStr;
   }
 
   ///顶部信息
@@ -139,7 +138,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             NavigatorUtils.goPerson(
                 context, widget.reposHeaderViewModel.ownerName);
           },
-          child: new Text(widget.reposHeaderViewModel.ownerName,
+          child: new Text(widget.reposHeaderViewModel.ownerName!,
               style: GSYConstant.normalTextActionWhiteBold.copyWith(shadows: [
                 BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
               ])),
@@ -151,7 +150,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
         ///仓库名,
         new Expanded(
-            child: new Text(widget.reposHeaderViewModel.repositoryName,
+            child: new Text(widget.reposHeaderViewModel.repositoryName!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
@@ -173,7 +172,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         new Container(width: 5.3, height: 1.0),
 
         ///仓库大小
-        new Text(widget.reposHeaderViewModel.repositorySize ?? "--",
+        new Text(widget.reposHeaderViewModel.repositorySize,
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
               BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
@@ -215,7 +214,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       alignment: Alignment.topRight,
       child: new RawMaterialButton(
         onPressed: () {
-          if (widget.reposHeaderViewModel.repositoryIsFork) {
+          if (widget.reposHeaderViewModel.repositoryIsFork!) {
             NavigatorUtils.goReposDetail(
                 context,
                 widget.reposHeaderViewModel.repositoryParentUser,
@@ -226,7 +225,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         padding: const EdgeInsets.all(0.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: new Text(_getInfoText(context),
-            style: widget.reposHeaderViewModel.repositoryIsFork
+            style: widget.reposHeaderViewModel.repositoryIsFork!
                 ? GSYConstant.smallActionLightText.copyWith(shadows: [
                     BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
                   ])
@@ -328,17 +327,17 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               widget.reposHeaderViewModel.repositoryIssue,
               () {
                 if (widget.reposHeaderViewModel.allIssueCount == null ||
-                    widget.reposHeaderViewModel.allIssueCount <= 0) {
+                    widget.reposHeaderViewModel.allIssueCount! <= 0) {
                   return;
                 }
                 List<String> list = [
-                  GSYLocalizations.i18n(context).repos_all_issue_count +
+                  GSYLocalizations.i18n(context)!.repos_all_issue_count +
                       widget.reposHeaderViewModel.allIssueCount.toString(),
-                  GSYLocalizations.i18n(context).repos_open_issue_count +
+                  GSYLocalizations.i18n(context)!.repos_open_issue_count +
                       widget.reposHeaderViewModel.openIssuesCount.toString(),
-                  GSYLocalizations.i18n(context).repos_close_issue_count +
-                      (widget.reposHeaderViewModel.allIssueCount -
-                              widget.reposHeaderViewModel.openIssuesCount)
+                  GSYLocalizations.i18n(context)!.repos_close_issue_count +
+                      (widget.reposHeaderViewModel.allIssueCount! -
+                              widget.reposHeaderViewModel.openIssuesCount!)
                           .toString(),
                 ];
                 CommonUtils.showCommitOptionDialog(context, list, (index) {},
@@ -356,25 +355,24 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
     ///如果存在tag，根据tag去判断，修复溢出
     new Future.delayed(Duration(seconds: 0), () {
       /// tag 所在 container
-      RenderBox renderBox2 =
-          layoutTopicContainerKey.currentContext?.findRenderObject();
+      RenderBox? renderBox2 =
+          layoutTopicContainerKey.currentContext?.findRenderObject() as RenderBox?;
 
       var dy = renderBox2
               ?.localToGlobal(Offset.zero,
-                  ancestor: layoutKey.currentContext.findRenderObject())
-              ?.dy ??
+                  ancestor: layoutKey.currentContext!.findRenderObject()).dy ??
           0;
       var sizeTagContainer =
-          layoutTopicContainerKey?.currentContext?.size ?? null;
-      var headerSize = layoutKey?.currentContext?.size;
+          layoutTopicContainerKey.currentContext?.size ?? null;
+      var headerSize = layoutKey.currentContext?.size;
       if (dy > 0 && headerSize != null && sizeTagContainer != null) {
         /// 20是 card 的上下 padding
         var newSize = dy + sizeTagContainer.height + 20;
         if (widgetHeight != newSize && newSize > 0) {
           print("widget?.layoutListener?.call");
           widgetHeight = newSize;
-          widget?.layoutListener
-              ?.call(Size(layoutKey.currentContext.size.width, widgetHeight));
+          widget.layoutListener
+              ?.call(Size(layoutKey.currentContext!.size!.width, widgetHeight));
         }
       }
     });
@@ -435,9 +433,9 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 }
 
 class ReposHeaderViewModel {
-  String ownerName = '---';
-  String ownerPic;
-  String repositoryName = "---";
+  String? ownerName = '---';
+  String? ownerPic;
+  String? repositoryName = "---";
   String repositorySize = "---";
   String repositoryStar = "---";
   String repositoryFork = "---";
@@ -445,25 +443,25 @@ class ReposHeaderViewModel {
   String repositoryIssue = "---";
   String repositoryIssueClose = "";
   String repositoryIssueAll = "";
-  String repositoryType = "---";
-  String repositoryDes = "---";
+  String? repositoryType = "---";
+  String? repositoryDes = "---";
   String repositoryLastActivity = "";
-  String repositoryParentName = "";
-  String repositoryParentUser = "";
+  String? repositoryParentName = "";
+  String? repositoryParentUser = "";
   String created_at = "";
   String push_at = "";
-  String license = "";
-  List<String> topics;
-  int allIssueCount = 0;
-  int openIssuesCount = 0;
+  String? license = "";
+  List<String?>? topics;
+  int? allIssueCount = 0;
+  int? openIssuesCount = 0;
   bool repositoryStared = false;
   bool repositoryForked = false;
   bool repositoryWatched = false;
-  bool repositoryIsFork = false;
+  bool? repositoryIsFork = false;
 
   ReposHeaderViewModel();
 
-  ReposHeaderViewModel.fromHttpMap(ownerName, reposName, RepositoryQL map) {
+  ReposHeaderViewModel.fromHttpMap(ownerName, reposName, RepositoryQL? map) {
     this.ownerName = ownerName;
     if (map == null || map.ownerName == null) {
       return;
@@ -482,16 +480,16 @@ class ReposHeaderViewModel {
     //this.repositoryIssueClose = map.closedIssuesCount != null ? map.closed_issues_count.toString() : "";
     //this.repositoryIssueAll = map.all_issues_count != null ? map.all_issues_count.toString() : "";
     this.repositorySize =
-        ((map.size / 1024.0)).toString().substring(0, 3) + "M";
+        (map.size! / 1024.0).toString().substring(0, 3) + "M";
     this.repositoryType = map.language;
     this.repositoryDes = map.shortDescriptionHTML;
     this.repositoryIsFork = map.isFork;
     this.license = map.license != null ? map.license : "";
     this.repositoryParentName =
-        map.parent != null ? map.parent.reposName : null;
+        map.parent != null ? map.parent!.reposName : null;
     this.repositoryParentUser =
-        map.parent != null ? map.parent.ownerName : null;
-    this.created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map.createdAt));
-    this.push_at = CommonUtils.getNewsTimeStr((DateTime.parse(map.pushAt)));
+        map.parent != null ? map.parent!.ownerName : null;
+    this.created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map.createdAt!));
+    this.push_at = CommonUtils.getNewsTimeStr((DateTime.parse(map.pushAt!)));
   }
 }

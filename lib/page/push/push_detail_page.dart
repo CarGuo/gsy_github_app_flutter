@@ -21,11 +21,11 @@ import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
  */
 
 class PushDetailPage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
-  final String sha;
+  final String? sha;
 
   final bool needHomeIcon;
 
@@ -43,7 +43,7 @@ class _PushDetailPageState extends State<PushDetailPage>
   ///提价信息页面的头部数据实体
   PushHeaderViewModel pushHeaderViewModel = new PushHeaderViewModel();
 
-  String htmlUrl;
+  String? htmlUrl;
 
   @override
   Future<Null> handleRefresh() async {
@@ -56,12 +56,12 @@ class _PushDetailPageState extends State<PushDetailPage>
     ///获取提交信息
     var res = await _getDataLogic();
     if (res != null && res.result) {
-      PushCommit pushCommit = res.data;
+      PushCommit? pushCommit = res.data;
       pullLoadWidgetControl.dataList.clear();
       if (isShow) {
         setState(() {
-          pushHeaderViewModel = PushHeaderViewModel.forMap(pushCommit);
-          pullLoadWidgetControl.dataList.addAll(pushCommit.files);
+          pushHeaderViewModel = PushHeaderViewModel.forMap(pushCommit!);
+          pullLoadWidgetControl.dataList.addAll(pushCommit.files!);
           pullLoadWidgetControl.needLoadMore.value = false;
           htmlUrl = pushCommit.htmlUrl;
         });
@@ -123,7 +123,7 @@ class _PushDetailPageState extends State<PushDetailPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget widgetContent =
+    Widget? widgetContent =
         (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(url: htmlUrl);
     return new Scaffold(
       appBar: new AppBar(

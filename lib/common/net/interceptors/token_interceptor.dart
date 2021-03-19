@@ -9,7 +9,7 @@ import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
  * on 2019/3/23.
  */
 class TokenInterceptors extends InterceptorsWrapper {
-  String _token;
+  String? _token;
 
   @override
   onRequest(RequestOptions options) async {
@@ -48,9 +48,9 @@ class TokenInterceptors extends InterceptorsWrapper {
 
   ///获取授权token
   getAuthorization() async {
-    String token = await LocalStorage.get(Config.TOKEN_KEY);
+    String? token = await LocalStorage.get(Config.TOKEN_KEY);
     if (token == null) {
-      String basic = await LocalStorage.get(Config.USER_BASIC_CODE);
+      String? basic = await LocalStorage.get(Config.USER_BASIC_CODE);
       if (basic == null) {
         //提示输入账号密码
       } else {

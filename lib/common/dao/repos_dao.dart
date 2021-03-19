@@ -78,7 +78,7 @@ class ReposDao {
         String url = Address.trending(since, languageType);
         var res = await new GitHubTrending().fetchTrending(url);
         if (res != null && res.result && res.data.length > 0) {
-          List<TrendingRepoModel> list = [];
+          List<TrendingRepoModel?> list = [];
           var data = res.data;
           if (data == null || data.length == 0) {
             return new DataResult(null, false);
@@ -87,7 +87,7 @@ class ReposDao {
             provider.insert(languageTypeDb + "V2", since, json.encode(data));
           }
           for (int i = 0; i < data.length; i++) {
-            TrendingRepoModel model = data[i];
+            TrendingRepoModel? model = data[i];
             list.add(model);
           }
           return new DataResult(list, true);
@@ -98,7 +98,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<TrendingRepoModel> list =
+      List<TrendingRepoModel>? list =
           await provider.getData(languageTypeDb + "V2", since);
       if (list == null || list.length == 0) {
         return await next();
@@ -114,13 +114,13 @@ class ReposDao {
    */
   static getRepositoryDetailDao(userName, reposName, branch,
       {needDb = true}) async {
-    String fullName = userName + "/" + reposName + "v3";
+    String? fullName = userName + "/" + reposName + "v3";
     RepositoryDetailDbProvider provider = new RepositoryDetailDbProvider();
 
     next() async {
       var result = await getRepository(userName, reposName);
       if (result != null && result.data != null) {
-        var data = result.data["repository"];
+        var data = result.data!["repository"];
         if (data == null) {
           return new DataResult(null, false);
         }
@@ -136,7 +136,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      RepositoryQL repositoryQL = await provider.getRepository(fullName);
+      RepositoryQL? repositoryQL = await provider.getRepository(fullName);
       if (repositoryQL == null) {
         return await next();
       }
@@ -151,7 +151,7 @@ class ReposDao {
    */
   static getRepositoryEventDao(userName, reposName,
       {page = 0, branch = "master", needDb = false}) async {
-    String fullName = userName + "/" + reposName;
+    String? fullName = userName + "/" + reposName;
     RepositoryEventDbProvider provider = new RepositoryEventDbProvider();
 
     next() async {
@@ -177,7 +177,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<Event> list = await provider.getEvents(fullName);
+      List<Event>? list = await provider.getEvents(fullName);
       if (list == null) {
         return await next();
       }
@@ -195,7 +195,7 @@ class ReposDao {
     String urlw = Address.resolveWatcherRepos(userName, reposName);
     var resS = await httpManager.netFetch(urls, null, null, null, noTip: true);
     var resW = await httpManager.netFetch(urlw, null, null, null, noTip: true);
-    var data = {"star": resS.result, "watch": resW.result};
+    var data = {"star": resS!.result, "watch": resW!.result};
     return new DataResult(data, true);
   }
 
@@ -204,7 +204,7 @@ class ReposDao {
    */
   static getReposCommitsDao(userName, reposName,
       {page = 0, branch = "master", needDb = false}) async {
-    String fullName = userName + "/" + reposName;
+    String? fullName = userName + "/" + reposName;
 
     RepositoryCommitsDbProvider provider = new RepositoryCommitsDbProvider();
 
@@ -233,7 +233,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<RepoCommit> list = await provider.getData(fullName, branch);
+      List<RepoCommit>? list = await provider.getData(fullName, branch);
       if (list == null) {
         return await next();
       }
@@ -294,7 +294,7 @@ class ReposDao {
     var res = await httpManager.netFetch(
         url, null, null, new Options(method: !star ? 'PUT' : 'DELETE'));
     return Future<DataResult>(() {
-      return new DataResult(null, res.result);
+      return new DataResult(null, res!.result);
     });
   }
 
@@ -305,7 +305,7 @@ class ReposDao {
     String url = Address.resolveWatcherRepos(userName, reposName);
     var res = await httpManager.netFetch(
         url, null, null, new Options(method: !watch ? 'PUT' : 'DELETE'));
-    return new DataResult(null, res.result);
+    return new DataResult(null, res!.result);
   }
 
   /**
@@ -313,7 +313,7 @@ class ReposDao {
    */
   static getRepositoryWatcherDao(userName, reposName, page,
       {needDb = false}) async {
-    String fullName = userName + "/" + reposName;
+    String? fullName = userName + "/" + reposName;
     RepositoryWatcherDbProvider provider = new RepositoryWatcherDbProvider();
 
     next() async {
@@ -339,7 +339,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<User> list = await provider.geData(fullName);
+      List<User>? list = await provider.geData(fullName);
       if (list == null) {
         return await next();
       }
@@ -354,7 +354,7 @@ class ReposDao {
    */
   static getRepositoryStarDao(userName, reposName, page,
       {needDb = false}) async {
-    String fullName = userName + "/" + reposName;
+    String? fullName = userName + "/" + reposName;
     RepositoryStarDbProvider provider = new RepositoryStarDbProvider();
     next() async {
       String url = Address.getReposStar(userName, reposName) +
@@ -379,7 +379,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<User> list = await provider.geData(fullName);
+      List<User>? list = await provider.geData(fullName);
       if (list == null) {
         return await next();
       }
@@ -394,7 +394,7 @@ class ReposDao {
    */
   static getRepositoryForksDao(userName, reposName, page,
       {needDb = false}) async {
-    String fullName = userName + "/" + reposName;
+    String? fullName = userName + "/" + reposName;
     RepositoryForkDbProvider provider = new RepositoryForkDbProvider();
     next() async {
       String url = Address.getReposForks(userName, reposName) +
@@ -420,7 +420,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<Repository> list = await provider.geData(fullName);
+      List<Repository>? list = await provider.geData(fullName);
       if (list == null) {
         return await next();
       }
@@ -459,7 +459,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<Repository> list = await provider.geData(userName);
+      List<Repository>? list = await provider.geData(userName);
       if (list == null) {
         return await next();
       }
@@ -498,7 +498,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      List<Repository> list = await provider.geData(userName);
+      List<Repository>? list = await provider.geData(userName);
       if (list == null) {
         return await next();
       }
@@ -515,7 +515,7 @@ class ReposDao {
     String url = Address.createFork(userName, reposName);
     var res = await httpManager.netFetch(
         url, null, null, new Options(method: "POST"));
-    return new DataResult(null, res.result);
+    return new DataResult(null, res!.result);
   }
 
   /**
@@ -525,7 +525,7 @@ class ReposDao {
     String url = Address.getbranches(userName, reposName);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<String> list = [];
+      List<String?> list = [];
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return new DataResult(null, false);
@@ -534,12 +534,12 @@ class ReposDao {
         var data = dataList[i];
 
         ///测试代码
-        Serializer<Branch> serializerForType =
-            serializers.serializerForType(Branch);
-        var test = serializers.deserializeWith<Branch>(serializerForType, data);
+        Serializer<Branch?> serializerForType =
+            serializers.serializerForType(Branch) as Serializer<Branch?>;
+        var test = serializers.deserializeWith<Branch?>(serializerForType, data);
 
         /// 反序列化
-        Map result = serializers.serializeWith(serializerForType, test);
+        Map result = serializers.serializeWith(serializerForType, test) as Map<dynamic, dynamic>;
         print("###### $test ${result}");
 
         list.add(data['name']);
@@ -562,11 +562,11 @@ class ReposDao {
       for (int i = 0; i < res.data.length; i++) {
         var data = res.data[i];
         Repository repository = new Repository.fromJson(data);
-        stared += repository.watchersCount;
+        stared += repository.watchersCount!;
         honorList.add(repository);
       }
       //排序
-      honorList.sort((r1, r2) => r2.watchersCount - r1.watchersCount);
+      honorList.sort((r1, r2) => r2.watchersCount! - r1.watchersCount!);
       return new DataResult({"stared": stared, "list": honorList}, true);
     }
     return new DataResult(null, false);
@@ -577,7 +577,7 @@ class ReposDao {
    */
   static getRepositoryDetailReadmeDao(userName, reposName, branch,
       {needDb = true}) async {
-    String fullName = userName + "/" + reposName;
+    String? fullName = userName + "/" + reposName;
     RepositoryDetailReadmeDbProvider provider =
         new RepositoryDetailReadmeDbProvider();
 
@@ -599,7 +599,7 @@ class ReposDao {
     }
 
     if (needDb) {
-      String readme = await provider.getRepositoryReadme(fullName, branch);
+      String? readme = await provider.getRepositoryReadme(fullName, branch);
       if (readme == null) {
         return await next();
       }
@@ -718,37 +718,37 @@ class ReposDao {
         needHtml: false);
     if (res != null && res.result && res.data.length > 0) {
       Release release = res.data[0];
-      String versionName = release.name;
+      String? versionName = release.name;
       if (versionName != null) {
-        if (Config.DEBUG) {
+        if (Config.DEBUG!) {
           print("versionName " + versionName);
         }
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
         var appVersion = packageInfo.version;
 
-        if (Config.DEBUG) {
+        if (Config.DEBUG!) {
           print("appVersion " + appVersion);
         }
         Version versionNameNum = Version.parse(versionName);
         Version currentNum = Version.parse(appVersion);
         int result = versionNameNum.compareTo(currentNum);
-        if (Config.DEBUG) {
+        if (Config.DEBUG!) {
           print("versionNameNum " +
               versionNameNum.toString() +
               " currentNum " +
               currentNum.toString());
         }
-        if (Config.DEBUG) {
+        if (Config.DEBUG!) {
           print("newsHad " + result.toString());
         }
         if (result > 0) {
           CommonUtils.showUpdateDialog(
-              context, release.name + ": " + release.body);
+              context, release.name! + ": " + release.body!);
         } else {
           if (showTip)
             Fluttertoast.showToast(
-                msg: GSYLocalizations.i18n(context).app_not_new_version);
+                msg: GSYLocalizations.i18n(context)!.app_not_new_version);
         }
       }
     }
@@ -763,7 +763,7 @@ class ReposDao {
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.headers != null) {
       try {
-        List<String> link = res.headers['link'];
+        List<String>? link = res.headers['link'];
         if (link != null) {
           int indexStart = link[0].lastIndexOf("page=") + 5;
           int indexEnd = link[0].lastIndexOf(">");
@@ -786,10 +786,10 @@ class ReposDao {
     String url =
         Address.searchTopic(searchTopic) + Address.getPageParams("&", page);
     var res = await httpManager.netFetch(url, null, null, null);
-    var data = (res.data != null && res.data["items"] != null)
+    var data = (res!.data != null && res.data["items"] != null)
         ? res.data["items"]
         : res.data;
-    if (res != null && res.result && data != null && data.length > 0) {
+    if (res.result && data != null && data.length > 0) {
       List<Repository> list = [];
       var dataList = data;
       if (dataList == null || dataList.length == 0) {
@@ -810,7 +810,7 @@ class ReposDao {
    */
   static getHistoryDao(page) async {
     ReadHistoryDbProvider provider = new ReadHistoryDbProvider();
-    List<RepositoryQL> list = await provider.geData(page);
+    List<RepositoryQL?>? list = await provider.geData(page);
     if (list == null || list.length <= 0) {
       return new DataResult(null, false);
     }
@@ -820,7 +820,7 @@ class ReposDao {
   /**
    * 保存阅读历史
    */
-  static saveHistoryDao(String fullName, DateTime dateTime, String data) {
+  static saveHistoryDao(String? fullName, DateTime dateTime, String data) {
     ReadHistoryDbProvider provider = new ReadHistoryDbProvider();
     provider.insert(fullName, dateTime, data);
   }

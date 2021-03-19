@@ -1,6 +1,5 @@
 import 'dart:math' as Math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Draws an [ActionIcon] and [_ArcProgressPainter] that represent an active action.
@@ -13,22 +12,22 @@ class ArcProgressIndicator extends StatelessWidget {
 
   // optional
   final double startAngle;
-  final double width;
+  final double? width;
 
   /// The color to use when filling the arc.
   ///
   /// Defaults to the accent color of the current theme.
-  final Color color;
-  final IconData icon;
-  final Color iconColor;
-  final double iconSize;
+  final Color? color;
+  final IconData? icon;
+  final Color? iconColor;
+  final double? iconSize;
 
   // private
   final Animation<double> _progress;
 
   ArcProgressIndicator({
-    @required this.controller,
-    @required this.radius,
+    required this.controller,
+    required this.radius,
     this.startAngle = 0.0,
     this.width,
     this.color,
@@ -39,22 +38,22 @@ class ArcProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextPainter _iconPainter;
+    TextPainter? _iconPainter;
     final ThemeData theme = Theme.of(context);
-    final Color _iconColor = iconColor ?? theme.accentIconTheme.color;
-    final double _iconSize = iconSize ?? IconTheme.of(context).size;
+    final Color? _iconColor = iconColor ?? theme.accentIconTheme.color;
+    final double? _iconSize = iconSize ?? IconTheme.of(context).size;
 
     if (icon != null) {
       _iconPainter = new TextPainter(
         textDirection: Directionality.of(context),
         text: new TextSpan(
-          text: new String.fromCharCode(icon.codePoint),
+          text: new String.fromCharCode(icon!.codePoint),
           style: new TextStyle(
             inherit: false,
             color: _iconColor,
             fontSize: _iconSize,
-            fontFamily: icon.fontFamily,
-            package: icon.fontPackage,
+            fontFamily: icon!.fontFamily,
+            package: icon!.fontPackage,
           ),
         ),
       )..layout();
@@ -65,7 +64,7 @@ class ArcProgressIndicator extends StatelessWidget {
         controller: _progress,
         color: color ?? theme.accentColor,
         radius: radius,
-        width: width ?? _iconSize * 2,
+        width: width ?? _iconSize! * 2,
         startAngle: startAngle,
         icon: _iconPainter,
       ),
@@ -82,13 +81,13 @@ class _ArcProgressPainter extends CustomPainter {
 
   // optional
   final double startAngle;
-  final TextPainter icon;
+  final TextPainter? icon;
 
   _ArcProgressPainter({
-    @required this.controller,
-    @required this.color,
-    @required this.radius,
-    @required this.width,
+    required this.controller,
+    required this.color,
+    required this.radius,
+    required this.width,
     this.startAngle = 0.0,
     this.icon,
   }) : super(repaint: controller);
@@ -114,11 +113,11 @@ class _ArcProgressPainter extends CustomPainter {
     if (icon != null) {
       double angle = startAngle + sweepAngle;
       Offset offset = new Offset(
-        (size.width / 2 - icon.size.width / 2) + radius * Math.cos(angle),
-        (size.height / 2 - icon.size.height / 2) + radius * Math.sin(angle),
+        (size.width / 2 - icon!.size.width / 2) + radius * Math.cos(angle),
+        (size.height / 2 - icon!.size.height / 2) + radius * Math.sin(angle),
       );
 
-      icon.paint(canvas, offset);
+      icon!.paint(canvas, offset);
     }
   }
 

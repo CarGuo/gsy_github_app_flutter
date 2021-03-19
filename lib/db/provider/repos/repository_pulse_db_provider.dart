@@ -12,9 +12,9 @@ class RepositoryPulseDbProvider extends BaseDbProvider {
   final String columnFullName = "fullName";
   final String columnData = "data";
 
-  int id;
-  String fullName;
-  String data;
+  int? id;
+  String? fullName;
+  String? data;
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {columnFullName: fullName, columnData: data};

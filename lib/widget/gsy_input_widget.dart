@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 class GSYInputWidget extends StatefulWidget {
   final bool obscureText;
 
-  final String hintText;
+  final String? hintText;
 
-  final IconData iconData;
+  final IconData? iconData;
 
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   GSYInputWidget(
-      {Key key,
+      {Key? key,
       this.hintText,
       this.iconData,
       this.onChanged,

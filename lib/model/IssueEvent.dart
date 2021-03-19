@@ -10,21 +10,21 @@ part 'IssueEvent.g.dart';
 
 @JsonSerializable()
 class IssueEvent{
-  int id;
-  User user;
+  int? id;
+  User? user;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
   @JsonKey(name: "updated_at")
-  DateTime updatedAt;
+  DateTime? updatedAt;
   @JsonKey(name: "author_association")
-  String authorAssociation;
-  String body;
+  String? authorAssociation;
+  String? body;
   @JsonKey(name: "body_html")
-  String bodyHtml;
+  String? bodyHtml;
   @JsonKey(name: "event")
-  String type;
+  String? type;
   @JsonKey(name: "html_url")
-  String htmlUrl;
+  String? htmlUrl;
 
   IssueEvent(
     this.id,

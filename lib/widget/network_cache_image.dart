@@ -17,9 +17,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   /// Creates an object that fetches the image at the given URL.
   ///
   /// The arguments must not be null.
-  const NetworkCacheImage(this.url, {this.scale = 1.0, this.headers})
-      : assert(url != null),
-        assert(scale != null);
+  const NetworkCacheImage(this.url, {this.scale = 1.0, this.headers});
 
   /// The URL from which the image will be fetched.
   final String url;
@@ -28,7 +26,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   final double scale;
 
   /// The HTTP headers that will be used with [HttpClient.get] to fetch image from network.
-  final Map<String, String> headers;
+  final Map<String, String>? headers;
 
   @override
   Future<NetworkCacheImage> obtainKey(ImageConfiguration configuration) {
@@ -77,7 +75,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
 
       final Uint8List bytes = await consolidateHttpClientResponseBytes(
         response,
-        onBytesReceived: (int cumulative, int total) {
+        onBytesReceived: (int cumulative, int? total) {
           chunkEvents.add(ImageChunkEvent(
             cumulativeBytesLoaded: cumulative,
             expectedTotalBytes: total,

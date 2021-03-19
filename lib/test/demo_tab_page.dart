@@ -57,24 +57,24 @@ enum TabType { bottom, top }
 class TabWidget extends StatefulWidget {
   final TabType type;
 
-  final List<Widget> tabItems;
+  final List<Widget>? tabItems;
 
-  final List<Widget> tabViews;
+  final List<Widget>? tabViews;
 
   final Color indicatorColor;
 
-  final Widget title;
+  final Widget? title;
 
-  final PageController pageController;
+  final PageController? pageController;
 
-  final ValueChanged<int> onPageChanged;
+  final ValueChanged<int>? onPageChanged;
 
-  final ValueChanged<int> onTap;
+  final ValueChanged<int>? onTap;
 
   final int initTabIndex;
 
   TabWidget({
-    Key key,
+    Key? key,
     this.type = TabType.top,
     this.tabItems,
     this.tabViews,
@@ -97,19 +97,19 @@ class _GSYTabBarState extends State<TabWidget>
     super.initState();
     _tabController = new TabController(
         vsync: this,
-        length: widget.tabViews.length,
+        length: widget.tabViews!.length,
         initialIndex: widget.initTabIndex);
 
     _pageController = widget.pageController;
     _pageController ??= PageController();
   }
 
-  TabController _tabController;
-  PageController _pageController;
+  TabController? _tabController;
+  PageController? _pageController;
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 
@@ -135,18 +135,18 @@ class _GSYTabBarState extends State<TabWidget>
               child: new TabBar(
                 controller: _tabController,
                 labelPadding: EdgeInsets.zero,
-                tabs: widget.tabItems,
+                tabs: widget.tabItems!,
 
                 /// tab标签的下划线颜色
                 indicatorColor: widget.indicatorColor,
 
                 onTap: (index) {
                   ///点击时 500 毫秒的滑动
-                  _pageController.animateToPage(index,
+                  _pageController!.animateToPage(index,
                       curve: Curves.linear,
                       duration: Duration(milliseconds: 200));
                   if (widget.onTap != null) {
-                    widget.onTap(index);
+                    widget.onTap!(index);
                   }
                 },
               )),
@@ -164,12 +164,12 @@ class _GSYTabBarState extends State<TabWidget>
           title: widget.title,
           bottom: new TabBar(
               controller: _tabController,
-              tabs: widget.tabItems,
+              tabs: widget.tabItems!,
               indicatorColor: widget.indicatorColor),
         ),
         body: new TabBarView(
           controller: _tabController,
-          children: widget.tabViews,
+          children: widget.tabViews!,
         ),
       );
     }
@@ -181,10 +181,10 @@ class _GSYTabBarState extends State<TabWidget>
         ),
         body: new PageView(
           controller: _pageController,
-          children: widget.tabViews,
+          children: widget.tabViews!,
           onPageChanged: (index) {
-            if (!_tabController.indexIsChanging) {
-              _tabController.animateTo(index,
+            if (!_tabController!.indexIsChanging) {
+              _tabController!.animateTo(index,
                   curve: Curves.linear, duration: Duration(milliseconds: 20));
             }
             widget.onPageChanged?.call(index);

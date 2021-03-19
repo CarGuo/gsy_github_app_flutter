@@ -12,15 +12,15 @@ import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
 class IssueEditDialog extends StatefulWidget {
   final String dialogTitle;
 
-  final ValueChanged<String> onTitleChanged;
+  final ValueChanged<String>? onTitleChanged;
 
   final ValueChanged<String> onContentChanged;
 
   final VoidCallback onPressed;
 
-  final TextEditingController titleController;
+  final TextEditingController? titleController;
 
-  final TextEditingController valueController;
+  final TextEditingController? valueController;
 
   final bool needTitle;
 
@@ -44,7 +44,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               onChanged: widget.onTitleChanged,
               controller: widget.titleController,
               hintText:
-                  GSYLocalizations.i18n(context).issue_edit_issue_title_tip,
+                  GSYLocalizations.i18n(context)!.issue_edit_issue_title_tip,
               obscureText: false,
             ))
         : new Container();
@@ -67,15 +67,15 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
               onPressed: () {
                 String text = FAST_INPUT_LIST[index].content;
                 String newText = "";
-                if (widget.valueController.value != null) {
-                  newText = widget.valueController.value.text;
+                if (widget.valueController?.value != null) {
+                  newText = widget.valueController!.value.text;
                 }
                 newText = newText + text;
                 setState(() {
-                  widget.valueController.value =
+                  widget.valueController!.value =
                       new TextEditingValue(text: newText);
                 });
-                widget.onContentChanged?.call(newText);
+                widget.onContentChanged.call(newText);
               });
         },
         itemCount: FAST_INPUT_LIST.length,
@@ -146,7 +146,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                     onChanged: widget.onContentChanged,
                                     controller: widget.valueController,
                                     decoration: new InputDecoration(
-                                      hintText: GSYLocalizations.i18n(context)
+                                      hintText: GSYLocalizations.i18n(context)!
                                           .issue_edit_issue_title_tip,
                                       hintStyle: GSYConstant.middleSubText,
                                       isDense: true,
@@ -174,7 +174,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       child: new Text(
-                                          GSYLocalizations.i18n(context)
+                                          GSYLocalizations.i18n(context)!
                                               .app_cancel,
                                           style: GSYConstant.normalSubText),
                                       onPressed: () {
@@ -194,7 +194,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       child: new Text(
-                                          GSYLocalizations.i18n(context).app_ok,
+                                          GSYLocalizations.i18n(context)!.app_ok,
                                           style: GSYConstant.normalTextBold),
                                       onPressed: widget.onPressed)),
                             ],

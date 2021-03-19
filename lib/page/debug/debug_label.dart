@@ -10,10 +10,10 @@ import 'package:package_info/package_info.dart';
 
 class DebugLabel {
   static bool hadShow = false;
-  static OverlayEntry _overlayEntry;
+  static OverlayEntry? _overlayEntry;
 
   static showDebugLabel(BuildContext context) async {
-    if (!ConfigWrapper.of(context).debug) {
+    if (!ConfigWrapper.of(context)!.debug!) {
       return false;
     }
     if (hadShow) {
@@ -22,12 +22,12 @@ class DebugLabel {
     hadShow = true;
     var list = await _getDeviceInfo();
     PackageInfo packInfo = await PackageInfo.fromPlatform();
-    var language = GSYLocalizations.of(context).locale.languageCode;
+    var language = GSYLocalizations.of(context)!.locale.languageCode;
     if (_overlayEntry != null) {
-      _overlayEntry.remove();
+      _overlayEntry!.remove();
       _overlayEntry = null;
     }
-    var overlayState = Overlay.of(context);
+    var overlayState = Overlay.of(context)!;
     _overlayEntry = new OverlayEntry(builder: (context) {
       return GlobalLabel(
           version: packInfo.version,
@@ -35,7 +35,7 @@ class DebugLabel {
           platform: list[1],
           language: language);
     });
-    overlayState.insert(_overlayEntry);
+    overlayState.insert(_overlayEntry!);
   }
 
   static resetDebugLabel(BuildContext context) {
@@ -46,7 +46,7 @@ class DebugLabel {
   static hideDebugLabel() {
     hadShow = false;
     if (_overlayEntry != null) {
-      _overlayEntry.remove();
+      _overlayEntry!.remove();
       _overlayEntry = null;
     }
   }
@@ -64,10 +64,10 @@ Future<List<String>> _getDeviceInfo() async {
 }
 
 class GlobalLabel extends StatefulWidget {
-  final String version;
-  final String deviceInfo;
-  final String platform;
-  final String language;
+  final String? version;
+  final String? deviceInfo;
+  final String? platform;
+  final String? language;
 
   GlobalLabel({this.version, this.deviceInfo, this.platform, this.language});
 

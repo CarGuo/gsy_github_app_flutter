@@ -18,20 +18,20 @@ class GSYPullLoadWidget extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
 
   ///加载更多回调
-  final RefreshCallback onLoadMore;
+  final RefreshCallback? onLoadMore;
 
   ///下拉刷新回调
-  final RefreshCallback onRefresh;
+  final RefreshCallback? onRefresh;
 
   ///控制器，比如数据和一些配置
   final GSYPullLoadWidgetControl control;
 
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   final bool userIos;
 
   ///刷新key
-  final Key refreshKey;
+  final Key? refreshKey;
 
   GSYPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
@@ -48,7 +48,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   final GlobalKey<IOS.CupertinoSliverRefreshControlState> sliverRefreshKey =
       GlobalKey<IOS.CupertinoSliverRefreshControlState>();
 
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   bool isRefreshing = false;
 
@@ -62,10 +62,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
     _scrollController = widget.scrollController ?? new ScrollController();
 
     ///增加滑动监听
-    _scrollController.addListener(() {
+    _scrollController!.addListener(() {
       ///判断当前滑动位置是不是到达底部，触发加载更多回调
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+      if (_scrollController!.position.pixels ==
+          _scrollController!.position.maxScrollExtent) {
         if (widget.control.needLoadMore) {
           handleLoadMore();
         }
@@ -77,7 +77,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
       try {
         Future.delayed(Duration(seconds: 2), () {
           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-          _scrollController.notifyListeners();
+          _scrollController!.notifyListeners();
         });
       } catch (e) {
         print(e);
@@ -94,36 +94,36 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
     if (widget.control.needHeader) {
       ///如果需要头部，用Item 0 的 Widget 作为ListView的头部
       ///列表数量大于0时，因为头部和底部加载更多选项，需要对列表数据总数+2
-      return (widget.control.dataList.length > 0)
-          ? widget.control.dataList.length + 2
-          : widget.control.dataList.length + 1;
+      return (widget.control.dataList!.length > 0)
+          ? widget.control.dataList!.length + 2
+          : widget.control.dataList!.length + 1;
     } else {
       ///如果不需要头部，在没有数据时，固定返回数量1用于空页面呈现
-      if (widget.control.dataList.length == 0) {
+      if (widget.control.dataList!.length == 0) {
         return 1;
       }
 
       ///如果有数据,因为部加载更多选项，需要对列表数据总数+1
-      return (widget.control.dataList.length > 0)
-          ? widget.control.dataList.length + 1
-          : widget.control.dataList.length;
+      return (widget.control.dataList!.length > 0)
+          ? widget.control.dataList!.length + 1
+          : widget.control.dataList!.length;
     }
   }
 
   ///根据配置状态返回实际列表渲染Item
   _getItem(int index) {
     if (!widget.control.needHeader &&
-        index == widget.control.dataList.length &&
-        widget.control.dataList.length != 0) {
+        index == widget.control.dataList!.length &&
+        widget.control.dataList!.length != 0) {
       ///如果不需要头部，并且数据不为0，当index等于数据长度时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
     } else if (widget.control.needHeader &&
         index == _getListCount() - 1 &&
-        widget.control.dataList.length != 0) {
+        widget.control.dataList!.length != 0) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
     } else if (!widget.control.needHeader &&
-        widget.control.dataList.length == 0) {
+        widget.control.dataList!.length == 0) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {
@@ -190,7 +190,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
       return new NotificationListener(
         onNotification: (ScrollNotification notification) {
           ///通知 CupertinoSliverRefreshControl 当前的拖拽状态
-          sliverRefreshKey.currentState.notifyScrollNotification(notification);
+          sliverRefreshKey.currentState!.notifyScrollNotification(notification);
           return false;
         },
         child: CustomScrollView(
@@ -263,7 +263,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
                 height: 70.0),
           ),
           Container(
-            child: Text(GSYLocalizations.i18n(context).app_empty,
+            child: Text(GSYLocalizations.i18n(context)!.app_empty,
                 style: GSYConstant.normalText),
           ),
         ],
@@ -287,7 +287,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
 
                 ///加载中文本
                 new Text(
-                  GSYLocalizations.i18n(context).load_more_text,
+                  GSYLocalizations.i18n(context)!.load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
                     fontSize: 14.0,
@@ -315,13 +315,13 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   double get refreshTriggerPullDistance => iosRefreshHeight;
 
   Widget buildSimpleRefreshIndicator(
-    BuildContext context,
-    IOS.RefreshIndicatorMode refreshState,
-    double pulledExtent,
-    double refreshTriggerPullDistance,
-    double refreshIndicatorExtent,
+    BuildContext? context,
+    IOS.RefreshIndicatorMode? refreshState,
+    double? pulledExtent,
+    double? refreshTriggerPullDistance,
+    double? refreshIndicatorExtent,
   ) {
-    pulledExtentFlare = pulledExtent * 0.6;
+    pulledExtentFlare = pulledExtent! * 0.6;
     playAuto = refreshState == IOS.RefreshIndicatorMode.refresh;
     /*if(refreshState == IOS.RefreshIndicatorMode.refresh) {
       onRefreshing();
@@ -332,7 +332,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
       alignment: Alignment.bottomCenter,
       child: new Container(
         color: Colors.black,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context!).size.width,
 
         ///动态大小处理
         height:
@@ -353,21 +353,21 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
 
 class GSYPullLoadWidgetControl extends ChangeNotifier {
   ///数据，对齐增减，不能替换
-  List _dataList = [];
+  List? _dataList = [];
 
-  get dataList => _dataList;
+  List? get dataList => _dataList;
 
-  set dataList(List value) {
-    _dataList.clear();
+ set dataList(List? value) {
+    _dataList!.clear();
     if (value != null) {
-      _dataList.addAll(value);
+      _dataList!.addAll(value);
       notifyListeners();
     }
   }
 
-  addList(List value) {
+  addList(List? value) {
     if (value != null) {
-      _dataList.addAll(value);
+      _dataList!.addAll(value);
       notifyListeners();
     }
   }

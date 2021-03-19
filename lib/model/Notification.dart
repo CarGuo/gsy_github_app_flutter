@@ -12,15 +12,15 @@ part 'Notification.g.dart';
 
 @JsonSerializable()
 class Notification {
-  String id;
-  bool unread;
-  String reason;
+  String? id;
+  bool? unread;
+  String? reason;
   @JsonKey(name: "updated_at")
-  DateTime updateAt;
+  DateTime? updateAt;
   @JsonKey(name: "last_read_at")
-  DateTime lastReadAt;
-  Repository repository;
-  NotificationSubject subject;
+  DateTime? lastReadAt;
+  Repository? repository;
+  NotificationSubject? subject;
 
   Notification(this.id, this.unread, this.reason, this.updateAt, this.lastReadAt, this.repository, this.subject);
 

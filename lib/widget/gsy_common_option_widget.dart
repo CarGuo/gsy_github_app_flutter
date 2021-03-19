@@ -9,11 +9,11 @@ import 'package:share/share.dart';
  * Date: 2018-07-26
  */
 class GSYCommonOptionWidget extends StatelessWidget {
-  final List<GSYOptionModel> otherList;
+  final List<GSYOptionModel>? otherList;
 
-  final String url;
+  final String? url;
 
-  GSYCommonOptionWidget({this.otherList, String url})
+  GSYCommonOptionWidget({this.otherList, String? url})
       : this.url = (url == null) ? GSYConstant.app_default_share_url : url;
 
   _renderHeaderPopItem(List<GSYOptionModel> list) {
@@ -42,18 +42,18 @@ class GSYCommonOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> constList = [
-      new GSYOptionModel(GSYLocalizations.i18n(context).option_web,
-          GSYLocalizations.i18n(context).option_web, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context)!.option_web,
+          GSYLocalizations.i18n(context)!.option_web, (model) {
         CommonUtils.launchOutURL(url, context);
       }),
-      new GSYOptionModel(GSYLocalizations.i18n(context).option_copy,
-          GSYLocalizations.i18n(context).option_copy, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context)!.option_copy,
+          GSYLocalizations.i18n(context)!.option_copy, (model) {
         CommonUtils.copy(url ?? "", context);
       }),
-      new GSYOptionModel(GSYLocalizations.i18n(context).option_share,
-          GSYLocalizations.i18n(context).option_share, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context)!.option_share,
+          GSYLocalizations.i18n(context)!.option_share, (model) {
         Share.share(
-            GSYLocalizations.i18n(context).option_share_title + url ?? "");
+            GSYLocalizations.i18n(context)!.option_share_title + (url ?? ""));
       }),
     ];
     var list = [...constList, ...?otherList];

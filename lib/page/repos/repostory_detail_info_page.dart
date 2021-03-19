@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
@@ -18,7 +19,6 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_header_item.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 /**
  * 仓库详情动态信息页面
@@ -26,11 +26,11 @@ import 'package:scoped_model/scoped_model.dart';
  * Date: 2018-07-18
  */
 class ReposDetailInfoPage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
-  ReposDetailInfoPage(this.userName, this.reposName, {Key key})
+  ReposDetailInfoPage(this.userName, this.reposName, {Key? key})
       : super(key: key);
 
   @override
@@ -57,12 +57,12 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   ///动画控制器
-  AnimationController animationController;
+  AnimationController? animationController;
 
   @override
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIKey.currentState.show().then((e) {});
+      refreshIKey.currentState!.show()!.then((e) {});
       return true;
     });
   }
@@ -86,7 +86,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
       onPressed: () {
         EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index],
-            widget.userName + "/" + widget.reposName);
+            widget.userName! + "/" + widget.reposName!);
       },
     );
   }
@@ -149,13 +149,13 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         ? []
         : <Widget>[
             /// star
-            _renderBottomItem(ReposDetailModel.of(context).bottomModel.starText,
-                ReposDetailModel.of(context).bottomModel.starIcon, () {
+            _renderBottomItem(ReposDetailModel.of(context).bottomModel!.starText,
+                ReposDetailModel.of(context).bottomModel!.starIcon, () {
               CommonUtils.showLoadingDialog(context);
               return ReposDao.doRepositoryStarDao(
                       widget.userName,
                       widget.reposName,
-                      ReposDetailModel.of(context).repository.isStared)
+                      ReposDetailModel.of(context).repository!.isStared)
                   .then((result) {
                 showRefreshLoading();
                 Navigator.pop(context);
@@ -164,13 +164,13 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
             /// watch
             _renderBottomItem(
-                ReposDetailModel.of(context).bottomModel.watchText,
-                ReposDetailModel.of(context).bottomModel.watchIcon, () {
+                ReposDetailModel.of(context).bottomModel!.watchText,
+                ReposDetailModel.of(context).bottomModel!.watchIcon, () {
               CommonUtils.showLoadingDialog(context);
               return ReposDao.doRepositoryWatchDao(
                       widget.userName,
                       widget.reposName,
-                      ReposDetailModel.of(context).repository.isSubscription ==
+                      ReposDetailModel.of(context).repository!.isSubscription ==
                           "SUBSCRIBED")
                   .then((result) {
                 showRefreshLoading();
@@ -304,8 +304,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
                   padding: EdgeInsets.only(bottom: 10, left: lr, right: lr),
                   child: new GSYSelectItemWidget(
                     [
-                      GSYLocalizations.i18n(context).repos_tab_activity,
-                      GSYLocalizations.i18n(context).repos_tab_commits,
+                      GSYLocalizations.i18n(context)!.repos_tab_activity,
+                      GSYLocalizations.i18n(context)!.repos_tab_commits,
                     ],
                     (index) {
                       ///切换时先滑动

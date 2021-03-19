@@ -6,18 +6,18 @@ part 'Branch.g.dart';
 abstract class Branch implements Built<Branch, BranchBuilder> {
   static Serializer<Branch> get serializer => _$branchSerializer;
 
-  @nullable
-  String get name;
 
-  @nullable
+  String? get name;
+
+
   @BuiltValueField(wireName: 'tarball_url')
-  String get tarballUrl;
+  String? get tarballUrl;
 
-  @nullable
+
   @BuiltValueField(wireName: 'zipball_url')
-  String get zipballUrl;
+  String? get zipballUrl;
 
 
   Branch._();
-  factory Branch([void Function(BranchBuilder) updates]) = _$Branch;
+  factory Branch([void Function(BranchBuilder)? updates]) = _$Branch;
 }

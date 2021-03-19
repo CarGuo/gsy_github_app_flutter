@@ -9,19 +9,19 @@ part 'FileModel.g.dart';
 
 @JsonSerializable()
 class FileModel {
-  String name;
-  String path;
-  String sha;
-  int size;
-  String url;
+  String? name;
+  String? path;
+  String? sha;
+  int? size;
+  String? url;
   @JsonKey(name: "html_url")
-  String htmlUrl;
+  String? htmlUrl;
   @JsonKey(name: "git_url")
-  String gitUrl;
+  String? gitUrl;
   @JsonKey(name: "download_url")
-  String downloadUrl;
+  String? downloadUrl;
   @JsonKey(name: "type")
-  String type;
+  String? type;
 
   FileModel(
     this.name,

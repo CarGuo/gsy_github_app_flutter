@@ -9,9 +9,9 @@ part 'CommitGitUser.g.dart';
 
 @JsonSerializable()
 class CommitGitUser{
-  String name;
-  String email;
-  DateTime date;
+  String? name;
+  String? email;
+  DateTime? date;
 
   CommitGitUser(this.name, this.email, this.date);
 

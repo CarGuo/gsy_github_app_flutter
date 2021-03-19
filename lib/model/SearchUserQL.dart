@@ -1,10 +1,10 @@
 class SearchUserQL {
-  final int followers;
-  final String name;
-  final String avatarUrl;
-  final String bio;
-  final String login;
-  final String lang;
+  final int? followers;
+  final String? name;
+  final String? avatarUrl;
+  final String? bio;
+  final String? login;
+  final String? lang;
 
   SearchUserQL({
     this.followers,
@@ -16,7 +16,7 @@ class SearchUserQL {
   });
 
   static fromMap(Map map) {
-    String lang;
+    String? lang;
     if (map["lang"] != null &&
         map["lang"]["nodes"] != null &&
         map["lang"]["nodes"].length > 0 &&

@@ -20,14 +20,14 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   final String columnReadDate = "readDate";
   final String columnData = "data";
 
-  int id;
-  String fullName;
-  int readDate;
-  String data;
+  int? id;
+  String? fullName;
+  int? readDate;
+  String? data;
 
   ReadHistoryDbProvider();
 
-  Map<String, dynamic> toMap(String fullName, DateTime readDate, String data) {
+  Map<String, dynamic> toMap(String? fullName, DateTime readDate, String data) {
     Map<String, dynamic> map = {
       columnFullName: fullName,
       columnReadDate: readDate.millisecondsSinceEpoch,
@@ -73,7 +73,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
     return null;
   }
 
-  Future _getProviderInsert(Database db, String fullName) async {
+  Future _getProviderInsert(Database db, String? fullName) async {
     List<Map<String, dynamic>> maps = await db.query(
       name,
       columns: [columnId, columnFullName, columnReadDate, columnData],
@@ -90,7 +90,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
 
   ///插入到数据库
   Future insert(
-      String fullName, DateTime dateTime, String dataMapString) async {
+      String? fullName, DateTime dateTime, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProviderInsert(db, fullName);
     if (provider != null) {
@@ -101,17 +101,17 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<RepositoryQL>> geData(int page) async {
+  Future<List<RepositoryQL?>?> geData(int page) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, page);
     if (provider != null) {
-      List<RepositoryQL> list = [];
+      List<RepositoryQL?> list = [];
       for (var providerMap in provider) {
         ReadHistoryDbProvider provider =
             ReadHistoryDbProvider.fromMap(providerMap);
 
         ///使用 compute 的 Isolate 优化 json decode
-        var mapData = await compute(CodeUtils.decodeMapResult, provider.data);
+        var mapData = await compute(CodeUtils.decodeMapResult as Map<String, dynamic> Function(String? data), provider.data);
 
         list.add(RepositoryQL.fromMap(mapData));
       }

@@ -17,13 +17,13 @@ class DemoSqlManager {
 
   static final _NAME = "demo_github_app_flutter.db";
 
-  static Database _database;
+  static Database? _database;
 
   ///初始化
   static init() async {
     // open the database
     var databasesPath = await getDatabasesPath();
-    String path = databasesPath + _NAME;
+    String path = databasesPath! + _NAME;
     _database = await openDatabase(path, version: _VERSION, onCreate: (Database db, int version) async {
       // When creating the db, create the table
       //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
@@ -35,12 +35,12 @@ class DemoSqlManager {
    */
   static isTableExits(String tableName) async {
     await getCurrentDatabase();
-    var res = await _database.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
+    var res = await _database?.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
     return res != null && res.length > 0;
   }
 
   ///获取当前数据库对象
-  static Future<Database> getCurrentDatabase() async {
+  static Future<Database?> getCurrentDatabase() async {
     if (_database == null) {
       await init();
     }
@@ -50,7 +50,7 @@ class DemoSqlManager {
   ///关闭
   static close() {
     if (_database != null) {
-      _database.close();
+      _database!.close();
       _database = null;
     }
   }
@@ -76,11 +76,11 @@ abstract class DemoBaseDbProvider {
   }
 
   @mustCallSuper
-  prepare(name, String createSql) async {
+  prepare(name, String? createSql) async {
     isTableExits = await DemoSqlManager.isTableExits(name);
     if (!isTableExits) {
-      Database db = await DemoSqlManager.getCurrentDatabase();
-      return await db.execute(createSql);
+      Database?db = await DemoSqlManager.getCurrentDatabase();
+      return await db?.execute(createSql!);
     }
   }
 
@@ -104,9 +104,9 @@ class DemoUserInfoDbProvider extends DemoBaseDbProvider {
   final String columnUserName = "userName";
   final String columnData = "data";
 
-  int id;
-  String userName;
-  String data;
+  int? id;
+  String? userName;
+  String? data;
 
   DemoUserInfoDbProvider();
 
@@ -161,7 +161,7 @@ class DemoUserInfoDbProvider extends DemoBaseDbProvider {
   }
 
   ///获取事件数据
-  Future<User> getUserInfo(String userName) async {
+  Future<User?> getUserInfo(String userName) async {
     Database db = await getDataBase();
     var userProvider = await _getUserProvider(db, userName);
     if (userProvider != null) {

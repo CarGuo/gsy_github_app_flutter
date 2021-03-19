@@ -40,22 +40,20 @@ class RadialMenu<T> extends StatefulWidget {
   /// arguments must not be null (they all have defaults, so do not need to be
   /// specified).
   const RadialMenu({
-    Key key,
-    @required this.items,
-    @required this.onSelected,
+    Key? key,
+    required this.items,
+    required this.onSelected,
     this.radius = 50.0,
     this.menuAnimationDuration = const Duration(milliseconds: 1000),
     this.progressAnimationDuration = const Duration(milliseconds: 1000),
-  })  : assert(radius != null),
-        assert(menuAnimationDuration != null),
-        assert(progressAnimationDuration != null),
+  })  :
         super(key: key);
 
   /// The list of possible items to select among.
   final List<RadialMenuItem<T>> items;
 
   /// Called when the user selects an item.
-  final ValueChanged<T> onSelected;
+  final ValueChanged<T>? onSelected;
 
   /// The radius of the arc used to lay out the items and draw the progress bar.
   ///
@@ -77,10 +75,10 @@ class RadialMenu<T> extends StatefulWidget {
 }
 
 class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
-  AnimationController _menuAnimationController;
-  AnimationController _progressAnimationController;
+  late AnimationController _menuAnimationController;
+  late AnimationController _progressAnimationController;
   bool _isOpen = false;
-  int _activeItemIndex;
+  int? _activeItemIndex;
 
   // todo: xqwzts: allow users to pass in their own calculator as a param.
   // and change this to the default: radialItemAngleCalculator.
@@ -124,7 +122,7 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
     //await _progressAnimationController.forward().orCancel;
     _closeMenu();
     if (widget.onSelected != null) {
-      widget.onSelected(widget.items[itemIndex].value);
+      widget.onSelected!(widget.items[itemIndex].value);
     }
   }
 
@@ -190,14 +188,14 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
     }
 
     if (_activeItemIndex != null) {
-      children.add(_buildActiveAction(_activeItemIndex));
+      children.add(_buildActiveAction(_activeItemIndex!));
     }
 
     children.add(_buildCenterButton());
 
     return new AnimatedBuilder(
       animation: _menuAnimationController,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return new CustomMultiChildLayout(
           delegate: new _RadialMenuLayout(
             itemCount: widget.items.length,
@@ -226,14 +224,14 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
   final Animation<double> _progress;
 
   _RadialMenuLayout({
-    @required this.itemCount,
-    @required this.radius,
-    @required this.calculateItemAngle,
-    this.controller,
+    required this.itemCount,
+    required this.radius,
+    required this.calculateItemAngle,
+    required this.controller,
   }) : _progress = new Tween<double>(begin: 0.0, end: radius).animate(
             new CurvedAnimation(curve: Curves.elasticInOut, parent: controller));
 
-  Offset center;
+  late Offset center;
 
   @override
   void performLayout(Size size) {

@@ -11,17 +11,17 @@ part 'RepoCommit.g.dart';
 
 @JsonSerializable()
 class RepoCommit {
-  String sha;
-  String url;
+  String? sha;
+  String? url;
   @JsonKey(name: "html_url")
-  String htmlUrl;
+  String? htmlUrl;
   @JsonKey(name: "comments_url")
-  String commentsUrl;
+  String? commentsUrl;
 
-  CommitGitInfo commit;
-  User author;
-  User committer;
-  List<RepoCommit> parents;
+  CommitGitInfo? commit;
+  User? author;
+  User? committer;
+  List<RepoCommit>? parents;
 
   RepoCommit(
     this.sha,

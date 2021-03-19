@@ -8,11 +8,11 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
  */
 
 class GSYUserIconWidget extends StatelessWidget {
-  final String image;
-  final VoidCallback onPressed;
+  final String? image;
+  final VoidCallback? onPressed;
   final double width;
   final double height;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
 
   GSYUserIconWidget(
       {this.image,

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
  * Date: 2018-07-16
  */
 class GSYIConText extends StatelessWidget {
-  final String iconText;
+  final String? iconText;
 
   final IconData iconData;
 
@@ -18,7 +18,7 @@ class GSYIConText extends StatelessWidget {
 
   final double iconSize;
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   final MainAxisAlignment mainAxisAlignment;
 
@@ -57,7 +57,7 @@ class GSYIConText extends StatelessWidget {
 
                 ///显示数量文本
                 new Text(
-              iconText,
+              iconText!,
               style: textStyle
                   .merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,

@@ -9,18 +9,18 @@ class SearchBLoC {
   int selectIndex = 0;
 
   ///搜索文件
-  String get searchText {
+  String? get searchText {
     return textEditingController.text;
   }
 
   ///排序类型
-  String type = searchFilterType[0].value;
+  String? type = searchFilterType[0].value;
 
   ///排序
-  String sort = sortType[0].value;
+  String? sort = sortType[0].value;
 
   ///过滤语言
-  String language = searchLanguageType[0].value;
+  String? language = searchLanguageType[0].value;
 
   final TextEditingController textEditingController  = TextEditingController();
 

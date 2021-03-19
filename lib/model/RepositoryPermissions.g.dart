@@ -9,9 +9,9 @@ part of 'RepositoryPermissions.dart';
 RepositoryPermissions _$RepositoryPermissionsFromJson(
     Map<String, dynamic> json) {
   return RepositoryPermissions(
-    json['admin'] as bool,
-    json['push'] as bool,
-    json['pull'] as bool,
+    json['admin'] as bool?,
+    json['push'] as bool?,
+    json['pull'] as bool?,
   );
 }
 

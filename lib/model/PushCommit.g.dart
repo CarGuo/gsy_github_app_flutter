@@ -8,17 +8,16 @@ part of 'PushCommit.dart';
 
 PushCommit _$PushCommitFromJson(Map<String, dynamic> json) {
   return PushCommit(
-    (json['files'] as List)
-        ?.map((e) =>
-            e == null ? null : CommitFile.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['files'] as List<dynamic>?)
+        ?.map((e) => CommitFile.fromJson(e as Map<String, dynamic>))
+        .toList(),
     json['stats'] == null
         ? null
         : CommitStats.fromJson(json['stats'] as Map<String, dynamic>),
-    json['sha'] as String,
-    json['url'] as String,
-    json['html_url'] as String,
-    json['comments_url'] as String,
+    json['sha'] as String?,
+    json['url'] as String?,
+    json['html_url'] as String?,
+    json['comments_url'] as String?,
     json['commit'] == null
         ? null
         : CommitGitInfo.fromJson(json['commit'] as Map<String, dynamic>),
@@ -28,10 +27,9 @@ PushCommit _$PushCommitFromJson(Map<String, dynamic> json) {
     json['committer'] == null
         ? null
         : User.fromJson(json['committer'] as Map<String, dynamic>),
-    (json['parents'] as List)
-        ?.map((e) =>
-            e == null ? null : RepoCommit.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['parents'] as List<dynamic>?)
+        ?.map((e) => RepoCommit.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

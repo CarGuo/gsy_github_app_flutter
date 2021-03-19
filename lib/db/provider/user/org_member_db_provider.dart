@@ -14,9 +14,9 @@ class OrgMemberDbProvider extends BaseDbProvider {
   final String columnOrg = "org";
   final String columnData = "data";
 
-  int id;
-  String org;
-  String data;
+  int? id;
+  String? org;
+  String? data;
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {columnOrg: org, columnData: data};

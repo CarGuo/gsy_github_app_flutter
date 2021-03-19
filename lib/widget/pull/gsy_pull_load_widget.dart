@@ -9,15 +9,15 @@ class GSYPullLoadWidget extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
 
   ///加载更多回调
-  final RefreshCallback onLoadMore;
+  final RefreshCallback? onLoadMore;
 
   ///下拉刷新回调
-  final RefreshCallback onRefresh;
+  final RefreshCallback? onRefresh;
 
   ///控制器，比如数据和一些配置
-  final GSYPullLoadWidgetControl control;
+  final GSYPullLoadWidgetControl? control;
 
-  final Key refreshKey;
+  final Key? refreshKey;
 
   GSYPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
@@ -32,7 +32,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   @override
   void initState() {
-    widget.control?.needLoadMore?.addListener(() {
+    widget.control?.needLoadMore.addListener(() {
       ///延迟两秒等待确认
       try {
         Future.delayed(Duration(seconds: 2), () {
@@ -49,8 +49,8 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
       ///判断当前滑动位置是不是到达底部，触发加载更多回调
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        if (widget?.control?.needLoadMore?.value == true) {
-          widget?.onLoadMore?.call();
+        if (widget.control?.needLoadMore.value == true) {
+          widget.onLoadMore?.call();
         }
       }
     });
@@ -62,39 +62,39 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   ///比如多个头部，是否需要空页面，是否需要显示加载更多。
   _getListCount() {
     ///是否需要头部
-    if (widget.control.needHeader) {
+    if (widget.control!.needHeader) {
       ///如果需要头部，用Item 0 的 Widget 作为ListView的头部
       ///列表数量大于0时，因为头部和底部加载更多选项，需要对列表数据总数+2
-      return (widget.control.dataList.length > 0)
-          ? widget.control.dataList.length + 2
-          : widget.control.dataList.length + 1;
+      return (widget.control!.dataList.length > 0)
+          ? widget.control!.dataList.length + 2
+          : widget.control!.dataList.length + 1;
     } else {
       ///如果不需要头部，在没有数据时，固定返回数量1用于空页面呈现
-      if (widget.control.dataList.length == 0) {
+      if (widget.control!.dataList.length == 0) {
         return 1;
       }
 
       ///如果有数据,因为部加载更多选项，需要对列表数据总数+1
-      return (widget.control.dataList.length > 0)
-          ? widget.control.dataList.length + 1
-          : widget.control.dataList.length;
+      return (widget.control!.dataList.length > 0)
+          ? widget.control!.dataList.length + 1
+          : widget.control!.dataList.length;
     }
   }
 
   ///根据配置状态返回实际列表渲染Item
   _getItem(int index) {
-    if (!widget.control.needHeader &&
-        index == widget.control.dataList.length &&
-        widget.control.dataList.length != 0) {
+    if (!widget.control!.needHeader &&
+        index == widget.control!.dataList.length &&
+        widget.control!.dataList.length != 0) {
       ///如果不需要头部，并且数据不为0，当index等于数据长度时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (widget.control.needHeader &&
+    } else if (widget.control!.needHeader &&
         index == _getListCount() - 1 &&
-        widget.control.dataList.length != 0) {
+        widget.control!.dataList.length != 0) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (!widget.control.needHeader &&
-        widget.control.dataList.length == 0) {
+    } else if (!widget.control!.needHeader &&
+        widget.control!.dataList.length == 0) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {
@@ -110,7 +110,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
       key: widget.refreshKey,
 
       ///下拉刷新触发，返回的是一个Future
-      onRefresh: widget.onRefresh,
+      onRefresh: widget.onRefresh ?? ()async{},
       child: new ListView.builder(
         ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
         physics: const AlwaysScrollableScrollPhysics(),
@@ -144,7 +144,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
                 height: 70.0),
           ),
           Container(
-            child: Text(GSYLocalizations.i18n(context).app_empty,
+            child: Text(GSYLocalizations.i18n(context)!.app_empty,
                 style: GSYConstant.normalText),
           ),
         ],
@@ -155,7 +155,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   ///上拉加载更多
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
-    Widget bottomWidget = (widget.control.needLoadMore.value)
+    Widget bottomWidget = (widget.control!.needLoadMore.value)
         ? new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -168,7 +168,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
                 ///加载中文本
                 new Text(
-                  GSYLocalizations.i18n(context).load_more_text,
+                  GSYLocalizations.i18n(context)!.load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
                     fontSize: 14.0,

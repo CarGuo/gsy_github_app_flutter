@@ -8,10 +8,10 @@ part of 'RepoCommit.dart';
 
 RepoCommit _$RepoCommitFromJson(Map<String, dynamic> json) {
   return RepoCommit(
-    json['sha'] as String,
-    json['url'] as String,
-    json['html_url'] as String,
-    json['comments_url'] as String,
+    json['sha'] as String?,
+    json['url'] as String?,
+    json['html_url'] as String?,
+    json['comments_url'] as String?,
     json['commit'] == null
         ? null
         : CommitGitInfo.fromJson(json['commit'] as Map<String, dynamic>),
@@ -21,10 +21,9 @@ RepoCommit _$RepoCommitFromJson(Map<String, dynamic> json) {
     json['committer'] == null
         ? null
         : User.fromJson(json['committer'] as Map<String, dynamic>),
-    (json['parents'] as List)
-        ?.map((e) =>
-            e == null ? null : RepoCommit.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['parents'] as List<dynamic>?)
+        ?.map((e) => RepoCommit.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

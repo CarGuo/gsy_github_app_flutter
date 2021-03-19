@@ -59,12 +59,12 @@ class _UserProfileState extends State<UserProfileInfo> {
     );
   }
 
-  _showEditDialog(String title, String value, String key, Store store) {
+  _showEditDialog(String title, String? value, String key, Store store) {
     String content = value ?? "";
     CommonUtils.showEditDialog(context, title, (title) {}, (res) {
       content = res;
     }, () {
-      if (content == null || content.length == 0) {
+      if (content.length == 0) {
         return;
       }
       CommonUtils.showLoadingDialog(context);
@@ -83,40 +83,40 @@ class _UserProfileState extends State<UserProfileInfo> {
 
   List<Widget> _renderList(User userInfo, Store store) {
     return [
-      _renderItem(Icons.info, GSYLocalizations.i18n(context).user_profile_name,
+      _renderItem(Icons.info, GSYLocalizations.i18n(context)!.user_profile_name,
           userInfo.name ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context).user_profile_name,
+        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_name,
             userInfo.name, "name", store);
       }),
       _renderItem(
           Icons.email,
-          GSYLocalizations.i18n(context).user_profile_email,
+          GSYLocalizations.i18n(context)!.user_profile_email,
           userInfo.email ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context).user_profile_email,
+        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_email,
             userInfo.email, "email", store);
       }),
-      _renderItem(Icons.link, GSYLocalizations.i18n(context).user_profile_link,
+      _renderItem(Icons.link, GSYLocalizations.i18n(context)!.user_profile_link,
           userInfo.blog ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context).user_profile_link,
+        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_link,
             userInfo.blog, "blog", store);
       }),
-      _renderItem(Icons.group, GSYLocalizations.i18n(context).user_profile_org,
+      _renderItem(Icons.group, GSYLocalizations.i18n(context)!.user_profile_org,
           userInfo.company ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context).user_profile_org,
+        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_org,
             userInfo.company, "company", store);
       }),
       _renderItem(
           Icons.location_on,
-          GSYLocalizations.i18n(context).user_profile_location,
+          GSYLocalizations.i18n(context)!.user_profile_location,
           userInfo.location ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context).user_profile_location,
+        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_location,
             userInfo.location, "location", store);
       }),
       _renderItem(
           Icons.message,
-          GSYLocalizations.i18n(context).user_profile_info,
+          GSYLocalizations.i18n(context)!.user_profile_info,
           userInfo.bio ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context).user_profile_info,
+        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_info,
             userInfo.bio, "bio", store);
       }),
     ];
@@ -132,14 +132,14 @@ class _UserProfileState extends State<UserProfileInfo> {
                 child: new Material(
                     color: Colors.transparent,
                     child: new Text(
-                      GSYLocalizations.i18n(context).home_user_info,
+                      GSYLocalizations.i18n(context)!.home_user_info,
                       style: GSYConstant.normalTextWhite,
                     )))),
         body: new Container(
           color: GSYColors.white,
           child: new SingleChildScrollView(
             child: new Column(
-              children: _renderList(store.state.userInfo, store),
+              children: _renderList(store.state.userInfo!, store),
             ),
           ),
         ),

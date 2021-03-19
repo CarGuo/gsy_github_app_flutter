@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ///动画大小变化打开的路由
 class SizeRoute extends PageRouteBuilder {
-  final Widget widget;
+  final Widget? widget;
 
   SizeRoute({this.widget})
       : super(
@@ -11,24 +11,31 @@ class SizeRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              widget,
+              widget!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,
             Animation<double> secondaryAnimation,
             Widget child,
-          ) =>
-              Align(
-            child: SizeTransition(
-              sizeFactor: animation,
-              child: child,
-            ),
-          ),
+          ) {
+            var begin = 0.0;
+            var end = 1.0;
+            var curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return Align(
+              child: SizeTransition(
+                sizeFactor: animation.drive(tween),
+                child: child,
+              ),
+            );
+          },
         );
 }
 
 class NoAnimationRoute extends PageRouteBuilder {
-  final Widget widget;
+  final Widget? widget;
 
   NoAnimationRoute({this.widget})
       : super(
@@ -37,7 +44,7 @@ class NoAnimationRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              widget,
+              widget!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

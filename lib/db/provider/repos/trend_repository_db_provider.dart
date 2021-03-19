@@ -13,11 +13,11 @@ import 'package:sqflite/sqflite.dart';
  */
 class TrendRepositoryDbProvider extends BaseDbProvider {
   final String name = 'TrendRepository';
-  int id;
-  String fullName;
-  String data;
-  String since;
-  String languageType;
+  int? id;
+  String? fullName;
+  String? data;
+  String? since;
+  String? languageType;
 
   final String columnId = "_id";
   final String columnLanguageType = "languageType";
@@ -27,7 +27,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
   TrendRepositoryDbProvider();
 
   Map<String, dynamic> toMap(
-      String language, String since, String dataMapString) {
+      String language, String? since, String dataMapString) {
     Map<String, dynamic> map = {
       columnLanguageType: language,
       columnSince: since,
@@ -62,7 +62,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
   }
 
   ///插入到数据库
-  Future insert(String language, String since, String dataMapString) async {
+  Future insert(String language, String? since, String dataMapString) async {
     Database db = await getDataBase();
 
     ///清空后再插入，因为只保存第一页面
@@ -71,7 +71,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<TrendingRepoModel>> getData(String language, String since) async {
+  Future<List<TrendingRepoModel>>? getData(String language, String? since) async {
     Database db = await getDataBase();
     List<Map> maps = await db.query(name,
         columns: [columnId, columnLanguageType, columnSince, columnData],
@@ -84,7 +84,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
-          await compute(CodeUtils.decodeListResult, provider.data);
+          await compute(CodeUtils.decodeListResult as List<dynamic> Function(String? data), provider.data);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

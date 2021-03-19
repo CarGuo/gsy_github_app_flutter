@@ -19,14 +19,14 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
   final String columnBranch = "branch";
   final String columnData = "data";
 
-  int id;
-  String fullName;
-  String data;
-  String branch;
+  int? id;
+  String? fullName;
+  String? data;
+  String? branch;
 
   RepositoryCommitsDbProvider();
 
-  Map<String, dynamic> toMap(String fullName, String branch, String data) {
+  Map<String, dynamic> toMap(String? fullName, String? branch, String data) {
     Map<String, dynamic> map = {
       columnFullName: fullName,
       columnBranch: branch,
@@ -60,7 +60,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String fullName, String branch) async {
+  Future _getProvider(Database db, String? fullName, String? branch) async {
     List<Map<String, dynamic>> maps = await db.query(name,
         columns: [columnId, columnFullName, columnBranch, columnData],
         where: "$columnFullName = ? and $columnBranch = ?",
@@ -74,7 +74,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
   }
 
   ///插入到数据库
-  Future insert(String fullName, String branch, String dataMapString) async {
+  Future insert(String? fullName, String? branch, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName, branch);
     if (provider != null) {
@@ -86,7 +86,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
   }
 
   ///获取事件数据
-  Future<List<RepoCommit>> getData(String fullName, String branch) async {
+  Future<List<RepoCommit>?> getData(String? fullName, String? branch) async {
     Database db = await getDataBase();
 
     var provider = await _getProvider(db, fullName, branch);
@@ -95,7 +95,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
-          await compute(CodeUtils.decodeListResult, provider.data as String);
+          await compute(CodeUtils.decodeListResult as List<dynamic> Function(String? data), provider.data as String?);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

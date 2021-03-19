@@ -21,15 +21,15 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-18
  */
 class HomeDrawer extends StatelessWidget {
-  showAboutDialog(BuildContext context, String versionName) {
+  showAboutDialog(BuildContext context, String? versionName) {
     versionName ??= "Null";
     NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) => AboutDialog(
-              applicationName: GSYLocalizations.i18n(context).app_name,
-              applicationVersion: GSYLocalizations.i18n(context).app_version +
+              applicationName: GSYLocalizations.i18n(context)!.app_name,
+              applicationVersion: GSYLocalizations.i18n(context)!.app_version +
                   ": " +
-                  versionName,
+                  (versionName ?? ""),
               applicationIcon: new Image(
                   image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 50.0,
@@ -40,13 +40,13 @@ class HomeDrawer extends StatelessWidget {
 
   showThemeDialog(BuildContext context, Store store) {
     List<String> list = [
-      GSYLocalizations.i18n(context).home_theme_default,
-      GSYLocalizations.i18n(context).home_theme_1,
-      GSYLocalizations.i18n(context).home_theme_2,
-      GSYLocalizations.i18n(context).home_theme_3,
-      GSYLocalizations.i18n(context).home_theme_4,
-      GSYLocalizations.i18n(context).home_theme_5,
-      GSYLocalizations.i18n(context).home_theme_6,
+      GSYLocalizations.i18n(context)!.home_theme_default,
+      GSYLocalizations.i18n(context)!.home_theme_1,
+      GSYLocalizations.i18n(context)!.home_theme_2,
+      GSYLocalizations.i18n(context)!.home_theme_3,
+      GSYLocalizations.i18n(context)!.home_theme_4,
+      GSYLocalizations.i18n(context)!.home_theme_5,
+      GSYLocalizations.i18n(context)!.home_theme_6,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.pushTheme(store, index);
@@ -59,12 +59,12 @@ class HomeDrawer extends StatelessWidget {
     return Material(
       child: new StoreBuilder<GSYState>(
         builder: (context, store) {
-          User user = store.state.userInfo;
+          User user = store.state.userInfo!;
           return new Drawer(
             ///侧边栏按钮Drawer
             child: new Container(
               ///默认背景
-              color: store.state.themeData.primaryColor,
+              color: store.state.themeData!.primaryColor,
               child: new SingleChildScrollView(
                 ///item 背景
                 child: Container(
@@ -98,30 +98,30 @@ class HomeDrawer extends StatelessWidget {
                           ),
                           decoration: new BoxDecoration(
                             //用一个BoxDecoration装饰器提供背景图片
-                            color: store.state.themeData.primaryColor,
+                            color: store.state.themeData!.primaryColor,
                           ),
                         ),
                         new ListTile(
                             title: new Text(
-                              GSYLocalizations.i18n(context).home_reply,
+                              GSYLocalizations.i18n(context)!.home_reply,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
                               String content = "";
                               CommonUtils.showEditDialog(
                                   context,
-                                  GSYLocalizations.i18n(context).home_reply,
+                                  GSYLocalizations.i18n(context)!.home_reply,
                                   (title) {}, (res) {
                                 content = res;
                               }, () {
-                                if (content == null || content.length == 0) {
+                                if (content.length == 0) {
                                   return;
                                 }
                                 CommonUtils.showLoadingDialog(context);
                                 IssueDao.createIssueDao(
                                     "CarGuo", "gsy_github_app_flutter", {
                                   "title":
-                                      GSYLocalizations.i18n(context).home_reply,
+                                      GSYLocalizations.i18n(context)!.home_reply,
                                   "body": content
                                 }).then((result) {
                                   Navigator.pop(context);
@@ -134,13 +134,13 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              GSYLocalizations.i18n(context).home_history,
+                              GSYLocalizations.i18n(context)!.home_history,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
                               NavigatorUtils.gotoCommonList(
                                   context,
-                                  GSYLocalizations.i18n(context).home_history,
+                                  GSYLocalizations.i18n(context)!.home_history,
                                   "repositoryql",
                                   "history",
                                   userName: "",
@@ -152,7 +152,7 @@ class HomeDrawer extends StatelessWidget {
                                 child: new Material(
                                     color: Colors.transparent,
                                     child: new Text(
-                                      GSYLocalizations.i18n(context)
+                                      GSYLocalizations.i18n(context)!
                                           .home_user_info,
                                       style: GSYConstant.normalTextBold,
                                     ))),
@@ -161,7 +161,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              GSYLocalizations.i18n(context).home_change_theme,
+                              GSYLocalizations.i18n(context)!.home_change_theme,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -169,7 +169,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              GSYLocalizations.i18n(context)
+                              GSYLocalizations.i18n(context)!
                                   .home_change_language,
                               style: GSYConstant.normalText,
                             ),
@@ -178,7 +178,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              GSYLocalizations.i18n(context).home_check_update,
+                              GSYLocalizations.i18n(context)!.home_check_update,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -186,8 +186,8 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new Text(
-                              GSYLocalizations.of(context)
-                                  .currentLocalized
+                              GSYLocalizations.of(context)!
+                                  .currentLocalized!
                                   .home_about,
                               style: GSYConstant.normalText,
                             ),
@@ -202,7 +202,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         new ListTile(
                             title: new GSYFlexButton(
-                              text: GSYLocalizations.i18n(context).Login_out,
+                              text: GSYLocalizations.i18n(context)!.Login_out,
                               color: Colors.redAccent,
                               textColor: GSYColors.textWhite,
                               onPress: () {

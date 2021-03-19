@@ -21,7 +21,7 @@ Future<GraphQLClient> _client(token) async {
   );
 }
 
-GraphQLClient _innerClient;
+GraphQLClient? _innerClient;
 
 initClient(token) async {
   _innerClient ??= await _client(token);
@@ -31,7 +31,7 @@ releaseClient() {
   _innerClient = null;
 }
 
-Future<QueryResult> getRepository(String owner, String name) async {
+Future<QueryResult>? getRepository(String owner, String? name) async {
   final QueryOptions _options = QueryOptions(
       document: gql(readRepository),
       variables: <String, dynamic>{
@@ -39,10 +39,10 @@ Future<QueryResult> getRepository(String owner, String name) async {
         'name': name,
       },
       fetchPolicy: FetchPolicy.noCache);
-  return await _innerClient.query(_options);
+  return await _innerClient!.query(_options);
 }
 
-Future<QueryResult> getTrendUser(String location, {String cursor}) async {
+Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{
           'location': "location:${location} sort:followers",
@@ -55,5 +55,5 @@ Future<QueryResult> getTrendUser(String location, {String cursor}) async {
       document: gql(cursor == null ? readTrendUser : readTrendUserByCursor),
       variables: variables,
       fetchPolicy: FetchPolicy.noCache);
-  return await _innerClient.query(_options);
+  return await _innerClient!.query(_options);
 }

@@ -8,26 +8,26 @@ part 'UserOrg.g.dart';
 
 @JsonSerializable()
 class UserOrg {
-  String login;
-  int id;
-  String url;
-  String description;
+  String? login;
+  int? id;
+  String? url;
+  String? description;
   @JsonKey(name: "node_id")
-  String nodeId;
+  String? nodeId;
   @JsonKey(name: "repos_url")
-  String reposUrl;
+  String? reposUrl;
   @JsonKey(name: "events_url")
-  String eventsUrl;
+  String? eventsUrl;
   @JsonKey(name: "hooks_url")
-  String hooksUrl;
+  String? hooksUrl;
   @JsonKey(name: "issues_url")
-  String issuesUrl;
+  String? issuesUrl;
   @JsonKey(name: "members_url")
-  String membersUrl;
+  String? membersUrl;
   @JsonKey(name: "public_members_url")
-  String publicMembersUrl;
+  String? publicMembersUrl;
   @JsonKey(name: "avatar_url")
-  String avatarUrl;
+  String? avatarUrl;
 
   UserOrg(
     this.login,

@@ -8,16 +8,16 @@ part of 'Release.dart';
 
 Release _$ReleaseFromJson(Map<String, dynamic> json) {
   return Release(
-    json['id'] as int,
-    json['tag_name'] as String,
-    json['target_commitish'] as String,
-    json['name'] as String,
-    json['body'] as String,
-    json['body_html'] as String,
-    json['tarball_url'] as String,
-    json['zipball_url'] as String,
-    json['draft'] as bool,
-    json['prerelease'] as bool,
+    json['id'] as int?,
+    json['tag_name'] as String?,
+    json['target_commitish'] as String?,
+    json['name'] as String?,
+    json['body'] as String?,
+    json['body_html'] as String?,
+    json['tarball_url'] as String?,
+    json['zipball_url'] as String?,
+    json['draft'] as bool?,
+    json['prerelease'] as bool?,
     json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
@@ -27,10 +27,9 @@ Release _$ReleaseFromJson(Map<String, dynamic> json) {
     json['author'] == null
         ? null
         : User.fromJson(json['author'] as Map<String, dynamic>),
-    (json['assets'] as List)
-        ?.map((e) =>
-            e == null ? null : ReleaseAsset.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['assets'] as List<dynamic>?)
+        ?.map((e) => ReleaseAsset.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

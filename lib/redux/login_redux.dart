@@ -14,19 +14,19 @@ import 'middleware/epic_store.dart';
  * Created by guoshuyu
  * Date: 2018-07-16
  */
-final LoginReducer = combineReducers<bool>([
-  TypedReducer<bool, LoginSuccessAction>(_loginResult),
-  TypedReducer<bool, LogoutAction>(_logoutResult),
+final LoginReducer = combineReducers<bool?>([
+  TypedReducer<bool?, LoginSuccessAction>(_loginResult) ,
+  TypedReducer<bool?, LogoutAction>(_logoutResult),
 ]);
 
-bool _loginResult(bool result, LoginSuccessAction action) {
+bool? _loginResult(bool? result, LoginSuccessAction action) {
   if (action.success == true) {
     NavigatorUtils.goHome(action.context);
   }
   return action.success;
 }
 
-bool _logoutResult(bool result, LogoutAction action) {
+bool? _logoutResult(bool? result, LogoutAction action) {
   return true;
 }
 
@@ -45,8 +45,8 @@ class LogoutAction {
 
 class LoginAction {
   final BuildContext context;
-  final String username;
-  final String password;
+  final String? username;
+  final String? password;
 
   LoginAction(this.context, this.username, this.password);
 }
@@ -77,7 +77,7 @@ Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
       LoginAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
     var res = await UserDao.login(
-        action.username.trim(), action.password.trim(), store);
+        action.username!.trim(), action.password!.trim(), store);
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }

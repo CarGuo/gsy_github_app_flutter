@@ -8,10 +8,10 @@ class GSYBottomAppBar extends StatelessWidget {
     this.rowContents,
   });
 
-  final Color color;
-  final FloatingActionButtonLocation fabLocation;
-  final NotchedShape shape;
-  final List<Widget> rowContents;
+  final Color? color;
+  final FloatingActionButtonLocation? fabLocation;
+  final NotchedShape? shape;
+  final List<Widget>? rowContents;
 
   static final List<FloatingActionButtonLocation> kCenterLocations =
       <FloatingActionButtonLocation>[
@@ -23,7 +23,7 @@ class GSYBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       color: color,
-      child: Row(children: rowContents),
+      child: Row(children: rowContents!),
       shape: shape,
     );
   }

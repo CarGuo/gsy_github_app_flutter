@@ -10,21 +10,21 @@ part 'ReleaseAsset.g.dart';
 
 @JsonSerializable()
 class ReleaseAsset {
-  int id;
-  String name;
-  String label;
-  User uploader;
+  int? id;
+  String? name;
+  String? label;
+  User? uploader;
   @JsonKey(name: "content_type")
-  String contentType;
-  String state;
-  int size;
-  int downloadCout;
+  String? contentType;
+  String? state;
+  int? size;
+  int? downloadCout;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
   @JsonKey(name: "updated_at")
-  DateTime updatedAt;
+  DateTime? updatedAt;
   @JsonKey(name: "browser_download_url")
-  String downloadUrl;
+  String? downloadUrl;
 
   ReleaseAsset(
     this.id,

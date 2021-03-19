@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                               height: 90.0),
                           new Padding(padding: new EdgeInsets.all(10.0)),
                           new GSYInputWidget(
-                            hintText: GSYLocalizations.i18n(context)
+                            hintText: GSYLocalizations.i18n(context)!
                                 .login_username_hint_text,
                             iconData: GSYICons.LOGIN_USER,
                             onChanged: (String value) {
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                           ),
                           new Padding(padding: new EdgeInsets.all(10.0)),
                           new GSYInputWidget(
-                            hintText: GSYLocalizations.i18n(context)
+                            hintText: GSYLocalizations.i18n(context)!
                                 .login_password_hint_text,
                             iconData: GSYICons.LOGIN_PW,
                             obscureText: true,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                               children: <Widget>[
                                 new Expanded(
                                   child: new GSYFlexButton(
-                                    text: GSYLocalizations.i18n(context)
+                                    text: GSYLocalizations.i18n(context)!
                                         .login_text,
                                     color: Theme.of(context).primaryColor,
                                     textColor: GSYColors.textWhite,
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                 ),
                                 new Expanded(
                                   child: new GSYFlexButton(
-                                    text: GSYLocalizations.i18n(context)
+                                    text: GSYLocalizations.i18n(context)!
                                         .oauth_text,
                                     color: Theme.of(context).primaryColor,
                                     textColor: GSYColors.textWhite,
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                               CommonUtils.showLanguageDialog(context);
                             },
                             child: Text(
-                              GSYLocalizations.i18n(context).switch_language,
+                              GSYLocalizations.i18n(context)!.switch_language,
                               style: TextStyle(color: GSYColors.subTextColor),
                             ),
                           ),
@@ -148,9 +148,9 @@ mixin LoginBLoC on State<LoginPage> {
 
   final TextEditingController pwController = new TextEditingController();
 
-  var _userName = "";
+  String? _userName = "";
 
-  var _password = "";
+  String? _password = "";
 
   @override
   void initState() {
@@ -182,7 +182,7 @@ mixin LoginBLoC on State<LoginPage> {
 
   loginIn() async {
     Fluttertoast.showToast(
-        msg: GSYLocalizations.i18n(context).Login_deprecated,
+        msg: GSYLocalizations.i18n(context)!.Login_deprecated,
         gravity: ToastGravity.CENTER,
         toastLength: Toast.LENGTH_LONG);
     return;
@@ -199,8 +199,8 @@ mixin LoginBLoC on State<LoginPage> {
   }
 
   oauthLogin() async {
-    String code = await NavigatorUtils.goLoginWebView(context,
-        Address.getOAuthUrl(), "${GSYLocalizations.i18n(context).oauth_text}");
+    String? code = await NavigatorUtils.goLoginWebView(context,
+        Address.getOAuthUrl(), "${GSYLocalizations.i18n(context)!.oauth_text}");
 
     if (code != null && code.length > 0) {
       ///通过 redux 去执行登陆流程

@@ -8,18 +8,18 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
  * on 2019/3/23.
  */
 class LogsInterceptors extends InterceptorsWrapper {
-  static List<Map> sHttpResponses = [];
-  static List<String> sResponsesHttpUrl = [];
+  static List<Map?> sHttpResponses = [];
+  static List<String?> sResponsesHttpUrl = [];
 
-  static List<Map<String, dynamic>> sHttpRequest = [];
-  static List<String> sRequestHttpUrl = [];
+  static List<Map<String, dynamic>?> sHttpRequest = [];
+  static List<String?> sRequestHttpUrl = [];
 
-  static List<Map<String, dynamic>> sHttpError = [];
-  static List<String> sHttpErrorUrl = [];
+  static List<Map<String, dynamic>?> sHttpError = [];
+  static List<String?> sHttpErrorUrl = [];
 
   @override
   onRequest(RequestOptions options) async {
-    if (Config.DEBUG) {
+    if (Config.DEBUG!) {
       print("请求url：${options.path} ${options.method}");
       print('请求头: ' + options.headers.toString());
       if (options.data != null) {
@@ -27,7 +27,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       }
     }
     try {
-      addLogic(sRequestHttpUrl, options.path ?? "");
+      addLogic(sRequestHttpUrl, options.path);
       var data;
       if (options.data is Map) {
         data = options.data;
@@ -49,16 +49,14 @@ class LogsInterceptors extends InterceptorsWrapper {
 
   @override
   onResponse(Response response) async {
-    if (Config.DEBUG) {
-      if (response != null) {
+    if (Config.DEBUG!) {
         print('返回参数: ' + response.toString());
-      }
     }
     if (response.data is Map || response.data is List) {
       try {
         var data = Map<String, dynamic>();
         data["data"] = response.data;
-        addLogic(sResponsesHttpUrl, response?.request?.uri?.toString() ?? "");
+        addLogic(sResponsesHttpUrl, response.request.uri.toString());
         addLogic(sHttpResponses, data);
       } catch (e) {
         print(e);
@@ -67,7 +65,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       try {
         var data = Map<String, dynamic>();
         data["data"] = response.data;
-        addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
+        addLogic(sResponsesHttpUrl, response.request.uri.toString() );
         addLogic(sHttpResponses, data);
       } catch (e) {
         print(e);
@@ -75,7 +73,7 @@ class LogsInterceptors extends InterceptorsWrapper {
     } else if (response.data != null) {
       try {
         String data = response.data.toJson();
-        addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
+        addLogic(sResponsesHttpUrl, response.request.uri.toString() );
         addLogic(sHttpResponses, json.decode(data));
       } catch (e) {
         print(e);
@@ -86,12 +84,12 @@ class LogsInterceptors extends InterceptorsWrapper {
 
   @override
   onError(DioError err) async {
-    if (Config.DEBUG) {
+    if (Config.DEBUG!) {
       print('请求异常: ' + err.toString());
       print('请求异常信息: ' + (err.response?.toString() ?? ""));
     }
     try {
-      addLogic(sHttpErrorUrl, err.request.path ?? "null");
+      addLogic(sHttpErrorUrl, err.request!.path);
       var errors = Map<String, dynamic>();
       errors["error"] = err.message;
       addLogic(sHttpError, errors);

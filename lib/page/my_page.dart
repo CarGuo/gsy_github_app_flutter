@@ -15,7 +15,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class MyPage extends StatefulWidget {
-  MyPage({Key key}) : super(key: key);
+  MyPage({Key? key}) : super(key: key);
   @override
   MyPageState createState() => MyPageState();
 }
@@ -27,27 +27,24 @@ class MyPageState extends BasePersonState<MyPage> {
 
   Color notifyColor = GSYColors.subTextColor;
 
-  Store<GSYState> _getStore() {
-    if (context == null) {
-      return null;
-    }
+  Store<GSYState>? _getStore() {
     return StoreProvider.of(context);
   }
 
   ///从全局状态中获取我的用户名
   _getUserName() {
-    if (_getStore()?.state?.userInfo == null) {
+    if (_getStore()?.state.userInfo == null) {
       return null;
     }
-    return _getStore()?.state?.userInfo?.login;
+    return _getStore()?.state.userInfo?.login;
   }
 
   ///从全局状态中获取我的用户类型
   getUserType() {
-    if (_getStore()?.state?.userInfo == null) {
+    if (_getStore()?.state.userInfo == null) {
       return null;
     }
-    return _getStore()?.state?.userInfo?.type;
+    return _getStore()?.state.userInfo?.type;
   }
 
   ///更新通知图标颜色
@@ -113,7 +110,7 @@ class MyPageState extends BasePersonState<MyPage> {
 
       ///通过 redux 提交更新用户数据行为
       ///触发网络请求更新
-      _getStore().dispatch(FetchUserAction());
+      _getStore()?.dispatch(FetchUserAction());
 
       ///获取用户组织信息
       getUserOrg(_getUserName());
@@ -152,7 +149,7 @@ class MyPageState extends BasePersonState<MyPage> {
         return GSYNestedPullLoadWidget(
           pullLoadWidgetControl,
           (BuildContext context, int index) => renderItem(
-              index, store.state.userInfo, beStaredCount, notifyColor, () {
+              index, store.state.userInfo!, beStaredCount, notifyColor, () {
             _refreshNotify();
           }, orgList),
           handleRefresh,
@@ -161,7 +158,7 @@ class MyPageState extends BasePersonState<MyPage> {
           refreshKey: refreshIKey,
           headerSliverBuilder: (context, _) {
             return sliverBuilder(
-                context, _, store.state.userInfo, notifyColor, beStaredCount,
+                context, _, store.state.userInfo!, notifyColor, beStaredCount,
                 () {
               _refreshNotify();
             });

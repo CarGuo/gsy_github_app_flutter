@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class DEMOWidget extends StatelessWidget {
-  final String text;
+  final String? text;
 
   DEMOWidget(this.text);
 
@@ -30,7 +30,7 @@ class DemoStateWidget extends StatefulWidget  {
 
 class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAliveClientMixin  {
 
-  String text;
+  String? text;
 
   _DemoStateWidgetState(this.text);
 

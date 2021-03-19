@@ -1,29 +1,29 @@
 class RepositoryQL {
-  final int issuesClosed;
-  final int issuesOpen;
-  final int issuesTotal;
-  final String reposName;
-  final String reposFullName;
-  final String ownerName;
-  final String ownerAvatarUrl;
-  final String license;
-  final int forkCount;
-  final int starCount;
-  final int watcherCount;
-  final bool isFork;
-  final bool isStared;
-  final bool hasIssuesEnabled;
-  final String defaultBranch;
-  final String isSubscription;
-  final String language;
-  final int size;
-  final String createdAt;
-  final String pushAt;
-  final String sshUrl;
-  final String htmlUrl;
-  final String shortDescriptionHTML;
-  final List<String> topics;
-  final RepositoryQL parent;
+  final int? issuesClosed;
+  final int? issuesOpen;
+  final int? issuesTotal;
+  final String? reposName;
+  final String? reposFullName;
+  final String? ownerName;
+  final String? ownerAvatarUrl;
+  final String? license;
+  final int? forkCount;
+  final int? starCount;
+  final int? watcherCount;
+  final bool? isFork;
+  final bool? isStared;
+  final bool? hasIssuesEnabled;
+  final String? defaultBranch;
+  final String? isSubscription;
+  final String? language;
+  final int? size;
+  final String? createdAt;
+  final String? pushAt;
+  final String? sshUrl;
+  final String? htmlUrl;
+  final String? shortDescriptionHTML;
+  final List<String?>? topics;
+  final RepositoryQL? parent;
 
   RepositoryQL({
     this.issuesClosed,
@@ -53,12 +53,12 @@ class RepositoryQL {
     this.parent,
   });
 
-  static fromMap(Map map) {
-    List<String> topics = [];
+  static fromMap(Map? map) {
+    List<String?> topics = [];
     if (map == null) {
       return null;
     }
-    Map repositoryTopics = map["repositoryTopics"];
+    Map? repositoryTopics = map["repositoryTopics"];
     if (repositoryTopics != null) {
       List topicList = repositoryTopics["nodes"];
       topicList.forEach((item) {
@@ -98,14 +98,14 @@ class RepositoryQL {
     );
   }
 
-  static toMap(RepositoryQL repositoryQL) {
+  static toMap(RepositoryQL? repositoryQL) {
     var topics = {};
     if (repositoryQL == null) {
       return null;
     }
     if (repositoryQL.topics != null) {
       var list = [];
-      repositoryQL.topics.forEach((item) {
+      repositoryQL.topics!.forEach((item) {
         list.add({"topic": item});
       });
       topics["nodes"] = list;

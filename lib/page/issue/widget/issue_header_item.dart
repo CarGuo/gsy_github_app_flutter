@@ -17,7 +17,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 class IssueHeaderItem extends StatelessWidget {
   final IssueHeaderViewModel issueHeaderViewModel;
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   IssueHeaderItem(this.issueHeaderViewModel, {this.onPressed});
 
@@ -61,11 +61,11 @@ class IssueHeaderItem extends StatelessWidget {
 
   ///关闭操作人
   _renderCloseByText() {
-    return (issueHeaderViewModel.closedBy == null || issueHeaderViewModel.closedBy.trim().length == 0)
+    return (issueHeaderViewModel.closedBy == null || issueHeaderViewModel.closedBy!.trim().length == 0)
         ? new Container()
         : new Container(
             child: new Text(
-              "Close By " + issueHeaderViewModel.closedBy,
+              "Close By " + issueHeaderViewModel.closedBy!,
               style: GSYConstant.smallSubLightText,
             ),
             margin: new EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
@@ -105,7 +105,7 @@ class IssueHeaderItem extends StatelessWidget {
                         new Row(
                           children: <Widget>[
                             ///名称
-                            new Expanded(child: new Text(issueHeaderViewModel.actionUser, style: GSYConstant.normalTextWhite)),
+                            new Expanded(child: new Text(issueHeaderViewModel.actionUser!, style: GSYConstant.normalTextWhite)),
 
                             ///时间
                             new Text(
@@ -123,7 +123,7 @@ class IssueHeaderItem extends StatelessWidget {
 
                             ///评论标题
                             child: new Text(
-                              issueHeaderViewModel.issueComment,
+                              issueHeaderViewModel.issueComment!,
                               style: GSYConstant.smallTextWhite,
                             ),
                             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
@@ -152,31 +152,31 @@ class IssueHeaderItem extends StatelessWidget {
 
 class IssueHeaderViewModel {
   String actionTime = "---";
-  String actionUser = "---";
-  String actionUserPic;
+  String? actionUser = "---";
+  String? actionUserPic;
 
-  String closedBy = "";
-  bool locked = false;
-  String issueComment = "---";
-  String issueDesHtml = "---";
+  String? closedBy = "";
+  bool? locked = false;
+  String? issueComment = "---";
+  String? issueDesHtml = "---";
   String commentCount = "---";
-  String state = "---";
+  String? state = "---";
   String issueDes = "---";
   String issueTag = "---";
 
   IssueHeaderViewModel();
 
   IssueHeaderViewModel.fromMap(Issue issueMap) {
-    actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt);
-    actionUser = issueMap.user.login;
-    actionUserPic = issueMap.user.avatar_url;
-    closedBy = issueMap.closeBy != null ? issueMap.closeBy.login : "";
+    actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt!);
+    actionUser = issueMap.user!.login;
+    actionUserPic = issueMap.user!.avatar_url;
+    closedBy = issueMap.closeBy != null ? issueMap.closeBy!.login : "";
     locked = issueMap.locked;
     issueComment = issueMap.title;
     issueDesHtml = issueMap.bodyHtml != null ? issueMap.bodyHtml : (issueMap.body != null) ? issueMap.body : "";
     commentCount = issueMap.commentNum.toString() + "";
     state = issueMap.state;
-    issueDes = issueMap.body != null ? ": \n" + issueMap.body : '';
+    issueDes = issueMap.body != null ? ": \n" + issueMap.body! : '';
     issueTag = "#" + issueMap.number.toString();
   }
 }

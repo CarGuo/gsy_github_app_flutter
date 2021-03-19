@@ -9,9 +9,9 @@ part 'CommitStats.g.dart';
 
 @JsonSerializable()
 class CommitStats  {
-  int total;
-  int additions;
-  int deletions;
+  int? total;
+  int? additions;
+  int? deletions;
 
   CommitStats(this.total, this.additions, this.deletions);
 

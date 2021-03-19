@@ -107,9 +107,9 @@ mixin LoginBLoC on State<LoginPage> {
 
   final TextEditingController pwController = new TextEditingController();
 
-  var _userName = "";
+  String? _userName = "";
 
-  var _password = "";
+  String? _password = "";
 
   @override
   void initState() {
@@ -136,22 +136,22 @@ mixin LoginBLoC on State<LoginPage> {
 
   _initState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _userName = await prefs.get("username");
-    _password = await prefs.get("password");
+    _userName = await (prefs.get("username") as Future<String?>);
+    _password = await (prefs.get("password") as Future<String?>);
     userController.value = new TextEditingValue(text: _userName ?? "");
     pwController.value = new TextEditingValue(text: _password ?? "");
   }
 
   loginIn() async {
-    if (_userName == null || _userName.isEmpty) {
+    if (_userName == null || _userName!.isEmpty) {
       return;
     }
-    if (_password == null || _password.isEmpty) {
+    if (_password == null || _password!.isEmpty) {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("username", _userName);
-    await prefs.setString("password", _password);
+    await prefs.setString("username", _userName!);
+    await prefs.setString("password", _password!);
 
     ///通过 redux 去执行登陆流程
     StoreProvider.of<GSYState>(context)

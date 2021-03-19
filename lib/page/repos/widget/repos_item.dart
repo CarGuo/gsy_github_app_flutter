@@ -16,12 +16,12 @@ import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 class ReposItem extends StatelessWidget {
   final ReposViewModel reposViewModel;
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
   ///仓库item的底部状态，比如star数量等
-  _getBottomItem(BuildContext context, IconData icon, String text,
+  _getBottomItem(BuildContext context, IconData icon, String? text,
       {int flex = 3}) {
     return new Expanded(
       flex: flex,
@@ -89,7 +89,7 @@ class ReposItem extends StatelessWidget {
                         ),
 
                         ///仓库语言
-                        new Text(reposViewModel.repositoryType,
+                        new Text(reposViewModel.repositoryType!,
                             style: GSYConstant.smallSubText),
                       ],
                     ),
@@ -97,7 +97,7 @@ class ReposItem extends StatelessWidget {
 
                         ///仓库描述
                         child: new Text(
-                          reposViewModel.repositoryDes,
+                          reposViewModel.repositoryDes!,
                           style: GSYConstant.smallSubText,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
@@ -133,21 +133,21 @@ class ReposItem extends StatelessWidget {
 }
 
 class ReposViewModel {
-  String ownerName;
-  String ownerPic;
-  String repositoryName;
-  String repositoryStar;
-  String repositoryFork;
-  String repositoryWatch;
-  String hideWatchIcon;
-  String repositoryType = "";
-  String repositoryDes;
+  String? ownerName;
+  String? ownerPic;
+  String? repositoryName;
+  String? repositoryStar;
+  String? repositoryFork;
+  String? repositoryWatch;
+  String? hideWatchIcon;
+  String? repositoryType = "";
+  String? repositoryDes;
 
   ReposViewModel();
 
   ReposViewModel.fromMap(Repository data) {
-    ownerName = data.owner.login;
-    ownerPic = data.owner.avatar_url;
+    ownerName = data.owner!.login;
+    ownerPic = data.owner!.avatar_url;
     repositoryName = data.name;
     repositoryStar = data.watchersCount.toString();
     repositoryFork = data.forksCount.toString();

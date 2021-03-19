@@ -18,12 +18,12 @@ class PhotoViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String url = ModalRoute.of(context).settings.arguments;
+    final String? url = ModalRoute.of(context)!.settings.arguments as String?;
     return new Scaffold(
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.file_download),
           onPressed: () {
-           /* CommonUtils.saveImage(url).then((res) {
+            /* CommonUtils.saveImage(url).then((res) {
               if (res != null) {
                 Fluttertoast.showToast(msg: res);
                 if (Platform.isAndroid) {
@@ -45,20 +45,25 @@ class PhotoViewPage extends StatelessWidget {
         body: new Container(
           color: Colors.black,
           child: new PhotoView(
-            imageProvider: new NetworkImage(url ?? GSYICons.DEFAULT_REMOTE_PIC),
-            loadingChild: Container(
-              child: new Stack(
-                children: <Widget>[
-                  new Center(
-                      child: new Image.asset(GSYICons.DEFAULT_IMAGE,
-                          height: 180.0, width: 180.0)),
-                  new Center(
-                      child: new SpinKitFoldingCube(
-                          color: Colors.white30, size: 60.0)),
-                ],
-              ),
-            ),
-          ),
+              imageProvider:
+                  new NetworkImage(url ?? GSYICons.DEFAULT_REMOTE_PIC),
+              loadingBuilder: (
+                BuildContext context,
+                ImageChunkEvent? event,
+              ) {
+                return Container(
+                  child: new Stack(
+                    children: <Widget>[
+                      new Center(
+                          child: new Image.asset(GSYICons.DEFAULT_IMAGE,
+                              height: 180.0, width: 180.0)),
+                      new Center(
+                          child: new SpinKitFoldingCube(
+                              color: Colors.white30, size: 60.0)),
+                    ],
+                  ),
+                );
+              }),
         ));
   }
 }

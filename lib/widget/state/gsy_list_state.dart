@@ -46,7 +46,7 @@ mixin GSYListState<T extends StatefulWidget>
 
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIndicatorKey.currentState.show().then((e) {});
+      refreshIndicatorKey.currentState!.show().then((e) {});
       return true;
     });
   }

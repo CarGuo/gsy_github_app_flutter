@@ -5,8 +5,8 @@ part 'env_config.g.dart';
 ///环境配置
 @JsonSerializable(createToJson: false)
 class EnvConfig {
-  final String env;
-  final bool debug;
+  final String? env;
+  final bool? debug;
 
   EnvConfig({
     this.env,

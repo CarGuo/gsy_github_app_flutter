@@ -8,13 +8,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "17.0.0"
-  after_layout:
-    dependency: transitive
-    description:
-      name: after_layout
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.7+2"
   analyzer:
     dependency: "direct overridden"
     description:
@@ -57,13 +50,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.0-nullsafety.0"
-  bezier:
-    dependency: "direct main"
-    description:
-      name: bezier
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.5"
   build:
     dependency: transitive
     description:
@@ -246,13 +232,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.0-beta6"
-  event_bus:
-    dependency: "direct main"
-    description:
-      name: event_bus
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.1"
   ffi:
     dependency: transitive
     description:
@@ -274,32 +253,18 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
-  flare_dart:
-    dependency: transitive
-    description:
-      name: flare_dart
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.3.4"
   flare_flutter:
     dependency: "direct main"
     description:
       name: flare_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.6"
+    version: "3.0.0-nullsafety.0"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_json_widget:
-    dependency: "direct main"
-    description:
-      name: flutter_json_widget
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.2"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -318,7 +283,7 @@ packages:
       name: flutter_redux
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.7.0"
+    version: "0.8.0"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -649,12 +614,10 @@ packages:
   photo_view:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "966b32661fbb6a2170871d80edb07e418c392e36"
-      url: "https://github.com/CarSmallGuo/photo_view.git"
-    source: git
-    version: "0.3.3"
+      name: photo_view
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.11.1"
   platform:
     dependency: transitive
     description:
@@ -717,7 +680,7 @@ packages:
       name: redux
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0+3"
+    version: "5.0.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -725,13 +688,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.26.0"
-  scoped_model:
-    dependency: "direct main"
-    description:
-      name: scoped_model
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.0"
   share:
     dependency: "direct main"
     description:

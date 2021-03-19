@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
@@ -12,7 +13,7 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_input_widget.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
-import 'package:scoped_model/scoped_model.dart';
+
 
 /**
  * 仓库详情issue列表
@@ -20,11 +21,11 @@ import 'package:scoped_model/scoped_model.dart';
  * Date: 2018-07-19
  */
 class RepositoryDetailIssuePage extends StatefulWidget {
-  final String userName;
+  final String? userName;
 
-  final String reposName;
+  final String? reposName;
 
-  RepositoryDetailIssuePage(this.userName, this.reposName, {Key key})
+  RepositoryDetailIssuePage(this.userName, this.reposName, {Key? key})
       : super(key: key);
 
   @override
@@ -43,13 +44,13 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
       new GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   ///搜索 issue 文本
-  String searchText;
+  String? searchText;
 
   ///过滤 issue 状态
-  String issueState;
+  String? issueState;
 
   ///显示 issue 状态 tag index
-  int selectIndex;
+  int? selectIndex;
 
   ///滑动控制器
   final ScrollController scrollController = new ScrollController();
@@ -57,7 +58,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   @override
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIKey.currentState.show().then((e) {});
+      refreshIKey.currentState!.show()!.then((e) {});
       return true;
     });
   }
@@ -100,7 +101,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   }
 
   ///获取数据
-  _getDataLogic(String searchString) async {
+  _getDataLogic(String? searchString) async {
     if (searchString == null || searchString.trim().length == 0) {
       return await IssueDao.getRepositoryIssueDao(
           widget.userName, widget.reposName, issueState,
@@ -144,7 +145,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
           backgroundColor: GSYColors.mainBackgroundColor,
           appBar: new AppBar(
             leading: new Container(),
-            flexibleSpace: (model.repository?.hasIssuesEnabled == false)
+            flexibleSpace: (model?.repository?.hasIssuesEnabled == false)
                 ? new Container()
                 : GSYSearchInputWidget(onSubmitted: (value) {
                     this.searchText = value;
@@ -155,7 +156,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
             elevation: 0.0,
             backgroundColor: GSYColors.mainBackgroundColor,
           ),
-          body: (model.repository?.hasIssuesEnabled == false)
+          body: (model?.repository?.hasIssuesEnabled == false)
               ? new Container(
                   alignment: Alignment.center,
                   child: new Column(
@@ -170,7 +171,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                       ),
                       Container(
                         child: Text(
-                            GSYLocalizations.i18n(context)
+                            GSYLocalizations.i18n(context)!
                                 .repos_no_support_issue,
                             style: GSYConstant.normalText),
                       ),
@@ -224,9 +225,9 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                       EdgeInsets.only(top: lr, bottom: 10, left: lr, right: lr),
                   child: new GSYSelectItemWidget(
                     [
-                      GSYLocalizations.i18n(context).repos_tab_issue_all,
-                      GSYLocalizations.i18n(context).repos_tab_issue_open,
-                      GSYLocalizations.i18n(context).repos_tab_issue_closed,
+                      GSYLocalizations.i18n(context)!.repos_tab_issue_all,
+                      GSYLocalizations.i18n(context)!.repos_tab_issue_open,
+                      GSYLocalizations.i18n(context)!.repos_tab_issue_closed,
                     ],
                     (selectIndex) {
                       this.selectIndex = selectIndex;

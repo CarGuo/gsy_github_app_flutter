@@ -13,9 +13,9 @@ import 'package:sqflite/sqflite.dart';
  */
 class RepositoryDetailDbProvider extends BaseDbProvider {
   final String name = 'RepositoryDetail';
-  int id;
-  String fullName;
-  String data;
+  int? id;
+  String? fullName;
+  String? data;
 
   final String columnId = "_id";
   final String columnFullName = "fullName";
@@ -23,7 +23,7 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
 
   RepositoryDetailDbProvider();
 
-  Map<String, dynamic> toMap(String fullName, String dataMapString) {
+  Map<String, dynamic> toMap(String? fullName, String dataMapString) {
     Map<String, dynamic> map = {
       columnFullName: fullName,
       columnData: dataMapString
@@ -54,7 +54,7 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
     return name;
   }
 
-  Future _getProvider(Database db, String fullName) async {
+  Future _getProvider(Database db, String? fullName) async {
     List<Map<String, dynamic>> maps = await db.query(name,
         columns: [columnId, columnFullName, columnData],
         where: "$columnFullName = ?",
@@ -68,7 +68,7 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   }
 
   ///插入到数据库
-  Future insert(String fullName, String dataMapString) async {
+  Future insert(String? fullName, String dataMapString) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
@@ -79,13 +79,13 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
   }
 
   ///获取详情
-  Future<RepositoryQL> getRepository(String fullName) async {
+  Future<RepositoryQL?> getRepository(String? fullName) async {
     Database db = await getDataBase();
     var provider = await _getProvider(db, fullName);
     if (provider != null) {
       ///使用 compute 的 Isolate 优化 json decode
       var mapData =
-          await compute(CodeUtils.decodeMapResult, provider.data as String);
+          await compute(CodeUtils.decodeMapResult as Map<String, dynamic> Function(String? data), provider.data as String?);
       return RepositoryQL.fromMap(mapData);
     }
     return null;

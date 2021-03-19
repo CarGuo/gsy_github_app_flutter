@@ -12,7 +12,7 @@ import 'env/dev.dart';
 void main() {
   runZonedGuarded(() {
     ErrorWidget.builder = (FlutterErrorDetails details) {
-      Zone.current.handleUncaughtError(details.exception, details.stack);
+      Zone.current.handleUncaughtError(details.exception, details.stack!);
       return ErrorPage(
           details.exception.toString() + "\n " + details.stack.toString(), details);
     };

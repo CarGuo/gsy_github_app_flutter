@@ -8,8 +8,8 @@ part of 'CommitsComparison.dart';
 
 CommitsComparison _$CommitsComparisonFromJson(Map<String, dynamic> json) {
   return CommitsComparison(
-    json['url'] as String,
-    json['html_url'] as String,
+    json['url'] as String?,
+    json['html_url'] as String?,
     json['base_commit'] == null
         ? null
         : RepoCommit.fromJson(json['base_commit'] as Map<String, dynamic>),
@@ -17,16 +17,14 @@ CommitsComparison _$CommitsComparisonFromJson(Map<String, dynamic> json) {
         ? null
         : RepoCommit.fromJson(
             json['merge_base_commit'] as Map<String, dynamic>),
-    json['status'] as String,
-    json['total_commits'] as int,
-    (json['commits'] as List)
-        ?.map((e) =>
-            e == null ? null : RepoCommit.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    (json['files'] as List)
-        ?.map((e) =>
-            e == null ? null : CommitFile.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    json['status'] as String?,
+    json['total_commits'] as int?,
+    (json['commits'] as List<dynamic>?)
+        ?.map((e) => RepoCommit.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    (json['files'] as List<dynamic>?)
+        ?.map((e) => CommitFile.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

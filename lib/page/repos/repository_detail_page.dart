@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -11,12 +12,10 @@ import 'package:gsy_github_app_flutter/page/repos/repository_detail_readme_page.
 import 'package:gsy_github_app_flutter/page/repos/repository_file_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repostory_detail_info_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
-import 'package:gsy_github_app_flutter/widget/anima/curves_bezier.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 /**
  * 仓库详情
@@ -25,10 +24,10 @@ import 'package:scoped_model/scoped_model.dart';
  */
 class RepositoryDetailPage extends StatefulWidget {
   ///用户名
-  final String userName;
+  final String? userName;
 
   ///仓库名
-  final String reposName;
+  final String? reposName;
 
   RepositoryDetailPage(this.userName, this.reposName);
 
@@ -55,18 +54,18 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       new GlobalKey<RepositoryDetailIssuePageState>();
 
   ///动画控制器，用于底部发布 issue 按键动画
-  AnimationController animationController;
+  late AnimationController animationController;
 
   ///仓库的详情数据实体
-  ReposDetailModel reposDetailModel;
+  ReposDetailModel? reposDetailModel;
 
   ///渲染 Tab 的 Item
   _renderTabItem() {
     var itemList = [
-      GSYLocalizations.i18n(context).repos_tab_info,
-      GSYLocalizations.i18n(context).repos_tab_readme,
-      GSYLocalizations.i18n(context).repos_tab_issue,
-      GSYLocalizations.i18n(context).repos_tab_file,
+      GSYLocalizations.i18n(context)!.repos_tab_info,
+      GSYLocalizations.i18n(context)!.repos_tab_readme,
+      GSYLocalizations.i18n(context)!.repos_tab_issue,
+      GSYLocalizations.i18n(context)!.repos_tab_file,
     ];
     renderItem(String item, int i) {
       return new Container(
@@ -86,48 +85,49 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   }
 
   ///title 显示更多弹出item
-  _getMoreOtherItem(RepositoryQL repository) {
+  _getMoreOtherItem(RepositoryQL? repository) {
     return [
       ///Release Page
-      new GSYOptionModel(GSYLocalizations.i18n(context).repos_option_release,
-          GSYLocalizations.i18n(context).repos_option_release, (model) {
+      new GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_release,
+          GSYLocalizations.i18n(context)!.repos_option_release, (model) {
         String releaseUrl = "";
         String tagUrl = "";
-        if (infoListKey == null || infoListKey.currentState == null) {
+        if (infoListKey.currentState == null) {
           releaseUrl = GSYConstant.app_default_share_url;
           tagUrl = GSYConstant.app_default_share_url;
         } else {
           releaseUrl = repository == null
               ? GSYConstant.app_default_share_url
-              : repository.htmlUrl + "/releases";
+              : repository.htmlUrl! + "/releases";
           tagUrl = repository == null
               ? GSYConstant.app_default_share_url
-              : repository.htmlUrl + "/tags";
+              : repository.htmlUrl! + "/tags";
         }
         NavigatorUtils.goReleasePage(
             context, widget.userName, widget.reposName, releaseUrl, tagUrl);
       }),
 
       ///Branch Page
-      new GSYOptionModel(GSYLocalizations.i18n(context).repos_option_branch,
-          GSYLocalizations.i18n(context).repos_option_branch, (model) {
-        if (reposDetailModel.branchList.length == 0) {
+      new GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_branch,
+          GSYLocalizations.i18n(context)!.repos_option_branch, (model) {
+        if (reposDetailModel!.branchList!.length == 0) {
           return;
         }
-        CommonUtils.showCommitOptionDialog(context, reposDetailModel.branchList,
-            (value) {
-          reposDetailModel.currentBranch = reposDetailModel.branchList[value];
+        CommonUtils.showCommitOptionDialog(
+            context, reposDetailModel!.branchList, (value) {
+          reposDetailModel!.currentBranch =
+              reposDetailModel!.branchList![value];
           if (infoListKey.currentState != null &&
-              infoListKey.currentState.mounted) {
-            infoListKey.currentState.showRefreshLoading();
+              infoListKey.currentState!.mounted) {
+            infoListKey.currentState!.showRefreshLoading();
           }
           if (fileListKey.currentState != null &&
-              fileListKey.currentState.mounted) {
-            fileListKey.currentState.showRefreshLoading();
+              fileListKey.currentState!.mounted) {
+            fileListKey.currentState!.showRefreshLoading();
           }
           if (readmeKey.currentState != null &&
-              readmeKey.currentState.mounted) {
-            readmeKey.currentState.refreshReadme();
+              readmeKey.currentState!.mounted) {
+            readmeKey.currentState!.refreshReadme();
           }
         });
       }),
@@ -139,20 +139,21 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     String title = "";
     String content = "";
     CommonUtils.showEditDialog(
-        context, GSYLocalizations.i18n(context).issue_edit_issue, (titleValue) {
+        context, GSYLocalizations.i18n(context)!.issue_edit_issue,
+        (titleValue) {
       title = titleValue;
     }, (contentValue) {
       content = contentValue;
     }, () {
-      if (title == null || title.trim().length == 0) {
+      if (title.trim().length == 0) {
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context)
+            msg: GSYLocalizations.i18n(context)!
                 .issue_edit_issue_title_not_be_null);
         return;
       }
-      if (content == null || content.trim().length == 0) {
+      if (content.trim().length == 0) {
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context)
+            msg: GSYLocalizations.i18n(context)!
                 .issue_edit_issue_content_not_be_null);
         return;
       }
@@ -161,8 +162,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       IssueDao.createIssueDao(widget.userName, widget.reposName,
           {"title": title, "body": content}).then((result) {
         if (issueListKey.currentState != null &&
-            issueListKey.currentState.mounted) {
-          issueListKey.currentState.showRefreshLoading();
+            issueListKey.currentState!.mounted) {
+          issueListKey.currentState!.showRefreshLoading();
         }
 
         Navigator.pop(context);
@@ -182,7 +183,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     reposDetailModel ??= new ReposDetailModel(
         userName: widget.userName, reposName: widget.reposName);
 
-    reposDetailModel.getBranchList();
+    reposDetailModel!.getBranchList();
 
     ///悬浮按键动画控制器
     animationController = new AnimationController(
@@ -194,14 +195,14 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   Widget build(BuildContext context) {
     ///跨 tab 共享状态
     return new ScopedModel<ReposDetailModel>(
-      model: reposDetailModel,
+      model: reposDetailModel!,
       child: new ScopedModelDescendant<ReposDetailModel>(
         builder: (context, child, model) {
           Widget widgetContent =
-              (model.repository != null && model.repository.htmlUrl != null)
+              (model?.repository != null && model?.repository!.htmlUrl != null)
                   ? new GSYCommonOptionWidget(
-                      url: model.repository?.htmlUrl,
-                      otherList: _getMoreOtherItem(model.repository))
+                      url: model?.repository?.htmlUrl,
+                      otherList: _getMoreOtherItem(model?.repository))
                   : Container();
 
           ///绘制顶部 tab 控件
@@ -231,19 +232,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
               rightWidget: widgetContent,
             ),
             onPageChanged: (index) {
-              reposDetailModel.currentIndex = index;
+              reposDetailModel!.currentIndex = index;
             },
 
             ///悬浮按键，增加出现动画
             floatingActionButton: ScaleTransition(
               //scale: CurvedAnimation(parent: animationController, curve: Curves.bounceInOut),
               scale: CurvedAnimation(
-                  parent: animationController, curve: CurveBezier()),
+                  parent: animationController, curve: Curves.decelerate),
               child: FloatingActionButton(
                 onPressed: () {
-                  if (model.repository?.hasIssuesEnabled == false) {
+                  if (model?.repository?.hasIssuesEnabled == false) {
                     Fluttertoast.showToast(
-                        msg: GSYLocalizations.i18n(context)
+                        msg: GSYLocalizations.i18n(context)!
                             .repos_no_support_issue);
                     return;
                   }
@@ -263,19 +264,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                 color: GSYColors.white,
                 fabLocation: FloatingActionButtonLocation.endDocked,
                 shape: CircularNotchedRectangle(),
-                rowContents: (model.footerButtons == null)
+                rowContents: (model?.footerButtons == null)
                     ? [
                         SizedBox.fromSize(
                           size: Size(0, 0),
                         )
                       ]
-                    : model.footerButtons.length == 0
+                    : model?.footerButtons!.length == 0
                         ? [
                             SizedBox.fromSize(
                               size: Size(0, 0),
                             )
                           ]
-                        : model.footerButtons),
+                        : model?.footerButtons),
           );
         },
       ),

@@ -114,35 +114,35 @@ class PushHeader extends StatelessWidget {
 }
 
 class PushHeaderViewModel {
-  String actionUser = "---";
-  String actionUserPic;
+  String? actionUser = "---";
+  String? actionUserPic;
   String pushDes = "---";
   String pushTime = "---";
   String editCount = "---";
   String addCount = "---";
   String deleteCount = "---";
-  String htmlUrl = GSYConstant.app_default_share_url;
+  String? htmlUrl = GSYConstant.app_default_share_url;
 
   PushHeaderViewModel();
 
   PushHeaderViewModel.forMap(PushCommit pushMap) {
-    String name = "---";
-    String pic;
+    String? name = "---";
+    String? pic;
     if (pushMap.committer != null) {
-      name = pushMap.committer.login;
-    } else if (pushMap.commit != null && pushMap.commit.author != null) {
-      name = pushMap.commit.author.name;
+      name = pushMap.committer!.login;
+    } else if (pushMap.commit != null && pushMap.commit!.author != null) {
+      name = pushMap.commit!.author!.name;
     }
-    if (pushMap.committer != null && pushMap.committer.avatar_url != null) {
-      pic = pushMap.committer.avatar_url;
+    if (pushMap.committer != null && pushMap.committer!.avatar_url != null) {
+      pic = pushMap.committer!.avatar_url;
     }
     actionUser = name;
     actionUserPic = pic;
-    pushDes = "Push at " + pushMap.commit.message;
-    pushTime = CommonUtils.getNewsTimeStr(pushMap.commit.committer.date);
-    editCount = pushMap.files.length.toString() + "";
-    addCount = pushMap.stats.additions.toString() + "";
-    deleteCount = pushMap.stats.deletions.toString() + "";
+    pushDes = "Push at " + pushMap.commit!.message!;
+    pushTime = CommonUtils.getNewsTimeStr(pushMap.commit!.committer!.date!);
+    editCount = pushMap.files!.length.toString() + "";
+    addCount = pushMap.stats!.additions.toString() + "";
+    deleteCount = pushMap.stats!.deletions.toString() + "";
     htmlUrl = pushMap.htmlUrl;
   }
 }
