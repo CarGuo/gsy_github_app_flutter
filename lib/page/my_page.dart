@@ -33,18 +33,18 @@ class MyPageState extends BasePersonState<MyPage> {
 
   ///从全局状态中获取我的用户名
   _getUserName() {
-    if (_getStore()?.state?.userInfo == null) {
+    if (_getStore()?.state.userInfo == null) {
       return null;
     }
-    return _getStore()?.state?.userInfo?.login;
+    return _getStore()?.state.userInfo?.login;
   }
 
   ///从全局状态中获取我的用户类型
   getUserType() {
-    if (_getStore()?.state?.userInfo == null) {
+    if (_getStore()?.state.userInfo == null) {
       return null;
     }
-    return _getStore()?.state?.userInfo?.type;
+    return _getStore()?.state.userInfo?.type;
   }
 
   ///更新通知图标颜色

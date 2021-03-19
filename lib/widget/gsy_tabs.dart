@@ -245,11 +245,11 @@ class _TabLabelBarRenderer extends RenderFlex {
 class _TabLabelBar extends Flex {
   _TabLabelBar({
     Key? key,
-    List<Widget?> children = const <Widget>[],
+    List<Widget> children = const <Widget>[],
     this.onPerformLayout,
   }) : super(
           key: key,
-          children: children as List<Widget>,
+          children: children,
           direction: Axis.horizontal,
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -602,7 +602,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.onTap,
     this.onDoubleTap,
-  })  : super(key: key);
+  }) : super(key: key);
 
   /// Typically a list of two or more [Tab] widgets.
   ///
@@ -1020,7 +1020,9 @@ class _TabBarState extends State<TabBar> {
 
     final TabBarTheme tabBarTheme = TabBarTheme.of(context);
 
-    final List<Widget?> wrappedTabs = List.filled(widget.tabs.length, null);
+
+
+    List<Widget> wrappedTabs = List.filled(widget.tabs.length, Container());
     for (int i = 0; i < widget.tabs.length; i += 1) {
       wrappedTabs[i] = Center(
         heightFactor: 1.0,
@@ -1091,7 +1093,7 @@ class _TabBarState extends State<TabBar> {
           padding: EdgeInsets.only(bottom: widget.indicatorWeight),
           child: Stack(
             children: <Widget>[
-              wrappedTabs[index]!,
+              wrappedTabs[index],
               Semantics(
                 selected: index == _currentIndex,
                 label: localizations.tabLabel(
@@ -1102,7 +1104,7 @@ class _TabBarState extends State<TabBar> {
         ),
       );
       if (!widget.isScrollable)
-        wrappedTabs[index] = Expanded(child: wrappedTabs[index]!);
+        wrappedTabs[index] = Expanded(child: wrappedTabs[index]);
     }
 
     Widget tabBar = CustomPaint(

@@ -21,7 +21,7 @@ class SqlManager {
   ///初始化
   static init() async {
     // open the database
-    var databasesPath = await (getDatabasesPath() as FutureOr<String>);
+    var databasesPath = await getDatabasesPath();
     var userRes = await UserDao.getUserInfoLocal();
     String dbName = _NAME;
     if (userRes != null && userRes.result) {
@@ -30,15 +30,17 @@ class SqlManager {
         dbName = user.login! + "_" + _NAME;
       }
     }
-    String path = databasesPath + dbName;
-    if (Platform.isIOS) {
-      path = databasesPath + "/" + dbName;
+    if(databasesPath != null) {
+      String path = databasesPath + dbName;
+      if (Platform.isIOS) {
+        path = databasesPath + "/" + dbName;
+      }
+      _database = await openDatabase(path, version: _VERSION,
+          onCreate: (Database db, int version) async {
+            // When creating the db, create the table
+            //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
+          });
     }
-    _database = await openDatabase(path, version: _VERSION,
-        onCreate: (Database db, int version) async {
-      // When creating the db, create the table
-      //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
-    });
   }
 
   /**

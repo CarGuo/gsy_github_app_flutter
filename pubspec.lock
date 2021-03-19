@@ -283,7 +283,7 @@ packages:
       name: flutter_redux
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.7.0"
+    version: "0.8.0"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -680,7 +680,7 @@ packages:
       name: redux
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0+3"
+    version: "5.0.0"
   rxdart:
     dependency: "direct main"
     description:

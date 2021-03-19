@@ -32,8 +32,8 @@ abstract class BaseDbProvider {
   prepare(name, String? createSql) async {
     isTableExits = await SqlManager.isTableExits(name);
     if (!isTableExits) {
-      Database db = await (SqlManager.getCurrentDatabase() as FutureOr<Database>);
-      return await db.execute(createSql!);
+      Database? db = await SqlManager.getCurrentDatabase();
+      return await db?.execute(createSql!);
     }
   }
 

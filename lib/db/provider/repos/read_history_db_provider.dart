@@ -111,7 +111,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
             ReadHistoryDbProvider.fromMap(providerMap);
 
         ///使用 compute 的 Isolate 优化 json decode
-        var mapData = await compute(CodeUtils.decodeMapResult as FutureOr<Map<String, dynamic>> Function(String? data), provider.data);
+        var mapData = await compute(CodeUtils.decodeMapResult as Map<String, dynamic> Function(String? data), provider.data);
 
         list.add(RepositoryQL.fromMap(mapData));
       }

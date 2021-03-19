@@ -22,8 +22,8 @@ class DemoSqlManager {
   ///初始化
   static init() async {
     // open the database
-    var databasesPath = await (getDatabasesPath() as FutureOr<String>);
-    String path = databasesPath + _NAME;
+    var databasesPath = await getDatabasesPath();
+    String path = databasesPath! + _NAME;
     _database = await openDatabase(path, version: _VERSION, onCreate: (Database db, int version) async {
       // When creating the db, create the table
       //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
@@ -79,8 +79,8 @@ abstract class DemoBaseDbProvider {
   prepare(name, String? createSql) async {
     isTableExits = await DemoSqlManager.isTableExits(name);
     if (!isTableExits) {
-      Database db = await (DemoSqlManager.getCurrentDatabase() as FutureOr<Database>);
-      return await db.execute(createSql!);
+      Database?db = await DemoSqlManager.getCurrentDatabase();
+      return await db?.execute(createSql!);
     }
   }
 

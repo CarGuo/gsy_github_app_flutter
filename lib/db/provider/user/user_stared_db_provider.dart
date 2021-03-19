@@ -86,7 +86,7 @@ class UserStaredDbProvider extends BaseDbProvider {
 
       ///使用 compute 的 Isolate 优化 json decode
       List<dynamic> eventMap =
-          await compute(CodeUtils.decodeListResult as FutureOr<List<dynamic>> Function(String? data), provider.data as String?);
+          await compute(CodeUtils.decodeListResult as List<dynamic> Function(String? data), provider.data as String?);
 
       if (eventMap.length > 0) {
         for (var item in eventMap) {

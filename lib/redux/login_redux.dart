@@ -15,18 +15,18 @@ import 'middleware/epic_store.dart';
  * Date: 2018-07-16
  */
 final LoginReducer = combineReducers<bool?>([
-  TypedReducer<bool, LoginSuccessAction>(_loginResult) ,
-  TypedReducer<bool, LogoutAction>(_logoutResult),
+  TypedReducer<bool?, LoginSuccessAction>(_loginResult) ,
+  TypedReducer<bool?, LogoutAction>(_logoutResult),
 ]);
 
-bool _loginResult(bool result, LoginSuccessAction action) {
+bool? _loginResult(bool? result, LoginSuccessAction action) {
   if (action.success == true) {
     NavigatorUtils.goHome(action.context);
   }
   return action.success;
 }
 
-bool _logoutResult(bool result, LogoutAction action) {
+bool? _logoutResult(bool? result, LogoutAction action) {
   return true;
 }
 
