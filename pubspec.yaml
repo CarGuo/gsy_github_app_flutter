@@ -3,7 +3,7 @@ description: Github Application
 version: 1.7.0+32
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 
 dependency_overrides:
@@ -35,15 +35,13 @@ dependencies:
   flutter_svg: 0.21.0-nullsafety.0
   flutter_slidable: ^0.6.0-nullsafety.0
   dio: 4.0.0-beta6
-  event_bus:  ^1.1.1
   path_provider: 2.0.0
-  scoped_model: ^1.0.1
   flutter_webview_plugin: 0.3.11
-  webview_flutter: 2.0.2
-  bezier: ^1.1.5
-  flare_flutter: ^2.0.6
+  webview_flutter: 2.0.0
+  #bezier: ^1.1.5
+  flare_flutter:  ^3.0.0-nullsafety.0
   # 固定版本
-  flutter_redux: 0.7.0
+  flutter_redux: 0.8.0
   rxdart: 0.26.0
   graphql: 5.0.0-nullsafety.1+readmefix
   #flutter_cache_manager: 3.0.0-nullsafety.0
@@ -59,17 +57,16 @@ dependencies:
   android_intent: 2.0.0
   shared_preferences: 2.0.1
   built_value: 8.0.0
-  flutter_json_widget: 1.0.2
   simple_animations: 3.0.1
   supercharged: 2.0.0
   animations: 2.0.0
   auto_size_text: 3.0.0-nullsafety.0
   flutter_localizations:
     sdk: flutter
-  photo_view:
-    git:
-      url: https://github.com/CarSmallGuo/photo_view.git
-      ref: master
+  photo_view: 0.11.1
+#    git:
+#      url: https://github.com/CarSmallGuo/photo_view.git
+#      ref: master
 
 dev_dependencies:
   built_value_generator: 8.0.0

@@ -19,7 +19,7 @@ class LoginWebView extends StatefulWidget {
 
 class _LoginWebViewState extends State<LoginWebView> {
   _renderTitle() {
-    if (widget.url == null || widget.url.length == 0) {
+    if (widget.url.length == 0) {
       return new Text(widget.title);
     }
     return new Row(children: [
@@ -55,8 +55,7 @@ class _LoginWebViewState extends State<LoginWebView> {
               javascriptMode: JavascriptMode.unrestricted,
               initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
               navigationDelegate: (NavigationRequest navigation) {
-                if (navigation.url != null &&
-                    navigation.url.startsWith("gsygithubapp://authed")) {
+                if (navigation.url.startsWith("gsygithubapp://authed")) {
                   var code = Uri.parse(navigation.url).queryParameters["code"];
                   print("code ${code}");
                   Navigator.of(context).pop(code);
@@ -83,7 +82,7 @@ class _LoginWebViewState extends State<LoginWebView> {
                     new Container(width: 10.0),
                     new Container(
                         child: new Text(
-                            GSYLocalizations.i18n(context).loading_text,
+                            GSYLocalizations.i18n(context)!.loading_text,
                             style: GSYConstant.middleText)),
                   ],
                 ),
