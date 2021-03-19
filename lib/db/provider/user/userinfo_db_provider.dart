@@ -83,7 +83,7 @@ class UserInfoDbProvider extends BaseDbProvider {
     if (userProvider != null) {
       ///使用 compute 的 Isolate 优化 json decode
       var mapData =
-          await compute(CodeUtils.decodeMapResult as Map<String, dynamic> Function(String? data), userProvider.data as String?);
+          await compute(CodeUtils.decodeMapResult, userProvider.data as String?);
       return User.fromJson(mapData);
     }
     return null;

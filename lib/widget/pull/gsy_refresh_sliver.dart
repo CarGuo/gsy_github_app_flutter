@@ -464,7 +464,6 @@ class CupertinoSliverRefreshControlState
           }
           return RefreshIndicatorMode.armed;
         }
-        break;
       case RefreshIndicatorMode.armed:
         if (refreshState == RefreshIndicatorMode.armed && !needRefresh) {
           goToDone();

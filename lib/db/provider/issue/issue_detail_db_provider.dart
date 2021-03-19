@@ -93,7 +93,7 @@ class IssueDetailDbProvider extends BaseDbProvider {
     if (provider != null) {
       ///使用 compute 的 Isolate 优化 json decode
       var mapData =
-          await compute(CodeUtils.decodeMapResult as Map<String, dynamic> Function(String? data), provider.data as String?);
+          await compute(CodeUtils.decodeMapResult, provider.data as String?);
       return Issue.fromJson(mapData);
     }
     return null;
