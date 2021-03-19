@@ -1,14 +1,8 @@
-flutter build apk --target-platform android-arm64 -t lib/main_prod.dart --no-sound-null-safety
+flutter build apk --target-platform android-arm64 -t lib/main_prod.dart
 
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
-dart migrate --skip-import-check
-
-flutter run --no-sound-null-safety
-
-https://flutter.cn/docs/development/tools/devtools/cli   http://localhost:9100
-
-sudo gem install -n /usr/local/bin cocoapods -v 1.9.3
+sudo gem install cocoapods -v 1.9.3
 
 query getUserDetail($name:String!){
   user(login: $name) {
