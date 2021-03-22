@@ -21,6 +21,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   onRequest(RequestOptions options) async {
     if (Config.DEBUG!) {
       print("请求url：${options.path} ${options.method}");
+      options.headers.forEach((k, v) => options.headers[k] = v ?? "");
       print('请求头: ' + options.headers.toString());
       if (options.data != null) {
         print('请求参数: ' + options.data.toString());
