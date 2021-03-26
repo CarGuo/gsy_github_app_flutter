@@ -10,7 +10,7 @@ class GSYFlexButton extends StatelessWidget {
 
   final Color? color;
 
-  final Color? textColor;
+  final Color textColor;
 
   final VoidCallback? onPress;
 
@@ -23,7 +23,7 @@ class GSYFlexButton extends StatelessWidget {
       {Key? key,
       this.text,
       this.color,
-      this.textColor,
+      this.textColor = Colors.black,
       this.onPress,
       this.fontSize = 20.0,
       this.mainAxisAlignment = MainAxisAlignment.center,
