@@ -47,7 +47,7 @@ class DynamicBloc {
   }
 
   doNext(res) async {
-    if (res.next != null) {
+    if (res?.next != null) {
       var resNext = await res.next();
       if (resNext != null && resNext.result) {
         changeLoadMoreStatus(getLoadMoreStatus(resNext));
