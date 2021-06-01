@@ -184,11 +184,11 @@ class GSYMarkdownWidget extends StatelessWidget {
           data: _getMarkDownData(markdownData!),
           imageBuilder: (Uri? uri, String? title, String? alt) {
             if (uri == null || uri.toString().isEmpty) return const SizedBox();
-            final List<String> parts = uri.toString().split('#');
+            final StringList parts = uri.toString().split('#');
             double? width;
             double? height;
             if (parts.length == 2) {
-              final List<String> dimensions = parts.last.split('x');
+              final StringList dimensions = parts.last.split('x');
               if (dimensions.length == 2) {
                 width = double.parse(dimensions[0]);
                 height = double.parse(dimensions[1]);

@@ -763,7 +763,7 @@ class ReposDao {
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.headers != null) {
       try {
-        List<String>? link = res.headers['link'];
+        StringList? link = res.headers['link'];
         if (link != null) {
           int indexStart = link[0].lastIndexOf("page=") + 5;
           int indexEnd = link[0].lastIndexOf(">");

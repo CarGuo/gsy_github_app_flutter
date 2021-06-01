@@ -75,7 +75,7 @@ class _NotifyPageState extends State<NotifyPage>
       }
       if (notification.subject!.type == 'Issue') {
         String url = notification.subject!.url!;
-        List<String> tmp = url.split("/");
+        StringList tmp = url.split("/");
         String number = tmp[tmp.length - 1];
         String? userName = notification.repository!.owner!.login;
         String? reposName = notification.repository!.name;

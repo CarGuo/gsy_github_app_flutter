@@ -330,7 +330,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                     widget.reposHeaderViewModel.allIssueCount! <= 0) {
                   return;
                 }
-                List<String> list = [
+                StringList list = [
                   GSYLocalizations.i18n(context)!.repos_all_issue_count +
                       widget.reposHeaderViewModel.allIssueCount.toString(),
                   GSYLocalizations.i18n(context)!.repos_open_issue_count +

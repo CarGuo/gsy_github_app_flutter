@@ -29,6 +29,9 @@ import 'package:url_launcher/url_launcher.dart';
  * Created by guoshuyu
  * Date: 2018-07-16
  */
+
+typedef StringList = List<String>;
+
 class CommonUtils {
   static final double MILLIS_LIMIT = 1000.0;
 
@@ -177,7 +180,7 @@ class CommonUtils {
     }
     String fullName = '';
     if (repository_url != null) {
-      List<String> splicurl = repository_url.split("/");
+      StringList splicurl = repository_url.split("/");
       if (splicurl.length > 2) {
         fullName =
             splicurl[splicurl.length - 2] + "/" + splicurl[splicurl.length - 1];
@@ -201,7 +204,7 @@ class CommonUtils {
   }
 
   static showLanguageDialog(BuildContext context) {
-    List<String> list = [
+    StringList list = [
       GSYLocalizations
           .i18n(context)!
           .home_language_default,
@@ -294,7 +297,7 @@ class CommonUtils {
 
     if (parseUrl.host == "github.com" &&
         parseUrl.path.length > 0) {
-      List<String> pathnames = parseUrl.path.split("/");
+      StringList pathnames = parseUrl.path.split("/");
       if (pathnames.length == 2) {
         //解析人
         String userName = pathnames[1];
@@ -406,7 +409,7 @@ class CommonUtils {
 
   ///列表item dialog
   static Future<Null> showCommitOptionDialog(BuildContext context,
-      List<String>? commitMaps,
+      StringList? commitMaps,
       ValueChanged<int> onTap, {
         width = 250.0,
         height = 400.0,

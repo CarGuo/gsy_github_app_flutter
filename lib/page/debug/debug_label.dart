@@ -52,7 +52,7 @@ class DebugLabel {
   }
 }
 
-Future<List<String>> _getDeviceInfo() async {
+Future<StringList> _getDeviceInfo() async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;

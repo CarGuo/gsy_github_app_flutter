@@ -39,7 +39,7 @@ class HomeDrawer extends StatelessWidget {
   }
 
   showThemeDialog(BuildContext context, Store store) {
-    List<String> list = [
+    StringList list = [
       GSYLocalizations.i18n(context)!.home_theme_default,
       GSYLocalizations.i18n(context)!.home_theme_1,
       GSYLocalizations.i18n(context)!.home_theme_2,

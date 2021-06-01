@@ -15,9 +15,9 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
   final String wireName = 'Branch';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, Branch object,
+  Iterable<Object?> serialize(Serializers serializers, Branch object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
+    final result = <Object?>[];
     Object? value;
     value = object.name;
     if (value != null) {
@@ -44,7 +44,7 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
   }
 
   @override
-  Branch deserialize(Serializers serializers, Iterable<Object> serialized,
+  Branch deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BranchBuilder();
 
@@ -52,7 +52,7 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'name':
           result.name = serializers.deserialize(value,
