@@ -18,7 +18,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   static List<String?> sHttpErrorUrl = [];
 
   @override
-  onRequest(RequestOptions options) async {
+  onRequest(RequestOptions options, handler) async {
     if (Config.DEBUG!) {
       print("请求url：${options.path} ${options.method}");
       options.headers.forEach((k, v) => options.headers[k] = v ?? "");
@@ -45,19 +45,19 @@ class LogsInterceptors extends InterceptorsWrapper {
     } catch (e) {
       print(e);
     }
-    return options;
+    return super.onRequest(options, handler);
   }
 
   @override
-  onResponse(Response response) async {
+  onResponse(Response response, handler) async {
     if (Config.DEBUG!) {
-        print('返回参数: ' + response.toString());
+      print('返回参数: ' + response.toString());
     }
     if (response.data is Map || response.data is List) {
       try {
         var data = Map<String, dynamic>();
         data["data"] = response.data;
-        addLogic(sResponsesHttpUrl, response.request.uri.toString());
+        addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
         addLogic(sHttpResponses, data);
       } catch (e) {
         print(e);
@@ -66,7 +66,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       try {
         var data = Map<String, dynamic>();
         data["data"] = response.data;
-        addLogic(sResponsesHttpUrl, response.request.uri.toString() );
+        addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
         addLogic(sHttpResponses, data);
       } catch (e) {
         print(e);
@@ -74,30 +74,30 @@ class LogsInterceptors extends InterceptorsWrapper {
     } else if (response.data != null) {
       try {
         String data = response.data.toJson();
-        addLogic(sResponsesHttpUrl, response.request.uri.toString() );
+        addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
         addLogic(sHttpResponses, json.decode(data));
       } catch (e) {
         print(e);
       }
     }
-    return response; // continue
+    return super.onResponse(response, handler);
   }
 
   @override
-  onError(DioError err) async {
+  onError(DioError err, handler) async {
     if (Config.DEBUG!) {
       print('请求异常: ' + err.toString());
       print('请求异常信息: ' + (err.response?.toString() ?? ""));
     }
     try {
-      addLogic(sHttpErrorUrl, err.request!.path);
+      addLogic(sHttpErrorUrl, err.requestOptions.path);
       var errors = Map<String, dynamic>();
       errors["error"] = err.message;
       addLogic(sHttpError, errors);
     } catch (e) {
       print(e);
     }
-    return err; // continue;
+    return super.onError(err, handler);
   }
 
   static addLogic(List list, data) {

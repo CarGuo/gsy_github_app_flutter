@@ -34,7 +34,7 @@ dependencies:
   pub_semver: 2.0.0
   flutter_svg: 0.21.0-nullsafety.0
   flutter_slidable: ^0.6.0-nullsafety.0
-  dio: 4.0.0-beta6
+  dio: 4.0.0
   path_provider: 2.0.0
   flutter_webview_plugin: 0.3.11
   webview_flutter: 2.0.0

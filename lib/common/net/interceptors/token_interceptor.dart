@@ -12,7 +12,7 @@ class TokenInterceptors extends InterceptorsWrapper {
   String? _token;
 
   @override
-  onRequest(RequestOptions options) async {
+  onRequest(RequestOptions options, handler) async {
     //授权码
     if (_token == null) {
       var authorizationCode = await getAuthorization();
@@ -22,11 +22,11 @@ class TokenInterceptors extends InterceptorsWrapper {
       }
     }
     options.headers["Authorization"] = _token;
-    return options;
+    return super.onRequest(options, handler);
   }
 
   @override
-  onResponse(Response response) async {
+  onResponse(Response response, handler) async {
     try {
       var responseJson = response.data;
       if (response.statusCode == 201 && responseJson["token"] != null) {
@@ -36,7 +36,7 @@ class TokenInterceptors extends InterceptorsWrapper {
     } catch (e) {
       print(e);
     }
-    return response;
+    return super.onResponse(response, handler);
   }
 
   ///清除授权

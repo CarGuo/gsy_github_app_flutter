@@ -231,7 +231,7 @@ packages:
       name: dio
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0-beta6"
+    version: "4.0.0"
   ffi:
     dependency: transitive
     description:

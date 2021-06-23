@@ -9,8 +9,8 @@ import 'package:gsy_github_app_flutter/common/net/result_data.dart';
  */
 class ResponseInterceptors extends InterceptorsWrapper {
   @override
-  onResponse(Response response) async {
-    RequestOptions option = response.request;
+  onResponse(Response response, handler) async {
+    RequestOptions option = response.requestOptions;
     var value;
     try {
       var header = response.headers[Headers.contentTypeHeader];
@@ -25,6 +25,7 @@ class ResponseInterceptors extends InterceptorsWrapper {
       value = new ResultData(response.data, false, response.statusCode,
           headers: response.headers);
     }
-    return value;
+    response.data = value;
+    return handler.next(response);
   }
 }
