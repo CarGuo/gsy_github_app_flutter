@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -43,6 +45,14 @@ class _GSYWebViewState extends State<GSYWebView> {
   final FocusNode focusNode = new FocusNode();
 
   bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

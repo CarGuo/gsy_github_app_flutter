@@ -23,19 +23,18 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
-
   static oauth(code, store) async {
-
     httpManager.clearAuthorization();
 
     var res = await httpManager.netFetch(
-        "https://github.com/login/oauth/access_token?"
-            "client_id=${NetConfig.CLIENT_ID}"
-            "&client_secret=${NetConfig.CLIENT_SECRET}"
-            "&code=${code}",
-        null,
-        null,
-        null);
+      "https://github.com/login/oauth/access_token?"
+      "client_id=${NetConfig.CLIENT_ID}"
+      "&client_secret=${NetConfig.CLIENT_SECRET}"
+      "&code=${code}",
+      null,
+      null,
+      new Options(method: "POST"),
+    );
     dynamic resultData = null;
     if (res != null && res.result) {
       print("#### ${res.data}");
@@ -44,14 +43,13 @@ class UserDao {
       var _token = 'token ' + token;
       await LocalStorage.save(Config.TOKEN_KEY, _token);
 
-
       resultData = await getUserInfo(null);
-      if (Config.DEBUG! ) {
+      if (Config.DEBUG!) {
         print("user result " + resultData.result.toString());
         print(resultData.data);
         print(res.data.toString());
       }
-      if(resultData.result == true) {
+      if (resultData.result == true) {
         store.dispatch(new UpdateUserAction(resultData.data));
       }
     }
@@ -333,7 +331,7 @@ class UserDao {
    */
   static checkFollowDao(name) async {
     String url = Address.doFollow(name);
-    var res = await httpManager.netFetch(url, null, null, null, noTip: true) ;
+    var res = await httpManager.netFetch(url, null, null, null, noTip: true);
     return new DataResult(res!.data, res.result);
   }
 

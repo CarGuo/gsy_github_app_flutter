@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -18,6 +20,15 @@ class LoginWebView extends StatefulWidget {
 }
 
 class _LoginWebViewState extends State<LoginWebView> {
+
+  @override
+  void initState() {
+    super.initState();
+    if(Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
   _renderTitle() {
     if (widget.url.length == 0) {
       return new Text(widget.title);

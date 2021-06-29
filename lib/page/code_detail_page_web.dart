@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -46,6 +47,14 @@ class CodeDetailPageWeb extends StatefulWidget {
 class _CodeDetailPageState extends State<CodeDetailPageWeb> {
   bool isLand = false;
 
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
   Future<String?> _getData() async {
     if (widget.data != null) {
       return widget.data;
@@ -61,11 +70,6 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       return url;
     }
     return "";
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
