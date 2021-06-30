@@ -21,7 +21,9 @@ class TokenInterceptors extends InterceptorsWrapper {
         await initClient(_token);
       }
     }
-    options.headers["Authorization"] = _token;
+    if(_token != null) {
+      options.headers["Authorization"] = _token;
+    }
     return super.onRequest(options, handler);
   }
 
