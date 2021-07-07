@@ -57,7 +57,7 @@ class TrendPageState extends State<TrendPage>
   ///显示刷新
   _showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIndicatorKey.currentState!.show()!.then((e) {});
+      refreshIndicatorKey.currentState!.show().then((e) {});
       return true;
     });
   }

@@ -21,6 +21,7 @@ import 'package:gsy_github_app_flutter/page/release/release_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/search/search_page.dart';
 import 'package:gsy_github_app_flutter/page/user_profile_page.dart';
+import 'package:gsy_github_app_flutter/widget/never_overscroll_indicator.dart';
 
 /**
  * 导航栏
@@ -105,7 +106,10 @@ class NavigatorUtils {
             return Align(
               child: SizeTransition(
                 sizeFactor: animation.drive(tween),
-                child: child,
+                child: NeverOverScrollIndicator(
+                  needOverload: false,
+                  child: child,
+                ),
               ),
             );
           },
@@ -114,8 +118,31 @@ class NavigatorUtils {
 
   ///荣耀列表
   static Future goHonorListPage(BuildContext context, List? list) {
-    return Navigator.push(context,
-        new SizeRoute(widget: pageContainer(HonorListPage(list), context)));
+    return Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            HonorListPage(list),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          double begin = 0;
+          double end = 1;
+          var curve = Curves.ease;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return Align(
+            child: SizeTransition(
+              sizeFactor: animation.drive(tween),
+              child: NeverOverScrollIndicator(
+                needOverload: false,
+                child: child,
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   ///仓库版本列表
@@ -281,7 +308,10 @@ class NavigatorUtils {
 
         ///不受系统字体缩放影响
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-        child: widget);
+        child: NeverOverScrollIndicator(
+          needOverload: false,
+          child: widget,
+        ));
   }
 
   ///弹出 dialog
@@ -299,7 +329,10 @@ class NavigatorUtils {
               ///不受系统字体缩放影响
               data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
                   .copyWith(textScaleFactor: 1),
-              child: new SafeArea(child: builder!(context)));
+              child: NeverOverScrollIndicator(
+                needOverload: false,
+                child: new SafeArea(child: builder!(context)),
+              ));
         });
   }
 }

@@ -58,7 +58,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   @override
   showRefreshLoading() {
     new Future.delayed(const Duration(seconds: 0), () {
-      refreshIKey.currentState!.show()!.then((e) {});
+      refreshIKey.currentState!.show().then((e) {});
       return true;
     });
   }
