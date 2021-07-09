@@ -15,11 +15,11 @@ class ParticleModel {
   Random random;
 
   ParticleModel(this.random) {
-    _restart();
-    _shuffle();
+    restart();
+    shuffle();
   }
 
-  _restart() {
+  restart() {
     final startPosition = Offset(-0.2 + 1.4 * random.nextDouble(), 1.2);
     final endPosition = Offset(-0.2 + 1.4 * random.nextDouble(), -0.2);
 
@@ -32,7 +32,7 @@ class ParticleModel {
     size = 0.2 + random.nextDouble() * 0.4;
   }
 
-  void _shuffle() {
+  void shuffle() {
     startTime -= (this.random.nextDouble() * duration.inMilliseconds)
         .round()
         .milliseconds;
@@ -40,7 +40,7 @@ class ParticleModel {
 
   checkIfParticleNeedsToBeRestarted() {
     if (progress() == 1.0) {
-      _restart();
+      restart();
     }
   }
 
