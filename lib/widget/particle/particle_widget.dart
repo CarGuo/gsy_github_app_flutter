@@ -15,7 +15,8 @@ class ParticlesWidget extends StatefulWidget {
   _ParticlesWidgetState createState() => _ParticlesWidgetState();
 }
 
-class _ParticlesWidgetState extends State<ParticlesWidget> {
+class _ParticlesWidgetState extends State<ParticlesWidget>
+    with WidgetsBindingObserver {
   final Random random = Random();
 
   final List<ParticleModel> particles = [];
@@ -23,7 +24,19 @@ class _ParticlesWidgetState extends State<ParticlesWidget> {
   @override
   void initState() {
     widget.numberOfParticles.times(() => particles.add(ParticleModel(random)));
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 从后台切回来时重置粒子
+    if (state == AppLifecycleState.resumed) {
+      particles.forEach((particle) {
+        particle.restart();
+        particle.shuffle();
+      });
+    }
   }
 
   @override
