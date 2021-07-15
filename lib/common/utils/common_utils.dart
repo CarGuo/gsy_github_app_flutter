@@ -200,6 +200,14 @@ class CommonUtils {
     return ThemeData(primarySwatch: color as MaterialColor?,
         platform: TargetPlatform.android,
         appBarTheme: AppBarTheme(brightness: Brightness.dark),
+        // 如果需要去除对应的水波纹效果
+        // splashFactory: NoSplash.splashFactory,
+        // textButtonTheme: TextButtonThemeData(
+        //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
+        // ),
+        // elevatedButtonTheme: ElevatedButtonThemeData(
+        //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
+        // ),
     );
   }
 
