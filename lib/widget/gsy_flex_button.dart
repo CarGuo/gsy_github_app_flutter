@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /**
  * 充满的button
@@ -50,7 +51,7 @@ class GSYFlexButton extends StatelessWidget {
           children: <Widget>[
             new Expanded(
               child: new Text(text!,
-                  style: new TextStyle(fontSize: fontSize),
+                  style: new TextStyle(fontSize: fontSize, color: GSYColors.primaryValue),
                   textAlign: TextAlign.center,
                   maxLines: maxLines,
                   overflow: TextOverflow.ellipsis),
