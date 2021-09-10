@@ -1437,7 +1437,7 @@ class TabPageSelector extends StatelessWidget {
   /// for all indicator circles.
   ///
   /// If this parameter is null, then the indicator is filled with the theme's
-  /// accent color, [ThemeData.accentColor].
+  /// accent color, [ThemeData.colorScheme.secondary].
   final Color? selectedColor;
 
   Widget _buildTabIndicator(
@@ -1481,7 +1481,7 @@ class TabPageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color fixColor = color ?? Colors.transparent;
     final Color fixSelectedColor =
-        selectedColor ?? Theme.of(context).accentColor;
+        selectedColor ?? Theme.of(context).colorScheme.secondary;
     final ColorTween selectedColorTween =
         ColorTween(begin: fixColor, end: fixSelectedColor);
     final ColorTween previousColorTween =

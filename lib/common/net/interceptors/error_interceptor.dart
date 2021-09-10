@@ -12,9 +12,7 @@ const NOT_TIP_KEY = "noTip";
  * on 2019/3/23.
  */
 class ErrorInterceptors extends InterceptorsWrapper {
-  final Dio _dio;
 
-  ErrorInterceptors(this._dio);
 
   @override
   onRequest(RequestOptions options, handler) async {

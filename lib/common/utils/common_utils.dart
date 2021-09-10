@@ -199,7 +199,7 @@ class CommonUtils {
   static getThemeData(Color color) {
     return ThemeData(primarySwatch: color as MaterialColor?,
         platform: TargetPlatform.android,
-        appBarTheme: AppBarTheme(brightness: Brightness.dark),
+        appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
         // 如果需要去除对应的水波纹效果
         // splashFactory: NoSplash.splashFactory,
         // textButtonTheme: TextButtonThemeData(
