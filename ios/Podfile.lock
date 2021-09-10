@@ -5,8 +5,6 @@ PODS:
   - device_info (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - flutter_webview_plugin (0.0.1):
-    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -37,7 +35,6 @@ DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
-  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -61,8 +58,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
     :path: Flutter
-  flutter_webview_plugin:
-    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   package_info:
@@ -85,8 +80,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
