@@ -211,6 +211,7 @@ class CommonUtils {
           systemNavigationBarContrastEnforced: true,
           systemStatusBarContrastEnforced: true,
           systemNavigationBarColor: color,
+          statusBarColor: color,
           systemNavigationBarDividerColor: color.withAlpha(199),
         ),
       ),
