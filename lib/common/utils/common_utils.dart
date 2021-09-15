@@ -48,9 +48,7 @@ class CommonUtils {
   static String getDateStr(DateTime? date) {
     if (date == null || date.toString() == "") {
       return "";
-    } else if (date
-        .toString()
-        .length < 10) {
+    } else if (date.toString().length < 10) {
       return date.toString();
     }
     return date.toString().substring(0, 10);
@@ -66,33 +64,41 @@ class CommonUtils {
   ///日期格式转换
   static String getNewsTimeStr(DateTime date) {
     int subTimes =
-        DateTime
-            .now()
-            .millisecondsSinceEpoch - date.millisecondsSinceEpoch;
+        DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
 
     if (subTimes < MILLIS_LIMIT) {
       return (curLocale != null)
-          ? (curLocale!.languageCode != "zh") ? "right now" : "刚刚"
+          ? (curLocale!.languageCode != "zh")
+              ? "right now"
+              : "刚刚"
           : "刚刚";
     } else if (subTimes < SECONDS_LIMIT) {
       return (subTimes / MILLIS_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale!.languageCode != "zh") ? " seconds ago" : " 秒前"
+              ? (curLocale!.languageCode != "zh")
+                  ? " seconds ago"
+                  : " 秒前"
               : " 秒前");
     } else if (subTimes < MINUTES_LIMIT) {
       return (subTimes / SECONDS_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale!.languageCode != "zh") ? " min ago" : " 分钟前"
+              ? (curLocale!.languageCode != "zh")
+                  ? " min ago"
+                  : " 分钟前"
               : " 分钟前");
     } else if (subTimes < HOURS_LIMIT) {
       return (subTimes / MINUTES_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale!.languageCode != "zh") ? " hours ago" : " 小时前"
+              ? (curLocale!.languageCode != "zh")
+                  ? " hours ago"
+                  : " 小时前"
               : " 小时前");
     } else if (subTimes < DAYS_LIMIT) {
       return (subTimes / HOURS_LIMIT).round().toString() +
           ((curLocale != null)
-              ? (curLocale!.languageCode != "zh") ? " days ago" : " 天前"
+              ? (curLocale!.languageCode != "zh")
+                  ? " days ago"
+                  : " 天前"
               : " 天前");
     } else {
       return getDateStr(date);
@@ -197,31 +203,33 @@ class CommonUtils {
   }
 
   static getThemeData(Color color) {
-    return ThemeData(primarySwatch: color as MaterialColor?,
-        platform: TargetPlatform.android,
-        appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
-        // 如果需要去除对应的水波纹效果
-        // splashFactory: NoSplash.splashFactory,
-        // textButtonTheme: TextButtonThemeData(
-        //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
-        // ),
-        // elevatedButtonTheme: ElevatedButtonThemeData(
-        //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
-        // ),
+    return ThemeData(
+      primarySwatch: color as MaterialColor?,
+      platform: TargetPlatform.android,
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
+          systemNavigationBarContrastEnforced: true,
+          systemStatusBarContrastEnforced: true,
+          systemNavigationBarColor: color,
+          systemNavigationBarDividerColor: color.withAlpha(199),
+        ),
+      ),
+      // 如果需要去除对应的水波纹效果
+      // splashFactory: NoSplash.splashFactory,
+      // textButtonTheme: TextButtonThemeData(
+      //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
+      // ),
+      // elevatedButtonTheme: ElevatedButtonThemeData(
+      //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
+      // ),
     );
   }
 
   static showLanguageDialog(BuildContext context) {
     StringList list = [
-      GSYLocalizations
-          .i18n(context)!
-          .home_language_default,
-      GSYLocalizations
-          .i18n(context)!
-          .home_language_zh,
-      GSYLocalizations
-          .i18n(context)!
-          .home_language_en,
+      GSYLocalizations.i18n(context)!.home_language_default,
+      GSYLocalizations.i18n(context)!.home_language_zh,
+      GSYLocalizations.i18n(context)!.home_language_en,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       CommonUtils.changeLocale(StoreProvider.of<GSYState>(context), index);
@@ -286,9 +294,7 @@ class CommonUtils {
   static copy(String? data, BuildContext context) {
     Clipboard.setData(new ClipboardData(text: data));
     Fluttertoast.showToast(
-        msg: GSYLocalizations
-            .i18n(context)!
-            .option_share_copy_success);
+        msg: GSYLocalizations.i18n(context)!.option_share_copy_success);
   }
 
   static launchUrl(context, String? url) {
@@ -303,8 +309,7 @@ class CommonUtils {
       return;
     }
 
-    if (parseUrl.host == "github.com" &&
-        parseUrl.path.length > 0) {
+    if (parseUrl.host == "github.com" && parseUrl.path.length > 0) {
       StringList pathnames = parseUrl.path.split("/");
       if (pathnames.length == 2) {
         //解析人
@@ -332,7 +337,7 @@ class CommonUtils {
       NavigatorUtils.goGSYWebView(
           context,
           new Uri.dataFromString(url,
-              mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
               .toString(),
           title);
     }
@@ -343,9 +348,7 @@ class CommonUtils {
       await launch(url);
     } else {
       Fluttertoast.showToast(
-          msg: GSYLocalizations
-              .i18n(context)!
-              .option_web_launcher_error +
+          msg: GSYLocalizations.i18n(context)!.option_web_launcher_error +
               ": " +
               (url ?? ""));
     }
@@ -377,9 +380,7 @@ class CommonUtils {
                         new Container(height: 10.0),
                         new Container(
                             child: new Text(
-                                GSYLocalizations
-                                    .i18n(context)!
-                                    .loading_text,
+                                GSYLocalizations.i18n(context)!.loading_text,
                                 style: GSYConstant.normalTextWhite)),
                       ],
                     ),
@@ -389,15 +390,16 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showEditDialog(BuildContext context,
-      String dialogTitle,
-      ValueChanged<String>? onTitleChanged,
-      ValueChanged<String> onContentChanged,
-      VoidCallback onPressed, {
-        TextEditingController? titleController,
-        TextEditingController? valueController,
-        bool needTitle = true,
-      }) {
+  static Future<Null> showEditDialog(
+    BuildContext context,
+    String dialogTitle,
+    ValueChanged<String>? onTitleChanged,
+    ValueChanged<String> onContentChanged,
+    VoidCallback onPressed, {
+    TextEditingController? titleController,
+    TextEditingController? valueController,
+    bool needTitle = true,
+  }) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
@@ -416,13 +418,14 @@ class CommonUtils {
   }
 
   ///列表item dialog
-  static Future<Null> showCommitOptionDialog(BuildContext context,
-      StringList? commitMaps,
-      ValueChanged<int> onTap, {
-        width = 250.0,
-        height = 400.0,
-        List<Color>? colorList,
-      }) {
+  static Future<Null> showCommitOptionDialog(
+    BuildContext context,
+    StringList? commitMaps,
+    ValueChanged<int> onTap, {
+    width = 250.0,
+    height = 400.0,
+    List<Color>? colorList,
+  }) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
@@ -446,9 +449,7 @@ class CommonUtils {
                       fontSize: 14.0,
                       color: colorList != null
                           ? colorList[index]
-                          : Theme
-                          .of(context)
-                          .primaryColor,
+                          : Theme.of(context).primaryColor,
                       text: commitMaps[index],
                       textColor: GSYColors.white,
                       onPress: () {
@@ -463,32 +464,26 @@ class CommonUtils {
   }
 
   ///版本更新
-  static Future<Null> showUpdateDialog(BuildContext context,
-      String contentMsg) {
+  static Future<Null> showUpdateDialog(
+      BuildContext context, String contentMsg) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(GSYLocalizations
-                .i18n(context)!
-                .app_version_title),
+            title: new Text(GSYLocalizations.i18n(context)!.app_version_title),
             content: new Text(contentMsg),
             actions: <Widget>[
               new TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYLocalizations
-                      .i18n(context)!
-                      .app_cancel)),
+                  child: new Text(GSYLocalizations.i18n(context)!.app_cancel)),
               new TextButton(
                   onPressed: () {
                     launch(Address.updateUrl);
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYLocalizations
-                      .i18n(context)!
-                      .app_ok)),
+                  child: new Text(GSYLocalizations.i18n(context)!.app_ok)),
             ],
           );
         });
