@@ -85,6 +85,13 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
 
             ///命名式路由
             /// "/" 和 MaterialApp 的 home 参数一个效果
+            ///⚠️ 这里的 name调用，里面 pageContainer 方法有一个 MediaQuery.of(context).copyWith(textScaleFactor: 1),
+            ///⚠️ 而这里的 context 用的是 WidgetBuilder 的 context  ～
+            ///⚠️ 所以 MediaQuery.of(context) 这个 InheritedWidget 就把这个 context “登记”到了 Element 的内部静态 _map 里。
+            ///⚠️ 所以键盘弹出来的时候，触发了顶层的 MediaQueryData 发生变化，自然就触发了“登记”过的 context 的变化
+            ///⚠️ 比如 LoginPage 、HomePage ····
+            ///⚠️ 所以比如你在 搜索页面 键盘弹出时，下面的 HomePage.sName 对应的 WidgetBuilder 会被触发
+            ///⚠️ 这个是我故意的，如果不需要，可以去掉 pageContainer 或者不要用这里的 context
             routes: {
               WelcomePage.sName: (context) {
                 _context = context;
