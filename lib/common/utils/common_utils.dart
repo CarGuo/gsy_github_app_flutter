@@ -421,7 +421,7 @@ class CommonUtils {
   ///列表item dialog
   static Future<Null> showCommitOptionDialog(
     BuildContext context,
-    StringList? commitMaps,
+    List<String?>? commitMaps,
     ValueChanged<int> onTap, {
     width = 250.0,
     height = 400.0,
@@ -442,7 +442,7 @@ class CommonUtils {
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
               child: new ListView.builder(
-                  itemCount: commitMaps!.length,
+                  itemCount: commitMaps?.length ?? 0,
                   itemBuilder: (context, index) {
                     return GSYFlexButton(
                       maxLines: 1,
@@ -451,7 +451,7 @@ class CommonUtils {
                       color: colorList != null
                           ? colorList[index]
                           : Theme.of(context).primaryColor,
-                      text: commitMaps[index],
+                      text: commitMaps![index],
                       textColor: GSYColors.white,
                       onPress: () {
                         Navigator.pop(context);

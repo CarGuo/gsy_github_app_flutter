@@ -114,7 +114,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
           return;
         }
         CommonUtils.showCommitOptionDialog(
-            context, reposDetailModel!.branchList, (value) {
+            context, reposDetailModel?.branchList, (value) {
           reposDetailModel!.currentBranch =
               reposDetailModel!.branchList![value];
           if (infoListKey.currentState != null &&

@@ -87,6 +87,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     children: <Widget>[
                       new GSYFlexButton(
                         color: GSYColors.white,
+                        textColor: GSYColors.primaryDarkValue,
                         text: GSYLocalizations.i18n(context)!
                             .issue_edit_issue_edit_commit,
                         onPress: () {

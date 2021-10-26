@@ -26,7 +26,7 @@ class ReposDetailModel extends Model {
 
   List<Widget>? _footerButtons;
 
-  List<String>? _branchList;
+  List<String?>? _branchList;
 
   RepositoryQL? get repository => _repository;
 
@@ -65,9 +65,9 @@ class ReposDetailModel extends Model {
     notifyListeners();
   }
 
-  List<String>? get branchList => _branchList;
+  List<String?>? get branchList => _branchList;
 
-  set branchList(List<String>? data) {
+  set branchList(List<String?>? data) {
     _branchList = data;
     notifyListeners();
   }
