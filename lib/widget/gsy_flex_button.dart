@@ -51,7 +51,7 @@ class GSYFlexButton extends StatelessWidget {
           children: <Widget>[
             new Expanded(
               child: new Text(text!,
-                  style: new TextStyle(fontSize: fontSize, color: GSYColors.primaryValue),
+                  style: new TextStyle(fontSize: fontSize, height: 1),
                   textAlign: TextAlign.center,
                   maxLines: maxLines,
                   overflow: TextOverflow.ellipsis),
