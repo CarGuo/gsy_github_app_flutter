@@ -21,11 +21,11 @@ void main() {
           details.exception.toString() + "\n " + details.stack.toString(), details);
     };
     runApp(ConfigWrapper(
-      child: FlutterReduxApp(),
+      child: Flutter(),
       config: EnvConfig.fromJson(config),
     ));
   }, (Object obj, StackTrace stack) {
-    print(obj);
-    print(stack);
+    print();
+    print(exit);
   });
 }
