@@ -10,6 +10,7 @@ https://flutter.cn/docs/development/tools/devtools/cli   http://localhost:9100
 
 sudo gem install -n /usr/local/bin cocoapods -v 1.9.3
 
+./gradlew :app:dependencies
 
 # 如何查看dill文件
 
