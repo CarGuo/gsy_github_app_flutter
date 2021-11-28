@@ -32,7 +32,7 @@ dependencies:
   flutter_spinkit: ^5.0.0
   sqflite: 2.0.0
   pub_semver: 2.0.0
-  flutter_svg: 0.21.0-nullsafety.0
+  flutter_svg: 0.23.0+1
   flutter_slidable: ^0.6.0-nullsafety.0
   dio: 4.0.0
   path_provider: 2.0.0
