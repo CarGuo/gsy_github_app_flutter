@@ -18,6 +18,7 @@ android.applicationVariants.all { variant ->
 
             if (manifestOutFile.exists() && manifestOutFile.canRead() && manifestOutFile.canWrite()) {
                 def manifestFile = manifestOutFile
+                ///这里第二个参数是 true ，所以 namespace 是展开的，所以下面要用 androidSpace.exported
                 def xml = new XmlParser(false, true).parse(manifestFile)
                 def exportedTag = "android:exported"
                 ///指定 space
