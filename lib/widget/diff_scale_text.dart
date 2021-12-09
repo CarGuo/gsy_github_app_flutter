@@ -1,7 +1,6 @@
 import 'dart:math' as Math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class DiffScaleText extends StatefulWidget {
   final String? text;
