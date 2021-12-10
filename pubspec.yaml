@@ -36,7 +36,7 @@ dependencies:
   flutter_slidable: ^0.6.0-nullsafety.0
   dio: 4.0.0
   path_provider: 2.0.0
-  webview_flutter: 2.0.0
+  webview_flutter: 3.0.0
   #bezier: ^1.1.5
   flare_flutter:  ^3.0.0-nullsafety.0
   # 固定版本

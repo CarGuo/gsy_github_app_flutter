@@ -30,7 +30,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 42
         versionName "2.3.0"
