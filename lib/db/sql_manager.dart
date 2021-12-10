@@ -30,17 +30,15 @@ class SqlManager {
         dbName = user.login! + "_" + _NAME;
       }
     }
-    if(databasesPath != null) {
-      String path = databasesPath + dbName;
-      if (Platform.isIOS) {
-        path = databasesPath + "/" + dbName;
-      }
-      _database = await openDatabase(path, version: _VERSION,
-          onCreate: (Database db, int version) async {
-            // When creating the db, create the table
-            //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
-          });
+    String path = databasesPath + dbName;
+    if (Platform.isIOS) {
+      path = databasesPath + "/" + dbName;
     }
+    _database = await openDatabase(path, version: _VERSION,
+        onCreate: (Database db, int version) async {
+      // When creating the db, create the table
+      //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
+    });
   }
 
   /**

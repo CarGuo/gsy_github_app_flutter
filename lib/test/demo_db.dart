@@ -23,7 +23,7 @@ class DemoSqlManager {
   static init() async {
     // open the database
     var databasesPath = await getDatabasesPath();
-    String path = databasesPath! + _NAME;
+    String path = databasesPath + _NAME;
     _database = await openDatabase(path, version: _VERSION, onCreate: (Database db, int version) async {
       // When creating the db, create the table
       //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");

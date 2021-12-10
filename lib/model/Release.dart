@@ -39,7 +39,7 @@ class Release {
   Release(
     this.id,
     this.tagName,
-    @JsonKey(name: "target_commitish") this.targetCommitish,
+    this.targetCommitish,
     this.name,
     this.body,
     this.bodyHtml,
@@ -53,7 +53,8 @@ class Release {
     this.assets,
   );
 
-  factory Release.fromJson(Map<String, dynamic> json) => _$ReleaseFromJson(json);
+  factory Release.fromJson(Map<String, dynamic> json) =>
+      _$ReleaseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ReleaseToJson(this);
 }
