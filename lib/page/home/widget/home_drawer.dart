@@ -176,6 +176,16 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {
                               CommonUtils.showLanguageDialog(context);
                             }),
+
+                        new ListTile(
+                            title: new Text(
+                              GSYLocalizations.i18n(context)!
+                                  .home_change_grey,
+                              style: GSYConstant.normalText,
+                            ),
+                            onTap: () {
+                              CommonUtils.changeGrey(store);
+                            }),
                         new ListTile(
                             title: new Text(
                               GSYLocalizations.i18n(context)!.home_check_update,

@@ -53,6 +53,8 @@ abstract class GSYStringBase {
 
   String get home_change_language;
 
+  String get home_change_grey;
+
   String get home_about;
 
   String get home_check_update;

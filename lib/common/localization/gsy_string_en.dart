@@ -66,6 +66,8 @@ class GSYStringEn extends GSYStringBase {
   @override
   String home_change_language = "Language";
   @override
+  String home_change_grey = "Grey App";
+  @override
   String home_about = "About";
   @override
   String home_check_update = "CheckUpdate";

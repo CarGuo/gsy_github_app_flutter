@@ -90,13 +90,18 @@ class UserEventDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data as String?);
 
-      if (eventMap.length > 0) {
-        for (var item in eventMap) {
-          list.add(Event.fromJson(item));
-        }
-      }
+      list = await compute(decodeMapToObject, eventMap);
+
       return list;
     }
     return null;
+  }
+
+  static List<Event> decodeMapToObject(List<dynamic> mapList) {
+    List<Event> list = [];
+    for (var item in mapList) {
+      list.add(Event.fromJson(item));
+    }
+    return list;
   }
 }

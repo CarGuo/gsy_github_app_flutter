@@ -3,7 +3,7 @@ description: Github Application
 version: 1.7.0+32
 
 environment:
-  sdk: '>=2.13.0 <3.0.0'
+  sdk: '>=2.15.0 <3.0.0'
 
 
 dependency_overrides:

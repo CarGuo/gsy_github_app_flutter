@@ -66,6 +66,8 @@ class GSYStringZh extends GSYStringBase {
   @override
   String home_change_language = "语言切换";
   @override
+  String home_change_grey = "灰度 App";
+  @override
   String home_about = "关于";
   @override
   String home_check_update = "检测更新";

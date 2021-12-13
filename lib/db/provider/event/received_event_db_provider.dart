@@ -70,11 +70,15 @@ class ReceivedEventDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data);
 
-      if (eventMap.length > 0) {
-        for (var item in eventMap) {
-          list.add(Event.fromJson(item));
-        }
-      }
+      list = await compute(decodeMapToObject, eventMap);
+    }
+    return list;
+  }
+
+  static List<Event> decodeMapToObject(List<dynamic> mapList) {
+    List<Event> list = [];
+    for (var item in mapList) {
+      list.add(Event.fromJson(item));
     }
     return list;
   }

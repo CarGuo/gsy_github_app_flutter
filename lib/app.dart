@@ -46,6 +46,14 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         locale: Locale('zh', 'CH')),
   );
 
+  ColorFilter greyscale = ColorFilter.matrix(<double>[
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0,      0,      0,      1, 0,
+  ]);
+
+
   @override
   void initState() {
     super.initState();
@@ -68,9 +76,9 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
         store.state.platformLocale = WidgetsBinding.instance!.window.locale;
-        return new MaterialApp(
+        Widget app = new MaterialApp(
 
-            ///多语言实现代理
+          ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -112,6 +120,19 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                 return PhotoViewPage();
               },
             });
+
+        if (store.state.grey) {
+          ///mode one
+          app = ColorFiltered(
+              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation),
+              child: app);
+          ///mode tow
+          // app = ColorFiltered(
+          //     colorFilter: greyscale,
+          //     child: app);
+        }
+
+        return app;
       }),
     );
   }
@@ -163,11 +184,11 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
         showToast(GSYLocalizations.i18n(_context)!.network_error_422);
         break;
       case Code.NETWORK_TIMEOUT:
-        //超时
+      //超时
         showToast(GSYLocalizations.i18n(_context)!.network_error_timeout);
         break;
       case Code.GITHUB_API_REFUSED:
-        //Github API 异常
+      //Github API 异常
         showToast(GSYLocalizations.i18n(_context)!.github_refused);
         break;
       default:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/redux/grey_redux.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
@@ -31,8 +32,16 @@ class GSYState {
   ///是否登录
   bool? login;
 
+  ///是否变灰色
+  bool grey;
+
   ///构造方法
-  GSYState({this.userInfo, this.themeData, this.locale, this.login});
+  GSYState(
+      {this.userInfo,
+      this.themeData,
+      this.locale,
+      this.login,
+      this.grey = false});
 }
 
 ///创建 Reducer
@@ -49,13 +58,15 @@ GSYState appReducer(GSYState state, action) {
     ///通过 LocaleReducer 将 GSYState 内的 locale 和 action 关联在一起
     locale: LocaleReducer(state.locale, action),
     login: LoginReducer(state.login, action),
+    ///通过 GreyReducer 将 GSYState 内的 grey 和 action 关联在一起
+    grey: GreyReducer(state.grey, action),
   );
 }
 
 final List<Middleware<GSYState>> middleware = [
   EpicMiddleware<GSYState>(loginEpic),
-  EpicMiddleware<GSYState>(userInfoEpic) ,
+  EpicMiddleware<GSYState>(userInfoEpic),
   EpicMiddleware<GSYState>(oauthEpic),
-  UserInfoMiddleware() ,
+  UserInfoMiddleware(),
   LoginMiddleware(),
 ];

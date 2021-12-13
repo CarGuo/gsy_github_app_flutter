@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
+import 'package:gsy_github_app_flutter/redux/grey_redux.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
 import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
@@ -266,6 +267,18 @@ class CommonUtils {
     }
     curLocale = locale;
     store.dispatch(RefreshLocaleAction(locale));
+  }
+
+
+  /**
+   * 切换灰色
+   */
+  static changeGrey(Store<GSYState> store) {
+    bool grey = store.state.grey;
+    if (Config.DEBUG!) {
+      print(store.state.grey);
+    }
+    store.dispatch(RefreshGreyAction(!grey));
   }
 
   static List<Color> getThemeListColor() {
