@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: 11
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.8.1'
