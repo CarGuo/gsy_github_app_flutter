@@ -12,6 +12,22 @@ sudo gem install -n /usr/local/bin cocoapods -v 1.9.3
 
 ./gradlew :app:dependencies
 
+
+
+查看 framework 支持
+
+1.进入到framework目录下
+
+cd /Users/.../xFramework.framework
+
+2.输入命令
+
+lipo -info  xFramework
+
+
+
+
+
 # 如何查看dill文件
 
 我们可以通过dart sdk中的vm package提供的dump_kernel.dart打印出dill的内部结构。
