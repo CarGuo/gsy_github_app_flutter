@@ -81,6 +81,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
           ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GSYLocalizationsDelegate.delegate,
             ],

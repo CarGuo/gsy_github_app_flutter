@@ -31,5 +31,5 @@ class GSYLocalizationsDelegate extends LocalizationsDelegate<GSYLocalizations> {
   }
 
   ///全局静态的代理
-  static GSYLocalizationsDelegate delegate = new GSYLocalizationsDelegate();
+  static LocalizationsDelegate<GSYLocalizations> delegate = new GSYLocalizationsDelegate();
 }
