@@ -75,7 +75,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
-        store.state.platformLocale = WidgetsBinding.instance!.window.locale;
+        store.state.platformLocale = WidgetsBinding.instance.window.locale;
         Widget app = new MaterialApp(
 
           ///多语言实现代理

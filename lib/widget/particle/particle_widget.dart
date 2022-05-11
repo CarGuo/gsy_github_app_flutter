@@ -24,7 +24,7 @@ class _ParticlesWidgetState extends State<ParticlesWidget>
   @override
   void initState() {
     widget.numberOfParticles.times(() => particles.add(ParticleModel(random)));
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 

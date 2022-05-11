@@ -175,7 +175,7 @@ class ScopedModel<T extends Model> extends StatelessWidget {
     InheritedWidget? widget = rebuildOnChange
         ? context.dependOnInheritedWidgetOfExactType<_InheritedModel<T>>()
         : context.getElementForInheritedWidgetOfExactType<_InheritedModel<T>>()
-            ?.widget;
+            ?.widget as InheritedWidget;
 
     if (widget == null) {
       throw ScopedModelError();

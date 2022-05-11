@@ -426,10 +426,10 @@ class CupertinoSliverRefreshControlState
       nextState = RefreshIndicatorMode.done;
       // Either schedule the RenderSliver to re-layout on the next frame
       // when not currently in a frame or schedule it on the next frame.
-      if (SchedulerBinding.instance!.schedulerPhase == SchedulerPhase.idle) {
+      if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.idle) {
         setState(() => hasSliverLayoutExtent = false);
       } else {
-        SchedulerBinding.instance!.addPostFrameCallback((Duration timestamp) {
+        SchedulerBinding.instance.addPostFrameCallback((Duration timestamp) {
           setState(() => hasSliverLayoutExtent = false);
         });
       }
@@ -455,7 +455,7 @@ class CupertinoSliverRefreshControlState
           ///超过 refreshTriggerPullDistance 就可以进入准备刷新的装备状态
           if (widget.onRefresh != null) {
             HapticFeedback.mediumImpact();
-            SchedulerBinding.instance!
+            SchedulerBinding.instance
                 .addPostFrameCallback((Duration timestamp) {
               needRefresh = true;
               setState(() => hasSliverLayoutExtent = true);
@@ -491,7 +491,7 @@ class CupertinoSliverRefreshControlState
           ///还没有触发外部刷新，触发一下
           if (widget.onRefresh != null && refreshTask == null) {
             HapticFeedback.mediumImpact();
-            SchedulerBinding.instance!
+            SchedulerBinding.instance
                 .addPostFrameCallback((Duration timestamp) {
               ///任务完成后清洗状态
               refreshTask = widget.onRefresh!()

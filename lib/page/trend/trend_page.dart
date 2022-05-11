@@ -214,8 +214,8 @@ class TrendPageState extends State<TrendPage>
   ///空页面
   Widget _buildEmpty() {
     var statusBar =
-        MediaQueryData.fromWindow(WidgetsBinding.instance!.window).padding.top;
-    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
         .padding
         .bottom;
     var height = MediaQuery.of(context).size.height -
