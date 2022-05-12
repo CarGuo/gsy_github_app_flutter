@@ -40,7 +40,7 @@ dependencies:
   #bezier: ^1.1.5
   flare_flutter:  ^3.0.2
   # 固定版本
-  flutter_redux: 0.8.2
+  flutter_redux: 0.9.0
   rxdart: 0.27.3
   graphql: 5.0.1-beta.1
   #flutter_cache_manager: 3.0.0-nullsafety.0
