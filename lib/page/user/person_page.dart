@@ -24,7 +24,7 @@ class PersonPage extends StatefulWidget {
 
   final String? userName;
 
-  PersonPage(this.userName, {Key? key}) : super(key: key);
+  PersonPage(this.userName, {Key? super.key});
 
   @override
   _PersonState createState() => _PersonState(userName);

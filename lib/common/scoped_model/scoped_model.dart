@@ -193,10 +193,10 @@ class _InheritedModel<T extends Model> extends InheritedWidget {
   final T? model;
   final int? version;
 
-  _InheritedModel({Key? key, Widget? child, T? model})
+  _InheritedModel({Key? super.key, Widget? child, T? model})
       : this.model = model,
         this.version = model?._version,
-        super(key: key, child: child!);
+        super(child: child!);
 
   @override
   bool updateShouldNotify(_InheritedModel<T> oldWidget) =>

@@ -39,14 +39,13 @@ class RadialMenu<T> extends StatefulWidget {
   /// arguments must not be null (they all have defaults, so do not need to be
   /// specified).
   const RadialMenu({
-    Key? key,
+    Key? super.key,
     required this.items,
     required this.onSelected,
     this.radius = 50.0,
     this.menuAnimationDuration = const Duration(milliseconds: 1000),
     this.progressAnimationDuration = const Duration(milliseconds: 1000),
-  })  :
-        super(key: key);
+  }) ;
 
   /// The list of possible items to select among.
   final List<RadialMenuItem<T>> items;

@@ -33,7 +33,7 @@ class GSYTabBarWidget extends StatefulWidget {
   final ValueChanged<int>? onSinglePress;
 
   GSYTabBarWidget({
-    Key? key,
+    Key? super.key,
     this.type = TabType.top,
     this.tabItems,
     this.tabViews,
@@ -49,7 +49,7 @@ class GSYTabBarWidget extends StatefulWidget {
     this.resizeToAvoidBottomPadding = true,
     this.footerButtons,
     this.onPageChanged,
-  }) : super(key: key);
+  });
 
   @override
   _GSYTabBarState createState() => new _GSYTabBarState();

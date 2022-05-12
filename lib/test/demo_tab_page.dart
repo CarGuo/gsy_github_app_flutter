@@ -74,7 +74,7 @@ class TabWidget extends StatefulWidget {
   final int initTabIndex;
 
   TabWidget({
-    Key? key,
+    Key? super.key,
     this.type = TabType.top,
     this.tabItems,
     this.tabViews,
@@ -84,7 +84,7 @@ class TabWidget extends StatefulWidget {
     this.pageController,
     this.onPageChanged,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   _GSYTabBarState createState() => new _GSYTabBarState();

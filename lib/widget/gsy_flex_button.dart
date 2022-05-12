@@ -20,15 +20,14 @@ class GSYFlexButton extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   GSYFlexButton(
-      {Key? key,
+      {Key? super.key,
       this.text,
       this.color,
       this.textColor = Colors.black,
       this.onPress,
       this.fontSize = 20.0,
       this.mainAxisAlignment = MainAxisAlignment.center,
-      this.maxLines = 1})
-      : super(key: key);
+      this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {

@@ -11,12 +11,11 @@ import 'package:flutter/services.dart';
 
 class _CupertinoSliverRefresh extends SingleChildRenderObjectWidget {
   const _CupertinoSliverRefresh({
-    Key? key,
+    Key? super.key,
     this.refreshIndicatorLayoutExtent = 0.0,
     this.hasLayoutExtent = false,
-    Widget? child,
-  })  : assert(refreshIndicatorLayoutExtent >= 0.0),
-        super(key: key, child: child);
+    Widget? super.child,
+  })  : assert(refreshIndicatorLayoutExtent >= 0.0);
 
   // The amount of space the indicator should occupy in the sliver in a
   // resting state when in the refreshing mode.
@@ -279,7 +278,7 @@ class CupertinoSliverRefreshControl extends StatefulWidget {
   /// The [onRefresh] argument will be called when pulled far enough to trigger
   /// a refresh.
   const CupertinoSliverRefreshControl({
-    Key? key,
+    Key? super.key,
     this.refreshTriggerPullDistance = _defaultRefreshTriggerPullDistance,
     this.refreshIndicatorExtent = _defaultRefreshIndicatorExtent,
     this.builder = buildSimpleRefreshIndicator,
@@ -289,8 +288,7 @@ class CupertinoSliverRefreshControl extends StatefulWidget {
         assert(
             refreshTriggerPullDistance >= refreshIndicatorExtent,
             'The refresh indicator cannot take more space in its final state '
-            'than the amount initially created by overscrolling.'),
-        super(key: key);
+            'than the amount initially created by overscrolling.');
 
   /// The amount of overscroll the scrollable must be dragged to trigger a reload.
   ///

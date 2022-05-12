@@ -25,8 +25,7 @@ class RepositoryDetailIssuePage extends StatefulWidget {
 
   final String? reposName;
 
-  RepositoryDetailIssuePage(this.userName, this.reposName, {Key? key})
-      : super(key: key);
+  RepositoryDetailIssuePage(this.userName, this.reposName, {Key? super.key});
 
   @override
   RepositoryDetailIssuePageState createState() =>

@@ -15,7 +15,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class MyPage extends StatefulWidget {
-  MyPage({Key? key}) : super(key: key);
+  MyPage({Key? super.key});
   @override
   MyPageState createState() => MyPageState();
 }

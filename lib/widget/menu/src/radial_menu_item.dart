@@ -11,7 +11,7 @@ class RadialMenuItem<T> extends StatelessWidget {
   ///
   /// The [child] argument is required.
   const RadialMenuItem({
-    Key? key,
+    Key? super.key,
     required this.child,
     this.value,
     this.tooltip,
@@ -19,9 +19,7 @@ class RadialMenuItem<T> extends StatelessWidget {
     this.backgroundColor,
     this.iconColor,
     // this.iconSize: 24.0,
-  })  : assert(child != null),
-
-        super(key: key);
+  })  : assert(child != null);
 
   /// The widget below this widget in the tree.
   ///

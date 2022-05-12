@@ -46,14 +46,12 @@ class Tab extends StatelessWidget {
   /// At least one of [text], [icon], and [child] must be non-null. The [text]
   /// and [child] arguments must not be used at the same time.
   const Tab({
-    Key? key,
+    Key? super.key,
     this.text,
     this.icon,
     this.child,
   })  : assert(text != null || child != null || icon != null),
-        assert(!(text != null && null != child)),
-        // TODO(goderbauer): https://github.com/dart-lang/sdk/issues/34180
-        super(key: key);
+        assert(!(text != null && null != child));
 
   /// The text to display as the tab's label.
   ///
@@ -121,7 +119,7 @@ class Tab extends StatelessWidget {
 
 class _TabStyle extends AnimatedWidget {
   const _TabStyle({
-    Key? key,
+    Key? super.key,
     required Animation<double> animation,
     this.selected,
     this.labelColor,
@@ -129,7 +127,7 @@ class _TabStyle extends AnimatedWidget {
     this.labelStyle,
     this.unselectedLabelStyle,
     required this.child,
-  }) : super(key: key, listenable: animation);
+  }) : super(listenable: animation);
 
   final TextStyle? labelStyle;
   final TextStyle? unselectedLabelStyle;
@@ -584,7 +582,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
   /// If [indicator] is not null, then [indicatorWeight], [indicatorPadding], and
   /// [indicatorColor] are ignored.
   const TabBar({
-    Key? key,
+    Key? super.key,
     required this.tabs,
     this.controller,
     this.isScrollable = false,
@@ -601,7 +599,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.onTap,
     this.onDoubleTap,
-  }) : super(key: key);
+  });
 
   /// Typically a list of two or more [Tab] widgets.
   ///
@@ -1153,12 +1151,12 @@ class TabBarView extends StatefulWidget {
   ///
   /// The length of [children] must be the same as the [controller]'s length.
   const TabBarView({
-    Key? key,
+    Key? super.key,
     required this.children,
     this.controller,
     this.physics,
     this.dragStartBehavior = DragStartBehavior.start,
-  }) : super(key: key);
+  });
 
   /// This widget's selection and animation state.
   ///
@@ -1370,11 +1368,11 @@ class TabPageSelectorIndicator extends StatelessWidget {
   ///
   /// The [backgroundColor], [borderColor], and [size] parameters must not be null.
   const TabPageSelectorIndicator({
-    Key? key,
+    Key? super.key,
     required this.backgroundColor,
     required this.borderColor,
     required this.size,
-  }) : super(key: key);
+  });
 
   /// The indicator circle's background color.
   final Color backgroundColor;
@@ -1410,13 +1408,12 @@ class TabPageSelectorIndicator extends StatelessWidget {
 class TabPageSelector extends StatelessWidget {
   /// Creates a compact widget that indicates which tab has been selected.
   const TabPageSelector({
-    Key? key,
+    Key? super.key,
     this.controller,
     this.indicatorSize = 12.0,
     this.color,
     this.selectedColor,
-  })  : assert(indicatorSize > 0.0),
-        super(key: key);
+  })  : assert(indicatorSize > 0.0);
 
   /// This widget's selection and animation state.
   ///

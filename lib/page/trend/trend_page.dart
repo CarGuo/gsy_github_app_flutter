@@ -26,7 +26,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class TrendPage extends StatefulWidget {
-  TrendPage({Key? key}) : super(key: key);
+  TrendPage({Key? super.key});
 
   @override
   TrendPageState createState() => TrendPageState();
