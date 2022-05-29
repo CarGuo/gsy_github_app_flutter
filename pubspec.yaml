@@ -35,7 +35,7 @@ dependencies:
   flutter_svg: 1.0.0
   flutter_slidable: ^0.6.0-nullsafety.0
   dio: 4.0.4
-  path_provider: 2.0.8
+  path_provider: 2.0.10
   webview_flutter: 3.0.0
   #bezier: ^1.1.5
   flare_flutter:  ^3.0.2
