@@ -80,9 +80,8 @@ class ErrorPageState extends State<ErrorPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   new TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: ButtonStyleButton.allOrNull<Color>(
-                          GSYColors.white.withAlpha(100)),
+                    style: TextButton.styleFrom(
+                      backgroundColor: GSYColors.white.withAlpha(100),
                     ),
                     onPressed: () {
                       String content = widget.errorMessage;
@@ -116,10 +115,8 @@ class ErrorPageState extends State<ErrorPage> {
                     width: 40,
                   ),
                   new TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: ButtonStyleButton.allOrNull<Color>(
-                            Colors.white.withAlpha(100)),
-                      ),
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.white.withAlpha(100)),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

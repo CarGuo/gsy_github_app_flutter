@@ -34,10 +34,7 @@ class PushHeader extends StatelessWidget {
     return new GSYCardItem(
       color: Theme.of(context).primaryColor,
       child: new TextButton(
-        style: ButtonStyle(
-          padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
-              new EdgeInsets.all(0.0)),
-        ),
+        style: TextButton.styleFrom(padding: new EdgeInsets.all(0.0)),
         onPressed: () {},
         child: new Padding(
           padding: new EdgeInsets.all(10.0),

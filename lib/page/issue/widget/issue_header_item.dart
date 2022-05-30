@@ -22,7 +22,8 @@ class IssueHeaderItem extends StatelessWidget {
   IssueHeaderItem(this.issueHeaderViewModel, {this.onPressed});
 
   _renderBottomContainer() {
-    Color issueStateColor = issueHeaderViewModel.state == "open" ? Colors.green : Colors.red;
+    Color issueStateColor =
+        issueHeaderViewModel.state == "open" ? Colors.green : Colors.red;
 
     ///底部Issue状态
     Widget bottomContainer = new Row(
@@ -42,7 +43,8 @@ class IssueHeaderItem extends StatelessWidget {
         new Padding(padding: new EdgeInsets.all(2.0)),
 
         ///issue issue编码
-        new Text(issueHeaderViewModel.issueTag, style: GSYConstant.smallTextWhite),
+        new Text(issueHeaderViewModel.issueTag,
+            style: GSYConstant.smallTextWhite),
         new Padding(padding: new EdgeInsets.all(2.0)),
 
         ///issue 评论数
@@ -61,7 +63,8 @@ class IssueHeaderItem extends StatelessWidget {
 
   ///关闭操作人
   _renderCloseByText() {
-    return (issueHeaderViewModel.closedBy == null || issueHeaderViewModel.closedBy!.trim().length == 0)
+    return (issueHeaderViewModel.closedBy == null ||
+            issueHeaderViewModel.closedBy!.trim().length == 0)
         ? new Container()
         : new Container(
             child: new Text(
@@ -77,10 +80,7 @@ class IssueHeaderItem extends StatelessWidget {
     return new GSYCardItem(
       color: Theme.of(context).primaryColor,
       child: new TextButton(
-        style: ButtonStyle(
-          padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
-              EdgeInsets.all(0.0)),
-        ),
+        style: TextButton.styleFrom(padding: EdgeInsets.all(0.0)),
         onPressed: onPressed,
         child: new Padding(
           padding: new EdgeInsets.all(10.0),
@@ -91,12 +91,15 @@ class IssueHeaderItem extends StatelessWidget {
                 children: <Widget>[
                   ///头像
                   new GSYUserIconWidget(
-                      padding: const EdgeInsets.only(top: 0.0, right: 10.0, left: 0.0),
+                      padding: const EdgeInsets.only(
+                          top: 0.0, right: 10.0, left: 0.0),
                       width: 50.0,
                       height: 50.0,
-                      image: issueHeaderViewModel.actionUserPic ?? GSYICons.DEFAULT_REMOTE_PIC,
+                      image: issueHeaderViewModel.actionUserPic ??
+                          GSYICons.DEFAULT_REMOTE_PIC,
                       onPressed: () {
-                        NavigatorUtils.goPerson(context, issueHeaderViewModel.actionUser);
+                        NavigatorUtils.goPerson(
+                            context, issueHeaderViewModel.actionUser);
                       }),
                   new Expanded(
                     child: Column(
@@ -105,7 +108,10 @@ class IssueHeaderItem extends StatelessWidget {
                         new Row(
                           children: <Widget>[
                             ///名称
-                            new Expanded(child: new Text(issueHeaderViewModel.actionUser!, style: GSYConstant.normalTextWhite)),
+                            new Expanded(
+                                child: new Text(
+                                    issueHeaderViewModel.actionUser!,
+                                    style: GSYConstant.normalTextWhite)),
 
                             ///时间
                             new Text(
@@ -129,7 +135,8 @@ class IssueHeaderItem extends StatelessWidget {
                             margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
                         new Padding(
-                          padding: new EdgeInsets.only(left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
+                          padding: new EdgeInsets.only(
+                              left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                         ),
                       ],
                     ),
@@ -138,7 +145,9 @@ class IssueHeaderItem extends StatelessWidget {
               ),
 
               ///评论内容
-              GSYMarkdownWidget(markdownData: issueHeaderViewModel.issueDesHtml, style: GSYMarkdownWidget.DARK_THEME),
+              GSYMarkdownWidget(
+                  markdownData: issueHeaderViewModel.issueDesHtml,
+                  style: GSYMarkdownWidget.DARK_THEME),
 
               ///close 用户
               _renderCloseByText()
@@ -173,7 +182,11 @@ class IssueHeaderViewModel {
     closedBy = issueMap.closeBy != null ? issueMap.closeBy!.login : "";
     locked = issueMap.locked;
     issueComment = issueMap.title;
-    issueDesHtml = issueMap.bodyHtml != null ? issueMap.bodyHtml : (issueMap.body != null) ? issueMap.body : "";
+    issueDesHtml = issueMap.bodyHtml != null
+        ? issueMap.bodyHtml
+        : (issueMap.body != null)
+            ? issueMap.body
+            : "";
     commentCount = issueMap.commentNum.toString() + "";
     state = issueMap.state;
     issueDes = issueMap.body != null ? ": \n" + issueMap.body! : '';
