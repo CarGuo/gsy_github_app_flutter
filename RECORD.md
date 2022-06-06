@@ -13,6 +13,8 @@ sudo gem install -n /usr/local/bin cocoapods -v 1.9.3
 ./gradlew :app:dependencies
 
 
+AS 全局匹配中文搜索 ^((?!(\*|//)).)+[\u4e00-\u9fa5]
+
 
 查看 framework 支持
 
