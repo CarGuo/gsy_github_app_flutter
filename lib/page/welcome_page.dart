@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/diff_scale_text.dart';
 import 'package:gsy_github_app_flutter/widget/mole_widget.dart';
 import 'package:redux/redux.dart';
+import 'package:rive/rive.dart';
 
 /**
  * 欢迎页
@@ -41,7 +42,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
     ///防止多次进入
     Store<GSYState> store = StoreProvider.of(context);
-    new Future.delayed(const Duration( milliseconds: 500), () {
+    new Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         text = "Welcome";
         fontSize = 60;
@@ -94,14 +95,11 @@ class _WelcomePageState extends State<WelcomePage> {
                   child: Mole(),
                 ),
                 new Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment(0.0, .9),
                   child: new Container(
                     width: size,
                     height: size,
-                    child: new FlareActor("static/file/flare_flutter_logo_.flr",
-                        alignment: Alignment.topCenter,
-                        fit: BoxFit.fill,
-                        animation: "Placeholder"),
+                    child: RiveAnimation.asset('static/file/launch.riv'),
                   ),
                 )
               ],

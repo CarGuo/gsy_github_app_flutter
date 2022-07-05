@@ -772,6 +772,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.0.0"
+  rive:
+    dependency: "direct main"
+    description:
+      name: rive
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.0"
   rxdart:
     dependency: "direct main"
     description:
