@@ -184,9 +184,9 @@
 | **lottie**                 | **svg动画**    |
 | **flare**                  | **路径动画**    |
 
-### 进行中：
+## Star History Chart
 
-[版本更新说明](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/VERSION.md)
+[![Star History Chart](https://api.star-history.com/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)](https://star-history.com/#CarGuo/gsy_github_app_flutter&Date)
 
 
 ![](http://img.cdn.guoshuyu.cn/thanks.jpg)
