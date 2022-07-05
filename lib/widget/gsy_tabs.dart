@@ -119,7 +119,6 @@ class Tab extends StatelessWidget {
 
 class _TabStyle extends AnimatedWidget {
   const _TabStyle({
-    Key? super.key,
     required Animation<double> animation,
     this.selected,
     this.labelColor,

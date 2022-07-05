@@ -76,12 +76,10 @@ class _DiffText extends CustomPainter {
   String? _oldText;
   List<_TextLayoutInfo> _textLayoutInfo = [];
   List<_TextLayoutInfo> _oldTextLayoutInfo = [];
-  Alignment alignment;
 
   _DiffText({required this.text,
     required this.textStyle,
-    this.progress = 1,
-    this.alignment = Alignment.center})
+    this.progress = 1})
       : assert(text != null),
         assert(textStyle != null);
 

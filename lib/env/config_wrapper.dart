@@ -27,7 +27,7 @@ class ConfigWrapper extends StatelessWidget {
 
 class _InheritedConfig extends InheritedWidget {
   const _InheritedConfig(
-      {Key? super.key, required this.config, required super.child});
+      {required this.config, required super.child});
 
   final EnvConfig? config;
 
