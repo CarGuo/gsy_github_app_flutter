@@ -39,7 +39,12 @@ dependencies:
   path_provider: 2.0.10
   webview_flutter: 3.0.0
   #bezier: ^1.1.5
-  flare_flutter:  ^3.0.2
+  flare_flutter:
+    git:
+      url: https://gitee.com/CarGuo/Flare-Flutter.git
+      ref: ab41281006402485ff7326d0c58134f451a0de3a
+      path: flare_flutter/
+
   rive: 0.9.0
   # 固定版本
   flutter_redux: 0.10.0

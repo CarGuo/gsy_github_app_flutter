@@ -312,9 +312,11 @@ packages:
   flare_flutter:
     dependency: "direct main"
     description:
-      name: flare_flutter
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: flare_flutter
+      ref: ab41281006402485ff7326d0c58134f451a0de3a
+      resolved-ref: ab41281006402485ff7326d0c58134f451a0de3a
+      url: "https://gitee.com/CarGuo/Flare-Flutter.git"
+    source: git
     version: "3.0.2"
   flutter:
     dependency: "direct main"
