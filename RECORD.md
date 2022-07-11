@@ -125,3 +125,4 @@ dart dump_kernel.dart /Users/xxxxxxx/workspace/flutter-wrok/flutter_app_test/.da
 
 
 
+m1 mac pod install fail ,  gem install ffi -- --enable-libffi-alloc
