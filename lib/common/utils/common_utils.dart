@@ -246,7 +246,7 @@ class CommonUtils {
       return "";
     }
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    return iosInfo.model;
+    return iosInfo.model ?? "";
   }
 
   /**

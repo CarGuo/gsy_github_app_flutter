@@ -60,7 +60,7 @@ Future<StringList> _getDeviceInfo() async {
   }
   IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
   String device = await CommonUtils.getDeviceInfo();
-  return [iosInfo.systemVersion, device];
+  return [iosInfo.systemVersion ?? "", device];
 }
 
 class GlobalLabel extends StatefulWidget {
