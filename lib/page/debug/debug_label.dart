@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
