@@ -32,8 +32,8 @@ android {
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 51
-        versionName "3.1.0"
+        versionCode 52
+        versionName "3.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
