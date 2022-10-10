@@ -123,6 +123,6 @@ xxd /Users/xxxxxxx/workspace/flutter-wrok/flutter_app_test/.dart_tool/flutter_bu
 
 dart dump_kernel.dart /Users/xxxxxxx/workspace/flutter-wrok/flutter_app_test/.dart_tool/flutter_build/bf7ed8e7e7b3e64f28f0af8a89a29ca9/app.dill /Users/xxxxxxx/workspace/flutter-wrok/flutter_app_test/.dart_tool/flutter_build/bf7ed8e7e7b3e64f28f0af8a89a29ca9/app.dill.txt
 
-
+flutter pub deps 打印依赖
 
 m1 mac pod install fail ,  gem install ffi -- --enable-libffi-alloc
