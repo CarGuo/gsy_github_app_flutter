@@ -32,7 +32,7 @@ class UserItem extends StatelessWidget {
             placeholder: GSYICons.DEFAULT_USER_ICON,
             //预览图
             fit: BoxFit.fitWidth,
-            image: userItemViewModel.userPic!,
+            image: userItemViewModel.userPic ?? "https://github.com/CarGuo/gsy_github_app_flutter/blob/master/logo.png?raw=true",
             width: 40.0,
             height: 40.0,
           ),

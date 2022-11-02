@@ -26,7 +26,7 @@ class SearchUserQL {
       lang = map["lang"]["nodes"][0]["languages"]["nodes"][0]["name"];
     }
     return SearchUserQL(
-      followers: map["followers"]["totalCount"],
+      followers: map["followers"]?["totalCount"],
       name: map["name"],
       avatarUrl: map["avatarUrl"],
       bio: map["bio"],
