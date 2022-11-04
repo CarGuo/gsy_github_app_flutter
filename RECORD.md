@@ -126,3 +126,5 @@ dart dump_kernel.dart /Users/xxxxxxx/workspace/flutter-wrok/flutter_app_test/.da
 flutter pub deps 打印依赖
 
 m1 mac pod install fail ,  gem install ffi -- --enable-libffi-alloc
+
+iconv -f gbk -t utf8 1.txt > 1_utf.txt
