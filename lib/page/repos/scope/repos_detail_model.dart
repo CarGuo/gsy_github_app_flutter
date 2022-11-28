@@ -18,7 +18,7 @@ class ReposDetailModel extends Model {
 
   int _currentIndex = 0;
 
-  String? _currentBranch = "master";
+  String? _currentBranch = "";
 
   RepositoryQL? _repository;
 

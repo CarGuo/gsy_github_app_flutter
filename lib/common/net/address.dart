@@ -167,7 +167,7 @@ class Address {
   ///仓库路径下的内容 get
   static reposDataDir(reposOwner, repos, path, [branch = 'master']) {
     return "${host}repos/$reposOwner/$repos/contents/$path" +
-        ((branch == null) ? "" : ("?ref=" + branch));
+        ((branch == null || branch == "") ? "" : ("?ref=" + branch));
   }
 
   ///README 文件地址 get
@@ -177,7 +177,8 @@ class Address {
         reposNameFullName +
         "/" +
         "readme" +
-        ((curBranch == null) ? "" : ("?ref=" + curBranch));
+        ((curBranch == null || curBranch == "" ) ? "" : ("?ref=" + curBranch));
+
   }
 
   ///我的用户信息 GET
