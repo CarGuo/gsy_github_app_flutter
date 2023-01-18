@@ -388,56 +388,56 @@ packages:
       name: gql
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.13.1"
+    version: "0.14.0"
   gql_dedupe_link:
     dependency: transitive
     description:
       name: gql_dedupe_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.3+1"
   gql_error_link:
     dependency: transitive
     description:
       name: gql_error_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.3+1"
   gql_exec:
     dependency: transitive
     description:
       name: gql_exec
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.3"
   gql_http_link:
     dependency: transitive
     description:
       name: gql_http_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.5"
   gql_link:
     dependency: transitive
     description:
       name: gql_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.0"
+    version: "0.5.1"
   gql_transform_link:
     dependency: transitive
     description:
       name: gql_transform_link
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.2+1"
   graphql:
     dependency: "direct main"
     description:
       name: graphql
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.0.1-beta.1"
+    version: "5.1.3"
   graphs:
     dependency: transitive
     description:
@@ -570,7 +570,7 @@ packages:
       name: normalize
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.5"
+    version: "0.7.2"
   package_config:
     dependency: transitive
     description:
