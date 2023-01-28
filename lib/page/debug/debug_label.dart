@@ -27,7 +27,7 @@ class DebugLabel {
       _overlayEntry!.remove();
       _overlayEntry = null;
     }
-    var overlayState = Overlay.of(context)!;
+    var overlayState = Overlay.of(context);
     _overlayEntry = new OverlayEntry(builder: (context) {
       return GlobalLabel(
           version: packInfo.version,

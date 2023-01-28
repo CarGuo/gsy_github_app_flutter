@@ -145,12 +145,12 @@ class _TabStyle extends AnimatedWidget {
     // the same value of inherit. Force that to be inherit=true here.
     final TextStyle defaultStyle = (labelStyle ??
             tabBarTheme.labelStyle ??
-            themeData.primaryTextTheme.bodyText1)!
+            themeData.primaryTextTheme.bodyLarge)!
         .copyWith(inherit: true);
     final TextStyle defaultUnselectedStyle = (unselectedLabelStyle ??
             tabBarTheme.unselectedLabelStyle ??
             labelStyle ??
-            themeData.primaryTextTheme.bodyText1)!
+            themeData.primaryTextTheme.bodyLarge)!
         .copyWith(inherit: true);
     final TextStyle textStyle = selected!
         ? TextStyle.lerp(defaultStyle, defaultUnselectedStyle, animation.value)!
@@ -159,7 +159,7 @@ class _TabStyle extends AnimatedWidget {
 
     final Color? selectedColor = labelColor ??
         tabBarTheme.labelColor ??
-        themeData.primaryTextTheme.bodyText1!.color;
+        themeData.primaryTextTheme.bodyLarge!.color;
     final Color unselectedColor = unselectedLabelColor ??
         tabBarTheme.unselectedLabelColor ??
         selectedColor!.withAlpha(0xB2); // 70% alpha
@@ -778,7 +778,7 @@ class _TabBarState extends State<TabBar> {
     //
     // The material's color might be null (if it's a transparency). In that case
     // there's no good way for us to find out what the color is so we don't.
-    if (color.value == Material.of(context)!.color?.value) color = Colors.white;
+    if (color.value == Material.of(context).color?.value) color = Colors.white;
 
     return UnderlineTabIndicator(
       insets: widget.indicatorPadding,

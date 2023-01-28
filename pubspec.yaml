@@ -57,7 +57,7 @@ dependencies:
   package_info: 2.0.2
   connectivity: 3.0.6
   flutter_markdown: 0.6.8
-  device_info_plus: 4.0.2
+  device_info_plus: 8.0.0
   url_launcher: 6.0.17
   google_fonts: 2.1.0
   android_intent: 2.0.2

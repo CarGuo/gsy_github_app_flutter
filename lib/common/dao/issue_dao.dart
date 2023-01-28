@@ -143,7 +143,7 @@ class IssueDao {
    * issue的详请列表
    */
   static getIssueCommentDao(userName, repository, number,
-      {page: 0, needDb = false}) async {
+      {page = 0, needDb = false}) async {
     String? fullName = userName + "/" + repository;
     IssueCommentDbProvider provider = new IssueCommentDbProvider();
 

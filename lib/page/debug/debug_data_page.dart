@@ -6,7 +6,6 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/test/demo_tab_page.dart';
 import 'package:gsy_github_app_flutter/widget/flutter_json_widget.dart';
 
-import '../../common/style/gsy_style.dart';
 import '../error_page.dart';
 
 ///请求数据调

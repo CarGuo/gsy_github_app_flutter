@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui show Codec;
 
 import 'package:flutter/painting.dart' as image_provider;
-
 
 /**
  * Created by guoshuyu
@@ -34,10 +32,8 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   }
 
   @override
-  ImageStreamCompleter load(NetworkCacheImage key, DecoderCallback decode) {
-    // Ownership of this controller is handed off to [_loadAsync]; it is that
-    // method's responsibility to close the controller's stream when the image
-    // has been loaded or an error is thrown.
+  ImageStreamCompleter loadBuffer(
+      NetworkCacheImage key, DecoderBufferCallback decode) {
     final StreamController<ImageChunkEvent> chunkEvents =
         StreamController<ImageChunkEvent>();
 
@@ -57,10 +53,10 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   static final HttpClient _httpClient = HttpClient();
 
   Future<ui.Codec> _loadAsync(
-      NetworkCacheImage key,
-      StreamController<ImageChunkEvent> chunkEvents,
-      DecoderCallback decode,
-      ) async {
+    NetworkCacheImage key,
+    StreamController<ImageChunkEvent> chunkEvents,
+    DecoderBufferCallback decode,
+  ) async {
     try {
       assert(key == this);
 
@@ -71,7 +67,8 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
       });
       final HttpClientResponse response = await request.close();
       if (response.statusCode != HttpStatus.ok)
-        throw image_provider.NetworkImageLoadException(statusCode: response.statusCode, uri: resolved);
+        throw image_provider.NetworkImageLoadException(
+            statusCode: response.statusCode, uri: resolved);
 
       final Uint8List bytes = await consolidateHttpClientResponseBytes(
         response,
@@ -84,7 +81,9 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
       );
       if (bytes.lengthInBytes == 0)
         throw Exception('NetworkImage is an empty file: $resolved');
-      return decode(bytes);
+      final ui.ImmutableBuffer buffer =
+          await ui.ImmutableBuffer.fromUint8List(bytes);
+      return decode(buffer);
     } finally {
       chunkEvents.close();
     }
@@ -151,7 +150,7 @@ class NetworkCacheImage extends ImageProvider<NetworkCacheImage> {
   }
 
   @override
-  int get hashCode => hashValues(url, scale);
+  int get hashCode => Object.hash(url, scale);
 
   @override
   String toString() => '$runtimeType("$url", scale: $scale)';

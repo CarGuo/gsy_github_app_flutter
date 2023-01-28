@@ -20,7 +20,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 
-import 'common/event/index.dart';
 import 'common/utils/navigator_utils.dart';
 
 class FlutterReduxApp extends StatefulWidget {
