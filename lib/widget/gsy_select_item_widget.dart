@@ -44,6 +44,8 @@ class GSYSelectItemWidget extends StatefulWidget
 
 class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   int selectIndex = 0;
+  int preSelIndex = 0;
+  List keys = [false,false];
 
   _GSYSelectItemWidgetState();
 
@@ -51,6 +53,10 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
     var style = index == selectIndex
         ? GSYConstant.middleTextWhite
         : GSYConstant.middleSubLightText;
+    if(preSelIndex!=index && index == selectIndex){
+      //说明此项是变项,key值取反
+      keys[index] = !keys[index];
+    }
     return new Expanded(
       child: AnimatedSwitcher(
         transitionBuilder: (child, anim) {
@@ -58,7 +64,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         },
         duration: Duration(milliseconds: 300),
         child: RawMaterialButton(
-            key: ValueKey(index == selectIndex),
+            key: ValueKey(keys[index]),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
             padding: EdgeInsets.all(10.0),
@@ -72,6 +78,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
                 widget.selectItemChanged?.call(index);
               }
               setState(() {
+                preSelIndex = selectIndex;
                 selectIndex = index;
               });
             }),
