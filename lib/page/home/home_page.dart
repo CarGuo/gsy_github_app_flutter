@@ -79,13 +79,13 @@ class _HomePageState extends State<HomePage> {
         onDoublePress: (index) {
           switch (index) {
             case 0:
-              dynamicKey.currentState!.scrollToTop();
+              dynamicKey.currentState?.scrollToTop();
               break;
             case 1:
-              trendKey.currentState!.scrollToTop();
+              trendKey.currentState?.scrollToTop();
               break;
             case 2:
-              myKey.currentState!.scrollToTop();
+              myKey.currentState?.scrollToTop();
               break;
           }
         },
