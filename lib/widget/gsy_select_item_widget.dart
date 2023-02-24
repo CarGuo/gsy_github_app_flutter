@@ -49,6 +49,13 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
 
   _GSYSelectItemWidgetState();
 
+
+  @override
+  void initState() {
+    super.initState();
+    keys = widget.itemNames.map((e) => false).toList();
+  }
+
   _renderItem(String name, int index) {
     var style = index == selectIndex
         ? GSYConstant.middleTextWhite
