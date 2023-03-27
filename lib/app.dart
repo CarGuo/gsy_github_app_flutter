@@ -53,6 +53,8 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   ]);
 
 
+
+
   @override
   void initState() {
     super.initState();
@@ -76,7 +78,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
         store.state.platformLocale = WidgetsBinding.instance.window.locale;
         Widget app = new MaterialApp(
-
+          navigatorKey: navKey,
           ///多语言实现代理
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
@@ -146,6 +148,8 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
   ///所以如果直接用 context 是会获取不到 MaterialApp 的 Localizations 哦。
   late BuildContext _context;
 
+  GlobalKey<NavigatorState> navKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -167,32 +171,33 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
 
   ///网络错误提醒
   errorHandleFunction(int? code, message) {
+    var context = navKey.currentContext!;
     switch (code) {
       case Code.NETWORK_ERROR:
-        showToast(GSYLocalizations.i18n(_context)!.network_error);
+        showToast(GSYLocalizations.i18n(context)!.network_error);
         break;
       case 401:
-        showToast(GSYLocalizations.i18n(_context)!.network_error_401);
+        showToast(GSYLocalizations.i18n(context)!.network_error_401);
         break;
       case 403:
-        showToast(GSYLocalizations.i18n(_context)!.network_error_403);
+        showToast(GSYLocalizations.i18n(context)!.network_error_403);
         break;
       case 404:
-        showToast(GSYLocalizations.i18n(_context)!.network_error_404);
+        showToast(GSYLocalizations.i18n(context)!.network_error_404);
         break;
       case 422:
-        showToast(GSYLocalizations.i18n(_context)!.network_error_422);
+        showToast(GSYLocalizations.i18n(context)!.network_error_422);
         break;
       case Code.NETWORK_TIMEOUT:
       //超时
-        showToast(GSYLocalizations.i18n(_context)!.network_error_timeout);
+        showToast(GSYLocalizations.i18n(context)!.network_error_timeout);
         break;
       case Code.GITHUB_API_REFUSED:
       //Github API 异常
-        showToast(GSYLocalizations.i18n(_context)!.github_refused);
+        showToast(GSYLocalizations.i18n(context)!.github_refused);
         break;
       default:
-        showToast(GSYLocalizations.i18n(_context)!.network_error_unknown +
+        showToast(GSYLocalizations.i18n(context)!.network_error_unknown +
             " " +
             message);
         break;
