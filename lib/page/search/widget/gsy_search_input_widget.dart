@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+
 /**
  * 搜索输入框
  * Created by guoshuyu
@@ -36,18 +37,29 @@ class GSYSearchInputWidget extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new Expanded(
-              child: new TextField(
-                  autofocus: false,
-                  controller: controller,
-                  decoration: new InputDecoration(
-                    hintText: GSYLocalizations.i18n(context)!.repos_issue_search,
-                    hintStyle: GSYConstant.middleSubText,
-                    border: InputBorder.none,
-                    isDense: true,
-                  ),
-                  style: GSYConstant.middleText
-                      .copyWith(textBaseline: TextBaseline.alphabetic),
-                  onSubmitted: onSubmitted)),
+            child: new TextField(
+                autofocus: false,
+                controller: controller,
+                decoration: new InputDecoration(
+                  hintText: GSYLocalizations.i18n(context)!.repos_issue_search,
+                  hintStyle: GSYConstant.middleSubText,
+                  border: InputBorder.none,
+                  isDense: true,
+                ),
+
+                ///关闭 3.7 的放大镜
+                magnifierConfiguration:
+                    TextMagnifierConfiguration(magnifierBuilder: (
+                  BuildContext context,
+                  MagnifierController controller,
+                  ValueNotifier<MagnifierInfo> magnifierInfo,
+                ) {
+                  return null;
+                }),
+                style: GSYConstant.middleText
+                    .copyWith(textBaseline: TextBaseline.alphabetic),
+                onSubmitted: onSubmitted),
+          ),
           new RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: const EdgeInsets.only(right: 5.0, left: 10.0),
