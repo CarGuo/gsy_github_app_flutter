@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/model/CommonListDataType.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
@@ -142,7 +143,7 @@ class HomeDrawer extends StatelessWidget {
                                   context,
                                   GSYLocalizations.i18n(context)!.home_history,
                                   "repositoryql",
-                                  "history",
+                                  CommonListDataType.history,
                                   userName: "",
                                   reposName: "");
                             }),
