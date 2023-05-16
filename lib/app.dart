@@ -2,23 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
 import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
-import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
-import 'package:gsy_github_app_flutter/page/photoview_page.dart';
-import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';
+import 'package:gsy_github_app_flutter/page/photoview_page.dart';
 import 'package:gsy_github_app_flutter/page/welcome_page.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:redux/redux.dart';
-import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 import 'common/utils/navigator_utils.dart';
 
@@ -28,7 +28,7 @@ class FlutterReduxApp extends StatefulWidget {
 }
 
 class _FlutterReduxAppState extends State<FlutterReduxApp>
-    with HttpErrorListener, NavigatorObserver {
+    with HttpErrorListener {
   /// 创建Store，引用 GSYState 中的 appReducer 实现 Reducer 方法
   /// initialState 初始化 State
   final store = new Store<GSYState>(
@@ -53,6 +53,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   ]);
 
 
+  NavigatorObserver navigatorObserver = NavigatorObserver();
 
 
   @override
@@ -63,8 +64,8 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       /// MaterialApp 和 StoreProvider 的 context
       /// 还可以获取到 navigator;
       /// 比如在这里增加一个监听，如果 token 失效就退回登陆页。
-      navigator!.context;
-      navigator;
+      navigatorObserver.navigator!.context;
+      navigatorObserver.navigator;
     });
   }
 
@@ -76,7 +77,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       store: store,
       child: new StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
-        store.state.platformLocale = WidgetsBinding.instance.window.locale;
+        store.state.platformLocale = WidgetsBinding.instance.platformDispatcher.locale;
         Widget app = new MaterialApp(
           navigatorKey: navKey,
           ///多语言实现代理
@@ -91,7 +92,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             ],
             locale: store.state.locale,
             theme: store.state.themeData,
-            navigatorObservers: [this],
+            navigatorObservers: [navigatorObserver],
 
             ///命名式路由
             /// "/" 和 MaterialApp 的 home 参数一个效果
@@ -104,16 +105,13 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             ///⚠️ 这个是我故意的，如果不需要，可以去掉 pageContainer 或者不要用这里的 context
             routes: {
               WelcomePage.sName: (context) {
-                _context = context;
                 DebugLabel.showDebugLabel(context);
                 return WelcomePage();
               },
               HomePage.sName: (context) {
-                _context = context;
                 return NavigatorUtils.pageContainer(new HomePage(), context);
               },
               LoginPage.sName: (context) {
-                _context = context;
                 return NavigatorUtils.pageContainer(new LoginPage(), context);
               },
 
@@ -138,15 +136,11 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
       }),
     );
   }
+
 }
 
 mixin HttpErrorListener on State<FlutterReduxApp> {
   StreamSubscription? stream;
-
-  ///这里为什么用 _context 你理解吗？
-  ///因为此时 State 的 context 是 FlutterReduxApp 而不是 MaterialApp
-  ///所以如果直接用 context 是会获取不到 MaterialApp 的 Localizations 哦。
-  late BuildContext _context;
 
   GlobalKey<NavigatorState> navKey = GlobalKey();
 
@@ -211,3 +205,4 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
         toastLength: Toast.LENGTH_LONG);
   }
 }
+

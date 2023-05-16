@@ -269,7 +269,6 @@ class CommonUtils {
     store.dispatch(RefreshLocaleAction(locale));
   }
 
-
   /**
    * 切换灰色
    */
@@ -306,9 +305,11 @@ class CommonUtils {
   }
 
   static copy(String? data, BuildContext context) {
-    Clipboard.setData(new ClipboardData(text: data));
-    Fluttertoast.showToast(
-        msg: GSYLocalizations.i18n(context)!.option_share_copy_success);
+    if (data != null) {
+      Clipboard.setData(new ClipboardData(text: data));
+      Fluttertoast.showToast(
+          msg: GSYLocalizations.i18n(context)!.option_share_copy_success);
+    }
   }
 
   static launchUrl(context, String? url) {

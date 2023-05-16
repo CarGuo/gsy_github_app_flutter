@@ -37,7 +37,7 @@ class ErrorPageState extends State<ErrorPage> {
   @override
   Widget build(BuildContext context) {
     double width =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
+        MediaQueryData.fromView(View.of(context)).size.width;
     return Container(
       color: GSYColors.primaryValue,
       child: new Center(
