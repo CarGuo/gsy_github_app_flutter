@@ -331,10 +331,9 @@ class CommonUtils {
         String userName = pathnames[1];
         NavigatorUtils.goPerson(context, userName);
       } else if (pathnames.length >= 3) {
-        String userName = pathnames[1];
-        String repoName = pathnames[2];
         //解析仓库
         if (pathnames.length == 3) {
+          var [_, userName, repoName] = pathnames;
           NavigatorUtils.goReposDetail(context, userName, repoName);
         } else {
           launchWebView(context, "", url);

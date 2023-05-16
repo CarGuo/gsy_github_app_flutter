@@ -190,8 +190,9 @@ class GSYMarkdownWidget extends StatelessWidget {
             if (parts.length == 2) {
               final StringList dimensions = parts.last.split('x');
               if (dimensions.length == 2) {
-                width = double.parse(dimensions[0]);
-                height = double.parse(dimensions[1]);
+                var [ws, hs] = dimensions;
+                width = double.parse(ws);
+                height = double.parse(hs);
               }
             }
             return kDefaultImageBuilder(uri, "", width, height);
@@ -241,7 +242,8 @@ Widget kDefaultImageBuilder(
   }
 }
 
-Widget _handleDataSchemeUri(Uri uri, final double? width, final double? height) {
+Widget _handleDataSchemeUri(
+    Uri uri, final double? width, final double? height) {
   final String mimeType = uri.data!.mimeType;
   if (mimeType.startsWith('image/')) {
     return Image.memory(

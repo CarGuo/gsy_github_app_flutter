@@ -152,8 +152,7 @@ class EventUtils {
       NavigatorUtils.goPerson(context, event.actor!.login);
       return;
     }
-    String owner = event.repo!.name!.split("/")[0];
-    String repositoryName = event.repo!.name!.split("/")[1];
+    var [owner, repositoryName] = event.repo!.name!.split("/");
     String fullName = owner + '/' + repositoryName;
     switch (event.type) {
       case 'ForkEvent':

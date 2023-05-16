@@ -53,32 +53,29 @@ class LogsInterceptors extends InterceptorsWrapper {
     if (Config.DEBUG!) {
       print('返回参数: ' + response.toString());
     }
-    if (response.data is Map || response.data is List) {
-      try {
-        var data = Map<String, dynamic>();
-        data["data"] = response.data;
-        addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
-        addLogic(sHttpResponses, data);
-      } catch (e) {
-        print(e);
-      }
-    } else if (response.data is String) {
-      try {
-        var data = Map<String, dynamic>();
-        data["data"] = response.data;
-        addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
-        addLogic(sHttpResponses, data);
-      } catch (e) {
-        print(e);
-      }
-    } else if (response.data != null) {
-      try {
-        String data = response.data.toJson();
-        addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
-        addLogic(sHttpResponses, json.decode(data));
-      } catch (e) {
-        print(e);
-      }
+    switch (response.data) {
+      case Map || List:
+        {
+          try {
+            var data = Map<String, dynamic>();
+            data["data"] = response.data;
+            addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
+            addLogic(sHttpResponses, data);
+          } catch (e) {
+            print(e);
+          }
+        }
+      case String:
+        {
+          try {
+            var data = Map<String, dynamic>();
+            data["data"] = response.data;
+            addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
+            addLogic(sHttpResponses, data);
+          } catch (e) {
+            print(e);
+          }
+        }
     }
     return super.onResponse(response, handler);
   }
