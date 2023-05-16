@@ -34,15 +34,15 @@ import 'package:url_launcher/url_launcher.dart';
 typedef StringList = List<String>;
 
 class CommonUtils {
-  static final double MILLIS_LIMIT = 1000.0;
+  static const double MILLIS_LIMIT = 1000.0;
 
-  static final double SECONDS_LIMIT = 60 * MILLIS_LIMIT;
+  static const double SECONDS_LIMIT = 60 * MILLIS_LIMIT;
 
-  static final double MINUTES_LIMIT = 60 * SECONDS_LIMIT;
+  static const double MINUTES_LIMIT = 60 * SECONDS_LIMIT;
 
-  static final double HOURS_LIMIT = 24 * MINUTES_LIMIT;
+  static const double HOURS_LIMIT = 24 * MINUTES_LIMIT;
 
-  static final double DAYS_LIMIT = 30 * HOURS_LIMIT;
+  static const double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
   static Locale? curLocale;
 
@@ -66,44 +66,38 @@ class CommonUtils {
   static String getNewsTimeStr(DateTime date) {
     int subTimes =
         DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
-
-    if (subTimes < MILLIS_LIMIT) {
-      return (curLocale != null)
+    return switch (subTimes) {
+      < MILLIS_LIMIT => (curLocale != null)
           ? (curLocale!.languageCode != "zh")
               ? "right now"
               : "刚刚"
-          : "刚刚";
-    } else if (subTimes < SECONDS_LIMIT) {
-      return (subTimes / MILLIS_LIMIT).round().toString() +
+          : "刚刚",
+      < SECONDS_LIMIT => (subTimes / MILLIS_LIMIT).round().toString() +
           ((curLocale != null)
               ? (curLocale!.languageCode != "zh")
                   ? " seconds ago"
                   : " 秒前"
-              : " 秒前");
-    } else if (subTimes < MINUTES_LIMIT) {
-      return (subTimes / SECONDS_LIMIT).round().toString() +
+              : " 秒前"),
+      < MINUTES_LIMIT => (subTimes / SECONDS_LIMIT).round().toString() +
           ((curLocale != null)
               ? (curLocale!.languageCode != "zh")
                   ? " min ago"
                   : " 分钟前"
-              : " 分钟前");
-    } else if (subTimes < HOURS_LIMIT) {
-      return (subTimes / MINUTES_LIMIT).round().toString() +
+              : " 分钟前"),
+      < HOURS_LIMIT => (subTimes / MINUTES_LIMIT).round().toString() +
           ((curLocale != null)
               ? (curLocale!.languageCode != "zh")
                   ? " hours ago"
                   : " 小时前"
-              : " 小时前");
-    } else if (subTimes < DAYS_LIMIT) {
-      return (subTimes / HOURS_LIMIT).round().toString() +
+              : " 小时前"),
+      < DAYS_LIMIT => (subTimes / HOURS_LIMIT).round().toString() +
           ((curLocale != null)
               ? (curLocale!.languageCode != "zh")
                   ? " days ago"
                   : " 天前"
-              : " 天前");
-    } else {
-      return getDateStr(date);
-    }
+              : " 天前"),
+      _ => getDateStr(date)
+    };
   }
 
   static getLocalPath() async {
@@ -326,18 +320,21 @@ class CommonUtils {
 
     if (parseUrl.host == "github.com" && parseUrl.path.length > 0) {
       StringList pathnames = parseUrl.path.split("/");
-      if (pathnames.length == 2) {
-        //解析人
-        String userName = pathnames[1];
-        NavigatorUtils.goPerson(context, userName);
-      } else if (pathnames.length >= 3) {
-        //解析仓库
-        if (pathnames.length == 3) {
-          var [_, userName, repoName] = pathnames;
-          NavigatorUtils.goReposDetail(context, userName, repoName);
-        } else {
-          launchWebView(context, "", url);
-        }
+      switch (pathnames.length) {
+        case == 2:
+          //解析人
+          String userName = pathnames[1];
+          NavigatorUtils.goPerson(context, userName);
+          break;
+        case >= 3:
+          //解析仓库
+          if (pathnames.length == 3) {
+            var [_, userName, repoName] = pathnames;
+            NavigatorUtils.goReposDetail(context, userName, repoName);
+          } else {
+            launchWebView(context, "", url);
+          }
+          break;
       }
     } else if (url.startsWith("http")) {
       launchWebView(context, "", url);

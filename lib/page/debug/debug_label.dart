@@ -20,7 +20,7 @@ class DebugLabel {
       return false;
     }
     hadShow = true;
-    var list = await _getDeviceInfo();
+    var (version, platform) = await _getDeviceInfo();
     PackageInfo packInfo = await PackageInfo.fromPlatform();
     var language = GSYLocalizations.of(context)!.locale.languageCode;
     if (_overlayEntry != null) {
@@ -31,8 +31,8 @@ class DebugLabel {
     _overlayEntry = new OverlayEntry(builder: (context) {
       return GlobalLabel(
           version: packInfo.version,
-          deviceInfo: list[0],
-          platform: list[1],
+          deviceInfo: version,
+          platform: platform,
           language: language);
     });
     overlayState.insert(_overlayEntry!);
@@ -52,15 +52,15 @@ class DebugLabel {
   }
 }
 
-Future<StringList> _getDeviceInfo() async {
+Future<(String, String)> _getDeviceInfo() async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    return [androidInfo.version.sdkInt.toString(), "Android"];
+    return (androidInfo.version.sdkInt.toString(), "Android");
   }
   IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
   String device = await CommonUtils.getDeviceInfo();
-  return [iosInfo.systemVersion ?? "", device];
+  return (iosInfo.systemVersion ?? "", device);
 }
 
 class GlobalLabel extends StatefulWidget {

@@ -11,7 +11,7 @@ import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
  */
 class EventUtils {
   ///事件描述与动作
-  static getActionAndDes(Event event) {
+  static ({String? actionStr, String? des})getActionAndDes(Event event) {
     String? actionStr;
     String? des;
     switch (event.type) {
@@ -143,7 +143,7 @@ class EventUtils {
         break;
     }
 
-    return {"actionStr": actionStr, "des": des != null ? des : ""};
+    return (actionStr: actionStr, des: des != null ? des : "");
   }
 
   ///跳转

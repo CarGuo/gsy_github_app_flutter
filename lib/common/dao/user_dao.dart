@@ -37,7 +37,6 @@ class UserDao {
     );
     dynamic resultData = null;
     if (res != null && res.result) {
-      print("#### ${res.data}");
       var result = Uri.parse("gsy://oauth?" + res.data);
       var token = result.queryParameters["access_token"]!;
       var _token = 'token ' + token;

@@ -93,9 +93,9 @@ class EventViewModel {
     actionTime = CommonUtils.getNewsTimeStr(event.createdAt!);
     actionUser = event.actor!.login;
     actionUserPic = event.actor!.avatar_url;
-    var other = EventUtils.getActionAndDes(event);
-    actionDes = other["des"];
-    actionTarget = other["actionStr"];
+    var as = EventUtils.getActionAndDes(event);
+    actionDes = as.des;
+    actionTarget = as.actionStr;
   }
 
   EventViewModel.fromCommitMap(RepoCommit eventMap) {
