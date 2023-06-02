@@ -147,7 +147,7 @@ class _SearchPageState extends State<SearchPage>
       ///填充剩下半圆颜色
       color: endAnima ? Theme.of(context).primaryColor : Colors.transparent,
       child: CRAnimation(
-        minR: MediaQuery.of(context).size.height - 8,
+        minR: MediaQuery.sizeOf(context).height - 8,
         maxR: 0,
         offset: widget.centerPosition,
         animation: animation as Animation<double>?,

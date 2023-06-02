@@ -218,7 +218,7 @@ class TrendPageState extends State<TrendPage>
     var mediaQueryData = MediaQueryData.fromView(View.of(context));
     var statusBar = mediaQueryData.padding.top;
     var bottomArea = mediaQueryData.padding.bottom;
-    var height = MediaQuery.of(context).size.height -
+    var height = MediaQuery.sizeOf(context).height -
         statusBar -
         bottomArea -
         kBottomNavigationBarHeight -
@@ -226,7 +226,7 @@ class TrendPageState extends State<TrendPage>
     return SingleChildScrollView(
       child: new Container(
         height: height,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

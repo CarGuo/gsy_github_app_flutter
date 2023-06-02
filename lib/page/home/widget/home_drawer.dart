@@ -70,7 +70,7 @@ class HomeDrawer extends StatelessWidget {
                 ///item 背景
                 child: Container(
                   constraints: new BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height),
+                      minHeight: MediaQuery.sizeOf(context).height),
                   child: new Material(
                     color: GSYColors.white,
                     child: new Column(

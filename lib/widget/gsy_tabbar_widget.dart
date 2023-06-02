@@ -94,7 +94,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     widget.onPageChanged?.call(index);
 
     ///不想要动画
-    _pageController.jumpTo(MediaQuery.of(context).size.width * index);
+    _pageController.jumpTo(MediaQuery.sizeOf(context).width * index);
     widget.onSinglePress?.call(index);
   }
 

@@ -34,8 +34,8 @@ class ReposItem extends StatelessWidget {
           15.0,
           padding: 5.0,
           textWidth: flex == 4
-              ? (MediaQuery.of(context).size.width - 100) / 3
-              : (MediaQuery.of(context).size.width - 100) / 5,
+              ? (MediaQuery.sizeOf(context).width - 100) / 3
+              : (MediaQuery.sizeOf(context).width - 100) / 5,
         ),
       ),
     );

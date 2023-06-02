@@ -251,7 +251,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   ///空页面
   Widget _buildEmpty() {
     return new Container(
-      height: MediaQuery.of(context).size.height - 100,
+      height: MediaQuery.sizeOf(context).height - 100,
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -332,7 +332,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
       alignment: Alignment.bottomCenter,
       child: new Container(
         color: Colors.black,
-        width: MediaQuery.of(context!).size.width,
+        width: MediaQuery.sizeOf(context!).width,
 
         ///动态大小处理
         height:

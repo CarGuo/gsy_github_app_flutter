@@ -27,7 +27,7 @@ cd /Users/.../xFramework.framework
 lipo -info  xFramework
 
 
-
+-tag:gralloc4 
 
 
 # 如何查看dill文件

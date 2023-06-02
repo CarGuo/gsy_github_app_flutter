@@ -124,7 +124,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   ///空页面
   Widget _buildEmpty() {
     return new Container(
-      height: MediaQuery.of(context).size.height - 100,
+      height: MediaQuery.sizeOf(context).height - 100,
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

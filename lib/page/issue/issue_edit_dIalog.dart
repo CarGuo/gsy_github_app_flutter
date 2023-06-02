@@ -90,8 +90,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: new Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.sizeOf(context).height,
+              width: MediaQuery.sizeOf(context).width,
               color: Colors.black12,
 
               ///触摸收起键盘
@@ -124,7 +124,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
 
                           ///内容输入框
                           new Container(
-                            height: MediaQuery.of(context).size.width * 3 / 4,
+                            height: MediaQuery.sizeOf(context).width * 3 / 4,
                             decoration: new BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0)),

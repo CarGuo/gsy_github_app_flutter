@@ -188,7 +188,7 @@ class UserHeaderItem extends StatelessWidget {
             GSYColors.subLightTextColor,
             10.0,
             padding: 3.0,
-            textWidth: MediaQuery.of(context).size.width - 50,
+            textWidth: MediaQuery.sizeOf(context).width - 50,
           ),
         ),
         margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
@@ -386,7 +386,7 @@ class UserHeaderChart extends StatelessWidget {
 
   _renderChart(context) {
     double height = 140.0;
-    double width = 3 * MediaQuery.of(context).size.width / 2;
+    double width = 3 * MediaQuery.sizeOf(context).width / 2;
     if (userInfo.login != null && userInfo.type == "Organization") {
       return new Container();
     }
