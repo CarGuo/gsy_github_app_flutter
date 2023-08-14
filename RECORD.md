@@ -128,3 +128,7 @@ flutter pub deps 打印依赖
 m1 mac pod install fail ,  gem install ffi -- --enable-libffi-alloc
 
 iconv -f gbk -t utf8 1.txt > 1_utf.txt
+
+AS 检索匹配中文
+
+^((?!(\*|//)).)+[\u4e00-\u9fa5]
