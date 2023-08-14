@@ -9,8 +9,8 @@ class HeaderInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options, handler) async {
     ///超时
-    options.connectTimeout = 30000;
-    options.receiveTimeout = 30000;
+    options.connectTimeout = Duration(seconds: 30);
+    options.receiveTimeout = Duration(seconds: 30);
 
     return super.onRequest(options, handler);
   }

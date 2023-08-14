@@ -52,15 +52,16 @@ class HttpManager {
       option.headers = headers;
     }
 
-    resultError(DioError e) {
+    resultError(DioException e) {
       Response? errorResponse;
       if (e.response != null) {
         errorResponse = e.response;
       } else {
         errorResponse = new Response(statusCode: 666, requestOptions: RequestOptions(path: url));
       }
-      if (e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.receiveTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+      e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         errorResponse!.statusCode = Code.NETWORK_TIMEOUT;
       }
       return new ResultData(
@@ -72,10 +73,10 @@ class HttpManager {
     Response response;
     try {
       response = await _dio.request(url, data: params, options: option);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return resultError(e);
     }
-    if (response.data is DioError) {
+    if (response.data is DioException) {
       return resultError(response.data);
     }
     return response.data;

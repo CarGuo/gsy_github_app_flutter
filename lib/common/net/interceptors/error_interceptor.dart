@@ -19,9 +19,9 @@ class ErrorInterceptors extends InterceptorsWrapper {
     //没有网络
     var connectivityResult = await (new Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      return handler.reject(DioError(
+      return handler.reject(DioException(
           requestOptions: options,
-          type: DioErrorType.other,
+          type: DioExceptionType.unknown,
           response: Response(
               requestOptions: options,
               data: new ResultData(

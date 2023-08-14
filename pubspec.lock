@@ -269,10 +269,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "5fd6e152bdbc876bc6e81910e16a2bd36e0c68e23d87316e8da67a1ec8fd7b1c"
+      sha256: "9d6445da1caf8412070670c03c39ad5b12a78cc8c2361417b220905a2bcbdd2f"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.4"
+    version: "5.3.1"
   ffi:
     dependency: transitive
     description:

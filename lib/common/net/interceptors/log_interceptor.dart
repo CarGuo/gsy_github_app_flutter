@@ -80,7 +80,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   }
 
   @override
-  onError(DioError err, handler) async {
+  onError(DioException err, handler) async {
     if (Config.DEBUG!) {
       print('请求异常: ' + err.toString());
       print('请求异常信息: ' + (err.response?.toString() ?? ""));
