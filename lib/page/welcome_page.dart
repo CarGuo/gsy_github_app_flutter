@@ -53,7 +53,7 @@ class _WelcomePageState extends State<WelcomePage> {
         fontSize = 60;
       });
     });
-    new Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
+    new Future.delayed(const Duration(seconds: 3, milliseconds: 500), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {
           NavigatorUtils.goHome(context);
@@ -98,7 +98,17 @@ class _WelcomePageState extends State<WelcomePage> {
                   child: new Container(
                     width: size,
                     height: size,
-                    child: RiveAnimation.asset('static/file/launch.riv'),
+                    child: RiveAnimation.asset(
+                      'static/file/launch.riv',
+                      animations: ["lookUp"],
+                      onInit: (arb) {
+                        var controller =
+                            StateMachineController.fromArtboard(arb, "birb");
+                        var smi = controller?.findInput<bool>("dance");
+                        arb.addController(controller!);
+                        smi?.value == true;
+                      },
+                    ),
                   ),
                 )
               ],
