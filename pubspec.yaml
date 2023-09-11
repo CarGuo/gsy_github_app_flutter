@@ -56,16 +56,16 @@ dependencies:
   json_annotation: 4.8.1
   package_info_plus: 4.1.0
   connectivity_plus: 4.0.2
-  flutter_markdown: 0.6.8
+  flutter_markdown: 0.6.17+2
   device_info_plus: 9.0.3
   url_launcher: 6.1.12
   google_fonts: 4.0.4
   android_intent_plus: 4.0.2
   shared_preferences: 2.0.10
   built_value: 8.1.3
-  simple_animations: 4.0.1
+  simple_animations: 5.0.2
   supercharged: 2.1.1
-  animations: 2.0.3
+  animations: 2.0.8
   auto_size_text: 3.0.0
   flutter_localizations:
     sdk: flutter

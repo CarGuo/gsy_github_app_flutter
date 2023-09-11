@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
-
 enum ParticleOffsetProps { x, y }
 
 class ParticleModel {
-  late MultiTween<ParticleOffsetProps> tween;
+  late MovieTween tween;
   late double size;
   late Duration duration;
   late Duration startTime;
@@ -23,9 +22,13 @@ class ParticleModel {
     final startPosition = Offset(-0.2 + 1.4 * random.nextDouble(), 1.2);
     final endPosition = Offset(-0.2 + 1.4 * random.nextDouble(), -0.2);
 
-    tween = MultiTween<ParticleOffsetProps>()
-      ..add(ParticleOffsetProps.x, startPosition.dx.tweenTo(endPosition.dx))
-      ..add(ParticleOffsetProps.y, startPosition.dy.tweenTo(endPosition.dy));
+    tween = MovieTween()
+      ..tween(ParticleOffsetProps.x,
+          Tween(begin: startPosition.dx, end: endPosition.dx),
+          duration: 2.seconds)
+      ..tween(ParticleOffsetProps.y,
+          Tween(begin: startPosition.dy, end: endPosition.dy),
+          duration: 2.seconds);
 
     duration = 3000.milliseconds + random.nextInt(6000).milliseconds;
     startTime = DateTime.now().duration();

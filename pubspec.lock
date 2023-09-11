@@ -29,10 +29,10 @@ packages:
     dependency: "direct main"
     description:
       name: animations
-      sha256: "1a5baa987a926607a363522869781637b591735195573ab04006b3f825eef224"
+      sha256: ef57563eed3620bd5d75ad96189846aca1e033c0c45fc9a7d26e80ab02b88a70
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.8"
   args:
     dependency: transitive
     description:
@@ -303,14 +303,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_lints:
-    dependency: transitive
-    description:
-      name: flutter_lints
-      sha256: b543301ad291598523947dc534aaddc5aaad597b709d2426d3a0e0d44c5cb493
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.4"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -320,10 +312,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_markdown
-      sha256: "453b7ddd0af5bb2f1f83204150de8ec921976dd69960abaa4a32723758692477"
+      sha256: d4a1cb250c4e059586af0235f32e02882860a508e189b61f2b31b8810c1e1330
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.8"
+    version: "0.6.17+2"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -537,14 +529,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.7.1"
-  lints:
-    dependency: transitive
-    description:
-      name: lints
-      sha256: a2c3d198cb5ea2e179926622d433331d8b58374ab8f29cdda6e863bd62fd369c
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.1"
   logging:
     dependency: transitive
     description:
@@ -557,10 +541,10 @@ packages:
     dependency: transitive
     description:
       name: markdown
-      sha256: "01512006c8429f604eb10f9848717baeaedf99e991d14a50d540d9beff08e5c6"
+      sha256: acf35edccc0463a9d7384e437c015a3535772e09714cf60e07eeef3a15870dcd
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.1"
+    version: "7.1.1"
   matcher:
     dependency: transitive
     description:
@@ -941,10 +925,10 @@ packages:
     dependency: "direct main"
     description:
       name: simple_animations
-      sha256: "79acf025f196001d4680280f67b4d77ca828459b23498606d2fb130a4961046e"
+      sha256: "1ea7b93fb98e2a611b6865d632de55607b766328d14700143353129ee0559d3a"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.2"
   sky_engine:
     dependency: transitive
     description: flutter

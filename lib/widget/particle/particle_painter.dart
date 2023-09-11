@@ -13,7 +13,7 @@ class ParticlePainter extends CustomPainter {
 
     particles.forEach((particle) {
       final progress = particle.progress();
-      final MultiTweenValues<ParticleOffsetProps> animation =
+      final Movie animation =
       particle.tween.transform(progress);
       final position = Offset(
         animation.get<double>(ParticleOffsetProps.x) * size.width,

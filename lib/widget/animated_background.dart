@@ -7,22 +7,20 @@ enum _ColorTween { color1, color2 }
 class AnimatedBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final tween = MultiTween<_ColorTween>()
-      ..add(
-        _ColorTween.color1,
-        Color(0xffD38312).tweenTo(Colors.lightBlue.shade900),
-        3.seconds,
-      )
-      ..add(
+    final tween = MovieTween()
+      ..tween(_ColorTween.color1,
+          ColorTween(begin: Color(0xffD38312), end: Colors.lightBlue.shade900),
+          duration: 3.seconds, curve: Curves.easeIn)
+      ..tween(
         _ColorTween.color2,
-        Color(0xffA83279).tweenTo(Colors.blue.shade600),
-        3.seconds,
+        ColorTween(begin: Color(0xffA83279), end: Colors.blue.shade600),
+        duration: 3.seconds,
       );
 
-    return MirrorAnimation<MultiTweenValues<_ColorTween>>(
+    return MirrorAnimationBuilder<Movie>(
       tween: tween,
       duration: tween.duration,
-      builder: (context, child, value) {
+      builder: (context, value, child) {
         return Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(

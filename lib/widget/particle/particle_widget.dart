@@ -41,8 +41,9 @@ class _ParticlesWidgetState extends State<ParticlesWidget>
 
   @override
   Widget build(BuildContext context) {
-    return LoopAnimation(
+    return LoopAnimationBuilder(
       tween: ConstantTween(1),
+      duration: Duration(seconds: 1),
       builder: (context, child, dynamic _) {
         _simulateParticles();
         return CustomPaint(
@@ -56,5 +57,4 @@ class _ParticlesWidgetState extends State<ParticlesWidget>
     particles
         .forEach((particle) => particle.checkIfParticleNeedsToBeRestarted());
   }
-
 }

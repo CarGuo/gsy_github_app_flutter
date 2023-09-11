@@ -36,8 +36,9 @@ class _MoleState extends State<Mole> {
 
   Widget _buildMole() {
     _manageParticleLifecycle();
-    return LoopAnimation<int>(
+    return LoopAnimationBuilder<int>(
       tween: ConstantTween(1),
+      duration: Duration(seconds: 1),
       builder: (context, child, value) {
         return Stack(
           clipBehavior: Clip.none,
@@ -98,25 +99,26 @@ class _MoleState extends State<Mole> {
 enum _MoleProps { x, y, scale }
 
 class MoleParticle {
-  late Animatable<MultiTweenValues<_MoleProps>> tween;
+  late Animatable<Movie> tween;
   late Duration startTime;
   final duration = 600.milliseconds;
 
   MoleParticle() {
     final random = Random();
-    final x = (100 + 200) * random.nextDouble() * (random.nextBool() ? 1 : -1);
-    final y = (100 + 200) * random.nextDouble() * (random.nextBool() ? 1 : -1);
+    double x = (100 + 200) * random.nextDouble() * (random.nextBool() ? 1 : -1);
+    double y = (100 + 200) * random.nextDouble() * (random.nextBool() ? 1 : -1);
 
-    tween = MultiTween<_MoleProps>()
-      ..add(_MoleProps.x, 0.0.tweenTo(x))
-      ..add(_MoleProps.y, 0.0.tweenTo(y))
-      ..add(_MoleProps.scale, 1.0.tweenTo(0.0));
+    tween = MovieTween()
+      ..tween(_MoleProps.x, Tween(begin: 0.0, end: x), duration: 2.seconds)
+      ..tween(_MoleProps.y, Tween(begin: 0.0, end: y), duration: 2.seconds)
+      ..tween(_MoleProps.scale, Tween(begin: 1.0, end: 0.0),
+          duration: 2.seconds);
 
     startTime = DateTime.now().duration();
   }
 
   Widget buildWidget() {
-    final MultiTweenValues<_MoleProps> values = tween.transform(progress());
+    final Movie values = tween.transform(progress());
     var alpha = (255 * progress()).toInt();
     return Positioned(
       left: values.get(_MoleProps.x),
