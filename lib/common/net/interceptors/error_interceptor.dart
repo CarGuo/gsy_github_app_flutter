@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';

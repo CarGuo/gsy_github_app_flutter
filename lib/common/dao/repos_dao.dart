@@ -35,7 +35,7 @@ import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 import 'package:gsy_github_app_flutter/common/net/trending/github_trending.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 /**
