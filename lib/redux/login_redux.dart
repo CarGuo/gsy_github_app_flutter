@@ -63,7 +63,7 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
     if (action is LogoutAction) {
       UserDao.clearAll(store);
-      CookieManager().clearCookies();
+      WebViewCookieManager().clearCookies();
       SqlManager.close();
       NavigatorUtils.goLogin(action.context);
     }

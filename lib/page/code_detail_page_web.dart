@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -47,29 +46,29 @@ class CodeDetailPageWeb extends StatefulWidget {
 class _CodeDetailPageState extends State<CodeDetailPageWeb> {
   bool isLand = false;
 
+  late final WebViewController controller;
+
   @override
   void initState() {
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted);
+
     super.initState();
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
   }
 
-  Future<String?> _getData() async {
+  Future<Uri?> _getData() async {
     if (widget.data != null) {
-      return widget.data;
+      return Uri.dataFromString(widget.data!);
     }
     var res = await ReposDao.getReposFileDirDao(
         widget.userName, widget.reposName,
         path: widget.path, branch: widget.branch, text: true, isHtml: true);
     if (res != null && res.result) {
       String data2 = HtmlUtils.resolveHtmlFile(res, "java");
-      String url = new Uri.dataFromString(data2,
-              mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
-          .toString();
-      return url;
+      return new Uri.dataFromString(data2,
+          mimeType: 'text/html', encoding: Encoding.getByName("utf-8"));
     }
-    return "";
+    return null;
   }
 
   @override
@@ -86,11 +85,12 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
       appBar: new AppBar(
         title: GSYTitleBar(widget.title),
       ),
-      body: FutureBuilder<String?>(
-        initialData: widget.data,
+      body: FutureBuilder<Uri?>(
+        initialData:
+            widget.data != null ? Uri.dataFromString(widget.data!) : null,
         future: _getData(),
         builder: (context, result) {
-          if (result.data == null || result.data!.isEmpty) {
+          if (result.data == null) {
             return new Center(
               child: new Container(
                 width: 200.0,
@@ -111,9 +111,9 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
               ),
             );
           }
-          return WebView(
-            initialUrl: result.data,
-            javascriptMode: JavascriptMode.unrestricted,
+          controller.loadRequest(result.data!);
+          return WebViewWidget(
+            controller: controller,
           );
         },
       ),

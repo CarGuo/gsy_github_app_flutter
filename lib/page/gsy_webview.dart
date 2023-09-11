@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -45,12 +43,33 @@ class _GSYWebViewState extends State<GSYWebView> {
 
   bool isLoading = true;
 
+  late final WebViewController controller;
+
   @override
   void initState() {
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onWebResourceError: (WebResourceError error) {},
+        ),
+      )
+      ..addJavaScriptChannel("name", onMessageReceived: (message) {
+        print(message.message);
+        FocusScope.of(context).requestFocus(focusNode);
+      })
+      ..loadRequest(Uri.parse(widget.url));
+
     super.initState();
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
   }
 
   @override
@@ -64,23 +83,9 @@ class _GSYWebViewState extends State<GSYWebView> {
           TextField(
             focusNode: focusNode,
           ),
-          WebView(
-              initialUrl: widget.url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (_) {
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              javascriptChannels: Set.from([
-                JavascriptChannel(
-                    name: 'Print',
-                    onMessageReceived: (JavascriptMessage message) {
-                      ///print("FFFFFF");
-                      print(message.message);
-                      FocusScope.of(context).requestFocus(focusNode);
-                    })
-              ])),
+          WebViewWidget(
+            controller: controller,
+          ),
           if (isLoading)
             new Center(
               child: new Container(
