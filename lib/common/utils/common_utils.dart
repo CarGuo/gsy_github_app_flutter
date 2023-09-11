@@ -240,7 +240,7 @@ class CommonUtils {
       return "";
     }
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    return iosInfo.model ?? "";
+    return iosInfo.model;
   }
 
   /**
@@ -306,7 +306,7 @@ class CommonUtils {
     }
   }
 
-  static launchUrl(context, String? url) {
+  static gsyLaunchUrl(context, String? url) {
     if (url == null && url!.length == 0) return;
     Uri parseUrl = Uri.parse(url);
     bool isImage = isImageEnd(parseUrl.toString());
@@ -355,8 +355,8 @@ class CommonUtils {
   }
 
   static launchOutURL(String? url, BuildContext context) async {
-    if (url != null && await canLaunch(url)) {
-      await launch(url);
+    if (url != null && await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       Fluttertoast.showToast(
           msg: GSYLocalizations.i18n(context)!.option_web_launcher_error +
@@ -491,7 +491,7 @@ class CommonUtils {
                   child: new Text(GSYLocalizations.i18n(context)!.app_cancel)),
               new TextButton(
                   onPressed: () {
-                    launch(Address.updateUrl);
+                    launchUrl(Uri.parse( Address.updateUrl));
                     Navigator.pop(context);
                   },
                   child: new Text(GSYLocalizations.i18n(context)!.app_ok)),

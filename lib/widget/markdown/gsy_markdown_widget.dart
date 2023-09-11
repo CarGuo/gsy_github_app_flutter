@@ -198,7 +198,7 @@ class GSYMarkdownWidget extends StatelessWidget {
             return kDefaultImageBuilder(uri, "", width, height);
           },
           onTapLink: (String text, String? href, String title) {
-            CommonUtils.launchUrl(context, href);
+            CommonUtils.gsyLaunchUrl(context, href);
           },
         ),
       ),
