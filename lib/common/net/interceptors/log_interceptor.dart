@@ -52,7 +52,7 @@ class LogsInterceptors extends InterceptorsWrapper {
     if (Config.DEBUG!) {
       print('返回参数: ' + response.toString());
     }
-    switch (response.data) {
+    switch (response.data.runtimeType) {
       case Map || List:
         {
           try {
