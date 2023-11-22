@@ -173,8 +173,8 @@ class NavigatorUtils {
   }
 
   ///通用列表
-  static gotoCommonList(
-      BuildContext context, String? title, String showType, CommonListDataType dataType,
+  static gotoCommonList(BuildContext context, String? title, String showType,
+      CommonListDataType dataType,
       {String? userName, String? reposName}) {
     NavigatorRouter(
         context,
@@ -307,7 +307,7 @@ class NavigatorUtils {
     return MediaQuery(
 
         ///不受系统字体缩放影响
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
         child: NeverOverScrollIndicator(
           needOverload: false,
           child: widget,
@@ -327,8 +327,9 @@ class NavigatorUtils {
           return MediaQuery(
 
               ///不受系统字体缩放影响
-              data: MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first)
-                  .copyWith(textScaleFactor: 1),
+              data: MediaQueryData.fromView(
+                      WidgetsBinding.instance.platformDispatcher.views.first)
+                  .copyWith(textScaler: TextScaler.noScaling),
               child: NeverOverScrollIndicator(
                 needOverload: false,
                 child: new SafeArea(child: builder!(context)),

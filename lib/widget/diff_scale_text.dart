@@ -46,24 +46,24 @@ class _DiffScaleTextState extends State<DiffScaleText>
   Widget build(BuildContext context) {
     TextStyle? textStyle = widget.textStyle == null
         ? TextStyle(
-      fontSize: 20,
-      color: Colors.white,
-    )
+            fontSize: 20,
+            color: Colors.white,
+          )
         : widget.textStyle;
     return AnimatedBuilder(
       animation: _animationController,
       builder: (BuildContext context, Widget? child) {
         return RepaintBoundary(
             child: CustomPaint(
-              child: Text(widget.text ?? "",
-                  style: textStyle!.merge(TextStyle(color: Color(0x00000000))),
-                  maxLines: 1,
-                  textDirection: TextDirection.ltr),
-              foregroundPainter: _DiffText(
-                  text: widget.text ?? "",
-                  textStyle: textStyle,
-                  progress: _animationController.value),
-            ));
+          child: Text(widget.text ?? "",
+              style: textStyle!.merge(TextStyle(color: Color(0x00000000))),
+              maxLines: 1,
+              textDirection: TextDirection.ltr),
+          foregroundPainter: _DiffText(
+              text: widget.text ?? "",
+              textStyle: textStyle,
+              progress: _animationController.value),
+        ));
       },
     );
   }
@@ -77,9 +77,7 @@ class _DiffText extends CustomPainter {
   List<_TextLayoutInfo> _textLayoutInfo = [];
   List<_TextLayoutInfo> _oldTextLayoutInfo = [];
 
-  _DiffText({required this.text,
-    required this.textStyle,
-    this.progress = 1})
+  _DiffText({required this.text, required this.textStyle, this.progress = 1})
       : assert(text != null),
         assert(textStyle != null);
 
@@ -102,7 +100,8 @@ class _DiffText extends CustomPainter {
               1,
               Offset(
                   _oldTextLayoutInfo.offsetX! -
-                      (_oldTextLayoutInfo.offsetX! - _oldTextLayoutInfo.toX!) * p,
+                      (_oldTextLayoutInfo.offsetX! - _oldTextLayoutInfo.toX!) *
+                          p,
                   _oldTextLayoutInfo.offsetY),
               _oldTextLayoutInfo);
         } else {
@@ -151,7 +150,7 @@ class _DiffText extends CustomPainter {
                 textBaseline: TextBaseline.ideographic))),
         textDirection: TextDirection.ltr);
     textPainter.textAlign = TextAlign.center;
-    textPainter.textScaleFactor = textScaleFactor;
+    textPainter.textScaler = TextScaler.linear(textScaleFactor);
     textPainter.textDirection = TextDirection.ltr;
     textPainter.layout();
     textPainter.paint(
@@ -191,7 +190,7 @@ class _DiffText extends CustomPainter {
     textPainter.layout();
     for (int i = 0; i < text.length; i++) {
       var forCaret =
-      textPainter.getOffsetForCaret(TextPosition(offset: i), Rect.zero);
+          textPainter.getOffsetForCaret(TextPosition(offset: i), Rect.zero);
       var offsetX = forCaret.dx;
       if (i > 0 && offsetX == 0) {
         break;

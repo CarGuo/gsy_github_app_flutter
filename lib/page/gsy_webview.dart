@@ -75,6 +75,7 @@ class _GSYWebViewState extends State<GSYWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: GSYColors.mainBackgroundColor,
       appBar: new AppBar(
         title: _renderTitle(),
       ),

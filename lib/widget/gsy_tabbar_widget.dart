@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabs.dart' as GSYTab;
 
 ///支持顶部和顶部的TabBar控件
@@ -108,6 +109,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     if (widget.type == TabType.top) {
       ///顶部tab bar
       return new Scaffold(
+        backgroundColor: GSYColors.mainBackgroundColor,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomPadding,
         floatingActionButton:
             SafeArea(child: widget.floatingActionButton ?? Container()),

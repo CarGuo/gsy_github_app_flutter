@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
@@ -31,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<MyPageState> myKey = new GlobalKey();
 
   /// 不退出
-  Future<bool> _dialogExitApp(BuildContext context) async {
+  _dialogExitApp(BuildContext context) async {
     ///如果是 android 回到桌面
     if (Platform.isAndroid) {
       AndroidIntent intent = AndroidIntent(
@@ -40,8 +39,6 @@ class _HomePageState extends State<HomePage> {
       );
       await intent.launch();
     }
-
-    return Future.value(false);
   }
 
   _renderTab(icon, text) {
@@ -63,8 +60,9 @@ class _HomePageState extends State<HomePage> {
     ];
 
     ///增加返回按键监听
-    return WillPopScope(
-      onWillPop: () {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
         return _dialogExitApp(context);
       },
       child: new GSYTabBarWidget(

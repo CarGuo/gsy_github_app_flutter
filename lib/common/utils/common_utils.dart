@@ -199,8 +199,12 @@ class CommonUtils {
 
   static getThemeData(Color color) {
     return ThemeData(
-      primarySwatch: color as MaterialColor?,
-      platform: TargetPlatform.android,
+      useMaterial3: false,
+      primaryColor: color,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: color,
+        primary: color,
+      ),
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
           systemNavigationBarContrastEnforced: true,
@@ -371,8 +375,8 @@ class CommonUtils {
         builder: (BuildContext context) {
           return new Material(
               color: Colors.transparent,
-              child: WillPopScope(
-                onWillPop: () => new Future.value(false),
+              child: PopScope(
+                canPop: false,
                 child: Center(
                   child: new Container(
                     width: 200.0,
@@ -491,7 +495,7 @@ class CommonUtils {
                   child: new Text(GSYLocalizations.i18n(context)!.app_cancel)),
               new TextButton(
                   onPressed: () {
-                    launchUrl(Uri.parse( Address.updateUrl));
+                    launchUrl(Uri.parse(Address.updateUrl));
                     Navigator.pop(context);
                   },
                   child: new Text(GSYLocalizations.i18n(context)!.app_ok)),
