@@ -302,7 +302,7 @@ class TrendPageState extends State<TrendPage>
           Radius.circular(size / 2),
         ),
       ),
-      closedColor: Theme.of(context).colorScheme.secondary,
+      closedColor: Theme.of(context).primaryColor,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return SizedBox(
           width: size,
