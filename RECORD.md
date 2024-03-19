@@ -132,3 +132,6 @@ iconv -f gbk -t utf8 1.txt > 1_utf.txt
 AS 检索匹配中文
 
 ^((?!(\*|//)).)+[\u4e00-\u9fa5]
+
+
+serve --ssl-key *.key --ssl-cert *.crt
