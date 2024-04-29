@@ -28,7 +28,7 @@ class ReposDetailInfoPage extends StatefulWidget {
 
   final String? reposName;
 
-  ReposDetailInfoPage(this.userName, this.reposName, {Key? super.key});
+  ReposDetailInfoPage(this.userName, this.reposName, {super.key});
 
   @override
   ReposDetailInfoPageState createState() => ReposDetailInfoPageState();

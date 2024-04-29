@@ -13,7 +13,7 @@ import 'package:redux/redux.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class DynamicPage extends StatefulWidget {
-  DynamicPage({Key? super.key});
+  DynamicPage({super.key});
 
   @override
   DynamicPageState createState() => DynamicPageState();

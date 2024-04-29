@@ -11,7 +11,7 @@ class RadialMenuItem<T> extends StatelessWidget {
   ///
   /// The [child] argument is required.
   const RadialMenuItem({
-    Key? super.key,
+    super.key,
     required this.child,
     this.value,
     this.tooltip,

@@ -34,7 +34,7 @@ class GSYTabBarWidget extends StatefulWidget {
   final ValueChanged<int>? onSinglePress;
 
   GSYTabBarWidget({
-    Key? super.key,
+    super.key,
     this.type = TabType.top,
     this.tabItems,
     this.tabViews,

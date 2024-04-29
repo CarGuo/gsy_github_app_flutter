@@ -39,7 +39,7 @@ class RadialMenu<T> extends StatefulWidget {
   /// arguments must not be null (they all have defaults, so do not need to be
   /// specified).
   const RadialMenu({
-    Key? super.key,
+    super.key,
     required this.items,
     required this.onSelected,
     this.radius = 50.0,

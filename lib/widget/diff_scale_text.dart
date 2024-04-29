@@ -6,7 +6,7 @@ class DiffScaleText extends StatefulWidget {
   final String? text;
   final TextStyle? textStyle;
 
-  const DiffScaleText({Key? super.key, required this.text, this.textStyle})
+  const DiffScaleText({super.key, required this.text, this.textStyle})
       : assert(text != null);
 
   @override

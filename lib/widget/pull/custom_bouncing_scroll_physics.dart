@@ -7,7 +7,7 @@ class CustomBouncingScrollPhysics extends ScrollPhysics {
   final double refreshHeight;
 
   const CustomBouncingScrollPhysics(
-      {ScrollPhysics? super.parent, this.refreshHeight = 140});
+      {super.parent, this.refreshHeight = 140});
 
   @override
   CustomBouncingScrollPhysics applyTo(ScrollPhysics? ancestor) {

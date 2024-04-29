@@ -193,7 +193,7 @@ class _InheritedModel<T extends Model> extends InheritedWidget {
   final T? model;
   final int? version;
 
-  _InheritedModel({Key? super.key, Widget? child, T? model})
+  _InheritedModel({super.key, Widget? child, T? model})
       : model = model,
         version = model?._version,
         super(child: child!);
