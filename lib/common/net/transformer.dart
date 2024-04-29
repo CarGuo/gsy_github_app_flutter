@@ -6,7 +6,7 @@ import 'package:gsy_github_app_flutter/model/Branch.dart';
 
 part 'transformer.g.dart';
 
-@SerializersFor(const [
+@SerializersFor([
   Branch,
 ])
 final Serializers serializers = (_$serializers.toBuilder()

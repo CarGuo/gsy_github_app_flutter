@@ -49,7 +49,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
   SyntaxHighlighterStyle? _style;
 
-  static const List<String> _kKeywords = const <String>[
+  static const List<String> _kKeywords = <String>[
     'abstract',
     'as',
     'assert',
@@ -124,7 +124,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
     'instanceof'
   ];
 
-  static const List<String> _kBuiltInTypes = const <String>[
+  static const List<String> _kBuiltInTypes = <String>[
     'int',
     'double',
     'num',
