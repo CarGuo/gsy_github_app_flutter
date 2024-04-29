@@ -288,7 +288,7 @@ class TrendPageState extends State<TrendPage>
   }
 
   trendUserButton() {
-    final double size = 56.0;
+    const double size = 56.0;
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {

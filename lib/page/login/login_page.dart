@@ -19,7 +19,7 @@ import 'package:gsy_github_app_flutter/widget/particle/particle_widget.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class LoginPage extends StatefulWidget {
-  static final String sName = "login";
+  static const String sName = "login";
 
   @override
   State createState() {

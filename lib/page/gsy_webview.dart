@@ -112,7 +112,7 @@ class _GSYWebViewState extends State<GSYWebView> {
 }
 
 ///测试 html 代码，不管
-final testhtml = "<!DOCTYPE html>"
+const testhtml = "<!DOCTYPE html>"
     "<html>"
     "<head>"
     "<meta charset=\"utf-8\">"

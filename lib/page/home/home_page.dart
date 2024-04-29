@@ -16,7 +16,7 @@ import 'package:gsy_github_app_flutter/page/home/widget/home_drawer.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class HomePage extends StatefulWidget {
-  static final String sName = "home";
+  static const String sName = "home";
 
   @override
   _HomePageState createState() => _HomePageState();

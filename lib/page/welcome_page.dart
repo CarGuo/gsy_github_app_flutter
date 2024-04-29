@@ -17,7 +17,7 @@ import 'package:rive/rive.dart';
 /// Date: 2018-07-16
 
 class WelcomePage extends StatefulWidget {
-  static final String sName = "/";
+  static const String sName = "/";
 
   @override
   _WelcomePageState createState() => _WelcomePageState();

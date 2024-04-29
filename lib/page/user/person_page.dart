@@ -18,7 +18,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-18
 class PersonPage extends StatefulWidget {
-  static final String sName = "person";
+  static const String sName = "person";
 
   final String? userName;
 

@@ -8,7 +8,7 @@ import 'package:gsy_github_app_flutter/widget/menu/src/radial_menu_center_button
 import 'package:gsy_github_app_flutter/widget/menu/src/radial_menu_item.dart';
 
 const double _radiansPerDegree = Math.pi / 180;
-final double _startAngle = -90.0 * _radiansPerDegree;
+const double _startAngle = -90.0 * _radiansPerDegree;
 
 typedef double ItemAngleCalculator(int index);
 

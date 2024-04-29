@@ -13,9 +13,9 @@ import 'package:sqflite/sqflite.dart';
 
 ///数据库管理
 class DemoSqlManager {
-  static final _VERSION = 1;
+  static const _VERSION = 1;
 
-  static final _NAME = "demo_github_app_flutter.db";
+  static const _NAME = "demo_github_app_flutter.db";
 
   static Database? _database;
 
