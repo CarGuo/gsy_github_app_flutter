@@ -9,11 +9,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 import 'package:redux/redux.dart';
 
-/**
- * 主页动态tab页
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 主页动态tab页
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class DynamicPage extends StatefulWidget {
   DynamicPage({Key? super.key});
 

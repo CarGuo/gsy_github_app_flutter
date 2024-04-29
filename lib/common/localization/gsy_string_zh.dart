@@ -1,9 +1,7 @@
 import 'package:gsy_github_app_flutter/common/localization/gsy_string_base.dart';
 
-/**
- * Created by guoshuyu
- * Date: 2018-08-15
- */
+/// Created by guoshuyu
+/// Date: 2018-08-15
 class GSYStringZh extends GSYStringBase {
   @override
   String welcomeMessage = "Welcome To Flutter";

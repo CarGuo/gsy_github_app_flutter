@@ -12,11 +12,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:gsy_github_app_flutter/page/home/widget/home_drawer.dart';
 
-/**
- * 主页
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 主页
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class HomePage extends StatefulWidget {
   static final String sName = "home";
 

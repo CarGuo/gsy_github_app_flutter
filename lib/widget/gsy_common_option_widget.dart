@@ -4,10 +4,8 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:share_plus/share_plus.dart';
 
-/**
- * Created by guoshuyu
- * Date: 2018-07-26
- */
+/// Created by guoshuyu
+/// Date: 2018-07-26
 class GSYCommonOptionWidget extends StatelessWidget {
   final List<GSYOptionModel>? otherList;
 

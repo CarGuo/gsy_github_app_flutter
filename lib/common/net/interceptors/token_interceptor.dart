@@ -3,11 +3,9 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 
-/**
- * Token拦截器
- * Created by guoshuyu
- * on 2019/3/23.
- */
+/// Token拦截器
+/// Created by guoshuyu
+/// on 2019/3/23.
 class TokenInterceptors extends InterceptorsWrapper {
   String? _token;
 

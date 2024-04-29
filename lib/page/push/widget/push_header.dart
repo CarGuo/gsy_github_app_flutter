@@ -7,11 +7,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 
-/**
- * 提交详情的头
- * Created by guoshuyu
- * Date: 2018-07-27
- */
+/// 提交详情的头
+/// Created by guoshuyu
+/// Date: 2018-07-27
 class PushHeader extends StatelessWidget {
   final PushHeaderViewModel pushHeaderViewModel;
 

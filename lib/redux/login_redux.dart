@@ -9,11 +9,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'middleware/epic_store.dart';
 
-/**
- * 登录相关Redux
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 登录相关Redux
+/// Created by guoshuyu
+/// Date: 2018-07-16
 final LoginReducer = combineReducers<bool?>([
   TypedReducer<bool?, LoginSuccessAction>(_loginResult) ,
   TypedReducer<bool?, LogoutAction>(_logoutResult),

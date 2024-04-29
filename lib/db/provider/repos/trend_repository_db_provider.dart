@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * 趋势表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 趋势表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 class TrendRepositoryDbProvider extends BaseDbProvider {
   final String name = 'TrendRepository';
   int? id;

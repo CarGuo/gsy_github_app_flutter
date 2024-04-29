@@ -4,11 +4,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
 
-/**
- * issue 编辑输入框
- * Created by guoshuyu
- * on 2018/7/21.
- */
+/// issue 编辑输入框
+/// Created by guoshuyu
+/// on 2018/7/21.
 class IssueEditDialog extends StatefulWidget {
   final String dialogTitle;
 

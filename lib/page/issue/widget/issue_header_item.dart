@@ -8,11 +8,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 
-/**
- * Issue 详情头
- * Created by guoshuyu
- * on 2018/7/21.
- */
+/// Issue 详情头
+/// Created by guoshuyu
+/// on 2018/7/21.
 
 class IssueHeaderItem extends StatelessWidget {
   final IssueHeaderViewModel issueHeaderViewModel;

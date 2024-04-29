@@ -4,11 +4,9 @@ import 'package:gsy_github_app_flutter/common/net/api.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 
-/**
- * 趋势数据解析
- * Created with guoshuyu
- * Date: 2018-07-16
- */
+/// 趋势数据解析
+/// Created with guoshuyu
+/// Date: 2018-07-16
 class GitHubTrending {
   fetchTrending(url) async {
     var res = await httpManager.netFetch(

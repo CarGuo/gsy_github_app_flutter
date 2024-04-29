@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * 用户动态表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 用户动态表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class UserEventDbProvider extends BaseDbProvider {
   final String name = 'UserEvent';

@@ -1,7 +1,5 @@
-/**
- * Created by guoshuyu
- * Date: 2018-08-06
- */
+/// Created by guoshuyu
+/// Date: 2018-08-06
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';

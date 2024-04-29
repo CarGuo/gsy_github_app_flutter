@@ -19,12 +19,10 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 import 'package:redux/redux.dart';
 
-/**
- * 主页趋势tab页
- * 目前采用纯 bloc 的 rxdart(stream) + streamBuilder
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 主页趋势tab页
+/// 目前采用纯 bloc 的 rxdart(stream) + streamBuilder
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class TrendPage extends StatefulWidget {
   TrendPage({Key? super.key});
 

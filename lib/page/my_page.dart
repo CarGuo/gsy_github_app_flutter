@@ -9,11 +9,9 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_w
 import 'package:gsy_github_app_flutter/page/user/base_person_state.dart';
 import 'package:redux/redux.dart';
 
-/**
- * 主页我的tab页
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 主页我的tab页
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class MyPage extends StatefulWidget {
   MyPage({Key? super.key});
   @override

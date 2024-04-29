@@ -2,10 +2,8 @@ import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
 import 'package:rxdart/rxdart.dart';
 
-/**
- * Created by guoshuyu
- * on 2019/3/23.
- */
+/// Created by guoshuyu
+/// on 2019/3/23.
 class TrendBloc {
   bool _requested = false;
 

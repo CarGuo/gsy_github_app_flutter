@@ -12,11 +12,9 @@ import 'package:gsy_github_app_flutter/widget/mole_widget.dart';
 import 'package:redux/redux.dart';
 import 'package:rive/rive.dart';
 
-/**
- * 欢迎页
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 欢迎页
+/// Created by guoshuyu
+/// Date: 2018-07-16
 
 class WelcomePage extends StatefulWidget {
   static final String sName = "/";

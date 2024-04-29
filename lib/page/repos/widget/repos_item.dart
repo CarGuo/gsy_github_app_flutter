@@ -8,11 +8,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 
-/**
- * 仓库Item
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 仓库Item
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class ReposItem extends StatelessWidget {
   final ReposViewModel reposViewModel;
 

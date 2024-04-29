@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
-/**
- * 搜索输入框
- * Created by guoshuyu
- * Date: 2018-07-20
- */
+/// 搜索输入框
+/// Created by guoshuyu
+/// Date: 2018-07-20
 class GSYSearchInputWidget extends StatelessWidget {
   final TextEditingController? controller;
 

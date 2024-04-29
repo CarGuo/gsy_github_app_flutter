@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart';
 
-/**
- * 代码详情
- * Created by guoshuyu
- * Date: 2018-07-24
- */
+/// 代码详情
+/// Created by guoshuyu
+/// Date: 2018-07-24
 
 class GSYMarkdownWidget extends StatelessWidget {
   static const int DARK_WHITE = 0;

@@ -7,11 +7,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 
-/**
- * 用户item
- * Created by guoshuyu
- * Date: 2018-07-23
- */
+/// 用户item
+/// Created by guoshuyu
+/// Date: 2018-07-23
 class UserItem extends StatelessWidget {
   final UserItemViewModel userItemViewModel;
 

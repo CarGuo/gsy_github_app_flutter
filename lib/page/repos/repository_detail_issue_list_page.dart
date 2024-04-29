@@ -15,11 +15,9 @@ import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 
 
-/**
- * 仓库详情issue列表
- * Created by guoshuyu
- * Date: 2018-07-19
- */
+/// 仓库详情issue列表
+/// Created by guoshuyu
+/// Date: 2018-07-19
 class RepositoryDetailIssuePage extends StatefulWidget {
   final String? userName;
 

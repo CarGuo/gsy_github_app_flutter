@@ -8,11 +8,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 
-/**
- * Issue相关item
- * Created by guoshuyu
- * Date: 2018-07-19
- */
+/// Issue相关item
+/// Created by guoshuyu
+/// Date: 2018-07-19
 class IssueItem extends StatelessWidget {
   final IssueItemViewModel issueItemViewModel;
 

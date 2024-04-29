@@ -1,9 +1,7 @@
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
-/**
- * Created by guoshuyu
- * on 2018/7/27.
- */
+/// Created by guoshuyu
+/// on 2018/7/27.
 
 class HtmlUtils {
   static generateCode2HTml(String? mdData,
@@ -96,9 +94,7 @@ class HtmlUtils {
         userBR: userBR);
   }
 
-  /**
-   * style for mdHTml
-   */
+  /// style for mdHTml
   static generateCodeHtml(mdHTML, wrap,
       {backgroundColor = GSYColors.white,
       String actionColor = GSYColors.actionBlueString,

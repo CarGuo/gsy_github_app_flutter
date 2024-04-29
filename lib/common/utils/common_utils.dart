@@ -25,11 +25,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/**
- * 通用逻辑
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 通用逻辑
+/// Created by guoshuyu
+/// Date: 2018-07-16
 
 typedef StringList = List<String>;
 
@@ -273,9 +271,7 @@ class CommonUtils {
     return iosInfo.model;
   }
 
-  /**
-   * 切换语言
-   */
+  /// 切换语言
   static changeLocale(Store<GSYState> store, int index) {
     Locale? locale = store.state.platformLocale;
     if (Config.DEBUG!) {
@@ -293,9 +289,7 @@ class CommonUtils {
     store.dispatch(RefreshLocaleAction(locale));
   }
 
-  /**
-   * 切换灰色
-   */
+  /// 切换灰色
   static changeGrey(Store<GSYState> store) {
     bool grey = store.state.grey;
     if (Config.DEBUG!) {

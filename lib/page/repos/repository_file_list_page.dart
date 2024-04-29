@@ -12,11 +12,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 
-/**
- * 仓库文件列表
- * Created by guoshuyu
- * on 2018/7/20.
- */
+/// 仓库文件列表
+/// Created by guoshuyu
+/// on 2018/7/20.
 
 class RepositoryDetailFileListPage extends StatefulWidget {
   final String? userName;

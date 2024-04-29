@@ -10,11 +10,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 
-/**
- * 事件Item
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 事件Item
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class GSYEventItem extends StatelessWidget {
   final EventViewModel eventViewModel;
 

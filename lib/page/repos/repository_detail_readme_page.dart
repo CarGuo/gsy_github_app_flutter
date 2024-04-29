@@ -9,11 +9,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
 
-/**
- * Readme
- * Created by guoshuyu
- * Date: 2018-07-18
- */
+/// Readme
+/// Created by guoshuyu
+/// Date: 2018-07-18
 
 class RepositoryDetailReadmePage extends StatefulWidget {
   final String? userName;

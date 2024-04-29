@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 ///是否需要弹提示
 const NOT_TIP_KEY = "noTip";
 
-/**
- * 错误拦截
- * Created by guoshuyu
- * on 2019/3/23.
- */
+/// 错误拦截
+/// Created by guoshuyu
+/// on 2019/3/23.
 class ErrorInterceptors extends InterceptorsWrapper {
 
 

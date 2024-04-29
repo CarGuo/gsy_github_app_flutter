@@ -1,10 +1,8 @@
 import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 
-/**
- * 仓库pulse表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 仓库pulse表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class RepositoryPulseDbProvider extends BaseDbProvider {
   final String name = 'RepositoryPulse';

@@ -8,11 +8,9 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 
-/**
- * 通用list
- * Created by guoshuyu
- * on 2018/7/22.
- */
+/// 通用list
+/// Created by guoshuyu
+/// on 2018/7/22.
 
 class CommonListPage extends StatefulWidget {
   final String? userName;

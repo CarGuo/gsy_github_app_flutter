@@ -23,11 +23,9 @@ import 'package:gsy_github_app_flutter/page/search/search_page.dart';
 import 'package:gsy_github_app_flutter/page/user_profile_page.dart';
 import 'package:gsy_github_app_flutter/widget/never_overscroll_indicator.dart';
 
-/**
- * 导航栏
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 导航栏
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class NavigatorUtils {
   ///替换
   static pushReplacementNamed(BuildContext context, String routeName) {

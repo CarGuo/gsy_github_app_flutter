@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * 仓库详情数据表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 仓库详情数据表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 class RepositoryDetailDbProvider extends BaseDbProvider {
   final String name = 'RepositoryDetail';
   int? id;

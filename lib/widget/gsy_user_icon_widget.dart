@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
-/**
- * 头像Icon
- * Created by guoshuyu
- * Date: 2018-07-30
- */
+/// 头像Icon
+/// Created by guoshuyu
+/// Date: 2018-07-30
 
 class GSYUserIconWidget extends StatelessWidget {
   final String? image;

@@ -4,11 +4,9 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 
-/**
- * 版本TagItem
- * Created by guoshuyu
- * Date: 2018-07-30
- */
+/// 版本TagItem
+/// Created by guoshuyu
+/// Date: 2018-07-30
 
 class ReleaseItem extends StatelessWidget {
   final ReleaseItemViewModel releaseItemViewModel;

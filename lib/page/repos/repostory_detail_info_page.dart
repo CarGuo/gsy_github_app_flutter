@@ -20,11 +20,9 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_header_item.dart';
 
-/**
- * 仓库详情动态信息页面
- * Created by guoshuyu
- * Date: 2018-07-18
- */
+/// 仓库详情动态信息页面
+/// Created by guoshuyu
+/// Date: 2018-07-18
 class ReposDetailInfoPage extends StatefulWidget {
   final String? userName;
 

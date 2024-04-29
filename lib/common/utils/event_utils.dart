@@ -4,11 +4,9 @@ import 'package:gsy_github_app_flutter/model/PushEventCommit.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 
-/**
- * 事件逻辑
- * Created by guoshuyu
- * Date: 2018-07-16
- */
+/// 事件逻辑
+/// Created by guoshuyu
+/// Date: 2018-07-16
 class EventUtils {
   ///事件描述与动作
   static ({String? actionStr, String? des})getActionAndDes(Event event) {

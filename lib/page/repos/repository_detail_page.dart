@@ -17,11 +17,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 
-/**
- * 仓库详情
- * Created by guoshuyu
- * Date: 2018-07-18
- */
+/// 仓库详情
+/// Created by guoshuyu
+/// Date: 2018-07-18
 class RepositoryDetailPage extends StatefulWidget {
   ///用户名
   final String? userName;

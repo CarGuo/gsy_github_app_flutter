@@ -1,7 +1,5 @@
-/**
- * Created by guoshuyu
- * Date: 2018-08-15
- */
+/// Created by guoshuyu
+/// Date: 2018-08-15
 abstract class GSYStringBase {
   String get welcomeMessage;
 

@@ -181,9 +181,7 @@ class UserDao {
     store.dispatch(UpdateUserAction(User.empty()));
   }
 
-  /**
-   * 在header中提起stared count
-   */
+  /// 在header中提起stared count
   static getUserStaredCountNet(userName) async {
     String url = Address.userStar(userName, null) + "&per_page=1";
     var res = await httpManager.netFetch(url, null, null, null);
@@ -206,9 +204,7 @@ class UserDao {
     return DataResult(null, false);
   }
 
-  /**
-   * 获取用户粉丝列表
-   */
+  /// 获取用户粉丝列表
   static getFollowerListDao(userName, page, {needDb = false}) async {
     UserFollowerDbProvider provider = UserFollowerDbProvider();
 
@@ -245,9 +241,7 @@ class UserDao {
     return await next();
   }
 
-  /**
-   * 获取用户关注列表
-   */
+  /// 获取用户关注列表
   static getFollowedListDao(userName, page, {needDb = false}) async {
     UserFollowedDbProvider provider = UserFollowedDbProvider();
     next() async {
@@ -283,9 +277,7 @@ class UserDao {
     return await next();
   }
 
-  /**
-   * 获取用户相关通知
-   */
+  /// 获取用户相关通知
   static getNotifyDao(bool all, bool participating, page) async {
     String tag = (!all && !participating) ? '?' : "&";
     String url = Address.getNotifation(all, participating) +
@@ -306,9 +298,7 @@ class UserDao {
     }
   }
 
-  /**
-   * 设置单个通知已读
-   */
+  /// 设置单个通知已读
   static setNotificationAsReadDao(id) async {
     String url = Address.setNotificationAsRead(id);
     var res = await httpManager
@@ -316,9 +306,7 @@ class UserDao {
     return res;
   }
 
-  /**
-   * 设置所有通知已读
-   */
+  /// 设置所有通知已读
   static setAllNotificationAsReadDao() async {
     String url = Address.setAllNotificationAsRead();
     var res =
@@ -326,18 +314,14 @@ class UserDao {
     return DataResult(res!.data, res.result);
   }
 
-  /**
-   * 检查用户关注状态
-   */
+  /// 检查用户关注状态
   static checkFollowDao(name) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(url, null, null, null, noTip: true);
     return DataResult(res!.data, res.result);
   }
 
-  /**
-   * 关注用户
-   */
+  /// 关注用户
   static doFollowDao(name, bool followed) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(
@@ -346,9 +330,7 @@ class UserDao {
     return DataResult(res!.data, res.result);
   }
 
-  /**
-   * 组织成员
-   */
+  /// 组织成员
   static getMemberDao(userName, page) async {
     String url = Address.getMember(userName) + Address.getPageParams("?", page);
     var res = await httpManager.netFetch(url, null, null, null);
@@ -367,9 +349,7 @@ class UserDao {
     }
   }
 
-  /**
-   * 更新用户信息
-   */
+  /// 更新用户信息
   static updateUserDao(params, Store store) async {
     String url = Address.getMyUserInfo();
     var res = await httpManager.netFetch(
@@ -385,9 +365,7 @@ class UserDao {
     return DataResult(null, false);
   }
 
-  /**
-   * 获取用户组织
-   */
+  /// 获取用户组织
   static getUserOrgsDao(userName, page, {needDb = false}) async {
     UserOrgsDbProvider provider = UserOrgsDbProvider();
     next() async {

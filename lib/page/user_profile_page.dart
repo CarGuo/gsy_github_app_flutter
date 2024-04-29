@@ -17,11 +17,9 @@ const String user_profile_org = "公司";
 const String user_profile_location = "位置";
 const String user_profile_info = "简介";
 
-/**
- * 用户信息中心
- * Created by guoshuyu
- * Date: 2018-08-08
- */
+/// 用户信息中心
+/// Created by guoshuyu
+/// Date: 2018-08-08
 class UserProfileInfo extends StatefulWidget {
   UserProfileInfo();
 

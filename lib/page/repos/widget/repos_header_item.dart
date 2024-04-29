@@ -10,11 +10,9 @@ import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 
-/**
- * 仓库详情信息头控件
- * Created by guoshuyu
- * Date: 2018-07-18
- */
+/// 仓库详情信息头控件
+/// Created by guoshuyu
+/// Date: 2018-07-18
 
 class ReposHeaderItem extends StatefulWidget {
   final ReposHeaderViewModel reposHeaderViewModel;

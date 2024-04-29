@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/Issue.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * issue评论表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// issue评论表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class IssueCommentDbProvider extends BaseDbProvider {
   final String name = 'IssueComment';

@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 
-/**
- * Log 拦截器
- * Created by guoshuyu
- * on 2019/3/23.
- */
+/// Log 拦截器
+/// Created by guoshuyu
+/// on 2019/3/23.
 class LogsInterceptors extends InterceptorsWrapper {
   static List<Map?> sHttpResponses = [];
   static List<String?> sResponsesHttpUrl = [];

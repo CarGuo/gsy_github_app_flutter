@@ -7,11 +7,9 @@ import 'package:gsy_github_app_flutter/db/provider/repos/repository_detail_db_pr
 import 'package:gsy_github_app_flutter/model/Issue.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * issue详情表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// issue详情表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class IssueDetailDbProvider extends BaseDbProvider {
   final String name = 'IssueDetail';

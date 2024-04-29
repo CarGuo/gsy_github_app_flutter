@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
-/**
- * 搜索drawer
- * Created by guoshuyu
- * Date: 2018-07-18
- */
+/// 搜索drawer
+/// Created by guoshuyu
+/// Date: 2018-07-18
 
 typedef void SearchSelectItemChanged<String>(String value);
 

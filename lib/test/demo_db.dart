@@ -30,9 +30,7 @@ class DemoSqlManager {
     });
   }
 
-  /**
-   * 表是否存在
-   */
+  /// 表是否存在
   static isTableExits(String tableName) async {
     await getCurrentDatabase();
     var res = await _database?.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
@@ -94,9 +92,7 @@ abstract class DemoBaseDbProvider {
 }
 
 
-/**
- * 用户表
- */
+/// 用户表
 class DemoUserInfoDbProvider extends DemoBaseDbProvider {
   final String name = 'UserInfo';
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-/**
- * title 控件
- * Created by guoshuyu
- * on 2018/7/24.
- */
+/// title 控件
+/// Created by guoshuyu
+/// on 2018/7/24.
 class GSYTitleBar extends StatelessWidget {
   final String? title;
 

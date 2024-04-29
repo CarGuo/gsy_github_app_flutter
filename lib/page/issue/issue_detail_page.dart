@@ -16,11 +16,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_header_item.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 
-/**
- * Issue 详情页面
- * Created by guoshuyu
- * on 2018/7/21.
- */
+/// Issue 详情页面
+/// Created by guoshuyu
+/// on 2018/7/21.
 
 class IssueDetailPage extends StatefulWidget {
   final String? userName;

@@ -12,11 +12,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 
-/**
- * 通知消息
- * Created by guoshuyu
- * Date: 2018-07-24
- */
+/// 通知消息
+/// Created by guoshuyu
+/// Date: 2018-07-24
 
 class NotifyPage extends StatefulWidget {
   NotifyPage();

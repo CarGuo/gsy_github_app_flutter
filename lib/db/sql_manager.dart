@@ -5,11 +5,9 @@ import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * 数据库管理
- * Created by guoshuyu
- * Date: 2018-08-03
- */
+/// 数据库管理
+/// Created by guoshuyu
+/// Date: 2018-08-03
 
 class SqlManager {
   static const _VERSION = 1;
@@ -41,9 +39,7 @@ class SqlManager {
     });
   }
 
-  /**
-   * 表是否存在
-   */
+  /// 表是否存在
   static isTableExits(String tableName) async {
     await getCurrentDatabase();
     var res = await _database?.rawQuery(

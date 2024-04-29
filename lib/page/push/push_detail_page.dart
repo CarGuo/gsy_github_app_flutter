@@ -14,11 +14,9 @@ import 'package:gsy_github_app_flutter/page/push/widget/push_coed_item.dart';
 import 'package:gsy_github_app_flutter/page/push/widget/push_header.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 
-/**
- * 提交信息详情页
- * Created by guoshuyu
- * Date: 2018-07-27
- */
+/// 提交信息详情页
+/// Created by guoshuyu
+/// Date: 2018-07-27
 
 class PushDetailPage extends StatefulWidget {
   final String? userName;

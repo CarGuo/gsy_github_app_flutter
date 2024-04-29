@@ -9,22 +9,18 @@ import 'package:gsy_github_app_flutter/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 
-/**
- * Issue相关
- * Created by guoshuyu
- * Date: 2018-07-19
- */
+/// Issue相关
+/// Created by guoshuyu
+/// Date: 2018-07-19
 
 class IssueDao {
-  /**
-   * 获取仓库issue
-   * @param page
-   * @param userName
-   * @param repository
-   * @param state issue状态
-   * @param sort 排序类型 created updated等
-   * @param direction 正序或者倒序
-   */
+  /// 获取仓库issue
+  /// @param page
+  /// @param userName
+  /// @param repository
+  /// @param state issue状态
+  /// @param sort 排序类型 created updated等
+  /// @param direction 正序或者倒序
   static getRepositoryIssueDao(userName, repository, state,
       {sort, direction, page = 0, needDb = false}) async {
     String? fullName = userName + "/" + repository;
@@ -72,14 +68,12 @@ class IssueDao {
     return await next();
   }
 
-  /**
-   * 搜索仓库issue
-   * @param q 搜索关键字
-   * @param name 用户名
-   * @param reposName 仓库名
-   * @param page
-   * @param state 问题状态，all open closed
-   */
+  /// 搜索仓库issue
+  /// @param q 搜索关键字
+  /// @param name 用户名
+  /// @param reposName 仓库名
+  /// @param page
+  /// @param state 问题状态，all open closed
   static searchRepositoryIssue(q, name, reposName, state, {page = 1}) async {
     String? qu;
     if (state == null || state == 'all') {
@@ -105,9 +99,7 @@ class IssueDao {
     }
   }
 
-  /**
-   * issue的详请
-   */
+  /// issue的详请
   static getIssueInfoDao(userName, repository, number, {needDb = true}) async {
     String? fullName = userName + "/" + repository;
 
@@ -139,9 +131,7 @@ class IssueDao {
     return await next();
   }
 
-  /**
-   * issue的详请列表
-   */
+  /// issue的详请列表
   static getIssueCommentDao(userName, repository, number,
       {page = 0, needDb = false}) async {
     String? fullName = userName + "/" + repository;
@@ -182,9 +172,7 @@ class IssueDao {
     return await next();
   }
 
-  /**
-   * 增加issue的回复
-   */
+  /// 增加issue的回复
   static addIssueCommentDao(userName, repository, number, comment) async {
     String url = Address.addIssueComment(userName, repository, number);
     var res = await httpManager.netFetch(
@@ -199,9 +187,7 @@ class IssueDao {
     }
   }
 
-  /**
-   * 编辑issue
-   */
+  /// 编辑issue
   static editIssueDao(userName, repository, number, issue) async {
     String url = Address.editIssue(userName, repository, number);
     var res = await httpManager.netFetch(
@@ -216,9 +202,7 @@ class IssueDao {
     }
   }
 
-  /**
-   * 锁定issue
-   */
+  /// 锁定issue
   static lockIssueDao(userName, repository, number, locked) async {
     String url = Address.lockIssue(userName, repository, number);
     var res = await httpManager.netFetch(
@@ -234,9 +218,7 @@ class IssueDao {
     }
   }
 
-  /**
-   * 创建issue
-   */
+  /// 创建issue
   static createIssueDao(userName, repository, issue) async {
     String url = Address.createIssue(userName, repository);
     var res = await httpManager.netFetch(
@@ -251,9 +233,7 @@ class IssueDao {
     }
   }
 
-  /**
-   * 编辑issue回复
-   */
+  /// 编辑issue回复
   static editCommentDao(
       userName, repository, number, commentId, comment) async {
     String url = Address.editComment(userName, repository, commentId);
@@ -269,9 +249,7 @@ class IssueDao {
     }
   }
 
-  /**
-   * 删除issue回复
-   */
+  /// 删除issue回复
   static deleteCommentDao(userName, repository, number, commentId) async {
     String url = Address.editComment(userName, repository, commentId);
     var res = await httpManager

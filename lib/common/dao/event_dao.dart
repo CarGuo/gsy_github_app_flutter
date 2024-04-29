@@ -49,9 +49,7 @@ class EventDao {
     return await next();
   }
 
-  /**
-   * 用户行为事件
-   */
+  /// 用户行为事件
   static getEventDao(userName, {page = 0, bool needDb = false}) async {
     UserEventDbProvider provider = UserEventDbProvider();
     next() async {

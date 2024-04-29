@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * 仓库收藏用户表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 仓库收藏用户表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class RepositoryStarDbProvider extends BaseDbProvider {
   final String name = 'RepositoryStar';

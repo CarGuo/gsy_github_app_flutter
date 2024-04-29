@@ -6,11 +6,9 @@ import 'package:gsy_github_app_flutter/db/sql_provider.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * 用户粉丝表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 用户粉丝表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class UserFollowerDbProvider extends BaseDbProvider {
   final String name = 'UserFollower';

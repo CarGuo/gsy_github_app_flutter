@@ -1,7 +1,5 @@
-/**
- * Created by guoshuyu
- * Date: 2018-10-12
- */
+/// Created by guoshuyu
+/// Date: 2018-10-12
 
 abstract class Base {
   a() {

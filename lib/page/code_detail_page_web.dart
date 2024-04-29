@@ -9,11 +9,9 @@ import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-/**
- * 文件代码详情
- * Created by guoshuyu
- * Date: 2018-07-24
- */
+/// 文件代码详情
+/// Created by guoshuyu
+/// Date: 2018-07-24
 
 class CodeDetailPageWeb extends StatefulWidget {
   final String? userName;

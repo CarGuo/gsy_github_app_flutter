@@ -7,11 +7,9 @@ import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
-/**
- * 本地已读历史表
- * Created by guoshuyu
- * Date: 2018-08-07
- */
+/// 本地已读历史表
+/// Created by guoshuyu
+/// Date: 2018-08-07
 
 class ReadHistoryDbProvider extends BaseDbProvider {
   final String name = 'ReadHistoryV2';

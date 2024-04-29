@@ -13,11 +13,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 
-/**
- * 搜索页面
- * Created by guoshuyu
- * on 2018/7/24.
- */
+/// 搜索页面
+/// Created by guoshuyu
+/// on 2018/7/24.
 class SearchPage extends StatefulWidget {
   final Offset centerPosition;
 
