@@ -108,18 +108,18 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
             routes: {
               WelcomePage.sName: (context) {
                 DebugLabel.showDebugLabel(context);
-                return WelcomePage();
+                return const WelcomePage();
               },
               HomePage.sName: (context) {
-                return NavigatorUtils.pageContainer(HomePage(), context);
+                return NavigatorUtils.pageContainer(const HomePage(), context);
               },
               LoginPage.sName: (context) {
-                return NavigatorUtils.pageContainer(LoginPage(), context);
+                return NavigatorUtils.pageContainer(const LoginPage(), context);
               },
 
               ///使用 ModalRoute.of(context).settings.arguments; 获取参数
               PhotoViewPage.sName: (context) {
-                return PhotoViewPage();
+                return const PhotoViewPage();
               },
             });
 

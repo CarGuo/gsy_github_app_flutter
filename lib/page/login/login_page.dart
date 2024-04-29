@@ -42,8 +42,8 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
         body: Container(
           color: Theme.of(context).primaryColor,
           child: Stack(children: <Widget>[
-            Positioned.fill(child: AnimatedBackground()),
-            Positioned.fill(child: ParticlesWidget(30)),
+            const Positioned.fill(child: AnimatedBackground()),
+            const Positioned.fill(child: ParticlesWidget(30)),
             Center(
               ///防止overFlow的现象
               child: SafeArea(

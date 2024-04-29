@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         return _dialogExitApp(context);
       },
       child: GSYTabBarWidget(
-        drawer: HomeDrawer(),
+        drawer: const HomeDrawer(),
         type: TabType.bottom,
         tabItems: tabs,
         tabViews: [

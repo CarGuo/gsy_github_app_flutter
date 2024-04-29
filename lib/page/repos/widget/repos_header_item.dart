@@ -456,8 +456,7 @@ class ReposHeaderViewModel {
 
   ReposHeaderViewModel();
 
-  ReposHeaderViewModel.fromHttpMap(ownerName, reposName, RepositoryQL? map) {
-    this.ownerName = ownerName;
+  ReposHeaderViewModel.fromHttpMap(this.ownerName, reposName, RepositoryQL? map) {
     if (map == null || map.ownerName == null) {
       return;
     }
@@ -479,7 +478,7 @@ class ReposHeaderViewModel {
     repositoryType = map.language;
     repositoryDes = map.shortDescriptionHTML;
     repositoryIsFork = map.isFork;
-    license = map.license != null ? map.license : "";
+    license = map.license ?? "";
     repositoryParentName =
         map.parent?.reposName;
     repositoryParentUser =

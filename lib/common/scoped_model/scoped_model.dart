@@ -193,9 +193,8 @@ class _InheritedModel<T extends Model> extends InheritedWidget {
   final T? model;
   final int? version;
 
-  _InheritedModel({super.key, Widget? child, T? model})
-      : model = model,
-        version = model?._version,
+  _InheritedModel({super.key, Widget? child, this.model})
+      : version = model?._version,
         super(child: child!);
 
   @override

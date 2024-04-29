@@ -89,8 +89,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: const Alignment(0.0, 0.8),
+                const Align(
+                  alignment: Alignment(0.0, 0.8),
                   child: Mole(),
                 ),
                 Align(

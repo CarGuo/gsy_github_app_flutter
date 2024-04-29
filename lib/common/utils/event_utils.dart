@@ -117,7 +117,7 @@ class EventUtils {
         break;
     }
 
-    return (actionStr: actionStr, des: des != null ? des : "");
+    return (actionStr: actionStr, des: des ?? "");
   }
 
   ///跳转

@@ -44,12 +44,10 @@ class _DiffScaleTextState extends State<DiffScaleText>
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? textStyle = widget.textStyle == null
-        ? const TextStyle(
+    TextStyle? textStyle = widget.textStyle ?? const TextStyle(
             fontSize: 20,
             color: Colors.white,
-          )
-        : widget.textStyle;
+          );
     return AnimatedBuilder(
       animation: _animationController,
       builder: (BuildContext context, Widget? child) {

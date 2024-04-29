@@ -39,15 +39,15 @@ class _DemoTabPageState extends State<DemoTabPage> {
     return [
       Container(
         color: Colors.blue,
-        child: KeepAliveList(),
+        child: const KeepAliveList(),
       ),
       Container(
         color: Colors.red,
-        child: KeepAliveList(),
+        child: const KeepAliveList(),
       ),
       Container(
         color: Colors.amber,
-        child: KeepAliveList(),
+        child: const KeepAliveList(),
       ),
     ];
   }

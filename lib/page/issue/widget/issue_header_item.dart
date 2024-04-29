@@ -182,11 +182,9 @@ class IssueHeaderViewModel {
     closedBy = issueMap.closeBy != null ? issueMap.closeBy!.login : "";
     locked = issueMap.locked;
     issueComment = issueMap.title;
-    issueDesHtml = issueMap.bodyHtml != null
-        ? issueMap.bodyHtml
-        : (issueMap.body != null)
+    issueDesHtml = issueMap.bodyHtml ?? ((issueMap.body != null)
             ? issueMap.body
-            : "";
+            : "");
     commentCount = "${issueMap.commentNum}";
     state = issueMap.state;
     issueDes = issueMap.body != null ? ": \n${issueMap.body!}" : '';

@@ -290,20 +290,20 @@ class TrendPageState extends State<TrendPage>
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return NavigatorUtils.pageContainer(TrendUserPage(), context);
+        return NavigatorUtils.pageContainer(const TrendUserPage(), context);
       },
       closedElevation: 6.0,
-      closedShape: RoundedRectangleBorder(
+      closedShape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(size / 2),
         ),
       ),
       closedColor: Theme.of(context).primaryColor,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
-        return SizedBox(
+        return const SizedBox(
           width: size,
           height: size,
-          child: const Icon(
+          child: Icon(
             Icons.person,
             size: 30,
             color: Colors.white,

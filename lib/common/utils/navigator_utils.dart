@@ -81,7 +81,7 @@ class NavigatorUtils {
 
   ///请求数据调试页面
   static goDebugDataPage(BuildContext context) {
-    return NavigatorRouter(context, DebugDataPage());
+    return NavigatorRouter(context, const DebugDataPage());
   }
 
   ///仓库详情
@@ -187,12 +187,12 @@ class NavigatorUtils {
 
   ///仓库详情通知
   static Future goNotifyPage(BuildContext context) {
-    return NavigatorRouter(context, NotifyPage());
+    return NavigatorRouter(context, const NotifyPage());
   }
 
   ///用户趋势
   static Future goTrendUserPage(BuildContext context) {
-    return NavigatorRouter(context, TrendUserPage());
+    return NavigatorRouter(context, const TrendUserPage());
   }
 
   ///搜索
@@ -289,7 +289,7 @@ class NavigatorUtils {
 
   ///用户配置
   static gotoUserProfileInfo(BuildContext context) {
-    NavigatorRouter(context, UserProfileInfo());
+    NavigatorRouter(context, const UserProfileInfo());
   }
 
   ///公共打开方式
