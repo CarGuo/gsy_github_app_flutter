@@ -93,7 +93,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
                 Align(
                   alignment: Alignment(0.0, .9),
-                  child: Container(
+                  child: SizedBox(
                     width: size,
                     height: size,
                     child: RiveAnimation.asset(

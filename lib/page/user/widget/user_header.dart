@@ -404,7 +404,7 @@ class UserHeaderChart extends StatelessWidget {
                   width: width,
                   height: height - 10,
                   allowDrawingOutsideViewBox: true,
-                  placeholderBuilder: (BuildContext context) => Container(
+                  placeholderBuilder: (BuildContext context) => SizedBox(
                     height: height,
                     width: width,
                     child: Center(
@@ -416,7 +416,7 @@ class UserHeaderChart extends StatelessWidget {
               ),
             ),
           )
-        : Container(
+        : SizedBox(
             height: height,
             child: Center(
               child: SpinKitRipple(color: Theme.of(context).primaryColor),

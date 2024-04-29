@@ -77,7 +77,7 @@ class RadialMenuItem<T> extends StatelessWidget {
       );
     }
 
-    result = Container(
+    result = SizedBox(
       width: size,
       height: size,
       child: result,

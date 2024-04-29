@@ -33,7 +33,7 @@ class DemoItem extends StatelessWidget {
 
             ///间隔
             Padding(padding: EdgeInsets.all(5.0)),
-            Container(
+            SizedBox(
               width: 60,
               child:
               ///显示数量文本

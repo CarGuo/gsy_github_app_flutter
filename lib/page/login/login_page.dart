@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             controller: pwController,
                           ),
                           Padding(padding: EdgeInsets.all(10.0)),
-                          Container(
+                          SizedBox(
                             height: 50,
                             child: Row(
                               children: <Widget>[

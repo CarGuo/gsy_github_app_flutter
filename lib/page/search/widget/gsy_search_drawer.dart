@@ -95,9 +95,9 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
       SearchSelectItemChanged<String?>? select) {
     return Stack(
       children: <Widget>[
-        Container(
+        SizedBox(
           height: 50.0,
-          child: Container(
+          child: SizedBox(
             width: itemWidth,
             child: Row(
               mainAxisSize: MainAxisSize.min,

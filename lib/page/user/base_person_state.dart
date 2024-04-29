@@ -183,7 +183,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             builder: (BuildContext context, double shrinkOffset,
                 bool overlapsContent) {
               return SizedBox.expand(
-                child: Container(
+                child: SizedBox(
                   height: chartSize,
                   child: UserHeaderChart(userInfo),
                 ),

@@ -49,7 +49,7 @@ class GSYIConText extends StatelessWidget {
               maxLines: 1,
             ),
           )
-        : Container(
+        : SizedBox(
             width: textWidth,
             child:
 

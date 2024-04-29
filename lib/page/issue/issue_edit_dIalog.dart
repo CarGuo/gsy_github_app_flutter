@@ -51,7 +51,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
   ///快速输入框
   _renderFastInputContainer() {
     ///因为是Column下包含了ListView，所以需要设置高度
-    return Container(
+    return SizedBox(
       height: 30.0,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

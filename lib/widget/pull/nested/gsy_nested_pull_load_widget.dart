@@ -123,7 +123,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
   ///空页面
   Widget _buildEmpty() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.sizeOf(context).height - 100,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

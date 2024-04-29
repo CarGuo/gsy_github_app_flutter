@@ -164,14 +164,14 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
               BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
-        Container(width: 5.3, height: 1.0),
+        SizedBox(width: 5.3, height: 1.0),
 
         ///仓库大小
         Text(widget.reposHeaderViewModel.repositorySize,
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
               BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
-        Container(width: 5.3, height: 1.0),
+        SizedBox(width: 5.3, height: 1.0),
 
         ///仓库协议
         Expanded(

@@ -84,7 +84,7 @@ class RadialMenuCenterButton extends StatelessWidget {
       progress: _progress,
     );
 
-    final Widget child = Container(
+    final Widget child = SizedBox(
       width: size,
       height: size,
       child: Center(

@@ -222,7 +222,7 @@ class TrendPageState extends State<TrendPage>
         kBottomNavigationBarHeight -
         kToolbarHeight;
     return SingleChildScrollView(
-      child: Container(
+      child: SizedBox(
         height: height,
         width: MediaQuery.sizeOf(context).width,
         child: Column(
