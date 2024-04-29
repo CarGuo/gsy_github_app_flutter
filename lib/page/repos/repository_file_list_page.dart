@@ -21,7 +21,8 @@ class RepositoryDetailFileListPage extends StatefulWidget {
 
   final String? reposName;
 
-  const RepositoryDetailFileListPage(this.userName, this.reposName, {super.key});
+  const RepositoryDetailFileListPage(this.userName, this.reposName,
+      {super.key});
 
   @override
   RepositoryDetailFileListPageState createState() =>
@@ -51,10 +52,10 @@ class RepositoryDetailFileListPageState
         ? null
         : const Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
     return GSYCardItem(
-      margin: const EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
+      margin:
+          const EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
       child: ListTile(
-        title:
-            Text(fileItemViewModel.name!, style: GSYConstant.smallSubText),
+        title: Text(fileItemViewModel.name!, style: GSYConstant.smallSubText),
         leading: Icon(
           iconData,
           size: 16.0,
@@ -80,8 +81,8 @@ class RepositoryDetailFileListPageState
             onPressed: () {
               _resolveHeaderClick(index);
             },
-            child: Text("${headerList[index]!} > ",
-                style: GSYConstant.smallText),
+            child:
+                Text("${headerList[index]!} > ", style: GSYConstant.smallText),
           );
         },
         itemCount: headerList.length,
@@ -95,7 +96,7 @@ class RepositoryDetailFileListPageState
       Fluttertoast.showToast(msg: GSYLocalizations.i18n(context)!.loading_text);
       return;
     }
-    if (headerList[index] != ".") {
+    if (headerList.isNotEmpty && index != -1 && headerList[index] != ".") {
       List<String?> newHeaderList = headerList.sublist(0, index + 1);
       String path = newHeaderList.sublist(1, newHeaderList.length).join("/");
       setState(() {
@@ -129,7 +130,8 @@ class RepositoryDetailFileListPageState
       });
       showRefreshLoading();
     } else {
-      String path = "${headerList.sublist(1, headerList.length).join("/")}/${fileItemViewModel.name!}";
+      String path =
+          "${headerList.sublist(1, headerList.length).join("/")}/${fileItemViewModel.name!}";
       if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
         NavigatorUtils.gotoPhotoViewPage(
             context, "${fileItemViewModel.htmlUrl!}?raw=true");
