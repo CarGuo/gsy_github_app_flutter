@@ -21,7 +21,7 @@ class GSYMarkdownWidget extends StatelessWidget {
 
   final int style;
 
-  GSYMarkdownWidget({this.markdownData = "", this.style = DARK_WHITE});
+  const GSYMarkdownWidget({this.markdownData = "", this.style = DARK_WHITE});
 
   _getCommonSheet(BuildContext context, Color codeBackground) {
     MarkdownStyleSheet markdownStyleSheet =

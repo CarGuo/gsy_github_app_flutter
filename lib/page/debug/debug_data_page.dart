@@ -66,7 +66,7 @@ class DebugDataList extends StatefulWidget {
 
   final List<String?> titles;
 
-  DebugDataList(this.titles, this.dataList);
+  const DebugDataList(this.titles, this.dataList);
 
   @override
   _DebugDataListState createState() => _DebugDataListState();

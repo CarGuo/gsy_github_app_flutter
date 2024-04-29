@@ -28,7 +28,7 @@ class UserHeaderItem extends StatelessWidget {
 
   final List<UserOrg>? orgList;
 
-  UserHeaderItem(this.userInfo, this.beStaredCount, this.themeColor,
+  const UserHeaderItem(this.userInfo, this.beStaredCount, this.themeColor,
       {this.notifyColor, this.refreshCallBack, this.orgList});
 
   ///通知Icon
@@ -259,7 +259,7 @@ class UserHeaderBottom extends StatelessWidget {
   final Radius radius;
   final List? honorList;
 
-  UserHeaderBottom(
+  const UserHeaderBottom(
       this.userInfo, this.beStaredCount, this.radius, this.honorList);
 
   ///底部状态栏
@@ -380,7 +380,7 @@ class UserHeaderBottom extends StatelessWidget {
 class UserHeaderChart extends StatelessWidget {
   final User userInfo;
 
-  UserHeaderChart(this.userInfo);
+  const UserHeaderChart(this.userInfo);
 
   _renderChart(context) {
     double height = 140.0;

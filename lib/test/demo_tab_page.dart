@@ -73,7 +73,7 @@ class TabWidget extends StatefulWidget {
 
   final int initTabIndex;
 
-  TabWidget({
+  const TabWidget({
     super.key,
     this.type = TabType.top,
     this.tabItems,

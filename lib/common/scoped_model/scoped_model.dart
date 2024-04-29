@@ -110,7 +110,7 @@ class ScopedModel<T extends Model> extends StatelessWidget {
   /// The [Widget] the [model] will be available to.
   final Widget? child;
 
-  ScopedModel({@required this.model, @required this.child})
+  const ScopedModel({@required this.model, @required this.child})
       : assert(model != null),
         assert(child != null);
 
@@ -250,7 +250,7 @@ class ScopedModelDescendant<T extends Model> extends StatelessWidget {
   final bool rebuildOnChange;
 
   /// Creates the ScopedModelDescendant
-  ScopedModelDescendant({
+  const ScopedModelDescendant({
     @required this.builder,
     this.child,
     this.rebuildOnChange = true,

@@ -19,7 +19,7 @@ class ReposHeaderItem extends StatefulWidget {
 
   final ValueChanged<Size>? layoutListener;
 
-  ReposHeaderItem(this.reposHeaderViewModel, {this.layoutListener}) : super();
+  const ReposHeaderItem(this.reposHeaderViewModel, {this.layoutListener}) : super();
 
   @override
   _ReposHeaderItemState createState() => _ReposHeaderItemState();

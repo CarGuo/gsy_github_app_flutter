@@ -22,7 +22,7 @@ class PersonPage extends StatefulWidget {
 
   final String? userName;
 
-  PersonPage(this.userName, {super.key});
+  const PersonPage(this.userName, {super.key});
 
   @override
   _PersonState createState() => _PersonState(userName);

@@ -22,7 +22,7 @@ class GSYSelectItemWidget extends StatefulWidget
 
   final EdgeInsets margin;
 
-  GSYSelectItemWidget(
+  const GSYSelectItemWidget(
     this.itemNames,
     this.selectItemChanged, {
     this.elevation = 5.0,

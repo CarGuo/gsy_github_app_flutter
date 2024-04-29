@@ -24,7 +24,7 @@ import 'package:redux/redux.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class TrendPage extends StatefulWidget {
-  TrendPage({super.key});
+  const TrendPage({super.key});
 
   @override
   TrendPageState createState() => TrendPageState();

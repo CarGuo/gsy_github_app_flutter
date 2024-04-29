@@ -12,7 +12,7 @@ import 'package:photo_view/photo_view.dart';
 class PhotoViewPage extends StatelessWidget {
   static const String sName = "PhotoViewPage";
 
-  PhotoViewPage();
+  const PhotoViewPage();
 
   @override
   Widget build(BuildContext context) {

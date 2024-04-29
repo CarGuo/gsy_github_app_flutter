@@ -28,7 +28,7 @@ class CodeDetailPageWeb extends StatefulWidget {
 
   final String? htmlUrl;
 
-  CodeDetailPageWeb(
+  const CodeDetailPageWeb(
       {this.title,
       this.userName,
       this.reposName,

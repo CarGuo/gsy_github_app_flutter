@@ -13,7 +13,7 @@ import 'package:redux/redux.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class MyPage extends StatefulWidget {
-  MyPage({super.key});
+  const MyPage({super.key});
   @override
   MyPageState createState() => MyPageState();
 }

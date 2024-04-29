@@ -20,7 +20,7 @@ class GSYEventItem extends StatelessWidget {
 
   final bool needImage;
 
-  GSYEventItem(this.eventViewModel, {this.onPressed, this.needImage = true})
+  const GSYEventItem(this.eventViewModel, {this.onPressed, this.needImage = true})
       : super();
 
   @override

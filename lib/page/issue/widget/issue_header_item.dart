@@ -17,7 +17,7 @@ class IssueHeaderItem extends StatelessWidget {
 
   final VoidCallback? onPressed;
 
-  IssueHeaderItem(this.issueHeaderViewModel, {this.onPressed});
+  const IssueHeaderItem(this.issueHeaderViewModel, {this.onPressed});
 
   _renderBottomContainer() {
     Color issueStateColor =

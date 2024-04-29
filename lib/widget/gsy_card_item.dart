@@ -11,7 +11,7 @@ class GSYCardItem extends StatelessWidget {
   final RoundedRectangleBorder? shape;
   final double elevation;
 
-  GSYCardItem(
+  const GSYCardItem(
       {required this.child,
       this.margin,
       this.color,

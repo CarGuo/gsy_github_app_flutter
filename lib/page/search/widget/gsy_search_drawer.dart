@@ -13,7 +13,7 @@ class GSYSearchDrawer extends StatefulWidget {
   final SearchSelectItemChanged<String?> sortCallback;
   final SearchSelectItemChanged<String?> languageCallback;
 
-  GSYSearchDrawer(this.typeCallback, this.sortCallback, this.languageCallback);
+  const GSYSearchDrawer(this.typeCallback, this.sortCallback, this.languageCallback);
 
   @override
   _GSYSearchDrawerState createState() => _GSYSearchDrawerState();

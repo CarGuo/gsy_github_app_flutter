@@ -9,7 +9,7 @@ import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 class HonorListPage extends StatefulWidget {
   final List? list;
 
-  HonorListPage(this.list);
+  const HonorListPage(this.list);
 
   @override
   _HonorListPageState createState() => _HonorListPageState();

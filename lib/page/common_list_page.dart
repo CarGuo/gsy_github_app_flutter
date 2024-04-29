@@ -23,7 +23,7 @@ class CommonListPage extends StatefulWidget {
 
   final String? title;
 
-  CommonListPage(this.title, this.showType, this.dataType,
+  const CommonListPage(this.title, this.showType, this.dataType,
       {this.userName, this.reposName});
 
   @override

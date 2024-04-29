@@ -17,7 +17,7 @@ class GSYFlexButton extends StatelessWidget {
 
   final MainAxisAlignment mainAxisAlignment;
 
-  GSYFlexButton(
+  const GSYFlexButton(
       {super.key,
       this.text,
       this.color,

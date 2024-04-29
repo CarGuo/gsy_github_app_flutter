@@ -26,7 +26,7 @@ class IssueItem extends StatelessWidget {
   ///是否需要限制内容行数
   final bool limitComment;
 
-  IssueItem(this.issueItemViewModel,
+  const IssueItem(this.issueItemViewModel,
       {this.onPressed,
       this.onLongPress,
       this.hideBottom = false,

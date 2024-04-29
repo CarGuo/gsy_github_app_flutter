@@ -33,7 +33,7 @@ class GSYPullLoadWidget extends StatefulWidget {
   ///刷新key
   final Key? refreshKey;
 
-  GSYPullLoadWidget(
+  const GSYPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
       {this.refreshKey, this.scrollController, this.userIos = false});
 

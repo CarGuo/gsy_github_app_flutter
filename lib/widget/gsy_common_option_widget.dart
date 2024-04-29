@@ -11,7 +11,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
 
   final String? url;
 
-  GSYCommonOptionWidget({this.otherList, String? url})
+  const GSYCommonOptionWidget({this.otherList, String? url})
       : url = (url == null) ? GSYConstant.app_default_share_url : url;
 
   _renderHeaderPopItem(List<GSYOptionModel> list) {

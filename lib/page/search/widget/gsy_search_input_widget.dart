@@ -12,7 +12,7 @@ class GSYSearchInputWidget extends StatelessWidget {
 
   final VoidCallback? onSubmitPressed;
 
-  GSYSearchInputWidget(
+  const GSYSearchInputWidget(
       {this.controller, this.onSubmitted, this.onSubmitPressed});
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class DEMOWidget extends StatelessWidget {
   final String? text;
 
-  DEMOWidget(this.text);
+  const DEMOWidget(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class DemoStateWidget extends StatefulWidget  {
 
   final String text;
 
-  DemoStateWidget(this.text);
+  const DemoStateWidget(this.text);
 
   @override
   _DemoStateWidgetState createState() => _DemoStateWidgetState(text);

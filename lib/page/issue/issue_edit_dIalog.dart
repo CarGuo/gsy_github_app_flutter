@@ -22,7 +22,7 @@ class IssueEditDialog extends StatefulWidget {
 
   final bool needTitle;
 
-  IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged,
+  const IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged,
       this.onPressed,
       {this.titleController, this.valueController, this.needTitle = true});
 

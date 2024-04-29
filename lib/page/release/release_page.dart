@@ -24,7 +24,7 @@ class ReleasePage extends StatefulWidget {
   final String releaseUrl;
   final String tagUrl;
 
-  ReleasePage(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
+  const ReleasePage(this.userName, this.reposName, this.releaseUrl, this.tagUrl);
 
   @override
   _ReleasePageState createState() => _ReleasePageState();

@@ -239,7 +239,7 @@ class _TabLabelBarRenderer extends RenderFlex {
 // upon layout. The tab widths are only used at paint time (see _IndicatorPainter)
 // or in response to input.
 class _TabLabelBar extends Flex {
-  _TabLabelBar({
+  const _TabLabelBar({
     Key? key,
     List<Widget> children = const <Widget>[],
     this.onPerformLayout,

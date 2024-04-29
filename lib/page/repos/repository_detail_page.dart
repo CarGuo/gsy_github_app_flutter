@@ -27,7 +27,7 @@ class RepositoryDetailPage extends StatefulWidget {
   ///仓库名
   final String? reposName;
 
-  RepositoryDetailPage(this.userName, this.reposName);
+  const RepositoryDetailPage(this.userName, this.reposName);
 
   @override
   _RepositoryDetailPageState createState() => _RepositoryDetailPageState();

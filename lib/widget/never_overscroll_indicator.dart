@@ -6,7 +6,7 @@ class NeverOverScrollIndicator extends StatelessWidget {
 
   final Widget? child;
 
-  NeverOverScrollIndicator({this.child, this.needOverload = true});
+  const NeverOverScrollIndicator({this.child, this.needOverload = true});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class NeverOverScrollIndicator extends StatelessWidget {
 class NeverOverScrollBehavior extends ScrollBehavior {
   final bool needOverload;
 
-  NeverOverScrollBehavior({this.needOverload = true});
+  const NeverOverScrollBehavior({this.needOverload = true});
 
   @override
   Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {

@@ -16,7 +16,7 @@ class ReposItem extends StatelessWidget {
 
   final VoidCallback? onPressed;
 
-  ReposItem(this.reposViewModel, {this.onPressed}) : super();
+  const ReposItem(this.reposViewModel, {this.onPressed}) : super();
 
   ///仓库item的底部状态，比如star数量等
   _getBottomItem(BuildContext context, IconData icon, String? text,
