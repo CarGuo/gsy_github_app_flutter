@@ -12,7 +12,7 @@ class GSYCardItem extends StatelessWidget {
   final double elevation;
 
   const GSYCardItem(
-      {required this.child,
+      {super.key, required this.child,
       this.margin,
       this.color,
       this.shape,

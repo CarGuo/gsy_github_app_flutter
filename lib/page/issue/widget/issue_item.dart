@@ -27,7 +27,7 @@ class IssueItem extends StatelessWidget {
   final bool limitComment;
 
   const IssueItem(this.issueItemViewModel,
-      {this.onPressed,
+      {super.key, this.onPressed,
       this.onLongPress,
       this.hideBottom = false,
       this.limitComment = true});

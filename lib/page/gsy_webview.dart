@@ -13,7 +13,7 @@ class GSYWebView extends StatefulWidget {
   final String url;
   final String? title;
 
-  const GSYWebView(this.url, this.title);
+  const GSYWebView(this.url, this.title, {super.key});
 
   @override
   _GSYWebViewState createState() => _GSYWebViewState();

@@ -13,7 +13,7 @@ class GSYUserIconWidget extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const GSYUserIconWidget(
-      {this.image,
+      {super.key, this.image,
       this.onPressed,
       this.width = 30.0,
       this.height = 30.0,

@@ -17,7 +17,7 @@ import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 /// Date: 2018-07-24
 
 class NotifyPage extends StatefulWidget {
-  const NotifyPage();
+  const NotifyPage({super.key});
 
   @override
   _NotifyPageState createState() => _NotifyPageState();

@@ -27,7 +27,7 @@ class GSYNestedPullLoadWidget extends StatefulWidget {
 
   const GSYNestedPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
-      {this.refreshKey, this.headerSliverBuilder, this.scrollController});
+      {super.key, this.refreshKey, this.headerSliverBuilder, this.scrollController});
 
   @override
   _GSYNestedPullLoadWidgetState createState() =>

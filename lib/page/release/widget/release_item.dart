@@ -14,7 +14,7 @@ class ReleaseItem extends StatelessWidget {
   final GestureTapCallback? onPressed;
   final GestureLongPressCallback? onLongPress;
 
-  const ReleaseItem(this.releaseItemViewModel, {this.onPressed, this.onLongPress}) : super();
+  const ReleaseItem(this.releaseItemViewModel, {super.key, this.onPressed, this.onLongPress});
 
   @override
   Widget build(BuildContext context) {

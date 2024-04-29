@@ -9,7 +9,7 @@ class ErrorPage extends StatefulWidget {
   final String errorMessage;
   final FlutterErrorDetails details;
 
-  const ErrorPage(this.errorMessage, this.details);
+  const ErrorPage(this.errorMessage, this.details, {super.key});
 
   @override
   ErrorPageState createState() => ErrorPageState();

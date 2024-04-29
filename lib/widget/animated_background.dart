@@ -5,6 +5,8 @@ import 'package:supercharged/supercharged.dart';
 enum _ColorTween { color1, color2 }
 
 class AnimatedBackground extends StatelessWidget {
+  const AnimatedBackground({super.key});
+
   @override
   Widget build(BuildContext context) {
     final tween = MovieTween()

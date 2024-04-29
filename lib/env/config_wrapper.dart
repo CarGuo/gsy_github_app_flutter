@@ -4,7 +4,7 @@ import 'package:gsy_github_app_flutter/env/env_config.dart';
 
 ///往下共享环境配置
 class ConfigWrapper extends StatelessWidget {
-  const ConfigWrapper({Key? key, this.config, this.child});
+  const ConfigWrapper({super.key, this.config, this.child});
 
   @override
   Widget build(BuildContext context) {

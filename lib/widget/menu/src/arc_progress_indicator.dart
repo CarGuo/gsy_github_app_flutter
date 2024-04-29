@@ -25,7 +25,7 @@ class ArcProgressIndicator extends StatelessWidget {
   // private
   final Animation<double> _progress;
 
-  ArcProgressIndicator({
+  ArcProgressIndicator({super.key, 
     required this.controller,
     required this.radius,
     this.startAngle = 0.0,

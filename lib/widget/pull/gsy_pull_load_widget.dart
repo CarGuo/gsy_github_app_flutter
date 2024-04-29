@@ -21,7 +21,7 @@ class GSYPullLoadWidget extends StatefulWidget {
 
   const GSYPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
-      {this.refreshKey});
+      {super.key, this.refreshKey});
 
   @override
   _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState();

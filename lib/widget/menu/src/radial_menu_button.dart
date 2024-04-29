@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RadialMenuButton extends StatelessWidget {
-  const RadialMenuButton({
+  const RadialMenuButton({super.key, 
     required this.child,
     this.backgroundColor,
     this.onPressed,

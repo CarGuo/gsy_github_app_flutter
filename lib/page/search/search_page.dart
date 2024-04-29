@@ -19,7 +19,7 @@ import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 class SearchPage extends StatefulWidget {
   final Offset centerPosition;
 
-  const SearchPage(this.centerPosition);
+  const SearchPage(this.centerPosition, {super.key});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -228,7 +228,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController? textEditingController;
 
   const SearchBottom(
-      {this.onSubmitted,
+      {super.key, this.onSubmitted,
       this.onSubmitPressed,
       this.selectItemChanged,
       this.textEditingController});
@@ -271,7 +271,7 @@ class CRAnimation extends StatelessWidget {
 
   final Animation<double>? animation;
 
-  const CRAnimation({
+  const CRAnimation({super.key, 
     required this.child,
     required this.animation,
     this.offset,

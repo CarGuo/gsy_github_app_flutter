@@ -7,6 +7,8 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 
 class TrendUserPage extends StatefulWidget {
+  const TrendUserPage({super.key});
+
   @override
   _TrendUserPageState createState() => _TrendUserPageState();
 }

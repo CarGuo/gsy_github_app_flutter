@@ -24,7 +24,7 @@ class CommonListPage extends StatefulWidget {
   final String? title;
 
   const CommonListPage(this.title, this.showType, this.dataType,
-      {this.userName, this.reposName});
+      {super.key, this.userName, this.reposName});
 
   @override
   _CommonListPageState createState() => _CommonListPageState();

@@ -20,6 +20,8 @@ import 'package:redux/redux.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-18
 class HomeDrawer extends StatelessWidget {
+  const HomeDrawer({super.key});
+
   showAboutDialog(BuildContext context, String? versionName) {
     versionName ??= "Null";
     NavigatorUtils.showGSYDialog(

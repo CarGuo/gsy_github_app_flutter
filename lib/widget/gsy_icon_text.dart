@@ -29,7 +29,7 @@ class GSYIConText extends StatelessWidget {
     this.iconText,
     this.textStyle,
     this.iconColor,
-    this.iconSize, {
+    this.iconSize, {super.key, 
     this.padding = 0.0,
     this.onPressed,
     this.mainAxisAlignment = MainAxisAlignment.start,

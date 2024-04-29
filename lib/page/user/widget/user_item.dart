@@ -17,8 +17,7 @@ class UserItem extends StatelessWidget {
 
   final bool needImage;
 
-  const UserItem(this.userItemViewModel, {this.onPressed, this.needImage = true})
-      : super();
+  const UserItem(this.userItemViewModel, {super.key, this.onPressed, this.needImage = true});
 
   @override
   Widget build(BuildContext context) {

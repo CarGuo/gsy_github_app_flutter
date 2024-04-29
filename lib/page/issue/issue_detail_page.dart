@@ -30,7 +30,7 @@ class IssueDetailPage extends StatefulWidget {
   final bool needHomeIcon;
 
   const IssueDetailPage(this.userName, this.reposName, this.issueNum,
-      {this.needHomeIcon = false});
+      {super.key, this.needHomeIcon = false});
 
   @override
   _IssueDetailPageState createState() => _IssueDetailPageState();

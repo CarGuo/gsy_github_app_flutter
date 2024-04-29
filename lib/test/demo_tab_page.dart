@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DemoTabPage extends StatefulWidget {
+  const DemoTabPage({super.key});
+
   @override
   _DemoTabPageState createState() => _DemoTabPageState();
 }
@@ -195,6 +197,8 @@ class _GSYTabBarState extends State<TabWidget>
 }
 
 class KeepAliveList extends StatefulWidget {
+  const KeepAliveList({super.key});
+
   @override
   _KeepAliveListState createState() => _KeepAliveListState();
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DemoTextFieldPage extends StatefulWidget {
+  const DemoTextFieldPage({super.key});
+
   @override
   _DemoTextFieldPageState createState() => _DemoTextFieldPageState();
 }

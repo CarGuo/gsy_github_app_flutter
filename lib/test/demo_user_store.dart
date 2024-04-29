@@ -7,6 +7,8 @@ import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 
 class DemoUseStorePage extends StatelessWidget {
+  const DemoUseStorePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     ///通过 StoreConnector 关联 GSYState 中的 User

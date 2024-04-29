@@ -24,7 +24,7 @@ class IssueEditDialog extends StatefulWidget {
 
   const IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged,
       this.onPressed,
-      {this.titleController, this.valueController, this.needTitle = true});
+      {super.key, this.titleController, this.valueController, this.needTitle = true});
 
   @override
   _IssueEditDialogState createState() => _IssueEditDialogState();

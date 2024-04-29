@@ -8,6 +8,8 @@ import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
 class Mole extends StatefulWidget {
+  const Mole({super.key});
+
   @override
   _MoleState createState() => _MoleState();
 }

@@ -11,7 +11,7 @@ class PushCodeItem extends StatelessWidget {
   final PushCodeItemViewModel pushCodeItemViewModel;
   final VoidCallback onPressed;
 
-  const PushCodeItem(this.pushCodeItemViewModel, this.onPressed);
+  const PushCodeItem(this.pushCodeItemViewModel, this.onPressed, {super.key});
 
   @override
   Widget build(BuildContext context) {

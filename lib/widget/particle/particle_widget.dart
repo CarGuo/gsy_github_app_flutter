@@ -9,7 +9,7 @@ import 'package:supercharged/supercharged.dart';
 class ParticlesWidget extends StatefulWidget {
   final int numberOfParticles;
 
-  const ParticlesWidget(this.numberOfParticles);
+  const ParticlesWidget(this.numberOfParticles, {super.key});
 
   @override
   _ParticlesWidgetState createState() => _ParticlesWidgetState();

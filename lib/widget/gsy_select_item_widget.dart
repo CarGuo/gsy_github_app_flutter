@@ -24,7 +24,7 @@ class GSYSelectItemWidget extends StatefulWidget
 
   const GSYSelectItemWidget(
     this.itemNames,
-    this.selectItemChanged, {
+    this.selectItemChanged, {super.key, 
     this.elevation = 5.0,
     this.height = 70.0,
     this.shape,

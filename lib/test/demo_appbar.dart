@@ -13,7 +13,7 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
 
   const ImageAppbar(
-      {this.leading,
+      {super.key, this.leading,
       this.actions,
       this.needLeading = true,
       this.title,
