@@ -46,7 +46,7 @@ class _PushDetailPageState extends State<PushDetailPage>
   @override
   Future<void> handleRefresh() async {
     if (isLoading) {
-      return null;
+      return;
     }
     isLoading = true;
     page = 1;
@@ -66,7 +66,7 @@ class _PushDetailPageState extends State<PushDetailPage>
       }
     }
     isLoading = false;
-    return null;
+    return;
   }
 
   ///绘制头部和提交item

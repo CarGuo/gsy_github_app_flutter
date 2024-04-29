@@ -55,7 +55,7 @@ class _PersonState extends BasePersonState<PersonPage> {
   @override
   Future<void> handleRefresh() async {
     if (isLoading) {
-      return null;
+      return;
     }
     isLoading = true;
     page = 1;
@@ -70,7 +70,7 @@ class _PersonState extends BasePersonState<PersonPage> {
         });
       }
     } else {
-      return null;
+      return;
     }
 
     ///获取用户动态或者组织成员
@@ -89,7 +89,7 @@ class _PersonState extends BasePersonState<PersonPage> {
 
     ///获取用户仓库前100个star统计数据
     getHonor(_getUserName());
-    return null;
+    return;
   }
 
   ///获取当前用户的关注状态

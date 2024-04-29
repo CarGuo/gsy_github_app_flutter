@@ -61,7 +61,9 @@ class _MoleState extends State<Mole> {
   }
 
   _hitMole() {
-    Iterable.generate(50).forEach((i) => particles.add(MoleParticle()));
+    for (var i in Iterable.generate(50)) {
+      particles.add(MoleParticle());
+    }
   }
 
   void _restartMole() async {

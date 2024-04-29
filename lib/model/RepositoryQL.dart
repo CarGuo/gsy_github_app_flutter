@@ -61,9 +61,9 @@ class RepositoryQL {
     Map? repositoryTopics = map["repositoryTopics"];
     if (repositoryTopics != null) {
       List topicList = repositoryTopics["nodes"];
-      topicList.forEach((item) {
+      for (var item in topicList) {
         topics.add(item["topic"]["name"]);
-      });
+      }
     }
     return RepositoryQL(
       issuesClosed: map["issuesClosed"]["totalCount"],
@@ -105,9 +105,9 @@ class RepositoryQL {
     }
     if (repositoryQL.topics != null) {
       var list = [];
-      repositoryQL.topics!.forEach((item) {
+      for (var item in repositoryQL.topics!) {
         list.add({"topic": item});
-      });
+      }
       topics["nodes"] = list;
     }
     var map = {

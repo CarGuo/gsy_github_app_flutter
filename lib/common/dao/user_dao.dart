@@ -35,7 +35,7 @@ class UserDao {
       null,
       Options(method: "POST"),
     );
-    dynamic resultData = null;
+    dynamic resultData;
     if (res != null && res.result) {
       var result = Uri.parse("gsy://oauth?" + res.data);
       var token = result.queryParameters["access_token"]!;
@@ -77,7 +77,7 @@ class UserDao {
 
     var res = await httpManager.netFetch(Address.getAuthorization(),
         json.encode(requestParams), null, Options(method: "post"));
-    dynamic resultData = null;
+    dynamic resultData;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);

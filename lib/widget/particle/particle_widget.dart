@@ -32,10 +32,10 @@ class _ParticlesWidgetState extends State<ParticlesWidget>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // 从后台切回来时重置粒子
     if (state == AppLifecycleState.resumed) {
-      particles.forEach((particle) {
+      for (var particle in particles) {
         particle.restart();
         particle.shuffle();
-      });
+      }
     }
   }
 
@@ -54,7 +54,8 @@ class _ParticlesWidgetState extends State<ParticlesWidget>
   }
 
   _simulateParticles() {
-    particles
-        .forEach((particle) => particle.checkIfParticleNeedsToBeRestarted());
+    for (var particle in particles) {
+      particle.checkIfParticleNeedsToBeRestarted();
+    }
   }
 }

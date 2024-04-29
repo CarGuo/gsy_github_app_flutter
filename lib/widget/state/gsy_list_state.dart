@@ -65,7 +65,7 @@ mixin GSYListState<T extends StatefulWidget>
   Future<void> handleRefresh() async {
     if (isLoading) {
       if (isRefreshing) {
-        return null;
+        return;
       }
       await _lockToAwait();
     }
@@ -82,14 +82,14 @@ mixin GSYListState<T extends StatefulWidget>
     }
     isLoading = false;
     isRefreshing = false;
-    return null;
+    return;
   }
 
   @protected
   Future<void> onLoadMore() async {
     if (isLoading) {
       if (isLoadMoring) {
-        return null;
+        return;
       }
       await _lockToAwait();
     }
@@ -107,7 +107,7 @@ mixin GSYListState<T extends StatefulWidget>
     resolveDataResult(res);
     isLoading = false;
     isLoadMoring = false;
-    return null;
+    return;
   }
 
   @protected

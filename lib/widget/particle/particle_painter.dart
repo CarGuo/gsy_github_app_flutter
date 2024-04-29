@@ -11,7 +11,7 @@ class ParticlePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.white.withAlpha(50);
 
-    particles.forEach((particle) {
+    for (var particle in particles) {
       final progress = particle.progress();
       final Movie animation =
       particle.tween.transform(progress);
@@ -20,7 +20,7 @@ class ParticlePainter extends CustomPainter {
         animation.get<double>(ParticleOffsetProps.y) * size.height,
       );
       canvas.drawCircle(position, size.width * 0.2 * particle.size, paint);
-    });
+    }
   }
 
   @override
