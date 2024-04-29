@@ -42,10 +42,10 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         userInfo: User.empty(),
         login: false,
         themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
-        locale: Locale('zh', 'CH')),
+        locale: const Locale('zh', 'CH')),
   );
 
-  ColorFilter greyscale = ColorFilter.matrix(<double>[
+  ColorFilter greyscale = const ColorFilter.matrix(<double>[
     0.2126, 0.7152, 0.0722, 0, 0,
     0.2126, 0.7152, 0.0722, 0, 0,
     0.2126, 0.7152, 0.0722, 0, 0,
@@ -59,7 +59,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       /// 通过 with NavigatorObserver ，在这里可以获取可以往上获取到
       /// MaterialApp 和 StoreProvider 的 context
       /// 还可以获取到 navigator;
@@ -124,7 +124,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         if (store.state.grey) {
           ///mode one
           app = ColorFiltered(
-              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation),
+              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.saturation),
               child: app);
           ///mode tow
           // app = ColorFiltered(

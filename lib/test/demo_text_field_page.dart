@@ -14,17 +14,17 @@ class _DemoTextFieldPageState extends State<DemoTextFieldPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("DemoTextFieldPage"),
+        title: const Text("DemoTextFieldPage"),
       ),
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
           controller: controller,
           obscureText: true,
           keyboardType: TextInputType.number,
           focusNode: focusNode,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: "请输入密码",
             icon: Icon(Icons.keyboard),
             prefix: Icon(Icons.person),

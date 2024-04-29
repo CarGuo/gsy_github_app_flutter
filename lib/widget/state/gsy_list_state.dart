@@ -30,7 +30,7 @@ mixin GSYListState<T extends StatefulWidget>
   _lockToAwait() async {
     ///if loading, lock to await
     doDelayed() async {
-      await Future.delayed(Duration(seconds: 1)).then((_) async {
+      await Future.delayed(const Duration(seconds: 1)).then((_) async {
         if (isLoading) {
           return await doDelayed();
         } else {

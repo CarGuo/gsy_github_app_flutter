@@ -24,7 +24,7 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var me = StoreProvider.of<GSYState>(context).state.userInfo!;
     Widget userImage = IconButton(
-        padding: EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
+        padding: const EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
         icon: ClipOval(
           child: FadeInImage.assetNetwork(
             placeholder: GSYICons.DEFAULT_USER_ICON,
@@ -47,13 +47,13 @@ class UserItem extends StatelessWidget {
         child: TextButton(
           onPressed: onPressed,
           child: Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
             child: Row(
               children: <Widget>[
                 if (userItemViewModel.index != null)
                   Padding(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10),
                     child: Text(userItemViewModel.index!,
                         style: GSYConstant.middleSubTextBold),
                   ),
@@ -81,7 +81,7 @@ class UserItem extends StatelessWidget {
                       if (userItemViewModel.bio != null &&
                           userItemViewModel.bio!.isNotEmpty)
                         Padding(
-                          padding: EdgeInsets.only(top: 5),
+                          padding: const EdgeInsets.only(top: 5),
                           child: Text(userItemViewModel.bio!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -89,7 +89,7 @@ class UserItem extends StatelessWidget {
                         ),
                       if (userItemViewModel.lang != null)
                         Padding(
-                          padding: EdgeInsets.only(top: 5, right: 10),
+                          padding: const EdgeInsets.only(top: 5, right: 10),
                           child: Text(userItemViewModel.lang!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,

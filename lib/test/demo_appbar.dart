@@ -69,7 +69,7 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
     var content = Stack(
       children: <Widget>[
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("static/images/logo.png"), fit: BoxFit.cover),
           ),
@@ -114,5 +114,5 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

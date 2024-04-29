@@ -67,7 +67,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     ];
     renderItem(String item, int i) {
       return Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Text(
             item,
             style: GSYConstant.smallTextWhite,
@@ -185,7 +185,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
 
     ///悬浮按键动画控制器
     animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 800));
+        vsync: this, duration: const Duration(milliseconds: 800));
     animationController.forward();
   }
 
@@ -248,7 +248,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                   }
                   _createIssue();
                 },
-                child: Icon(Icons.add),
+                child: const Icon(Icons.add),
                 backgroundColor: Theme.of(context).primaryColor,
               ),
             ),
@@ -261,17 +261,17 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             bottomBar: GSYBottomAppBar(
                 color: GSYColors.white,
                 fabLocation: FloatingActionButtonLocation.endDocked,
-                shape: CircularNotchedRectangle(),
+                shape: const CircularNotchedRectangle(),
                 rowContents: (model?.footerButtons == null)
                     ? [
                         SizedBox.fromSize(
-                          size: Size(0, 0),
+                          size: const Size(0, 0),
                         )
                       ]
                     : model?.footerButtons!.isEmpty == true
                         ? [
                             SizedBox.fromSize(
-                              size: Size(0, 0),
+                              size: const Size(0, 0),
                             )
                           ]
                         : model?.footerButtons),

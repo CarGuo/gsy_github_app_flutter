@@ -38,13 +38,13 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       child: Center(
           child: RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
               child: GSYIConText(
                 icon,
                 text,
                 GSYConstant.smallSubLightText.copyWith(shadows: [
-                  BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+                  const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
                 ]),
                 GSYColors.subLightTextColor,
                 15.0,
@@ -69,16 +69,16 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: Container(
           padding:
-              EdgeInsets.only(left: 5.0, right: 5.0, top: 2.5, bottom: 2.5),
+              const EdgeInsets.only(left: 5.0, right: 5.0, top: 2.5, bottom: 2.5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
             color: Colors.white30,
             border: Border.all(color: Colors.white30, width: 0.0),
           ),
           child: Text(
             item,
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
-              BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+              const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ]),
           ),
         ));
@@ -127,20 +127,20 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       children: <Widget>[
         ///用户名
         RawMaterialButton(
-          constraints: BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-          padding: EdgeInsets.all(0.0),
+          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+          padding: const EdgeInsets.all(0.0),
           onPressed: () {
             NavigatorUtils.goPerson(
                 context, widget.reposHeaderViewModel.ownerName);
           },
           child: Text(widget.reposHeaderViewModel.ownerName!,
               style: GSYConstant.normalTextActionWhiteBold.copyWith(shadows: [
-                BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
+                const BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
               ])),
         ),
         Text(" / ",
             style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
-              BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
+              const BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
             ])),
 
         ///仓库名,
@@ -149,7 +149,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
-                  BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
+                  const BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
                 ])))
       ],
     );
@@ -162,16 +162,16 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         ///仓库语言
         Text(widget.reposHeaderViewModel.repositoryType ?? "--",
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
-              BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+              const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
-        SizedBox(width: 5.3, height: 1.0),
+        const SizedBox(width: 5.3, height: 1.0),
 
         ///仓库大小
         Text(widget.reposHeaderViewModel.repositorySize,
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
-              BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+              const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
-        SizedBox(width: 5.3, height: 1.0),
+        const SizedBox(width: 5.3, height: 1.0),
 
         ///仓库协议
         Expanded(
@@ -179,7 +179,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GSYConstant.smallSubLightText.copyWith(shadows: [
-                  BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+                  const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
                 ]))),
       ],
     );
@@ -193,19 +193,19 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                   widget.reposHeaderViewModel.repositoryDes) ??
               "---",
           style: GSYConstant.smallSubLightText.copyWith(shadows: [
-            BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+            const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
           ]),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
-        margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
         alignment: Alignment.topLeft);
   }
 
   /// 右下角的信息
   renderRepoStatus() {
     return Container(
-      margin: EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
+      margin: const EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
       alignment: Alignment.topRight,
       child: RawMaterialButton(
         onPressed: () {
@@ -222,10 +222,10 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         child: Text(_getInfoText(context),
             style: widget.reposHeaderViewModel.repositoryIsFork!
                 ? GSYConstant.smallActionLightText.copyWith(shadows: [
-                    BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+                    const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
                   ])
                 : GSYConstant.smallSubLightText.copyWith(shadows: [
-                    BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+                    const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
                   ])),
       ),
     );
@@ -234,7 +234,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///底部仓库状态信息
   renderBottomInfo() {
     return Padding(
-        padding: EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(0.0),
 
         ///创建数值状态
         child: Row(
@@ -259,7 +259,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             Container(
               width: 0.3,
               height: 25.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: GSYColors.subLightTextColor,
                   boxShadow: [
                     BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
@@ -284,7 +284,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             Container(
               width: 0.3,
               height: 25.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: GSYColors.subLightTextColor,
                   boxShadow: [
                     BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
@@ -309,7 +309,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             Container(
               width: 0.3,
               height: 25.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: GSYColors.subLightTextColor,
                   boxShadow: [
                     BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
@@ -348,7 +348,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
     super.didUpdateWidget(oldWidget);
 
     ///如果存在tag，根据tag去判断，修复溢出
-    Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       /// tag 所在 container
       RenderBox? renderBox2 =
           layoutTopicContainerKey.currentContext?.findRenderObject() as RenderBox?;
@@ -380,7 +380,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       child: GSYCardItem(
         color: Theme.of(context).primaryColorDark,
         child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
           child: Container(
             ///背景头像
             decoration: BoxDecoration(
@@ -394,7 +394,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               ///高斯模糊
               filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                     left: 10.0, top: 0.0, right: 10.0, bottom: 10.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -407,7 +407,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
                     ///创建状态
                     renderRepoStatus(),
-                    Divider(
+                    const Divider(
                       color: GSYColors.subTextColor,
                     ),
 

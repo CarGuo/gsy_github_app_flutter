@@ -29,13 +29,13 @@ class GSYMarkdownWidget extends StatelessWidget {
     return markdownStyleSheet
         .copyWith(
             codeblockDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                 color: codeBackground,
                 border:
                     Border.all(color: GSYColors.subTextColor, width: 0.3)))
         .copyWith(
             blockquoteDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                 color: GSYColors.subTextColor,
                 border:
                     Border.all(color: GSYColors.subTextColor, width: 0.3)),
@@ -43,7 +43,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetDark(BuildContext context) {
-    return _getCommonSheet(context, Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
+    return _getCommonSheet(context, const Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
       h2: GSYConstant.largeTextWhiteBold,
@@ -58,7 +58,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetWhite(BuildContext context) {
-    return _getCommonSheet(context, Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
+    return _getCommonSheet(context, const Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
       p: GSYConstant.smallText,
       h1: GSYConstant.largeLargeText,
       h2: GSYConstant.largeTextBold,
@@ -72,7 +72,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   }
 
   _getStyleSheetTheme(BuildContext context) {
-    return _getCommonSheet(context, Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
+    return _getCommonSheet(context, const Color.fromRGBO(40, 44, 52, 1.00)).copyWith(
       p: GSYConstant.smallTextWhite,
       h1: GSYConstant.largeLargeTextWhite,
       h2: GSYConstant.largeTextWhiteBold,
@@ -173,7 +173,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: _getBackgroundColor(context),
-      padding: EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(5.0),
       child: SingleChildScrollView(
         child: MarkdownBody(
           styleSheet: _getStyle(context),
@@ -219,7 +219,7 @@ Widget kDefaultImageBuilder(
   double? height,
 ) {
   if (uri.scheme.isEmpty) {
-    return SizedBox();
+    return const SizedBox();
   }
   if (uri.scheme == 'http' || uri.scheme == 'https') {
     return Image.network(uri.toString(), width: width, height: height);

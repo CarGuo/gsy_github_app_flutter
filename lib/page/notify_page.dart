@@ -40,11 +40,11 @@ class _NotifyPageState extends State<NotifyPage>
     return Slidable(
       key: ValueKey<String>("${index}_$selectIndex"),
       controller: slidableController,
-      actionPane: SlidableBehindActionPane(),
+      actionPane: const SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       child: _renderEventItem(notification),
       dismissal: SlidableDismissal(
-        child: SlidableDrawerDismissal(),
+        child: const SlidableDrawerDismissal(),
         onDismissed: (actionType) {},
       ),
       secondaryActions: <Widget>[

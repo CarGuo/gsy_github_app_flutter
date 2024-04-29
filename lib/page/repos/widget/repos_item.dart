@@ -46,7 +46,7 @@ class ReposItem extends StatelessWidget {
           child: TextButton(
               onPressed: onPressed,
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                     left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -100,9 +100,9 @@ class ReposItem extends StatelessWidget {
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+                        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
-                    Padding(padding: EdgeInsets.all(10.0)),
+                    const Padding(padding: EdgeInsets.all(10.0)),
 
                     ///仓库状态数值
                     Row(
@@ -110,12 +110,12 @@ class ReposItem extends StatelessWidget {
                       children: <Widget>[
                         _getBottomItem(context, GSYICons.REPOS_ITEM_STAR,
                             reposViewModel.repositoryStar),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         _getBottomItem(context, GSYICons.REPOS_ITEM_FORK,
                             reposViewModel.repositoryFork),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         _getBottomItem(context, GSYICons.REPOS_ITEM_ISSUE,

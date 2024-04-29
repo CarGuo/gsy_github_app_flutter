@@ -22,7 +22,7 @@ class _DebugDataPageState extends State<DebugDataPage> {
     return Tab(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(text, style: TextStyle(fontSize: 11))],
+        children: <Widget>[Text(text, style: const TextStyle(fontSize: 11))],
       ),
     );
   }
@@ -39,7 +39,7 @@ class _DebugDataPageState extends State<DebugDataPage> {
           _renderTab("Error", 2),
           _renderTab("ErrorWidget", 3),
         ],
-        title: Text(
+        title: const Text(
           "Debug",
           style: TextStyle(color: GSYColors.white),
         ),
@@ -92,10 +92,10 @@ class _DebugDataListState extends State<DebugDataList>
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(right: 5),
+                    margin: const EdgeInsets.only(right: 5),
                     height: 24,
                     width: 24,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: GSYColors.primaryValue,
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -111,10 +111,10 @@ class _DebugDataListState extends State<DebugDataList>
                   ),
                   Expanded(
                       child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Text(
                       widget.titles[index] ?? "",
-                      style: TextStyle(fontSize: 15),
+                      style: const TextStyle(fontSize: 15),
                     ),
                   ))
                 ],
@@ -147,18 +147,18 @@ class _DebugDataListState extends State<DebugDataList>
                       child: Stack(
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.only(top: 30),
+                            padding: const EdgeInsets.only(top: 30),
                             color: Colors.white,
                             child: SingleChildScrollView(
                                 child:
                                     JsonViewerWidget(widget.dataList[index] as Map<String, dynamic>)),
                           ),
                           Transform.translate(
-                            offset: Offset(0, -10),
+                            offset: const Offset(0, -10),
                             child: Container(
                               alignment: Alignment.topCenter,
                               child: IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_drop_down,
                                   size: 30,
                                   color: Colors.black,

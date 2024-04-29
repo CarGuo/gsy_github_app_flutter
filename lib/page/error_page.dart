@@ -58,21 +58,21 @@ class ErrorPageState extends State<ErrorPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image(
+              const Image(
                   image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 90.0,
                   height: 90.0),
-              SizedBox(
+              const SizedBox(
                 height: 11,
               ),
-              Material(
+              const Material(
                 child: Text(
                   "Error Occur",
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
                 color: GSYColors.primaryValue,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Row(
@@ -109,9 +109,9 @@ class ErrorPageState extends State<ErrorPage> {
                           valueController: textEditingController,
                           needTitle: false);
                     },
-                    child: Text("Report"),
+                    child: const Text("Report"),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 40,
                   ),
                   TextButton(
@@ -120,7 +120,7 @@ class ErrorPageState extends State<ErrorPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Back")),
+                      child: const Text("Back")),
                 ],
               )
             ],

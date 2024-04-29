@@ -19,7 +19,7 @@ class PhotoViewPage extends StatelessWidget {
     final String? url = ModalRoute.of(context)!.settings.arguments as String?;
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.file_download),
+          child: const Icon(Icons.file_download),
           onPressed: () {
             /* CommonUtils.saveImage(url).then((res) {
               if (res != null) {
@@ -55,7 +55,7 @@ class PhotoViewPage extends StatelessWidget {
                       Center(
                           child: Image.asset(GSYICons.DEFAULT_IMAGE,
                               height: 180.0, width: 180.0)),
-                      Center(
+                      const Center(
                           child: SpinKitFoldingCube(
                               color: Colors.white30, size: 60.0)),
                     ],

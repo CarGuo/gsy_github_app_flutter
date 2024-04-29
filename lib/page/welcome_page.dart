@@ -73,12 +73,12 @@ class _WelcomePageState extends State<WelcomePage> {
             color: GSYColors.white,
             child: Stack(
               children: <Widget>[
-                Center(
+                const Center(
                   child: Image(
                       image: AssetImage('static/images/welcome.png')),
                 ),
                 Align(
-                  alignment: Alignment(0.0, 0.3),
+                  alignment: const Alignment(0.0, 0.3),
                   child: DiffScaleText(
                     text: text,
                     textStyle: GoogleFonts.akronim().copyWith(
@@ -88,11 +88,11 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment(0.0, 0.8),
+                  alignment: const Alignment(0.0, 0.8),
                   child: Mole(),
                 ),
                 Align(
-                  alignment: Alignment(0.0, .9),
+                  alignment: const Alignment(0.0, .9),
                   child: SizedBox(
                     width: size,
                     height: size,

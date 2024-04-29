@@ -37,7 +37,7 @@ class DynamicPageState extends State<DynamicPage>
     Future.delayed(const Duration(milliseconds: 500), () {
       scrollController
           .animateTo(-141,
-              duration: Duration(milliseconds: 600), curve: Curves.linear)
+              duration: const Duration(milliseconds: 600), curve: Curves.linear)
           .then((_) {
         /*setState(() {
           _ignoring = false;
@@ -51,13 +51,13 @@ class DynamicPageState extends State<DynamicPage>
     if (scrollController.offset <= 0) {
       scrollController
           .animateTo(0,
-              duration: Duration(milliseconds: 600), curve: Curves.linear)
+              duration: const Duration(milliseconds: 600), curve: Curves.linear)
           .then((_) {
         showRefreshLoading();
       });
     } else {
       scrollController.animateTo(0,
-          duration: Duration(milliseconds: 600), curve: Curves.linear);
+          duration: const Duration(milliseconds: 600), curve: Curves.linear);
     }
   }
 

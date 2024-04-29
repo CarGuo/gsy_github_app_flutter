@@ -15,14 +15,14 @@ class SyntaxHighlighterStyle {
 //123
   static SyntaxHighlighterStyle defaultStyle() {
     return SyntaxHighlighterStyle(
-        baseStyle: TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
+        baseStyle: const TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
         numberStyle: TextStyle(color: Colors.blue[800]),
-        commentStyle: TextStyle(color: Color.fromRGBO(124, 126, 120, 1.0)),
-        keywordStyle: TextStyle(color: Color.fromRGBO(228, 125, 246, 1.0)),
-        stringStyle: TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
+        commentStyle: const TextStyle(color: Color.fromRGBO(124, 126, 120, 1.0)),
+        keywordStyle: const TextStyle(color: Color.fromRGBO(228, 125, 246, 1.0)),
+        stringStyle: const TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
         punctuationStyle:
-            TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
-        classStyle: TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
+            const TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
+        classStyle: const TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
         constantStyle: TextStyle(color: Colors.brown[500]));
   }
 

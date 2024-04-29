@@ -62,7 +62,7 @@ class RadialMenuCenterButton extends StatelessWidget {
   })  : _progress = Tween(begin: 0.0, end: 1.0).animate(
           CurvedAnimation(
             parent: openCloseAnimationController,
-            curve: Interval(
+            curve: const Interval(
               0.0,
               0.5,
               curve: Curves.ease,

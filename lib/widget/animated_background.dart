@@ -9,11 +9,11 @@ class AnimatedBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final tween = MovieTween()
       ..tween(_ColorTween.color1,
-          ColorTween(begin: Color(0xffD38312), end: Colors.lightBlue.shade900),
+          ColorTween(begin: const Color(0xffD38312), end: Colors.lightBlue.shade900),
           duration: 3.seconds, curve: Curves.easeIn)
       ..tween(
         _ColorTween.color2,
-        ColorTween(begin: Color(0xffA83279), end: Colors.blue.shade600),
+        ColorTween(begin: const Color(0xffA83279), end: Colors.blue.shade600),
         duration: 3.seconds,
       );
 

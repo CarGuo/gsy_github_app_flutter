@@ -29,12 +29,12 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
               ///显示卡片
               child: Card(
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 color: Colors.white,
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
 
                   ///内容
@@ -42,27 +42,27 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Padding(padding: EdgeInsets.all(10.0)),
+                      const Padding(padding: EdgeInsets.all(10.0)),
 
                       ///用户名输入框
                       TextField(
                         controller: userController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "请输入用户名",
                           icon: Icon(Icons.person),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.all(30.0)),
+                      const Padding(padding: EdgeInsets.all(30.0)),
 
                       ///密码输入框
                       TextField(
                         controller: pwController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             hintText: "请输入密码", icon: Icon(Icons.person)),
                       ),
 
-                      Padding(padding: EdgeInsets.all(15.0)),
+                      const Padding(padding: EdgeInsets.all(15.0)),
 
                       ///登陆按键
                       LayoutBuilder(
@@ -72,12 +72,12 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             width: constraints.maxWidth,
                             child: TextButton(
                                 style: TextButton.styleFrom(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       color: Colors.white,
                                     ),
                                     backgroundColor:
                                         Theme.of(context).primaryColor),
-                                child: Text("登陆",
+                                child: const Text("登陆",
                                     style: TextStyle(fontSize: 14),
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                           );
                         },
                       ),
-                      Padding(padding: EdgeInsets.all(15.0)),
+                      const Padding(padding: EdgeInsets.all(15.0)),
                     ],
                   ),
                 ),

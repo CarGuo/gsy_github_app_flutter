@@ -32,14 +32,14 @@ class DemoItem extends StatelessWidget {
             ),
 
             ///间隔
-            Padding(padding: EdgeInsets.all(5.0)),
+            const Padding(padding: EdgeInsets.all(5.0)),
             SizedBox(
               width: 60,
               child:
               ///显示数量文本
               Text(
                 text,
-                style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                style: const TextStyle(color: Colors.grey, fontSize: 14.0),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
@@ -59,13 +59,13 @@ class DemoItem extends StatelessWidget {
           child: TextButton(
               onPressed: (){print("点击了哦");},
               child: Padding(
-                padding: EdgeInsets.only(left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
+                padding: const EdgeInsets.only(left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ///文本描述
                     Container(
-                        child: Text(
+                        child: const Text(
                           "这是一点描述",
                           style: TextStyle(
                             color: Colors.blueGrey,
@@ -75,9 +75,9 @@ class DemoItem extends StatelessWidget {
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+                        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                         alignment: Alignment.topLeft),
-                    Padding(padding: EdgeInsets.all(10.0)),
+                    const Padding(padding: EdgeInsets.all(10.0)),
 
                     ///三个平均分配的横向图标文字
                     Row(

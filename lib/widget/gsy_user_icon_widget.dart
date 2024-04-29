@@ -28,7 +28,7 @@ class GSYUserIconWidget extends StatelessWidget {
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: ClipOval(
           child: FadeInImage(
-            placeholder: AssetImage(
+            placeholder: const AssetImage(
               GSYICons.DEFAULT_USER_ICON,
             ),
             image: NetworkImage(image ?? GSYICons.DEFAULT_REMOTE_PIC),

@@ -130,7 +130,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
         children: <Widget>[
           TextButton(
             onPressed: () {},
-            child: Image(
+            child: const Image(
                 image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                 width: 70.0,
                 height: 70.0),
@@ -161,7 +161,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
                 ///加载中文本
                 Text(
                   GSYLocalizations.i18n(context)!.load_more_text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF121917),
                     fontSize: 14.0,
                     fontWeight: FontWeight.bold,

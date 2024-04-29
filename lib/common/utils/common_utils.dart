@@ -210,7 +210,7 @@ class CommonUtils {
       ),
 
       /// 受到 iconThemeData.isConcrete 的印象，需要全参数才不会进入 fallback
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         size: 24.0,
         fill: 0.0,
         weight: 400.0,
@@ -224,9 +224,9 @@ class CommonUtils {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
           foregroundColor: Colors.white,
           backgroundColor: color,
-          shape: CircleBorder()),
+          shape: const CircleBorder()),
       appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
           size: 24.0,
         ),
@@ -276,10 +276,10 @@ class CommonUtils {
     }
     switch (index) {
       case 1:
-        locale = Locale('zh', 'CH');
+        locale = const Locale('zh', 'CH');
         break;
       case 2:
-        locale = Locale('en', 'US');
+        locale = const Locale('en', 'US');
         break;
     }
     curLocale = locale;
@@ -396,8 +396,8 @@ class CommonUtils {
                   child: Container(
                     width: 200.0,
                     height: 200.0,
-                    padding: EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: const BoxDecoration(
                       color: Colors.transparent,
                       //用一个BoxDecoration装饰器提供背景图片
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -406,7 +406,7 @@ class CommonUtils {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                            child: SpinKitCubeGrid(color: GSYColors.white)),
+                            child: const SpinKitCubeGrid(color: GSYColors.white)),
                         Container(height: 10.0),
                         Container(
                             child: Text(
@@ -463,9 +463,9 @@ class CommonUtils {
             child: Container(
               width: width,
               height: height,
-              padding: EdgeInsets.all(4.0),
-              margin: EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(4.0),
+              margin: const EdgeInsets.all(20.0),
+              decoration: const BoxDecoration(
                 color: GSYColors.white,
                 //用一个BoxDecoration装饰器提供背景图片
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),

@@ -37,7 +37,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
   renderTitleInput() {
     return (widget.needTitle)
         ? Padding(
-            padding: EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
             child: GSYInputWidget(
               onChanged: widget.onTitleChanged,
               controller: widget.titleController,
@@ -59,7 +59,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
           return RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding:
-                  EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0, bottom: 5.0),
+                  const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0, bottom: 5.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
               child: Icon(FAST_INPUT_LIST[index].iconData, size: 16.0),
               onPressed: () {
@@ -100,18 +100,18 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                 },
                 child: Center(
                   child: GSYCardItem(
-                    margin: EdgeInsets.only(left: 50.0, right: 50.0),
-                    shape: RoundedRectangleBorder(
+                    margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     child: Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           ///dialog标题
                           Padding(
                               padding:
-                                  EdgeInsets.only(top: 5.0, bottom: 15.0),
+                                  const EdgeInsets.only(top: 5.0, bottom: 15.0),
                               child: Center(
                                 child: Text(widget.dialogTitle,
                                     style: GSYConstant.normalTextBold),
@@ -125,12 +125,12 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                             height: MediaQuery.sizeOf(context).width * 3 / 4,
                             decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(4.0)),
+                                  const BorderRadius.all(Radius.circular(4.0)),
                               color: GSYColors.white,
                               border: Border.all(
                                   color: GSYColors.subTextColor, width: .3),
                             ),
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 20.0,
                                 top: 12.0,
                                 right: 20.0,
@@ -168,7 +168,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                   child: RawMaterialButton(
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
-                                      padding: EdgeInsets.all(4.0),
+                                      padding: const EdgeInsets.all(4.0),
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       child: Text(
@@ -188,7 +188,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                   child: RawMaterialButton(
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
-                                      padding: EdgeInsets.all(4.0),
+                                      padding: const EdgeInsets.all(4.0),
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       child: Text(

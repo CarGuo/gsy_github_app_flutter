@@ -93,7 +93,7 @@ class UserHeaderItem extends StatelessWidget {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: const EdgeInsets.only(right: 5.0, left: 5.0),
           constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-          child: Icon(
+          child: const Icon(
             Icons.more_horiz,
             color: GSYColors.white,
             size: 18.0,
@@ -187,7 +187,7 @@ class UserHeaderItem extends StatelessWidget {
             textWidth: MediaQuery.sizeOf(context).width - 50,
           ),
         ),
-        margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
         alignment: Alignment.topLeft);
   }
 
@@ -196,13 +196,13 @@ class UserHeaderItem extends StatelessWidget {
     return GSYCardItem(
         color: themeColor,
         elevation: 0,
-        margin: EdgeInsets.all(0.0),
-        shape: RoundedRectangleBorder(
+        margin: const EdgeInsets.all(0.0),
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(0.0),
                 bottomRight: Radius.circular(0.0))),
         child: Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
               left: 10.0, top: 10.0, right: 10.0, bottom: 0.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -213,7 +213,7 @@ class UserHeaderItem extends StatelessWidget {
                 children: <Widget>[
                   ///用户头像
                   _renderImg(context),
-                  Padding(padding: EdgeInsets.all(10.0)),
+                  const Padding(padding: EdgeInsets.all(10.0)),
                   Expanded(
                     child: _renderUserInfo(context),
                   ),
@@ -242,9 +242,9 @@ class UserHeaderItem extends StatelessWidget {
                     style: GSYConstant.smallSubLightText,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+                  margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                   alignment: Alignment.topLeft),
-              Padding(padding: EdgeInsets.only(bottom: 5.0)),
+              const Padding(padding: EdgeInsets.only(bottom: 5.0)),
             ],
           ),
         ));
@@ -273,7 +273,7 @@ class UserHeaderBottom extends StatelessWidget {
       child: Center(
           child: RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding: EdgeInsets.only(top: 5.0),
+              padding: const EdgeInsets.only(top: 5.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
               child: RichText(
                 textAlign: TextAlign.center,
@@ -294,7 +294,7 @@ class UserHeaderBottom extends StatelessWidget {
     ///用户底部状态
     return GSYCardItem(
       color: Theme.of(context).primaryColor,
-      margin: EdgeInsets.all(0.0),
+      margin: const EdgeInsets.all(0.0),
       shape: RoundedRectangleBorder(
           borderRadius:
               BorderRadius.only(bottomLeft: radius, bottomRight: radius)),
@@ -389,12 +389,12 @@ class UserHeaderChart extends StatelessWidget {
     return (userInfo.login != null)
         ? Card(
             margin:
-                EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 0.0),
+                const EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 0.0),
             color: GSYColors.white,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                 width: width,
                 height: height,
 
@@ -437,7 +437,7 @@ class UserHeaderChart extends StatelessWidget {
                 style: GSYConstant.normalTextBold,
                 overflow: TextOverflow.ellipsis,
               ),
-              margin: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
+              margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
               alignment: Alignment.topLeft),
           _renderChart(context),
         ],

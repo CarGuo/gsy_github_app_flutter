@@ -107,7 +107,7 @@ class _SearchPageState extends State<SearchPage>
 
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
 
     animation = CurvedAnimation(
@@ -117,7 +117,7 @@ class _SearchPageState extends State<SearchPage>
         setState(() {});
       });
 
-    Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       controller.forward().then((_) {
         setState(() {
           endAnima = true;
@@ -256,7 +256,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return Size.fromHeight(100.0);
+    return const Size.fromHeight(100.0);
   }
 }
 

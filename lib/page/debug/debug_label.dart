@@ -105,19 +105,19 @@ class _GlobalLabelState extends State<GlobalLabel> {
               },
               child: Text(
                 "${widget.platform} ${widget.deviceInfo} ${widget.language} ${widget.version}",
-                style: TextStyle(color: Colors.white, fontSize: 10),
+                style: const TextStyle(color: Colors.white, fontSize: 10),
               ),
             ),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.6),
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(5),
               ),
             ),
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 3),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
           ),
         ),
-        alignment: Alignment(0.97, 0.8),
+        alignment: const Alignment(0.97, 0.8),
       );
     });
   }

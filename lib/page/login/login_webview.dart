@@ -116,7 +116,7 @@ class _LoginWebViewState extends State<LoginWebView> {
               child: Container(
                 width: 200.0,
                 height: 200.0,
-                padding: EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

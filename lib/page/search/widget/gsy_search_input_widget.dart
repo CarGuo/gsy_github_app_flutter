@@ -20,7 +20,7 @@ class GSYSearchInputWidget extends StatelessWidget {
     return Container(
       height: kToolbarHeight,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(0.0),
               bottomLeft: Radius.circular(0.0)),
           color: GSYColors.white,
@@ -31,7 +31,7 @@ class GSYSearchInputWidget extends StatelessWidget {
                 color: Theme.of(context).primaryColorDark, blurRadius: 4.0)
           ]),
       padding:
-          EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
+          const EdgeInsets.only(left: 20.0, top: 12.0, right: 20.0, bottom: 12.0),
       child: Row(
         children: <Widget>[
           Expanded(

@@ -38,12 +38,12 @@ class IssueHeaderItem extends StatelessWidget {
           15.0,
           padding: 2.0,
         ),
-        Padding(padding: EdgeInsets.all(2.0)),
+        const Padding(padding: EdgeInsets.all(2.0)),
 
         ///issue issue编码
         Text(issueHeaderViewModel.issueTag,
             style: GSYConstant.smallTextWhite),
-        Padding(padding: EdgeInsets.all(2.0)),
+        const Padding(padding: EdgeInsets.all(2.0)),
 
         ///issue 评论数
         GSYIConText(
@@ -69,7 +69,7 @@ class IssueHeaderItem extends StatelessWidget {
               "Close By ${issueHeaderViewModel.closedBy!}",
               style: GSYConstant.smallSubLightText,
             ),
-            margin: EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
+            margin: const EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
             alignment: Alignment.topRight);
   }
 
@@ -78,10 +78,10 @@ class IssueHeaderItem extends StatelessWidget {
     return GSYCardItem(
       color: Theme.of(context).primaryColor,
       child: TextButton(
-        style: TextButton.styleFrom(padding: EdgeInsets.all(0.0)),
+        style: TextButton.styleFrom(padding: const EdgeInsets.all(0.0)),
         onPressed: onPressed,
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
               Row(
@@ -119,7 +119,7 @@ class IssueHeaderItem extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Padding(padding: EdgeInsets.all(2.0)),
+                        const Padding(padding: EdgeInsets.all(2.0)),
 
                         ///底部Item
                         _renderBottomContainer(),
@@ -130,9 +130,9 @@ class IssueHeaderItem extends StatelessWidget {
                               issueHeaderViewModel.issueComment!,
                               style: GSYConstant.smallTextWhite,
                             ),
-                            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(
                               left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                         ),

@@ -52,7 +52,7 @@ class IssueItem extends StatelessWidget {
                 15.0,
                 padding: 2.0,
               ),
-              Padding(padding: EdgeInsets.all(2.0)),
+              const Padding(padding: EdgeInsets.all(2.0)),
 
               ///issue标号
               Expanded(
@@ -82,7 +82,7 @@ class IssueItem extends StatelessWidget {
               style: GSYConstant.smallSubText,
               maxLines: limitComment ? 2 : 1000,
             ),
-            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
             alignment: Alignment.topLeft,
           )
         : GSYMarkdownWidget(markdownData: issueItemViewModel.issueComment);
@@ -95,7 +95,7 @@ class IssueItem extends StatelessWidget {
         onTap: onPressed,
         onLongPress: onLongPress,
         child: Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
               left: 5.0, top: 5.0, right: 10.0, bottom: 8.0),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +130,7 @@ class IssueItem extends StatelessWidget {
 
                       ///评论内容
                       _renderCommentText(),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(
                             left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                       ),

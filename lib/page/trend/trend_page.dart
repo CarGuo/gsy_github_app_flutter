@@ -64,13 +64,13 @@ class TrendPageState extends State<TrendPage>
     if (scrollController.offset <= 0) {
       scrollController
           .animateTo(0,
-              duration: Duration(milliseconds: 600), curve: Curves.linear)
+              duration: const Duration(milliseconds: 600), curve: Curves.linear)
           .then((_) {
         _showRefreshLoading();
       });
     } else {
       scrollController.animateTo(0,
-          duration: Duration(milliseconds: 600), curve: Curves.linear);
+          duration: const Duration(milliseconds: 600), curve: Curves.linear);
     }
   }
 
@@ -103,13 +103,13 @@ class TrendPageState extends State<TrendPage>
     var trendTypeList = trendType(context);
     return GSYCardItem(
       color: store.state.themeData!.primaryColor,
-      margin: EdgeInsets.all(0.0),
+      margin: const EdgeInsets.all(0.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(radius),
       ),
       child: Padding(
         padding:
-            EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
+            const EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: Row(
           children: <Widget>[
             _renderHeaderPopItem(selectTime!.name, trendTimeList,
@@ -121,7 +121,7 @@ class TrendPageState extends State<TrendPage>
               }
               scrollController
                   .animateTo(0,
-                      duration: Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       curve: Curves.bounceInOut)
                   .then((_) {
                 setState(() {
@@ -141,7 +141,7 @@ class TrendPageState extends State<TrendPage>
               }
               scrollController
                   .animateTo(0,
-                      duration: Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       curve: Curves.bounceInOut)
                   .then((_) {
                 setState(() {
@@ -230,7 +230,7 @@ class TrendPageState extends State<TrendPage>
           children: <Widget>[
             TextButton(
               onPressed: () {},
-              child: Image(
+              child: const Image(
                   image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 70.0,
                   height: 70.0),
@@ -305,7 +305,7 @@ class TrendPageState extends State<TrendPage>
         return SizedBox(
           width: size,
           height: size,
-          child: Icon(
+          child: const Icon(
             Icons.person,
             size: 30,
             color: Colors.white,

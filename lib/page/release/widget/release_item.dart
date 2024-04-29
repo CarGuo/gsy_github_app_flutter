@@ -24,7 +24,7 @@ class ReleaseItem extends StatelessWidget {
           onTap: onPressed,
           onLongPress: onLongPress,
           child: Padding(
-            padding: EdgeInsets.only(left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
+            padding: const EdgeInsets.only(left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
             child: Row(
               children: <Widget>[
                 Expanded(child: Text(releaseItemViewModel.actionTitle!, style: GSYConstant.smallTextBold)),

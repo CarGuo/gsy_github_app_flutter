@@ -308,7 +308,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
                       ///切换时先滑动
                       scrollController
                           .animateTo(0,
-                              duration: Duration(milliseconds: 200),
+                              duration: const Duration(milliseconds: 200),
                               curve: Curves.bounceInOut)
                           .then((_) {
                         selectIndex = index;

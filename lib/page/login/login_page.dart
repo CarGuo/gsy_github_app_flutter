@@ -49,22 +49,22 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                 child: SingleChildScrollView(
                   child: Card(
                     elevation: 5.0,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     color: GSYColors.cardWhite,
                     margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Image(
+                          const Image(
                               image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                               width: 90.0,
                               height: 90.0),
-                          Padding(padding: EdgeInsets.all(10.0)),
+                          const Padding(padding: EdgeInsets.all(10.0)),
                           GSYInputWidget(
                             hintText: GSYLocalizations.i18n(context)!
                                 .login_username_hint_text,
@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             },
                             controller: userController,
                           ),
-                          Padding(padding: EdgeInsets.all(10.0)),
+                          const Padding(padding: EdgeInsets.all(10.0)),
                           GSYInputWidget(
                             hintText: GSYLocalizations.i18n(context)!
                                 .login_password_hint_text,
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             },
                             controller: pwController,
                           ),
-                          Padding(padding: EdgeInsets.all(10.0)),
+                          const Padding(padding: EdgeInsets.all(10.0)),
                           SizedBox(
                             height: 50,
                             child: Row(
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                     onPress: loginIn,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
@@ -116,17 +116,17 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                               ],
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(15.0)),
+                          const Padding(padding: EdgeInsets.all(15.0)),
                           InkWell(
                             onTap: () {
                               CommonUtils.showLanguageDialog(context);
                             },
                             child: Text(
                               GSYLocalizations.i18n(context)!.switch_language,
-                              style: TextStyle(color: GSYColors.subTextColor),
+                              style: const TextStyle(color: GSYColors.subTextColor),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(15.0)),
+                          const Padding(padding: EdgeInsets.all(15.0)),
                         ],
                       ),
                     ),

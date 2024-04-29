@@ -50,7 +50,7 @@ class _UserProfileState extends State<UserProfileInfo> {
             Container(
               width: 10.0,
             ),
-            Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0),
+            const Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0),
           ],
         ),
       ),

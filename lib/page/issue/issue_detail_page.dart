@@ -74,11 +74,11 @@ class _IssueDetailPageState extends State<IssueDetailPage>
               return Center(
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                       color: GSYColors.white,
                       border: Border.all(
                           color: GSYColors.subTextColor, width: 0.3)),
-                  margin: EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,

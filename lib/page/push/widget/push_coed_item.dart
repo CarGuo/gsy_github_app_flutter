@@ -18,7 +18,7 @@ class PushCodeItem extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Container(
         ///修改文件路径
-        margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 0.0),
+        margin: const EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 0.0),
         child: Text(
           pushCodeItemViewModel.path,
           style: GSYConstant.smallSubLightText,
@@ -26,10 +26,10 @@ class PushCodeItem extends StatelessWidget {
       ),
       GSYCardItem(
         ///修改文件名
-        margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
+        margin: const EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
         child: ListTile(
           title: Text(pushCodeItemViewModel.name!, style: GSYConstant.smallSubText),
-          leading: Icon(
+          leading: const Icon(
             GSYICons.REPOS_ITEM_FILE,
             size: 15.0,
           ),

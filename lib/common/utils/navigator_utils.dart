@@ -207,7 +207,7 @@ class NavigatorUtils {
       },
       barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Color(0x01000000),
+      barrierColor: const Color(0x01000000),
       transitionDuration: const Duration(milliseconds: 150),
       transitionBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) {

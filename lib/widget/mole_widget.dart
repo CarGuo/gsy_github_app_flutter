@@ -38,7 +38,7 @@ class _MoleState extends State<Mole> {
     _manageParticleLifecycle();
     return LoopAnimationBuilder<int>(
       tween: ConstantTween(1),
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       builder: (context, child, value) {
         return Stack(
           clipBehavior: Clip.none,

@@ -17,7 +17,7 @@ class _DemoPageState extends State<DemoPage> {
       ///标题栏，当然不仅仅是标题栏
       appBar: AppBar(
         ///这个title是一个Widget
-        title: Text("Title"),
+        title: const Text("Title"),
       ),
       ///正式的页面开始
       ///一个ListView，20个Item
@@ -27,13 +27,13 @@ class _DemoPageState extends State<DemoPage> {
             ///设置阴影的深度
             elevation: 5.0,
             ///增加圆角
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             color: Colors.white,
             margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
             child: Container(
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               height: 80,
               child: Text("显示文本 ${index}"),
             ),
@@ -47,7 +47,7 @@ class _DemoPageState extends State<DemoPage> {
         return FloatingActionButton(
           onPressed: () {
             ScaffoldMessenger.of(builderContext)
-                .showSnackBar(SnackBar(content: Text("SnackBar")));
+                .showSnackBar(const SnackBar(content: Text("SnackBar")));
           },
         );
       }),

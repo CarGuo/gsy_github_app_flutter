@@ -44,7 +44,7 @@ class GSYIConText extends StatelessWidget {
             child: Text(
               iconText ?? "",
               style: textStyle
-                  .merge(TextStyle(textBaseline: TextBaseline.alphabetic)),
+                  .merge(const TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
@@ -57,7 +57,7 @@ class GSYIConText extends StatelessWidget {
                 Text(
               iconText!,
               style: textStyle
-                  .merge(TextStyle(textBaseline: TextBaseline.alphabetic)),
+                  .merge(const TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ));

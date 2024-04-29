@@ -10,7 +10,7 @@ class _DemoTabPageState extends State<DemoTabPage> {
   Widget build(BuildContext context) {
     return TabWidget(
       type: TabType.bottom,
-      title: Text("标题"),
+      title: const Text("标题"),
       tabItems: getTab(),
       tabViews: getPages(),
     );
@@ -18,15 +18,15 @@ class _DemoTabPageState extends State<DemoTabPage> {
 
   getTab() {
     return [
-      Tab(
+      const Tab(
         text: "tab1",
         icon: Icon(Icons.access_alarm),
       ),
-      Tab(
+      const Tab(
         text: "tab2",
         icon: Icon(Icons.android),
       ),
-      Tab(
+      const Tab(
         text: "tab3",
         icon: Icon(Icons.ac_unit),
       ),
@@ -144,7 +144,7 @@ class _GSYTabBarState extends State<TabWidget>
                   ///点击时 500 毫秒的滑动
                   _pageController!.animateToPage(index,
                       curve: Curves.linear,
-                      duration: Duration(milliseconds: 200));
+                      duration: const Duration(milliseconds: 200));
                   if (widget.onTap != null) {
                     widget.onTap!(index);
                   }
@@ -185,7 +185,7 @@ class _GSYTabBarState extends State<TabWidget>
           onPageChanged: (index) {
             if (!_tabController!.indexIsChanging) {
               _tabController!.animateTo(index,
-                  curve: Curves.linear, duration: Duration(milliseconds: 20));
+                  curve: Curves.linear, duration: const Duration(milliseconds: 20));
             }
             widget.onPageChanged?.call(index);
           },
@@ -213,13 +213,13 @@ class _KeepAliveListState extends State<KeepAliveList> with AutomaticKeepAliveCl
           ///设置阴影的深度
           elevation: 5.0,
           ///增加圆角
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           color: Colors.white,
           margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
           child: Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             height: 80,
             child: Text("显示文本 ${index}"),
           ),

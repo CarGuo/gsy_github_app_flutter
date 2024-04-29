@@ -49,9 +49,9 @@ class RepositoryDetailFileListPageState
         : GSYICons.REPOS_ITEM_DIR;
     Widget? trailing = (fileItemViewModel.type == "file")
         ? null
-        : Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
+        : const Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
     return GSYCardItem(
-      margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
+      margin: const EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
       child: ListTile(
         title:
             Text(fileItemViewModel.name!, style: GSYConstant.smallSubText),
@@ -70,13 +70,13 @@ class RepositoryDetailFileListPageState
   ///渲染头部列表
   _renderHeader() {
     return Container(
-      margin: EdgeInsets.only(left: 3.0, right: 3.0),
+      margin: const EdgeInsets.only(left: 3.0, right: 3.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return RawMaterialButton(
-            constraints: BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-            padding: EdgeInsets.all(4.0),
+            constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+            padding: const EdgeInsets.all(4.0),
             onPressed: () {
               _resolveHeaderClick(index);
             },

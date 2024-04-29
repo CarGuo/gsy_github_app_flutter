@@ -21,7 +21,7 @@ class _DiffScaleTextState extends State<DiffScaleText>
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     _animationController.addStatusListener((status) {});
   }
 
@@ -45,7 +45,7 @@ class _DiffScaleTextState extends State<DiffScaleText>
   @override
   Widget build(BuildContext context) {
     TextStyle? textStyle = widget.textStyle == null
-        ? TextStyle(
+        ? const TextStyle(
             fontSize: 20,
             color: Colors.white,
           )
@@ -56,7 +56,7 @@ class _DiffScaleTextState extends State<DiffScaleText>
         return RepaintBoundary(
             child: CustomPaint(
           child: Text(widget.text ?? "",
-              style: textStyle!.merge(TextStyle(color: Color(0x00000000))),
+              style: textStyle!.merge(const TextStyle(color: Color(0x00000000))),
               maxLines: 1,
               textDirection: TextDirection.ltr),
           foregroundPainter: _DiffText(

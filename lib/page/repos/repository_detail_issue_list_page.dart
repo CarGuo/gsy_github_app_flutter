@@ -91,7 +91,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     ///回滚到最初位置
     scrollController
         .animateTo(0,
-            duration: Duration(milliseconds: 100), curve: Curves.bounceIn)
+            duration: const Duration(milliseconds: 100), curve: Curves.bounceIn)
         .then((_) {
       showRefreshLoading();
     });
@@ -161,7 +161,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                     children: <Widget>[
                       TextButton(
                         onPressed: () {},
-                        child: Image(
+                        child: const Image(
                             image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                             width: 70.0,
                             height: 70.0),
@@ -230,7 +230,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                       this.selectIndex = selectIndex;
                       _resolveSelectIndex();
                     },
-                    margin: EdgeInsets.all(0.0),
+                    margin: const EdgeInsets.all(0.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(radius),
                     ),

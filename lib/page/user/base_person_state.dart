@@ -147,7 +147,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               var radius = Radius.circular(10 - shrinkOffset / bottomSize * 10);
               return SizedBox.expand(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 10, left: 0, right: 0),
+                  padding: const EdgeInsets.only(bottom: 10, left: 0, right: 0),
 
                   /// MultiProvider 共享 HonorModel 状态
                   child: MultiProvider(

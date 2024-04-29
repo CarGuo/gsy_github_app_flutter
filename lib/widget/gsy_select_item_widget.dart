@@ -67,12 +67,12 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         transitionBuilder: (child, anim) {
           return ScaleTransition(child: child, scale: anim);
         },
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         child: RawMaterialButton(
             key: ValueKey(keys[index]),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               name,
               style: style,
@@ -112,7 +112,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         margin: widget.margin,
         color: Theme.of(context).primaryColor,
         shape: widget.shape ??
-            RoundedRectangleBorder(
+            const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
         child: Row(

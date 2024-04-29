@@ -16,7 +16,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
 
   _renderHeaderPopItem(List<GSYOptionModel> list) {
     return PopupMenuButton<GSYOptionModel>(
-      child: Icon(GSYICons.MORE),
+      child: const Icon(GSYICons.MORE),
       onSelected: (model) {
         model.selected(model);
       },

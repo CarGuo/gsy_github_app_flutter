@@ -32,10 +32,10 @@ class PushHeader extends StatelessWidget {
     return GSYCardItem(
       color: Theme.of(context).primaryColor,
       child: TextButton(
-        style: TextButton.styleFrom(padding: EdgeInsets.all(0.0)),
+        style: TextButton.styleFrom(padding: const EdgeInsets.all(0.0)),
         onPressed: () {},
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
               Row(
@@ -70,7 +70,7 @@ class PushHeader extends StatelessWidget {
                             Container(width: 8.0),
                           ],
                         ),
-                        Padding(padding: EdgeInsets.all(2.0)),
+                        const Padding(padding: EdgeInsets.all(2.0)),
 
                         ///修改时间
                         Container(
@@ -79,7 +79,7 @@ class PushHeader extends StatelessWidget {
                               style: GSYConstant.smallTextWhite,
                               maxLines: 2,
                             ),
-                            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
 
                         ///修改的commit内容
@@ -89,9 +89,9 @@ class PushHeader extends StatelessWidget {
                               style: GSYConstant.smallTextWhite,
                               maxLines: 2,
                             ),
-                            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(
                               left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                         ),

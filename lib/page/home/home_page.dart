@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   _dialogExitApp(BuildContext context) async {
     ///如果是 android 回到桌面
     if (Platform.isAndroid) {
-      AndroidIntent intent = AndroidIntent(
+      AndroidIntent intent = const AndroidIntent(
         action: 'android.intent.action.MAIN',
         category: "android.intent.category.HOME",
       );

@@ -66,13 +66,13 @@ class MyPageState extends BasePersonState<MyPage> {
     if (scrollController.offset <= 0) {
       scrollController
           .animateTo(0,
-              duration: Duration(milliseconds: 600), curve: Curves.linear)
+              duration: const Duration(milliseconds: 600), curve: Curves.linear)
           .then((_) {
         showRefreshLoading();
       });
     } else {
       scrollController.animateTo(0,
-          duration: Duration(milliseconds: 600), curve: Curves.linear);
+          duration: const Duration(milliseconds: 600), curve: Curves.linear);
     }
   }
 
