@@ -700,9 +700,10 @@ class ReposDao {
           CommonUtils.showUpdateDialog(
               context, "${release.name!}: ${release.body!}");
         } else {
-          if (showTip)
+          if (showTip) {
             Fluttertoast.showToast(
                 msg: GSYLocalizations.i18n(context)!.app_not_new_version);
+          }
         }
       }
     }

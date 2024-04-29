@@ -315,8 +315,9 @@ class NestedScrollViewRefreshIndicatorState
     }
     if (indicatorAtTopNow != _isIndicatorAtTop) {
       if (_mode == _RefreshIndicatorMode.drag ||
-          _mode == _RefreshIndicatorMode.armed)
+          _mode == _RefreshIndicatorMode.armed) {
         _dismiss(_RefreshIndicatorMode.canceled);
+      }
     } else if (notification is ScrollUpdateNotification) {
       if (_mode == _RefreshIndicatorMode.drag ||
           _mode == _RefreshIndicatorMode.armed) {
@@ -393,12 +394,14 @@ class NestedScrollViewRefreshIndicatorState
         _mode == _RefreshIndicatorMode.armed);
     double newValue =
         _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
-    if (_mode == _RefreshIndicatorMode.armed)
+    if (_mode == _RefreshIndicatorMode.armed) {
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
+    }
     _positionController.value =
         newValue.clamp(0.0, 1.0); // this triggers various rebuilds
-    if (_mode == _RefreshIndicatorMode.drag && _valueColor.value!.alpha == 0xFF)
+    if (_mode == _RefreshIndicatorMode.drag && _valueColor.value!.alpha == 0xFF) {
       _mode = _RefreshIndicatorMode.armed;
+    }
   }
 
   // Stop showing the refresh indicator.

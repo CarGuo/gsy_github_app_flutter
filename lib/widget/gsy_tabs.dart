@@ -283,8 +283,9 @@ double _indexChangeProgress(TabController controller) {
 
   // The controller's offset is changing because the user is dragging the
   // TabBarView's PageView to the left or right.
-  if (!controller.indexIsChanging)
+  if (!controller.indexIsChanging) {
     return (currentIndex - controllerValue).abs().clamp(0.0, 1.0);
+  }
 
   // The TabController animation's value is changing from previousIndex to currentIndex.
   return (controllerValue - currentIndex).abs() /
@@ -299,8 +300,9 @@ class _IndicatorPainter extends CustomPainter {
     required this.tabKeys,
     _IndicatorPainter? old,
   }) : super(repaint: controller.animation) {
-    if (old != null)
+    if (old != null) {
       saveTabOffsets(old._currentTabOffsets, old._currentTextDirection);
+    }
   }
 
   final TabController controller;
@@ -391,9 +393,9 @@ class _IndicatorPainter extends CustomPainter {
           : null;
       final double index = controller.index.toDouble();
       final double value = controller.animation!.value;
-      if (value == index - 1.0)
+      if (value == index - 1.0) {
         _currentRect = previous ?? middle;
-      else if (value == index + 1.0)
+      } else if (value == index + 1.0)
         _currentRect = next ?? middle;
       else if (value == index)
         _currentRect = middle;
@@ -735,8 +737,9 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
     for (Widget item in tabs) {
       if (item is Tab) {
         final Tab tab = item;
-        if (tab.text != null && tab.icon != null)
+        if (tab.text != null && tab.icon != null) {
           return Size.fromHeight(_kTextAndIconTabHeight + indicatorWeight);
+        }
       }
     }
     return Size.fromHeight(_kTabHeight + indicatorWeight);
@@ -921,9 +924,9 @@ class _TabBarState extends State<TabBar> {
     final double index = _controller!.index.toDouble();
     final double value = _controller!.animation!.value;
     double? offset;
-    if (value == index - 1.0)
+    if (value == index - 1.0) {
       offset = leadingPosition ?? middlePosition;
-    else if (value == index + 1.0)
+    } else if (value == index + 1.0)
       offset = trailingPosition ?? middlePosition;
     else if (value == index)
       offset = middlePosition;
@@ -1099,8 +1102,9 @@ class _TabBarState extends State<TabBar> {
           ),
         ),
       );
-      if (!widget.isScrollable)
+      if (!widget.isScrollable) {
         wrappedTabs[index] = Expanded(child: wrappedTabs[index]);
+      }
     }
 
     Widget tabBar = CustomPaint(
@@ -1219,11 +1223,13 @@ class _TabBarViewState extends State<TabBarView> {
 
     if (newController == _controller) return;
 
-    if (_controllerIsValid)
+    if (_controllerIsValid) {
       _controller!.animation!.removeListener(_handleTabControllerAnimationTick);
+    }
     _controller = newController;
-    if (_controller != null)
+    if (_controller != null) {
       _controller!.animation!.addListener(_handleTabControllerAnimationTick);
+    }
   }
 
   @override
@@ -1244,14 +1250,16 @@ class _TabBarViewState extends State<TabBarView> {
   void didUpdateWidget(TabBarView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) _updateTabController();
-    if (widget.children != oldWidget.children && _warpUnderwayCount == 0)
+    if (widget.children != oldWidget.children && _warpUnderwayCount == 0) {
       _updateChildren();
+    }
   }
 
   @override
   void dispose() {
-    if (_controllerIsValid)
+    if (_controllerIsValid) {
       _controller!.animation!.removeListener(_handleTabControllerAnimationTick);
+    }
     _controller = null;
     // We don't own the _controller Animation, so it's not disposed here.
     super.dispose();
@@ -1263,8 +1271,9 @@ class _TabBarViewState extends State<TabBarView> {
   }
 
   void _handleTabControllerAnimationTick() {
-    if (_warpUnderwayCount > 0 || !_controller!.indexIsChanging)
+    if (_warpUnderwayCount > 0 || !_controller!.indexIsChanging) {
       return; // This widget is driving the controller's animation.
+    }
 
     if (_controller!.index != _currentIndex) {
       _currentIndex = _controller!.index;
@@ -1275,13 +1284,15 @@ class _TabBarViewState extends State<TabBarView> {
   Future<void> _warpToCurrentIndex() async {
     if (!mounted) return Future<void>.value();
 
-    if (_pageController!.page == _currentIndex!.toDouble())
+    if (_pageController!.page == _currentIndex!.toDouble()) {
       return Future<void>.value();
+    }
 
     final int previousIndex = _controller!.previousIndex;
-    if ((_currentIndex! - previousIndex).abs() == 1)
+    if ((_currentIndex! - previousIndex).abs() == 1) {
       return _pageController!.animateToPage(_currentIndex!,
           duration: kTabScrollDuration, curve: Curves.ease);
+    }
 
     assert((_currentIndex! - previousIndex).abs() > 1);
     final int initialPage = _currentIndex! > previousIndex
@@ -1445,9 +1456,9 @@ class TabPageSelector extends StatelessWidget {
     if (tabController.indexIsChanging) {
       // The selection's animation is animating from previousValue to value.
       final double t = 1.0 - _indexChangeProgress(tabController);
-      if (tabController.index == tabIndex)
+      if (tabController.index == tabIndex) {
         background = selectedColorTween.lerp(t);
-      else if (tabController.previousIndex == tabIndex)
+      } else if (tabController.previousIndex == tabIndex)
         background = previousColorTween.lerp(t);
       else
         background = selectedColorTween.begin;
