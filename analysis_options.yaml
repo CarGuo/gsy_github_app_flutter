@@ -10,3 +10,4 @@ linter:
     file_names: false
     constant_identifier_names: false
     library_private_types_in_public_api: false
+    library_prefixes: false
