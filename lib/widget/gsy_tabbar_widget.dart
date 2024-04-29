@@ -126,8 +126,8 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
         ),
         body: PageView(
           controller: _pageController,
-          children: widget.tabViews!,
           onPageChanged: _navigationPageChanged,
+          children: widget.tabViews!,
         ),
         bottomNavigationBar: widget.bottomBar,
       );
@@ -142,8 +142,8 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
         ),
         body: PageView(
           controller: _pageController,
-          children: widget.tabViews!,
           onPageChanged: _navigationPageChanged,
+          children: widget.tabViews!,
         ),
         bottomNavigationBar: Material(
           //为了适配主题风格，包一层Material实现风格套用

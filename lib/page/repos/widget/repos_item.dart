@@ -93,14 +93,16 @@ class ReposItem extends StatelessWidget {
                   Container(
 
                       ///仓库描述
+                      margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                      alignment: Alignment.topLeft,
+
+                      ///仓库描述
                       child: Text(
                         reposViewModel.repositoryDes!,
                         style: GSYConstant.smallSubText,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                      ),
-                      margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      alignment: Alignment.topLeft),
+                      )),
                   const Padding(padding: EdgeInsets.all(10.0)),
 
                   ///仓库状态数值

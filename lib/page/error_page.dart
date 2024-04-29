@@ -66,11 +66,11 @@ class ErrorPageState extends State<ErrorPage> {
                 height: 11,
               ),
               const Material(
+                color: GSYColors.primaryValue,
                 child: Text(
                   "Error Occur",
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
-                color: GSYColors.primaryValue,
               ),
               const SizedBox(
                 height: 40,

@@ -65,7 +65,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
     return Expanded(
       child: AnimatedSwitcher(
         transitionBuilder: (child, anim) {
-          return ScaleTransition(child: child, scale: anim);
+          return ScaleTransition(scale: anim, child: child);
         },
         duration: const Duration(milliseconds: 300),
         child: RawMaterialButton(

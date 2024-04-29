@@ -69,10 +69,10 @@ class UserItem extends StatelessWidget {
                         if (userItemViewModel.followers != null)
                           Expanded(
                             child: Align(
+                              alignment: Alignment.centerRight,
                               child: Text(
                                   "followers: ${userItemViewModel.followers}",
                                   style: GSYConstant.smallSubText),
-                              alignment: Alignment.centerRight,
                             ),
                           ),
                       ],

@@ -248,8 +248,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                   }
                   _createIssue();
                 },
-                child: const Icon(Icons.add),
                 backgroundColor: Theme.of(context).primaryColor,
+                child: const Icon(Icons.add),
               ),
             ),
 

@@ -97,9 +97,9 @@ class RadialMenuCenterButton extends StatelessWidget {
     return ScaleTransition(
       scale: _scale,
       child: RadialMenuButton(
-        child: child,
         backgroundColor: color,
         onPressed: onPressed,
+        child: child,
       ),
     );
   }

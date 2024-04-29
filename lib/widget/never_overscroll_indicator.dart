@@ -11,8 +11,8 @@ class NeverOverScrollIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      child: child!,
       behavior: NeverOverScrollBehavior(needOverload: needOverload),
+      child: child!,
     );
   }
 }

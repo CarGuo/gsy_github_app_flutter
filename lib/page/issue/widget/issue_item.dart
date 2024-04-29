@@ -77,13 +77,13 @@ class IssueItem extends StatelessWidget {
   _renderCommentText() {
     return (limitComment)
         ? Container(
+            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+            alignment: Alignment.topLeft,
             child: Text(
               issueItemViewModel.issueComment,
               style: GSYConstant.smallSubText,
               maxLines: limitComment ? 2 : 1000,
             ),
-            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-            alignment: Alignment.topLeft,
           )
         : GSYMarkdownWidget(markdownData: issueItemViewModel.issueComment);
   }

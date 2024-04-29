@@ -23,8 +23,8 @@ class GSYBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       color: color,
-      child: Row(children: rowContents!),
       shape: shape,
+      child: Row(children: rowContents!),
     );
   }
 }

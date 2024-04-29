@@ -191,10 +191,10 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       padding: const EdgeInsets.all(4.0),
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
+                                      onPressed: widget.onPressed,
                                       child: Text(
                                           GSYLocalizations.i18n(context)!.app_ok,
-                                          style: GSYConstant.normalTextBold),
-                                      onPressed: widget.onPressed)),
+                                          style: GSYConstant.normalTextBold))),
                             ],
                           )
                         ],

@@ -77,12 +77,12 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                     ),
                                     backgroundColor:
                                         Theme.of(context).primaryColor),
+                                onPressed: loginIn,
                                 child: const Text("登陆",
                                     style: TextStyle(fontSize: 14),
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
-                                    overflow: TextOverflow.ellipsis),
-                                onPressed: loginIn),
+                                    overflow: TextOverflow.ellipsis)),
                           );
                         },
                       ),

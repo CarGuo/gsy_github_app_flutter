@@ -91,6 +91,9 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
     return NestedScrollViewRefreshIndicator(
       ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
       key: widget.refreshKey,
+
+      ///下拉刷新触发，返回的是一个Future
+      onRefresh: widget.onRefresh ?? () async {},
       child: NestedScrollView(
         ///滑动监听
         controller: widget.scrollController,
@@ -115,9 +118,6 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
           ),
         ),
       ),
-
-      ///下拉刷新触发，返回的是一个Future
-      onRefresh: widget.onRefresh ?? () async {},
     );
   }
 

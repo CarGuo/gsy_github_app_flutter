@@ -140,9 +140,9 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
     return LayoutId(
       id: '${_RadialMenuLayout.actionButton}$index',
       child: RadialMenuButton(
-        child: item,
         backgroundColor: item.backgroundColor,
         onPressed: () => _activate(index),
+        child: item,
       ),
     );
   }

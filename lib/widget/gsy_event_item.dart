@@ -29,13 +29,13 @@ class GSYEventItem extends StatelessWidget {
             eventViewModel.actionDes!.isEmpty)
         ? Container()
         : Container(
+            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+            alignment: Alignment.topLeft,
             child: Text(
               eventViewModel.actionDes!,
               style: GSYConstant.smallSubText,
               maxLines: 3,
-            ),
-            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-            alignment: Alignment.topLeft);
+            ));
 
     Widget userImage = (needImage)
         ? GSYUserIconWidget(
@@ -67,10 +67,10 @@ class GSYEventItem extends StatelessWidget {
                     ],
                   ),
                   Container(
-                      child: Text(eventViewModel.actionTarget!,
-                          style: GSYConstant.smallTextBold),
                       margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      alignment: Alignment.topLeft),
+                      alignment: Alignment.topLeft,
+                      child: Text(eventViewModel.actionTarget!,
+                          style: GSYConstant.smallTextBold)),
                   des,
                 ],
               ),

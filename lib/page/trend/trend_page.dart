@@ -162,12 +162,12 @@ class TrendPageState extends State<TrendPage>
       PopupMenuItemSelected<TrendTypeModel> onSelected) {
     return Expanded(
       child: PopupMenuButton<TrendTypeModel>(
-        child: Center(
-            child: Text(data, style: GSYConstant.middleTextWhite)),
         onSelected: onSelected,
         itemBuilder: (BuildContext context) {
           return _renderHeaderPopItemChild(list);
         },
+        child: Center(
+            child: Text(data, style: GSYConstant.middleTextWhite)),
       ),
     );
   }
@@ -258,6 +258,7 @@ class TrendPageState extends State<TrendPage>
                 ///下拉刷新
                 return NestedScrollViewRefreshIndicator(
                   key: refreshIndicatorKey,
+                  onRefresh: requestRefresh,
 
                   ///嵌套滚动
                   child: NestedScrollView(
@@ -276,7 +277,6 @@ class TrendPageState extends State<TrendPage>
                             itemCount: snapShot.data!.length,
                           ),
                   ),
-                  onRefresh: requestRefresh,
                 );
               }),
           floatingActionButton: trendUserButton(),

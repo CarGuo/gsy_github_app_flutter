@@ -65,12 +65,12 @@ class IssueHeaderItem extends StatelessWidget {
             issueHeaderViewModel.closedBy!.trim().isEmpty)
         ? Container()
         : Container(
+            margin: const EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
+            alignment: Alignment.topRight,
             child: Text(
               "Close By ${issueHeaderViewModel.closedBy!}",
               style: GSYConstant.smallSubLightText,
-            ),
-            margin: const EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
-            alignment: Alignment.topRight);
+            ));
   }
 
   @override
@@ -126,12 +126,14 @@ class IssueHeaderItem extends StatelessWidget {
                         Container(
 
                             ///评论标题
+                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            alignment: Alignment.topLeft,
+
+                            ///评论标题
                             child: Text(
                               issueHeaderViewModel.issueComment!,
                               style: GSYConstant.smallTextWhite,
-                            ),
-                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                            alignment: Alignment.topLeft),
+                            )),
                         const Padding(
                           padding: EdgeInsets.only(
                               left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),

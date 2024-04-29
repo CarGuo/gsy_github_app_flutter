@@ -19,8 +19,8 @@ void main() {
           details);
     };
     runApp(ConfigWrapper(
-      child: FlutterReduxApp(),
       config: EnvConfig.fromJson(config),
+      child: FlutterReduxApp(),
     ));
     ///屏幕刷新率和显示率不一致时的优化
     GestureBinding.instance.resamplingEnabled = true;

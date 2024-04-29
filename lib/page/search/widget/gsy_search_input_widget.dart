@@ -62,12 +62,12 @@ class GSYSearchInputWidget extends StatelessWidget {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: const EdgeInsets.only(right: 5.0, left: 10.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+              onPressed: onSubmitPressed,
               child: Icon(
                 GSYICons.SEARCH,
                 size: 15.0,
                 color: Theme.of(context).primaryColorDark,
-              ),
-              onPressed: onSubmitPressed)
+              ))
         ],
       ),
     );

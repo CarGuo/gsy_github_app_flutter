@@ -63,6 +63,8 @@ class DemoItem extends StatelessWidget {
                 children: <Widget>[
                   ///文本描述
                   Container(
+                      margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                      alignment: Alignment.topLeft,
                       child: const Text(
                         "这是一点描述",
                         style: TextStyle(
@@ -72,9 +74,7 @@ class DemoItem extends StatelessWidget {
                         ///最长三行，超过 ... 显示
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                      ),
-                      margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      alignment: Alignment.topLeft),
+                      )),
                   const Padding(padding: EdgeInsets.all(10.0)),
 
                   ///三个平均分配的横向图标文字

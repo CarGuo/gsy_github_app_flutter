@@ -91,8 +91,8 @@ class Tab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            child: icon,
             margin: const EdgeInsets.only(bottom: 10.0),
+            child: icon,
           ),
           _buildLabelText(),
         ],
@@ -102,8 +102,8 @@ class Tab extends StatelessWidget {
     return SizedBox(
       height: height,
       child: Center(
-        child: label,
         widthFactor: 1.0,
+        child: label,
       ),
     );
   }

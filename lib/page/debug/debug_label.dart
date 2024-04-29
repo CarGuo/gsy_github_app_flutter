@@ -90,9 +90,17 @@ class _GlobalLabelState extends State<GlobalLabel> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
+        alignment: const Alignment(0.97, 0.8),
         child: Material(
           color: Colors.transparent,
           child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(5),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
             child: InkWell(
               onLongPress: () {
                 longClick = true;
@@ -108,16 +116,8 @@ class _GlobalLabelState extends State<GlobalLabel> {
                 style: const TextStyle(color: Colors.white, fontSize: 10),
               ),
             ),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.6),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
           ),
         ),
-        alignment: const Alignment(0.97, 0.8),
       );
     });
   }

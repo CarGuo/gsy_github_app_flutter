@@ -40,6 +40,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+              onPressed: onPressed,
               child: GSYIConText(
                 icon,
                 text,
@@ -50,8 +51,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                 15.0,
                 padding: 3.0,
                 mainAxisAlignment: MainAxisAlignment.center,
-              ),
-              onPressed: onPressed)),
+              ))),
     );
   }
 
@@ -188,6 +188,8 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///仓库描述
   renderDes() {
     return Container(
+        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+        alignment: Alignment.topLeft,
         child: Text(
           CommonUtils.removeTextTag(
                   widget.reposHeaderViewModel.repositoryDes) ??
@@ -197,9 +199,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
           ]),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
-        ),
-        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-        alignment: Alignment.topLeft);
+        ));
   }
 
   /// 右下角的信息

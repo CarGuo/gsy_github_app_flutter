@@ -26,6 +26,7 @@ class GSYUserIconWidget extends StatelessWidget {
         padding:
             padding ?? const EdgeInsets.only(top: 4.0, right: 5.0, left: 5.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+        onPressed: onPressed,
         child: ClipOval(
           child: FadeInImage(
             placeholder: const AssetImage(
@@ -37,7 +38,6 @@ class GSYUserIconWidget extends StatelessWidget {
             width: width,
             height: height,
           ),
-        ),
-        onPressed: onPressed);
+        ));
   }
 }

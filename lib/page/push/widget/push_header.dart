@@ -74,23 +74,23 @@ class PushHeader extends StatelessWidget {
 
                         ///修改时间
                         Container(
+                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            alignment: Alignment.topLeft,
                             child: Text(
                               pushHeaderViewModel.pushTime,
                               style: GSYConstant.smallTextWhite,
                               maxLines: 2,
-                            ),
-                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                            alignment: Alignment.topLeft),
+                            )),
 
                         ///修改的commit内容
                         Container(
+                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            alignment: Alignment.topLeft,
                             child: Text(
                               pushHeaderViewModel.pushDes,
                               style: GSYConstant.smallTextWhite,
                               maxLines: 2,
-                            ),
-                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                            alignment: Alignment.topLeft),
+                            )),
                         const Padding(
                           padding: EdgeInsets.only(
                               left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),

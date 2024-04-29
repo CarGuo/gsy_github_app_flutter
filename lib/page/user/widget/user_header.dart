@@ -166,6 +166,10 @@ class UserHeaderItem extends StatelessWidget {
     return Container(
 
         ///用户博客
+        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+        alignment: Alignment.topLeft,
+
+        ///用户博客
         child: RawMaterialButton(
           onPressed: () {
             if (userInfo.blog != null) {
@@ -186,9 +190,7 @@ class UserHeaderItem extends StatelessWidget {
             padding: 3.0,
             textWidth: MediaQuery.sizeOf(context).width - 50,
           ),
-        ),
-        margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-        alignment: Alignment.topLeft);
+        ));
   }
 
   @override
@@ -226,24 +228,24 @@ class UserHeaderItem extends StatelessWidget {
 
               ///用户描述
               Container(
+                  alignment: Alignment.topLeft,
                   child: Text(
                     userInfo.bio == null ? "" : userInfo.bio!,
                     style: GSYConstant.smallSubLightText,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  alignment: Alignment.topLeft),
+                  )),
 
               ///用户创建时长
               Container(
+                  margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                  alignment: Alignment.topLeft,
                   child: Text(
                     GSYLocalizations.i18n(context)!.user_create_at +
                         CommonUtils.getDateStr(userInfo.created_at),
                     style: GSYConstant.smallSubLightText,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                  alignment: Alignment.topLeft),
+                  )),
               const Padding(padding: EdgeInsets.only(bottom: 5.0)),
             ],
           ),
@@ -275,6 +277,7 @@ class UserHeaderBottom extends StatelessWidget {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: const EdgeInsets.only(top: 5.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+              onPressed: onPressed,
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -284,8 +287,7 @@ class UserHeaderBottom extends StatelessWidget {
                     TextSpan(text: data, style: valueStyle)
                   ],
                 ),
-              ),
-              onPressed: onPressed)),
+              ))),
     );
   }
 
@@ -429,15 +431,15 @@ class UserHeaderChart extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
+            margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
+            alignment: Alignment.topLeft,
             child: Text(
               (userInfo.type == "Organization")
                   ? GSYLocalizations.i18n(context)!.user_dynamic_group
                   : GSYLocalizations.i18n(context)!.user_dynamic_title,
               style: GSYConstant.normalTextBold,
               overflow: TextOverflow.ellipsis,
-            ),
-            margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
-            alignment: Alignment.topLeft),
+            )),
         _renderChart(context),
       ],
     );

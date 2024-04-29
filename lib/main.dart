@@ -18,8 +18,8 @@ void main() {
           "${details.exception}\n ${details.stack}", details);
     };
     runApp(ConfigWrapper(
-      child: FlutterReduxApp(),
       config: EnvConfig.fromJson(config),
+      child: FlutterReduxApp(),
     ));
     ///屏幕刷新率和显示率不一致时的优化，必须挪动到 runApp 之后
     GestureBinding.instance.resamplingEnabled = true;
