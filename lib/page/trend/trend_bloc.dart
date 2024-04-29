@@ -16,7 +16,7 @@ class TrendBloc {
   bool get requested => _requested;
 
   ///rxdart 实现的 stream
-  var _subject = PublishSubject<List<TrendingRepoModel>?>();
+  final _subject = PublishSubject<List<TrendingRepoModel>?>();
 
   Stream<List<TrendingRepoModel>?> get stream => _subject.stream;
 

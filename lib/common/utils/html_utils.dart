@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_escapes
+
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /// Created by guoshuyu

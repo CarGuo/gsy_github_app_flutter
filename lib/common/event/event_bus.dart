@@ -11,7 +11,7 @@ import 'dart:async';
 /// filter events.
 ///
 class EventBus {
-  StreamController _streamController;
+  final StreamController _streamController;
 
   /// Controller for the event bus stream.
   StreamController get streamController => _streamController;

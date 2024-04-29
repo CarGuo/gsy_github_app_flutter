@@ -798,7 +798,7 @@ class _TabBarState extends State<TabBar> {
   bool get _controllerIsValid => _controller?.animation != null;
 
   void _updateTabController() {
-    final TabController? newController =
+    final TabController newController =
         widget.controller ?? DefaultTabController.of(context);
     assert(() {
       if (newController == null) {
@@ -1208,7 +1208,7 @@ class _TabBarViewState extends State<TabBarView> {
   bool get _controllerIsValid => _controller?.animation != null;
 
   void _updateTabController() {
-    final TabController? newController =
+    final TabController newController =
         widget.controller ?? DefaultTabController.of(context);
     assert(() {
       if (newController == null) {
@@ -1492,7 +1492,7 @@ class TabPageSelector extends StatelessWidget {
         ColorTween(begin: fixColor, end: fixSelectedColor);
     final ColorTween previousColorTween =
         ColorTween(begin: fixSelectedColor, end: fixColor);
-    final TabController? tabController =
+    final TabController tabController =
         controller ?? DefaultTabController.of(context);
     assert(() {
       if (tabController == null) {

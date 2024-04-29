@@ -10,7 +10,7 @@ mixin GSYFlarePullMutliController implements FlareController {
   double pulledExtentFlare = 0;
   bool _isSurround = false;
 
-  double _refreshTriggerPullDistance = 140;
+  final double _refreshTriggerPullDistance = 140;
 
   double _successTime = 0.0;
   double _loadingTime = 0.0;

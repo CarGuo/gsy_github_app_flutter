@@ -40,7 +40,7 @@ class ArcProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     TextPainter? _iconPainter;
     final ThemeData theme = Theme.of(context);
-    final Color? _iconColor = iconColor ?? theme.colorScheme.secondary;
+    final Color _iconColor = iconColor ?? theme.colorScheme.secondary;
     final double? _iconSize = iconSize ?? IconTheme.of(context).size;
 
     if (icon != null) {

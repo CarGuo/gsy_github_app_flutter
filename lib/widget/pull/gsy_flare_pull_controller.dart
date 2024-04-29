@@ -5,7 +5,7 @@ mixin GSYFlarePullController implements FlareController {
   late ActorAnimation? _pullAnimation;
 
   double pulledExtentFlare = 0;
-  double _speed = 2.0;
+  final double _speed = 2.0;
   double _rockTime = 0.0;
 
   @override
