@@ -11,7 +11,7 @@ class JsonViewerWidget extends StatefulWidget {
 }
 
 class JsonViewerWidgetState extends State<JsonViewerWidget> {
-  Map<String, bool> openFlag = Map();
+  Map<String, bool> openFlag = {};
 
   @override
   Widget build(BuildContext context) {

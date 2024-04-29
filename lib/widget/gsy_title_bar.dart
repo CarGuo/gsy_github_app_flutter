@@ -46,19 +46,17 @@ class GSYTitleBar extends StatelessWidget {
               })
           : Container();
     }
-    return Container(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              title!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(
+            title!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          widget!
-        ],
-      ),
+        ),
+        widget!
+      ],
     );
   }
 }

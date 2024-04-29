@@ -286,7 +286,7 @@ class Address {
   ///趋势 get
   static trendingApi(since, languageType) {
     if (languageType != null) {
-      return "https://guoshuyu.cn/github/trend/list?languageType=$languageType&since=${since}";
+      return "https://guoshuyu.cn/github/trend/list?languageType=$languageType&since=$since";
     }
     return "https://guoshuyu.cn/github/trend/list?since=$since";
   }

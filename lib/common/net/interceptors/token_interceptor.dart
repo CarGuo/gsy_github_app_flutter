@@ -41,7 +41,7 @@ class TokenInterceptors extends InterceptorsWrapper {
 
   ///清除授权
   clearAuthorization() {
-    this._token = null;
+    _token = null;
     LocalStorage.remove(Config.TOKEN_KEY);
     releaseClient();
   }
@@ -58,7 +58,7 @@ class TokenInterceptors extends InterceptorsWrapper {
         return "Basic $basic";
       }
     } else {
-      this._token = token;
+      _token = token;
       return token;
     }
   }

@@ -53,7 +53,7 @@ class TrendingUtil {
       parseRepoBaseInfo(repo, html);
 
       var metaNoteContent =
-          parseContentWithNote(html, 'class="f6 text-gray mt-2">', '<\/div>') +
+          parseContentWithNote(html, 'class="f6 text-gray mt-2">', '</div>') +
               "end";
       repo.meta = parseRepoLabelWithTag(repo, metaNoteContent, TAGS["meta"]);
       repo.starCount =

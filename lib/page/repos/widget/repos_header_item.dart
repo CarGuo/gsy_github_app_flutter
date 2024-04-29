@@ -461,30 +461,30 @@ class ReposHeaderViewModel {
     if (map == null || map.ownerName == null) {
       return;
     }
-    this.ownerPic = map.ownerAvatarUrl;
-    this.repositoryName = reposName;
-    this.allIssueCount = map.issuesTotal;
-    this.topics = map.topics;
-    this.openIssuesCount = map.issuesOpen;
-    this.repositoryStar = map.starCount != null ? map.starCount.toString() : "";
-    this.repositoryFork = map.forkCount != null ? map.forkCount.toString() : "";
-    this.repositoryWatch =
+    ownerPic = map.ownerAvatarUrl;
+    repositoryName = reposName;
+    allIssueCount = map.issuesTotal;
+    topics = map.topics;
+    openIssuesCount = map.issuesOpen;
+    repositoryStar = map.starCount != null ? map.starCount.toString() : "";
+    repositoryFork = map.forkCount != null ? map.forkCount.toString() : "";
+    repositoryWatch =
         map.watcherCount != null ? map.watcherCount.toString() : "";
-    this.repositoryIssue =
+    repositoryIssue =
         map.issuesOpen != null ? map.issuesOpen.toString() : "";
     //this.repositoryIssueClose = map.closedIssuesCount != null ? map.closed_issues_count.toString() : "";
     //this.repositoryIssueAll = map.all_issues_count != null ? map.all_issues_count.toString() : "";
-    this.repositorySize =
+    repositorySize =
         "${(map.size! / 1024.0).toString().substring(0, 3)}M";
-    this.repositoryType = map.language;
-    this.repositoryDes = map.shortDescriptionHTML;
-    this.repositoryIsFork = map.isFork;
-    this.license = map.license != null ? map.license : "";
-    this.repositoryParentName =
+    repositoryType = map.language;
+    repositoryDes = map.shortDescriptionHTML;
+    repositoryIsFork = map.isFork;
+    license = map.license != null ? map.license : "";
+    repositoryParentName =
         map.parent != null ? map.parent!.reposName : null;
-    this.repositoryParentUser =
+    repositoryParentUser =
         map.parent != null ? map.parent!.ownerName : null;
-    this.created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map.createdAt!));
-    this.push_at = CommonUtils.getNewsTimeStr((DateTime.parse(map.pushAt!)));
+    created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map.createdAt!));
+    push_at = CommonUtils.getNewsTimeStr((DateTime.parse(map.pushAt!)));
   }
 }

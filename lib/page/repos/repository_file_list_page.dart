@@ -98,17 +98,17 @@ class RepositoryDetailFileListPageState
     if (headerList[index] != ".") {
       List<String?> newHeaderList = headerList.sublist(0, index + 1);
       String path = newHeaderList.sublist(1, newHeaderList.length).join("/");
-      this.setState(() {
+      setState(() {
         this.path = path;
         headerList = newHeaderList;
       });
-      this.showRefreshLoading();
+      showRefreshLoading();
     } else {
       setState(() {
         path = "";
         headerList = ["."];
       });
-      this.showRefreshLoading();
+      showRefreshLoading();
     }
   }
 
@@ -120,14 +120,14 @@ class RepositoryDetailFileListPageState
             msg: GSYLocalizations.i18n(context)!.loading_text);
         return;
       }
-      this.setState(() {
+      setState(() {
         headerList.add(fileItemViewModel.name);
       });
       String path = headerList.sublist(1, headerList.length).join("/");
-      this.setState(() {
+      setState(() {
         this.path = path;
       });
-      this.showRefreshLoading();
+      showRefreshLoading();
     } else {
       String path = "${headerList.sublist(1, headerList.length).join("/")}/${fileItemViewModel.name!}";
       if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
@@ -162,12 +162,12 @@ class RepositoryDetailFileListPageState
 
   @override
   requestLoadMore() async {
-    return await _getDataLogic(this.searchText);
+    return await _getDataLogic(searchText);
   }
 
   @override
   requestRefresh() async {
-    return await _getDataLogic(this.searchText);
+    return await _getDataLogic(searchText);
   }
 
   @override

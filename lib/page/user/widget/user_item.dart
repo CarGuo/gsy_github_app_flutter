@@ -37,69 +37,67 @@ class UserItem extends StatelessWidget {
         ),
         onPressed: null);
 
-    return Container(
-      child: GSYCardItem(
-        color: me.login == userItemViewModel.login
-            ? Colors.amber
-            : (userItemViewModel.login == "CarGuo")
-                ? Colors.pink
-                : Colors.white,
-        child: TextButton(
-          onPressed: onPressed,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
-            child: Row(
-              children: <Widget>[
-                if (userItemViewModel.index != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(userItemViewModel.index!,
-                        style: GSYConstant.middleSubTextBold),
-                  ),
-                userImage,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(userItemViewModel.userName ?? "null",
-                              style: GSYConstant.smallTextBold),
-                          if (userItemViewModel.followers != null)
-                            Expanded(
-                              child: Align(
-                                child: Text(
-                                    "followers: ${userItemViewModel.followers}",
-                                    style: GSYConstant.smallSubText),
-                                alignment: Alignment.centerRight,
-                              ),
-                            ),
-                        ],
-                      ),
-                      if (userItemViewModel.bio != null &&
-                          userItemViewModel.bio!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(userItemViewModel.bio!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GSYConstant.smallText),
-                        ),
-                      if (userItemViewModel.lang != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5, right: 10),
-                          child: Text(userItemViewModel.lang!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GSYConstant.smallSubText),
-                        ),
-                    ],
-                  ),
+    return GSYCardItem(
+      color: me.login == userItemViewModel.login
+          ? Colors.amber
+          : (userItemViewModel.login == "CarGuo")
+              ? Colors.pink
+              : Colors.white,
+      child: TextButton(
+        onPressed: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.only(
+              left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
+          child: Row(
+            children: <Widget>[
+              if (userItemViewModel.index != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Text(userItemViewModel.index!,
+                      style: GSYConstant.middleSubTextBold),
                 ),
-              ],
-            ),
+              userImage,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(userItemViewModel.userName ?? "null",
+                            style: GSYConstant.smallTextBold),
+                        if (userItemViewModel.followers != null)
+                          Expanded(
+                            child: Align(
+                              child: Text(
+                                  "followers: ${userItemViewModel.followers}",
+                                  style: GSYConstant.smallSubText),
+                              alignment: Alignment.centerRight,
+                            ),
+                          ),
+                      ],
+                    ),
+                    if (userItemViewModel.bio != null &&
+                        userItemViewModel.bio!.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text(userItemViewModel.bio!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: GSYConstant.smallText),
+                      ),
+                    if (userItemViewModel.lang != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, right: 10),
+                        child: Text(userItemViewModel.lang!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: GSYConstant.smallSubText),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

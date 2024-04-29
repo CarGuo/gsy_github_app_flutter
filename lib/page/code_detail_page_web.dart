@@ -100,10 +100,9 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
                     SpinKitDoubleBounce(
                         color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Container(
-                        child: Text(
-                            GSYLocalizations.i18n(context)!.loading_text,
-                            style: GSYConstant.middleText)),
+                    Text(
+                        GSYLocalizations.i18n(context)!.loading_text,
+                        style: GSYConstant.middleText),
                   ],
                 ),
               ),

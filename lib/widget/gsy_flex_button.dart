@@ -49,7 +49,7 @@ class GSYFlexButton extends StatelessWidget {
           ],
         ),
         onPressed: () {
-          this.onPress?.call();
+          onPress?.call();
         });
   }
 }

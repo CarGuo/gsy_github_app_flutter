@@ -291,7 +291,7 @@ class CRAnimation extends StatelessWidget {
             maxR: maxR,
             offset: offset,
           ),
-          child: this.child,
+          child: child,
         );
       },
     );

@@ -49,17 +49,15 @@ class PhotoViewPage extends StatelessWidget {
                 BuildContext context,
                 ImageChunkEvent? event,
               ) {
-                return Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Center(
-                          child: Image.asset(GSYICons.DEFAULT_IMAGE,
-                              height: 180.0, width: 180.0)),
-                      const Center(
-                          child: SpinKitFoldingCube(
-                              color: Colors.white30, size: 60.0)),
-                    ],
-                  ),
+                return Stack(
+                  children: <Widget>[
+                    Center(
+                        child: Image.asset(GSYICons.DEFAULT_IMAGE,
+                            height: 180.0, width: 180.0)),
+                    const Center(
+                        child: SpinKitFoldingCube(
+                            color: Colors.white30, size: 60.0)),
+                  ],
                 );
               }),
         ));

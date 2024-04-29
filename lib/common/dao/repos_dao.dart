@@ -509,7 +509,7 @@ class ReposDao {
 
         /// 反序列化
         Map result = serializers.serializeWith(serializerForType, test) as Map<dynamic, dynamic>;
-        print("###### $test ${result}");
+        print("###### $test $result");
 
         list.add(data['name']);
       }

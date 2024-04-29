@@ -135,10 +135,8 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
                 width: 70.0,
                 height: 70.0),
           ),
-          Container(
-            child: Text(GSYLocalizations.i18n(context)!.app_empty,
-                style: GSYConstant.normalText),
-          ),
+          Text(GSYLocalizations.i18n(context)!.app_empty,
+              style: GSYConstant.normalText),
         ],
       ),
     );

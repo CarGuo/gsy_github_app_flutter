@@ -9,9 +9,9 @@ class ConfigWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ///设置 Config.DEBUG 的静态变量
-    Config.DEBUG = this.config?.debug;
+    Config.DEBUG = config?.debug;
     print("ConfigWrapper build ${Config.DEBUG}");
-    return _InheritedConfig(config: this.config, child: this.child!);
+    return _InheritedConfig(config: config, child: child!);
   }
 
   static EnvConfig? of(BuildContext context) {

@@ -164,14 +164,14 @@ class _DiffText extends CustomPainter {
     if (oldDelegate is _DiffText) {
       String oldFrameText = oldDelegate.text ?? "";
       if (oldFrameText == text) {
-        this._oldText = oldDelegate._oldText;
-        this._oldTextLayoutInfo = oldDelegate._oldTextLayoutInfo;
-        this._textLayoutInfo = oldDelegate._textLayoutInfo;
-        if (this.progress == oldDelegate.progress) {
+        _oldText = oldDelegate._oldText;
+        _oldTextLayoutInfo = oldDelegate._oldTextLayoutInfo;
+        _textLayoutInfo = oldDelegate._textLayoutInfo;
+        if (progress == oldDelegate.progress) {
           return false;
         }
       } else {
-        this._oldText = oldDelegate.text;
+        _oldText = oldDelegate.text;
         calculateLayoutInfo(text ?? "", _textLayoutInfo);
         calculateLayoutInfo(_oldText!, _oldTextLayoutInfo);
         calculateMove();

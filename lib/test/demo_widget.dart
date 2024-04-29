@@ -65,8 +65,6 @@ class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      child: Text(text ?? "这就是有状态DMEO"),
-    );
+    return Text(text ?? "这就是有状态DMEO");
   }
 }

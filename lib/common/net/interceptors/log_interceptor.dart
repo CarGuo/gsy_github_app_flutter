@@ -30,7 +30,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       if (options.data is Map) {
         data = options.data;
       } else {
-        data = Map<String, dynamic>();
+        data = <String, dynamic>{};
       }
       var map = {
         "header:": {...options.headers},
@@ -54,7 +54,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       case Map || List:
         {
           try {
-            var data = Map<String, dynamic>();
+            var data = <String, dynamic>{};
             data["data"] = response.data;
             addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
             addLogic(sHttpResponses, data);
@@ -65,7 +65,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       case String:
         {
           try {
-            var data = Map<String, dynamic>();
+            var data = <String, dynamic>{};
             data["data"] = response.data;
             addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
             addLogic(sHttpResponses, data);
@@ -85,7 +85,7 @@ class LogsInterceptors extends InterceptorsWrapper {
     }
     try {
       addLogic(sHttpErrorUrl, err.requestOptions.path);
-      var errors = Map<String, dynamic>();
+      var errors = <String, dynamic>{};
       errors["error"] = err.message;
       addLogic(sHttpError, errors);
     } catch (e) {

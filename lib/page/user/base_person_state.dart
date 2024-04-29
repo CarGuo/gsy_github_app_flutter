@@ -117,13 +117,11 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               return Transform.translate(
                 offset: Offset(0, -shrinkOffset),
                 child: SizedBox.expand(
-                  child: Container(
-                    child: UserHeaderItem(
-                        userInfo, beStaredCount, Theme.of(context).primaryColor,
-                        notifyColor: notifyColor,
-                        refreshCallBack: refreshCallBack,
-                        orgList: orgList),
-                  ),
+                  child: UserHeaderItem(
+                      userInfo, beStaredCount, Theme.of(context).primaryColor,
+                      notifyColor: notifyColor,
+                      refreshCallBack: refreshCallBack,
+                      orgList: orgList),
                 ),
               );
             }),

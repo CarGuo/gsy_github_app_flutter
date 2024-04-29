@@ -26,13 +26,11 @@ class _GSYWebViewState extends State<GSYWebView> {
     }
     return Row(children: [
       Expanded(
-          child: Container(
-        child: Text(
-          widget.title!,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      )),
+          child: Text(
+            widget.title!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          )),
       GSYCommonOptionWidget(url: widget.url),
     ]);
   }
@@ -97,10 +95,9 @@ class _GSYWebViewState extends State<GSYWebView> {
                     SpinKitDoubleBounce(
                         color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Container(
-                        child: Text(
-                            GSYLocalizations.i18n(context)!.loading_text,
-                            style: GSYConstant.middleText)),
+                    Text(
+                        GSYLocalizations.i18n(context)!.loading_text,
+                        style: GSYConstant.middleText),
                   ],
                 ),
               ),

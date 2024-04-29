@@ -40,15 +40,13 @@ class GSYIConText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget showText = (textWidth == -1)
-        ? Container(
-            child: Text(
-              iconText ?? "",
-              style: textStyle
-                  .merge(const TextStyle(textBaseline: TextBaseline.alphabetic)),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          )
+        ? Text(
+          iconText ?? "",
+          style: textStyle
+              .merge(const TextStyle(textBaseline: TextBaseline.alphabetic)),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        )
         : SizedBox(
             width: textWidth,
             child:
@@ -62,22 +60,20 @@ class GSYIConText extends StatelessWidget {
               maxLines: 1,
             ));
 
-    return Container(
-      child: Row(
-        textBaseline: TextBaseline.alphabetic,
-        mainAxisAlignment: mainAxisAlignment,
-        mainAxisSize: mainAxisSize,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        children: <Widget>[
-          Icon(
-            iconData,
-            size: iconSize,
-            color: iconColor,
-          ),
-          Padding(padding: EdgeInsets.all(padding)),
-          showText
-        ],
-      ),
+    return Row(
+      textBaseline: TextBaseline.alphabetic,
+      mainAxisAlignment: mainAxisAlignment,
+      mainAxisSize: mainAxisSize,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      children: <Widget>[
+        Icon(
+          iconData,
+          size: iconSize,
+          color: iconColor,
+        ),
+        Padding(padding: EdgeInsets.all(padding)),
+        showText
+      ],
     );
   }
 }

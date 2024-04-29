@@ -61,7 +61,7 @@ class _LoginWebViewState extends State<LoginWebView> {
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith("gsygithubapp://authed")) {
               var code = Uri.parse(request.url).queryParameters["code"];
-              print("code ${code}");
+              print("code $code");
               Navigator.of(context).pop(code);
               return NavigationDecision.prevent;
             }
@@ -82,13 +82,11 @@ class _LoginWebViewState extends State<LoginWebView> {
     }
     return Row(children: [
       Expanded(
-          child: Container(
-        child: Text(
-          widget.title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      )),
+          child: Text(
+            widget.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          )),
       GSYCommonOptionWidget(url: widget.url),
     ]);
   }
@@ -123,10 +121,9 @@ class _LoginWebViewState extends State<LoginWebView> {
                     SpinKitDoubleBounce(
                         color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Container(
-                        child: Text(
-                            GSYLocalizations.i18n(context)!.loading_text,
-                            style: GSYConstant.middleText)),
+                    Text(
+                        GSYLocalizations.i18n(context)!.loading_text,
+                        style: GSYConstant.middleText),
                   ],
                 ),
               ),

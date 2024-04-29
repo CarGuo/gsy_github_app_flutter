@@ -77,9 +77,9 @@ class IssueDao {
   static searchRepositoryIssue(q, name, reposName, state, {page = 1}) async {
     String? qu;
     if (state == null || state == 'all') {
-      qu = q + "+repo%3A${name}%2F${reposName}";
+      qu = q + "+repo%3A$name%2F$reposName";
     } else {
-      qu = q + "+repo%3A${name}%2F${reposName}+state%3A${state}";
+      qu = q + "+repo%3A$name%2F$reposName+state%3A$state";
     }
     String url =
         Address.repositoryIssueSearch(qu) + Address.getPageParams("&", page);

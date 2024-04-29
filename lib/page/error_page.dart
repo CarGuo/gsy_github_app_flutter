@@ -24,7 +24,7 @@ class ErrorPageState extends State<ErrorPage> {
 
   addError(FlutterErrorDetails details) {
     try {
-      var map = Map<String, dynamic>();
+      var map = <String, dynamic>{};
       map["error"] = details.toString();
       LogsInterceptors.addLogic(
           sErrorName, details.exception.runtimeType.toString());

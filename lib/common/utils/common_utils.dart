@@ -405,13 +405,11 @@ class CommonUtils {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
-                            child: const SpinKitCubeGrid(color: GSYColors.white)),
+                        const SpinKitCubeGrid(color: GSYColors.white),
                         Container(height: 10.0),
-                        Container(
-                            child: Text(
-                                GSYLocalizations.i18n(context)!.loading_text,
-                                style: GSYConstant.normalTextWhite)),
+                        Text(
+                            GSYLocalizations.i18n(context)!.loading_text,
+                            style: GSYConstant.normalTextWhite),
                       ],
                     ),
                   ),

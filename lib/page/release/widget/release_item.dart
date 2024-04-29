@@ -18,19 +18,17 @@ class ReleaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GSYCardItem(
-        child: InkWell(
-          onTap: onPressed,
-          onLongPress: onLongPress,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(child: Text(releaseItemViewModel.actionTitle!, style: GSYConstant.smallTextBold)),
-                Container(child: Text(releaseItemViewModel.actionTime ?? "", style: GSYConstant.smallSubText)),
-              ],
-            ),
+    return GSYCardItem(
+      child: InkWell(
+        onTap: onPressed,
+        onLongPress: onLongPress,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: Text(releaseItemViewModel.actionTitle!, style: GSYConstant.smallTextBold)),
+              Text(releaseItemViewModel.actionTime ?? "", style: GSYConstant.smallSubText),
+            ],
           ),
         ),
       ),

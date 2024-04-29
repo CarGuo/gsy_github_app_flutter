@@ -33,7 +33,7 @@ import 'package:flutter/material.dart';
 /// }
 /// ```
 abstract class Model extends Listenable {
-  final Set<VoidCallback> _listeners = Set<VoidCallback>();
+  final Set<VoidCallback> _listeners = <VoidCallback>{};
   int _version = 0;
   int _microtaskVersion = 0;
 
@@ -194,8 +194,8 @@ class _InheritedModel<T extends Model> extends InheritedWidget {
   final int? version;
 
   _InheritedModel({Key? super.key, Widget? child, T? model})
-      : this.model = model,
-        this.version = model?._version,
+      : model = model,
+        version = model?._version,
         super(child: child!);
 
   @override

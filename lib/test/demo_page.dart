@@ -35,7 +35,7 @@ class _DemoPageState extends State<DemoPage> {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               height: 80,
-              child: Text("显示文本 ${index}"),
+              child: Text("显示文本 $index"),
             ),
           );
         },

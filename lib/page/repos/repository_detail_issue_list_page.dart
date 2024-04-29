@@ -105,8 +105,8 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
           page: page, needDb: page <= 1);
     }
     return await IssueDao.searchRepositoryIssue(
-        searchString, widget.userName, widget.reposName, this.issueState,
-        page: this.page);
+        searchString, widget.userName, widget.reposName, issueState,
+        page: page);
   }
 
   @override
@@ -125,12 +125,12 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
 
   @override
   requestLoadMore() async {
-    return await _getDataLogic(this.searchText);
+    return await _getDataLogic(searchText);
   }
 
   @override
   requestRefresh() async {
-    return await _getDataLogic(this.searchText);
+    return await _getDataLogic(searchText);
   }
 
   @override
@@ -145,7 +145,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
             flexibleSpace: (model?.repository?.hasIssuesEnabled == false)
                 ? Container()
                 : GSYSearchInputWidget(onSubmitted: (value) {
-                    this.searchText = value;
+                    searchText = value;
                     _resolveSelectIndex();
                   }, onSubmitPressed: () {
                     _resolveSelectIndex();
@@ -166,12 +166,10 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                             width: 70.0,
                             height: 70.0),
                       ),
-                      Container(
-                        child: Text(
-                            GSYLocalizations.i18n(context)!
-                                .repos_no_support_issue,
-                            style: GSYConstant.normalText),
-                      ),
+                      Text(
+                          GSYLocalizations.i18n(context)!
+                              .repos_no_support_issue,
+                          style: GSYConstant.normalText),
                     ],
                   ),
                 )

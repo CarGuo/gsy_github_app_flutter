@@ -81,29 +81,23 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         SafeArea(
-          child: Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: Container(
+          child: Row(
+            children: <Widget>[
+              Expanded(
                   child: Center(
                     child: title ?? Container(),
-                  ),
-                )),
-              ],
-            ),
+                  )),
+            ],
           ),
         ),
         SafeArea(
-          child: Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(child: Container()),
-                Row(
-                  children: actions ?? [],
-                )
-              ],
-            ),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: Container()),
+              Row(
+                children: actions ?? [],
+              )
+            ],
           ),
         )
       ],

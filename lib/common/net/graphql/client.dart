@@ -45,10 +45,10 @@ Future<QueryResult>? getRepository(String owner, String? name) async {
 Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{
-          'location': "location:${location} sort:followers",
+          'location': "location:$location sort:followers",
         }
       : <String, dynamic>{
-          'location': "location:${location} sort:followers",
+          'location': "location:$location sort:followers",
           'after': cursor,
         };
   final QueryOptions _options = QueryOptions(

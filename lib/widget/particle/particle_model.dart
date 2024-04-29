@@ -36,7 +36,7 @@ class ParticleModel {
   }
 
   void shuffle() {
-    startTime -= (this.random.nextDouble() * duration.inMilliseconds)
+    startTime -= (random.nextDouble() * duration.inMilliseconds)
         .round()
         .milliseconds;
   }

@@ -30,7 +30,7 @@ class UserDao {
       "https://github.com/login/oauth/access_token?"
       "client_id=${NetConfig.CLIENT_ID}"
       "&client_secret=${NetConfig.CLIENT_SECRET}"
-      "&code=${code}",
+      "&code=$code",
       null,
       null,
       Options(method: "POST"),

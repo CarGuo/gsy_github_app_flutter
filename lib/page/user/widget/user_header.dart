@@ -426,22 +426,20 @@ class UserHeaderChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-              child: Text(
-                (userInfo.type == "Organization")
-                    ? GSYLocalizations.i18n(context)!.user_dynamic_group
-                    : GSYLocalizations.i18n(context)!.user_dynamic_title,
-                style: GSYConstant.normalTextBold,
-                overflow: TextOverflow.ellipsis,
-              ),
-              margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
-              alignment: Alignment.topLeft),
-          _renderChart(context),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        Container(
+            child: Text(
+              (userInfo.type == "Organization")
+                  ? GSYLocalizations.i18n(context)!.user_dynamic_group
+                  : GSYLocalizations.i18n(context)!.user_dynamic_title,
+              style: GSYConstant.normalTextBold,
+              overflow: TextOverflow.ellipsis,
+            ),
+            margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 12.0),
+            alignment: Alignment.topLeft),
+        _renderChart(context),
+      ],
     );
   }
 }
