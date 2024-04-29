@@ -63,7 +63,7 @@ class ReposDao {
           return DataResult(null, false);
         }
         if (needDb) {
-          provider.insert(languageTypeDb + "V2", since, json.encode(data));
+          provider.insert("${languageTypeDb}V2", since, json.encode(data));
         }
         for (int i = 0; i < data.length; i++) {
           TrendingRepoModel model = TrendingRepoModel.fromJson(data[i]);
@@ -80,7 +80,7 @@ class ReposDao {
             return DataResult(null, false);
           }
           if (needDb) {
-            provider.insert(languageTypeDb + "V2", since, json.encode(data));
+            provider.insert("${languageTypeDb}V2", since, json.encode(data));
           }
           for (int i = 0; i < data.length; i++) {
             TrendingRepoModel? model = data[i];
@@ -95,7 +95,7 @@ class ReposDao {
 
     if (needDb) {
       List<TrendingRepoModel>? list =
-          await provider.getData(languageTypeDb + "V2", since);
+          await provider.getData("${languageTypeDb}V2", since);
       if (list == null || list.isEmpty) {
         return await next();
       }
@@ -678,30 +678,27 @@ class ReposDao {
       String? versionName = release.name;
       if (versionName != null) {
         if (Config.DEBUG!) {
-          print("versionName " + versionName);
+          print("versionName $versionName");
         }
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
         var appVersion = packageInfo.version;
 
         if (Config.DEBUG!) {
-          print("appVersion " + appVersion);
+          print("appVersion $appVersion");
         }
         Version versionNameNum = Version.parse(versionName);
         Version currentNum = Version.parse(appVersion);
         int result = versionNameNum.compareTo(currentNum);
         if (Config.DEBUG!) {
-          print("versionNameNum " +
-              versionNameNum.toString() +
-              " currentNum " +
-              currentNum.toString());
+          print("versionNameNum $versionNameNum currentNum $currentNum");
         }
         if (Config.DEBUG!) {
-          print("newsHad " + result.toString());
+          print("newsHad $result");
         }
         if (result > 0) {
           CommonUtils.showUpdateDialog(
-              context, release.name! + ": " + release.body!);
+              context, "${release.name!}: ${release.body!}");
         } else {
           if (showTip)
             Fluttertoast.showToast(

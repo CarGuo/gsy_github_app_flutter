@@ -26,9 +26,7 @@ class HomeDrawer extends StatelessWidget {
         context: context,
         builder: (BuildContext context) => AboutDialog(
               applicationName: GSYLocalizations.i18n(context)!.app_name,
-              applicationVersion: GSYLocalizations.i18n(context)!.app_version +
-                  ": " +
-                  (versionName ?? ""),
+              applicationVersion: "${GSYLocalizations.i18n(context)!.app_version}: ${versionName ?? ""}",
               applicationIcon: Image(
                   image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 50.0,

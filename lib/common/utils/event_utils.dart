@@ -14,99 +14,79 @@ class EventUtils {
     String? des;
     switch (event.type) {
       case "CommitCommentEvent":
-        actionStr = "Commit comment at " + event.repo!.name!;
+        actionStr = "Commit comment at ${event.repo!.name!}";
         break;
       case "CreateEvent":
         if (event.payload!.refType == "repository") {
-          actionStr = "Created repository " + event.repo!.name!;
+          actionStr = "Created repository ${event.repo!.name!}";
         } else {
-          actionStr = "Created " +
-              event.payload!.refType! +
-              " " +
-              event.payload!.ref! +
-              " at " +
-              event.repo!.name!;
+          actionStr = "Created ${event.payload!.refType!} ${event.payload!.ref!} at ${event.repo!.name!}";
         }
         break;
       case "DeleteEvent":
-        actionStr = "Delete " +
-            event.payload!.refType! +
-            " " +
-            event.payload!.ref! +
-            " at " +
-            event.repo!.name!;
+        actionStr = "Delete ${event.payload!.refType!} ${event.payload!.ref!} at ${event.repo!.name!}";
         break;
       case "ForkEvent":
         String oriRepo = event.repo!.name!;
-        String newRepo = event.actor!.login! + "/" + event.repo!.name!;
-        actionStr = "Forked " + oriRepo + " to " + newRepo;
+        String newRepo = "${event.actor!.login!}/${event.repo!.name!}";
+        actionStr = "Forked $oriRepo to $newRepo";
         break;
       case "GollumEvent":
-        actionStr = event.actor!.login! + " a wiki page ";
+        actionStr = "${event.actor!.login!} a wiki page ";
         break;
 
       case "InstallationEvent":
-        actionStr = event.payload!.action! + " an GitHub App ";
+        actionStr = "${event.payload!.action!} an GitHub App ";
         break;
       case "InstallationRepositoriesEvent":
-        actionStr = event.payload!.action! + " repository from an installation ";
+        actionStr = "${event.payload!.action!} repository from an installation ";
         break;
       case "IssueCommentEvent":
-        actionStr = event.payload!.action! +
-            " comment on issue " +
-            event.payload!.issue!.number.toString() +
-            " in " +
-            event.repo!.name!;
+        actionStr = "${event.payload!.action!} comment on issue ${event.payload!.issue!.number} in ${event.repo!.name!}";
         des = event.payload!.comment!.body;
         break;
       case "IssuesEvent":
-        actionStr = event.payload!.action! +
-            " issue " +
-            event.payload!.issue!.number.toString() +
-            " in " +
-            event.repo!.name!;
+        actionStr = "${event.payload!.action!} issue ${event.payload!.issue!.number} in ${event.repo!.name!}";
         des = event.payload!.issue!.title;
         break;
 
       case "MarketplacePurchaseEvent":
-        actionStr = event.payload!.action! + " marketplace plan ";
+        actionStr = "${event.payload!.action!} marketplace plan ";
         break;
       case "MemberEvent":
-        actionStr = event.payload!.action! + " member to " + event.repo!.name!;
+        actionStr = "${event.payload!.action!} member to ${event.repo!.name!}";
         break;
       case "OrgBlockEvent":
-        actionStr = event.payload!.action! + " a user ";
+        actionStr = "${event.payload!.action!} a user ";
         break;
       case "ProjectCardEvent":
-        actionStr = event.payload!.action! + " a project ";
+        actionStr = "${event.payload!.action!} a project ";
         break;
       case "ProjectColumnEvent":
-        actionStr = event.payload!.action! + " a project ";
+        actionStr = "${event.payload!.action!} a project ";
         break;
 
       case "ProjectEvent":
-        actionStr = event.payload!.action! + " a project ";
+        actionStr = "${event.payload!.action!} a project ";
         break;
       case "PublicEvent":
-        actionStr = "Made " + event.repo!.name! + " public";
+        actionStr = "Made ${event.repo!.name!} public";
         break;
       case "PullRequestEvent":
-        actionStr = event.payload!.action! + " pull request " + event.repo!.name!;
+        actionStr = "${event.payload!.action!} pull request ${event.repo!.name!}";
         break;
       case "PullRequestReviewEvent":
         actionStr =
-            event.payload!.action! + " pull request review at" + event.repo!.name!;
+            "${event.payload!.action!} pull request review at${event.repo!.name!}";
         break;
       case "PullRequestReviewCommentEvent":
-        actionStr = event.payload!.action! +
-            " pull request review comment at" +
-            event.repo!.name!;
+        actionStr = "${event.payload!.action!} pull request review comment at${event.repo!.name!}";
         break;
 
       case "PushEvent":
         String ref = event.payload!.ref!;
         ref = ref.substring(ref.lastIndexOf("/") + 1);
-        actionStr = "Push to " + ref + " at " + event.repo!.name!;
+        actionStr = "Push to $ref at ${event.repo!.name!}";
 
         des = '';
         String descSpan = '';
@@ -126,18 +106,14 @@ class EventUtils {
           descSpan += commit.message!;
         }
         if (count > maxLines) {
-          descSpan = descSpan + "\n" + "...";
+          descSpan = "$descSpan\n...";
         }
         break;
       case "ReleaseEvent":
-        actionStr = event.payload!.action! +
-            " release " +
-            event.payload!.release!.tagName! +
-            " at " +
-            event.repo!.name!;
+        actionStr = "${event.payload!.action!} release ${event.payload!.release!.tagName!} at ${event.repo!.name!}";
         break;
       case "WatchEvent":
-        actionStr = event.payload!.action! + " " + event.repo!.name!;
+        actionStr = "${event.payload!.action!} ${event.repo!.name!}";
         break;
     }
 
@@ -151,10 +127,10 @@ class EventUtils {
       return;
     }
     var [owner, repositoryName] = event.repo!.name!.split("/");
-    String fullName = owner + '/' + repositoryName;
+    String fullName = '$owner/$repositoryName';
     switch (event.type) {
       case 'ForkEvent':
-        String forkName = event.actor!.login! + "/" + repositoryName;
+        String forkName = "${event.actor!.login!}/$repositoryName";
         if (forkName.toLowerCase() == currentRepository.toLowerCase()) {
           return;
         }
@@ -173,9 +149,7 @@ class EventUtils {
         } else {
           StringList list = [];
           for (int i = 0; i < event.payload!.commits!.length; i++) {
-            list.add(event.payload!.commits![i].message! +
-                " " +
-                event.payload!.commits![i].sha!.substring(0, 4));
+            list.add("${event.payload!.commits![i].message!} ${event.payload!.commits![i].sha!.substring(0, 4)}");
           }
           CommonUtils.showCommitOptionDialog(context, list, (index) {
             NavigatorUtils.goPushDetailPage(context, owner, repositoryName,

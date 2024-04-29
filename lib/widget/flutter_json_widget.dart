@@ -119,7 +119,7 @@ class JsonViewerWidgetState extends State<JsonViewerWidget> {
     } else if (entry.value is String) {
       return Expanded(
           child: Text(
-        '\"' + entry.value + '\"',
+        '${'\"' + entry.value}\"',
         style: TextStyle(color: Colors.redAccent),
       ));
     } else if (entry.value is bool) {
@@ -298,7 +298,7 @@ class _JsonArrayViewerWidgetState extends State<JsonArrayViewerWidget> {
     } else if (content is String) {
       return Expanded(
           child: Text(
-        '\"' + content + '\"',
+        '\"$content\"',
         style: TextStyle(color: Colors.redAccent),
       ));
     } else if (content is bool) {

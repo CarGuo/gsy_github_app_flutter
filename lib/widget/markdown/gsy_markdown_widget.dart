@@ -152,9 +152,8 @@ class GSYMarkdownWidget extends StatelessWidget {
             for (Match srcMatch in srcTags) {
               String? srcString = srcMatch.group(0);
               if (srcString != null && srcString.contains("http")) {
-                String newSrc = srcString.substring(
-                        srcString.indexOf("http"), srcString.length - 1) +
-                    "?raw=true";
+                String newSrc = "${srcString.substring(
+                        srcString.indexOf("http"), srcString.length - 1)}?raw=true";
 
                 ///增加点击
                 match = "[![]($newSrc)]($newSrc)";

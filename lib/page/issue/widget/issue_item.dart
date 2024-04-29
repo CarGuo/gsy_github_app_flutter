@@ -164,10 +164,10 @@ class IssueItemViewModel {
     actionUser = issueMap.user!.login;
     actionUserPic = issueMap.user!.avatar_url;
     if (needTitle) {
-      issueComment = fullName + "- " + issueMap.title!;
+      issueComment = "$fullName- ${issueMap.title!}";
       commentCount = issueMap.commentNum.toString();
       state = issueMap.state;
-      issueTag = "#" + issueMap.number.toString();
+      issueTag = "#${issueMap.number}";
       number = issueMap.number.toString();
     } else {
       issueComment = issueMap.body ?? "";

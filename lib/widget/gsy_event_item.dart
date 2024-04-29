@@ -99,7 +99,7 @@ class EventViewModel {
   EventViewModel.fromCommitMap(RepoCommit eventMap) {
     actionTime = CommonUtils.getNewsTimeStr(eventMap.commit!.committer!.date!);
     actionUser = eventMap.commit!.committer!.name;
-    actionDes = "sha:" + eventMap.sha!;
+    actionDes = "sha:${eventMap.sha!}";
     actionTarget = eventMap.commit!.message;
   }
 
@@ -110,8 +110,7 @@ class EventViewModel {
     String status = eventMap.unread!
         ? GSYLocalizations.i18n(context)!.notify_unread
         : GSYLocalizations.i18n(context)!.notify_readed;
-    actionDes = eventMap.reason! +
-        "${GSYLocalizations.i18n(context)!.notify_type}：$type，${GSYLocalizations.i18n(context)!.notify_status}：$status";
+    actionDes = "${eventMap.reason!}${GSYLocalizations.i18n(context)!.notify_type}：$type，${GSYLocalizations.i18n(context)!.notify_status}：$status";
     actionTarget = eventMap.subject!.title;
   }
 }

@@ -83,7 +83,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
       onPressed: () {
         EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index],
-            widget.userName! + "/" + widget.reposName!);
+            "${widget.userName!}/${widget.reposName!}");
       },
     );
   }

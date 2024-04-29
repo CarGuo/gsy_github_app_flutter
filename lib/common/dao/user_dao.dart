@@ -39,12 +39,12 @@ class UserDao {
     if (res != null && res.result) {
       var result = Uri.parse("gsy://oauth?" + res.data);
       var token = result.queryParameters["access_token"]!;
-      var _token = 'token ' + token;
+      var _token = 'token $token';
       await LocalStorage.save(Config.TOKEN_KEY, _token);
 
       resultData = await getUserInfo(null);
       if (Config.DEBUG!) {
-        print("user result " + resultData.result.toString());
+        print("user result ${resultData.result}");
         print(resultData.data);
         print(res.data.toString());
       }
@@ -61,7 +61,7 @@ class UserDao {
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
     if (Config.DEBUG!) {
-      print("base64Str login " + base64Str);
+      print("base64Str login $base64Str");
     }
 
     await LocalStorage.save(Config.USER_NAME_KEY, userName);
@@ -82,7 +82,7 @@ class UserDao {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
       if (Config.DEBUG!) {
-        print("user result " + resultData.result.toString());
+        print("user result ${resultData.result}");
         print(resultData.data);
         print(res.data.toString());
       }

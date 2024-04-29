@@ -74,7 +74,7 @@ class UserHeaderItem extends StatelessWidget {
 
     int length = orgList.length > 3 ? 3 : orgList.length;
 
-    list.add(Text(GSYLocalizations.i18n(context)!.user_orgs_title + ":",
+    list.add(Text("${GSYLocalizations.i18n(context)!.user_orgs_title}:",
         style: GSYConstant.smallSubLightText));
 
     for (int i = 0; i < length; i++) {
@@ -85,9 +85,7 @@ class UserHeaderItem extends StatelessWidget {
           onPressed: () {
             NavigatorUtils.gotoCommonList(
                 context,
-                userInfo.login! +
-                    " " +
-                    GSYLocalizations.i18n(context)!.user_orgs_title,
+                "${userInfo.login!} ${GSYLocalizations.i18n(context)!.user_orgs_title}",
                 "org",
                 CommonListDataType.userOrgs,
                 userName: userInfo.login);

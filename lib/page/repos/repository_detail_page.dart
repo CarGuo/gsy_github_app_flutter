@@ -96,10 +96,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         } else {
           releaseUrl = repository == null
               ? GSYConstant.app_default_share_url
-              : repository.htmlUrl! + "/releases";
+              : "${repository.htmlUrl!}/releases";
           tagUrl = repository == null
               ? GSYConstant.app_default_share_url
-              : repository.htmlUrl! + "/tags";
+              : "${repository.htmlUrl!}/tags";
         }
         NavigatorUtils.goReleasePage(
             context, widget.userName, widget.reposName, releaseUrl, tagUrl);

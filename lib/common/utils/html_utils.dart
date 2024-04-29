@@ -9,18 +9,8 @@ class HtmlUtils {
       String lang = 'java',
       userBR = true}) {
     String currentData = (mdData != null && mdData.indexOf("<code>") == -1)
-        ? "<body>\n" +
-            "<pre class=\"pre\">\n" +
-            "<code lang='$lang'>\n" +
-            mdData +
-            "</code>\n" +
-            "</pre>\n" +
-            "</body>\n"
-        : "<body>\n" +
-            "<pre class=\"pre\">\n" +
-            mdData! +
-            "</pre>\n" +
-            "</body>\n";
+        ? "<body>\n<pre class=\"pre\">\n<code lang='$lang'>\n$mdData</code>\n</pre>\n</body>\n"
+        : "<body>\n<pre class=\"pre\">\n${mdData!}</pre>\n</body>\n";
     return generateHtml(currentData,
         backgroundColor: backgroundColor, userBR: userBR);
   }
@@ -81,7 +71,7 @@ class HtmlUtils {
             capture.indexOf("https://") < 0 &&
             capture.indexOf("#") != 0) {
           mdDataCode =
-              mdDataCode.replaceAll(m.group(0)!, "gsygithub://" + capture);
+              mdDataCode.replaceAll(m.group(0)!, "gsygithub://$capture");
         }
       }
     } catch (e) {
@@ -99,7 +89,7 @@ class HtmlUtils {
       {backgroundColor = GSYColors.white,
       String actionColor = GSYColors.actionBlueString,
       userBR = true}) {
-    return "<html>\n" +
+    return "${"${"<html>\n" +
         "<head>\n" +
         "<meta charset=\"utf-8\" />\n" +
         "<title></title>\n" +
@@ -112,62 +102,8 @@ class HtmlUtils {
         "});hljs.initHighlightingOnLoad();</script> " +
         "<style>" +
         "body{background: " +
-        backgroundColor +
-        ";}" +
-        "a {color:" +
-        actionColor +
-        " !important;}" +
-        ".highlight pre, pre {" +
-        " word-wrap: " +
-        (wrap ? "break-word" : "normal") +
-        "; " +
-        " white-space: " +
-        (wrap ? "pre-wrap" : "pre") +
-        "; " +
-        "}" +
-        "thead, tr {" +
-        "background:" +
-        GSYColors.miWhiteString +
-        ";}" +
-        "td, th {" +
-        "padding: 5px 10px;" +
-        "font-size: 12px;" +
-        "direction:hor" +
-        "}" +
-        ".highlight {overflow: scroll; background: " +
-        GSYColors.miWhiteString +
-        "}" +
-        "tr:nth-child(even) {" +
-        "background:" +
-        GSYColors.primaryLightValueString +
-        ";" +
-        "color:" +
-        GSYColors.miWhiteString +
-        ";" +
-        "}" +
-        "tr:nth-child(odd) {" +
-        "background: " +
-        GSYColors.miWhiteString +
-        ";" +
-        "color:" +
-        GSYColors.primaryLightValueString +
-        ";" +
-        "}" +
-        "th {" +
-        "font-size: 14px;" +
-        "color:" +
-        GSYColors.miWhiteString +
-        ";" +
-        "background:" +
-        GSYColors.primaryLightValueString +
-        ";" +
-        "}" +
-        "</style>" +
-        "</head>\n" +
-        "<body>\n" +
-        mdHTML +
-        "</body>\n" +
-        "</html>";
+        backgroundColor};}a {color:$actionColor !important;}.highlight pre, pre { word-wrap: ${wrap ? "break-word" : "normal"};  white-space: ${wrap ? "pre-wrap" : "pre"}; }thead, tr {background:${GSYColors.miWhiteString};}td, th {padding: 5px 10px;font-size: 12px;direction:hor}.highlight {overflow: scroll; background: ${GSYColors.miWhiteString}}tr:nth-child(even) {background:${GSYColors.primaryLightValueString};color:${GSYColors.miWhiteString};}tr:nth-child(odd) {background: ${GSYColors.miWhiteString};color:${GSYColors.primaryLightValueString};}th {font-size: 14px;color:${GSYColors.miWhiteString};background:${GSYColors.primaryLightValueString};}</style></head>\n<body>\n" +
+        mdHTML}</body>\n</html>";
   }
 
   static parseDiffSource(String? diffSource, bool wrap) {
@@ -209,15 +145,9 @@ class HtmlUtils {
         normalLineNum++;
       }
       lineNumberStr = getDiffLineNumber(
-          curRemoveNumber == -1 ? "" : (curRemoveNumber.toString() + ""),
-          curAddNumber == -1 ? "" : (curAddNumber.toString() + ""));
-      source = source +
-          "<div " +
-          classStr +
-          ">" +
-          (wrap ? "" : lineNumberStr! + getBlank(1)) +
-          line +
-          "</div>";
+          curRemoveNumber == -1 ? "" : ("$curRemoveNumber"),
+          curAddNumber == -1 ? "" : ("$curAddNumber"));
+      source = "$source<div $classStr>${wrap ? "" : lineNumberStr! + getBlank(1)}$line</div>";
     }
     return source;
   }
@@ -281,7 +211,7 @@ class HtmlUtils {
             lang: lang);
       }
     } else {
-      return "<h1>" + "Not Support" + "</h1>";
+      return "<h1>Not Support</h1>";
     }
   }
 

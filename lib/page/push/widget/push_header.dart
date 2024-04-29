@@ -133,11 +133,11 @@ class PushHeaderViewModel {
     }
     actionUser = name;
     actionUserPic = pic;
-    pushDes = "Push at " + pushMap.commit!.message!;
+    pushDes = "Push at ${pushMap.commit!.message!}";
     pushTime = CommonUtils.getNewsTimeStr(pushMap.commit!.committer!.date!);
-    editCount = pushMap.files!.length.toString() + "";
-    addCount = pushMap.stats!.additions.toString() + "";
-    deleteCount = pushMap.stats!.deletions.toString() + "";
+    editCount = "${pushMap.files!.length}";
+    addCount = "${pushMap.stats!.additions}";
+    deleteCount = "${pushMap.stats!.deletions}";
     htmlUrl = pushMap.htmlUrl;
   }
 }

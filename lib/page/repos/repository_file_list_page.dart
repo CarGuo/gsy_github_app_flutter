@@ -80,7 +80,7 @@ class RepositoryDetailFileListPageState
             onPressed: () {
               _resolveHeaderClick(index);
             },
-            child: Text(headerList[index]! + " > ",
+            child: Text("${headerList[index]!} > ",
                 style: GSYConstant.smallText),
           );
         },
@@ -129,12 +129,10 @@ class RepositoryDetailFileListPageState
       });
       this.showRefreshLoading();
     } else {
-      String path = headerList.sublist(1, headerList.length).join("/") +
-          "/" +
-          fileItemViewModel.name!;
+      String path = "${headerList.sublist(1, headerList.length).join("/")}/${fileItemViewModel.name!}";
       if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
         NavigatorUtils.gotoPhotoViewPage(
-            context, fileItemViewModel.htmlUrl! + "?raw=true");
+            context, "${fileItemViewModel.htmlUrl!}?raw=true");
       } else {
         NavigatorUtils.gotoCodeDetailPlatform(
           context,

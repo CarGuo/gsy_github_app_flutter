@@ -38,7 +38,7 @@ class _NotifyPageState extends State<NotifyPage>
 
     ///只有未读消息支持 Slidable 滑动效果
     return Slidable(
-      key: ValueKey<String>(index.toString() + "_" + selectIndex.toString()),
+      key: ValueKey<String>("${index}_$selectIndex"),
       controller: slidableController,
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,

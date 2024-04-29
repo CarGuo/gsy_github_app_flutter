@@ -67,9 +67,7 @@ class _ReleasePageState extends State<ReleasePage>
       await launchUrl(Uri.parse(url));
     } else {
       Fluttertoast.showToast(
-          msg: GSYLocalizations.i18n(context)!.option_web_launcher_error +
-              ": " +
-              url);
+          msg: "${GSYLocalizations.i18n(context)!.option_web_launcher_error}: $url");
     }
   }
 

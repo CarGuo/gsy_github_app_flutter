@@ -66,7 +66,7 @@ class IssueHeaderItem extends StatelessWidget {
         ? Container()
         : Container(
             child: Text(
-              "Close By " + issueHeaderViewModel.closedBy!,
+              "Close By ${issueHeaderViewModel.closedBy!}",
               style: GSYConstant.smallSubLightText,
             ),
             margin: EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
@@ -185,9 +185,9 @@ class IssueHeaderViewModel {
         : (issueMap.body != null)
             ? issueMap.body
             : "";
-    commentCount = issueMap.commentNum.toString() + "";
+    commentCount = "${issueMap.commentNum}";
     state = issueMap.state;
-    issueDes = issueMap.body != null ? ": \n" + issueMap.body! : '';
-    issueTag = "#" + issueMap.number.toString();
+    issueDes = issueMap.body != null ? ": \n${issueMap.body!}" : '';
+    issueTag = "#${issueMap.number}";
   }
 }

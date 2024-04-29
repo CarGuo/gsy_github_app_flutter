@@ -112,12 +112,8 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///仓库创建和提交状态信息
   _getInfoText(BuildContext context) {
     String createStr = widget.reposHeaderViewModel.repositoryIsFork!
-        ? GSYLocalizations.i18n(context)!.repos_fork_at +
-            widget.reposHeaderViewModel.repositoryParentName! +
-            '\n'
-        : GSYLocalizations.i18n(context)!.repos_create_at +
-            widget.reposHeaderViewModel.created_at +
-            "\n";
+        ? '${GSYLocalizations.i18n(context)!.repos_fork_at}${widget.reposHeaderViewModel.repositoryParentName!}\n'
+        : "${GSYLocalizations.i18n(context)!.repos_create_at}${widget.reposHeaderViewModel.created_at}\n";
 
     String updateStr = GSYLocalizations.i18n(context)!.repos_last_commit +
         widget.reposHeaderViewModel.push_at;
@@ -479,7 +475,7 @@ class ReposHeaderViewModel {
     //this.repositoryIssueClose = map.closedIssuesCount != null ? map.closed_issues_count.toString() : "";
     //this.repositoryIssueAll = map.all_issues_count != null ? map.all_issues_count.toString() : "";
     this.repositorySize =
-        (map.size! / 1024.0).toString().substring(0, 3) + "M";
+        "${(map.size! / 1024.0).toString().substring(0, 3)}M";
     this.repositoryType = map.language;
     this.repositoryDes = map.shortDescriptionHTML;
     this.repositoryIsFork = map.isFork;

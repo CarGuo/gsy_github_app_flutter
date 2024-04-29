@@ -25,12 +25,12 @@ class SqlManager {
     if (userRes != null && userRes.result) {
       User? user = userRes.data;
       if (user != null && user.login != null) {
-        dbName = user.login! + "_" + _NAME;
+        dbName = "${user.login!}_$_NAME";
       }
     }
     String path = databasesPath + dbName;
     if (Platform.isIOS) {
-      path = databasesPath + "/" + dbName;
+      path = "$databasesPath/$dbName";
     }
     _database = await openDatabase(path, version: _VERSION,
         onCreate: (Database db, int version) async {

@@ -191,8 +191,7 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
         showToast(GSYLocalizations.i18n(context)!.github_refused);
         break;
       default:
-        showToast(GSYLocalizations.i18n(context)!.network_error_unknown +
-            " " +
+        showToast("${GSYLocalizations.i18n(context)!.network_error_unknown} " +
             message);
         break;
     }

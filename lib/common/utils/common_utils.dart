@@ -54,10 +54,7 @@ class CommonUtils {
   }
 
   static String getUserChartAddress(String userName) {
-    return Address.graphicHost +
-        GSYColors.primaryValueString.replaceAll("#", "") +
-        "/" +
-        userName;
+    return "${Address.graphicHost}${GSYColors.primaryValueString.replaceAll("#", "")}/$userName";
   }
 
   ///日期格式转换
@@ -115,7 +112,7 @@ class CommonUtils {
         return null;
       }
     }
-    String appDocPath = appDir!.path + "/gsygithubappflutter";
+    String appDocPath = "${appDir!.path}/gsygithubappflutter";
     Directory appPath = Directory(appDocPath);
     await appPath.create(recursive: true);
     return appPath;
@@ -128,7 +125,7 @@ class CommonUtils {
     } else {
       appDir = await getApplicationSupportDirectory();
     }
-    String appDocPath = appDir.path + "/gsygithubappflutter";
+    String appDocPath = "${appDir.path}/gsygithubappflutter";
     Directory appPath = Directory(appDocPath);
     await appPath.create(recursive: true);
     return appPath.path;
@@ -182,7 +179,7 @@ class CommonUtils {
       StringList splicurl = repository_url.split("/");
       if (splicurl.length > 2) {
         fullName =
-            splicurl[splicurl.length - 2] + "/" + splicurl[splicurl.length - 1];
+            "${splicurl[splicurl.length - 2]}/${splicurl[splicurl.length - 1]}";
       }
     }
     return fullName;
@@ -383,9 +380,7 @@ class CommonUtils {
       await launchUrl(Uri.parse(url));
     } else {
       Fluttertoast.showToast(
-          msg: GSYLocalizations.i18n(context)!.option_web_launcher_error +
-              ": " +
-              (url ?? ""));
+          msg: "${GSYLocalizations.i18n(context)!.option_web_launcher_error}: ${url ?? ""}");
     }
   }
 

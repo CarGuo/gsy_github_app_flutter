@@ -15,7 +15,7 @@ void main() {
       Zone.current.handleUncaughtError(details.exception, details.stack!);
       ///此处仅为展示，正规的实现方式参考 _defaultErrorWidgetBuilder 通过自定义 RenderErrorBox 实现
       return ErrorPage(
-          details.exception.toString() + "\n " + details.stack.toString(),
+          "${details.exception}\n ${details.stack}",
           details);
     };
     runApp(ConfigWrapper(
