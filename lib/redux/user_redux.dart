@@ -50,7 +50,7 @@ class UserInfoMiddleware implements MiddlewareClass<GSYState> {
 Stream<dynamic> userInfoEpic(
     Stream<dynamic> actions, EpicStore<GSYState> store) {
   // Use the async* function to make easier
-  Stream<dynamic> _loadUserInfo() async* {
+  Stream<dynamic> loadUserInfo() async* {
     print("*********** userInfoEpic _loadUserInfo ***********");
     var res = await UserDao.getUserInfo(null);
     yield UpdateUserAction(res.data);
@@ -61,5 +61,5 @@ Stream<dynamic> userInfoEpic(
       .whereType<FetchUserAction>()
       // Don't start  until the 10ms
       .debounce(((_) => TimerStream(true, const Duration(milliseconds: 10))))
-      .switchMap((action) => _loadUserInfo());
+      .switchMap((action) => loadUserInfo());
 }

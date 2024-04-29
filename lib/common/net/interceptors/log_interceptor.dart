@@ -1,3 +1,5 @@
+// ignore_for_file: type_literal_in_constant_pattern
+
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 

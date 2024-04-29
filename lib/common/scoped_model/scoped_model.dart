@@ -118,7 +118,7 @@ class ScopedModel<T extends Model> extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: model!,
-      builder: (context, _) => _InheritedModel<T>(model: model!, child: child!),
+      builder: (context, _) => _InheritedModel<T>(model: model, child: child!),
     );
   }
 
@@ -274,6 +274,7 @@ class ScopedModelDescendant<T extends Model> extends StatelessWidget {
 class ScopedModelError extends Error {
   ScopedModelError();
 
+  @override
   String toString() {
     return '''Error: Could not find the correct ScopedModel.
     

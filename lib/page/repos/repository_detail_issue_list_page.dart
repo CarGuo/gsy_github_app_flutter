@@ -109,10 +109,6 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
         page: page);
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   bool get wantKeepAlive => true;

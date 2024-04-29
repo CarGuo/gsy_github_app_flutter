@@ -71,7 +71,7 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
 }
 
 Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
-  Stream<dynamic> _loginIn(
+  Stream<dynamic> loginIn(
       LoginAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
     var res = await UserDao.login(
@@ -81,11 +81,11 @@ Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   }
   return actions
       .whereType<LoginAction>()
-      .switchMap((action) => _loginIn(action, store));
+      .switchMap((action) => loginIn(action, store));
 }
 
 Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
-  Stream<dynamic> _loginIn(
+  Stream<dynamic> loginIn(
       OAuthAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
     var res = await UserDao.oauth(action.code, store);
@@ -94,5 +94,5 @@ Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   }
   return actions
       .whereType<OAuthAction>()
-      .switchMap((action) => _loginIn(action, store));
+      .switchMap((action) => loginIn(action, store));
 }

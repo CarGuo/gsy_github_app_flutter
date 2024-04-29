@@ -200,7 +200,7 @@ mixin LoginBLoC on State<LoginPage> {
 
   oauthLogin() async {
     String? code = await NavigatorUtils.goLoginWebView(context,
-        Address.getOAuthUrl(), "${GSYLocalizations.i18n(context)!.oauth_text}");
+        Address.getOAuthUrl(), GSYLocalizations.i18n(context)!.oauth_text);
 
     if (code != null && code.isNotEmpty) {
       ///通过 redux 去执行登陆流程

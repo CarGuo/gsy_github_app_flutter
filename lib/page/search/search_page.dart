@@ -315,7 +315,7 @@ class AnimationClipper extends CustomClipper<Path> {
   });
 
   @override
-  bool shouldReclip(old) => true;
+  bool shouldReclip(oldClipper) => true;
 
   @override
   Path getClip(Size size) {

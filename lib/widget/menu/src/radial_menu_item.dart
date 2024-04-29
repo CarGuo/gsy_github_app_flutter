@@ -54,8 +54,8 @@ class RadialMenuItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color? _iconColor =
-        iconColor ?? Theme.of(context).primaryIconTheme.color;
+    final Color? iconColor =
+        this.iconColor ?? Theme.of(context).primaryIconTheme.color;
 
     Widget? result;
 
@@ -63,7 +63,7 @@ class RadialMenuItem<T> extends StatelessWidget {
       result = Center(
         child: IconTheme.merge(
           data: IconThemeData(
-            color: _iconColor,
+            color: iconColor,
           ),
           child: child ?? Container(),
         ),

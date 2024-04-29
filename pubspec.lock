@@ -303,6 +303,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      sha256: "9e8c3858111da373efc5aa341de011d9bd23e2c5c5e0c62bccf32438e192d7b1"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.2"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -529,6 +537,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.7.1"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      sha256: cbf8d4b858bb0134ef3ef87841abdf8d63bfc255c266b7bf6b39daa1085c4290
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
   logging:
     dependency: transitive
     description:
@@ -562,7 +578,7 @@ packages:
     source: hosted
     version: "0.8.0"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       sha256: d584fa6707a52763a52446f02cc621b077888fb63b93bbcb1143a7be5a0c0c04
@@ -802,7 +818,7 @@ packages:
     source: hosted
     version: "1.2.0"
   redux:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: redux
       sha256: "1e86ed5b1a9a717922d0a0ca41f9bf49c1a587d50050e9426fc65b14e85ec4d7"
@@ -999,7 +1015,7 @@ packages:
     source: hosted
     version: "2.0.0"
   string_scanner:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: string_scanner
       sha256: dd11571b8a03f7cadcf91ec26a77e02bfbd6bbba2a512924d3116646b4198fc4
@@ -1183,7 +1199,7 @@ packages:
     source: hosted
     version: "4.2.3"
   webview_flutter_android:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter_android
       sha256: "9427774649fd3c8b7ff53523051395d13aed2ca355822b822e6493d79f5fc05a"
@@ -1199,7 +1215,7 @@ packages:
     source: hosted
     version: "2.6.0"
   webview_flutter_wkwebview:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter_wkwebview
       sha256: ed749f94ac9e814d04a258a9255cf69cfa4cc6006ff59542aea7fb4590144972

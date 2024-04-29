@@ -100,7 +100,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     height: size,
                     child: RiveAnimation.asset(
                       'static/file/launch.riv',
-                      animations: ["lookUp"],
+                      animations: const ["lookUp"],
                       onInit: (arb) {
                         var controller =
                             StateMachineController.fromArtboard(arb, "birb");

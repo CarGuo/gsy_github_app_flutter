@@ -81,8 +81,8 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
   // todo: xqwzts: allow users to pass in their own calculator as a param.
   // and change this to the default: radialItemAngleCalculator.
   double calculateItemAngle(int index) {
-    double _itemSpacing = 360.0 / widget.items.length;
-    return _startAngle + index * _itemSpacing * _radiansPerDegree;
+    double itemSpacing = 360.0 / widget.items.length;
+    return _startAngle + index * itemSpacing * _radiansPerDegree;
   }
 
   @override

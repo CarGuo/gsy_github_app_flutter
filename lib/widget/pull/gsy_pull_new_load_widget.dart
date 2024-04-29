@@ -351,21 +351,21 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
 
 class GSYPullLoadWidgetControl extends ChangeNotifier {
   ///数据，对齐增减，不能替换
-  final List? _dataList = [];
+  final List _dataList = [];
 
   List? get dataList => _dataList;
 
  set dataList(List? value) {
-    _dataList!.clear();
+    _dataList.clear();
     if (value != null) {
-      _dataList!.addAll(value);
+      _dataList.addAll(value);
       notifyListeners();
     }
   }
 
   addList(List? value) {
     if (value != null) {
-      _dataList!.addAll(value);
+      _dataList.addAll(value);
       notifyListeners();
     }
   }

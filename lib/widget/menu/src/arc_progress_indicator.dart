@@ -38,20 +38,20 @@ class ArcProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextPainter? _iconPainter;
+    TextPainter? iconPainter;
     final ThemeData theme = Theme.of(context);
-    final Color _iconColor = iconColor ?? theme.colorScheme.secondary;
-    final double? _iconSize = iconSize ?? IconTheme.of(context).size;
+    final Color iconColor = this.iconColor ?? theme.colorScheme.secondary;
+    final double? iconSize = this.iconSize ?? IconTheme.of(context).size;
 
     if (icon != null) {
-      _iconPainter = TextPainter(
+      iconPainter = TextPainter(
         textDirection: Directionality.of(context),
         text: TextSpan(
           text: String.fromCharCode(icon!.codePoint),
           style: TextStyle(
             inherit: false,
-            color: _iconColor,
-            fontSize: _iconSize,
+            color: iconColor,
+            fontSize: iconSize,
             fontFamily: icon!.fontFamily,
             package: icon!.fontPackage,
           ),
@@ -64,9 +64,9 @@ class ArcProgressIndicator extends StatelessWidget {
         controller: _progress,
         color: color ?? theme.colorScheme.secondary,
         radius: radius,
-        width: width ?? _iconSize! * 2,
+        width: width ?? iconSize! * 2,
         startAngle: startAngle,
-        icon: _iconPainter,
+        icon: iconPainter,
       ),
     );
   }

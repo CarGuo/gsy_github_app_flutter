@@ -58,7 +58,7 @@ class _DiffScaleTextState extends State<DiffScaleText>
               textStyle: textStyle,
               progress: _animationController.value),
           child: Text(widget.text ?? "",
-              style: textStyle!.merge(const TextStyle(color: Color(0x00000000))),
+              style: textStyle.merge(const TextStyle(color: Color(0x00000000))),
               maxLines: 1,
               textDirection: TextDirection.ltr),
         ));
