@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
-import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 
 /**

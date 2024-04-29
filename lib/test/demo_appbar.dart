@@ -27,8 +27,7 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     var leading = this.leading;
 
-    if (leading == null) {
-      leading ??= needLeading
+    leading ??= needLeading
           ? IconButton(
               highlightColor: Colors.transparent,
               icon: Icon(
@@ -45,7 +44,6 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
               },
             )
           : Container();
-    }
 
     leading = ConstrainedBox(
       constraints: BoxConstraints.tightFor(width: leadingWidth),

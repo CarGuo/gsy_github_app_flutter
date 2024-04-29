@@ -25,11 +25,10 @@ class PersonPage extends StatefulWidget {
   const PersonPage(this.userName, {super.key});
 
   @override
-  PersonState createState() => PersonState(userName);
+  PersonState createState() => PersonState();
 }
 
 class PersonState extends BasePersonState<PersonPage> {
-  final String? userName;
 
   String beStaredCount = "---";
 
@@ -39,9 +38,10 @@ class PersonState extends BasePersonState<PersonPage> {
 
   User? userInfo = User.empty();
 
+  // ignore: overridden_fields
   final List<UserOrg> orgList = [];
 
-  PersonState(this.userName);
+  PersonState();
 
   ///处理用户信息显示
   _resolveUserInfo(res) {
@@ -61,7 +61,7 @@ class PersonState extends BasePersonState<PersonPage> {
     page = 1;
 
     ///获取网络用户数据
-    var userResult = await UserDao.getUserInfo(userName, needDb: true);
+    var userResult = await UserDao.getUserInfo(widget.userName, needDb: true);
     if (userResult != null && userResult.result) {
       _resolveUserInfo(userResult);
       if (userResult.next != null) {
@@ -94,7 +94,7 @@ class PersonState extends BasePersonState<PersonPage> {
 
   ///获取当前用户的关注状态
   _getFocusStatus() async {
-    var focusRes = await UserDao.checkFollowDao(userName);
+    var focusRes = await UserDao.checkFollowDao(widget.userName);
     if (isShow) {
       setState(() {
         focus = (focusRes != null && focusRes.result)
@@ -168,7 +168,7 @@ class PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               CommonUtils.showLoadingDialog(context);
-              UserDao.doFollowDao(userName, focusStatus).then((res) {
+              UserDao.doFollowDao(widget.userName, focusStatus).then((res) {
                 Navigator.pop(context);
                 _getFocusStatus();
               });

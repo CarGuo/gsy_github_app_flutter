@@ -47,7 +47,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
   DartSyntaxHighlighter([this._style]) {
     _spans = <_HighlightSpan>[];
 
-    if (_style == null) _style = SyntaxHighlighterStyle.defaultStyle();
+    _style ??= SyntaxHighlighterStyle.defaultStyle();
   }
 
   SyntaxHighlighterStyle? _style;

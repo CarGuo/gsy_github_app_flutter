@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_followed_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_follower_db_provider.dart';

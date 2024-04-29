@@ -213,9 +213,7 @@ class HtmlUtils {
           lang = formName(tmpLang.toLowerCase());
         }
       }
-      if (lang == null) {
-        lang = defaultLang;
-      }
+      lang ??= defaultLang;
       if ('markdown' == lang) {
         return generateHtml(res.data, backgroundColor: GSYColors.miWhiteString);
       } else {
