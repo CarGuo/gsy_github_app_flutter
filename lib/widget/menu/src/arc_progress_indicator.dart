@@ -34,7 +34,7 @@ class ArcProgressIndicator extends StatelessWidget {
     this.icon,
     this.iconColor,
     this.iconSize,
-  }) : _progress = new Tween(begin: 0.0, end: 1.0).animate(controller);
+  }) : _progress = Tween(begin: 0.0, end: 1.0).animate(controller);
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +44,11 @@ class ArcProgressIndicator extends StatelessWidget {
     final double? _iconSize = iconSize ?? IconTheme.of(context).size;
 
     if (icon != null) {
-      _iconPainter = new TextPainter(
+      _iconPainter = TextPainter(
         textDirection: Directionality.of(context),
-        text: new TextSpan(
-          text: new String.fromCharCode(icon!.codePoint),
-          style: new TextStyle(
+        text: TextSpan(
+          text: String.fromCharCode(icon!.codePoint),
+          style: TextStyle(
             inherit: false,
             color: _iconColor,
             fontSize: _iconSize,
@@ -59,8 +59,8 @@ class ArcProgressIndicator extends StatelessWidget {
       )..layout();
     }
 
-    return new CustomPaint(
-      painter: new _ArcProgressPainter(
+    return CustomPaint(
+      painter: _ArcProgressPainter(
         controller: _progress,
         color: color ?? theme.colorScheme.secondary,
         radius: radius,
@@ -94,7 +94,7 @@ class _ArcProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = new Paint()
+    Paint paint = Paint()
       ..color = color
       ..strokeWidth = width
       ..strokeCap = StrokeCap.round
@@ -112,7 +112,7 @@ class _ArcProgressPainter extends CustomPainter {
 
     if (icon != null) {
       double angle = startAngle + sweepAngle;
-      Offset offset = new Offset(
+      Offset offset = Offset(
         (size.width / 2 - icon!.size.width / 2) + radius * Math.cos(angle),
         (size.height / 2 - icon!.size.height / 2) + radius * Math.sin(angle),
       );

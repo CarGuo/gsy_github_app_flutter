@@ -41,19 +41,19 @@ class _WelcomePageState extends State<WelcomePage> {
 
     ///防止多次进入
     Store<GSYState> store = StoreProvider.of(context);
-    new Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         text = "Welcome";
         fontSize = 60;
       });
     });
-    new Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
+    Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
       setState(() {
         text = "GSYGithubApp";
         fontSize = 60;
       });
     });
-    new Future.delayed(const Duration(seconds: 3, milliseconds: 500), () {
+    Future.delayed(const Duration(seconds: 3, milliseconds: 500), () {
       UserDao.initUserInfo(store).then((res) {
         if (res != null && res.result) {
           NavigatorUtils.goHome(context);
@@ -71,13 +71,13 @@ class _WelcomePageState extends State<WelcomePage> {
       builder: (context, store) {
         double size = 200;
         return Material(
-          child: new Container(
+          child: Container(
             color: GSYColors.white,
             child: Stack(
               children: <Widget>[
-                new Center(
-                  child: new Image(
-                      image: new AssetImage('static/images/welcome.png')),
+                Center(
+                  child: Image(
+                      image: AssetImage('static/images/welcome.png')),
                 ),
                 Align(
                   alignment: Alignment(0.0, 0.3),
@@ -93,9 +93,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   alignment: Alignment(0.0, 0.8),
                   child: Mole(),
                 ),
-                new Align(
+                Align(
                   alignment: Alignment(0.0, .9),
-                  child: new Container(
+                  child: Container(
                     width: size,
                     height: size,
                     child: RiveAnimation.asset(

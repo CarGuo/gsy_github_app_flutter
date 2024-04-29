@@ -28,21 +28,21 @@ class ReposHeaderItem extends StatefulWidget {
 }
 
 class _ReposHeaderItemState extends State<ReposHeaderItem> {
-  final GlobalKey layoutKey = new GlobalKey();
-  final GlobalKey layoutTopicContainerKey = new GlobalKey();
-  final GlobalKey layoutLastTopicKey = new GlobalKey();
+  final GlobalKey layoutKey = GlobalKey();
+  final GlobalKey layoutTopicContainerKey = GlobalKey();
+  final GlobalKey layoutLastTopicKey = GlobalKey();
 
   double widgetHeight = 0;
 
   ///底部仓库状态信息，比如star数量等
   _getBottomItem(IconData icon, String text, onPressed) {
-    return new Expanded(
-      child: new Center(
-          child: new RawMaterialButton(
+    return Expanded(
+      child: Center(
+          child: RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-              child: new GSYIConText(
+              child: GSYIConText(
                 icon,
                 text,
                 GSYConstant.smallSubLightText.copyWith(shadows: [
@@ -58,7 +58,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   }
 
   _renderTopicItem(BuildContext context, String item, index) {
-    return new RawMaterialButton(
+    return RawMaterialButton(
         key: index == widget.reposHeaderViewModel.topics!.length - 1
             ? layoutLastTopicKey
             : null,
@@ -69,15 +69,15 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: const EdgeInsets.all(0.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: new Container(
+        child: Container(
           padding:
               EdgeInsets.only(left: 5.0, right: 5.0, top: 2.5, bottom: 2.5),
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
             color: Colors.white30,
-            border: new Border.all(color: Colors.white30, width: 0.0),
+            border: Border.all(color: Colors.white30, width: 0.0),
           ),
-          child: new Text(
+          child: Text(
             item,
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
               BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
@@ -99,7 +99,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       var item = widget.reposHeaderViewModel.topics![i]!;
       list.add(_renderTopicItem(context, item, i));
     }
-    return new Container(
+    return Container(
       key: layoutTopicContainerKey,
       alignment: Alignment.topLeft,
       //margin: EdgeInsets.only(top: 5.0),
@@ -129,29 +129,29 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   ///顶部信息
   _renderTopNameInfo() {
-    return new Row(
+    return Row(
       children: <Widget>[
         ///用户名
-        new RawMaterialButton(
-          constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-          padding: new EdgeInsets.all(0.0),
+        RawMaterialButton(
+          constraints: BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+          padding: EdgeInsets.all(0.0),
           onPressed: () {
             NavigatorUtils.goPerson(
                 context, widget.reposHeaderViewModel.ownerName);
           },
-          child: new Text(widget.reposHeaderViewModel.ownerName!,
+          child: Text(widget.reposHeaderViewModel.ownerName!,
               style: GSYConstant.normalTextActionWhiteBold.copyWith(shadows: [
                 BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
               ])),
         ),
-        new Text(" / ",
+        Text(" / ",
             style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
               BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
             ])),
 
         ///仓库名,
-        new Expanded(
-            child: new Text(widget.reposHeaderViewModel.repositoryName!,
+        Expanded(
+            child: Text(widget.reposHeaderViewModel.repositoryName!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
@@ -163,25 +163,25 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   ///次要信息
   _renderSubInfo() {
-    return new Row(
+    return Row(
       children: <Widget>[
         ///仓库语言
-        new Text(widget.reposHeaderViewModel.repositoryType ?? "--",
+        Text(widget.reposHeaderViewModel.repositoryType ?? "--",
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
               BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
-        new Container(width: 5.3, height: 1.0),
+        Container(width: 5.3, height: 1.0),
 
         ///仓库大小
-        new Text(widget.reposHeaderViewModel.repositorySize,
+        Text(widget.reposHeaderViewModel.repositorySize,
             style: GSYConstant.smallSubLightText.copyWith(shadows: [
               BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
             ])),
-        new Container(width: 5.3, height: 1.0),
+        Container(width: 5.3, height: 1.0),
 
         ///仓库协议
-        new Expanded(
-            child: new Text(widget.reposHeaderViewModel.license ?? "--",
+        Expanded(
+            child: Text(widget.reposHeaderViewModel.license ?? "--",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GSYConstant.smallSubLightText.copyWith(shadows: [
@@ -193,8 +193,8 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   ///仓库描述
   renderDes() {
-    return new Container(
-        child: new Text(
+    return Container(
+        child: Text(
           CommonUtils.removeTextTag(
                   widget.reposHeaderViewModel.repositoryDes) ??
               "---",
@@ -204,16 +204,16 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
-        margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+        margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
         alignment: Alignment.topLeft);
   }
 
   /// 右下角的信息
   renderRepoStatus() {
-    return new Container(
-      margin: new EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
+    return Container(
+      margin: EdgeInsets.only(top: 6.0, bottom: 2.0, right: 5.0),
       alignment: Alignment.topRight,
-      child: new RawMaterialButton(
+      child: RawMaterialButton(
         onPressed: () {
           if (widget.reposHeaderViewModel.repositoryIsFork!) {
             NavigatorUtils.goReposDetail(
@@ -225,7 +225,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: const EdgeInsets.all(0.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: new Text(_getInfoText(context),
+        child: Text(_getInfoText(context),
             style: widget.reposHeaderViewModel.repositoryIsFork!
                 ? GSYConstant.smallActionLightText.copyWith(shadows: [
                     BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
@@ -239,11 +239,11 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   ///底部仓库状态信息
   renderBottomInfo() {
-    return new Padding(
-        padding: new EdgeInsets.all(0.0),
+    return Padding(
+        padding: EdgeInsets.all(0.0),
 
         ///创建数值状态
-        child: new Row(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -262,7 +262,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               },
             ),
 
-            new Container(
+            Container(
               width: 0.3,
               height: 25.0,
               decoration: BoxDecoration(
@@ -287,7 +287,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               },
             ),
 
-            new Container(
+            Container(
               width: 0.3,
               height: 25.0,
               decoration: BoxDecoration(
@@ -312,7 +312,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               },
             ),
 
-            new Container(
+            Container(
               width: 0.3,
               height: 25.0,
               decoration: BoxDecoration(
@@ -354,7 +354,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
     super.didUpdateWidget(oldWidget);
 
     ///如果存在tag，根据tag去判断，修复溢出
-    new Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(Duration(seconds: 0), () {
       /// tag 所在 container
       RenderBox? renderBox2 =
           layoutTopicContainerKey.currentContext?.findRenderObject() as RenderBox?;
@@ -381,28 +381,28 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       key: layoutKey,
-      child: new GSYCardItem(
+      child: GSYCardItem(
         color: Theme.of(context).primaryColorDark,
-        child: new ClipRRect(
+        child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          child: new Container(
+          child: Container(
             ///背景头像
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
+            decoration: BoxDecoration(
+              image: DecorationImage(
                 fit: BoxFit.cover,
-                image: new NetworkImage(widget.reposHeaderViewModel.ownerPic ??
+                image: NetworkImage(widget.reposHeaderViewModel.ownerPic ??
                     GSYICons.DEFAULT_REMOTE_PIC),
               ),
             ),
-            child: new BackdropFilter(
+            child: BackdropFilter(
               ///高斯模糊
               filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-              child: new Padding(
-                padding: new EdgeInsets.only(
+              child: Padding(
+                padding: EdgeInsets.only(
                     left: 10.0, top: 0.0, right: 10.0, bottom: 10.0),
-                child: new Column(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     _renderTopNameInfo(),
@@ -413,7 +413,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
 
                     ///创建状态
                     renderRepoStatus(),
-                    new Divider(
+                    Divider(
                       color: GSYColors.subTextColor,
                     ),
 

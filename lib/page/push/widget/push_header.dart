@@ -19,7 +19,7 @@ class PushHeader extends StatelessWidget {
 
   /// 头部变化数量图标
   _getIconItem(IconData icon, String text) {
-    return new GSYIConText(
+    return GSYIConText(
       icon,
       text,
       GSYConstant.smallSubLightText,
@@ -31,20 +31,20 @@ class PushHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new GSYCardItem(
+    return GSYCardItem(
       color: Theme.of(context).primaryColor,
-      child: new TextButton(
-        style: TextButton.styleFrom(padding: new EdgeInsets.all(0.0)),
+      child: TextButton(
+        style: TextButton.styleFrom(padding: EdgeInsets.all(0.0)),
         onPressed: () {},
-        child: new Padding(
-          padding: new EdgeInsets.all(10.0),
-          child: new Column(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
             children: <Widget>[
-              new Row(
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ///用户头像
-                  new GSYUserIconWidget(
+                  GSYUserIconWidget(
                       padding: const EdgeInsets.only(
                           top: 0.0, right: 5.0, left: 0.0),
                       width: 40.0,
@@ -54,47 +54,47 @@ class PushHeader extends StatelessWidget {
                         NavigatorUtils.goPerson(
                             context, pushHeaderViewModel.actionUser);
                       }),
-                  new Expanded(
+                  Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ///变化状态
-                        new Row(
+                        Row(
                           children: <Widget>[
                             _getIconItem(GSYICons.PUSH_ITEM_EDIT,
                                 pushHeaderViewModel.editCount),
-                            new Container(width: 8.0),
+                            Container(width: 8.0),
                             _getIconItem(GSYICons.PUSH_ITEM_ADD,
                                 pushHeaderViewModel.addCount),
-                            new Container(width: 8.0),
+                            Container(width: 8.0),
                             _getIconItem(GSYICons.PUSH_ITEM_MIN,
                                 pushHeaderViewModel.deleteCount),
-                            new Container(width: 8.0),
+                            Container(width: 8.0),
                           ],
                         ),
-                        new Padding(padding: new EdgeInsets.all(2.0)),
+                        Padding(padding: EdgeInsets.all(2.0)),
 
                         ///修改时间
-                        new Container(
-                            child: new Text(
+                        Container(
+                            child: Text(
                               pushHeaderViewModel.pushTime,
                               style: GSYConstant.smallTextWhite,
                               maxLines: 2,
                             ),
-                            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
 
                         ///修改的commit内容
-                        new Container(
-                            child: new Text(
+                        Container(
+                            child: Text(
                               pushHeaderViewModel.pushDes,
                               style: GSYConstant.smallTextWhite,
                               maxLines: 2,
                             ),
-                            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
-                        new Padding(
-                          padding: new EdgeInsets.only(
+                        Padding(
+                          padding: EdgeInsets.only(
                               left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                         ),
                       ],

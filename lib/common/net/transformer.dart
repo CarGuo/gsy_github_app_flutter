@@ -10,6 +10,6 @@ part 'transformer.g.dart';
   Branch,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
-  ..addPlugin(new StandardJsonPlugin())
-  ..add(new Iso8601DateTimeSerializer())
+  ..addPlugin(StandardJsonPlugin())
+  ..add(Iso8601DateTimeSerializer())
 ).build();

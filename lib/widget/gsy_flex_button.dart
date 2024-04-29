@@ -31,18 +31,18 @@ class GSYFlexButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ElevatedButton(
+    return ElevatedButton(
         style: TextButton.styleFrom(
             backgroundColor: color,
-            padding: new EdgeInsets.only(
+            padding: EdgeInsets.only(
                 left: 20.0, top: 10.0, right: 20.0, bottom: 10.0)),
-        child: new Flex(
+        child: Flex(
           mainAxisAlignment: mainAxisAlignment,
           direction: Axis.horizontal,
           children: <Widget>[
-            new Expanded(
-              child: new Text(text!,
-                  style: new TextStyle(
+            Expanded(
+              child: Text(text!,
+                  style: TextStyle(
                       color: textColor, fontSize: fontSize, height: 1),
                   textAlign: TextAlign.center,
                   maxLines: maxLines,

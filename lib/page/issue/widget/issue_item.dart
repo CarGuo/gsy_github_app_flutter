@@ -39,11 +39,11 @@ class IssueItem extends StatelessWidget {
     Color issueStateColor =
         issueItemViewModel.state == "open" ? Colors.green : Colors.red;
     return (hideBottom)
-        ? new Container()
-        : new Row(
+        ? Container()
+        : Row(
             children: <Widget>[
               ///issue 关闭打开状态
-              new GSYIConText(
+              GSYIConText(
                 GSYICons.ISSUE_ITEM_ISSUE,
                 issueItemViewModel.state,
                 TextStyle(
@@ -54,16 +54,16 @@ class IssueItem extends StatelessWidget {
                 15.0,
                 padding: 2.0,
               ),
-              new Padding(padding: new EdgeInsets.all(2.0)),
+              Padding(padding: EdgeInsets.all(2.0)),
 
               ///issue标号
-              new Expanded(
-                child: new Text(issueItemViewModel.issueTag,
+              Expanded(
+                child: Text(issueItemViewModel.issueTag,
                     style: GSYConstant.smallSubText),
               ),
 
               ///评论数
-              new GSYIConText(
+              GSYIConText(
                 GSYICons.ISSUE_ITEM_COMMENT,
                 issueItemViewModel.commentCount,
                 GSYConstant.smallSubText,
@@ -78,13 +78,13 @@ class IssueItem extends StatelessWidget {
   ///评论内容
   _renderCommentText() {
     return (limitComment)
-        ? new Container(
-            child: new Text(
+        ? Container(
+            child: Text(
               issueItemViewModel.issueComment,
               style: GSYConstant.smallSubText,
               maxLines: limitComment ? 2 : 1000,
             ),
-            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
             alignment: Alignment.topLeft,
           )
         : GSYMarkdownWidget(markdownData: issueItemViewModel.issueComment);
@@ -92,18 +92,18 @@ class IssueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new GSYCardItem(
-      child: new InkWell(
+    return GSYCardItem(
+      child: InkWell(
         onTap: onPressed,
         onLongPress: onLongPress,
-        child: new Padding(
-          padding: new EdgeInsets.only(
+        child: Padding(
+          padding: EdgeInsets.only(
               left: 5.0, top: 5.0, right: 10.0, bottom: 8.0),
-          child: new Row(
+          child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ///头像
-                new GSYUserIconWidget(
+                GSYUserIconWidget(
                     width: 30.0,
                     height: 30.0,
                     image: issueItemViewModel.actionUserPic,
@@ -111,17 +111,17 @@ class IssueItem extends StatelessWidget {
                       NavigatorUtils.goPerson(
                           context, issueItemViewModel.actionUser);
                     }),
-                new Expanded(
+                Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      new Row(
+                      Row(
                         children: <Widget>[
                           ///用户名
-                          new Expanded(
-                              child: new Text(issueItemViewModel.actionUser!,
+                          Expanded(
+                              child: Text(issueItemViewModel.actionUser!,
                                   style: GSYConstant.smallTextBold)),
-                          new Text(
+                          Text(
                             issueItemViewModel.actionTime,
                             style: GSYConstant.smallSubText,
                             maxLines: 2,
@@ -132,8 +132,8 @@ class IssueItem extends StatelessWidget {
 
                       ///评论内容
                       _renderCommentText(),
-                      new Padding(
-                        padding: new EdgeInsets.only(
+                      Padding(
+                        padding: EdgeInsets.only(
                             left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                       ),
                       _renderBottomContainer(),

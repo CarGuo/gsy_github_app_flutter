@@ -13,56 +13,56 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
   @override
   Widget build(BuildContext context) {
     ///共享 store
-    return new GestureDetector(
+    return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         /// 触摸收起键盘
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
         ///使用主题颜色做背景
-        body: new Container(
+        body: Container(
           color: Theme.of(context).primaryColor,
-          child: new Center(
+          child: Center(
             ///同时弹出键盘不遮挡
             child: SingleChildScrollView(
               ///显示卡片
-              child: new Card(
+              child: Card(
                 elevation: 5.0,
-                shape: new RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 color: Colors.white,
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: new Padding(
-                  padding: new EdgeInsets.only(
+                child: Padding(
+                  padding: EdgeInsets.only(
                       left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
 
                   ///内容
-                  child: new Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      new Padding(padding: new EdgeInsets.all(10.0)),
+                      Padding(padding: EdgeInsets.all(10.0)),
 
                       ///用户名输入框
-                      new TextField(
+                      TextField(
                         controller: userController,
-                        decoration: new InputDecoration(
+                        decoration: InputDecoration(
                           hintText: "请输入用户名",
                           icon: Icon(Icons.person),
                         ),
                       ),
-                      new Padding(padding: new EdgeInsets.all(30.0)),
+                      Padding(padding: EdgeInsets.all(30.0)),
 
                       ///密码输入框
-                      new TextField(
+                      TextField(
                         controller: pwController,
                         obscureText: true,
-                        decoration: new InputDecoration(
+                        decoration: InputDecoration(
                             hintText: "请输入密码", icon: Icon(Icons.person)),
                       ),
 
-                      new Padding(padding: new EdgeInsets.all(15.0)),
+                      Padding(padding: EdgeInsets.all(15.0)),
 
                       ///登陆按键
                       LayoutBuilder(
@@ -70,15 +70,15 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                           return SizedBox(
                             height: 40,
                             width: constraints.maxWidth,
-                            child: new TextButton(
+                            child: TextButton(
                                 style: TextButton.styleFrom(
                                     textStyle: TextStyle(
                                       color: Colors.white,
                                     ),
                                     backgroundColor:
                                         Theme.of(context).primaryColor),
-                                child: new Text("登陆",
-                                    style: new TextStyle(fontSize: 14),
+                                child: Text("登陆",
+                                    style: TextStyle(fontSize: 14),
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis),
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                           );
                         },
                       ),
-                      new Padding(padding: new EdgeInsets.all(15.0)),
+                      Padding(padding: EdgeInsets.all(15.0)),
                     ],
                   ),
                 ),
@@ -100,9 +100,9 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
 }
 
 mixin LoginBLoC on State<LoginPage> {
-  final TextEditingController userController = new TextEditingController();
+  final TextEditingController userController = TextEditingController();
 
-  final TextEditingController pwController = new TextEditingController();
+  final TextEditingController pwController = TextEditingController();
 
   String? _userName = "";
 
@@ -135,8 +135,8 @@ mixin LoginBLoC on State<LoginPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userName = await (prefs.get("username") as Future<String?>);
     _password = await (prefs.get("password") as Future<String?>);
-    userController.value = new TextEditingValue(text: _userName ?? "");
-    pwController.value = new TextEditingValue(text: _password ?? "");
+    userController.value = TextEditingValue(text: _userName ?? "");
+    pwController.value = TextEditingValue(text: _password ?? "");
   }
 
   loginIn() async {

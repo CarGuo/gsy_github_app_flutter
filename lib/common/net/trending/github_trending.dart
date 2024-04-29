@@ -12,9 +12,9 @@ import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 class GitHubTrending {
   fetchTrending(url) async {
     var res = await httpManager.netFetch(
-        url, null, null, new Options(contentType: "text/plain; charset=utf-8"));
+        url, null, null, Options(contentType: "text/plain; charset=utf-8"));
     if (res != null && res.result && res.data != null) {
-      return new ResultData(
+      return ResultData(
           TrendingUtil.htmlToRepo(res.data), true, Code.SUCCESS);
     } else {
       return res;
@@ -43,7 +43,7 @@ const TAGS = {
 class TrendingUtil {
   static htmlToRepo(String responseData) {
     try {
-      responseData = responseData.replaceAll(new RegExp('\n'), '');
+      responseData = responseData.replaceAll(RegExp('\n'), '');
     } catch (e) {}
     var repos = [];
     var splitWithH3 = responseData.split('<article');
@@ -98,14 +98,14 @@ class TrendingUtil {
         htmlBaseInfo, '<p class="col-9 text-gray my-1 pr-4">', '</p>');
     if (description != null) {
       String reg = "<g-emoji.*?>.+?</g-emoji>";
-      RegExp tag = new RegExp(reg);
+      RegExp tag = RegExp(reg);
       Iterable<Match> tags = tag.allMatches(description);
       for (Match m in tags) {
         String match = m
             .group(0)!
-            .replaceAll(new RegExp("<g-emoji.*?>"), "")
-            .replaceAll(new RegExp("</g-emoji>"), "");
-        description = description?.replaceAll(new RegExp(m.group(0)!), match);
+            .replaceAll(RegExp("<g-emoji.*?>"), "")
+            .replaceAll(RegExp("</g-emoji>"), "");
+        description = description?.replaceAll(RegExp(m.group(0)!), match);
       }
     }
     repo.description = description;

@@ -8,7 +8,7 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart
  */
 class DynamicBloc {
   final GSYPullLoadWidgetControl pullLoadWidgetControl =
-      new GSYPullLoadWidgetControl();
+      GSYPullLoadWidgetControl();
 
   int _page = 1;
 

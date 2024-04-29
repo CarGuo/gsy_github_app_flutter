@@ -65,7 +65,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         path: widget.path, branch: widget.branch, text: true, isHtml: true);
     if (res != null && res.result) {
       String data2 = HtmlUtils.resolveHtmlFile(res, "java");
-      return new Uri.dataFromString(data2,
+      return Uri.dataFromString(data2,
           mimeType: 'text/html', encoding: Encoding.getByName("utf-8"));
     }
     return null;
@@ -81,8 +81,8 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: GSYTitleBar(widget.title),
       ),
       body: FutureBuilder<Uri?>(
@@ -91,19 +91,19 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         future: _getData(),
         builder: (context, result) {
           if (result.data == null) {
-            return new Center(
-              child: new Container(
+            return Center(
+              child: Container(
                 width: 200.0,
                 height: 200.0,
-                padding: new EdgeInsets.all(4.0),
-                child: new Row(
+                padding: EdgeInsets.all(4.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new SpinKitDoubleBounce(
+                    SpinKitDoubleBounce(
                         color: Theme.of(context).primaryColor),
-                    new Container(width: 10.0),
-                    new Container(
-                        child: new Text(
+                    Container(width: 10.0),
+                    Container(
+                        child: Text(
                             GSYLocalizations.i18n(context)!.loading_text,
                             style: GSYConstant.middleText)),
                   ],

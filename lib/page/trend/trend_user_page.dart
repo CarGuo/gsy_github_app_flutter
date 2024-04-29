@@ -22,7 +22,7 @@ class _TrendUserPageState extends State<TrendUserPage>
       return null;
     }
     var data = pullLoadWidgetControl.dataList[index];
-    return new UserItem(UserItemViewModel.fromQL(data, index + 1), onPressed: () {
+    return UserItem(UserItemViewModel.fromQL(data, index + 1), onPressed: () {
       NavigatorUtils.goPerson(context, data.login);
     });
   }
@@ -57,8 +57,8 @@ class _TrendUserPageState extends State<TrendUserPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: new AppBar(
-          title: new Text(
+      appBar: AppBar(
+          title: Text(
         GSYLocalizations.i18n(context)!.trend_user_title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

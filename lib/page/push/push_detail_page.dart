@@ -41,7 +41,7 @@ class _PushDetailPageState extends State<PushDetailPage>
         AutomaticKeepAliveClientMixin<PushDetailPage>,
         GSYListState<PushDetailPage> {
   ///提价信息页面的头部数据实体
-  PushHeaderViewModel pushHeaderViewModel = new PushHeaderViewModel();
+  PushHeaderViewModel pushHeaderViewModel = PushHeaderViewModel();
 
   String? htmlUrl;
 
@@ -74,11 +74,11 @@ class _PushDetailPageState extends State<PushDetailPage>
   ///绘制头部和提交item
   _renderEventItem(index) {
     if (index == 0) {
-      return new PushHeader(pushHeaderViewModel);
+      return PushHeader(pushHeaderViewModel);
     }
     PushCodeItemViewModel itemViewModel = PushCodeItemViewModel.fromMap(
         pullLoadWidgetControl.dataList[index - 1]);
-    return new PushCodeItem(itemViewModel, () {
+    return PushCodeItem(itemViewModel, () {
       String html = HtmlUtils.generateCode2HTml(
           HtmlUtils.parseDiffSource(itemViewModel.patch, false),
           backgroundColor: GSYColors.webDraculaBackgroundColorString,
@@ -90,7 +90,7 @@ class _PushDetailPageState extends State<PushDetailPage>
         reposName: widget.reposName,
         userName: widget.userName,
         path: itemViewModel.patch,
-        data: new Uri.dataFromString(html,
+        data: Uri.dataFromString(html,
                 mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
             .toString(),
         branch: "",
@@ -124,9 +124,9 @@ class _PushDetailPageState extends State<PushDetailPage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     Widget? widgetContent =
-        (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(url: htmlUrl);
-    return new Scaffold(
-      appBar: new AppBar(
+        (widget.needHomeIcon) ? null : GSYCommonOptionWidget(url: htmlUrl);
+    return Scaffold(
+      appBar: AppBar(
         title: GSYTitleBar(
           widget.reposName,
           rightWidget: widgetContent,

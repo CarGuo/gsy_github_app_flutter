@@ -23,12 +23,12 @@ class GSYUserIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new RawMaterialButton(
+    return RawMaterialButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding:
             padding ?? const EdgeInsets.only(top: 4.0, right: 5.0, left: 5.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: new ClipOval(
+        child: ClipOval(
           child: FadeInImage(
             placeholder: AssetImage(
               GSYICons.DEFAULT_USER_ICON,

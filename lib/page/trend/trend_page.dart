@@ -46,17 +46,17 @@ class TrendPageState extends State<TrendPage>
 
   /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIndicatorKey =
-      new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+      GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   ///滚动控制与监听
-  final ScrollController scrollController = new ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   ///bloc
-  final TrendBloc trendBloc = new TrendBloc();
+  final TrendBloc trendBloc = TrendBloc();
 
   ///显示刷新
   _showRefreshLoading() {
-    new Future.delayed(const Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       refreshIndicatorKey.currentState!.show().then((e) {});
       return true;
     });
@@ -91,7 +91,7 @@ class TrendPageState extends State<TrendPage>
       },
       tappable: true,
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
-        return new ReposItem(reposViewModel, onPressed: null);
+        return ReposItem(reposViewModel, onPressed: null);
       },
     );
   }
@@ -103,16 +103,16 @@ class TrendPageState extends State<TrendPage>
     }
     var trendTimeList = trendTime(context);
     var trendTypeList = trendType(context);
-    return new GSYCardItem(
+    return GSYCardItem(
       color: store.state.themeData!.primaryColor,
       margin: EdgeInsets.all(0.0),
-      shape: new RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(radius),
       ),
-      child: new Padding(
+      child: Padding(
         padding:
-            new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
-        child: new Row(
+            EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
+        child: Row(
           children: <Widget>[
             _renderHeaderPopItem(selectTime!.name, trendTimeList,
                 (TrendTypeModel result) {
@@ -133,7 +133,7 @@ class TrendPageState extends State<TrendPage>
                 _showRefreshLoading();
               });
             }),
-            new Container(height: 10.0, width: 0.5, color: GSYColors.white),
+            Container(height: 10.0, width: 0.5, color: GSYColors.white),
             _renderHeaderPopItem(selectType!.name, trendTypeList,
                 (TrendTypeModel result) {
               if (trendBloc.isLoading) {
@@ -162,10 +162,10 @@ class TrendPageState extends State<TrendPage>
   ///或者头部可选弹出item容器
   _renderHeaderPopItem(String data, List<TrendTypeModel> list,
       PopupMenuItemSelected<TrendTypeModel> onSelected) {
-    return new Expanded(
-      child: new PopupMenuButton<TrendTypeModel>(
-        child: new Center(
-            child: new Text(data, style: GSYConstant.middleTextWhite)),
+    return Expanded(
+      child: PopupMenuButton<TrendTypeModel>(
+        child: Center(
+            child: Text(data, style: GSYConstant.middleTextWhite)),
         onSelected: onSelected,
         itemBuilder: (BuildContext context) {
           return _renderHeaderPopItemChild(list);
@@ -180,7 +180,7 @@ class TrendPageState extends State<TrendPage>
     for (TrendTypeModel item in data) {
       list.add(PopupMenuItem<TrendTypeModel>(
         value: item,
-        child: new Text(item.name),
+        child: Text(item.name),
       ));
     }
     return list;
@@ -224,16 +224,16 @@ class TrendPageState extends State<TrendPage>
         kBottomNavigationBarHeight -
         kToolbarHeight;
     return SingleChildScrollView(
-      child: new Container(
+      child: Container(
         height: height,
         width: MediaQuery.sizeOf(context).width,
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
               onPressed: () {},
-              child: new Image(
-                  image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+              child: Image(
+                  image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 70.0,
                   height: 70.0),
             ),
@@ -250,9 +250,9 @@ class TrendPageState extends State<TrendPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return new StoreBuilder<GSYState>(
+    return StoreBuilder<GSYState>(
       builder: (context, store) {
-        return new Scaffold(
+        return Scaffold(
           backgroundColor: GSYColors.mainBackgroundColor,
 
           ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
@@ -260,7 +260,7 @@ class TrendPageState extends State<TrendPage>
               stream: trendBloc.stream,
               builder: (context, snapShot) {
                 ///下拉刷新
-                return new NestedScrollViewRefreshIndicator(
+                return NestedScrollViewRefreshIndicator(
                   key: refreshIndicatorKey,
 
                   ///嵌套滚动
@@ -272,7 +272,7 @@ class TrendPageState extends State<TrendPage>
                     },
                     body: (snapShot.data == null || snapShot.data!.length == 0)
                         ? _buildEmpty()
-                        : new ListView.builder(
+                        : ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return _renderItem(snapShot.data![index]);
@@ -294,7 +294,7 @@ class TrendPageState extends State<TrendPage>
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return NavigatorUtils.pageContainer(new TrendUserPage(), context);
+        return NavigatorUtils.pageContainer(TrendUserPage(), context);
       },
       closedElevation: 6.0,
       closedShape: RoundedRectangleBorder(
@@ -364,9 +364,9 @@ class TrendTypeModel {
 ///趋势数据时间过滤
 List<TrendTypeModel> trendTime(BuildContext context) {
   return [
-    new TrendTypeModel(GSYLocalizations.i18n(context)!.trend_day, "daily"),
-    new TrendTypeModel(GSYLocalizations.i18n(context)!.trend_week, "weekly"),
-    new TrendTypeModel(GSYLocalizations.i18n(context)!.trend_month, "monthly"),
+    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_day, "daily"),
+    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_week, "weekly"),
+    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_month, "monthly"),
   ];
 }
 

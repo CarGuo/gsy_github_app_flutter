@@ -15,13 +15,13 @@ class RadialMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = backgroundColor ?? Theme.of(context).primaryColor;
 
-    return new Semantics(
+    return Semantics(
       button: true,
       enabled: true,
-      child: new Material(
+      child: Material(
         type: MaterialType.circle,
         color: color,
-        child: new InkWell(
+        child: InkWell(
           onTap: onPressed,
           child: child,
         ),

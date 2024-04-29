@@ -50,7 +50,7 @@ class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAli
   void didChangeDependencies() {
     ///在initState之后调 Called when a dependency of this [State] object changes.
     super.didChangeDependencies();
-    new Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         text = "这就变了数值";
       });

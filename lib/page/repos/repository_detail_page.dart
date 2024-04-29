@@ -39,19 +39,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     with SingleTickerProviderStateMixin {
   /// 文件列表页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailFileListPageState> fileListKey =
-      new GlobalKey<RepositoryDetailFileListPageState>();
+      GlobalKey<RepositoryDetailFileListPageState>();
 
   /// 详情信息页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<ReposDetailInfoPageState> infoListKey =
-      new GlobalKey<ReposDetailInfoPageState>();
+      GlobalKey<ReposDetailInfoPageState>();
 
   /// readme 页面的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailReadmePageState> readmeKey =
-      new GlobalKey<RepositoryDetailReadmePageState>();
+      GlobalKey<RepositoryDetailReadmePageState>();
 
   /// issue 列表页的 GlobalKey ，可用于当前控件控制文件也行为
   GlobalKey<RepositoryDetailIssuePageState> issueListKey =
-      new GlobalKey<RepositoryDetailIssuePageState>();
+      GlobalKey<RepositoryDetailIssuePageState>();
 
   ///动画控制器，用于底部发布 issue 按键动画
   late AnimationController animationController;
@@ -68,9 +68,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       GSYLocalizations.i18n(context)!.repos_tab_file,
     ];
     renderItem(String item, int i) {
-      return new Container(
+      return Container(
           padding: EdgeInsets.symmetric(vertical: 10),
-          child: new Text(
+          child: Text(
             item,
             style: GSYConstant.smallTextWhite,
             maxLines: 1,
@@ -88,7 +88,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   _getMoreOtherItem(RepositoryQL? repository) {
     return [
       ///Release Page
-      new GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_release,
+      GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_release,
           GSYLocalizations.i18n(context)!.repos_option_release, (model) {
         String releaseUrl = "";
         String tagUrl = "";
@@ -108,7 +108,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       }),
 
       ///Branch Page
-      new GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_branch,
+      GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_branch,
           GSYLocalizations.i18n(context)!.repos_option_branch, (model) {
         if (reposDetailModel!.branchList!.length == 0) {
           return;
@@ -171,8 +171,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       });
     },
         needTitle: true,
-        titleController: new TextEditingController(),
-        valueController: new TextEditingController());
+        titleController: TextEditingController(),
+        valueController: TextEditingController());
   }
 
   @override
@@ -180,13 +180,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     super.initState();
 
     ///仓库的详情数据实体
-    reposDetailModel ??= new ReposDetailModel(
+    reposDetailModel ??= ReposDetailModel(
         userName: widget.userName, reposName: widget.reposName);
 
     reposDetailModel!.getBranchList();
 
     ///悬浮按键动画控制器
-    animationController = new AnimationController(
+    animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 800));
     animationController.forward();
   }
@@ -194,40 +194,40 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   @override
   Widget build(BuildContext context) {
     ///跨 tab 共享状态
-    return new ScopedModel<ReposDetailModel>(
+    return ScopedModel<ReposDetailModel>(
       model: reposDetailModel!,
-      child: new ScopedModelDescendant<ReposDetailModel>(
+      child: ScopedModelDescendant<ReposDetailModel>(
         builder: (context, child, model) {
           Widget widgetContent =
               (model?.repository != null && model?.repository!.htmlUrl != null)
-                  ? new GSYCommonOptionWidget(
+                  ? GSYCommonOptionWidget(
                       url: model?.repository?.htmlUrl,
                       otherList: _getMoreOtherItem(model?.repository))
                   : Container();
 
           ///绘制顶部 tab 控件
-          return new GSYTabBarWidget(
+          return GSYTabBarWidget(
             type: TabType.top,
             tabItems: _renderTabItem(),
             resizeToAvoidBottomPadding: false,
             //footerButtons: model.footerButtons,
             tabViews: [
-              new ReposDetailInfoPage(widget.userName, widget.reposName,
+              ReposDetailInfoPage(widget.userName, widget.reposName,
                   key: infoListKey),
-              new RepositoryDetailReadmePage(widget.userName, widget.reposName,
+              RepositoryDetailReadmePage(widget.userName, widget.reposName,
                   key: readmeKey),
-              new RepositoryDetailIssuePage(
+              RepositoryDetailIssuePage(
                 widget.userName,
                 widget.reposName,
                 key: issueListKey,
               ),
-              new RepositoryDetailFileListPage(
+              RepositoryDetailFileListPage(
                   widget.userName, widget.reposName,
                   key: fileListKey),
             ],
             backgroundColor: GSYColors.primarySwatch,
             indicatorColor: GSYColors.white,
-            title: new GSYTitleBar(
+            title: GSYTitleBar(
               widget.reposName,
               rightWidget: widgetContent,
             ),

@@ -74,10 +74,16 @@ dependencies:
 #      url: https://github.com/CarSmallGuo/photo_view.git
 #      ref: master
 
+  redux: any
+  webview_flutter_android: any
+  webview_flutter_wkwebview: any
+  string_scanner: any
+  meta: any
 dev_dependencies:
   built_value_generator: 8.6.2
   build_runner: ^2.1.5
   json_serializable: 6.7.1
+  flutter_lints: 3.0.2
 #  flutter_test:
 #    sdk: flutter
 

@@ -14,16 +14,16 @@ class SyntaxHighlighterStyle {
 
 //123
   static SyntaxHighlighterStyle defaultStyle() {
-    return new SyntaxHighlighterStyle(
-        baseStyle: new TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
-        numberStyle: new TextStyle(color: Colors.blue[800]),
-        commentStyle: new TextStyle(color: Color.fromRGBO(124, 126, 120, 1.0)),
-        keywordStyle: new TextStyle(color: Color.fromRGBO(228, 125, 246, 1.0)),
-        stringStyle: new TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
+    return SyntaxHighlighterStyle(
+        baseStyle: TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
+        numberStyle: TextStyle(color: Colors.blue[800]),
+        commentStyle: TextStyle(color: Color.fromRGBO(124, 126, 120, 1.0)),
+        keywordStyle: TextStyle(color: Color.fromRGBO(228, 125, 246, 1.0)),
+        stringStyle: TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
         punctuationStyle:
-            new TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
-        classStyle: new TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
-        constantStyle: new TextStyle(color: Colors.brown[500]));
+            TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
+        classStyle: TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
+        constantStyle: TextStyle(color: Colors.brown[500]));
   }
 
   final TextStyle? baseStyle;
@@ -138,7 +138,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
   TextSpan format(String src) {
     _src = src;
-    _scanner = new StringScanner(_src);
+    _scanner = StringScanner(_src);
 
     if (_generateSpans()) {
       // Successfully parsed the code
@@ -148,9 +148,9 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
       for (_HighlightSpan span in _spans) {
         if (currentPosition != span.start)
           formattedText.add(
-              new TextSpan(text: _src.substring(currentPosition, span.start)));
+              TextSpan(text: _src.substring(currentPosition, span.start)));
 
-        formattedText.add(new TextSpan(
+        formattedText.add(TextSpan(
             style: span.textStyle(_style), text: span.textForSpan(_src)));
 
         currentPosition = span.end;
@@ -158,12 +158,12 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
       if (currentPosition != _src.length)
         formattedText.add(
-            new TextSpan(text: _src.substring(currentPosition, _src.length)));
+            TextSpan(text: _src.substring(currentPosition, _src.length)));
 
-      return new TextSpan(style: _style!.baseStyle, children: formattedText);
+      return TextSpan(style: _style!.baseStyle, children: formattedText);
     } else {
       // Parsing failed, return with only basic formatting
-      return new TextSpan(style: _style!.baseStyle, text: src);
+      return TextSpan(style: _style!.baseStyle, text: src);
     }
   }
 
@@ -173,11 +173,11 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
     try {
       while (!_scanner.isDone) {
         // Skip White space
-        _scanner.scan(new RegExp(r"\s+"));
+        _scanner.scan(RegExp(r"\s+"));
 
         // Block comments
-        if (_scanner.scan(new RegExp(r"/\*(.|\n)*\*/"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.comment,
+        if (_scanner.scan(RegExp(r"/\*(.|\n)*\*/"))) {
+          _spans.add(_HighlightSpan(_HighlightType.comment,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
@@ -188,14 +188,14 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
           bool eof = false;
           int endComment;
-          if (_scanner.scan(new RegExp(r".*\n"))) {
+          if (_scanner.scan(RegExp(r".*\n"))) {
             endComment = _scanner.lastMatch!.end - 1;
           } else {
             eof = true;
             endComment = _src.length;
           }
 
-          _spans.add(new _HighlightSpan(
+          _spans.add(_HighlightSpan(
               _HighlightType.comment, startComment, endComment));
 
           if (eof) break;
@@ -209,14 +209,14 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
           bool eof = false;
           int endComment;
 
-          if (_scanner.scan(new RegExp(r".*\n"))) {
+          if (_scanner.scan(RegExp(r".*\n"))) {
             endComment = _scanner.lastMatch!.end - 1;
           } else {
             eof = true;
             endComment = _src.length;
           }
 
-          _spans.add(new _HighlightSpan(
+          _spans.add(_HighlightSpan(
               _HighlightType.comment, startComment, endComment));
 
           if (eof) break;
@@ -224,84 +224,84 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
           continue;
         }
         // Raw r"String"
-        if (_scanner.scan(new RegExp(r'r".*"'))) {
-          _spans.add(new _HighlightSpan(_HighlightType.string,
+        if (_scanner.scan(RegExp(r'r".*"'))) {
+          _spans.add(_HighlightSpan(_HighlightType.string,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Raw r'String'
-        if (_scanner.scan(new RegExp(r"r'.*'"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.string,
+        if (_scanner.scan(RegExp(r"r'.*'"))) {
+          _spans.add(_HighlightSpan(_HighlightType.string,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Multiline """String"""
-        if (_scanner.scan(new RegExp(r'"""(?:[^"\\]|\\(.|\n))*"""'))) {
-          _spans.add(new _HighlightSpan(_HighlightType.string,
+        if (_scanner.scan(RegExp(r'"""(?:[^"\\]|\\(.|\n))*"""'))) {
+          _spans.add(_HighlightSpan(_HighlightType.string,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Multiline '''String'''
-        if (_scanner.scan(new RegExp(r"'''(?:[^'\\]|\\(.|\n))*'''"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.string,
+        if (_scanner.scan(RegExp(r"'''(?:[^'\\]|\\(.|\n))*'''"))) {
+          _spans.add(_HighlightSpan(_HighlightType.string,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // "String"
-        if (_scanner.scan(new RegExp(r'"(?:[^"\\]|\\.)*"'))) {
-          _spans.add(new _HighlightSpan(_HighlightType.string,
+        if (_scanner.scan(RegExp(r'"(?:[^"\\]|\\.)*"'))) {
+          _spans.add(_HighlightSpan(_HighlightType.string,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // 'String'
-        if (_scanner.scan(new RegExp(r"'(?:[^'\\]|\\.)*'"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.string,
+        if (_scanner.scan(RegExp(r"'(?:[^'\\]|\\.)*'"))) {
+          _spans.add(_HighlightSpan(_HighlightType.string,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Double
-        if (_scanner.scan(new RegExp(r"\d+\.\d+"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.number,
+        if (_scanner.scan(RegExp(r"\d+\.\d+"))) {
+          _spans.add(_HighlightSpan(_HighlightType.number,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Integer
-        if (_scanner.scan(new RegExp(r"\d+"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.number,
+        if (_scanner.scan(RegExp(r"\d+"))) {
+          _spans.add(_HighlightSpan(_HighlightType.number,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Punctuation
-        if (_scanner.scan(new RegExp(r"[\[\]{}().!=<>&\|\?\+\-\*/%\^~;:,]"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.punctuation,
+        if (_scanner.scan(RegExp(r"[\[\]{}().!=<>&\|\?\+\-\*/%\^~;:,]"))) {
+          _spans.add(_HighlightSpan(_HighlightType.punctuation,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         //中文
-        if (_scanner.scan(new RegExp(r"[\u4e00-\u9fa5]"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.punctuation,
+        if (_scanner.scan(RegExp(r"[\u4e00-\u9fa5]"))) {
+          _spans.add(_HighlightSpan(_HighlightType.punctuation,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Metadata
-        if (_scanner.scan(new RegExp(r"@\w+"))) {
-          _spans.add(new _HighlightSpan(_HighlightType.keyword,
+        if (_scanner.scan(RegExp(r"@\w+"))) {
+          _spans.add(_HighlightSpan(_HighlightType.keyword,
               _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           continue;
         }
 
         // Words
-        if (_scanner.scan(new RegExp(r"\w+"))) {
+        if (_scanner.scan(RegExp(r"\w+"))) {
           _HighlightType? type;
 
           String word = _scanner.lastMatch![0]!;
@@ -319,7 +319,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
             type = _HighlightType.constant;
 
           if (type != null) {
-            _spans.add(new _HighlightSpan(
+            _spans.add(_HighlightSpan(
                 type, _scanner.lastMatch!.start, _scanner.lastMatch!.end));
           }
         }
@@ -328,7 +328,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
         if (lastLoopPosition == _scanner.position) {
           // Failed to parse this file, abort gracefully
           if (_spans.length > 0) {
-            _spans.add(new _HighlightSpan(_HighlightType.punctuation,
+            _spans.add(_HighlightSpan(_HighlightType.punctuation,
                 lastLoopPosition, _scanner.string.length - 1));
             _simplify();
             return true;
@@ -350,7 +350,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
     for (int i = _spans.length - 2; i >= 0; i -= 1) {
       if (_spans[i].type == _spans[i + 1].type &&
           _spans[i].end == _spans[i + 1].start) {
-        _spans[i] = new _HighlightSpan(
+        _spans[i] = _HighlightSpan(
             _spans[i].type, _spans[i].start, _spans[i + 1].end);
         _spans.removeAt(i + 1);
       }

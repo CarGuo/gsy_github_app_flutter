@@ -88,7 +88,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new NestedScrollViewRefreshIndicator(
+    return NestedScrollViewRefreshIndicator(
       ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
       key: widget.refreshKey,
       child: NestedScrollView(
@@ -123,15 +123,15 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
   ///空页面
   Widget _buildEmpty() {
-    return new Container(
+    return Container(
       height: MediaQuery.sizeOf(context).height - 100,
-      child: new Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TextButton(
             onPressed: () {},
-            child: new Image(
-                image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+            child: Image(
+                image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                 width: 70.0,
                 height: 70.0),
           ),
@@ -148,18 +148,18 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
     Widget bottomWidget = (widget.control.needLoadMore.value)
-        ? new Row(
+        ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
                 ///loading框
-                new SpinKitRotatingCircle(
+                SpinKitRotatingCircle(
                     color: Theme.of(context).primaryColor),
-                new Container(
+                Container(
                   width: 5.0,
                 ),
 
                 ///加载中文本
-                new Text(
+                Text(
                   GSYLocalizations.i18n(context)!.load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
@@ -170,10 +170,10 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
               ])
 
         /// 不需要加载
-        : new Container();
-    return new Padding(
+        : Container();
+    return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: new Center(
+      child: Center(
         child: bottomWidget,
       ),
     );

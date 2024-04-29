@@ -25,9 +25,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<DynamicPageState> dynamicKey = new GlobalKey();
-  final GlobalKey<TrendPageState> trendKey = new GlobalKey();
-  final GlobalKey<MyPageState> myKey = new GlobalKey();
+  final GlobalKey<DynamicPageState> dynamicKey = GlobalKey();
+  final GlobalKey<TrendPageState> trendKey = GlobalKey();
+  final GlobalKey<MyPageState> myKey = GlobalKey();
 
   /// 不退出
   _dialogExitApp(BuildContext context) async {
@@ -42,10 +42,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   _renderTab(icon, text) {
-    return new Tab(
-      child: new Column(
+    return Tab(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[new Icon(icon, size: 16.0), new Text(text)],
+        children: <Widget>[Icon(icon, size: 16.0), Text(text)],
       ),
     );
   }
@@ -65,14 +65,14 @@ class _HomePageState extends State<HomePage> {
       onPopInvoked: (didPop) {
         return _dialogExitApp(context);
       },
-      child: new GSYTabBarWidget(
-        drawer: new HomeDrawer(),
+      child: GSYTabBarWidget(
+        drawer: HomeDrawer(),
         type: TabType.bottom,
         tabItems: tabs,
         tabViews: [
-          new DynamicPage(key: dynamicKey),
-          new TrendPage(key: trendKey),
-          new MyPage(key: myKey),
+          DynamicPage(key: dynamicKey),
+          TrendPage(key: trendKey),
+          MyPage(key: myKey),
         ],
         onDoublePress: (index) {
           switch (index) {

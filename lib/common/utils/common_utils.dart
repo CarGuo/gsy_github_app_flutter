@@ -139,14 +139,14 @@ class CommonUtils {
   static String? removeTextTag(String? description) {
     if (description != null) {
       String reg = "<g-emoji.*?>.+?</g-emoji>";
-      RegExp tag = new RegExp(reg);
+      RegExp tag = RegExp(reg);
       Iterable<Match> tags = tag.allMatches(description);
       for (Match m in tags) {
         String match = m
             .group(0)!
-            .replaceAll(new RegExp("<g-emoji.*?>"), "")
-            .replaceAll(new RegExp("</g-emoji>"), "");
-        description = description!.replaceAll(new RegExp(m.group(0)!), match);
+            .replaceAll(RegExp("<g-emoji.*?>"), "")
+            .replaceAll(RegExp("</g-emoji>"), "");
+        description = description!.replaceAll(RegExp(m.group(0)!), match);
       }
     }
     return description;
@@ -194,7 +194,7 @@ class CommonUtils {
     ThemeData themeData;
     List<Color> colors = getThemeListColor();
     themeData = getThemeData(colors[index]);
-    store.dispatch(new RefreshThemeDataAction(themeData));
+    store.dispatch(RefreshThemeDataAction(themeData));
   }
 
   static getThemeData(Color color) {
@@ -330,7 +330,7 @@ class CommonUtils {
 
   static copy(String? data, BuildContext context) {
     if (data != null) {
-      Clipboard.setData(new ClipboardData(text: data));
+      Clipboard.setData(ClipboardData(text: data));
       Fluttertoast.showToast(
           msg: GSYLocalizations.i18n(context)!.option_share_copy_success);
     }
@@ -377,7 +377,7 @@ class CommonUtils {
     } else {
       NavigatorUtils.goGSYWebView(
           context,
-          new Uri.dataFromString(url,
+          Uri.dataFromString(url,
                   mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
               .toString(),
           title);
@@ -399,28 +399,28 @@ class CommonUtils {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
-          return new Material(
+          return Material(
               color: Colors.transparent,
               child: PopScope(
                 canPop: false,
                 child: Center(
-                  child: new Container(
+                  child: Container(
                     width: 200.0,
                     height: 200.0,
-                    padding: new EdgeInsets.all(4.0),
-                    decoration: new BoxDecoration(
+                    padding: EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
                       color: Colors.transparent,
                       //用一个BoxDecoration装饰器提供背景图片
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                     ),
-                    child: new Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Container(
+                        Container(
                             child: SpinKitCubeGrid(color: GSYColors.white)),
-                        new Container(height: 10.0),
-                        new Container(
-                            child: new Text(
+                        Container(height: 10.0),
+                        Container(
+                            child: Text(
                                 GSYLocalizations.i18n(context)!.loading_text,
                                 style: GSYConstant.normalTextWhite)),
                       ],
@@ -445,7 +445,7 @@ class CommonUtils {
         context: context,
         builder: (BuildContext context) {
           return Center(
-            child: new IssueEditDialog(
+            child: IssueEditDialog(
               dialogTitle,
               onTitleChanged,
               onContentChanged,
@@ -471,17 +471,17 @@ class CommonUtils {
         context: context,
         builder: (BuildContext context) {
           return Center(
-            child: new Container(
+            child: Container(
               width: width,
               height: height,
-              padding: new EdgeInsets.all(4.0),
-              margin: new EdgeInsets.all(20.0),
-              decoration: new BoxDecoration(
+              padding: EdgeInsets.all(4.0),
+              margin: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
                 color: GSYColors.white,
                 //用一个BoxDecoration装饰器提供背景图片
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
-              child: new ListView.builder(
+              child: ListView.builder(
                   itemCount: commitMaps?.length ?? 0,
                   itemBuilder: (context, index) {
                     return GSYFlexButton(
@@ -511,20 +511,20 @@ class CommonUtils {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(GSYLocalizations.i18n(context)!.app_version_title),
-            content: new Text(contentMsg),
+            title: Text(GSYLocalizations.i18n(context)!.app_version_title),
+            content: Text(contentMsg),
             actions: <Widget>[
-              new TextButton(
+              TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYLocalizations.i18n(context)!.app_cancel)),
-              new TextButton(
+                  child: Text(GSYLocalizations.i18n(context)!.app_cancel)),
+              TextButton(
                   onPressed: () {
                     launchUrl(Uri.parse(Address.updateUrl));
                     Navigator.pop(context);
                   },
-                  child: new Text(GSYLocalizations.i18n(context)!.app_ok)),
+                  child: Text(GSYLocalizations.i18n(context)!.app_ok)),
             ],
           );
         });

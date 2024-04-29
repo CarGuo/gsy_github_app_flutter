@@ -41,7 +41,7 @@ class _ReleasePageState extends State<ReleasePage>
   _renderEventItem(index) {
     ReleaseItemViewModel releaseItemViewModel =
         ReleaseItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
-    return new ReleaseItem(
+    return ReleaseItem(
       releaseItemViewModel,
       onPressed: () {
         ///没有 release 提示就不要了
@@ -112,16 +112,16 @@ class _ReleasePageState extends State<ReleasePage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
-      appBar: new AppBar(
+      appBar: AppBar(
         title: GSYTitleBar(
           widget.reposName,
-          rightWidget: new GSYCommonOptionWidget(
+          rightWidget: GSYCommonOptionWidget(
             url: _getUrl(),
           ),
         ),
-        bottom: new GSYSelectItemWidget(
+        bottom: GSYSelectItemWidget(
           [
             GSYLocalizations.i18n(context)!.release_tab_release,
             GSYLocalizations.i18n(context)!.release_tab_tag,

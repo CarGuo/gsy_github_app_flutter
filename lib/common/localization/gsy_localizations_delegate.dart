@@ -22,7 +22,7 @@ class GSYLocalizationsDelegate extends LocalizationsDelegate<GSYLocalizations> {
   ///根据locale，创建一个对象用于提供当前locale下的文本显示
   @override
   Future<GSYLocalizations> load(Locale locale) {
-    return new SynchronousFuture<GSYLocalizations>(new GSYLocalizations(locale));
+    return SynchronousFuture<GSYLocalizations>(GSYLocalizations(locale));
   }
 
   @override
@@ -31,5 +31,5 @@ class GSYLocalizationsDelegate extends LocalizationsDelegate<GSYLocalizations> {
   }
 
   ///全局静态的代理
-  static LocalizationsDelegate<GSYLocalizations> delegate = new GSYLocalizationsDelegate();
+  static LocalizationsDelegate<GSYLocalizations> delegate = GSYLocalizationsDelegate();
 }

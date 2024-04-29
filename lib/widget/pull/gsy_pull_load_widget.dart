@@ -28,7 +28,7 @@ class GSYPullLoadWidget extends StatefulWidget {
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
-  final ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -105,13 +105,13 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new RefreshIndicator(
+    return RefreshIndicator(
       ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
       key: widget.refreshKey,
 
       ///下拉刷新触发，返回的是一个Future
       onRefresh: widget.onRefresh ?? ()async{},
-      child: new ListView.builder(
+      child: ListView.builder(
         ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
         physics: const AlwaysScrollableScrollPhysics(),
 
@@ -131,15 +131,15 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   ///空页面
   Widget _buildEmpty() {
-    return new Container(
+    return Container(
       height: MediaQuery.sizeOf(context).height - 100,
-      child: new Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TextButton(
             onPressed: () {},
-            child: new Image(
-                image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+            child: Image(
+                image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                 width: 70.0,
                 height: 70.0),
           ),
@@ -156,18 +156,18 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
     Widget bottomWidget = (widget.control!.needLoadMore.value)
-        ? new Row(
+        ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
                 ///loading框
-                new SpinKitRotatingCircle(
+                SpinKitRotatingCircle(
                     color: Theme.of(context).primaryColor),
-                new Container(
+                Container(
                   width: 5.0,
                 ),
 
                 ///加载中文本
-                new Text(
+                Text(
                   GSYLocalizations.i18n(context)!.load_more_text,
                   style: TextStyle(
                     color: Color(0xFF121917),
@@ -178,10 +178,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
               ])
 
         /// 不需要加载
-        : new Container();
-    return new Padding(
+        : Container();
+    return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: new Center(
+      child: Center(
         child: bottomWidget,
       ),
     );
@@ -193,7 +193,7 @@ class GSYPullLoadWidgetControl {
   List dataList = [];
 
   ///是否需要加载更多
-  ValueNotifier<bool> needLoadMore = new ValueNotifier(false);
+  ValueNotifier<bool> needLoadMore = ValueNotifier(false);
 
   ///是否需要头部
   bool needHeader = false;

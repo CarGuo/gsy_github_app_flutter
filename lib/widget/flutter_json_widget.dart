@@ -7,7 +7,7 @@ class JsonViewerWidget extends StatefulWidget {
   JsonViewerWidget(this.jsonObj, {this.notRoot = false});
 
   @override
-  JsonViewerWidgetState createState() => new JsonViewerWidgetState();
+  JsonViewerWidgetState createState() => JsonViewerWidgetState();
 }
 
 class JsonViewerWidgetState extends State<JsonViewerWidget> {
@@ -205,7 +205,7 @@ class JsonArrayViewerWidget extends StatefulWidget {
 
   @override
   _JsonArrayViewerWidgetState createState() =>
-      new _JsonArrayViewerWidgetState();
+      _JsonArrayViewerWidgetState();
 }
 
 class _JsonArrayViewerWidgetState extends State<JsonArrayViewerWidget> {

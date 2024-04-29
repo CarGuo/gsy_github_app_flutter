@@ -29,7 +29,7 @@ class IssueDao {
       {sort, direction, page = 0, needDb = false}) async {
     String? fullName = userName + "/" + repository;
     String dbState = state ?? "*";
-    RepositoryIssueDbProvider provider = new RepositoryIssueDbProvider();
+    RepositoryIssueDbProvider provider = RepositoryIssueDbProvider();
 
     next() async {
       String url =
@@ -47,7 +47,7 @@ class IssueDao {
         List<Issue> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
-          return new DataResult(null, false);
+          return DataResult(null, false);
         }
         for (int i = 0; i < data.length; i++) {
           list.add(Issue.fromJson(data[i]));
@@ -55,9 +55,9 @@ class IssueDao {
         if (needDb) {
           provider.insert(fullName, dbState, json.encode(data));
         }
-        return new DataResult(list, true);
+        return DataResult(list, true);
       } else {
-        return new DataResult(null, false);
+        return DataResult(null, false);
       }
     }
 
@@ -66,7 +66,7 @@ class IssueDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next);
+      DataResult dataResult = DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -94,14 +94,14 @@ class IssueDao {
       List<Issue> list = [];
       var data = res.data["items"];
       if (data == null || data.length == 0) {
-        return new DataResult(null, false);
+        return DataResult(null, false);
       }
       for (int i = 0; i < data.length; i++) {
         list.add(Issue.fromJson(data[i]));
       }
-      return new DataResult(list, true);
+      return DataResult(list, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 
@@ -111,7 +111,7 @@ class IssueDao {
   static getIssueInfoDao(userName, repository, number, {needDb = true}) async {
     String? fullName = userName + "/" + repository;
 
-    IssueDetailDbProvider provider = new IssueDetailDbProvider();
+    IssueDetailDbProvider provider = IssueDetailDbProvider();
 
     next() async {
       String url = Address.getIssueInfo(userName, repository, number);
@@ -122,9 +122,9 @@ class IssueDao {
         if (needDb) {
           provider.insert(fullName, number, json.encode(res.data));
         }
-        return new DataResult(Issue.fromJson(res.data), true);
+        return DataResult(Issue.fromJson(res.data), true);
       } else {
-        return new DataResult(null, false);
+        return DataResult(null, false);
       }
     }
 
@@ -133,7 +133,7 @@ class IssueDao {
       if (issue == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(issue, true, next: next);
+      DataResult dataResult = DataResult(issue, true, next: next);
       return dataResult;
     }
     return await next();
@@ -145,7 +145,7 @@ class IssueDao {
   static getIssueCommentDao(userName, repository, number,
       {page = 0, needDb = false}) async {
     String? fullName = userName + "/" + repository;
-    IssueCommentDbProvider provider = new IssueCommentDbProvider();
+    IssueCommentDbProvider provider = IssueCommentDbProvider();
 
     next() async {
       String url = Address.getIssueComment(userName, repository, number) +
@@ -157,7 +157,7 @@ class IssueDao {
         List<Issue> list = [];
         var data = res.data;
         if (data == null || data.length == 0) {
-          return new DataResult(null, false);
+          return DataResult(null, false);
         }
         if (needDb) {
           provider.insert(fullName, number, json.encode(res.data));
@@ -165,9 +165,9 @@ class IssueDao {
         for (int i = 0; i < data.length; i++) {
           list.add(Issue.fromJson(data[i]));
         }
-        return new DataResult(list, true);
+        return DataResult(list, true);
       } else {
-        return new DataResult(null, false);
+        return DataResult(null, false);
       }
     }
 
@@ -176,7 +176,7 @@ class IssueDao {
       if (list == null) {
         return await next();
       }
-      DataResult dataResult = new DataResult(list, true, next: next);
+      DataResult dataResult = DataResult(list, true, next: next);
       return dataResult;
     }
     return await next();
@@ -191,11 +191,11 @@ class IssueDao {
         url,
         {"body": comment},
         {"Accept": 'application/vnd.github.VERSION.full+json'},
-        new Options(method: 'POST'));
+        Options(method: 'POST'));
     if (res != null && res.result) {
-      return new DataResult(res.data, true);
+      return DataResult(res.data, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 
@@ -208,11 +208,11 @@ class IssueDao {
         url,
         issue,
         {"Accept": 'application/vnd.github.VERSION.full+json'},
-        new Options(method: 'PATCH'));
+        Options(method: 'PATCH'));
     if (res != null && res.result) {
-      return new DataResult(res.data, true);
+      return DataResult(res.data, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 
@@ -225,12 +225,12 @@ class IssueDao {
         url,
         null,
         {"Accept": 'application/vnd.github.VERSION.full+json'},
-        new Options(method: locked ? "DELETE" : 'PUT'),
+        Options(method: locked ? "DELETE" : 'PUT'),
         noTip: true);
     if (res != null && res.result) {
-      return new DataResult(res.data, true);
+      return DataResult(res.data, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 
@@ -243,11 +243,11 @@ class IssueDao {
         url,
         issue,
         {"Accept": 'application/vnd.github.VERSION.full+json'},
-        new Options(method: 'POST'));
+        Options(method: 'POST'));
     if (res != null && res.result) {
-      return new DataResult(res.data, true);
+      return DataResult(res.data, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 
@@ -261,11 +261,11 @@ class IssueDao {
         url,
         comment,
         {"Accept": 'application/vnd.github.VERSION.full+json'},
-        new Options(method: 'PATCH'));
+        Options(method: 'PATCH'));
     if (res != null && res.result) {
-      return new DataResult(res.data, true);
+      return DataResult(res.data, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 
@@ -275,11 +275,11 @@ class IssueDao {
   static deleteCommentDao(userName, repository, number, commentId) async {
     String url = Address.editComment(userName, repository, commentId);
     var res = await httpManager
-        .netFetch(url, null, null, new Options(method: 'DELETE'), noTip: true);
+        .netFetch(url, null, null, Options(method: 'DELETE'), noTip: true);
     if (res != null && res.result) {
-      return new DataResult(res.data, true);
+      return DataResult(res.data, true);
     } else {
-      return new DataResult(null, false);
+      return DataResult(null, false);
     }
   }
 }

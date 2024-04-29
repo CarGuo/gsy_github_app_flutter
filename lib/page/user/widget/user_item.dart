@@ -25,10 +25,10 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var me = StoreProvider.of<GSYState>(context).state.userInfo!;
-    Widget userImage = new IconButton(
+    Widget userImage = IconButton(
         padding: EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
-        icon: new ClipOval(
-          child: new FadeInImage.assetNetwork(
+        icon: ClipOval(
+          child: FadeInImage.assetNetwork(
             placeholder: GSYICons.DEFAULT_USER_ICON,
             //预览图
             fit: BoxFit.fitWidth,
@@ -39,40 +39,40 @@ class UserItem extends StatelessWidget {
         ),
         onPressed: null);
 
-    return new Container(
-      child: new GSYCardItem(
+    return Container(
+      child: GSYCardItem(
         color: me.login == userItemViewModel.login
             ? Colors.amber
             : (userItemViewModel.login == "CarGuo")
                 ? Colors.pink
                 : Colors.white,
-        child: new TextButton(
+        child: TextButton(
           onPressed: onPressed,
-          child: new Padding(
-            padding: new EdgeInsets.only(
+          child: Padding(
+            padding: EdgeInsets.only(
                 left: 0.0, top: 5.0, right: 0.0, bottom: 10.0),
-            child: new Row(
+            child: Row(
               children: <Widget>[
                 if (userItemViewModel.index != null)
                   Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: new Text(userItemViewModel.index!,
+                    child: Text(userItemViewModel.index!,
                         style: GSYConstant.middleSubTextBold),
                   ),
                 userImage,
-                new Expanded(
-                  child: new Column(
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      new Row(
+                      Row(
                         children: <Widget>[
-                          new Text(userItemViewModel.userName ?? "null",
+                          Text(userItemViewModel.userName ?? "null",
                               style: GSYConstant.smallTextBold),
                           if (userItemViewModel.followers != null)
-                            new Expanded(
+                            Expanded(
                               child: Align(
-                                child: new Text(
+                                child: Text(
                                     "followers: ${userItemViewModel.followers}",
                                     style: GSYConstant.smallSubText),
                                 alignment: Alignment.centerRight,
@@ -82,17 +82,17 @@ class UserItem extends StatelessWidget {
                       ),
                       if (userItemViewModel.bio != null &&
                           userItemViewModel.bio!.isNotEmpty)
-                        new Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 5),
-                          child: new Text(userItemViewModel.bio!,
+                          child: Text(userItemViewModel.bio!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GSYConstant.smallText),
                         ),
                       if (userItemViewModel.lang != null)
-                        new Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 5, right: 10),
-                          child: new Text(userItemViewModel.lang!,
+                          child: Text(userItemViewModel.lang!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GSYConstant.smallSubText),

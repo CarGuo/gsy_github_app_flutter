@@ -17,21 +17,21 @@ class PushCodeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      new Container(
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      Container(
         ///修改文件路径
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 0.0),
-        child: new Text(
+        child: Text(
           pushCodeItemViewModel.path,
           style: GSYConstant.smallSubLightText,
         ),
       ),
-      new GSYCardItem(
+      GSYCardItem(
         ///修改文件名
         margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
-        child: new ListTile(
-          title: new Text(pushCodeItemViewModel.name!, style: GSYConstant.smallSubText),
-          leading: new Icon(
+        child: ListTile(
+          title: Text(pushCodeItemViewModel.name!, style: GSYConstant.smallSubText),
+          leading: Icon(
             GSYICons.REPOS_ITEM_FILE,
             size: 15.0,
           ),

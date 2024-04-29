@@ -53,7 +53,7 @@ class GSYTabBarWidget extends StatefulWidget {
   });
 
   @override
-  _GSYTabBarState createState() => new _GSYTabBarState();
+  _GSYTabBarState createState() => _GSYTabBarState();
 }
 
 class _GSYTabBarState extends State<GSYTabBarWidget>
@@ -68,7 +68,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
   void initState() {
     super.initState();
     _tabController =
-        new TabController(vsync: this, length: widget.tabItems!.length);
+        TabController(vsync: this, length: widget.tabItems!.length);
   }
 
   ///整个页面dispose时，记得把控制器也dispose掉，释放内存
@@ -108,23 +108,23 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
   Widget build(BuildContext context) {
     if (widget.type == TabType.top) {
       ///顶部tab bar
-      return new Scaffold(
+      return Scaffold(
         backgroundColor: GSYColors.mainBackgroundColor,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomPadding,
         floatingActionButton:
             SafeArea(child: widget.floatingActionButton ?? Container()),
         floatingActionButtonLocation: widget.floatingActionButtonLocation,
         persistentFooterButtons: widget.footerButtons,
-        appBar: new AppBar(
+        appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: widget.title,
-          bottom: new TabBar(
+          bottom: TabBar(
               controller: _tabController,
               tabs: widget.tabItems!,
               indicatorColor: widget.indicatorColor,
               onTap: _navigationTapClick),
         ),
-        body: new PageView(
+        body: PageView(
           controller: _pageController,
           children: widget.tabViews!,
           onPageChanged: _navigationPageChanged,
@@ -134,22 +134,22 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     }
 
     ///底部tab bar
-    return new Scaffold(
+    return Scaffold(
         drawer: widget.drawer,
-        appBar: new AppBar(
+        appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: widget.title,
         ),
-        body: new PageView(
+        body: PageView(
           controller: _pageController,
           children: widget.tabViews!,
           onPageChanged: _navigationPageChanged,
         ),
-        bottomNavigationBar: new Material(
+        bottomNavigationBar: Material(
           //为了适配主题风格，包一层Material实现风格套用
           color: Theme.of(context).primaryColor, //底部导航栏主题颜色
-          child: new SafeArea(
-            child: new GSYTab.TabBar(
+          child: SafeArea(
+            child: GSYTab.TabBar(
               //TabBar导航标签，底部导航放到Scaffold的bottomNavigationBar中
               controller: _tabController,
               //配置控制器

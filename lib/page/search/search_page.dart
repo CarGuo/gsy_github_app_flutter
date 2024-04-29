@@ -32,7 +32,7 @@ class _SearchPageState extends State<SearchPage>
         AutomaticKeepAliveClientMixin<SearchPage>,
         GSYListState<SearchPage>,
         SingleTickerProviderStateMixin {
-  final SearchBLoC searchBLoC = new SearchBLoC();
+  final SearchBLoC searchBLoC = SearchBLoC();
 
   late AnimationController controller;
   Animation? animation;
@@ -43,12 +43,12 @@ class _SearchPageState extends State<SearchPage>
     var data = pullLoadWidgetControl.dataList[index];
     if (searchBLoC.selectIndex == 0) {
       ReposViewModel reposViewModel = ReposViewModel.fromMap(data);
-      return new ReposItem(reposViewModel, onPressed: () {
+      return ReposItem(reposViewModel, onPressed: () {
         NavigatorUtils.goReposDetail(
             context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
     } else if (searchBLoC.selectIndex == 1) {
-      return new UserItem(UserItemViewModel.fromMap(data), onPressed: () {
+      return UserItem(UserItemViewModel.fromMap(data), onPressed: () {
         NavigatorUtils.goPerson(
             context, UserItemViewModel.fromMap(data).userName);
       });
@@ -119,7 +119,7 @@ class _SearchPageState extends State<SearchPage>
         setState(() {});
       });
 
-    Future.delayed(new Duration(seconds: 0), () {
+    Future.delayed(Duration(seconds: 0), () {
       controller.forward().then((_) {
         setState(() {
           endAnima = true;
@@ -143,7 +143,7 @@ class _SearchPageState extends State<SearchPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return new Container(
+    return Container(
       ///填充剩下半圆颜色
       color: endAnima ? Theme.of(context).primaryColor : Colors.transparent,
       child: CRAnimation(
@@ -151,10 +151,10 @@ class _SearchPageState extends State<SearchPage>
         maxR: 0,
         offset: widget.centerPosition,
         animation: animation as Animation<double>?,
-        child: new Scaffold(
+        child: Scaffold(
           resizeToAvoidBottomInset: false,
           ///右侧 Drawer
-          endDrawer: new GSYSearchDrawer(
+          endDrawer: GSYSearchDrawer(
             (String? type) {
               ///排序类型
               searchBLoC.type = type;
@@ -174,7 +174,7 @@ class _SearchPageState extends State<SearchPage>
               _resolveSelectIndex();
             },
           ),
-          appBar: new AppBar(
+          appBar: AppBar(
               leading: IconButton(
                 highlightColor: Colors.transparent,
                 icon: const BackButtonIcon(),
@@ -187,8 +187,8 @@ class _SearchPageState extends State<SearchPage>
                   });
                 },
               ),
-              title: new Text(GSYLocalizations.i18n(context)!.search_title),
-              bottom: new SearchBottom(
+              title: Text(GSYLocalizations.i18n(context)!.search_title),
+              bottom: SearchBottom(
                   textEditingController: searchBLoC.textEditingController,
                   onSubmitted: (_) {
                     _search();
@@ -243,7 +243,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
             controller: textEditingController,
             onSubmitted: onSubmitted,
             onSubmitPressed: onSubmitPressed),
-        new GSYSelectItemWidget(
+        GSYSelectItemWidget(
           [
             GSYLocalizations.i18n(context)!.search_tab_repos,
             GSYLocalizations.i18n(context)!.search_tab_user,
@@ -258,7 +258,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return new Size.fromHeight(100.0);
+    return Size.fromHeight(100.0);
   }
 }
 

@@ -78,12 +78,12 @@ class NavigatorUtils {
 
   ///个人中心
   static goPerson(BuildContext context, String? userName) {
-    NavigatorRouter(context, new PersonPage(userName));
+    NavigatorRouter(context, PersonPage(userName));
   }
 
   ///请求数据调试页面
   static goDebugDataPage(BuildContext context) {
-    return NavigatorRouter(context, new DebugDataPage());
+    return NavigatorRouter(context, DebugDataPage());
   }
 
   ///仓库详情
@@ -150,7 +150,7 @@ class NavigatorUtils {
       String? reposName, String releaseUrl, String tagUrl) {
     return NavigatorRouter(
         context,
-        new ReleasePage(
+        ReleasePage(
           userName,
           reposName,
           releaseUrl,
@@ -164,7 +164,7 @@ class NavigatorUtils {
       {bool needRightLocalIcon = false}) {
     return NavigatorRouter(
         context,
-        new IssueDetailPage(
+        IssueDetailPage(
           userName,
           reposName,
           num,
@@ -178,7 +178,7 @@ class NavigatorUtils {
       {String? userName, String? reposName}) {
     NavigatorRouter(
         context,
-        new CommonListPage(
+        CommonListPage(
           title,
           showType,
           dataType,
@@ -189,12 +189,12 @@ class NavigatorUtils {
 
   ///仓库详情通知
   static Future goNotifyPage(BuildContext context) {
-    return NavigatorRouter(context, new NotifyPage());
+    return NavigatorRouter(context, NotifyPage());
   }
 
   ///用户趋势
   static Future goTrendUserPage(BuildContext context) {
-    return NavigatorRouter(context, new TrendUserPage());
+    return NavigatorRouter(context, TrendUserPage());
   }
 
   ///搜索
@@ -229,7 +229,7 @@ class NavigatorUtils {
       String? reposName, String? sha, bool needHomeIcon) {
     return NavigatorRouter(
         context,
-        new PushDetailPage(
+        PushDetailPage(
           sha,
           userName,
           reposName,
@@ -239,12 +239,12 @@ class NavigatorUtils {
 
   ///全屏Web页面
   static Future goGSYWebView(BuildContext context, String url, String? title) {
-    return NavigatorRouter(context, new GSYWebView(url, title));
+    return NavigatorRouter(context, GSYWebView(url, title));
   }
 
   ///登陆Web页面
   static Future goLoginWebView(BuildContext context, String url, String title) {
-    return NavigatorRouter(context, new LoginWebView(url, title));
+    return NavigatorRouter(context, LoginWebView(url, title));
   }
 
   ///文件代码详情Web
@@ -258,7 +258,7 @@ class NavigatorUtils {
       String? htmlUrl}) {
     NavigatorRouter(
         context,
-        new CodeDetailPageWeb(
+        CodeDetailPageWeb(
           title: title,
           userName: userName,
           reposName: reposName,
@@ -291,14 +291,14 @@ class NavigatorUtils {
 
   ///用户配置
   static gotoUserProfileInfo(BuildContext context) {
-    NavigatorRouter(context, new UserProfileInfo());
+    NavigatorRouter(context, UserProfileInfo());
   }
 
   ///公共打开方式
   static NavigatorRouter(BuildContext context, Widget widget) {
     return Navigator.push(
         context,
-        new CupertinoPageRoute(
+        CupertinoPageRoute(
             builder: (context) => pageContainer(widget, context)));
   }
 
@@ -332,7 +332,7 @@ class NavigatorUtils {
                   .copyWith(textScaler: TextScaler.noScaling),
               child: NeverOverScrollIndicator(
                 needOverload: false,
-                child: new SafeArea(child: builder!(context)),
+                child: SafeArea(child: builder!(context)),
               ));
         });
   }

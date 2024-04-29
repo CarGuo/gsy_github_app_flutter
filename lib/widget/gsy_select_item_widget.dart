@@ -38,7 +38,7 @@ class GSYSelectItemWidget extends StatefulWidget
 
   @override
   Size get preferredSize {
-    return new Size.fromHeight(height);
+    return Size.fromHeight(height);
   }
 }
 
@@ -64,7 +64,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
       //说明此项是变项,key值取反
       keys[index] = !keys[index];
     }
-    return new Expanded(
+    return Expanded(
       child: AnimatedSwitcher(
         transitionBuilder: (child, anim) {
           return ScaleTransition(child: child, scale: anim);
@@ -75,7 +75,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
             padding: EdgeInsets.all(10.0),
-            child: new Text(
+            child: Text(
               name,
               style: style,
               textAlign: TextAlign.center,
@@ -100,7 +100,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
         list.add(_renderItem(widget.itemNames[i], i));
       } else {
         list.add(_renderItem(widget.itemNames[i], i));
-        list.add(new Container(
+        list.add(Container(
             width: 1.0, height: 25.0, color: GSYColors.subLightTextColor));
       }
     }
@@ -109,15 +109,15 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new GSYCardItem(
+    return GSYCardItem(
         elevation: widget.elevation,
         margin: widget.margin,
         color: Theme.of(context).primaryColor,
         shape: widget.shape ??
-            new RoundedRectangleBorder(
+            RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
-        child: new Row(
+        child: Row(
           children: _renderList(),
         ));
   }

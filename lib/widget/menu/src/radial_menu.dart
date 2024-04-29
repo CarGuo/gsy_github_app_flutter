@@ -69,7 +69,7 @@ class RadialMenu<T> extends StatefulWidget {
   final Duration progressAnimationDuration;
 
   @override
-  RadialMenuState createState() => new RadialMenuState();
+  RadialMenuState createState() => RadialMenuState();
 }
 
 class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
@@ -88,11 +88,11 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _menuAnimationController = new AnimationController(
+    _menuAnimationController = AnimationController(
       duration: widget.menuAnimationDuration,
       vsync: this,
     );
-    _progressAnimationController = new AnimationController(
+    _progressAnimationController = AnimationController(
       duration: widget.progressAnimationDuration,
       vsync: this,
     );
@@ -137,9 +137,9 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
   Widget _buildActionButton(int index) {
     final RadialMenuItem item = widget.items[index];
 
-    return new LayoutId(
+    return LayoutId(
       id: '${_RadialMenuLayout.actionButton}$index',
-      child: new RadialMenuButton(
+      child: RadialMenuButton(
         child: item,
         backgroundColor: item.backgroundColor,
         onPressed: () => _activate(index),
@@ -150,9 +150,9 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
   Widget _buildActiveAction(int index) {
     final RadialMenuItem item = widget.items[index];
 
-    return new LayoutId(
+    return LayoutId(
       id: '${_RadialMenuLayout.activeAction}$index',
-      child: new ArcProgressIndicator(
+      child: ArcProgressIndicator(
         controller: _progressAnimationController.view,
         radius: widget.radius,
         color: item.backgroundColor,
@@ -164,9 +164,9 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
   }
 
   Widget _buildCenterButton() {
-    return new LayoutId(
+    return LayoutId(
       id: _RadialMenuLayout.menuButton,
-      child: new RadialMenuCenterButton(
+      child: RadialMenuCenterButton(
         openCloseAnimationController: _menuAnimationController.view,
         activateAnimationController: _progressAnimationController.view,
         isOpen: _isOpen,
@@ -191,11 +191,11 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
 
     children.add(_buildCenterButton());
 
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: _menuAnimationController,
       builder: (BuildContext context, Widget? child) {
-        return new CustomMultiChildLayout(
-          delegate: new _RadialMenuLayout(
+        return CustomMultiChildLayout(
+          delegate: _RadialMenuLayout(
             itemCount: widget.items.length,
             radius: widget.radius,
             calculateItemAngle: calculateItemAngle,
@@ -226,23 +226,23 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
     required this.radius,
     required this.calculateItemAngle,
     required this.controller,
-  }) : _progress = new Tween<double>(begin: 0.0, end: radius).animate(
-            new CurvedAnimation(curve: Curves.elasticInOut, parent: controller));
+  }) : _progress = Tween<double>(begin: 0.0, end: radius).animate(
+            CurvedAnimation(curve: Curves.elasticInOut, parent: controller));
 
   late Offset center;
 
   @override
   void performLayout(Size size) {
-    center = new Offset(size.width, size.height);
+    center = Offset(size.width, size.height);
 
     if (hasChild(menuButton)) {
       Size menuButtonSize;
-      menuButtonSize = layoutChild(menuButton, new BoxConstraints.loose(size));
+      menuButtonSize = layoutChild(menuButton, BoxConstraints.loose(size));
 
       // place the menubutton in the center
       positionChild(
         menuButton,
-        new Offset(
+        Offset(
           center.dx - menuButtonSize.width + 1,
           center.dy - menuButtonSize.height + 1,
         ),
@@ -255,7 +255,7 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
       if (hasChild(actionArcId)) {
         final Size arcSize = layoutChild(
           actionArcId,
-          new BoxConstraints.expand(
+          BoxConstraints.expand(
             width: _progress.value * 2,
             height: _progress.value * 2,
           ),
@@ -263,7 +263,7 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
 
         positionChild(
           actionArcId,
-          new Offset(
+          Offset(
             center.dx - arcSize.width / 2,
             center.dy - arcSize.height / 2,
           ),
@@ -272,13 +272,13 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
 
       if (hasChild(actionButtonId)) {
         final Size buttonSize =
-            layoutChild(actionButtonId, new BoxConstraints.loose(size));
+            layoutChild(actionButtonId, BoxConstraints.loose(size));
 
         final double itemAngle = calculateItemAngle(0);
 
         positionChild(
           actionButtonId,
-          new Offset(
+          Offset(
             (center.dx - buttonSize.width) +
                 (_progress.value) * Math.cos(itemAngle),
             (center.dy - buttonSize.height) +

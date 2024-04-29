@@ -27,7 +27,7 @@ class NotifyPage extends StatefulWidget {
 
 class _NotifyPageState extends State<NotifyPage>
     with AutomaticKeepAliveClientMixin<NotifyPage>, GSYListState<NotifyPage> {
-  final SlidableController slidableController = new SlidableController();
+  final SlidableController slidableController = SlidableController();
 
   int selectIndex = 0;
 
@@ -39,7 +39,7 @@ class _NotifyPageState extends State<NotifyPage>
     }
 
     ///只有未读消息支持 Slidable 滑动效果
-    return new Slidable(
+    return Slidable(
       key: ValueKey<String>(index.toString() + "_" + selectIndex.toString()),
       controller: slidableController,
       actionPane: SlidableBehindActionPane(),
@@ -50,7 +50,7 @@ class _NotifyPageState extends State<NotifyPage>
         onDismissed: (actionType) {},
       ),
       secondaryActions: <Widget>[
-        new IconSlideAction(
+        IconSlideAction(
           caption: GSYLocalizations.i18n(context)!.notify_readed,
           color: Colors.redAccent,
           icon: Icons.delete,
@@ -69,7 +69,7 @@ class _NotifyPageState extends State<NotifyPage>
   _renderEventItem(Model.Notification notification) {
     EventViewModel eventViewModel =
         EventViewModel.fromNotify(context, notification);
-    return new GSYEventItem(eventViewModel, onPressed: () {
+    return GSYEventItem(eventViewModel, onPressed: () {
       if (notification.unread!) {
         UserDao.setNotificationAsReadDao(notification.id.toString());
       }
@@ -120,9 +120,9 @@ class _NotifyPageState extends State<NotifyPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
-      appBar: new AppBar(
+      appBar: AppBar(
         title: GSYTitleBar(
           GSYLocalizations.i18n(context)!.notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
@@ -135,7 +135,7 @@ class _NotifyPageState extends State<NotifyPage>
             });
           },
         ),
-        bottom: new GSYSelectItemWidget(
+        bottom: GSYSelectItemWidget(
           [
             GSYLocalizations.i18n(context)!.notify_tab_unread,
             GSYLocalizations.i18n(context)!.notify_tab_part,

@@ -32,27 +32,27 @@ class UserProfileInfo extends StatefulWidget {
 class _UserProfileState extends State<UserProfileInfo> {
   _renderItem(
       IconData leftIcon, String title, String value, VoidCallback onPressed) {
-    return new GSYCardItem(
-      child: new RawMaterialButton(
+    return GSYCardItem(
+      child: RawMaterialButton(
         onPressed: onPressed,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: const EdgeInsets.all(15.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: new Row(
+        child: Row(
           children: <Widget>[
-            new Icon(leftIcon),
-            new Container(
+            Icon(leftIcon),
+            Container(
               width: 10.0,
             ),
-            new Text(title, style: GSYConstant.normalSubText),
-            new Container(
+            Text(title, style: GSYConstant.normalSubText),
+            Container(
               width: 10.0,
             ),
-            new Expanded(child: new Text(value, style: GSYConstant.normalText)),
-            new Container(
+            Expanded(child: Text(value, style: GSYConstant.normalText)),
+            Container(
               width: 10.0,
             ),
-            new Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0),
+            Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0),
           ],
         ),
       ),
@@ -76,8 +76,8 @@ class _UserProfileState extends State<UserProfileInfo> {
         }
       });
     },
-        titleController: new TextEditingController(),
-        valueController: new TextEditingController(text: value),
+        titleController: TextEditingController(),
+        valueController: TextEditingController(text: value),
         needTitle: false);
   }
 
@@ -124,21 +124,21 @@ class _UserProfileState extends State<UserProfileInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreBuilder<GSYState>(builder: (context, store) {
+    return StoreBuilder<GSYState>(builder: (context, store) {
       return Scaffold(
-        appBar: new AppBar(
-            title: new Hero(
+        appBar: AppBar(
+            title: Hero(
                 tag: "home_user_info",
-                child: new Material(
+                child: Material(
                     color: Colors.transparent,
-                    child: new Text(
+                    child: Text(
                       GSYLocalizations.i18n(context)!.home_user_info,
                       style: GSYConstant.normalTextWhite,
                     )))),
-        body: new Container(
+        body: Container(
           color: GSYColors.white,
-          child: new SingleChildScrollView(
-            child: new Column(
+          child: SingleChildScrollView(
+            child: Column(
               children: _renderList(store.state.userInfo!, store),
             ),
           ),

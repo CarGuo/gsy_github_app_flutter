@@ -7,8 +7,8 @@ class DemoTextFieldPage extends StatefulWidget {
 }
 
 class _DemoTextFieldPageState extends State<DemoTextFieldPage> {
-  final TextEditingController controller = new TextEditingController();
-  final FocusNode focusNode = new FocusNode();
+  final TextEditingController controller = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,12 @@ class _DemoTextFieldPageState extends State<DemoTextFieldPage> {
       body: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: new TextField(
+        child: TextField(
           controller: controller,
           obscureText: true,
           keyboardType: TextInputType.number,
           focusNode: focusNode,
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
             hintText: "请输入密码",
             icon: Icon(Icons.keyboard),
             prefix: Icon(Icons.person),
@@ -56,7 +56,7 @@ class _DemoTextFieldPageState extends State<DemoTextFieldPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.text = "";
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
       ),
     );

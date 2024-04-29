@@ -51,13 +51,13 @@ class RepositoryDetailFileListPageState
         : GSYICons.REPOS_ITEM_DIR;
     Widget? trailing = (fileItemViewModel.type == "file")
         ? null
-        : new Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
-    return new GSYCardItem(
+        : Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0);
+    return GSYCardItem(
       margin: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
-      child: new ListTile(
+      child: ListTile(
         title:
-            new Text(fileItemViewModel.name!, style: GSYConstant.smallSubText),
-        leading: new Icon(
+            Text(fileItemViewModel.name!, style: GSYConstant.smallSubText),
+        leading: Icon(
           iconData,
           size: 16.0,
         ),
@@ -71,18 +71,18 @@ class RepositoryDetailFileListPageState
 
   ///渲染头部列表
   _renderHeader() {
-    return new Container(
-      margin: new EdgeInsets.only(left: 3.0, right: 3.0),
-      child: new ListView.builder(
+    return Container(
+      margin: EdgeInsets.only(left: 3.0, right: 3.0),
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return new RawMaterialButton(
-            constraints: new BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-            padding: new EdgeInsets.all(4.0),
+          return RawMaterialButton(
+            constraints: BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+            padding: EdgeInsets.all(4.0),
             onPressed: () {
               _resolveHeaderClick(index);
             },
-            child: new Text(headerList[index]! + " > ",
+            child: Text(headerList[index]! + " > ",
                 style: GSYConstant.smallText),
           );
         },
@@ -177,12 +177,12 @@ class RepositoryDetailFileListPageState
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
-      appBar: new AppBar(
+      appBar: AppBar(
         flexibleSpace: _renderHeader(),
         backgroundColor: GSYColors.mainBackgroundColor,
-        leading: new Container(),
+        leading: Container(),
         elevation: 0.0,
       ),
       body: PopScope(

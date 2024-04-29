@@ -43,7 +43,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         GSYListState<ReposDetailInfoPage>,
         TickerProviderStateMixin {
   ///滑动监听
-  final ScrollController scrollController = new ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   ///当前显示tab
   int selectIndex = 0;
@@ -53,14 +53,14 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIKey =
-      new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+      GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   ///动画控制器
   AnimationController? animationController;
 
   @override
   showRefreshLoading() {
-    new Future.delayed(const Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       refreshIKey.currentState!.show().then((e) {});
       return true;
     });
@@ -71,7 +71,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     var item = pullLoadWidgetControl.dataList[index];
     if (selectIndex == 1 && item is RepoCommit) {
       ///提交
-      return new GSYEventItem(
+      return GSYEventItem(
         EventViewModel.fromCommitMap(item),
         onPressed: () {
           RepoCommit model = pullLoadWidgetControl.dataList[index];
@@ -81,7 +81,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         needImage: false,
       );
     }
-    return new GSYEventItem(
+    return GSYEventItem(
       EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
       onPressed: () {
         EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index],
@@ -128,7 +128,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         }
         return null;
       }
-      return new Future.value(null);
+      return Future.value(null);
     }).then((result) {
       if (result != null && result.result) {
         if (!isShow) {
@@ -192,9 +192,9 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   ///绘制底部状态 item
   _renderBottomItem(var text, var icon, var onPressed) {
-    return new TextButton(
+    return TextButton(
         onPressed: onPressed,
-        child: new GSYIConText(
+        child: GSYIConText(
           icon,
           text,
           GSYConstant.smallText,
@@ -228,7 +228,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   @override
   void initState() {
     super.initState();
-    animationController = new AnimationController(vsync: this);
+    animationController = AnimationController(vsync: this);
   }
 
   @override
@@ -266,7 +266,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           ),
           child: OverflowBox(
             maxHeight: 1000,
-            child: new ReposHeaderItem(
+            child: ReposHeaderItem(
               ReposHeaderViewModel.fromHttpMap(widget.userName, widget.reposName,
                   ReposDetailModel.of(context).repository),
               layoutListener: (size) {
@@ -301,7 +301,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
               return SizedBox.expand(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 10, left: lr, right: lr),
-                  child: new GSYSelectItemWidget(
+                  child: GSYSelectItemWidget(
                     [
                       GSYLocalizations.i18n(context)!.repos_tab_activity,
                       GSYLocalizations.i18n(context)!.repos_tab_commits,
@@ -319,7 +319,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
                       });
                     },
                     margin: EdgeInsets.zero,
-                    shape: new RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(radius),
                     ),
                   ),

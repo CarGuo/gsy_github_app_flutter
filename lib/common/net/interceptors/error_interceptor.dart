@@ -17,14 +17,14 @@ class ErrorInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options, handler) async {
     //没有网络
-    var connectivityResult = await (new Connectivity().checkConnectivity());
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       return handler.reject(DioException(
           requestOptions: options,
           type: DioExceptionType.unknown,
           response: Response(
               requestOptions: options,
-              data: new ResultData(
+              data: ResultData(
                   Code.errorHandleFunction(Code.NETWORK_ERROR, "", false),
                   false,
                   Code.NETWORK_ERROR))));

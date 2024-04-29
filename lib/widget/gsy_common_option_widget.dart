@@ -17,8 +17,8 @@ class GSYCommonOptionWidget extends StatelessWidget {
       : this.url = (url == null) ? GSYConstant.app_default_share_url : url;
 
   _renderHeaderPopItem(List<GSYOptionModel> list) {
-    return new PopupMenuButton<GSYOptionModel>(
-      child: new Icon(GSYICons.MORE),
+    return PopupMenuButton<GSYOptionModel>(
+      child: Icon(GSYICons.MORE),
       onSelected: (model) {
         model.selected(model);
       },
@@ -33,7 +33,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
     for (GSYOptionModel item in data) {
       list.add(PopupMenuItem<GSYOptionModel>(
         value: item,
-        child: new Text(item.name),
+        child: Text(item.name),
       ));
     }
     return list;
@@ -42,15 +42,15 @@ class GSYCommonOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> constList = [
-      new GSYOptionModel(GSYLocalizations.i18n(context)!.option_web,
+      GSYOptionModel(GSYLocalizations.i18n(context)!.option_web,
           GSYLocalizations.i18n(context)!.option_web, (model) {
         CommonUtils.launchOutURL(url, context);
       }),
-      new GSYOptionModel(GSYLocalizations.i18n(context)!.option_copy,
+      GSYOptionModel(GSYLocalizations.i18n(context)!.option_copy,
           GSYLocalizations.i18n(context)!.option_copy, (model) {
         CommonUtils.copy(url ?? "", context);
       }),
-      new GSYOptionModel(GSYLocalizations.i18n(context)!.option_share,
+      GSYOptionModel(GSYLocalizations.i18n(context)!.option_share,
           GSYLocalizations.i18n(context)!.option_share, (model) {
         Share.share(
             GSYLocalizations.i18n(context)!.option_share_title + (url ?? ""));

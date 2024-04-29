@@ -20,7 +20,7 @@ class HonorListPage extends StatefulWidget {
 class _HonorListPageState extends State<HonorListPage> {
   _renderItem(item) {
     ReposViewModel reposViewModel = ReposViewModel.fromMap(item);
-    return new ReposItem(reposViewModel, onPressed: () {
+    return ReposItem(reposViewModel, onPressed: () {
       NavigatorUtils.goReposDetail(
           context, reposViewModel.ownerName, reposViewModel.repositoryName);
     });
@@ -28,9 +28,9 @@ class _HonorListPageState extends State<HonorListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-          title: new Text(
+    return Scaffold(
+      appBar: AppBar(
+          title: Text(
         GSYLocalizations.i18n(context)!.user_tab_honor,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

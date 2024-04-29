@@ -110,7 +110,7 @@ class _PersonState extends BasePersonState<PersonPage> {
   ///获取用户信息里的用户名
   _getUserName() {
     if (userInfo == null) {
-      return new User.empty();
+      return User.empty();
     }
     return userInfo!.login;
   }
@@ -145,15 +145,15 @@ class _PersonState extends BasePersonState<PersonPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return new Scaffold(
-        appBar: new AppBar(
+    return Scaffold(
+        appBar: AppBar(
             title: GSYTitleBar(
           (userInfo != null && userInfo!.login != null) ? userInfo!.login : "",
           rightWidget: GSYCommonOptionWidget(
             url: userInfo?.html_url,
           ),
         )),
-        floatingActionButton: new FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
             child: AutoSizeText(
               focus,
               minFontSize: 8,

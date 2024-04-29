@@ -25,7 +25,7 @@ class LoginPage extends StatefulWidget {
 
   @override
   State createState() {
-    return new _LoginPageState();
+    return _LoginPageState();
   }
 }
 
@@ -33,41 +33,41 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
   @override
   Widget build(BuildContext context) {
     /// 触摸收起键盘
-    return new GestureDetector(
+    return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        body: new Container(
+        body: Container(
           color: Theme.of(context).primaryColor,
           child: Stack(children: <Widget>[
             Positioned.fill(child: AnimatedBackground()),
             Positioned.fill(child: ParticlesWidget(30)),
-            new Center(
+            Center(
               ///防止overFlow的现象
               child: SafeArea(
                 ///同时弹出键盘不遮挡
                 child: SingleChildScrollView(
-                  child: new Card(
+                  child: Card(
                     elevation: 5.0,
-                    shape: new RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     color: GSYColors.cardWhite,
                     margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: new Padding(
-                      padding: new EdgeInsets.only(
+                    child: Padding(
+                      padding: EdgeInsets.only(
                           left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
-                      child: new Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          new Image(
-                              image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+                          Image(
+                              image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                               width: 90.0,
                               height: 90.0),
-                          new Padding(padding: new EdgeInsets.all(10.0)),
-                          new GSYInputWidget(
+                          Padding(padding: EdgeInsets.all(10.0)),
+                          GSYInputWidget(
                             hintText: GSYLocalizations.i18n(context)!
                                 .login_username_hint_text,
                             iconData: GSYICons.LOGIN_USER,
@@ -76,8 +76,8 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             },
                             controller: userController,
                           ),
-                          new Padding(padding: new EdgeInsets.all(10.0)),
-                          new GSYInputWidget(
+                          Padding(padding: EdgeInsets.all(10.0)),
+                          GSYInputWidget(
                             hintText: GSYLocalizations.i18n(context)!
                                 .login_password_hint_text,
                             iconData: GSYICons.LOGIN_PW,
@@ -87,13 +87,13 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             },
                             controller: pwController,
                           ),
-                          new Padding(padding: new EdgeInsets.all(10.0)),
+                          Padding(padding: EdgeInsets.all(10.0)),
                           Container(
                             height: 50,
                             child: Row(
                               children: <Widget>[
-                                new Expanded(
-                                  child: new GSYFlexButton(
+                                Expanded(
+                                  child: GSYFlexButton(
                                     text: GSYLocalizations.i18n(context)!
                                         .login_text,
                                     color: Theme.of(context).primaryColor,
@@ -102,11 +102,11 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                     onPress: loginIn,
                                   ),
                                 ),
-                                new SizedBox(
+                                SizedBox(
                                   width: 10,
                                 ),
-                                new Expanded(
-                                  child: new GSYFlexButton(
+                                Expanded(
+                                  child: GSYFlexButton(
                                     text: GSYLocalizations.i18n(context)!
                                         .oauth_text,
                                     color: Theme.of(context).primaryColor,
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                               ],
                             ),
                           ),
-                          new Padding(padding: new EdgeInsets.all(15.0)),
+                          Padding(padding: EdgeInsets.all(15.0)),
                           InkWell(
                             onTap: () {
                               CommonUtils.showLanguageDialog(context);
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                               style: TextStyle(color: GSYColors.subTextColor),
                             ),
                           ),
-                          new Padding(padding: new EdgeInsets.all(15.0)),
+                          Padding(padding: EdgeInsets.all(15.0)),
                         ],
                       ),
                     ),
@@ -144,9 +144,9 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
 }
 
 mixin LoginBLoC on State<LoginPage> {
-  final TextEditingController userController = new TextEditingController();
+  final TextEditingController userController = TextEditingController();
 
-  final TextEditingController pwController = new TextEditingController();
+  final TextEditingController pwController = TextEditingController();
 
   String? _userName = "";
 
@@ -176,8 +176,8 @@ mixin LoginBLoC on State<LoginPage> {
   initParams() async {
     _userName = await LocalStorage.get(Config.USER_NAME_KEY);
     _password = await LocalStorage.get(Config.PW_KEY);
-    userController.value = new TextEditingValue(text: _userName ?? "");
-    pwController.value = new TextEditingValue(text: _password ?? "");
+    userController.value = TextEditingValue(text: _userName ?? "");
+    pwController.value = TextEditingValue(text: _password ?? "");
   }
 
   loginIn() async {

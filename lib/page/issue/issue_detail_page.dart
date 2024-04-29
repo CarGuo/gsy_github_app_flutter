@@ -50,22 +50,22 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   String? htmlUrl;
 
   /// issue 的头部数据显示
-  IssueHeaderViewModel issueHeaderViewModel = new IssueHeaderViewModel();
+  IssueHeaderViewModel issueHeaderViewModel = IssueHeaderViewModel();
 
   ///控制编辑时issue的title
-  TextEditingController issueInfoTitleControl = new TextEditingController();
+  TextEditingController issueInfoTitleControl = TextEditingController();
 
   ///控制编辑时issue的content
-  TextEditingController issueInfoValueControl = new TextEditingController();
+  TextEditingController issueInfoValueControl = TextEditingController();
 
   ///绘制item
   _renderEventItem(index) {
     ///第一个绘制的是头部
     if (index == 0) {
-      return new IssueHeaderItem(issueHeaderViewModel, onPressed: () {});
+      return IssueHeaderItem(issueHeaderViewModel, onPressed: () {});
     }
     Issue issue = pullLoadWidgetControl.dataList[index - 1];
-    return new IssueItem(
+    return IssueItem(
       IssueItemViewModel.fromMap(issue, needTitle: false),
       hideBottom: true,
       limitComment: false,
@@ -73,19 +73,19 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         NavigatorUtils.showGSYDialog(
             context: context,
             builder: (BuildContext context) {
-              return new Center(
-                child: new Container(
-                  decoration: new BoxDecoration(
+              return Center(
+                child: Container(
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                       color: GSYColors.white,
-                      border: new Border.all(
+                      border: Border.all(
                           color: GSYColors.subTextColor, width: 0.3)),
                   margin: EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      new GSYFlexButton(
+                      GSYFlexButton(
                         color: GSYColors.white,
                         textColor: GSYColors.primaryDarkValue,
                         text: GSYLocalizations.i18n(context)!
@@ -94,7 +94,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                           _editCommit(issue.id.toString(), issue.body);
                         },
                       ),
-                      new GSYFlexButton(
+                      GSYFlexButton(
                         color: GSYColors.white,
                         text: GSYLocalizations.i18n(context)!
                             .issue_edit_issue_delete_commit,
@@ -102,7 +102,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                           _deleteCommit(issue.id.toString());
                         },
                       ),
-                      new GSYFlexButton(
+                      GSYFlexButton(
                         color: GSYColors.white,
                         text: GSYLocalizations.i18n(context)!
                             .issue_edit_issue_copy_commit,
@@ -138,7 +138,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         _resolveHeaderInfo(res);
         return res.next?.call();
       }
-      return new Future.value(null);
+      return Future.value(null);
     }).then((res) {
       if (res != null && res.result) {
         _resolveHeaderInfo(res);
@@ -160,7 +160,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   _editCommit(id, content) {
     Navigator.pop(context);
     String? contentData = content;
-    issueInfoValueControl = new TextEditingController(text: contentData);
+    issueInfoValueControl = TextEditingController(text: contentData);
     //编译Issue Info
     CommonUtils.showEditDialog(
       context,
@@ -207,8 +207,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   _editIssue() {
     String? title = issueHeaderViewModel.issueComment;
     String? content = issueHeaderViewModel.issueDesHtml;
-    issueInfoTitleControl = new TextEditingController(text: title);
-    issueInfoValueControl = new TextEditingController(text: content);
+    issueInfoTitleControl = TextEditingController(text: title);
+    issueInfoValueControl = TextEditingController(text: content);
     //编译Issue Info
     CommonUtils.showEditDialog(
       context,
@@ -250,8 +250,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///回复 issue
   _replyIssue() {
     //回复 Info
-    issueInfoTitleControl = new TextEditingController(text: "");
-    issueInfoValueControl = new TextEditingController(text: "");
+    issueInfoTitleControl = TextEditingController(text: "");
+    issueInfoValueControl = TextEditingController(text: "");
     String? content = "";
     CommonUtils.showEditDialog(
       context,
@@ -291,29 +291,29 @@ class _IssueDetailPageState extends State<IssueDetailPage>
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                new TextButton(
+                TextButton(
                   onPressed: () {
                     _replyIssue();
                   },
-                  child: new Text(GSYLocalizations.i18n(context)!.issue_reply,
+                  child: Text(GSYLocalizations.i18n(context)!.issue_reply,
                       style: GSYConstant.smallText),
                 ),
-                new Container(
+                Container(
                     width: 0.3,
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
-                new TextButton(
+                TextButton(
                   onPressed: () {
                     _editIssue();
                   },
-                  child: new Text(GSYLocalizations.i18n(context)!.issue_edit,
+                  child: Text(GSYLocalizations.i18n(context)!.issue_edit,
                       style: GSYConstant.smallText),
                 ),
-                new Container(
+                Container(
                     width: 0.3,
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
-                new TextButton(
+                TextButton(
                     onPressed: () {
                       CommonUtils.showLoadingDialog(context);
                       IssueDao.editIssueDao(
@@ -326,16 +326,16 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                         Navigator.pop(context);
                       });
                     },
-                    child: new Text(
+                    child: Text(
                         (issueHeaderViewModel.state == 'closed')
                             ? GSYLocalizations.i18n(context)!.issue_open
                             : GSYLocalizations.i18n(context)!.issue_close,
                         style: GSYConstant.smallText)),
-                new Container(
+                Container(
                     width: 0.3,
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
-                new TextButton(
+                TextButton(
                     onPressed: () {
                       CommonUtils.showLoadingDialog(context);
                       IssueDao.lockIssueDao(widget.userName, widget.reposName,
@@ -345,7 +345,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                         Navigator.pop(context);
                       });
                     },
-                    child: new Text(
+                    child: Text(
                         issueHeaderViewModel.locked!
                             ? GSYLocalizations.i18n(context)!.issue_unlock
                             : GSYLocalizations.i18n(context)!.issue_lock,
@@ -379,10 +379,10 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     Widget? widgetContent =
-        (widget.needHomeIcon) ? null : new GSYCommonOptionWidget(url: htmlUrl);
-    return new Scaffold(
+        (widget.needHomeIcon) ? null : GSYCommonOptionWidget(url: htmlUrl);
+    return Scaffold(
       persistentFooterButtons: _getBottomWidget(),
-      appBar: new AppBar(
+      appBar: AppBar(
         title: GSYTitleBar(
           widget.reposName,
           rightWidget: widgetContent,

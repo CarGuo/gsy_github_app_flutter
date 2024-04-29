@@ -27,13 +27,13 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return new SafeArea(
-      child: new Container(
+    return SafeArea(
+      child: Container(
         color: Theme.of(context).primaryColor,
         child: Container(
           color: GSYColors.white,
-          child: new SingleChildScrollView(
-            child: new Column(
+          child: SingleChildScrollView(
+            child: Column(
               children: _renderList(),
             ),
           ),
@@ -44,7 +44,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   _renderList() {
     List<Widget> list = [];
-    list.add(new Container(
+    list.add(Container(
       width: itemWidth,
     ));
     list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_type));
@@ -71,12 +71,12 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
   }
 
   _renderTitle(String title) {
-    return new Container(
+    return Container(
       color: Theme.of(context).primaryColor,
       width: itemWidth + 50,
       height: 50.0,
-      child: new Center(
-        child: new Text(
+      child: Center(
+        child: Text(
           title,
           style: GSYConstant.middleTextWhite,
           textAlign: TextAlign.start,
@@ -95,25 +95,25 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   _renderItem(FilterModel model, List<FilterModel> list, int index,
       SearchSelectItemChanged<String?>? select) {
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new Container(
+        Container(
           height: 50.0,
-          child: new Container(
+          child: Container(
             width: itemWidth,
-            child: new Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Center(
-                    child: new Checkbox(
+                Center(
+                    child: Checkbox(
                         value: model.select, onChanged: (value) {})),
-                new Center(child: Text(model.name!)),
+                Center(child: Text(model.name!)),
               ],
             ),
           ),
         ),
-        new TextButton(
+        TextButton(
           onPressed: () {
             setState(() {
               for (FilterModel model in list) {
@@ -123,7 +123,7 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
             });
             select?.call(model.value);
           },
-          child: new Container(
+          child: Container(
             width: itemWidth,
           ),
         )

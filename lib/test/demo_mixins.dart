@@ -59,7 +59,7 @@ class G extends B with A, A2 {
 
 
 testMixins() {
-  G t = new G();
+  G t = G();
   t.a();
   t.b();
   t.c();

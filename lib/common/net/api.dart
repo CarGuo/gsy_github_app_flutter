@@ -16,20 +16,20 @@ class HttpManager {
   static const CONTENT_TYPE_JSON = "application/json";
   static const CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
 
-  Dio _dio = new Dio(); // 使用默认配置
+  Dio _dio = Dio(); // 使用默认配置
 
-  final TokenInterceptors _tokenInterceptors = new TokenInterceptors();
+  final TokenInterceptors _tokenInterceptors = TokenInterceptors();
 
   HttpManager() {
-    _dio.interceptors.add(new HeaderInterceptors());
+    _dio.interceptors.add(HeaderInterceptors());
 
     _dio.interceptors.add(_tokenInterceptors);
 
-    _dio.interceptors.add(new LogsInterceptors());
+    _dio.interceptors.add(LogsInterceptors());
 
-    _dio.interceptors.add(new ErrorInterceptors());
+    _dio.interceptors.add(ErrorInterceptors());
 
-    _dio.interceptors.add(new ResponseInterceptors());
+    _dio.interceptors.add(ResponseInterceptors());
   }
 
   ///发起网络请求
@@ -40,7 +40,7 @@ class HttpManager {
   Future<ResultData?> netFetch(
       url, params, Map<String, dynamic>? header, Options? option,
       {noTip = false}) async {
-    Map<String, dynamic> headers = new HashMap();
+    Map<String, dynamic> headers = HashMap();
     if (header != null) {
       headers.addAll(header);
     }
@@ -48,7 +48,7 @@ class HttpManager {
     if (option != null) {
       option.headers = headers;
     } else {
-      option = new Options(method: "get");
+      option = Options(method: "get");
       option.headers = headers;
     }
 
@@ -57,14 +57,14 @@ class HttpManager {
       if (e.response != null) {
         errorResponse = e.response;
       } else {
-        errorResponse = new Response(statusCode: 666, requestOptions: RequestOptions(path: url));
+        errorResponse = Response(statusCode: 666, requestOptions: RequestOptions(path: url));
       }
       if (e.type == DioExceptionType.connectionTimeout ||
       e.type == DioExceptionType.sendTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
         errorResponse!.statusCode = Code.NETWORK_TIMEOUT;
       }
-      return new ResultData(
+      return ResultData(
           Code.errorHandleFunction(errorResponse!.statusCode, e.message, noTip),
           false,
           errorResponse.statusCode);
@@ -93,4 +93,4 @@ class HttpManager {
   }
 }
 
-final HttpManager httpManager = new HttpManager();
+final HttpManager httpManager = HttpManager();

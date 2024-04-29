@@ -20,7 +20,7 @@ class ErrorPageState extends State<ErrorPage> {
   static List<String?> sErrorName = [];
 
   final TextEditingController textEditingController =
-      new TextEditingController();
+      TextEditingController();
 
   addError(FlutterErrorDetails details) {
     try {
@@ -40,12 +40,12 @@ class ErrorPageState extends State<ErrorPage> {
         MediaQueryData.fromView(View.of(context)).size.width;
     return Container(
       color: GSYColors.primaryValue,
-      child: new Center(
+      child: Center(
         child: Container(
           alignment: Alignment.center,
           width: width,
           height: width,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white.withAlpha(30),
             gradient:
                 RadialGradient(tileMode: TileMode.mirror, radius: 0.1, colors: [
@@ -58,28 +58,28 @@ class ErrorPageState extends State<ErrorPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Image(
-                  image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+              Image(
+                  image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 90.0,
                   height: 90.0),
-              new SizedBox(
+              SizedBox(
                 height: 11,
               ),
               Material(
-                child: new Text(
+                child: Text(
                   "Error Occur",
-                  style: new TextStyle(fontSize: 24, color: Colors.white),
+                  style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
                 color: GSYColors.primaryValue,
               ),
-              new SizedBox(
+              SizedBox(
                 height: 40,
               ),
-              new Row(
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new TextButton(
+                  TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: GSYColors.white.withAlpha(100),
                     ),
@@ -105,16 +105,16 @@ class ErrorPageState extends State<ErrorPage> {
                           Navigator.pop(context);
                         });
                       },
-                          titleController: new TextEditingController(),
+                          titleController: TextEditingController(),
                           valueController: textEditingController,
                           needTitle: false);
                     },
                     child: Text("Report"),
                   ),
-                  new SizedBox(
+                  SizedBox(
                     width: 40,
                   ),
-                  new TextButton(
+                  TextButton(
                       style: TextButton.styleFrom(
                           backgroundColor: Colors.white.withAlpha(100)),
                       onPressed: () {

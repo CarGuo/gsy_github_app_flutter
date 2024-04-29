@@ -28,7 +28,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
         GSYListState<T>,
         SingleTickerProviderStateMixin {
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIKey =
-      new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+      GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   final List<UserOrg> orgList = [];
 
@@ -36,7 +36,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
 
   @override
   showRefreshLoading() {
-    new Future.delayed(const Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       refreshIKey.currentState!.show().then((e) {});
       return true;
     });
@@ -46,7 +46,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   renderItem(index, User userInfo, String beStaredCount, Color? notifyColor,
       VoidCallback? refreshCallBack, List<UserOrg> orgList) {
     if (userInfo.type == "Organization") {
-      return new UserItem(
+      return UserItem(
           UserItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]),
           onPressed: () {
         NavigatorUtils.goPerson(
@@ -56,7 +56,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       });
     } else {
       Event event = pullLoadWidgetControl.dataList[index];
-      return new GSYEventItem(EventViewModel.fromEventMap(event), onPressed: () {
+      return GSYEventItem(EventViewModel.fromEventMap(event), onPressed: () {
         EventUtils.ActionUtils(context, event, "");
       });
     }
@@ -82,7 +82,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
           });
           return res.next?.call();
         }
-        return new Future.value(null);
+        return Future.value(null);
       }).then((res) {
         if (res != null && res.result) {
           setState(() {
@@ -120,7 +120,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
                 offset: Offset(0, -shrinkOffset),
                 child: SizedBox.expand(
                   child: Container(
-                    child: new UserHeaderItem(
+                    child: UserHeaderItem(
                         userInfo, beStaredCount, Theme.of(context).primaryColor,
                         notifyColor: notifyColor,
                         refreshCallBack: refreshCallBack,

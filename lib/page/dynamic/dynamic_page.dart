@@ -23,20 +23,20 @@ class DynamicPage extends StatefulWidget {
 
 class DynamicPageState extends State<DynamicPage>
     with AutomaticKeepAliveClientMixin<DynamicPage>, WidgetsBindingObserver {
-  final DynamicBloc dynamicBloc = new DynamicBloc();
+  final DynamicBloc dynamicBloc = DynamicBloc();
 
   ///控制列表滚动和监听
-  final ScrollController scrollController = new ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
 
   bool _ignoring = true;
 
   /// 模拟IOS下拉显示刷新
   showRefreshLoading() {
     ///直接触发下拉
-    new Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       scrollController
           .animateTo(-141,
               duration: Duration(milliseconds: 600), curve: Curves.linear)
@@ -82,7 +82,7 @@ class DynamicPageState extends State<DynamicPage>
 
   _renderEventItem(Event e) {
     EventViewModel eventViewModel = EventViewModel.fromEventMap(e);
-    return new GSYEventItem(
+    return GSYEventItem(
       eventViewModel,
       onPressed: () {
         EventUtils.ActionUtils(context, e, "");

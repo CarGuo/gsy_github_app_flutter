@@ -42,41 +42,41 @@ class GSYIConText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget showText = (textWidth == -1)
-        ? new Container(
-            child: new Text(
+        ? Container(
+            child: Text(
               iconText ?? "",
               style: textStyle
-                  .merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
+                  .merge(TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
           )
-        : new Container(
+        : Container(
             width: textWidth,
             child:
 
                 ///显示数量文本
-                new Text(
+                Text(
               iconText!,
               style: textStyle
-                  .merge(new TextStyle(textBaseline: TextBaseline.alphabetic)),
+                  .merge(TextStyle(textBaseline: TextBaseline.alphabetic)),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ));
 
-    return new Container(
-      child: new Row(
+    return Container(
+      child: Row(
         textBaseline: TextBaseline.alphabetic,
         mainAxisAlignment: mainAxisAlignment,
         mainAxisSize: mainAxisSize,
         crossAxisAlignment: CrossAxisAlignment.baseline,
         children: <Widget>[
-          new Icon(
+          Icon(
             iconData,
             size: iconSize,
             color: iconColor,
           ),
-          new Padding(padding: new EdgeInsets.all(padding)),
+          Padding(padding: EdgeInsets.all(padding)),
           showText
         ],
       ),

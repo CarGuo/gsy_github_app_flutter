@@ -86,7 +86,7 @@ class ReposDetailModel extends Model {
         ? GSYICons.REPOS_ITEM_STARED
         : GSYICons.REPOS_ITEM_STAR;
     BottomStatusModel model =
-        new BottomStatusModel(watchText, starText, watchIcon, starIcon);
+        BottomStatusModel(watchText, starText, watchIcon, starIcon);
     bottomModel = model;
     footerButtons = getBottomWidget();
   }

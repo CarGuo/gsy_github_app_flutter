@@ -19,17 +19,17 @@ class _DebugDataPageState extends State<DebugDataPage> {
 
   /// tab
   _renderTab(String text, index) {
-    return new Tab(
-      child: new Column(
+    return Tab(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[new Text(text, style: new TextStyle(fontSize: 11))],
+        children: <Widget>[Text(text, style: TextStyle(fontSize: 11))],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return new TabWidget(
+    return TabWidget(
         type: TabType.top,
 
         /// 返回数据和请求数据
@@ -39,7 +39,7 @@ class _DebugDataPageState extends State<DebugDataPage> {
           _renderTab("Error", 2),
           _renderTab("ErrorWidget", 3),
         ],
-        title: new Text(
+        title: Text(
           "Debug",
           style: TextStyle(color: GSYColors.white),
         ),
@@ -90,7 +90,7 @@ class _DebugDataListState extends State<DebugDataList>
             child: Card(
               child: Row(
                 children: <Widget>[
-                  new Container(
+                  Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(right: 5),
                     height: 24,
@@ -101,7 +101,7 @@ class _DebugDataListState extends State<DebugDataList>
                         Radius.circular(12),
                       ),
                     ),
-                    child: new Text(
+                    child: Text(
                       index.toString(),
                       style: TextStyle(
                         fontSize: 15,
@@ -109,10 +109,10 @@ class _DebugDataListState extends State<DebugDataList>
                       ),
                     ),
                   ),
-                  new Expanded(
+                  Expanded(
                       child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: new Text(
+                    child: Text(
                       widget.titles[index] ?? "",
                       style: TextStyle(fontSize: 15),
                     ),
@@ -123,7 +123,7 @@ class _DebugDataListState extends State<DebugDataList>
             onLongPress: () {
               try {
                 Clipboard.setData(
-                    new ClipboardData(text: "${widget.titles[index]}"));
+                    ClipboardData(text: "${widget.titles[index]}"));
                 Fluttertoast.showToast(msg: "复制链接成功");
               } catch (e) {
                 print(e);
@@ -132,7 +132,7 @@ class _DebugDataListState extends State<DebugDataList>
             onDoubleTap: () {
               try {
                 Clipboard.setData(
-                    new ClipboardData(text: "${widget.dataList[index]}"));
+                    ClipboardData(text: "${widget.dataList[index]}"));
                 Fluttertoast.showToast(msg: "复制数据成功");
               } catch (e) {
                 print(e);
@@ -144,9 +144,9 @@ class _DebugDataListState extends State<DebugDataList>
                   builder: (context) {
                     return Material(
                       color: Colors.transparent,
-                      child: new Stack(
+                      child: Stack(
                         children: <Widget>[
-                          new Container(
+                          Container(
                             padding: EdgeInsets.only(top: 30),
                             color: Colors.white,
                             child: SingleChildScrollView(
@@ -155,7 +155,7 @@ class _DebugDataListState extends State<DebugDataList>
                           ),
                           Transform.translate(
                             offset: Offset(0, -10),
-                            child: new Container(
+                            child: Container(
                               alignment: Alignment.topCenter,
                               child: IconButton(
                                 icon: Icon(

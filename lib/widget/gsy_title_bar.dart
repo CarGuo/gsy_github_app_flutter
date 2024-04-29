@@ -29,8 +29,8 @@ class GSYTitleBar extends StatelessWidget {
     Widget? widget = rightWidget;
     if (rightWidget == null) {
       widget = (needRightLocalIcon)
-          ? new IconButton(
-              icon: new Icon(
+          ? IconButton(
+              icon: Icon(
                 iconData,
                 key: rightKey,
                 size: 19.0,
@@ -46,13 +46,13 @@ class GSYTitleBar extends StatelessWidget {
                 );
                 onRightIconPressed?.call(centerPosition);
               })
-          : new Container();
+          : Container();
     }
     return Container(
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Expanded(
-            child: new Text(
+          Expanded(
+            child: Text(
               title!,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

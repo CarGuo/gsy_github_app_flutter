@@ -40,7 +40,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
         SingleTickerProviderStateMixin {
   /// NestedScrollView 的刷新状态 GlobalKey ，方便主动刷新使用
   final GlobalKey<NestedScrollViewRefreshIndicatorState> refreshIKey =
-      new GlobalKey<NestedScrollViewRefreshIndicatorState>();
+      GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   ///搜索 issue 文本
   String? searchText;
@@ -52,11 +52,11 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   int? selectIndex;
 
   ///滑动控制器
-  final ScrollController scrollController = new ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   showRefreshLoading() {
-    new Future.delayed(const Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       refreshIKey.currentState?.show().then((e) {});
       return true;
     });
@@ -66,7 +66,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   _renderIssueItem(index) {
     IssueItemViewModel issueItemViewModel =
         IssueItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
-    return new IssueItem(
+    return IssueItem(
       issueItemViewModel,
       onPressed: () {
         NavigatorUtils.goIssueDetail(context, widget.userName, widget.reposName,
@@ -140,12 +140,12 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return ScopedModelDescendant<ReposDetailModel>(
       builder: (context, child, model) {
-        return new Scaffold(
+        return Scaffold(
           backgroundColor: GSYColors.mainBackgroundColor,
-          appBar: new AppBar(
-            leading: new Container(),
+          appBar: AppBar(
+            leading: Container(),
             flexibleSpace: (model?.repository?.hasIssuesEnabled == false)
-                ? new Container()
+                ? Container()
                 : GSYSearchInputWidget(onSubmitted: (value) {
                     this.searchText = value;
                     _resolveSelectIndex();
@@ -156,15 +156,15 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
             backgroundColor: GSYColors.mainBackgroundColor,
           ),
           body: (model?.repository?.hasIssuesEnabled == false)
-              ? new Container(
+              ? Container(
                   alignment: Alignment.center,
-                  child: new Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       TextButton(
                         onPressed: () {},
-                        child: new Image(
-                            image: new AssetImage(GSYICons.DEFAULT_USER_ICON),
+                        child: Image(
+                            image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                             width: 70.0,
                             height: 70.0),
                       ),
@@ -222,7 +222,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                 child: Padding(
                   padding:
                       EdgeInsets.only(top: lr, bottom: 10, left: lr, right: lr),
-                  child: new GSYSelectItemWidget(
+                  child: GSYSelectItemWidget(
                     [
                       GSYLocalizations.i18n(context)!.repos_tab_issue_all,
                       GSYLocalizations.i18n(context)!.repos_tab_issue_open,
@@ -233,7 +233,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                       _resolveSelectIndex();
                     },
                     margin: EdgeInsets.all(0.0),
-                    shape: new RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(radius),
                     ),
                   ),

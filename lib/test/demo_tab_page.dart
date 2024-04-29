@@ -10,7 +10,7 @@ class _DemoTabPageState extends State<DemoTabPage> {
   Widget build(BuildContext context) {
     return TabWidget(
       type: TabType.bottom,
-      title: new Text("标题"),
+      title: Text("标题"),
       tabItems: getTab(),
       tabViews: getPages(),
     );
@@ -87,7 +87,7 @@ class TabWidget extends StatefulWidget {
   });
 
   @override
-  _GSYTabBarState createState() => new _GSYTabBarState();
+  _GSYTabBarState createState() => _GSYTabBarState();
 }
 
 class _GSYTabBarState extends State<TabWidget>
@@ -95,7 +95,7 @@ class _GSYTabBarState extends State<TabWidget>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(
+    _tabController = TabController(
         vsync: this,
         length: widget.tabViews!.length,
         initialIndex: widget.initTabIndex);
@@ -116,10 +116,10 @@ class _GSYTabBarState extends State<TabWidget>
   ///返回底部类型的 Tab
   Widget _getBottomNavByType() {
     /// 为了主题风格，包一层 Material 实现风格套用
-    return new Material(
+    return Material(
       /// 底部导航栏主题颜色
       color: Colors.black,
-      child: new Container(
+      child: Container(
         decoration: BoxDecoration(
           ///设置一个底部分割线
           border: Border(
@@ -128,11 +128,11 @@ class _GSYTabBarState extends State<TabWidget>
         ),
 
         ///使用 SafeArea 判断底部安全区域
-        child: new SafeArea(
+        child: SafeArea(
           ///使用 Theme 嵌套去除 splashColor 的点击颜色
           child: Theme(
               data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-              child: new TabBar(
+              child: TabBar(
                 controller: _tabController,
                 labelPadding: EdgeInsets.zero,
                 tabs: widget.tabItems!,
@@ -159,15 +159,15 @@ class _GSYTabBarState extends State<TabWidget>
   Widget build(BuildContext context) {
     if (widget.type == TabType.top) {
       ///顶部 tab bar
-      return new Scaffold(
-        appBar: new AppBar(
+      return Scaffold(
+        appBar: AppBar(
           title: widget.title,
-          bottom: new TabBar(
+          bottom: TabBar(
               controller: _tabController,
               tabs: widget.tabItems!,
               indicatorColor: widget.indicatorColor),
         ),
-        body: new TabBarView(
+        body: TabBarView(
           controller: _tabController,
           children: widget.tabViews!,
         ),
@@ -175,11 +175,11 @@ class _GSYTabBarState extends State<TabWidget>
     }
 
     ///底部tab bar
-    return new Scaffold(
-        appBar: new AppBar(
+    return Scaffold(
+        appBar: AppBar(
           title: widget.title,
         ),
-        body: new PageView(
+        body: PageView(
           controller: _pageController,
           children: widget.tabViews!,
           onPageChanged: (index) {
@@ -207,21 +207,21 @@ class _KeepAliveListState extends State<KeepAliveList> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return new ListView.builder(
+    return ListView.builder(
       itemBuilder: (context, index) {
-        return new Card(
+        return Card(
           ///设置阴影的深度
           elevation: 5.0,
           ///增加圆角
-          shape: new RoundedRectangleBorder(
+          shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           color: Colors.white,
           margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
-          child: new Container(
+          child: Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.symmetric(horizontal: 10),
             height: 80,
-            child: new Text("显示文本 ${index}"),
+            child: Text("显示文本 ${index}"),
           ),
         );
       },

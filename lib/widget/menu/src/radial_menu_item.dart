@@ -60,9 +60,9 @@ class RadialMenuItem<T> extends StatelessWidget {
     Widget? result;
 
     if (child != null) {
-      result = new Center(
+      result = Center(
         child: IconTheme.merge(
-          data: new IconThemeData(
+          data: IconThemeData(
             color: _iconColor,
           ),
           child: child ?? Container(),
@@ -71,13 +71,13 @@ class RadialMenuItem<T> extends StatelessWidget {
     }
 
     if (tooltip != null) {
-      result = new Tooltip(
+      result = Tooltip(
         message: tooltip!,
         child: result,
       );
     }
 
-    result = new Container(
+    result = Container(
       width: size,
       height: size,
       child: result,

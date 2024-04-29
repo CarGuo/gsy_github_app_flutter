@@ -27,10 +27,10 @@ class GSYCardItem extends StatelessWidget {
     Color? color = this.color;
     margin ??=
         EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0);
-    shape ??= new RoundedRectangleBorder(
+    shape ??= RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)));
     color ??= GSYColors.cardWhite;
-    return new Card(
+    return Card(
         elevation: elevation,
         shape: shape,
         color: color,

@@ -28,7 +28,7 @@ class DebugLabel {
       _overlayEntry = null;
     }
     var overlayState = Overlay.of(context);
-    _overlayEntry = new OverlayEntry(builder: (context) {
+    _overlayEntry = OverlayEntry(builder: (context) {
       return GlobalLabel(
           version: packInfo.version,
           deviceInfo: version,
@@ -90,10 +90,10 @@ class _GlobalLabelState extends State<GlobalLabel> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        child: new Material(
+        child: Material(
           color: Colors.transparent,
           child: Container(
-            child: new InkWell(
+            child: InkWell(
               onLongPress: () {
                 longClick = true;
               },

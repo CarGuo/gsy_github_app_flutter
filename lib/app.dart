@@ -31,14 +31,14 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
     with HttpErrorListener {
   /// 创建Store，引用 GSYState 中的 appReducer 实现 Reducer 方法
   /// initialState 初始化 State
-  final store = new Store<GSYState>(
+  final store = Store<GSYState>(
     appReducer,
 
     ///拦截器
     middleware: middleware,
 
     ///初始化数据
-    initialState: new GSYState(
+    initialState: GSYState(
         userInfo: User.empty(),
         login: false,
         themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
@@ -73,12 +73,12 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   Widget build(BuildContext context) {
     /// 使用 flutter_redux 做全局状态共享
     /// 通过 StoreProvider 应用 store
-    return new StoreProvider(
+    return StoreProvider(
       store: store,
-      child: new StoreBuilder<GSYState>(builder: (context, store) {
+      child: StoreBuilder<GSYState>(builder: (context, store) {
         ///使用 StoreBuilder 获取 store 中的 theme 、locale
         store.state.platformLocale = WidgetsBinding.instance.platformDispatcher.locale;
-        Widget app = new MaterialApp(
+        Widget app = MaterialApp(
           navigatorKey: navKey,
           ///多语言实现代理
             localizationsDelegates: [
@@ -109,10 +109,10 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                 return WelcomePage();
               },
               HomePage.sName: (context) {
-                return NavigatorUtils.pageContainer(new HomePage(), context);
+                return NavigatorUtils.pageContainer(HomePage(), context);
               },
               LoginPage.sName: (context) {
-                return NavigatorUtils.pageContainer(new LoginPage(), context);
+                return NavigatorUtils.pageContainer(LoginPage(), context);
               },
 
               ///使用 ModalRoute.of(context).settings.arguments; 获取参数

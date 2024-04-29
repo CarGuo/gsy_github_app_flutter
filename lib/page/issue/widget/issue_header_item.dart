@@ -26,10 +26,10 @@ class IssueHeaderItem extends StatelessWidget {
         issueHeaderViewModel.state == "open" ? Colors.green : Colors.red;
 
     ///底部Issue状态
-    Widget bottomContainer = new Row(
+    Widget bottomContainer = Row(
       children: <Widget>[
         ///issue 关闭打开状态
-        new GSYIConText(
+        GSYIConText(
           GSYICons.ISSUE_ITEM_ISSUE,
           issueHeaderViewModel.state,
           TextStyle(
@@ -40,15 +40,15 @@ class IssueHeaderItem extends StatelessWidget {
           15.0,
           padding: 2.0,
         ),
-        new Padding(padding: new EdgeInsets.all(2.0)),
+        Padding(padding: EdgeInsets.all(2.0)),
 
         ///issue issue编码
-        new Text(issueHeaderViewModel.issueTag,
+        Text(issueHeaderViewModel.issueTag,
             style: GSYConstant.smallTextWhite),
-        new Padding(padding: new EdgeInsets.all(2.0)),
+        Padding(padding: EdgeInsets.all(2.0)),
 
         ///issue 评论数
-        new GSYIConText(
+        GSYIConText(
           GSYICons.ISSUE_ITEM_COMMENT,
           issueHeaderViewModel.commentCount,
           GSYConstant.smallTextWhite,
@@ -65,32 +65,32 @@ class IssueHeaderItem extends StatelessWidget {
   _renderCloseByText() {
     return (issueHeaderViewModel.closedBy == null ||
             issueHeaderViewModel.closedBy!.trim().length == 0)
-        ? new Container()
-        : new Container(
-            child: new Text(
+        ? Container()
+        : Container(
+            child: Text(
               "Close By " + issueHeaderViewModel.closedBy!,
               style: GSYConstant.smallSubLightText,
             ),
-            margin: new EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
+            margin: EdgeInsets.only(right: 5.0, top: 10.0, bottom: 10.0),
             alignment: Alignment.topRight);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new GSYCardItem(
+    return GSYCardItem(
       color: Theme.of(context).primaryColor,
-      child: new TextButton(
+      child: TextButton(
         style: TextButton.styleFrom(padding: EdgeInsets.all(0.0)),
         onPressed: onPressed,
-        child: new Padding(
-          padding: new EdgeInsets.all(10.0),
-          child: new Column(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
             children: <Widget>[
-              new Row(
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ///头像
-                  new GSYUserIconWidget(
+                  GSYUserIconWidget(
                       padding: const EdgeInsets.only(
                           top: 0.0, right: 10.0, left: 0.0),
                       width: 50.0,
@@ -101,41 +101,41 @@ class IssueHeaderItem extends StatelessWidget {
                         NavigatorUtils.goPerson(
                             context, issueHeaderViewModel.actionUser);
                       }),
-                  new Expanded(
+                  Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        new Row(
+                        Row(
                           children: <Widget>[
                             ///名称
-                            new Expanded(
-                                child: new Text(
+                            Expanded(
+                                child: Text(
                                     issueHeaderViewModel.actionUser!,
                                     style: GSYConstant.normalTextWhite)),
 
                             ///时间
-                            new Text(
+                            Text(
                               issueHeaderViewModel.actionTime,
                               style: GSYConstant.smallSubLightText,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
-                        new Padding(padding: new EdgeInsets.all(2.0)),
+                        Padding(padding: EdgeInsets.all(2.0)),
 
                         ///底部Item
                         _renderBottomContainer(),
-                        new Container(
+                        Container(
 
                             ///评论标题
-                            child: new Text(
+                            child: Text(
                               issueHeaderViewModel.issueComment!,
                               style: GSYConstant.smallTextWhite,
                             ),
-                            margin: new EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin: EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft),
-                        new Padding(
-                          padding: new EdgeInsets.only(
+                        Padding(
+                          padding: EdgeInsets.only(
                               left: 0.0, top: 2.0, right: 0.0, bottom: 0.0),
                         ),
                       ],

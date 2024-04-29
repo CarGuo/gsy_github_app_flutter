@@ -24,12 +24,12 @@ class GSYWebView extends StatefulWidget {
 class _GSYWebViewState extends State<GSYWebView> {
   _renderTitle() {
     if (widget.url.length == 0) {
-      return new Text(widget.title!);
+      return Text(widget.title!);
     }
-    return new Row(children: [
-      new Expanded(
-          child: new Container(
-        child: new Text(
+    return Row(children: [
+      Expanded(
+          child: Container(
+        child: Text(
           widget.title!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -39,7 +39,7 @@ class _GSYWebViewState extends State<GSYWebView> {
     ]);
   }
 
-  final FocusNode focusNode = new FocusNode();
+  final FocusNode focusNode = FocusNode();
 
   bool isLoading = true;
 
@@ -76,10 +76,10 @@ class _GSYWebViewState extends State<GSYWebView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
-      appBar: new AppBar(
+      appBar: AppBar(
         title: _renderTitle(),
       ),
-      body: new Stack(
+      body: Stack(
         children: <Widget>[
           TextField(
             focusNode: focusNode,
@@ -88,19 +88,19 @@ class _GSYWebViewState extends State<GSYWebView> {
             controller: controller,
           ),
           if (isLoading)
-            new Center(
-              child: new Container(
+            Center(
+              child: Container(
                 width: 200.0,
                 height: 200.0,
-                padding: new EdgeInsets.all(4.0),
-                child: new Row(
+                padding: EdgeInsets.all(4.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new SpinKitDoubleBounce(
+                    SpinKitDoubleBounce(
                         color: Theme.of(context).primaryColor),
-                    new Container(width: 10.0),
-                    new Container(
-                        child: new Text(
+                    Container(width: 10.0),
+                    Container(
+                        child: Text(
                             GSYLocalizations.i18n(context)!.loading_text,
                             style: GSYConstant.middleText)),
                   ],

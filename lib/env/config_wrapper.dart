@@ -11,7 +11,7 @@ class ConfigWrapper extends StatelessWidget {
     ///设置 Config.DEBUG 的静态变量
     Config.DEBUG = this.config?.debug;
     print("ConfigWrapper build ${Config.DEBUG}");
-    return new _InheritedConfig(config: this.config, child: this.child!);
+    return _InheritedConfig(config: this.config, child: this.child!);
   }
 
   static EnvConfig? of(BuildContext context) {
