@@ -381,11 +381,12 @@ class CommonUtils {
   }
 
   static launchOutURL(String? url, BuildContext context) async {
+    var gl = GSYLocalizations.i18n(context);
     if (url != null && await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
       Fluttertoast.showToast(
-          msg: "${GSYLocalizations.i18n(context)!.option_web_launcher_error}: ${url ?? ""}");
+          msg: "${gl!.option_web_launcher_error}: ${url ?? ""}");
     }
   }
 

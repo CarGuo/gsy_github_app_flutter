@@ -199,12 +199,14 @@ mixin LoginBLoC on State<LoginPage> {
   }
 
   oauthLogin() async {
+    var st = StoreProvider.of<GSYState>(context);
     String? code = await NavigatorUtils.goLoginWebView(context,
         Address.getOAuthUrl(), GSYLocalizations.i18n(context)!.oauth_text);
 
     if (code != null && code.isNotEmpty) {
       ///通过 redux 去执行登陆流程
-      StoreProvider.of<GSYState>(context).dispatch(OAuthAction(context, code));
+      // ignore: use_build_context_synchronously
+      st.dispatch(OAuthAction(context, code));
     }
   }
 }

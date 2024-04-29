@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';

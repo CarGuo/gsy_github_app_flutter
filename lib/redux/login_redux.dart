@@ -1,4 +1,4 @@
-// ignore_for_file: implicit_call_tearoffs
+// ignore_for_file: implicit_call_tearoffs, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/db/sql_manager.dart';
@@ -76,9 +76,10 @@ Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   Stream<dynamic> loginIn(
       LoginAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
+    var nv = Navigator.of(action.context);
     var res = await UserDao.login(
         action.username!.trim(), action.password!.trim(), store);
-    Navigator.pop(action.context);
+    nv.pop(action);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }
   return actions

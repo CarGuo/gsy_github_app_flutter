@@ -20,14 +20,15 @@ class DebugLabel {
       return false;
     }
     hadShow = true;
+    var gl = GSYLocalizations.of(context);
+    var overlayState = Overlay.of(context);
     var (version, platform) = await _getDeviceInfo();
     PackageInfo packInfo = await PackageInfo.fromPlatform();
-    var language = GSYLocalizations.of(context)!.locale.languageCode;
+    var language = gl!.locale.languageCode;
     if (_overlayEntry != null) {
       _overlayEntry!.remove();
       _overlayEntry = null;
     }
-    var overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(builder: (context) {
       return GlobalLabel(
           version: packInfo.version,

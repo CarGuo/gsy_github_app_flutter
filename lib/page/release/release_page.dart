@@ -63,11 +63,12 @@ class _ReleasePageState extends State<ReleasePage>
   ///打开外部url
   _launchURL() async {
     String url = _getUrl();
+    var gl = GSYLocalizations.i18n(context);
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
       Fluttertoast.showToast(
-          msg: "${GSYLocalizations.i18n(context)!.option_web_launcher_error}: $url");
+          msg: "${gl!.option_web_launcher_error}: $url");
     }
   }
 
