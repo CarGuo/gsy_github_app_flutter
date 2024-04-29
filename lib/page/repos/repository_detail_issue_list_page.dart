@@ -99,7 +99,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
 
   ///获取数据
   _getDataLogic(String? searchString) async {
-    if (searchString == null || searchString.trim().length == 0) {
+    if (searchString == null || searchString.trim().isEmpty) {
       return await IssueDao.getRepositoryIssueDao(
           widget.userName, widget.reposName, issueState,
           page: page, needDb: page <= 1);

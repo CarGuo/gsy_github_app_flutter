@@ -63,7 +63,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnBranch, columnData],
         where: "$columnFullName = ? and $columnBranch = ?",
         whereArgs: [fullName, branch]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       RepositoryCommitsDbProvider provider =
           RepositoryCommitsDbProvider.fromMap(maps.first);
       return provider;
@@ -95,7 +95,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data as String?);
 
-      if (eventMap.length > 0) {
+      if (eventMap.isNotEmpty) {
         for (var item in eventMap) {
           list.add(RepoCommit.fromJson(item));
         }

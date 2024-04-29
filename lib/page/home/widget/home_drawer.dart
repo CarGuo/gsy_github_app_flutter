@@ -113,7 +113,7 @@ class HomeDrawer extends StatelessWidget {
                                   (title) {}, (res) {
                                 content = res;
                               }, () {
-                                if (content.length == 0) {
+                                if (content.isEmpty) {
                                   return;
                                 }
                                 CommonUtils.showLoadingDialog(context);

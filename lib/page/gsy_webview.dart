@@ -21,7 +21,7 @@ class GSYWebView extends StatefulWidget {
 
 class _GSYWebViewState extends State<GSYWebView> {
   _renderTitle() {
-    if (widget.url.length == 0) {
+    if (widget.url.isEmpty) {
       return Text(widget.title!);
     }
     return Row(children: [

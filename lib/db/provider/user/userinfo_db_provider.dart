@@ -56,7 +56,7 @@ class UserInfoDbProvider extends BaseDbProvider {
         columns: [columnId, columnUserName, columnData],
         where: "$columnUserName = ?",
         whereArgs: [userName]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       UserInfoDbProvider provider = UserInfoDbProvider.fromMap(maps.first);
       return provider;
     }

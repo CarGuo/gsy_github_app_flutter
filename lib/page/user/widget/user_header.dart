@@ -56,7 +56,7 @@ class UserHeaderItem extends StatelessWidget {
 
   ///用户组织
   _renderOrgs(BuildContext context, List<UserOrg>? orgList) {
-    if (orgList == null || orgList.length == 0) {
+    if (orgList == null || orgList.isEmpty) {
       return Container();
     }
     List<Widget> list = [];

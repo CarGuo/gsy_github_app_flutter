@@ -18,7 +18,7 @@ class _TrendUserPageState extends State<TrendUserPage>
   String? endCursor;
 
   _renderItem(index) {
-    if (pullLoadWidgetControl.dataList.length == 0) {
+    if (pullLoadWidgetControl.dataList.isEmpty) {
       return null;
     }
     var data = pullLoadWidgetControl.dataList[index];

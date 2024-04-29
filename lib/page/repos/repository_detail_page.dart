@@ -108,7 +108,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       ///Branch Page
       GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_branch,
           GSYLocalizations.i18n(context)!.repos_option_branch, (model) {
-        if (reposDetailModel!.branchList!.length == 0) {
+        if (reposDetailModel!.branchList!.isEmpty) {
           return;
         }
         CommonUtils.showCommitOptionDialog(
@@ -143,13 +143,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     }, (contentValue) {
       content = contentValue;
     }, () {
-      if (title.trim().length == 0) {
+      if (title.trim().isEmpty) {
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(context)!
                 .issue_edit_issue_title_not_be_null);
         return;
       }
-      if (content.trim().length == 0) {
+      if (content.trim().isEmpty) {
         Fluttertoast.showToast(
             msg: GSYLocalizations.i18n(context)!
                 .issue_edit_issue_content_not_be_null);
@@ -268,7 +268,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
                           size: Size(0, 0),
                         )
                       ]
-                    : model?.footerButtons!.length == 0
+                    : model?.footerButtons!.isEmpty == true
                         ? [
                             SizedBox.fromSize(
                               size: Size(0, 0),

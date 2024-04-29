@@ -66,7 +66,7 @@ class IssueCommentDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnNumber, columnData],
         where: "$columnFullName = ? and $columnNumber = ?",
         whereArgs: [fullName, number]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       IssueCommentDbProvider provider =
           IssueCommentDbProvider.fromMap(maps.first);
       return provider;
@@ -98,7 +98,7 @@ class IssueCommentDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data as String?);
 
-      if (eventMap.length > 0) {
+      if (eventMap.isNotEmpty) {
         for (var item in eventMap) {
           list.add(Issue.fromJson(item));
         }

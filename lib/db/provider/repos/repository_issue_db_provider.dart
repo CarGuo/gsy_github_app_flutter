@@ -63,7 +63,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnState, columnData],
         where: "$columnFullName = ? and $columnState = ?",
         whereArgs: [fullName, state]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       RepositoryIssueDbProvider provider =
           RepositoryIssueDbProvider.fromMap(maps.first);
       return provider;
@@ -95,7 +95,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data as String?);
 
-      if (eventMap.length > 0) {
+      if (eventMap.isNotEmpty) {
         for (var item in eventMap) {
           list.add(Issue.fromJson(item));
         }

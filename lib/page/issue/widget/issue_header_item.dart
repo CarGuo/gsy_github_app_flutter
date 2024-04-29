@@ -62,7 +62,7 @@ class IssueHeaderItem extends StatelessWidget {
   ///关闭操作人
   _renderCloseByText() {
     return (issueHeaderViewModel.closedBy == null ||
-            issueHeaderViewModel.closedBy!.trim().length == 0)
+            issueHeaderViewModel.closedBy!.trim().isEmpty)
         ? Container()
         : Container(
             child: Text(

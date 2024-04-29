@@ -121,7 +121,7 @@ class GSYMarkdownWidget extends StatelessWidget {
     String mdDataCode = markdownData;
     try {
       Iterable<Match> tags = exp.allMatches(markdownData);
-      if (tags.length > 0) {
+      if (tags.isNotEmpty) {
         for (Match m in tags) {
           String? imageMatch = m.group(0);
           if (imageMatch != null && !imageMatch.contains(".svg")) {
@@ -143,7 +143,7 @@ class GSYMarkdownWidget extends StatelessWidget {
 
       ///优化img标签的src资源
       tags = expImg.allMatches(markdownData);
-      if (tags.length > 0) {
+      if (tags.isNotEmpty) {
         for (Match m in tags) {
           String? imageTag = m.group(0);
           String? match = imageTag;

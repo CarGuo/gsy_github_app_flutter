@@ -327,7 +327,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
         // Check if this loop did anything
         if (lastLoopPosition == _scanner.position) {
           // Failed to parse this file, abort gracefully
-          if (_spans.length > 0) {
+          if (_spans.isNotEmpty) {
             _spans.add(_HighlightSpan(_HighlightType.punctuation,
                 lastLoopPosition, _scanner.string.length - 1));
             _simplify();
@@ -358,7 +358,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
   }
 
   bool _firstLetterIsUpperCase(String str) {
-    if (str.length > 0) {
+    if (str.isNotEmpty) {
       String first = str.substring(0, 1);
       return first == first.toUpperCase();
     }

@@ -62,7 +62,7 @@ class _UserProfileState extends State<UserProfileInfo> {
     CommonUtils.showEditDialog(context, title, (title) {}, (res) {
       content = res;
     }, () {
-      if (content.length == 0) {
+      if (content.isEmpty) {
         return;
       }
       CommonUtils.showLoadingDialog(context);

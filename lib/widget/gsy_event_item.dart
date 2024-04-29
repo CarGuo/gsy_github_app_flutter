@@ -26,7 +26,7 @@ class GSYEventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget des = (eventViewModel.actionDes == null ||
-            eventViewModel.actionDes!.length == 0)
+            eventViewModel.actionDes!.isEmpty)
         ? Container()
         : Container(
             child: Text(

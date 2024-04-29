@@ -87,7 +87,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///话题组控件
   _renderTopicGroup(BuildContext context) {
     if (widget.reposHeaderViewModel.topics == null ||
-        widget.reposHeaderViewModel.topics!.length == 0) {
+        widget.reposHeaderViewModel.topics!.isEmpty) {
       return Container(
         key: layoutTopicContainerKey,
       );

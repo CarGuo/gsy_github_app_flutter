@@ -61,7 +61,7 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnData],
         where: "$columnFullName = ? and $columnBranch = ?",
         whereArgs: [fullName, branch]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       RepositoryDetailReadmeDbProvider provider =
           RepositoryDetailReadmeDbProvider.fromMap(maps.first);
       return provider;

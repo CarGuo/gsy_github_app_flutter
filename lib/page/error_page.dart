@@ -92,7 +92,7 @@ class ErrorPageState extends State<ErrorPage> {
                           (title) {}, (res) {
                         content = res;
                       }, () {
-                        if (content.length == 0) {
+                        if (content.isEmpty) {
                           return;
                         }
                         CommonUtils.showLoadingDialog(context);

@@ -40,7 +40,7 @@ class EventDao {
 
     if (needDb) {
       List<Event>? dbList = await provider.getEvents();
-      if (dbList == null || dbList.length == 0) {
+      if (dbList == null || dbList.isEmpty) {
         return await next();
       }
       DataResult dataResult = DataResult(dbList, true, next: next);
@@ -76,7 +76,7 @@ class EventDao {
 
     if (needDb) {
       List<Event>? dbList = await provider.getEvents(userName);
-      if (dbList == null || dbList.length == 0) {
+      if (dbList == null || dbList.isEmpty) {
         return await next();
       }
       DataResult dataResult = DataResult(dbList, true, next: next);

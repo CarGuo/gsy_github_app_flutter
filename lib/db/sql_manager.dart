@@ -44,7 +44,7 @@ class SqlManager {
     await getCurrentDatabase();
     var res = await _database?.rawQuery(
         "select * from Sqlite_master where type = 'table' and name = '$tableName'");
-    return res != null && res.length > 0;
+    return res != null && res.isNotEmpty;
   }
 
   ///获取当前数据库对象

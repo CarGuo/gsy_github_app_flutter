@@ -331,7 +331,7 @@ class CommonUtils {
   }
 
   static gsyLaunchUrl(context, String? url) {
-    if (url == null && url!.length == 0) return;
+    if (url == null && url!.isEmpty) return;
     Uri parseUrl = Uri.parse(url);
     bool isImage = isImageEnd(parseUrl.toString());
     if (parseUrl.toString().endsWith("?raw=true")) {
@@ -342,7 +342,7 @@ class CommonUtils {
       return;
     }
 
-    if (parseUrl.host == "github.com" && parseUrl.path.length > 0) {
+    if (parseUrl.host == "github.com" && parseUrl.path.isNotEmpty) {
       StringList pathnames = parseUrl.path.split("/");
       switch (pathnames.length) {
         case == 2:

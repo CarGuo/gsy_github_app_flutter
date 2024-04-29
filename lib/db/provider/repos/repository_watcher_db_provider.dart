@@ -55,7 +55,7 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnData],
         where: "$columnFullName = ?",
         whereArgs: [fullName]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       RepositoryWatcherDbProvider provider =
           RepositoryWatcherDbProvider.fromMap(maps.first);
       return provider;
@@ -86,7 +86,7 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data as String?);
 
-      if (eventMap.length > 0) {
+      if (eventMap.isNotEmpty) {
         for (var item in eventMap) {
           list.add(User.fromJson(item));
         }

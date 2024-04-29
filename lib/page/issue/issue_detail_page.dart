@@ -168,7 +168,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         contentData = contentValue;
       },
       () {
-        if (contentData == null || contentData!.trim().length == 0) {
+        if (contentData == null || contentData!.trim().isEmpty) {
           Fluttertoast.showToast(
               msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);
@@ -218,13 +218,13 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         content = contentValue;
       },
       () {
-        if (title == null || title!.trim().length == 0) {
+        if (title == null || title!.trim().isEmpty) {
           Fluttertoast.showToast(
               msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_title_not_be_null);
           return;
         }
-        if (content == null || content!.trim().length == 0) {
+        if (content == null || content!.trim().isEmpty) {
           Fluttertoast.showToast(
               msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);
@@ -259,7 +259,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         content = replyContent;
       },
       () {
-        if (content == null || content?.trim().length == 0) {
+        if (content == null || content?.trim().isEmpty == true) {
           Fluttertoast.showToast(
               msg: GSYLocalizations.i18n(context)!
                   .issue_edit_issue_content_not_be_null);

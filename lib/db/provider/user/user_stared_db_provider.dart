@@ -56,7 +56,7 @@ class UserStaredDbProvider extends BaseDbProvider {
         columns: [columnId, columnUserName, columnData],
         where: "$columnUserName = ?",
         whereArgs: [userName]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       UserStaredDbProvider provider = UserStaredDbProvider.fromMap(maps.first);
       return provider;
     }
@@ -86,7 +86,7 @@ class UserStaredDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data as String?);
 
-      if (eventMap.length > 0) {
+      if (eventMap.isNotEmpty) {
         for (var item in eventMap) {
           list.add(Repository.fromJson(item));
         }

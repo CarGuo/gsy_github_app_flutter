@@ -96,7 +96,7 @@ class ReposDao {
     if (needDb) {
       List<TrendingRepoModel>? list =
           await provider.getData(languageTypeDb + "V2", since);
-      if (list == null || list.length == 0) {
+      if (list == null || list.isEmpty) {
         return await next();
       }
       DataResult dataResult = DataResult(list, true, next: next);
@@ -763,7 +763,7 @@ class ReposDao {
   static getHistoryDao(page) async {
     ReadHistoryDbProvider provider = ReadHistoryDbProvider();
     List<RepositoryQL?>? list = await provider.geData(page);
-    if (list == null || list.length <= 0) {
+    if (list == null || list.isEmpty) {
       return DataResult(null, false);
     }
     return DataResult(list, true);

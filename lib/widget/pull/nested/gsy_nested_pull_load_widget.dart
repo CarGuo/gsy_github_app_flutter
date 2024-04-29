@@ -48,17 +48,17 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
     if (widget.control.needHeader) {
       ///如果需要头部，用Item 0 的 Widget 作为ListView的头部
       ///列表数量大于0时，因为头部和底部加载更多选项，需要对列表数据总数+2
-      return (widget.control.dataList.length > 0)
+      return (widget.control.dataList.isNotEmpty)
           ? widget.control.dataList.length + 2
           : widget.control.dataList.length + 1;
     } else {
       ///如果不需要头部，在没有数据时，固定返回数量1用于空页面呈现
-      if (widget.control.dataList.length == 0) {
+      if (widget.control.dataList.isEmpty) {
         return 1;
       }
 
       ///如果有数据,因为部加载更多选项，需要对列表数据总数+1
-      return (widget.control.dataList.length > 0)
+      return (widget.control.dataList.isNotEmpty)
           ? widget.control.dataList.length + 1
           : widget.control.dataList.length;
     }
@@ -68,16 +68,16 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   _getItem(int index) {
     if (!widget.control.needHeader &&
         index == widget.control.dataList.length &&
-        widget.control.dataList.length != 0) {
+        widget.control.dataList.isNotEmpty) {
       ///如果不需要头部，并且数据不为0，当index等于数据长度时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
     } else if (widget.control.needHeader &&
         index == _getListCount() - 1 &&
-        widget.control.dataList.length != 0) {
+        widget.control.dataList.isNotEmpty) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
     } else if (!widget.control.needHeader &&
-        widget.control.dataList.length == 0) {
+        widget.control.dataList.isEmpty) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {

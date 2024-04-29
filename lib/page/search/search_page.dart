@@ -92,7 +92,7 @@ class _SearchPageState extends State<SearchPage>
 
   _search() {
     if (searchBLoC.searchText == null ||
-        searchBLoC.searchText?.trim().length == 0) {
+        searchBLoC.searchText?.trim().isEmpty == true) {
       return;
     }
     if (isLoading) {
@@ -196,7 +196,7 @@ class _SearchPageState extends State<SearchPage>
                   },
                   selectItemChanged: (selectIndex) {
                     if (searchBLoC.searchText == null ||
-                        searchBLoC.searchText?.trim().length == 0) {
+                        searchBLoC.searchText?.trim().isEmpty == true) {
                       return;
                     }
                     if (isLoading) {

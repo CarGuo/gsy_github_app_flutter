@@ -65,7 +65,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
         limit: Config.PAGE_SIZE,
         offset: (page - 1) * Config.PAGE_SIZE,
         orderBy: "$columnReadDate DESC");
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       return maps;
     }
     return null;
@@ -78,7 +78,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
       where: "$columnFullName = ?",
       whereArgs: [fullName],
     );
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       ReadHistoryDbProvider provider =
           ReadHistoryDbProvider.fromMap(maps.first);
       return provider;

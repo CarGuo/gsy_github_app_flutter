@@ -37,7 +37,7 @@ class _CommonListPageState extends State<CommonListPage>
   _CommonListPageState();
 
   _renderItem(index) {
-    if (pullLoadWidgetControl.dataList.length == 0) {
+    if (pullLoadWidgetControl.dataList.isEmpty) {
       return null;
     }
     var data = pullLoadWidgetControl.dataList[index];

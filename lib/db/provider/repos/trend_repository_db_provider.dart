@@ -76,7 +76,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
         where: "$columnLanguageType = ? and $columnSince = ?",
         whereArgs: [language, since]);
     List<TrendingRepoModel> list = [];
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       TrendRepositoryDbProvider provider =
           TrendRepositoryDbProvider.fromMap(maps.first);
 
@@ -84,7 +84,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
       List<dynamic> eventMap =
           await compute(CodeUtils.decodeListResult, provider.data);
 
-      if (eventMap.length > 0) {
+      if (eventMap.isNotEmpty) {
         for (var item in eventMap) {
           list.add(TrendingRepoModel.fromJson(item));
         }

@@ -101,13 +101,13 @@ class UserDao {
 
     ///读取主题
     String? themeIndex = await LocalStorage.get(Config.THEME_COLOR);
-    if (themeIndex != null && themeIndex.length != 0) {
+    if (themeIndex != null && themeIndex.isNotEmpty) {
       CommonUtils.pushTheme(store, int.parse(themeIndex));
     }
 
     ///切换语言
     String? localeIndex = await LocalStorage.get(Config.LOCALE);
-    if (localeIndex != null && localeIndex.length != 0) {
+    if (localeIndex != null && localeIndex.isNotEmpty) {
       CommonUtils.changeLocale(store, int.parse(localeIndex));
     } else {
       CommonUtils.curLocale = store.state.platformLocale;

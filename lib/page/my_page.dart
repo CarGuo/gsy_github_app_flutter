@@ -133,7 +133,7 @@ class MyPageState extends BasePersonState<MyPage> {
 
   @override
   void didChangeDependencies() {
-    if (pullLoadWidgetControl.dataList.length == 0) {
+    if (pullLoadWidgetControl.dataList.isEmpty) {
       showRefreshLoading();
     }
     super.didChangeDependencies();

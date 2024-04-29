@@ -158,7 +158,7 @@ mixin GSYListState<T extends StatefulWidget>
     super.initState();
     pullLoadWidgetControl.needHeader = needHeader;
     pullLoadWidgetControl.dataList = getDataList;
-    if (pullLoadWidgetControl.dataList.length == 0 && isRefreshFirst) {
+    if (pullLoadWidgetControl.dataList.isEmpty && isRefreshFirst) {
       showRefreshLoading();
     }
   }

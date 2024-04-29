@@ -57,7 +57,7 @@ class RepositoryDetailDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnData],
         where: "$columnFullName = ?",
         whereArgs: [fullName]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       RepositoryDetailDbProvider provider =
           RepositoryDetailDbProvider.fromMap(maps.first);
       return provider;

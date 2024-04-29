@@ -45,7 +45,7 @@ class _ReleasePageState extends State<ReleasePage>
         ///没有 release 提示就不要了
         if (selectIndex == 0 &&
             releaseItemViewModel.actionTargetHtml != null &&
-            releaseItemViewModel.actionTargetHtml!.length > 0) {
+            releaseItemViewModel.actionTargetHtml!.isNotEmpty) {
           String html = HtmlUtils.generateHtml(
               releaseItemViewModel.actionTargetHtml,
               backgroundColor: GSYColors.miWhiteString,

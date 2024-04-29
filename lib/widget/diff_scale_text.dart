@@ -84,11 +84,11 @@ class _DiffText extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     double percent = Math.max(0, Math.min(1, progress));
-    if (_textLayoutInfo.length == 0) {
+    if (_textLayoutInfo.isEmpty) {
       calculateLayoutInfo(text ?? "", _textLayoutInfo);
     }
     canvas.save();
-    if (_oldTextLayoutInfo.length > 0) {
+    if (_oldTextLayoutInfo.isNotEmpty) {
       for (_TextLayoutInfo _oldTextLayoutInfo in _oldTextLayoutInfo) {
         if (_oldTextLayoutInfo.needMove) {
           double p = percent * 2;
@@ -208,10 +208,10 @@ class _DiffText extends CustomPainter {
   }
 
   void calculateMove() {
-    if (_oldTextLayoutInfo.length == 0) {
+    if (_oldTextLayoutInfo.isEmpty) {
       return;
     }
-    if (_textLayoutInfo.length == 0) {
+    if (_textLayoutInfo.isEmpty) {
       return;
     }
 

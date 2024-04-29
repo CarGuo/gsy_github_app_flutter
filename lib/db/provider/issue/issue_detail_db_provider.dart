@@ -64,7 +64,7 @@ class IssueDetailDbProvider extends BaseDbProvider {
         columns: [columnId, columnFullName, columnNumber, columnData],
         where: "$columnFullName = ? and $columnNumber = ?",
         whereArgs: [fullName, number]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       RepositoryDetailDbProvider provider =
           RepositoryDetailDbProvider.fromMap(maps.first);
       return provider;

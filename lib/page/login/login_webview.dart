@@ -77,7 +77,7 @@ class _LoginWebViewState extends State<LoginWebView> {
   }
 
   _renderTitle() {
-    if (widget.url.length == 0) {
+    if (widget.url.isEmpty) {
       return Text(widget.title);
     }
     return Row(children: [

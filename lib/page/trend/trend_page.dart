@@ -268,7 +268,7 @@ class TrendPageState extends State<TrendPage>
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return _sliverBuilder(context, innerBoxIsScrolled, store);
                     },
-                    body: (snapShot.data == null || snapShot.data!.length == 0)
+                    body: (snapShot.data == null || snapShot.data!.isEmpty)
                         ? _buildEmpty()
                         : ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(),
