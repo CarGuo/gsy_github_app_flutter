@@ -481,9 +481,9 @@ class ReposHeaderViewModel {
     repositoryIsFork = map.isFork;
     license = map.license != null ? map.license : "";
     repositoryParentName =
-        map.parent != null ? map.parent!.reposName : null;
+        map.parent?.reposName;
     repositoryParentUser =
-        map.parent != null ? map.parent!.ownerName : null;
+        map.parent?.ownerName;
     created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map.createdAt!));
     push_at = CommonUtils.getNewsTimeStr((DateTime.parse(map.pushAt!)));
   }

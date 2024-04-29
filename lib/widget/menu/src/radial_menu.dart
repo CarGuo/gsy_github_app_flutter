@@ -10,7 +10,7 @@ import 'package:gsy_github_app_flutter/widget/menu/src/radial_menu_item.dart';
 const double _radiansPerDegree = Math.pi / 180;
 const double _startAngle = -90.0 * _radiansPerDegree;
 
-typedef double ItemAngleCalculator(int index);
+typedef ItemAngleCalculator = double Function(int index);
 
 /// A radial menu for selecting from a list of items.
 ///

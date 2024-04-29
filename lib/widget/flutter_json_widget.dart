@@ -119,6 +119,7 @@ class JsonViewerWidgetState extends State<JsonViewerWidget> {
     } else if (entry.value is String) {
       return Expanded(
           child: Text(
+        // ignore: prefer_interpolation_to_compose_strings
         '${'\"' + entry.value}\"',
         style: const TextStyle(color: Colors.redAccent),
       ));

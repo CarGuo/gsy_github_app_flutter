@@ -204,7 +204,7 @@ class _InheritedModel<T extends Model> extends InheritedWidget {
 }
 
 /// Builds a child for a [ScopedModelDescendant].
-typedef Widget ScopedModelDescendantBuilder<T extends Model>(
+typedef ScopedModelDescendantBuilder<T extends Model> = Widget Function(
   BuildContext context,
   Widget? child,
   T? model,

@@ -89,6 +89,7 @@ class HtmlUtils {
       {backgroundColor = GSYColors.white,
       String actionColor = GSYColors.actionBlueString,
       userBR = true}) {
+    // ignore: prefer_interpolation_to_compose_strings
     return "${"${"<html>\n" +
         "<head>\n" +
         "<meta charset=\"utf-8\" />\n" +

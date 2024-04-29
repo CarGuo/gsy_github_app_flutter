@@ -6,7 +6,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-19
 
-typedef void SelectItemChanged<int>(int value);
+typedef SelectItemChanged<int> = void Function(int value);
 
 class GSYSelectItemWidget extends StatefulWidget
     implements PreferredSizeWidget {

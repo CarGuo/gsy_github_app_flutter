@@ -50,5 +50,5 @@ class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   FloatingHeaderSnapConfiguration get snapConfiguration => snapConfig;
 }
 
-typedef Widget Builder(
+typedef Builder = Widget Function(
     BuildContext context, double shrinkOffset, bool overlapsContent);

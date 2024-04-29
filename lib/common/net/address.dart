@@ -166,13 +166,14 @@ class Address {
 
   ///仓库路径下的内容 get
   static reposDataDir(reposOwner, repos, path, [branch = 'master']) {
-    return "${host}repos/$reposOwner/$repos/contents/$path${(branch == null || branch == "") ? "" : ("?ref=" + branch)}";
+    return "${host}repos/$reposOwner/$repos/contents/$path${(branch == null || branch == "") ? "" : ("?ref=$branch")}";
   }
 
   ///README 文件地址 get
   static readmeFile(reposNameFullName, curBranch) {
+    // ignore: prefer_interpolation_to_compose_strings
     return "${"${host}repos/" +
-        reposNameFullName}/readme${(curBranch == null || curBranch == "" ) ? "" : ("?ref=" + curBranch)}";
+        reposNameFullName}/readme${(curBranch == null || curBranch == "" ) ? "" : ("?ref=$curBranch")}";
 
   }
 

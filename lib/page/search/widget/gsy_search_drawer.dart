@@ -6,7 +6,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-18
 
-typedef void SearchSelectItemChanged<String>(String value);
+typedef SearchSelectItemChanged<String> = void Function(String value);
 
 class GSYSearchDrawer extends StatefulWidget {
   final SearchSelectItemChanged<String?> typeCallback;

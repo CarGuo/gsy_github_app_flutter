@@ -75,7 +75,7 @@ class ReposDetailModel extends Model {
   ///#################################################///
 
   ///获取网络端仓库的star等状态
-  getReposStatus(List<Widget> getBottomWidget()) async {
+  getReposStatus(List<Widget> Function() getBottomWidget) async {
     String watchText =
         repository!.isSubscription == "SUBSCRIBED" ? "UnWatch" : "Watch";
     String starText = repository!.isStared! ? "UnStar" : "Star";
