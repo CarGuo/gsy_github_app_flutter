@@ -358,7 +358,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                   ancestor: layoutKey.currentContext!.findRenderObject()).dy ??
           0;
       var sizeTagContainer =
-          layoutTopicContainerKey.currentContext?.size ?? null;
+          layoutTopicContainerKey.currentContext?.size;
       var headerSize = layoutKey.currentContext?.size;
       if (dy > 0 && headerSize != null && sizeTagContainer != null) {
         /// 20是 card 的上下 padding

@@ -44,7 +44,7 @@ class _PushDetailPageState extends State<PushDetailPage>
   String? htmlUrl;
 
   @override
-  Future<Null> handleRefresh() async {
+  Future<void> handleRefresh() async {
     if (isLoading) {
       return null;
     }

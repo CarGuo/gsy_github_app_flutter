@@ -8,7 +8,7 @@ class HtmlUtils {
       {String backgroundColor = GSYColors.miWhiteString,
       String lang = 'java',
       userBR = true}) {
-    String currentData = (mdData != null && mdData.indexOf("<code>") == -1)
+    String currentData = (mdData != null && !mdData.contains("<code>"))
         ? "<body>\n<pre class=\"pre\">\n<code lang='$lang'>\n$mdData</code>\n</pre>\n</body>\n"
         : "<body>\n<pre class=\"pre\">\n${mdData!}</pre>\n</body>\n";
     return generateHtml(currentData,
@@ -41,7 +41,7 @@ class HtmlUtils {
       RegExp exp = RegExp(regExPre);
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
-        if (m.group(0)!.indexOf("<code>") < 0) {
+        if (!m.group(0)!.contains("<code>")) {
           String match = m.group(0)!.replaceAll(RegExp("\n"), "\n\r<br>");
           mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
         }
@@ -54,7 +54,7 @@ class HtmlUtils {
       RegExp exp = RegExp("<pre>(([\\s\\S])*?)<\/pre>");
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
-        if (m.group(0)!.indexOf("<code>") < 0) {
+        if (!m.group(0)!.contains("<code>")) {
           String match = m.group(0)!.replaceAll(RegExp("\n"), "\n\r<br>");
           mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
         }
@@ -67,8 +67,8 @@ class HtmlUtils {
       Iterable<Match> tags = exp.allMatches(mdDataCode);
       for (Match m in tags) {
         String capture = m.group(0)!;
-        if (capture.indexOf("http://") < 0 &&
-            capture.indexOf("https://") < 0 &&
+        if (!capture.contains("http://") &&
+            !capture.contains("https://") &&
             capture.indexOf("#") != 0) {
           mdDataCode =
               mdDataCode.replaceAll(m.group(0)!, "gsygithub://$capture");

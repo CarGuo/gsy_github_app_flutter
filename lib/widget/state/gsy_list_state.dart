@@ -62,7 +62,7 @@ mixin GSYListState<T extends StatefulWidget>
   }
 
   @protected
-  Future<Null> handleRefresh() async {
+  Future<void> handleRefresh() async {
     if (isLoading) {
       if (isRefreshing) {
         return null;
@@ -86,7 +86,7 @@ mixin GSYListState<T extends StatefulWidget>
   }
 
   @protected
-  Future<Null> onLoadMore() async {
+  Future<void> onLoadMore() async {
     if (isLoading) {
       if (isLoadMoring) {
         return null;

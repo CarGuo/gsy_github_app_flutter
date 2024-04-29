@@ -115,7 +115,7 @@ class RadialMenuState extends State<RadialMenu> with TickerProviderStateMixin {
     setState(() => _isOpen = false);
   }
 
-  Future<Null> _activate(int itemIndex) async {
+  Future<void> _activate(int itemIndex) async {
     //setState(() => _activeItemIndex = itemIndex);
     //await _progressAnimationController.forward().orCancel;
     _closeMenu();

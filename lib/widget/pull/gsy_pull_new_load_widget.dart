@@ -148,7 +148,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   }
 
   @protected
-  Future<Null> handleRefresh() async {
+  Future<void> handleRefresh() async {
     if (widget.control.isLoading) {
       if (isRefreshing) {
         return null;
@@ -166,7 +166,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   }
 
   @protected
-  Future<Null> handleLoadMore() async {
+  Future<void> handleLoadMore() async {
     if (widget.control.isLoading) {
       if (isLoadMoring) {
         return null;

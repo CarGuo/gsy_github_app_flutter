@@ -53,7 +53,7 @@ class _PersonState extends BasePersonState<PersonPage> {
   }
 
   @override
-  Future<Null> handleRefresh() async {
+  Future<void> handleRefresh() async {
     if (isLoading) {
       return null;
     }

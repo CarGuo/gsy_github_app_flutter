@@ -384,7 +384,7 @@ class CommonUtils {
     }
   }
 
-  static Future<Null> showLoadingDialog(BuildContext context) {
+  static Future<void> showLoadingDialog(BuildContext context) {
     return NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) {
@@ -418,7 +418,7 @@ class CommonUtils {
         });
   }
 
-  static Future<Null> showEditDialog(
+  static Future<void> showEditDialog(
     BuildContext context,
     String dialogTitle,
     ValueChanged<String>? onTitleChanged,
@@ -446,7 +446,7 @@ class CommonUtils {
   }
 
   ///列表item dialog
-  static Future<Null> showCommitOptionDialog(
+  static Future<void> showCommitOptionDialog(
     BuildContext context,
     List<String?>? commitMaps,
     ValueChanged<int> onTap, {
@@ -492,7 +492,7 @@ class CommonUtils {
   }
 
   ///版本更新
-  static Future<Null> showUpdateDialog(
+  static Future<void> showUpdateDialog(
       BuildContext context, String contentMsg) {
     return NavigatorUtils.showGSYDialog(
         context: context,

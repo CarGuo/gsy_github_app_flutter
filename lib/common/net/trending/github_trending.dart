@@ -144,7 +144,7 @@ class TrendingUtil {
     var contributors = [];
     for (var i = 0; i < splitWitSemicolon.length; i++) {
       String url = splitWitSemicolon[i];
-      if (url.indexOf('http') != -1) {
+      if (url.contains('http')) {
         contributors.add(url);
       }
     }
