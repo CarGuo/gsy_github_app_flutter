@@ -1,5 +1,5 @@
 class DataResult {
-  var data;
+  Object? data;
   bool result;
   Function? next;
 

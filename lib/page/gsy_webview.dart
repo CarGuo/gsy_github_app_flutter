@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -60,7 +61,9 @@ class _GSYWebViewState extends State<GSYWebView> {
         ),
       )
       ..addJavaScriptChannel("name", onMessageReceived: (message) {
-        print(message.message);
+        if (kDebugMode) {
+          print(message.message);
+        }
         FocusScope.of(context).requestFocus(focusNode);
       })
       ..loadRequest(Uri.parse(widget.url));

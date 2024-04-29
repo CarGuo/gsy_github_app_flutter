@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';

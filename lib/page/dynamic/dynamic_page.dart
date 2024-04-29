@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/page/dynamic/dynamic_bloc.dart';
@@ -66,7 +67,9 @@ class DynamicPageState extends State<DynamicPage>
     await dynamicBloc
         .requestRefresh(_getStore().state.userInfo?.login)
         .catchError((e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     });
     setState(() {
       _ignoring = false;

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
@@ -151,7 +152,9 @@ class DemoUserInfoDbProvider extends DemoBaseDbProvider {
     var userProvider = await _getUserProvider(db, userName);
     if (userProvider != null) {
       var result = await db.delete(name, where: "$columnUserName = ?", whereArgs: [userName]);
-      print(result);
+      if (kDebugMode) {
+        print(result);
+      }
     }
     return await db.insert(name, toMap(userName, eventMapString));
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -40,7 +41,9 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
           _scrollController.notifyListeners();
         });
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
     });
 

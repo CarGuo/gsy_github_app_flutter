@@ -1,5 +1,6 @@
 /// Created by guoshuyu
 /// Date: 2018-08-16
+library;
 
 class HttpErrorEvent {
   final int? code;

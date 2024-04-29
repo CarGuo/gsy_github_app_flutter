@@ -25,10 +25,10 @@ class PersonPage extends StatefulWidget {
   const PersonPage(this.userName, {super.key});
 
   @override
-  _PersonState createState() => _PersonState(userName);
+  PersonState createState() => PersonState(userName);
 }
 
-class _PersonState extends BasePersonState<PersonPage> {
+class PersonState extends BasePersonState<PersonPage> {
   final String? userName;
 
   String beStaredCount = "---";
@@ -41,7 +41,7 @@ class _PersonState extends BasePersonState<PersonPage> {
 
   final List<UserOrg> orgList = [];
 
-  _PersonState(this.userName);
+  PersonState(this.userName);
 
   ///处理用户信息显示
   _resolveUserInfo(res) {

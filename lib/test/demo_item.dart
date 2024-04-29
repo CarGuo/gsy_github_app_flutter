@@ -1,8 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-
 class DemoItem extends StatelessWidget {
-
   const DemoItem({super.key});
 
   ///返回一个居中带图标和文本的Item
@@ -36,8 +35,9 @@ class DemoItem extends StatelessWidget {
             SizedBox(
               width: 60,
               child:
-              ///显示数量文本
-              Text(
+
+                  ///显示数量文本
+                  Text(
                 text,
                 style: const TextStyle(color: Colors.grey, fontSize: 14.0),
                 overflow: TextOverflow.ellipsis,
@@ -53,11 +53,17 @@ class DemoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-         ///增加点击效果
+
+        ///增加点击效果
         child: TextButton(
-            onPressed: (){print("点击了哦");},
+            onPressed: () {
+              if (kDebugMode) {
+                print("点击了哦");
+              }
+            },
             child: Padding(
-              padding: const EdgeInsets.only(left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
+              padding: const EdgeInsets.only(
+                  left: 0.0, top: 10.0, right: 10.0, bottom: 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -71,6 +77,7 @@ class DemoItem extends StatelessWidget {
                           color: Colors.blueGrey,
                           fontSize: 14.0,
                         ),
+
                         ///最长三行，超过 ... 显示
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -81,7 +88,8 @@ class DemoItem extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      _getBottomItem(Icons.star, "10000000000000000000000000000000000000000000000000"),
+                      _getBottomItem(Icons.star,
+                          "10000000000000000000000000000000000000000000000000"),
                       _getBottomItem(Icons.link, "1000"),
                       _getBottomItem(Icons.subject, "1000"),
                     ],

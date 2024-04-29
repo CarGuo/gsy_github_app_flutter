@@ -1,6 +1,7 @@
 // ignore_for_file: type_literal_in_constant_pattern
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 
 /// Log 拦截器
@@ -19,16 +20,22 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options, handler) async {
     if (Config.DEBUG!) {
-      print("请求url：${options.path} ${options.method}");
+      if (kDebugMode) {
+        print("请求url：${options.path} ${options.method}");
+      }
       options.headers.forEach((k, v) => options.headers[k] = v ?? "");
-      print('请求头: ${options.headers}');
+      if (kDebugMode) {
+        print('请求头: ${options.headers}');
+      }
       if (options.data != null) {
-        print('请求参数: ${options.data}');
+        if (kDebugMode) {
+          print('请求参数: ${options.data}');
+        }
       }
     }
     try {
       addLogic(sRequestHttpUrl, options.path);
-      var data;
+      dynamic data;
       if (options.data is Map) {
         data = options.data;
       } else {
@@ -42,7 +49,9 @@ class LogsInterceptors extends InterceptorsWrapper {
       }
       addLogic(sHttpRequest, map);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return super.onRequest(options, handler);
   }
@@ -50,7 +59,9 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response, handler) async {
     if (Config.DEBUG!) {
-      print('返回参数: $response');
+      if (kDebugMode) {
+        print('返回参数: $response');
+      }
     }
     switch (response.data.runtimeType) {
       case Map || List:
@@ -61,7 +72,9 @@ class LogsInterceptors extends InterceptorsWrapper {
             addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
             addLogic(sHttpResponses, data);
           } catch (e) {
-            print(e);
+            if (kDebugMode) {
+              print(e);
+            }
           }
         }
       case String:
@@ -72,7 +85,9 @@ class LogsInterceptors extends InterceptorsWrapper {
             addLogic(sResponsesHttpUrl, response.requestOptions.uri.toString());
             addLogic(sHttpResponses, data);
           } catch (e) {
-            print(e);
+            if (kDebugMode) {
+              print(e);
+            }
           }
         }
     }
@@ -82,8 +97,10 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onError(DioException err, handler) async {
     if (Config.DEBUG!) {
-      print('请求异常: $err');
-      print('请求异常信息: ${err.response?.toString() ?? ""}');
+      if (kDebugMode) {
+        print('请求异常: $err');
+        print('请求异常信息: ${err.response?.toString() ?? ""}');
+      }
     }
     try {
       addLogic(sHttpErrorUrl, err.requestOptions.path);
@@ -91,7 +108,9 @@ class LogsInterceptors extends InterceptorsWrapper {
       errors["error"] = err.message;
       addLogic(sHttpError, errors);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return super.onError(err, handler);
   }

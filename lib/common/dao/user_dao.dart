@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_followed_db_provider.dart';
@@ -44,9 +45,11 @@ class UserDao {
 
       resultData = await getUserInfo(null);
       if (Config.DEBUG!) {
-        print("user result ${resultData.result}");
-        print(resultData.data);
-        print(res.data.toString());
+        if (kDebugMode) {
+          print("user result ${resultData.result}");
+          print(resultData.data);
+          print(res.data.toString());
+        }
       }
       if (resultData.result == true) {
         store.dispatch(UpdateUserAction(resultData.data));
@@ -61,7 +64,9 @@ class UserDao {
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
     if (Config.DEBUG!) {
-      print("base64Str login $base64Str");
+      if (kDebugMode) {
+        print("base64Str login $base64Str");
+      }
     }
 
     await LocalStorage.save(Config.USER_NAME_KEY, userName);
@@ -82,9 +87,11 @@ class UserDao {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
       if (Config.DEBUG!) {
-        print("user result ${resultData.result}");
-        print(resultData.data);
-        print(res.data.toString());
+        if (kDebugMode) {
+          print("user result ${resultData.result}");
+          print(resultData.data);
+          print(res.data.toString());
+        }
       }
       store.dispatch(UpdateUserAction(resultData.data));
     }
@@ -133,7 +140,7 @@ class UserDao {
   static getUserInfo(userName, {needDb = false}) async {
     UserInfoDbProvider provider = UserInfoDbProvider();
     next() async {
-      var res;
+      dynamic res;
       if (userName == null) {
         res = await httpManager.netFetch(
             Address.getMyUserInfo(), null, null, null);
@@ -198,7 +205,9 @@ class UserDao {
           }
         }
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
     }
     return DataResult(null, false);

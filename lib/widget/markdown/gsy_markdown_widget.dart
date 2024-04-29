@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -166,7 +167,9 @@ class GSYMarkdownWidget extends StatelessWidget {
         }
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     return mdDataCode;
   }

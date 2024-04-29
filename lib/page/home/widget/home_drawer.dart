@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
@@ -205,7 +206,9 @@ class HomeDrawer extends StatelessWidget {
                             },
                             onTap: () {
                               PackageInfo.fromPlatform().then((value) {
-                                print(value);
+                                if (kDebugMode) {
+                                  print(value);
+                                }
                                 showAboutDialog(context, value.version);
                               });
                             }),

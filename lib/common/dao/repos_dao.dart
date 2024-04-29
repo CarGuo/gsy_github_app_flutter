@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
@@ -509,7 +510,9 @@ class ReposDao {
 
         /// 反序列化
         Map result = serializers.serializeWith(serializerForType, test) as Map<dynamic, dynamic>;
-        print("###### $test $result");
+        if (kDebugMode) {
+          print("###### $test $result");
+        }
 
         list.add(data['name']);
       }
@@ -678,23 +681,31 @@ class ReposDao {
       String? versionName = release.name;
       if (versionName != null) {
         if (Config.DEBUG!) {
-          print("versionName $versionName");
+          if (kDebugMode) {
+            print("versionName $versionName");
+          }
         }
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
         var appVersion = packageInfo.version;
 
         if (Config.DEBUG!) {
-          print("appVersion $appVersion");
+          if (kDebugMode) {
+            print("appVersion $appVersion");
+          }
         }
         Version versionNameNum = Version.parse(versionName);
         Version currentNum = Version.parse(appVersion);
         int result = versionNameNum.compareTo(currentNum);
         if (Config.DEBUG!) {
-          print("versionNameNum $versionNameNum currentNum $currentNum");
+          if (kDebugMode) {
+            print("versionNameNum $versionNameNum currentNum $currentNum");
+          }
         }
         if (Config.DEBUG!) {
-          print("newsHad $result");
+          if (kDebugMode) {
+            print("newsHad $result");
+          }
         }
         if (result > 0) {
           CommonUtils.showUpdateDialog(
@@ -727,7 +738,9 @@ class ReposDao {
           }
         }
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
     }
     return DataResult(null, false);

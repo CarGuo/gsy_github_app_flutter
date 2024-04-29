@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -128,7 +129,9 @@ class _DebugDataListState extends State<DebugDataList>
                     ClipboardData(text: "${widget.titles[index]}"));
                 Fluttertoast.showToast(msg: "复制链接成功");
               } catch (e) {
-                print(e);
+                if (kDebugMode) {
+                  print(e);
+                }
               }
             },
             onDoubleTap: () {
@@ -137,7 +140,9 @@ class _DebugDataListState extends State<DebugDataList>
                     ClipboardData(text: "${widget.dataList[index]}"));
                 Fluttertoast.showToast(msg: "复制数据成功");
               } catch (e) {
-                print(e);
+                if (kDebugMode) {
+                  print(e);
+                }
               }
             },
             onTap: () {

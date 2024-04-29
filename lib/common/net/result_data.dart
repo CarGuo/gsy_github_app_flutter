@@ -2,10 +2,10 @@
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class ResultData {
-  var data;
+  dynamic data;
   bool result;
   int? code;
-  var headers;
+  dynamic headers;
 
   ResultData(this.data, this.result, this.code, {this.headers});
 }

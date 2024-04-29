@@ -44,6 +44,7 @@ class TrendingUtil {
   static htmlToRepo(String responseData) {
     try {
       responseData = responseData.replaceAll(RegExp('\n'), '');
+    // ignore: empty_catches
     } catch (e) {}
     var repos = [];
     var splitWithH3 = responseData.split('<article');
@@ -112,7 +113,7 @@ class TrendingUtil {
   }
 
   static parseRepoLabelWithTag(repo, noteContent, tag) {
-    var startFlag;
+    Object? startFlag;
     if (TAGS["starCount"] == tag || TAGS["forkCount"] == tag) {
       startFlag = tag["start"];
     } else {

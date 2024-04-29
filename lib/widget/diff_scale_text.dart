@@ -87,44 +87,44 @@ class _DiffText extends CustomPainter {
     }
     canvas.save();
     if (_oldTextLayoutInfo.isNotEmpty) {
-      for (_TextLayoutInfo _oldTextLayoutInfo in _oldTextLayoutInfo) {
-        if (_oldTextLayoutInfo.needMove) {
+      for (_TextLayoutInfo oldTextLayoutInfo in _oldTextLayoutInfo) {
+        if (oldTextLayoutInfo.needMove) {
           double p = percent * 2;
           p = p > 1 ? 1 : p;
           drawText(
               canvas,
-              _oldTextLayoutInfo.text,
+              oldTextLayoutInfo.text,
               1,
               1,
               Offset(
-                  _oldTextLayoutInfo.offsetX! -
-                      (_oldTextLayoutInfo.offsetX! - _oldTextLayoutInfo.toX!) *
+                  oldTextLayoutInfo.offsetX! -
+                      (oldTextLayoutInfo.offsetX! - oldTextLayoutInfo.toX!) *
                           p,
-                  _oldTextLayoutInfo.offsetY),
-              _oldTextLayoutInfo);
+                  oldTextLayoutInfo.offsetY),
+              oldTextLayoutInfo);
         } else {
           drawText(
               canvas,
-              _oldTextLayoutInfo.text,
+              oldTextLayoutInfo.text,
               1 - percent,
               percent,
-              Offset(_oldTextLayoutInfo.offsetX!, _oldTextLayoutInfo.offsetY),
-              _oldTextLayoutInfo);
+              Offset(oldTextLayoutInfo.offsetX!, oldTextLayoutInfo.offsetY),
+              oldTextLayoutInfo);
         }
       }
     } else {
       //no oldText
       percent = 1;
     }
-    for (_TextLayoutInfo _textLayoutInfo in _textLayoutInfo) {
-      if (!_textLayoutInfo.needMove) {
+    for (_TextLayoutInfo textLayoutInfo in _textLayoutInfo) {
+      if (!textLayoutInfo.needMove) {
         drawText(
             canvas,
-            _textLayoutInfo.text,
+            textLayoutInfo.text,
             percent,
             percent,
-            Offset(_textLayoutInfo.offsetX!, _textLayoutInfo.offsetY),
-            _textLayoutInfo);
+            Offset(textLayoutInfo.offsetX!, textLayoutInfo.offsetY),
+            textLayoutInfo);
       }
     }
     canvas.restore();

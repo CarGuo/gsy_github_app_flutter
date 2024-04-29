@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 
@@ -9,7 +10,7 @@ class ResponseInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response, handler) async {
     RequestOptions option = response.requestOptions;
-    var value;
+    dynamic value;
     try {
       var header = response.headers[Headers.contentTypeHeader];
       if ((header != null && header.toString().contains("text"))) {
@@ -19,7 +20,9 @@ class ResponseInterceptors extends InterceptorsWrapper {
             headers: response.headers);
       }
     } catch (e) {
-      print(e.toString() + option.path);
+      if (kDebugMode) {
+        print(e.toString() + option.path);
+      }
       value = ResultData(response.data, false, response.statusCode,
           headers: response.headers);
     }

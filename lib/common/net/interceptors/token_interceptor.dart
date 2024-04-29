@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
@@ -34,7 +35,9 @@ class TokenInterceptors extends InterceptorsWrapper {
         await LocalStorage.save(Config.TOKEN_KEY, _token);
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return super.onResponse(response, handler);
   }

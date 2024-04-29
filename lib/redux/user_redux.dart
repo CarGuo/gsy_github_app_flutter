@@ -1,3 +1,6 @@
+// ignore_for_file: implicit_call_tearoffs
+
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
@@ -40,7 +43,9 @@ class UserInfoMiddleware implements MiddlewareClass<GSYState> {
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
     if (action is UpdateUserAction) {
-      print("*********** UserInfoMiddleware *********** ");
+      if (kDebugMode) {
+        print("*********** UserInfoMiddleware *********** ");
+      }
     }
     // Make sure to forward actions to the next middleware in the chain!
     next(action);
@@ -51,7 +56,9 @@ Stream<dynamic> userInfoEpic(
     Stream<dynamic> actions, EpicStore<GSYState> store) {
   // Use the async* function to make easier
   Stream<dynamic> loadUserInfo() async* {
-    print("*********** userInfoEpic _loadUserInfo ***********");
+    if (kDebugMode) {
+      print("*********** userInfoEpic _loadUserInfo ***********");
+    }
     var res = await UserDao.getUserInfo(null);
     yield UpdateUserAction(res.data);
   }

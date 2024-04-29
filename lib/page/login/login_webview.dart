@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -61,7 +62,9 @@ class _LoginWebViewState extends State<LoginWebView> {
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith("gsygithubapp://authed")) {
               var code = Uri.parse(request.url).queryParameters["code"];
-              print("code $code");
+              if (kDebugMode) {
+                print("code $code");
+              }
               Navigator.of(context).pop(code);
               return NavigationDecision.prevent;
             }

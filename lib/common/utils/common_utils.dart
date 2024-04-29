@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -272,7 +273,9 @@ class CommonUtils {
   static changeLocale(Store<GSYState> store, int index) {
     Locale? locale = store.state.platformLocale;
     if (Config.DEBUG!) {
-      print(store.state.platformLocale);
+      if (kDebugMode) {
+        print(store.state.platformLocale);
+      }
     }
     switch (index) {
       case 1:
@@ -290,7 +293,9 @@ class CommonUtils {
   static changeGrey(Store<GSYState> store) {
     bool grey = store.state.grey;
     if (Config.DEBUG!) {
-      print(store.state.grey);
+      if (kDebugMode) {
+        print(store.state.grey);
+      }
     }
     store.dispatch(RefreshGreyAction(!grey));
   }

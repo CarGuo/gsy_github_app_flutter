@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -30,7 +31,9 @@ class ErrorPageState extends State<ErrorPage> {
           sErrorName, details.exception.runtimeType.toString());
       LogsInterceptors.addLogic(sErrorStack, map);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/app.dart';
@@ -24,7 +25,9 @@ void main() {
     ///屏幕刷新率和显示率不一致时的优化，必须挪动到 runApp 之后
     GestureBinding.instance.resamplingEnabled = true;
   }, (Object obj, StackTrace stack) {
-    print(obj);
-    print(stack);
+    if (kDebugMode) {
+      print(obj);
+      print(stack);
+    }
   });
 }

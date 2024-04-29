@@ -1,3 +1,5 @@
+// ignore_for_file: implicit_call_tearoffs
+
 import 'package:redux/redux.dart';
 
 /// 变灰Redux

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:string_scanner/string_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,10 @@ class SyntaxHighlighterStyle {
     return SyntaxHighlighterStyle(
         baseStyle: const TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
         numberStyle: TextStyle(color: Colors.blue[800]),
-        commentStyle: const TextStyle(color: Color.fromRGBO(124, 126, 120, 1.0)),
-        keywordStyle: const TextStyle(color: Color.fromRGBO(228, 125, 246, 1.0)),
+        commentStyle:
+            const TextStyle(color: Color.fromRGBO(124, 126, 120, 1.0)),
+        keywordStyle:
+            const TextStyle(color: Color.fromRGBO(228, 125, 246, 1.0)),
         stringStyle: const TextStyle(color: Color.fromRGBO(150, 190, 118, 1.0)),
         punctuationStyle:
             const TextStyle(color: Color.fromRGBO(212, 212, 212, 1.0)),
@@ -136,6 +139,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
   late List<_HighlightSpan> _spans;
 
+  @override
   TextSpan format(String src) {
     _src = src;
     _scanner = StringScanner(_src);
@@ -147,8 +151,8 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
       for (_HighlightSpan span in _spans) {
         if (currentPosition != span.start) {
-          formattedText.add(
-              TextSpan(text: _src.substring(currentPosition, span.start)));
+          formattedText
+              .add(TextSpan(text: _src.substring(currentPosition, span.start)));
         }
 
         formattedText.add(TextSpan(
@@ -158,8 +162,8 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
       }
 
       if (currentPosition != _src.length) {
-        formattedText.add(
-            TextSpan(text: _src.substring(currentPosition, _src.length)));
+        formattedText
+            .add(TextSpan(text: _src.substring(currentPosition, _src.length)));
       }
 
       return TextSpan(style: _style!.baseStyle, children: formattedText);
@@ -197,8 +201,8 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
             endComment = _src.length;
           }
 
-          _spans.add(_HighlightSpan(
-              _HighlightType.comment, startComment, endComment));
+          _spans.add(
+              _HighlightSpan(_HighlightType.comment, startComment, endComment));
 
           if (eof) break;
 
@@ -218,8 +222,8 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
             endComment = _src.length;
           }
 
-          _spans.add(_HighlightSpan(
-              _HighlightType.comment, startComment, endComment));
+          _spans.add(
+              _HighlightSpan(_HighlightType.comment, startComment, endComment));
 
           if (eof) break;
 
@@ -311,14 +315,15 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
 
           if (_kKeywords.contains(word)) {
             type = _HighlightType.keyword;
-          } else if (_kBuiltInTypes.contains(word))
+          } else if (_kBuiltInTypes.contains(word)) {
             type = _HighlightType.keyword;
-          else if (_firstLetterIsUpperCase(word))
+          } else if (_firstLetterIsUpperCase(word)) {
             type = _HighlightType.klass;
-          else if (word.length >= 2 &&
+          } else if (word.length >= 2 &&
               word.startsWith("k") &&
-              _firstLetterIsUpperCase(word.substring(1)))
+              _firstLetterIsUpperCase(word.substring(1))) {
             type = _HighlightType.constant;
+          }
 
           if (type != null) {
             _spans.add(_HighlightSpan(
@@ -341,7 +346,9 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
         lastLoopPosition = _scanner.position;
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
 
     _simplify();
@@ -352,8 +359,8 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
     for (int i = _spans.length - 2; i >= 0; i -= 1) {
       if (_spans[i].type == _spans[i + 1].type &&
           _spans[i].end == _spans[i + 1].start) {
-        _spans[i] = _HighlightSpan(
-            _spans[i].type, _spans[i].start, _spans[i + 1].end);
+        _spans[i] =
+            _HighlightSpan(_spans[i].type, _spans[i].start, _spans[i + 1].end);
         _spans.removeAt(i + 1);
       }
     }
@@ -392,19 +399,20 @@ class _HighlightSpan {
   TextStyle? textStyle(SyntaxHighlighterStyle? style) {
     if (type == _HighlightType.number) {
       return style!.numberStyle;
-    } else if (type == _HighlightType.comment)
+    } else if (type == _HighlightType.comment) {
       return style!.commentStyle;
-    else if (type == _HighlightType.keyword)
+    } else if (type == _HighlightType.keyword) {
       return style!.keywordStyle;
-    else if (type == _HighlightType.string)
+    } else if (type == _HighlightType.string) {
       return style!.stringStyle;
-    else if (type == _HighlightType.punctuation)
+    } else if (type == _HighlightType.punctuation) {
       return style!.punctuationStyle;
-    else if (type == _HighlightType.klass)
+    } else if (type == _HighlightType.klass) {
       return style!.classStyle;
-    else if (type == _HighlightType.constant)
+    } else if (type == _HighlightType.constant) {
       return style!.constantStyle;
-    else
+    } else {
       return style!.baseStyle;
+    }
   }
 }

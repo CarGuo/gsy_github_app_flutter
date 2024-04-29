@@ -1,9 +1,16 @@
 /// Created by guoshuyu
 /// Date: 2018-10-12
+// ignore_for_file: avoid_print
+
+library;
+
+import 'package:flutter/foundation.dart';
 
 abstract class Base {
   a() {
-    print("base a()");
+    if (kDebugMode) {
+      print("base a()");
+    }
   }
 
   b() {
@@ -22,7 +29,9 @@ mixin A on Base {
   }
 
   b() {
-    print("A.b()");
+    if (kDebugMode) {
+      print("A.b()");
+    }
     super.b();
   }
 }
@@ -41,12 +50,16 @@ class B extends Base {
   }
 
   b() {
-    print("B.b()");
+    if (kDebugMode) {
+      print("B.b()");
+    }
     super.b();
   }
 
   c() {
-    print("B.c()");
+    if (kDebugMode) {
+      print("B.c()");
+    }
     super.c();
   }
 }

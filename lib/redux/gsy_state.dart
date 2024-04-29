@@ -1,3 +1,5 @@
+// ignore_for_file: implicit_call_tearoffs
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/grey_redux.dart';

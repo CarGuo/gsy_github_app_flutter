@@ -185,24 +185,14 @@ typedef _LayoutCallback = void Function(
 
 class _TabLabelBarRenderer extends RenderFlex {
   _TabLabelBarRenderer({
-    List<RenderBox>? children,
-    required Axis direction,
-    required MainAxisSize mainAxisSize,
-    required MainAxisAlignment mainAxisAlignment,
-    required CrossAxisAlignment crossAxisAlignment,
-    required TextDirection textDirection,
-    required VerticalDirection verticalDirection,
+    required super.direction,
+    required super.mainAxisSize,
+    required super.mainAxisAlignment,
+    required super.crossAxisAlignment,
+    required TextDirection super.textDirection,
+    required super.verticalDirection,
     required this.onPerformLayout,
-  })   : assert(onPerformLayout != null),
-        super(
-          children: children,
-          direction: direction,
-          mainAxisSize: mainAxisSize,
-          mainAxisAlignment: mainAxisAlignment,
-          crossAxisAlignment: crossAxisAlignment,
-          textDirection: textDirection,
-          verticalDirection: verticalDirection,
-        );
+  })   : assert(onPerformLayout != null);
 
   _LayoutCallback? onPerformLayout;
 
@@ -240,12 +230,9 @@ class _TabLabelBarRenderer extends RenderFlex {
 // or in response to input.
 class _TabLabelBar extends Flex {
   const _TabLabelBar({
-    Key? key,
-    List<Widget> children = const <Widget>[],
+    super.children,
     this.onPerformLayout,
   }) : super(
-          key: key,
-          children: children,
           direction: Axis.horizontal,
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -395,17 +382,18 @@ class _IndicatorPainter extends CustomPainter {
       final double value = controller.animation!.value;
       if (value == index - 1.0) {
         _currentRect = previous ?? middle;
-      } else if (value == index + 1.0)
+      } else if (value == index + 1.0) {
         _currentRect = next ?? middle;
-      else if (value == index)
+      } else if (value == index) {
         _currentRect = middle;
-      else if (value < index)
+      } else if (value < index) {
         _currentRect = previous == null
             ? middle
             : Rect.lerp(middle, previous, index - value);
-      else
+      } else {
         _currentRect =
-            next == null ? middle : Rect.lerp(middle, next, value - index);
+        next == null ? middle : Rect.lerp(middle, next, value - index);
+      }
     }
     assert(_currentRect != null);
 
@@ -477,15 +465,12 @@ class _DragAnimation extends Animation<double>
 // pixels value) after the TabBar viewport width and scroll limits are known.
 class _TabBarScrollPosition extends ScrollPositionWithSingleContext {
   _TabBarScrollPosition({
-    required ScrollPhysics physics,
-    required ScrollContext context,
-    ScrollPosition? oldPosition,
+    required super.physics,
+    required super.context,
+    super.oldPosition,
     this.tabBar,
   }) : super(
-          physics: physics,
-          context: context,
           initialPixels: null,
-          oldPosition: oldPosition,
         );
 
   final _TabBarState? tabBar;
@@ -900,18 +885,20 @@ class _TabBarState extends State<TabBar> {
     double? offset;
     if (value == index - 1.0) {
       offset = leadingPosition ?? middlePosition;
-    } else if (value == index + 1.0)
+    } else if (value == index + 1.0) {
       offset = trailingPosition ?? middlePosition;
-    else if (value == index)
+    } else if (value == index) {
       offset = middlePosition;
-    else if (value < index)
+    } else if (value < index) {
       offset = leadingPosition == null
           ? middlePosition
           : lerpDouble(middlePosition, leadingPosition, index - value);
-    else
+    }
+    else {
       offset = trailingPosition == null
           ? middlePosition
           : lerpDouble(middlePosition, trailingPosition, value - index);
+    }
 
     _scrollController!.jumpTo(offset!);
   }
@@ -1422,10 +1409,11 @@ class TabPageSelector extends StatelessWidget {
       final double t = 1.0 - _indexChangeProgress(tabController);
       if (tabController.index == tabIndex) {
         background = selectedColorTween.lerp(t);
-      } else if (tabController.previousIndex == tabIndex)
+      } else if (tabController.previousIndex == tabIndex) {
         background = previousColorTween.lerp(t);
-      else
+      } else {
         background = selectedColorTween.begin;
+      }
     } else {
       // The selection's offset reflects how far the TabBarView has / been dragged
       // to the previous page (-1.0 to 0.0) or the next page (0.0 to 1.0).

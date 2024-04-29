@@ -1,5 +1,6 @@
-// ignore_for_file: unnecessary_string_escapes
+// ignore_for_file: unnecessary_string_escapes, prefer_adjacent_string_concatenation
 
+import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /// Created by guoshuyu
@@ -37,7 +38,9 @@ class HtmlUtils {
         mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     try {
       RegExp exp = RegExp(regExPre);
@@ -49,7 +52,9 @@ class HtmlUtils {
         }
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     try {
@@ -62,7 +67,9 @@ class HtmlUtils {
         }
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     try {
       RegExp exp = RegExp("href=\"(.*?)\"");
@@ -77,7 +84,9 @@ class HtmlUtils {
         }
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     return generateCodeHtml(mdDataCode, false,
@@ -182,6 +191,7 @@ class HtmlUtils {
         addNumber;
   }
 
+  // ignore: avoid_types_as_parameter_names
   static getBlank(num) {
     String builder = "";
     for (int i = 0; i < num; i++) {

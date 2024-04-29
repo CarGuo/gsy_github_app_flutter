@@ -1,3 +1,5 @@
+// ignore_for_file: implicit_call_tearoffs
+
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 

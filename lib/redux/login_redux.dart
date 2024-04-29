@@ -1,3 +1,5 @@
+// ignore_for_file: implicit_call_tearoffs
+
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/db/sql_manager.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';

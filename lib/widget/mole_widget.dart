@@ -63,6 +63,7 @@ class _MoleState extends State<Mole> {
   }
 
   _hitMole() {
+    // ignore: unused_local_variable
     for (var i in Iterable.generate(50)) {
       particles.add(MoleParticle());
     }

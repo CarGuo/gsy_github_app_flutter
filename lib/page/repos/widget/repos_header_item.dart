@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -364,7 +365,9 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         /// 20是 card 的上下 padding
         var newSize = dy + sizeTagContainer.height + 20;
         if (widgetHeight != newSize && newSize > 0) {
-          print("widget?.layoutListener?.call");
+          if (kDebugMode) {
+            print("widget?.layoutListener?.call");
+          }
           widgetHeight = newSize;
           widget.layoutListener
               ?.call(Size(layoutKey.currentContext!.size!.width, widgetHeight));

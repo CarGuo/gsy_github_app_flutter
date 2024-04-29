@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        return _dialogExitApp(context);
+        _dialogExitApp(context);
       },
       child: GSYTabBarWidget(
         drawer: const HomeDrawer(),
