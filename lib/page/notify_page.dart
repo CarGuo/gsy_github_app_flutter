@@ -24,8 +24,11 @@ class NotifyPage extends StatefulWidget {
 }
 
 class _NotifyPageState extends State<NotifyPage>
-    with AutomaticKeepAliveClientMixin<NotifyPage>, GSYListState<NotifyPage> {
-  final SlidableController slidableController = SlidableController();
+    with
+        AutomaticKeepAliveClientMixin<NotifyPage>,
+        GSYListState<NotifyPage>,
+        SingleTickerProviderStateMixin {
+  late SlidableController slidableController;
 
   int selectIndex = 0;
 
@@ -40,26 +43,29 @@ class _NotifyPageState extends State<NotifyPage>
     return Slidable(
       key: ValueKey<String>("${index}_$selectIndex"),
       controller: slidableController,
-      actionPane: const SlidableBehindActionPane(),
-      actionExtentRatio: 0.25,
-      child: _renderEventItem(notification),
-      dismissal: SlidableDismissal(
-        child: const SlidableDrawerDismissal(),
-        onDismissed: (actionType) {},
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        dismissible: DismissiblePane(onDismissed: () {
+          UserDao.setNotificationAsReadDao(notification.id.toString())
+              .then((res) {
+            showRefreshLoading();
+          });
+        }),
+        children: [
+          SlidableAction(
+            label: GSYLocalizations.i18n(context)!.notify_readed,
+            backgroundColor: Colors.redAccent,
+            icon: Icons.delete,
+            onPressed: (c) {
+              UserDao.setNotificationAsReadDao(notification.id.toString())
+                  .then((res) {
+                showRefreshLoading();
+              });
+            },
+          ),
+        ],
       ),
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: GSYLocalizations.i18n(context)!.notify_readed,
-          color: Colors.redAccent,
-          icon: Icons.delete,
-          onTap: () {
-            UserDao.setNotificationAsReadDao(notification.id.toString())
-                .then((res) {
-              showRefreshLoading();
-            });
-          },
-        ),
-      ],
+      child: _renderEventItem(notification),
     );
   }
 
@@ -113,6 +119,12 @@ class _NotifyPageState extends State<NotifyPage>
   @override
   requestRefresh() async {
     return await _getDataLogic();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    slidableController = SlidableController(this);
   }
 
   @override
