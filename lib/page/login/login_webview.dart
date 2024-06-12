@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -73,6 +75,24 @@ class _LoginWebViewState extends State<LoginWebView> {
               setState(() {
                 isLoading = true;
               });
+            },
+            initialOptions: Platform.isIOS
+                ? InAppWebViewGroupOptions(
+                    crossPlatform: InAppWebViewOptions(
+                    useShouldOverrideUrlLoading: true,
+                  ))
+                : null,
+            shouldOverrideUrlLoading: (controller, navigationAction) async {
+              var url = navigationAction.request.url!.toString();
+              if (url.startsWith("gsygithubapp://authed")) {
+                var code = Uri.parse(url).queryParameters["code"];
+                if (kDebugMode) {
+                  print("code $code");
+                }
+                Navigator.of(context).pop(code);
+                return NavigationActionPolicy.CANCEL;
+              }
+              return NavigationActionPolicy.ALLOW;
             },
             onLoadStop: (controller, url) async {
               setState(() {
