@@ -1,16 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-// Import for Android features.
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-
-// Import for iOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class LoginWebView extends StatefulWidget {
   final String url;
@@ -25,57 +20,14 @@ class LoginWebView extends StatefulWidget {
 class _LoginWebViewState extends State<LoginWebView> {
   late final WebViewController controller;
 
+  final GlobalKey webViewKey = GlobalKey();
+
+  InAppWebViewController? webViewController;
+
   late final PlatformWebViewControllerCreationParams params;
 
   @override
   void initState() {
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
-
-    controller = WebViewController.fromPlatformCreationParams(params);
-    if (controller.platform is AndroidWebViewController) {
-      //AndroidWebViewController.enableDebugging(true);
-      (controller.platform as AndroidWebViewController)
-          .setMediaPlaybackRequiresUserGesture(true);
-    }
-    controller
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith("gsygithubapp://authed")) {
-              var code = Uri.parse(request.url).queryParameters["code"];
-              if (kDebugMode) {
-                print("code $code");
-              }
-              Navigator.of(context).pop(code);
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(
-        widget.url,
-      ));
-
     super.initState();
   }
 
@@ -86,10 +38,10 @@ class _LoginWebViewState extends State<LoginWebView> {
     return Row(children: [
       Expanded(
           child: Text(
-            widget.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )),
+        widget.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      )),
       GSYCommonOptionWidget(url: widget.url),
     ]);
   }
@@ -109,8 +61,38 @@ class _LoginWebViewState extends State<LoginWebView> {
           TextField(
             focusNode: focusNode,
           ),
-          WebViewWidget(
-            controller: controller,
+          InAppWebView(
+            key: webViewKey,
+            initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+            onWebViewCreated: (controller) {
+              webViewController = controller;
+              webViewController?.loadUrl(
+                  urlRequest: URLRequest(url: Uri.parse(widget.url)));
+            },
+            onLoadStart: (controller, url) {
+              setState(() {
+                isLoading = true;
+              });
+            },
+            onLoadStop: (controller, url) async {
+              setState(() {
+                isLoading = false;
+              });
+              if (url.toString().startsWith("gsygithubapp://authed")) {
+                var code = Uri.parse(url.toString()).queryParameters["code"];
+                if (kDebugMode) {
+                  print("code $code");
+                }
+                Navigator.of(context).pop(code);
+              }
+            },
+            onProgressChanged: (controller, progress) {
+              if (progress == 100) {
+                setState(() {
+                  isLoading = false;
+                });
+              }
+            },
           ),
           if (isLoading)
             Center(
@@ -121,11 +103,9 @@ class _LoginWebViewState extends State<LoginWebView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SpinKitDoubleBounce(
-                        color: Theme.of(context).primaryColor),
+                    SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Text(
-                        GSYLocalizations.i18n(context)!.loading_text,
+                    Text(GSYLocalizations.i18n(context)!.loading_text,
                         style: GSYConstant.middleText),
                   ],
                 ),

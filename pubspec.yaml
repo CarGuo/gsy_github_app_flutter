@@ -37,7 +37,9 @@ dependencies:
   dio: 5.3.1
   #fconsole: 2.2.1
   path_provider: 2.1.0
-  webview_flutter: 4.2.3
+  webview_flutter: 4.8.0
+  # 高版本目前和👆兼容有问题
+  flutter_inappwebview: 5.8.0
   #bezier: ^1.1.5
   flare_flutter:
     git:
