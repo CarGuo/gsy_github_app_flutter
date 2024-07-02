@@ -90,7 +90,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
               GSYLocalizationsDelegate.delegate,
             ],
             supportedLocales: [
-              store.state.locale ?? store.state.platformLocale!
+              store.state.locale ?? store.state.platformLocale ?? const Locale('en', 'US')
             ],
             locale: store.state.locale,
             theme: store.state.themeData,
