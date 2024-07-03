@@ -114,7 +114,7 @@
 
 ### 下载
 
-#### Apk下载链接： [Apk下载链接](https://gitee.com/CarGuo/GSYGithubAppFlutter/releases)
+#### Apk下载链接： [Apk下载链接](https://github.com/CarGuo/gsy_github_app_flutter/releases)
 
 
 | 类型          | 二维码                                      |

@@ -6,7 +6,7 @@ class Address {
   static const String host = "https://api.github.com/";
   static const String hostWeb = "https://github.com/";
   static const String graphicHost = 'https://ghchart.rshah.org/';
-  static const String updateUrl = 'https://gitee.com/CarGuo/GSYGithubAppFlutter/releases';
+  static const String updateUrl = 'https://github.com/CarGuo/gsy_github_app_flutter/releases';
 
   ///获取授权  post
   static getAuthorization() {
