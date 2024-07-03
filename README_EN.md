@@ -72,7 +72,7 @@ With the use and feedback of the project, will user experience and function opti
 
 ### Download
 
-#### Apk Link： [Apk Link](https://www.pgyer.com/guqa)
+#### Apk Link： [Apk Link](https://gitee.com/CarGuo/GSYGithubAppFlutter/releases)
 
 
 | 类型          | 二维码                                      |
