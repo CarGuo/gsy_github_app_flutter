@@ -383,7 +383,7 @@ class CommonUtils {
   static launchOutURL(String? url, BuildContext context) async {
     var gl = GSYLocalizations.i18n(context);
     if (url != null && await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
       Fluttertoast.showToast(
           msg: "${gl!.option_web_launcher_error}: ${url ?? ""}");
@@ -413,8 +413,7 @@ class CommonUtils {
                       children: <Widget>[
                         const SpinKitCubeGrid(color: GSYColors.white),
                         Container(height: 10.0),
-                        Text(
-                            GSYLocalizations.i18n(context)!.loading_text,
+                        Text(GSYLocalizations.i18n(context)!.loading_text,
                             style: GSYConstant.normalTextWhite),
                       ],
                     ),
@@ -516,7 +515,8 @@ class CommonUtils {
                   child: Text(GSYLocalizations.i18n(context)!.app_cancel)),
               TextButton(
                   onPressed: () {
-                    launchUrl(Uri.parse(Address.updateUrl));
+                    launchUrl(Uri.parse(Address.updateUrl),
+                        mode: LaunchMode.externalApplication);
                     Navigator.pop(context);
                   },
                   child: Text(GSYLocalizations.i18n(context)!.app_ok)),

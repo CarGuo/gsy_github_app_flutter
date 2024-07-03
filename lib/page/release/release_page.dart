@@ -24,7 +24,8 @@ class ReleasePage extends StatefulWidget {
   final String releaseUrl;
   final String tagUrl;
 
-  const ReleasePage(this.userName, this.reposName, this.releaseUrl, this.tagUrl, {super.key});
+  const ReleasePage(this.userName, this.reposName, this.releaseUrl, this.tagUrl,
+      {super.key});
 
   @override
   _ReleasePageState createState() => _ReleasePageState();
@@ -65,10 +66,9 @@ class _ReleasePageState extends State<ReleasePage>
     String url = _getUrl();
     var gl = GSYLocalizations.i18n(context);
     if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
-      Fluttertoast.showToast(
-          msg: "${gl!.option_web_launcher_error}: $url");
+      Fluttertoast.showToast(msg: "${gl!.option_web_launcher_error}: $url");
     }
   }
 
