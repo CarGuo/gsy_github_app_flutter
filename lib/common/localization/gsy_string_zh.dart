@@ -295,4 +295,6 @@ class GSYStringZh extends GSYStringBase {
   String search_sort = "排序";
   @override
   String search_language = "语言";
+  @override
+  String feed_back_tip = "你的反馈将通过 github issue 被提交";
 }

@@ -266,4 +266,6 @@ abstract class GSYStringBase {
   String get search_sort;
 
   String get search_language;
+
+  String get feed_back_tip;
 }

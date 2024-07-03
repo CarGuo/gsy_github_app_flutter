@@ -433,6 +433,7 @@ class CommonUtils {
     TextEditingController? titleController,
     TextEditingController? valueController,
     bool needTitle = true,
+    String? hintText,
   }) {
     return NavigatorUtils.showGSYDialog(
         context: context,
@@ -446,6 +447,7 @@ class CommonUtils {
               titleController: titleController,
               valueController: valueController,
               needTitle: needTitle,
+              hintText: hintText,
             ),
           );
         });

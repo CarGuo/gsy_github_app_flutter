@@ -21,10 +21,19 @@ class IssueEditDialog extends StatefulWidget {
   final TextEditingController? valueController;
 
   final bool needTitle;
+  final String? hintText;
 
-  const IssueEditDialog(this.dialogTitle, this.onTitleChanged, this.onContentChanged,
-      this.onPressed,
-      {super.key, this.titleController, this.valueController, this.needTitle = true});
+  const IssueEditDialog(
+    this.dialogTitle,
+    this.onTitleChanged,
+    this.onContentChanged,
+    this.onPressed, {
+    super.key,
+    this.titleController,
+    this.valueController,
+    this.needTitle = true,
+    this.hintText,
+  });
 
   @override
   _IssueEditDialogState createState() => _IssueEditDialogState();
@@ -58,8 +67,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
         itemBuilder: (context, index) {
           return RawMaterialButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding:
-                  const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0, bottom: 5.0),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 5.0, bottom: 5.0),
               constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
               child: Icon(FAST_INPUT_LIST[index].iconData, size: 16.0),
               onPressed: () {
@@ -144,8 +153,9 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                     onChanged: widget.onContentChanged,
                                     controller: widget.valueController,
                                     decoration: InputDecoration(
-                                      hintText: GSYLocalizations.i18n(context)!
-                                          .issue_edit_issue_title_tip,
+                                      hintText: widget.hintText ??
+                                          GSYLocalizations.i18n(context)!
+                                              .issue_edit_issue_title_tip,
                                       hintStyle: GSYConstant.middleSubText,
                                       isDense: true,
                                       border: InputBorder.none,
@@ -193,7 +203,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                           minWidth: 0.0, minHeight: 0.0),
                                       onPressed: widget.onPressed,
                                       child: Text(
-                                          GSYLocalizations.i18n(context)!.app_ok,
+                                          GSYLocalizations.i18n(context)!
+                                              .app_ok,
                                           style: GSYConstant.normalTextBold))),
                             ],
                           )

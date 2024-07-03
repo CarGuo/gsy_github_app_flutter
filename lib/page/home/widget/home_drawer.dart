@@ -29,7 +29,8 @@ class HomeDrawer extends StatelessWidget {
         context: context,
         builder: (BuildContext context) => AboutDialog(
               applicationName: GSYLocalizations.i18n(context)!.app_name,
-              applicationVersion: "${GSYLocalizations.i18n(context)!.app_version}: ${versionName ?? ""}",
+              applicationVersion:
+                  "${GSYLocalizations.i18n(context)!.app_version}: ${versionName ?? ""}",
               applicationIcon: const Image(
                   image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 50.0,
@@ -91,9 +92,8 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {},
                             child: CircleAvatar(
                               //圆形图标控件
-                              backgroundImage: NetworkImage(
-                                  user.avatar_url ??
-                                      GSYICons.DEFAULT_REMOTE_PIC),
+                              backgroundImage: NetworkImage(user.avatar_url ??
+                                  GSYICons.DEFAULT_REMOTE_PIC),
                             ),
                           ),
                           decoration: BoxDecoration(
@@ -102,36 +102,42 @@ class HomeDrawer extends StatelessWidget {
                           ),
                         ),
                         ListTile(
-                            title: Text(
+                          title: Text(
+                            GSYLocalizations.i18n(context)!.home_reply,
+                            style: GSYConstant.normalText,
+                          ),
+                          onTap: () {
+                            String content = "";
+                            CommonUtils.showEditDialog(
+                              context,
                               GSYLocalizations.i18n(context)!.home_reply,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              String content = "";
-                              CommonUtils.showEditDialog(
-                                  context,
-                                  GSYLocalizations.i18n(context)!.home_reply,
-                                  (title) {}, (res) {
+                              (title) {},
+                              (res) {
                                 content = res;
-                              }, () {
+                              },
+                              () {
                                 if (content.isEmpty) {
                                   return;
                                 }
                                 CommonUtils.showLoadingDialog(context);
                                 IssueDao.createIssueDao(
                                     "CarGuo", "gsy_github_app_flutter", {
-                                  "title":
-                                      GSYLocalizations.i18n(context)!.home_reply,
+                                  "title": GSYLocalizations.i18n(context)!
+                                      .home_reply,
                                   "body": content
                                 }).then((result) {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 });
                               },
-                                  titleController: TextEditingController(),
-                                  valueController: TextEditingController(),
-                                  needTitle: false);
-                            }),
+                              titleController: TextEditingController(),
+                              valueController: TextEditingController(),
+                              needTitle: false,
+                              hintText:
+                                  GSYLocalizations.i18n(context)!.feed_back_tip,
+                            );
+                          },
+                        ),
                         ListTile(
                             title: Text(
                               GSYLocalizations.i18n(context)!.home_history,
@@ -176,11 +182,9 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {
                               CommonUtils.showLanguageDialog(context);
                             }),
-
                         ListTile(
                             title: Text(
-                              GSYLocalizations.i18n(context)!
-                                  .home_change_grey,
+                              GSYLocalizations.i18n(context)!.home_change_grey,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -201,7 +205,7 @@ class HomeDrawer extends StatelessWidget {
                                   .home_about,
                               style: GSYConstant.normalText,
                             ),
-                            onLongPress: (){
+                            onLongPress: () {
                               NavigatorUtils.goDebugDataPage(context);
                             },
                             onTap: () {

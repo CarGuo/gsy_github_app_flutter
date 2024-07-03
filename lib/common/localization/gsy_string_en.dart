@@ -293,4 +293,6 @@ class GSYStringEn extends GSYStringBase {
   String search_sort = "sort";
   @override
   String search_language = "language";
+  @override
+  String feed_back_tip = "Your feedback  will be submitted to GitHub through a public issue";
 }
