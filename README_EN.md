@@ -72,7 +72,10 @@ With the use and feedback of the project, will user experience and function opti
 
 ### Download
 
-#### Apk Link： [Apk Link](https://github.com/CarGuo/gsy_github_app_flutter/releases)
+#### Apk Link 1： [Apk Link](https://github.com/CarGuo/gsy_github_app_flutter/releases)
+#### Apk Link 2： [Apk Link](https://www.openapk.net/gsygithubappflutter/com.shuyu.gsygithub.gsygithubappflutter/)
+
+![openapk](https://www.openapk.net/images/openapk-badge.png)
 
 
 | 类型          | 二维码                                      |
