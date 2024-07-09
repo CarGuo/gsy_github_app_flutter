@@ -114,8 +114,9 @@
 
 ### 下载
 
-#### Apk下载链接： [Apk下载链接](https://github.com/CarGuo/gsy_github_app_flutter/releases)
-
+#### Apk下载链接： [Apk下载链接1 ](https://github.com/CarGuo/gsy_github_app_flutter/releases)
+#### Apk下载链接： [Apk下载链接2 ](https://www.openapk.net/gsygithubappflutter/com.shuyu.gsygithub.gsygithubappflutter/)
+![openapk](https://www.openapk.net/images/openapk-badge.png)
 
 | 类型          | 二维码                                      |
 | ----------- | ---------------------------------------- |
