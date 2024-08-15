@@ -213,6 +213,7 @@ class HomeDrawer extends StatelessWidget {
                                 if (kDebugMode) {
                                   print(value);
                                 }
+                                if(!context.mounted)return;
                                 showAboutDialog(context, value.version);
                               });
                             }),

@@ -31,7 +31,6 @@ class PersonPage extends StatefulWidget {
 }
 
 class PersonState extends BasePersonState<PersonPage> {
-
   String beStaredCount = "---";
 
   bool focusStatus = false;
@@ -182,9 +181,9 @@ class PersonState extends BasePersonState<PersonPage> {
           handleRefresh,
           onLoadMore,
           refreshKey: refreshIKey,
-          headerSliverBuilder: (context, _) {
-            return sliverBuilder(
-                context, _, userInfo!, null, beStaredCount, null);
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return sliverBuilder(context, innerBoxIsScrolled, userInfo!, null,
+                beStaredCount, null);
           },
         ));
   }

@@ -186,7 +186,7 @@ class RepositoryDetailFileListPageState
       body: PopScope(
         canPop: ReposDetailModel.of(context).currentIndex != 3 &&
             headerList.length == 1,
-        onPopInvoked: (didPop) {
+        onPopInvokedWithResult: (didPop, _) {
           if (didPop == false) {
             _resolveHeaderClick(headerList.length - 2);
           }

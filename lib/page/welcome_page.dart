@@ -10,7 +10,7 @@ import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/diff_scale_text.dart';
 import 'package:gsy_github_app_flutter/widget/mole_widget.dart';
 import 'package:redux/redux.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 
 /// 欢迎页
 /// Created by guoshuyu
@@ -76,8 +76,7 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Stack(
               children: <Widget>[
                 const Center(
-                  child: Image(
-                      image: AssetImage('static/images/welcome.png')),
+                  child: Image(image: AssetImage('static/images/welcome.png')),
                 ),
                 Align(
                   alignment: const Alignment(0.0, 0.3),
@@ -98,12 +97,13 @@ class _WelcomePageState extends State<WelcomePage> {
                   child: SizedBox(
                     width: size,
                     height: size,
-                    child: RiveAnimation.asset(
+                    child: rive.RiveAnimation.asset(
                       'static/file/launch.riv',
                       animations: const ["lookUp"],
                       onInit: (arb) {
                         var controller =
-                            StateMachineController.fromArtboard(arb, "birb");
+                            rive.StateMachineController.fromArtboard(
+                                arb, "birb");
                         var smi = controller?.findInput<bool>("dance");
                         arb.addController(controller!);
                         smi?.value == true;

@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     ///增加返回按键监听
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         _dialogExitApp(context);
       },
       child: GSYTabBarWidget(

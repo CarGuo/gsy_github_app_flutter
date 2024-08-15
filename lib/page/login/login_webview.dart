@@ -65,23 +65,23 @@ class _LoginWebViewState extends State<LoginWebView> {
           ),
           InAppWebView(
             key: webViewKey,
-            initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+            initialUrlRequest: URLRequest(url: WebUri(widget.url)),
             onWebViewCreated: (controller) {
               webViewController = controller;
               webViewController?.loadUrl(
-                  urlRequest: URLRequest(url: Uri.parse(widget.url)));
+                  urlRequest: URLRequest(url: WebUri(widget.url)));
             },
             onLoadStart: (controller, url) {
               setState(() {
                 isLoading = true;
               });
             },
-            initialOptions: Platform.isIOS
-                ? InAppWebViewGroupOptions(
-                    crossPlatform: InAppWebViewOptions(
-                    useShouldOverrideUrlLoading: true,
-                  ))
-                : null,
+            initialSettings: InAppWebViewSettings(
+              useHybridComposition: true,
+              allowsInlineMediaPlayback: true,
+              mediaPlaybackRequiresUserGesture: true,
+              useShouldOverrideUrlLoading: Platform.isIOS ? true : false,
+            ),
             shouldOverrideUrlLoading: (controller, navigationAction) async {
               var url = navigationAction.request.url!.toString();
               if (url.startsWith("gsygithubapp://authed")) {

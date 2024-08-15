@@ -178,8 +178,8 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                   onLoadMore,
                   refreshKey: refreshIKey,
                   scrollController: scrollController,
-                  headerSliverBuilder: (context, _) {
-                    return _sliverBuilder(context, _);
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return _sliverBuilder(context, innerBoxIsScrolled);
                   },
                 ),
         );

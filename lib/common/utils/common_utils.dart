@@ -195,6 +195,8 @@ class CommonUtils {
 
   static getThemeData(Color color) {
     return ThemeData(
+      useMaterial3: false,
+
       ///用来适配 Theme.of(context).primaryColorLight 和 primaryColorDark 的颜色变化，不设置可能会是默认蓝色
       primarySwatch: color as MaterialColor,
 

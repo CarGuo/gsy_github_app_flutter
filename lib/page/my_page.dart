@@ -154,9 +154,9 @@ class MyPageState extends BasePersonState<MyPage> {
           onLoadMore,
           scrollController: scrollController,
           refreshKey: refreshIKey,
-          headerSliverBuilder: (context, _) {
+          headerSliverBuilder: (context,  innerBoxIsScrolled) {
             return sliverBuilder(
-                context, _, store.state.userInfo!, notifyColor, beStaredCount,
+                context, innerBoxIsScrolled, store.state.userInfo!, notifyColor, beStaredCount,
                 () {
               _refreshNotify();
             });

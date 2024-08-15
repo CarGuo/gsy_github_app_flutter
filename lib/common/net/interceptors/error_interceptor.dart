@@ -10,13 +10,12 @@ const NOT_TIP_KEY = "noTip";
 /// Created by guoshuyu
 /// on 2019/3/23.
 class ErrorInterceptors extends InterceptorsWrapper {
-
-
   @override
   onRequest(RequestOptions options, handler) async {
     //没有网络
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
+    if (connectivityResult.isEmpty ||
+        connectivityResult[0] == ConnectivityResult.none) {
       return handler.reject(DioException(
           requestOptions: options,
           type: DioExceptionType.unknown,

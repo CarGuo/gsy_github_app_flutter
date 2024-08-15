@@ -155,6 +155,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
                       ReposDetailModel.of(context).repository!.isStared)
                   .then((result) {
                 showRefreshLoading();
+                var context = this.context;
+                if(!context.mounted)return;
                 Navigator.pop(context);
               });
             }),
@@ -241,8 +243,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           onLoadMore,
           refreshKey: refreshIKey,
           scrollController: scrollController,
-          headerSliverBuilder: (context, _) {
-            return _sliverBuilder(context, _);
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return _sliverBuilder(context, innerBoxIsScrolled);
           },
         );
       },
