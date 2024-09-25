@@ -320,10 +320,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_inappwebview
-      sha256: "3e9a443a18ecef966fb930c3a76ca5ab6a7aafc0c7b5e14a4a850cf107b09959"
+      sha256: bdfcf87dd49e1bd036781e308cfde61e258749852ba5e337c6128670b4428fda
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "6.0.0"
+    version: "6.1.0+1"
   flutter_inappwebview_android:
     dependency: "direct overridden"
     description:
@@ -345,34 +345,42 @@ packages:
     dependency: transitive
     description:
       name: flutter_inappwebview_ios
-      sha256: f363577208b97b10b319cd0c428555cd8493e88b468019a8c5635a0e4312bd0f
+      sha256: "9b2a9ded585581898692a21e0c501dccab7c6d48b936b9fc1bbdd6d9fe9df3e6"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.13"
+    version: "1.1.0+1"
   flutter_inappwebview_macos:
     dependency: transitive
     description:
       name: flutter_inappwebview_macos
-      sha256: b55b9e506c549ce88e26580351d2c71d54f4825901666bd6cfa4be9415bb2636
+      sha256: "3c08e27e1471834037d5015b55560e42ad44e15502646198a0e64d54bcc3ba26"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.11"
+    version: "1.1.0+1"
   flutter_inappwebview_platform_interface:
     dependency: transitive
     description:
       name: flutter_inappwebview_platform_interface
-      sha256: "545fd4c25a07d2775f7d5af05a979b2cac4fbf79393b0a7f5d33ba39ba4f6187"
+      sha256: "491281ff6c15b205f04e4c11df4af23245a5b2cb1aa70113f6f42a1296836559"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.10"
+    version: "1.1.0"
   flutter_inappwebview_web:
     dependency: transitive
     description:
       name: flutter_inappwebview_web
-      sha256: d8c680abfb6fec71609a700199635d38a744df0febd5544c5a020bd73de8ee07
+      sha256: "926523a83e1a3318ef2798a5b2589b70d568ae1de53f9b011794ea90984859ad"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.8"
+    version: "1.1.0"
+  flutter_inappwebview_windows:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_windows
+      sha256: "2c1c13c32835c4a0afa49aabc207cd5cf80967c00bfdfe49259d082182d7c81f"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -811,10 +819,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_html
-      sha256: "6cac773d389e045a8d4f85418d07ad58ef9e42a56e063629ce14c4c26344de24"
+      sha256: af26edbbb1f2674af65a8f4b56e1a6f526156bc273d0e65dd8075fab51c78851
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.3+2"
   permission_handler_platform_interface:
     dependency: transitive
     description:
@@ -907,18 +915,18 @@ packages:
     dependency: "direct main"
     description:
       name: rive
-      sha256: b45de4f0053e380302a7c37c0e7c7e734127d238eed23a85fe3a4b0b6faa8a5a
+      sha256: daa5394a7d064b4997b39e9afa02f6882c479c38b19fa0dd60f052b99c105400
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.13.12"
+    version: "0.13.13"
   rive_common:
     dependency: transitive
     description:
       name: rive_common
-      sha256: "77311538b149263d34dc29cde4e608953c2d4451233efdb874ea9f08910769ac"
+      sha256: c7bf0781b1621629361579c300ac2f8aa1a238227a242202a596e82becc244d7
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.10"
+    version: "0.4.11"
   rxdart:
     dependency: "direct main"
     description:
@@ -1272,10 +1280,10 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: "97da13628db363c635202ad97068d47c5b8aa555808e7a9411963c533b449b27"
+      sha256: cd3543bd5798f6ad290ea73d210f423502e71900302dde696f8bff84bf89a1cb
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.1"
+    version: "1.1.0"
   web_socket_channel:
     dependency: transitive
     description:
@@ -1358,4 +1366,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.5.0 <4.0.0"
-  flutter: ">=3.22.0"
+  flutter: ">=3.24.0"

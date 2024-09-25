@@ -81,10 +81,13 @@ android {
         jvmTarget = '17'
     }
 
-    ///为了 https://github.com/pichillilorenzo/flutter_inappwebview/issues/2150
+
     configurations.all {
         resolutionStrategy {
+            ///为了 https://github.com/pichillilorenzo/flutter_inappwebview/issues/2150
             force 'androidx.webkit:webkit:1.8.0'
+            ///为了 Failed to transform appcompat-resources-1.7.0.aar
+            //force "androidx.appcompat:appcompat:1.6.1"
         }
     }
 }

@@ -45,7 +45,7 @@ dependencies:
   path_provider: 2.1.4
   webview_flutter: 4.8.0
   # 高版本目前和👆兼容有问题
-  flutter_inappwebview: 6.0.0
+  flutter_inappwebview: 6.1.0+1
   #bezier: ^1.1.5
   flare_flutter:
     git:
@@ -53,7 +53,7 @@ dependencies:
       ref: ab41281006402485ff7326d0c58134f451a0de3a
       path: flare_flutter/
 
-  rive: 0.13.12
+  rive: 0.13.13
   # 固定版本
   flutter_redux: 0.10.0
   rxdart: 0.27.1
