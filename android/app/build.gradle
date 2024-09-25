@@ -85,8 +85,9 @@ android {
     configurations.all {
         resolutionStrategy {
             ///为了 https://github.com/pichillilorenzo/flutter_inappwebview/issues/2150
-            force 'androidx.webkit:webkit:1.8.0'
+            ///force 'androidx.webkit:webkit:1.8.0'
             ///为了 Failed to transform appcompat-resources-1.7.0.aar
+            ///这玩意导致的 Failed to transform appcompat-resources-1.7.0.aar  Cannot invoke "String.length()" because "<parameter1>" is null 居然要升级 AGP 8.6.1  才能适配，有毒
             //force "androidx.appcompat:appcompat:1.6.1"
         }
     }

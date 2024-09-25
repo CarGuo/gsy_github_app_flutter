@@ -20,11 +20,11 @@ dependency_overrides:
   #gql_http_link: 0.3.2
   #http_parser: 4.0.0
   # fix inappwebview R8 issue https://github.com/pichillilorenzo/flutter_inappwebview/issues/2193
-  flutter_inappwebview_android:
-    git:
-      url: https://github.com/holzgeist/flutter_inappwebview
-      path: flutter_inappwebview_android
-      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
+#  flutter_inappwebview_android:
+#    git:
+#      url: https://github.com/holzgeist/flutter_inappwebview
+#      path: flutter_inappwebview_android
+#      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
 
 dependencies:
   flutter:
