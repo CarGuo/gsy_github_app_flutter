@@ -137,7 +137,7 @@ class _DiffText extends CustomPainter {
       textPaint.color = textStyle!.color!;
     } else {
       textPaint.color = textStyle!.color!
-          .withAlpha((textStyle!.color!.alpha * alphaFactor).floor());
+          .withAlpha((textStyle!.color!.a * alphaFactor).floor());
     }
     var textPainter = TextPainter(
         text: TextSpan(

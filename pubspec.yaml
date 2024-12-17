@@ -33,13 +33,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.4
-  fluttertoast: 8.2.8
+  fluttertoast: 8.2.10
   share_plus: 7.1.0
   flutter_spinkit: 5.2.1
   sqflite: 2.3.3+1
   pub_semver: 2.1.4
   flutter_svg: 2.0.7
-  flutter_slidable: 3.1.1
+  flutter_slidable: 3.1.2
   dio: 5.6.0
   #fconsole: 2.2.1
   path_provider: 2.1.4
@@ -50,7 +50,7 @@ dependencies:
   flare_flutter:
     git:
       url: https://gitee.com/CarGuo/Flare-Flutter.git
-      ref: ab41281006402485ff7326d0c58134f451a0de3a
+      ref: d9c4ca55cbea3f283491679847ff1e9b4bc74192
       path: flare_flutter/
 
   rive: 0.13.13

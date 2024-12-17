@@ -59,7 +59,7 @@ class UserDao {
   }
 
   static login(userName, password, store) async {
-    String type = userName + ":" + password;
+    String type = "$userName:$password";
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
     if (Config.DEBUG!) {

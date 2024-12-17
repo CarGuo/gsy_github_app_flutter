@@ -28,7 +28,6 @@ class _NotifyPageState extends State<NotifyPage>
         AutomaticKeepAliveClientMixin<NotifyPage>,
         GSYListState<NotifyPage>,
         SingleTickerProviderStateMixin {
-  late SlidableController slidableController;
 
   int selectIndex = 0;
 
@@ -42,8 +41,8 @@ class _NotifyPageState extends State<NotifyPage>
     ///只有未读消息支持 Slidable 滑动效果
     return Slidable(
       key: ValueKey<String>("${index}_$selectIndex"),
-      controller: slidableController,
       endActionPane: ActionPane(
+        dragDismissible: false,
         motion: const ScrollMotion(),
         dismissible: DismissiblePane(onDismissed: () {
           UserDao.setNotificationAsReadDao(notification.id.toString())
@@ -119,12 +118,6 @@ class _NotifyPageState extends State<NotifyPage>
   @override
   requestRefresh() async {
     return await _getDataLogic();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    slidableController = SlidableController(this);
   }
 
   @override

@@ -23,7 +23,7 @@ class IssueDao {
   /// @param direction 正序或者倒序
   static getRepositoryIssueDao(userName, repository, state,
       {sort, direction, page = 0, needDb = false}) async {
-    String? fullName = userName + "/" + repository;
+    String? fullName = "$userName/$repository";
     String dbState = state ?? "*";
     RepositoryIssueDbProvider provider = RepositoryIssueDbProvider();
 
@@ -101,7 +101,7 @@ class IssueDao {
 
   /// issue的详请
   static getIssueInfoDao(userName, repository, number, {needDb = true}) async {
-    String? fullName = userName + "/" + repository;
+    String? fullName =  "$userName/$repository";
 
     IssueDetailDbProvider provider = IssueDetailDbProvider();
 
@@ -134,7 +134,7 @@ class IssueDao {
   /// issue的详请列表
   static getIssueCommentDao(userName, repository, number,
       {page = 0, needDb = false}) async {
-    String? fullName = userName + "/" + repository;
+    String? fullName =  "$userName/$repository";
     IssueCommentDbProvider provider = IssueCommentDbProvider();
 
     next() async {

@@ -109,7 +109,7 @@ class ReposDao {
   /// 仓库的详情数据
   static getRepositoryDetailDao(userName, reposName, branch,
       {needDb = true}) async {
-    String? fullName = userName + "/" + reposName + "v3";
+    String? fullName = userName + "/$reposName" + "v3";
     RepositoryDetailDbProvider provider = RepositoryDetailDbProvider();
 
     next() async {
@@ -144,7 +144,7 @@ class ReposDao {
   /// 仓库活动事件
   static getRepositoryEventDao(userName, reposName,
       {page = 0, branch = "master", needDb = false}) async {
-    String? fullName = userName + "/" + reposName;
+    String? fullName = userName + "/$reposName";
     RepositoryEventDbProvider provider = RepositoryEventDbProvider();
 
     next() async {
@@ -193,15 +193,14 @@ class ReposDao {
   /// 获取仓库的提交列表
   static getReposCommitsDao(userName, reposName,
       {page = 0, branch = "master", needDb = false}) async {
-    String? fullName = userName + "/" + reposName;
+    String? fullName = userName + "/$reposName";
 
     RepositoryCommitsDbProvider provider = RepositoryCommitsDbProvider();
 
     next() async {
       String url = Address.getReposCommits(userName, reposName) +
           Address.getPageParams("?", page) +
-          "&sha=" +
-          branch;
+          "&sha=$branch";
       var res = await httpManager.netFetch(url, null, null, null);
       if (res != null && res.result) {
         List<RepoCommit> list = [];
@@ -295,7 +294,7 @@ class ReposDao {
   /// 获取当前仓库所有订阅用户
   static getRepositoryWatcherDao(userName, reposName, page,
       {needDb = false}) async {
-    String? fullName = userName + "/" + reposName;
+    String? fullName =  "$userName/$reposName";
     RepositoryWatcherDbProvider provider = RepositoryWatcherDbProvider();
 
     next() async {
@@ -334,7 +333,7 @@ class ReposDao {
   /// 获取当前仓库所有star用户
   static getRepositoryStarDao(userName, reposName, page,
       {needDb = false}) async {
-    String? fullName = userName + "/" + reposName;
+    String? fullName =  "$userName/$reposName";
     RepositoryStarDbProvider provider = RepositoryStarDbProvider();
     next() async {
       String url = Address.getReposStar(userName, reposName) +
@@ -372,7 +371,7 @@ class ReposDao {
   /// 获取仓库的fork分支
   static getRepositoryForksDao(userName, reposName, page,
       {needDb = false}) async {
-    String? fullName = userName + "/" + reposName;
+    String? fullName =  "$userName/$reposName";
     RepositoryForkDbProvider provider = RepositoryForkDbProvider();
     next() async {
       String url = Address.getReposForks(userName, reposName) +
@@ -545,12 +544,12 @@ class ReposDao {
   /// 详情的remde数据
   static getRepositoryDetailReadmeDao(userName, reposName, branch,
       {needDb = true}) async {
-    String? fullName = userName + "/" + reposName;
+    String? fullName = "$userName/$reposName";
     RepositoryDetailReadmeDbProvider provider =
         RepositoryDetailReadmeDbProvider();
 
     next() async {
-      String url = Address.readmeFile(userName + '/' + reposName, branch);
+      String url = Address.readmeFile('$userName/$reposName', branch);
       var res = await httpManager.netFetch(
           url,
           null,

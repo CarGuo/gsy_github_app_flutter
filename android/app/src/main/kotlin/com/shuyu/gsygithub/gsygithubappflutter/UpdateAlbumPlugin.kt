@@ -5,7 +5,6 @@ import android.provider.MediaStore
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
 class UpdateAlbumPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
 
@@ -17,18 +16,11 @@ class UpdateAlbumPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
     companion object {
 
         private val sChannelName = "com.shuyu.gsygithub.gsygithubflutter/UpdateAlbumPlugin"
-
-        fun registerWith(registrar: Registrar) {
-            val instance = UpdateAlbumPlugin()
-            instance.channel = MethodChannel(registrar.messenger(), sChannelName)
-            instance.context = registrar.context()
-            instance.channel?.setMethodCallHandler(instance)
-        }
     }
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(
-                binding.flutterEngine.dartExecutor, sChannelName)
+                binding.binaryMessenger, sChannelName)
         context = binding.applicationContext
         channel!!.setMethodCallHandler(this)
     }
