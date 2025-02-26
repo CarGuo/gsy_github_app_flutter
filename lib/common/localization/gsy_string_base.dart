@@ -69,6 +69,10 @@ abstract class GSYStringBase {
 
   String get home_language_en;
 
+  String get home_language_ko;
+
+  String get home_language_ja;
+
   String get switch_language;
 
   String get home_theme_default;

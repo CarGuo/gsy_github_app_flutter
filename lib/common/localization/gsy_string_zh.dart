@@ -83,6 +83,12 @@ class GSYStringZh extends GSYStringBase {
   String home_language_en = "English";
 
   @override
+  String get home_language_ko => "韩语";
+  
+  @override
+  String get home_language_ja => "日语";
+
+  @override
   String switch_language = "切换语言";
 
   @override

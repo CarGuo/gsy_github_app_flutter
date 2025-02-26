@@ -67,6 +67,10 @@ class AppLocalState extends _$AppLocalState {
         return const Locale('zh', 'CH');
       case 2:
         return const Locale('en', 'US');
+      case 3:
+        return const Locale('ko', 'KR');
+      case 4:
+        return const Locale('ja', 'JP');
       default:
         return WidgetsBinding.instance.platformDispatcher.locale;
     }

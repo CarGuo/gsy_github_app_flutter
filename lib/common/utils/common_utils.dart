@@ -251,11 +251,13 @@ class CommonUtils {
       GSYLocalizations.i18n(ref.context)!.home_language_default,
       GSYLocalizations.i18n(ref.context)!.home_language_zh,
       GSYLocalizations.i18n(ref.context)!.home_language_en,
+      GSYLocalizations.i18n(ref.context)!.home_language_ko,
+      GSYLocalizations.i18n(ref.context)!.home_language_ja,
     ];
     CommonUtils.showCommitOptionDialog(ref.context, list, (index) {
       ref.read(appLocalStateProvider.notifier).changeLocale(index.toString());
       LocalStorage.save(Config.LOCALE, index.toString());
-    }, height: 150.0);
+    }, height: 300.0);
   }
 
   ///获取设备信息

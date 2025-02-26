@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_string_base.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_string_en.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_string_zh.dart';
+import 'package:gsy_github_app_flutter/common/localization/gsy_string_ja.dart';
+import 'package:gsy_github_app_flutter/common/localization/gsy_string_ko.dart';
 
 ///自定义多语言实现
 class GSYLocalizations {
@@ -14,19 +16,18 @@ class GSYLocalizations {
   static final Map<String, GSYStringBase> _localizedValues = {
     'en': GSYStringEn(),
     'zh': GSYStringZh(),
+    'ja': GSYStringJa(),
+    'ko': GSYStringKo(),
   };
 
   GSYStringBase? get currentLocalized {
-    if (_localizedValues.containsKey(locale.languageCode)) {
-      return _localizedValues[locale.languageCode];
-    }
-    return _localizedValues["en"];
+    return _localizedValues[locale.languageCode];
   }
 
   ///通过 Localizations 加载当前的 GSYLocalizations
   ///获取对应的 GSYStringBase
   static GSYLocalizations? of(BuildContext context) {
-    return Localizations.of(context, GSYLocalizations);
+    return Localizations.of<GSYLocalizations>(context, GSYLocalizations);
   }
 
   ///通过 Localizations 加载当前的 GSYLocalizations
