@@ -23,7 +23,7 @@ final appGrepStateProvider =
 );
 
 typedef _$AppGrepState = AutoDisposeNotifier<bool>;
-String _$appLocalStateHash() => r'ec1b33dd1dd98ea2501abeb46e8c36b38e0801e4';
+String _$appLocalStateHash() => r'094022d96deb55273c2bc53466ad2bf5ee8bdce0';
 
 /// 控制 App 语言
 ///
@@ -41,7 +41,7 @@ final appLocalStateProvider =
 );
 
 typedef _$AppLocalState = AutoDisposeNotifier<Locale>;
-String _$appThemeStateHash() => r'fcb0530ded04fc2815b542312964d16558fe9cc9';
+String _$appThemeStateHash() => r'a02ca99fb2b47827f007b77c8d1d371cb171b17e';
 
 /// 控制 App 主题
 ///

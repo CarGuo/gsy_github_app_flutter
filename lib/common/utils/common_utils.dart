@@ -12,7 +12,6 @@ import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
-import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
@@ -181,13 +180,6 @@ class CommonUtils {
       }
     }
     return fullName;
-  }
-
-  static pushTheme(Store store, int index) {
-    ThemeData themeData;
-    List<Color> colors = getThemeListColor();
-    themeData = getThemeData(colors[index]);
-    store.dispatch(RefreshThemeDataAction(themeData));
   }
 
   static getThemeData(Color color) {

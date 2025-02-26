@@ -1,77 +1,73 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_user_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
-import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
-import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 
-class TrendUserPage extends StatefulWidget {
+class TrendUserPage extends ConsumerStatefulWidget {
   const TrendUserPage({super.key});
 
   @override
   _TrendUserPageState createState() => _TrendUserPageState();
 }
 
-class _TrendUserPageState extends State<TrendUserPage>
-    with
-        AutomaticKeepAliveClientMixin<TrendUserPage>,
-        GSYListState<TrendUserPage> {
+class _TrendUserPageState extends ConsumerState<TrendUserPage> {
   String? endCursor;
 
-  _renderItem(index) {
-    if (pullLoadWidgetControl.dataList.isEmpty) {
-      return null;
-    }
-    var data = pullLoadWidgetControl.dataList[index];
+  _renderItem(SearchUserQL data, int index) {
     return UserItem(UserItemViewModel.fromQL(data, index + 1), onPressed: () {
       NavigatorUtils.goPerson(context, data.login);
     });
   }
 
-  _getDataLogic() async {
-    return await UserRepository.searchTrendUserRequest("China", cursor: endCursor,
-        valueChanged: (endCursor) {
-      this.endCursor = endCursor;
-    });
+  Future<void> loadData(WidgetRef ref, {bool isRefresh = false}) async {
+    final result = await ref.read(
+        searchTrendUserRequestProvider("China", cursor: endCursor).future);
+    if (result != null) {
+      var (dataList, cursor) = result;
+      var trendRef = ref.read(trendCNUserListProvider.notifier);
+      if (isRefresh) {
+        trendRef.setList(dataList);
+      } else {
+        trendRef.addList(dataList);
+      }
+      var _ = ref.refresh(trendCNUserListProvider.notifier);
+      endCursor = cursor;
+    }
   }
 
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
   requestRefresh() async {
-    return await _getDataLogic();
+    endCursor = null;
+    await loadData(ref, isRefresh: true);
   }
 
-  @override
   requestLoadMore() async {
-    return await _getDataLogic();
+    await loadData(ref);
   }
-
-  @override
-  bool get isRefreshFirst => true;
-
-  @override
-  bool get needHeader => false;
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    var dataList = ref.watch(trendCNUserListProvider);
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        GSYLocalizations.i18n(context)!.trend_user_title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      )),
-      body: GSYPullLoadWidget(
-        pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderItem(index),
-        handleRefresh,
-        onLoadMore,
-        refreshKey: refreshIndicatorKey,
-      ),
-    );
+        appBar: AppBar(
+            title: Text(
+          GSYLocalizations.i18n(context)!.trend_user_title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        )),
+        body: EasyRefresh(
+          header: const MaterialHeader(),
+          footer: const BezierFooter(),
+          refreshOnStart: true,
+          onRefresh: requestRefresh,
+          onLoad: requestLoadMore,
+          child: ListView.builder(
+            itemBuilder: (_, int index) => _renderItem(dataList[index], index),
+            itemCount: dataList.length,
+          ),
+        ));
   }
 }

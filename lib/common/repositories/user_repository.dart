@@ -106,7 +106,6 @@ class UserRepository {
       store.dispatch(UpdateUserAction(res.data));
     }
 
-
     ///读取主题
     String? themeIndex = await LocalStorage.get(Config.THEME_COLOR);
     ref.read(appThemeStateProvider.notifier).pushTheme(themeIndex);
@@ -355,8 +354,8 @@ class UserRepository {
   /// 更新用户信息
   static updateUserRequest(params, Store store) async {
     String url = Address.getMyUserInfo();
-    var res = await httpManager.netFetch(
-        url, params, null, Options(method: "PATCH"));
+    var res =
+        await httpManager.netFetch(url, params, null, Options(method: "PATCH"));
     if (res != null && res.result) {
       var localResult = await getUserInfoLocal();
       User newUser = User.fromJson(res.data);
@@ -404,8 +403,7 @@ class UserRepository {
     return await next();
   }
 
-  static searchTrendUserRequest(String location,
-      {String? cursor, ValueChanged? valueChanged}) async {
+  static searchTrendUserRequest(String location, {String? cursor}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {
       var endCursor = result.data!["search"]["pageInfo"]["endCursor"];
@@ -413,13 +411,12 @@ class UserRepository {
       if (dataList == null || dataList.length == 0) {
         return DataResult(null, false);
       }
-      var dataResult = [];
-      valueChanged?.call(endCursor);
+      List<SearchUserQL> dataResult = [];
       dataList.forEach((item) {
         var userModel = SearchUserQL.fromMap(item["user"]);
         dataResult.add(userModel);
       });
-      return DataResult(dataResult, true);
+      return DataResult((dataResult, endCursor), true);
     } else {
       return DataResult(null, false);
     }

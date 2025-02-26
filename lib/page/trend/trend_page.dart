@@ -1,25 +1,24 @@
 import 'dart:async';
 
 import 'package:animations/animations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gsy_github_app_flutter/db/provider/repos/trend_repository_db_provider.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/page/trend/trend_bloc.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_provider.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
-import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
-import 'package:redux/redux.dart';
 
 /// 主页趋势tab页
 /// 目前采用纯 bloc 的 rxdart(stream) + streamBuilder
@@ -50,9 +49,6 @@ class TrendPageState extends ConsumerState<TrendPage>
 
   ///滚动控制与监听
   final ScrollController scrollController = ScrollController();
-
-  ///bloc
-  final TrendBloc trendBloc = TrendBloc();
 
   ///显示刷新
   _showRefreshLoading() {
@@ -97,7 +93,7 @@ class TrendPageState extends ConsumerState<TrendPage>
   }
 
   ///绘制头部可选item
-  _renderHeader(Store<GSYState> store, Radius radius) {
+  _renderHeader(Radius radius) {
     if (selectTime == null && selectType == null) {
       return Container();
     }
@@ -116,7 +112,7 @@ class TrendPageState extends ConsumerState<TrendPage>
           children: <Widget>[
             _renderHeaderPopItem(selectTime!.name, trendTimeList,
                 (TrendTypeModel result) {
-              if (trendBloc.isLoading) {
+              if (trendLoadingState) {
                 Fluttertoast.showToast(
                     msg: GSYLocalizations.i18n(context)!.loading_text);
                 return;
@@ -136,7 +132,7 @@ class TrendPageState extends ConsumerState<TrendPage>
             Container(height: 10.0, width: 0.5, color: GSYColors.white),
             _renderHeaderPopItem(selectType!.name, trendTypeList,
                 (TrendTypeModel result) {
-              if (trendBloc.isLoading) {
+              if (trendLoadingState) {
                 Fluttertoast.showToast(
                     msg: GSYLocalizations.i18n(context)!.loading_text);
                 return;
@@ -186,7 +182,9 @@ class TrendPageState extends ConsumerState<TrendPage>
   }
 
   Future<void> requestRefresh() async {
-    return trendBloc.requestRefresh(selectTime, selectType);
+    var query = (selectTime?.value, selectType?.value);
+    var _ = ref.refresh(trendFirstProvider(query));
+    await ref.read(trendFirstProvider(query).future);
   }
 
   @override
@@ -194,7 +192,7 @@ class TrendPageState extends ConsumerState<TrendPage>
 
   @override
   void didChangeDependencies() {
-    if (!trendBloc.requested) {
+    if (!trendRequestedState) {
       setState(() {
         selectTime = trendTime(context)[0];
         selectType = trendType(context)[0];
@@ -247,43 +245,44 @@ class TrendPageState extends ConsumerState<TrendPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return StoreBuilder<GSYState>(
-      builder: (context, store) {
-        return Scaffold(
-          backgroundColor: GSYColors.mainBackgroundColor,
 
-          ///采用目前采用纯 bloc 的 rxdart(stream) + streamBuilder
-          body: StreamBuilder<List<TrendingRepoModel>?>(
-              stream: trendBloc.stream,
-              builder: (context, snapShot) {
-                ///下拉刷新
-                return NestedScrollViewRefreshIndicator(
-                  key: refreshIndicatorKey,
-                  onRefresh: requestRefresh,
+    ///展示非注解的 riverpod 并且配置先后顺序
+    return Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      final firstAsync =
+          ref.watch(trendFirstProvider((selectTime?.value, selectType?.value)));
+      final secondAsync = ref
+          .watch(trendSecondProvider((selectTime?.value, selectType?.value)));
+      var result = secondAsync.value?.data as List<TrendingRepoModel>? ??
+          firstAsync.value?.data as List<TrendingRepoModel>?;
 
-                  ///嵌套滚动
-                  child: NestedScrollView(
-                    controller: scrollController,
+      return Scaffold(
+        backgroundColor: GSYColors.mainBackgroundColor,
+        body: NestedScrollViewRefreshIndicator(
+          key: refreshIndicatorKey,
+          onRefresh: requestRefresh,
+
+          ///嵌套滚动
+          child: NestedScrollView(
+            controller: scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return _sliverBuilder(context, innerBoxIsScrolled);
+            },
+            body: (result == null || result.isEmpty)
+                ? _buildEmpty()
+                : ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    headerSliverBuilder: (context, innerBoxIsScrolled) {
-                      return _sliverBuilder(context, innerBoxIsScrolled, store);
+                    itemBuilder: (context, index) {
+                      return _renderItem(result[index]);
                     },
-                    body: (snapShot.data == null || snapShot.data!.isEmpty)
-                        ? _buildEmpty()
-                        : ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return _renderItem(snapShot.data![index]);
-                            },
-                            itemCount: snapShot.data!.length,
-                          ),
+                    itemCount: result.length,
                   ),
-                );
-              }),
-          floatingActionButton: trendUserButton(),
-        );
-      },
-    );
+          ),
+        ),
+        floatingActionButton: trendUserButton(),
+      );
+    });
   }
 
   trendUserButton() {
@@ -315,8 +314,7 @@ class TrendPageState extends ConsumerState<TrendPage>
   }
 
   ///嵌套可滚动头部
-  List<Widget> _sliverBuilder(
-      BuildContext context, bool innerBoxIsScrolled, Store store) {
+  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
     return <Widget>[
       ///动态头部
       SliverPersistentHeader(
@@ -341,7 +339,7 @@ class TrendPageState extends ConsumerState<TrendPage>
                 child: Padding(
                   padding:
                       EdgeInsets.only(top: lr, bottom: 15, left: lr, right: lr),
-                  child: _renderHeader(store as Store<GSYState>, radius),
+                  child: _renderHeader(radius),
                 ),
               );
             }),

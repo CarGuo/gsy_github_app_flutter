@@ -399,7 +399,7 @@ class NestedScrollViewRefreshIndicatorState
     }
     _positionController.value =
         newValue.clamp(0.0, 1.0); // this triggers various rebuilds
-    if (_mode == _RefreshIndicatorMode.drag && _valueColor.value!.a == 0xFF) {
+    if (_mode == _RefreshIndicatorMode.drag && _valueColor.value!.a == 1.0) {
       _mode = _RefreshIndicatorMode.armed;
     }
   }

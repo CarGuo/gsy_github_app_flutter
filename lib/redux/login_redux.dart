@@ -14,11 +14,16 @@ import 'middleware/epic_store.dart';
 /// 登录相关Redux
 /// Created by guoshuyu
 /// Date: 2018-07-16
+
+/// redux 的 combineReducers, 通过 TypedReducer 将 LoginSuccessAction、 LogoutAction 与 reducers 关联起来
 final LoginReducer = combineReducers<bool?>([
   TypedReducer<bool?, LoginSuccessAction>(_loginResult) ,
   TypedReducer<bool?, LogoutAction>(_logoutResult),
 ]);
 
+/// 如果有 LoginSuccessAction 发起一个请求时
+/// 就会调用到 _loginResult
+/// _loginResult 这里接返回结果的同时进行跳转
 bool? _loginResult(bool? result, LoginSuccessAction action) {
   if (action.success == true) {
     NavigatorUtils.goHome(action.context);
@@ -30,6 +35,8 @@ bool? _logoutResult(bool? result, LogoutAction action) {
   return true;
 }
 
+///定一个 LoginSuccessAction ，用于发起 登陆成功后 的改变
+///类名随你喜欢定义，只要通过上面TypedReducer 绑定就好
 class LoginSuccessAction {
   final BuildContext context;
   final bool success;
@@ -58,6 +65,7 @@ class OAuthAction {
   OAuthAction(this.context, this.code);
 }
 
+///中间过程处理
 class LoginMiddleware implements MiddlewareClass<GSYState> {
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
@@ -72,6 +80,7 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
   }
 }
 
+///中间过程处理
 Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   Stream<dynamic> loginIn(
       LoginAction action, EpicStore<GSYState> store) async* {
@@ -87,6 +96,7 @@ Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
       .switchMap((action) => loginIn(action, store));
 }
 
+///中间过程处理
 Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   Stream<dynamic> loginIn(
       OAuthAction action, EpicStore<GSYState> store) async* {
