@@ -1,13 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/CommonListDataType.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -15,7 +17,6 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:redux/redux.dart';
 
 /// 主页drawer
 /// Created by guoshuyu
@@ -39,7 +40,7 @@ class HomeDrawer extends StatelessWidget {
             ));
   }
 
-  showThemeDialog(BuildContext context, Store store) {
+  showThemeDialog(BuildContext context, WidgetRef ref) {
     StringList list = [
       GSYLocalizations.i18n(context)!.home_theme_default,
       GSYLocalizations.i18n(context)!.home_theme_1,
@@ -50,22 +51,24 @@ class HomeDrawer extends StatelessWidget {
       GSYLocalizations.i18n(context)!.home_theme_6,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
-      CommonUtils.pushTheme(store, index);
+      ref.read(appThemeStateProvider.notifier).pushTheme(index.toString());
       LocalStorage.save(Config.THEME_COLOR, index.toString());
     }, colorList: CommonUtils.getThemeListColor());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: StoreBuilder<GSYState>(
+    return Material(child:
+        Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      var themeData = ref.watch(appThemeStateProvider);
+      return StoreBuilder<GSYState>(
         builder: (context, store) {
           User user = store.state.userInfo!;
           return Drawer(
             ///侧边栏按钮Drawer
             child: Container(
               ///默认背景
-              color: store.state.themeData!.primaryColor,
+              color: themeData.primaryColor,
               child: SingleChildScrollView(
                 ///item 背景
                 child: Container(
@@ -98,7 +101,7 @@ class HomeDrawer extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             //用一个BoxDecoration装饰器提供背景图片
-                            color: store.state.themeData!.primaryColor,
+                            color: themeData.primaryColor,
                           ),
                         ),
                         ListTile(
@@ -120,7 +123,7 @@ class HomeDrawer extends StatelessWidget {
                                   return;
                                 }
                                 CommonUtils.showLoadingDialog(context);
-                                IssueDao.createIssueDao(
+                                IssueRepository.createIssueRequest(
                                     "CarGuo", "gsy_github_app_flutter", {
                                   "title": GSYLocalizations.i18n(context)!
                                       .home_reply,
@@ -171,7 +174,7 @@ class HomeDrawer extends StatelessWidget {
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
-                              showThemeDialog(context, store);
+                              showThemeDialog(context, ref);
                             }),
                         ListTile(
                             title: Text(
@@ -180,7 +183,7 @@ class HomeDrawer extends StatelessWidget {
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
-                              CommonUtils.showLanguageDialog(context);
+                              CommonUtils.showLanguageDialog(ref);
                             }),
                         ListTile(
                             title: Text(
@@ -188,7 +191,9 @@ class HomeDrawer extends StatelessWidget {
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
-                              CommonUtils.changeGrey(store);
+                              ref
+                                  .read(appGrepStateProvider.notifier)
+                                  .changeGrey();
                             }),
                         ListTile(
                             title: Text(
@@ -196,7 +201,7 @@ class HomeDrawer extends StatelessWidget {
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
-                              ReposDao.getNewsVersion(context, true);
+                              ReposRepository.getNewsVersion(context, true);
                             }),
                         ListTile(
                             title: Text(
@@ -213,7 +218,7 @@ class HomeDrawer extends StatelessWidget {
                                 if (kDebugMode) {
                                   print(value);
                                 }
-                                if(!context.mounted)return;
+                                if (!context.mounted) return;
                                 showAboutDialog(context, value.version);
                               });
                             }),
@@ -235,7 +240,7 @@ class HomeDrawer extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
+      );
+    }));
   }
 }

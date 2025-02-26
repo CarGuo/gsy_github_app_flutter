@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
@@ -58,7 +58,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
     if (widget.data != null) {
       return Uri.dataFromString(widget.data!);
     }
-    var res = await ReposDao.getReposFileDirDao(
+    var res = await ReposRepository.getReposFileDirRequest(
         widget.userName, widget.reposName,
         path: widget.path, branch: widget.branch, text: true, isHtml: true);
     if (res != null && res.result) {

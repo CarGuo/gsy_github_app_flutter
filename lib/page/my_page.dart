@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -47,7 +47,7 @@ class MyPageState extends BasePersonState<MyPage> {
 
   ///更新通知图标颜色
   _refreshNotify() {
-    UserDao.getNotifyDao(false, false, 0).then((res) {
+    UserRepository.getNotifyRequest(false, false, 0).then((res) {
       Color newColor;
       if (res != null && res.result && res.data.length > 0) {
         newColor = GSYColors.actionBlue;
@@ -90,16 +90,16 @@ class MyPageState extends BasePersonState<MyPage> {
       return [];
     }
     if (getUserType() == "Organization") {
-      return await UserDao.getMemberDao(_getUserName(), page);
+      return await UserRepository.getMemberRequest(_getUserName(), page);
     }
-    return await EventDao.getEventDao(_getUserName(),
+    return await EventRepository.getEventRequest(_getUserName(),
         page: page, needDb: page <= 1);
   }
 
   @override
   requestRefresh() async {
     if (_getUserName() != null) {
-      /*UserDao.getUserInfo(null).then((res) {
+      /*User.getUserInfo(null).then((res) {
         if (res != null && res.result) {
           _getStore()?.dispatch(UpdateUserAction(res.data));
           //todo getUserOrg(_getUserName());

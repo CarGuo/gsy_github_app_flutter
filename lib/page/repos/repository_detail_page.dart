@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -11,21 +9,23 @@ import 'package:gsy_github_app_flutter/page/repos/repository_detail_issue_list_p
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_readme_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_file_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repostory_detail_info_page.dart';
-import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
+import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
+import 'package:gsy_github_app_flutter/page/repos/provider/repos_network_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_bottom_action_bar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
+import 'package:provider/provider.dart';
 
 /// 仓库详情
 /// Created by guoshuyu
 /// Date: 2018-07-18
 class RepositoryDetailPage extends StatefulWidget {
   ///用户名
-  final String? userName;
+  final String userName;
 
   ///仓库名
-  final String? reposName;
+  final String reposName;
 
   const RepositoryDetailPage(this.userName, this.reposName, {super.key});
 
@@ -55,7 +55,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   late AnimationController animationController;
 
   ///仓库的详情数据实体
-  ReposDetailModel? reposDetailModel;
+  late ReposDetailProvider reposDetailProvider;
 
   ///渲染 Tab 的 Item
   _renderTabItem() {
@@ -108,13 +108,13 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       ///Branch Page
       GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_branch,
           GSYLocalizations.i18n(context)!.repos_option_branch, (model) {
-        if (reposDetailModel!.branchList!.isEmpty) {
+        if (reposDetailProvider.branchList!.isEmpty) {
           return;
         }
         CommonUtils.showCommitOptionDialog(
-            context, reposDetailModel?.branchList, (value) {
-          reposDetailModel!.currentBranch =
-              reposDetailModel!.branchList![value];
+            context, reposDetailProvider.branchList, (value) {
+          reposDetailProvider.currentBranch =
+              reposDetailProvider.branchList![value];
           if (infoListKey.currentState != null &&
               infoListKey.currentState!.mounted) {
             infoListKey.currentState!.showRefreshLoading();
@@ -133,7 +133,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   }
 
   ///创建 issue
-  _createIssue() {
+  _createIssue(ReposDetailProvider provider) {
     String title = "";
     String content = "";
     CommonUtils.showEditDialog(
@@ -157,8 +157,8 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       }
       CommonUtils.showLoadingDialog(context);
       //提交修改
-      IssueDao.createIssueDao(widget.userName, widget.reposName,
-          {"title": title, "body": content}).then((result) {
+      provider
+          .createIssueRequest({"title": title, "body": content}).then((result) {
         if (issueListKey.currentState != null &&
             issueListKey.currentState!.mounted) {
           issueListKey.currentState!.showRefreshLoading();
@@ -178,10 +178,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     super.initState();
 
     ///仓库的详情数据实体
-    reposDetailModel ??= ReposDetailModel(
+    reposDetailProvider = ReposDetailProvider(
         userName: widget.userName, reposName: widget.reposName);
 
-    reposDetailModel!.getBranchList();
+    reposDetailProvider.getBranchList();
 
     ///悬浮按键动画控制器
     animationController = AnimationController(
@@ -192,92 +192,92 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   @override
   Widget build(BuildContext context) {
     ///跨 tab 共享状态
-    return ScopedModel<ReposDetailModel>(
-      model: reposDetailModel!,
-      child: ScopedModelDescendant<ReposDetailModel>(
-        builder: (context, child, model) {
-          Widget widgetContent =
-              (model?.repository != null && model?.repository!.htmlUrl != null)
-                  ? GSYCommonOptionWidget(
-                      url: model?.repository?.htmlUrl,
-                      otherList: _getMoreOtherItem(model?.repository))
-                  : Container();
+    ///这是只是为了展示 Provider 状态管理的 Demo，所以在应用里使用了多种不同的状态管理框架
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ReposNetWorkProvider()),
+        ChangeNotifierProxyProvider<ReposNetWorkProvider, ReposDetailProvider>(
+          update: (context, network, previousMessages) =>
+              previousMessages!..network = network,
+          create: (BuildContext context) => reposDetailProvider,
+        ),
+      ],
+      child: Consumer<ReposDetailProvider>(
+          builder: (BuildContext context, provider, Widget? child) {
+        Widget widgetContent = (provider.repository != null &&
+                provider.repository!.htmlUrl != null)
+            ? GSYCommonOptionWidget(
+                url: provider.repository?.htmlUrl,
+                otherList: _getMoreOtherItem(provider.repository))
+            : Container();
 
-          ///绘制顶部 tab 控件
-          return GSYTabBarWidget(
-            type: TabType.top,
-            tabItems: _renderTabItem(),
-            resizeToAvoidBottomPadding: false,
-            //footerButtons: model.footerButtons,
-            tabViews: [
-              ReposDetailInfoPage(widget.userName, widget.reposName,
-                  key: infoListKey),
-              RepositoryDetailReadmePage(widget.userName, widget.reposName,
-                  key: readmeKey),
-              RepositoryDetailIssuePage(
-                widget.userName,
-                widget.reposName,
-                key: issueListKey,
-              ),
-              RepositoryDetailFileListPage(
-                  widget.userName, widget.reposName,
-                  key: fileListKey),
-            ],
-            backgroundColor: GSYColors.primarySwatch,
-            indicatorColor: GSYColors.white,
-            title: GSYTitleBar(
-              widget.reposName,
-              rightWidget: widgetContent,
+        ///绘制顶部 tab 控件
+        return GSYTabBarWidget(
+          type: TabType.top,
+          tabItems: _renderTabItem(),
+          resizeToAvoidBottomPadding: false,
+          //footerButtons: model.footerButtons,
+          tabViews: [
+            ReposDetailInfoPage(key: infoListKey),
+            RepositoryDetailReadmePage(key: readmeKey),
+            RepositoryDetailIssuePage(
+              key: issueListKey,
             ),
-            onPageChanged: (index) {
-              reposDetailModel!.currentIndex = index;
-            },
+            RepositoryDetailFileListPage(key: fileListKey),
+          ],
+          backgroundColor: GSYColors.primarySwatch,
+          indicatorColor: GSYColors.white,
+          title: GSYTitleBar(
+            widget.reposName,
+            rightWidget: widgetContent,
+          ),
+          onPageChanged: (index) {
+            reposDetailProvider.currentIndex = index;
+          },
 
-            ///悬浮按键，增加出现动画
-            floatingActionButton: ScaleTransition(
-              //scale: CurvedAnimation(parent: animationController, curve: Curves.bounceInOut),
-              scale: CurvedAnimation(
-                  parent: animationController, curve: Curves.decelerate),
-              child: FloatingActionButton(
-                onPressed: () {
-                  if (model?.repository?.hasIssuesEnabled == false) {
-                    Fluttertoast.showToast(
-                        msg: GSYLocalizations.i18n(context)!
-                            .repos_no_support_issue);
-                    return;
-                  }
-                  _createIssue();
-                },
-                backgroundColor: Theme.of(context).primaryColor,
-                child: const Icon(Icons.add),
-              ),
+          ///悬浮按键，增加出现动画
+          floatingActionButton: ScaleTransition(
+            //scale: CurvedAnimation(parent: animationController, curve: Curves.bounceInOut),
+            scale: CurvedAnimation(
+                parent: animationController, curve: Curves.decelerate),
+            child: FloatingActionButton(
+              onPressed: () {
+                if (provider.repository?.hasIssuesEnabled == false) {
+                  Fluttertoast.showToast(
+                      msg: GSYLocalizations.i18n(context)!
+                          .repos_no_support_issue);
+                  return;
+                }
+                _createIssue(provider);
+              },
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(Icons.add),
             ),
+          ),
 
-            ///悬浮按键位置
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.endDocked,
+          ///悬浮按键位置
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
-            ///底部bar，增加对悬浮按键的缺省容器处理
-            bottomBar: GSYBottomAppBar(
-                color: GSYColors.white,
-                fabLocation: FloatingActionButtonLocation.endDocked,
-                shape: const CircularNotchedRectangle(),
-                rowContents: (model?.footerButtons == null)
-                    ? [
-                        SizedBox.fromSize(
-                          size: const Size(0, 0),
-                        )
-                      ]
-                    : model?.footerButtons!.isEmpty == true
-                        ? [
-                            SizedBox.fromSize(
-                              size: const Size(0, 0),
-                            )
-                          ]
-                        : model?.footerButtons),
-          );
-        },
-      ),
+          ///底部bar，增加对悬浮按键的缺省容器处理
+          bottomBar: GSYBottomAppBar(
+              color: GSYColors.white,
+              fabLocation: FloatingActionButtonLocation.endDocked,
+              shape: const CircularNotchedRectangle(),
+              rowContents: (provider.footerButtons == null)
+                  ? [
+                      SizedBox.fromSize(
+                        size: const Size(0, 0),
+                      )
+                    ]
+                  : provider.footerButtons!.isEmpty == true
+                      ? [
+                          SizedBox.fromSize(
+                            size: const Size(0, 0),
+                          )
+                        ]
+                      : provider.footerButtons),
+        );
+      }),
     );
   }
 }

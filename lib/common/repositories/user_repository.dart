@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_followed_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_follower_db_provider.dart';
@@ -8,7 +9,7 @@ import 'package:gsy_github_app_flutter/db/provider/user/userinfo_db_provider.dar
 import 'package:gsy_github_app_flutter/db/provider/user/user_orgs_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
-import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
@@ -16,13 +17,13 @@ import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
-import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:redux/redux.dart';
 
-class UserDao {
+class UserRepository {
   static oauth(code, store) async {
     httpManager.clearAuthorization();
 
@@ -98,27 +99,21 @@ class UserDao {
   }
 
   ///初始化用户信息
-  static initUserInfo(Store<GSYState> store) async {
+  static initUserInfo(Store<GSYState> store, WidgetRef ref) async {
     var token = await LocalStorage.get(Config.TOKEN_KEY);
     var res = await getUserInfoLocal();
     if (res != null && res.result && token != null) {
       store.dispatch(UpdateUserAction(res.data));
     }
 
+
     ///读取主题
     String? themeIndex = await LocalStorage.get(Config.THEME_COLOR);
-    if (themeIndex != null && themeIndex.isNotEmpty) {
-      CommonUtils.pushTheme(store, int.parse(themeIndex));
-    }
+    ref.read(appThemeStateProvider.notifier).pushTheme(themeIndex);
 
     ///切换语言
     String? localeIndex = await LocalStorage.get(Config.LOCALE);
-    if (localeIndex != null && localeIndex.isNotEmpty) {
-      CommonUtils.changeLocale(store, int.parse(localeIndex));
-    } else {
-      CommonUtils.curLocale = store.state.platformLocale;
-      store.dispatch(RefreshLocaleAction(store.state.platformLocale));
-    }
+    ref.read(appLocalStateProvider.notifier).changeLocale(localeIndex);
 
     return DataResult(res.data, (res.result && (token != null)));
   }
@@ -213,7 +208,7 @@ class UserDao {
   }
 
   /// 获取用户粉丝列表
-  static getFollowerListDao(userName, page, {needDb = false}) async {
+  static getFollowerListRequest(userName, page, {needDb = false}) async {
     UserFollowerDbProvider provider = UserFollowerDbProvider();
 
     next() async {
@@ -250,7 +245,7 @@ class UserDao {
   }
 
   /// 获取用户关注列表
-  static getFollowedListDao(userName, page, {needDb = false}) async {
+  static getFollowedListRequest(userName, page, {needDb = false}) async {
     UserFollowedDbProvider provider = UserFollowedDbProvider();
     next() async {
       String url =
@@ -286,7 +281,7 @@ class UserDao {
   }
 
   /// 获取用户相关通知
-  static getNotifyDao(bool all, bool participating, page) async {
+  static getNotifyRequest(bool all, bool participating, page) async {
     String tag = (!all && !participating) ? '?' : "&";
     String url = Address.getNotifation(all, participating) +
         Address.getPageParams(tag, page);
@@ -307,7 +302,7 @@ class UserDao {
   }
 
   /// 设置单个通知已读
-  static setNotificationAsReadDao(id) async {
+  static setNotificationAsReadRequest(id) async {
     String url = Address.setNotificationAsRead(id);
     var res = await httpManager
         .netFetch(url, null, null, Options(method: "PATCH"), noTip: true);
@@ -315,7 +310,7 @@ class UserDao {
   }
 
   /// 设置所有通知已读
-  static setAllNotificationAsReadDao() async {
+  static setAllNotificationAsReadRequest() async {
     String url = Address.setAllNotificationAsRead();
     var res =
         await httpManager.netFetch(url, null, null, Options(method: "PUT"));
@@ -323,14 +318,14 @@ class UserDao {
   }
 
   /// 检查用户关注状态
-  static checkFollowDao(name) async {
+  static checkFollowRequest(name) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(url, null, null, null, noTip: true);
     return DataResult(res!.data, res.result);
   }
 
   /// 关注用户
-  static doFollowDao(name, bool followed) async {
+  static doFollowRequest(name, bool followed) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(
         url, null, null, Options(method: !followed ? "PUT" : "DELETE"),
@@ -339,7 +334,7 @@ class UserDao {
   }
 
   /// 组织成员
-  static getMemberDao(userName, page) async {
+  static getMemberRequest(userName, page) async {
     String url = Address.getMember(userName) + Address.getPageParams("?", page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -358,7 +353,7 @@ class UserDao {
   }
 
   /// 更新用户信息
-  static updateUserDao(params, Store store) async {
+  static updateUserRequest(params, Store store) async {
     String url = Address.getMyUserInfo();
     var res = await httpManager.netFetch(
         url, params, null, Options(method: "PATCH"));
@@ -374,7 +369,7 @@ class UserDao {
   }
 
   /// 获取用户组织
-  static getUserOrgsDao(userName, page, {needDb = false}) async {
+  static getUserOrgsRequest(userName, page, {needDb = false}) async {
     UserOrgsDbProvider provider = UserOrgsDbProvider();
     next() async {
       String url =
@@ -409,7 +404,7 @@ class UserDao {
     return await next();
   }
 
-  static searchTrendUserDao(String location,
+  static searchTrendUserRequest(String location,
       {String? cursor, ValueChanged? valueChanged}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {

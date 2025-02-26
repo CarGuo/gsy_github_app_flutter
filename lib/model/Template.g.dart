@@ -6,13 +6,11 @@ part of 'Template.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Template _$TemplateFromJson(Map<String, dynamic> json) {
-  return Template(
-    json['name'] as String?,
-    json['id'] as int?,
-    json['push_id'] as int?,
-  );
-}
+Template _$TemplateFromJson(Map<String, dynamic> json) => Template(
+      json['name'] as String?,
+      (json['id'] as num?)?.toInt(),
+      (json['push_id'] as num?)?.toInt(),
+    );
 
 Map<String, dynamic> _$TemplateToJson(Template instance) => <String, dynamic>{
       'name': instance.name,

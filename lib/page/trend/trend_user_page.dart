@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
@@ -30,7 +30,7 @@ class _TrendUserPageState extends State<TrendUserPage>
   }
 
   _getDataLogic() async {
-    return await UserDao.searchTrendUserDao("China", cursor: endCursor,
+    return await UserRepository.searchTrendUserRequest("China", cursor: endCursor,
         valueChanged: (endCursor) {
       this.endCursor = endCursor;
     });

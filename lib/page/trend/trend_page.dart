@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:animations/animations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/localization/default_localizations
 import 'package:gsy_github_app_flutter/page/trend/trend_bloc.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -23,14 +25,14 @@ import 'package:redux/redux.dart';
 /// 目前采用纯 bloc 的 rxdart(stream) + streamBuilder
 /// Created by guoshuyu
 /// Date: 2018-07-16
-class TrendPage extends StatefulWidget {
+class TrendPage extends ConsumerStatefulWidget {
   const TrendPage({super.key});
 
   @override
   TrendPageState createState() => TrendPageState();
 }
 
-class TrendPageState extends State<TrendPage>
+class TrendPageState extends ConsumerState<TrendPage>
     with
         AutomaticKeepAliveClientMixin<TrendPage>,
         SingleTickerProviderStateMixin {
@@ -84,7 +86,7 @@ class TrendPageState extends State<TrendPage>
       openBuilder: (BuildContext context, VoidCallback _) {
         return NavigatorUtils.pageContainer(
             RepositoryDetailPage(
-                reposViewModel.ownerName, reposViewModel.repositoryName),
+                reposViewModel.ownerName!, reposViewModel.repositoryName!),
             context);
       },
       tappable: true,
@@ -102,7 +104,7 @@ class TrendPageState extends State<TrendPage>
     var trendTimeList = trendTime(context);
     var trendTypeList = trendType(context);
     return GSYCardItem(
-      color: store.state.themeData!.primaryColor,
+      color: ref.watch(appThemeStateProvider).primaryColor,
       margin: const EdgeInsets.all(0.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(radius),
@@ -166,8 +168,7 @@ class TrendPageState extends State<TrendPage>
         itemBuilder: (BuildContext context) {
           return _renderHeaderPopItemChild(list);
         },
-        child: Center(
-            child: Text(data, style: GSYConstant.middleTextWhite)),
+        child: Center(child: Text(data, style: GSYConstant.middleTextWhite)),
       ),
     );
   }

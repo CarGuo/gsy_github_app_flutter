@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
@@ -39,105 +40,110 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        body: Container(
-          color: Theme.of(context).primaryColor,
-          child: Stack(children: <Widget>[
-            const Positioned.fill(child: AnimatedBackground()),
-            const Positioned.fill(child: ParticlesWidget(30)),
-            Center(
-              ///防止overFlow的现象
-              child: SafeArea(
-                ///同时弹出键盘不遮挡
-                child: SingleChildScrollView(
-                  child: Card(
-                    elevation: 5.0,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    color: GSYColors.cardWhite,
-                    margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Image(
-                              image: AssetImage(GSYICons.DEFAULT_USER_ICON),
-                              width: 90.0,
-                              height: 90.0),
-                          const Padding(padding: EdgeInsets.all(10.0)),
-                          GSYInputWidget(
-                            hintText: GSYLocalizations.i18n(context)!
-                                .login_username_hint_text,
-                            iconData: GSYICons.LOGIN_USER,
-                            onChanged: (String value) {
-                              _userName = value;
-                            },
-                            controller: userController,
-                          ),
-                          const Padding(padding: EdgeInsets.all(10.0)),
-                          GSYInputWidget(
-                            hintText: GSYLocalizations.i18n(context)!
-                                .login_password_hint_text,
-                            iconData: GSYICons.LOGIN_PW,
-                            obscureText: true,
-                            onChanged: (String value) {
-                              _password = value;
-                            },
-                            controller: pwController,
-                          ),
-                          const Padding(padding: EdgeInsets.all(10.0)),
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: GSYFlexButton(
-                                    text: GSYLocalizations.i18n(context)!
-                                        .login_text,
-                                    color: Theme.of(context).primaryColor,
-                                    textColor: GSYColors.textWhite,
-                                    fontSize: 16,
-                                    onPress: loginIn,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: GSYFlexButton(
-                                    text: GSYLocalizations.i18n(context)!
-                                        .oauth_text,
-                                    color: Theme.of(context).primaryColor,
-                                    textColor: GSYColors.textWhite,
-                                    fontSize: 16,
-                                    onPress: oauthLogin,
-                                  ),
-                                ),
-                              ],
+        body: Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+          return Container(
+            color: Theme.of(context).primaryColor,
+            child: Stack(children: <Widget>[
+              const Positioned.fill(child: AnimatedBackground()),
+              const Positioned.fill(child: ParticlesWidget(30)),
+              Center(
+                ///防止overFlow的现象
+                child: SafeArea(
+                  ///同时弹出键盘不遮挡
+                  child: SingleChildScrollView(
+                    child: Card(
+                      elevation: 5.0,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      color: GSYColors.cardWhite,
+                      margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 30.0, top: 40.0, right: 30.0, bottom: 0.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const Image(
+                                image: AssetImage(GSYICons.DEFAULT_USER_ICON),
+                                width: 90.0,
+                                height: 90.0),
+                            const Padding(padding: EdgeInsets.all(10.0)),
+                            GSYInputWidget(
+                              hintText: GSYLocalizations.i18n(context)!
+                                  .login_username_hint_text,
+                              iconData: GSYICons.LOGIN_USER,
+                              onChanged: (String value) {
+                                _userName = value;
+                              },
+                              controller: userController,
                             ),
-                          ),
-                          const Padding(padding: EdgeInsets.all(15.0)),
-                          InkWell(
-                            onTap: () {
-                              CommonUtils.showLanguageDialog(context);
-                            },
-                            child: Text(
-                              GSYLocalizations.i18n(context)!.switch_language,
-                              style: const TextStyle(color: GSYColors.subTextColor),
+                            const Padding(padding: EdgeInsets.all(10.0)),
+                            GSYInputWidget(
+                              hintText: GSYLocalizations.i18n(context)!
+                                  .login_password_hint_text,
+                              iconData: GSYICons.LOGIN_PW,
+                              obscureText: true,
+                              onChanged: (String value) {
+                                _password = value;
+                              },
+                              controller: pwController,
                             ),
-                          ),
-                          const Padding(padding: EdgeInsets.all(15.0)),
-                        ],
+                            const Padding(padding: EdgeInsets.all(10.0)),
+                            SizedBox(
+                              height: 50,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: GSYFlexButton(
+                                      text: GSYLocalizations.i18n(context)!
+                                          .login_text,
+                                      color: Theme.of(context).primaryColor,
+                                      textColor: GSYColors.textWhite,
+                                      fontSize: 16,
+                                      onPress: loginIn,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: GSYFlexButton(
+                                      text: GSYLocalizations.i18n(context)!
+                                          .oauth_text,
+                                      color: Theme.of(context).primaryColor,
+                                      textColor: GSYColors.textWhite,
+                                      fontSize: 16,
+                                      onPress: oauthLogin,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.all(15.0)),
+                            InkWell(
+                              onTap: () {
+                                CommonUtils.showLanguageDialog(ref);
+                              },
+                              child: Text(
+                                GSYLocalizations.i18n(context)!.switch_language,
+                                style: const TextStyle(
+                                    color: GSYColors.subTextColor),
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.all(15.0)),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ]),
-        ),
+              )
+            ]),
+          );
+        }),
       ),
     );
   }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
+import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
@@ -13,17 +11,13 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_input_widget.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
-
+import 'package:provider/provider.dart';
 
 /// 仓库详情issue列表
 /// Created by guoshuyu
 /// Date: 2018-07-19
 class RepositoryDetailIssuePage extends StatefulWidget {
-  final String? userName;
-
-  final String? reposName;
-
-  const RepositoryDetailIssuePage(this.userName, this.reposName, {super.key});
+  const RepositoryDetailIssuePage({super.key});
 
   @override
   RepositoryDetailIssuePageState createState() =>
@@ -61,14 +55,14 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   }
 
   ///绘制issue item
-  _renderIssueItem(index) {
+  _renderIssueItem(index, ReposDetailProvider provider) {
     IssueItemViewModel issueItemViewModel =
         IssueItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
     return IssueItem(
       issueItemViewModel,
       onPressed: () {
-        NavigatorUtils.goIssueDetail(context, widget.userName, widget.reposName,
-            issueItemViewModel.number);
+        NavigatorUtils.goIssueDetail(context, provider.userName,
+            provider.reposName, issueItemViewModel.number);
       },
     );
   }
@@ -100,15 +94,14 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   ///获取数据
   _getDataLogic(String? searchString) async {
     if (searchString == null || searchString.trim().isEmpty) {
-      return await IssueDao.getRepositoryIssueDao(
-          widget.userName, widget.reposName, issueState,
-          page: page, needDb: page <= 1);
+      return await context
+          .read<ReposDetailProvider>()
+          .getRepositoryIssueRequest(issueState, page: page, needDb: page <= 1);
     }
-    return await IssueDao.searchRepositoryIssue(
-        searchString, widget.userName, widget.reposName, issueState,
-        page: page);
+    return await context
+        .read<ReposDetailProvider>()
+        .searchRepositoryRequest(searchString, issueState, page: page);
   }
-
 
   @override
   bool get wantKeepAlive => true;
@@ -132,58 +125,54 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return ScopedModelDescendant<ReposDetailModel>(
-      builder: (context, child, model) {
-        return Scaffold(
-          backgroundColor: GSYColors.mainBackgroundColor,
-          appBar: AppBar(
-            leading: Container(),
-            flexibleSpace: (model?.repository?.hasIssuesEnabled == false)
-                ? Container()
-                : GSYSearchInputWidget(onSubmitted: (value) {
-                    searchText = value;
-                    _resolveSelectIndex();
-                  }, onSubmitPressed: () {
-                    _resolveSelectIndex();
-                  }),
-            elevation: 0.0,
-            backgroundColor: GSYColors.mainBackgroundColor,
-          ),
-          body: (model?.repository?.hasIssuesEnabled == false)
-              ? Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      TextButton(
-                        onPressed: () {},
-                        child: const Image(
-                            image: AssetImage(GSYICons.DEFAULT_USER_ICON),
-                            width: 70.0,
-                            height: 70.0),
-                      ),
-                      Text(
-                          GSYLocalizations.i18n(context)!
-                              .repos_no_support_issue,
-                          style: GSYConstant.normalText),
-                    ],
+    var provider = context.watch<ReposDetailProvider>();
+    return Scaffold(
+      backgroundColor: GSYColors.mainBackgroundColor,
+      appBar: AppBar(
+        leading: Container(),
+        flexibleSpace: (provider.repository?.hasIssuesEnabled == false)
+            ? Container()
+            : GSYSearchInputWidget(onSubmitted: (value) {
+                searchText = value;
+                _resolveSelectIndex();
+              }, onSubmitPressed: () {
+                _resolveSelectIndex();
+              }),
+        elevation: 0.0,
+        backgroundColor: GSYColors.mainBackgroundColor,
+      ),
+      body: (provider.repository?.hasIssuesEnabled == false)
+          ? Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () {},
+                    child: const Image(
+                        image: AssetImage(GSYICons.DEFAULT_USER_ICON),
+                        width: 70.0,
+                        height: 70.0),
                   ),
-                )
+                  Text(GSYLocalizations.i18n(context)!.repos_no_support_issue,
+                      style: GSYConstant.normalText),
+                ],
+              ),
+            )
 
-              ///支持嵌套滚动
-              : GSYNestedPullLoadWidget(
-                  pullLoadWidgetControl,
-                  (BuildContext context, int index) => _renderIssueItem(index),
-                  handleRefresh,
-                  onLoadMore,
-                  refreshKey: refreshIKey,
-                  scrollController: scrollController,
-                  headerSliverBuilder: (context, innerBoxIsScrolled) {
-                    return _sliverBuilder(context, innerBoxIsScrolled);
-                  },
-                ),
-        );
-      },
+          ///支持嵌套滚动
+          : GSYNestedPullLoadWidget(
+              pullLoadWidgetControl,
+              (BuildContext context, int index) =>
+                  _renderIssueItem(index, provider),
+              handleRefresh,
+              onLoadMore,
+              refreshKey: refreshIKey,
+              scrollController: scrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return _sliverBuilder(context, innerBoxIsScrolled);
+              },
+            ),
     );
   }
 

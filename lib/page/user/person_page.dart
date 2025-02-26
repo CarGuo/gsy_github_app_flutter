@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
@@ -62,7 +62,7 @@ class PersonState extends BasePersonState<PersonPage> {
     page = 1;
 
     ///获取网络用户数据
-    var userResult = await UserDao.getUserInfo(widget.userName, needDb: true);
+    var userResult = await UserRepository.getUserInfo(widget.userName, needDb: true);
     if (userResult != null && userResult.result) {
       _resolveUserInfo(userResult);
       if (userResult.next != null) {
@@ -95,7 +95,7 @@ class PersonState extends BasePersonState<PersonPage> {
 
   ///获取当前用户的关注状态
   _getFocusStatus() async {
-    var focusRes = await UserDao.checkFollowDao(widget.userName);
+    var focusRes = await UserRepository.checkFollowRequest(widget.userName);
     if (isShow) {
       setState(() {
         focus = (focusRes != null && focusRes.result)
@@ -117,10 +117,10 @@ class PersonState extends BasePersonState<PersonPage> {
   ///获取用户动态或者组织成员
   _getDataLogic() async {
     if (userInfo!.type == "Organization") {
-      return await UserDao.getMemberDao(_getUserName(), page);
+      return await UserRepository.getMemberRequest(_getUserName(), page);
     }
     getUserOrg(_getUserName());
-    return await EventDao.getEventDao(_getUserName(),
+    return await EventRepository.getEventRequest(_getUserName(),
         page: page, needDb: page <= 1);
   }
 
@@ -169,7 +169,7 @@ class PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               CommonUtils.showLoadingDialog(context);
-              UserDao.doFollowDao(widget.userName, focusStatus).then((res) {
+              UserRepository.doFollowRequest(widget.userName, focusStatus).then((res) {
                 Navigator.pop(context);
                 _getFocusStatus();
               });

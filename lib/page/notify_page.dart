@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -45,7 +45,7 @@ class _NotifyPageState extends State<NotifyPage>
         dragDismissible: false,
         motion: const ScrollMotion(),
         dismissible: DismissiblePane(onDismissed: () {
-          UserDao.setNotificationAsReadDao(notification.id.toString())
+          UserRepository.setNotificationAsReadRequest(notification.id.toString())
               .then((res) {
             showRefreshLoading();
           });
@@ -56,7 +56,7 @@ class _NotifyPageState extends State<NotifyPage>
             backgroundColor: Colors.redAccent,
             icon: Icons.delete,
             onPressed: (c) {
-              UserDao.setNotificationAsReadDao(notification.id.toString())
+              UserRepository.setNotificationAsReadRequest(notification.id.toString())
                   .then((res) {
                 showRefreshLoading();
               });
@@ -74,7 +74,7 @@ class _NotifyPageState extends State<NotifyPage>
         EventViewModel.fromNotify(context, notification);
     return GSYEventItem(eventViewModel, onPressed: () {
       if (notification.unread!) {
-        UserDao.setNotificationAsReadDao(notification.id.toString());
+        UserRepository.setNotificationAsReadRequest(notification.id.toString());
       }
       if (notification.subject!.type == 'Issue') {
         String url = notification.subject!.url!;
@@ -98,7 +98,7 @@ class _NotifyPageState extends State<NotifyPage>
   }
 
   _getDataLogic() async {
-    return await UserDao.getNotifyDao(selectIndex == 2, selectIndex == 1, page);
+    return await UserRepository.getNotifyRequest(selectIndex == 2, selectIndex == 1, page);
   }
 
   @override
@@ -132,7 +132,7 @@ class _NotifyPageState extends State<NotifyPage>
           needRightLocalIcon: true,
           onRightIconPressed: (_) {
             CommonUtils.showLoadingDialog(context);
-            UserDao.setAllNotificationAsReadDao().then((res) {
+            UserRepository.setAllNotificationAsReadRequest().then((res) {
               Navigator.pop(context);
               _resolveSelectIndex();
             });

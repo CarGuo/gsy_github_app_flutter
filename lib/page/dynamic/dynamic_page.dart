@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/page/dynamic/dynamic_bloc.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
@@ -103,7 +103,7 @@ class DynamicPageState extends State<DynamicPage>
     WidgetsBinding.instance.addObserver(this);
 
     ///获取网络端新版信息
-    ReposDao.getNewsVersion(context, false);
+    ReposRepository.getNewsVersion(context, false);
   }
 
   @override

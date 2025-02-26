@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -82,7 +82,7 @@ class _ReleasePageState extends State<ReleasePage>
   }
 
   _getDataLogic() async {
-    return await ReposDao.getRepositoryReleaseDao(
+    return await ReposRepository.getRepositoryReleaseRequest(
         widget.userName, widget.reposName, page,
         needHtml: true, release: selectIndex == 0);
   }

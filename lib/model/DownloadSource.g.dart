@@ -6,14 +6,13 @@ part of 'DownloadSource.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DownloadSource _$DownloadSourceFromJson(Map<String, dynamic> json) {
-  return DownloadSource(
-    json['url'] as String?,
-    json['isSourceCode'] as bool?,
-    json['name'] as String?,
-    json['size'] as int?,
-  );
-}
+DownloadSource _$DownloadSourceFromJson(Map<String, dynamic> json) =>
+    DownloadSource(
+      json['url'] as String?,
+      json['isSourceCode'] as bool?,
+      json['name'] as String?,
+      (json['size'] as num?)?.toInt(),
+    );
 
 Map<String, dynamic> _$DownloadSourceToJson(DownloadSource instance) =>
     <String, dynamic>{

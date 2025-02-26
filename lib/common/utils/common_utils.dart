@@ -3,18 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
-import 'package:gsy_github_app_flutter/redux/grey_redux.dart';
-import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
-import 'package:gsy_github_app_flutter/redux/locale_redux.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/redux/theme_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -249,14 +246,14 @@ class CommonUtils {
     );
   }
 
-  static showLanguageDialog(BuildContext context) {
+  static showLanguageDialog(WidgetRef ref) {
     StringList list = [
-      GSYLocalizations.i18n(context)!.home_language_default,
-      GSYLocalizations.i18n(context)!.home_language_zh,
-      GSYLocalizations.i18n(context)!.home_language_en,
+      GSYLocalizations.i18n(ref.context)!.home_language_default,
+      GSYLocalizations.i18n(ref.context)!.home_language_zh,
+      GSYLocalizations.i18n(ref.context)!.home_language_en,
     ];
-    CommonUtils.showCommitOptionDialog(context, list, (index) {
-      CommonUtils.changeLocale(StoreProvider.of<GSYState>(context), index);
+    CommonUtils.showCommitOptionDialog(ref.context, list, (index) {
+      ref.read(appLocalStateProvider.notifier).changeLocale(index.toString());
       LocalStorage.save(Config.LOCALE, index.toString());
     }, height: 150.0);
   }
@@ -271,36 +268,6 @@ class CommonUtils {
     return iosInfo.model;
   }
 
-  /// 切换语言
-  static changeLocale(Store<GSYState> store, int index) {
-    Locale? locale = store.state.platformLocale;
-    if (Config.DEBUG!) {
-      if (kDebugMode) {
-        print(store.state.platformLocale);
-      }
-    }
-    switch (index) {
-      case 1:
-        locale = const Locale('zh', 'CH');
-        break;
-      case 2:
-        locale = const Locale('en', 'US');
-        break;
-    }
-    curLocale = locale;
-    store.dispatch(RefreshLocaleAction(locale));
-  }
-
-  /// 切换灰色
-  static changeGrey(Store<GSYState> store) {
-    bool grey = store.state.grey;
-    if (Config.DEBUG!) {
-      if (kDebugMode) {
-        print(store.state.grey);
-      }
-    }
-    store.dispatch(RefreshGreyAction(!grey));
-  }
 
   static List<Color> getThemeListColor() {
     return [

@@ -2,15 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/RepoCommit.dart';
-import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
+import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
+import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
@@ -19,16 +18,13 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_header_item.dart';
+import 'package:provider/provider.dart';
 
 /// 仓库详情动态信息页面
 /// Created by guoshuyu
 /// Date: 2018-07-18
 class ReposDetailInfoPage extends StatefulWidget {
-  final String? userName;
-
-  final String? reposName;
-
-  const ReposDetailInfoPage(this.userName, this.reposName, {super.key});
+  const ReposDetailInfoPage({super.key});
 
   @override
   ReposDetailInfoPageState createState() => ReposDetailInfoPageState();
@@ -66,6 +62,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   ///渲染时间Item或者提交Item
   _renderEventItem(index) {
+    var provider = context.read<ReposDetailProvider>();
     var item = pullLoadWidgetControl.dataList[index];
     if (selectIndex == 1 && item is RepoCommit) {
       ///提交
@@ -74,7 +71,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         onPressed: () {
           RepoCommit model = pullLoadWidgetControl.dataList[index];
           NavigatorUtils.goPushDetailPage(
-              context, widget.userName, widget.reposName, model.sha, false);
+              context, provider.userName, provider.reposName, model.sha, false);
         },
         needImage: false,
       );
@@ -83,95 +80,57 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
       onPressed: () {
         EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index],
-            "${widget.userName!}/${widget.reposName!}");
+            "${provider.userName}/${provider.reposName}");
       },
     );
   }
 
   ///获取列表
   _getDataLogic() async {
+    var provider = context.read<ReposDetailProvider>();
     if (selectIndex == 1) {
-      return await ReposDao.getReposCommitsDao(
-        widget.userName,
-        widget.reposName,
+      return await provider.getReposCommitsRequest(
         page: page,
-        branch: ReposDetailModel.of(context).currentBranch,
         needDb: page <= 1,
       );
     }
-    return await ReposDao.getRepositoryEventDao(
-      widget.userName,
-      widget.reposName,
+    return await provider.getRepositoryEventRequest(
       page: page,
-      branch: ReposDetailModel.of(context).currentBranch,
       needDb: page <= 1,
     );
   }
 
   ///获取详情
   _getReposDetail() {
-    ReposDao.getRepositoryDetailDao(widget.userName, widget.reposName,
-            ReposDetailModel.of(context).currentBranch)
-        .then((result) {
-      if (result != null && result.result) {
-        if (result.data.defaultBranch != null &&
-            result.data.defaultBranch.length > 0) {
-          ReposDetailModel.of(context).currentBranch =
-              result.data.defaultBranch;
-        }
-        ReposDetailModel.of(context).repository = result.data;
-        ReposDetailModel.of(context).getReposStatus(_getBottomWidget);
-        if (result.next != null) {
-          return result.next();
-        }
-        return null;
-      }
-      return Future.value(null);
-    }).then((result) {
-      if (result != null && result.result) {
-        if (!isShow) {
-          return;
-        }
-        ReposDetailModel.of(context).repository = result.data;
-        ReposDetailModel.of(context).getReposStatus(_getBottomWidget);
-      }
-    });
+    context
+        .read<ReposDetailProvider>()
+        .getRepositoryDetailRequest(_getBottomWidget);
   }
 
   ///绘制底部状态
-  List<Widget> _getBottomWidget() {
+  List<Widget> _getBottomWidget(ReposDetailProvider provider) {
     ///根据网络返回数据，返回底部状态数据
-    List<Widget> bottomWidget = (ReposDetailModel.of(context).bottomModel ==
-            null)
+    List<Widget> bottomWidget = (provider.bottomModel == null)
         ? []
         : <Widget>[
             /// star
-            _renderBottomItem(ReposDetailModel.of(context).bottomModel!.starText,
-                ReposDetailModel.of(context).bottomModel!.starIcon, () {
+            _renderBottomItem(
+                provider.bottomModel!.starText, provider.bottomModel!.starIcon,
+                () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryStarDao(
-                      widget.userName,
-                      widget.reposName,
-                      ReposDetailModel.of(context).repository!.isStared)
-                  .then((result) {
+              return provider.doRepositoryStarRequest().then((result) {
                 showRefreshLoading();
                 var context = this.context;
-                if(!context.mounted)return;
+                if (!context.mounted) return;
                 Navigator.pop(context);
               });
             }),
 
             /// watch
-            _renderBottomItem(
-                ReposDetailModel.of(context).bottomModel!.watchText,
-                ReposDetailModel.of(context).bottomModel!.watchIcon, () {
+            _renderBottomItem(provider.bottomModel!.watchText,
+                provider.bottomModel!.watchIcon, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.doRepositoryWatchDao(
-                      widget.userName,
-                      widget.reposName,
-                      ReposDetailModel.of(context).repository!.isSubscription ==
-                          "SUBSCRIBED")
-                  .then((result) {
+              return provider.doRepositoryWatchRequest().then((result) {
                 showRefreshLoading();
                 Navigator.pop(context);
               });
@@ -180,8 +139,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             ///fork
             _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
               CommonUtils.showLoadingDialog(context);
-              return ReposDao.createForkDao(widget.userName, widget.reposName)
-                  .then((result) {
+              return provider.createForkRequest().then((result) {
                 showRefreshLoading();
                 Navigator.pop(context);
               });
@@ -234,25 +192,27 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ScopedModelDescendant<ReposDetailModel>(
-      builder: (context, child, model) {
-        return GSYNestedPullLoadWidget(
-          pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(index),
-          handleRefresh,
-          onLoadMore,
-          refreshKey: refreshIKey,
-          scrollController: scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return _sliverBuilder(context, innerBoxIsScrolled);
-          },
-        );
+
+    ///展示 select
+    context.select<ReposDetailProvider, RepositoryQL?>((p) => p.repository);
+
+    return GSYNestedPullLoadWidget(
+      pullLoadWidgetControl,
+      (BuildContext context, int index) => _renderEventItem(index),
+      handleRefresh,
+      onLoadMore,
+      refreshKey: refreshIKey,
+      scrollController: scrollController,
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return _sliverBuilder(
+            context, innerBoxIsScrolled, context.read<ReposDetailProvider>());
       },
     );
   }
 
   ///绘制内置Header，支持部分停靠支持
-  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
+  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled,
+      ReposDetailProvider provider) {
     return <Widget>[
       ///头部信息
       SliverPersistentHeader(
@@ -267,8 +227,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
           child: OverflowBox(
             maxHeight: 1000,
             child: ReposHeaderItem(
-              ReposHeaderViewModel.fromHttpMap(widget.userName, widget.reposName,
-                  ReposDetailModel.of(context).repository),
+              ReposHeaderViewModel.fromHttpMap(
+                  provider.userName, provider.reposName, provider.repository),
               layoutListener: (size) {
                 setState(() {
                   headerSize = size.height;

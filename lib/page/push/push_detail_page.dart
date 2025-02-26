@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/model/PushCommit.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -97,7 +97,7 @@ class _PushDetailPageState extends State<PushDetailPage>
   }
 
   _getDataLogic() async {
-    return await ReposDao.getReposCommitsInfoDao(
+    return await ReposRepository.getReposCommitsInfoRequest(
         widget.userName, widget.reposName, widget.sha);
   }
 

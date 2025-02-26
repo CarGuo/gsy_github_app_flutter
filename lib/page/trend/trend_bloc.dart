@@ -1,4 +1,4 @@
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -24,7 +24,7 @@ class TrendBloc {
   Future<void> requestRefresh(selectTime, selectType) async {
     _isLoading = true;
     //_subject.add([]);
-    var res = await ReposDao.getTrendDao(since: selectTime.value, languageType: selectType.value);
+    var res = await ReposRepository.getTrendRequest(since: selectTime.value, languageType: selectType.value);
     if (res != null && res.result) {
       _subject.add(res.data);
     }

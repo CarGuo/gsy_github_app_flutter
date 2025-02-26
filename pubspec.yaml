@@ -88,9 +88,12 @@ dependencies:
   webview_flutter_wkwebview: any
   string_scanner: any
   meta: any
+  flutter_riverpod: 2.6.1
+  riverpod_annotation: 2.6.1
 dev_dependencies:
+  riverpod_generator: 2.6.1
   built_value_generator: 8.9.2
-  build_runner: ^2.4.12
+  build_runner: ^2.4.14
   json_serializable: 6.8.0
   flutter_lints: 4.0.0
 #  flutter_test:

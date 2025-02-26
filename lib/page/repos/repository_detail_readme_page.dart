@@ -1,24 +1,17 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
+import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
+import 'package:provider/provider.dart';
 
 /// Readme
 /// Created by guoshuyu
 /// Date: 2018-07-18
 
 class RepositoryDetailReadmePage extends StatefulWidget {
-  final String? userName;
-
-  final String? reposName;
-
-  const RepositoryDetailReadmePage(this.userName, this.reposName, {super.key});
+  const RepositoryDetailReadmePage({super.key});
 
   @override
   RepositoryDetailReadmePageState createState() =>
@@ -27,34 +20,13 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
 class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
     with AutomaticKeepAliveClientMixin {
-  bool isShow = false;
-
-  String? markdownData;
 
   RepositoryDetailReadmePageState();
 
+  Future? request;
+
   refreshReadme() {
-    ReposDao.getRepositoryDetailReadmeDao(widget.userName, widget.reposName,
-            ReposDetailModel.of(context).currentBranch)
-        .then((res) {
-      if (res != null && res.result) {
-        if (isShow) {
-          setState(() {
-            markdownData = res.data;
-          });
-          return res.next?.call();
-        }
-      }
-      return Future.value(null);
-    }).then((res) {
-      if (res != null && res.result) {
-        if (isShow) {
-          setState(() {
-            markdownData = res.data;
-          });
-        }
-      }
-    });
+    context.read<ReposDetailProvider>().refreshReadme();
   }
 
   @override
@@ -62,20 +34,21 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
 
   @override
   void initState() {
-    isShow = true;
     super.initState();
     refreshReadme();
   }
 
   @override
   void dispose() {
-    isShow = false;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    ///展示 select
+    var markdownData =
+        context.select<ReposDetailProvider, String?>((p) => p.markdownData);
     var widget = (markdownData == null)
         ? Center(
             child: Container(
@@ -85,11 +58,9 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SpinKitDoubleBounce(
-                      color: Theme.of(context).primaryColor),
+                  SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                   Container(width: 10.0),
-                  Text(
-                      GSYLocalizations.i18n(context)!.loading_text,
+                  Text(GSYLocalizations.i18n(context)!.loading_text,
                       style: GSYConstant.middleText),
                 ],
               ),
@@ -97,8 +68,6 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
           )
         : GSYMarkdownWidget(markdownData: markdownData);
 
-    return ScopedModelDescendant<ReposDetailModel>(
-      builder: (context, child, model) => widget,
-    );
+    return widget;
   }
 }

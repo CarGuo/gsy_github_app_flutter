@@ -21,7 +21,7 @@ import 'package:gsy_github_app_flutter/db/provider/repos/trend_repository_db_pro
 import 'package:gsy_github_app_flutter/db/provider/user/user_repos_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_stared_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/Branch.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/model/FileModel.dart';
@@ -42,12 +42,12 @@ import 'package:pub_semver/pub_semver.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 
-class ReposDao {
+class ReposRepository {
   /// 趋势数据
   /// @param page 分页，趋势数据其实没有分页
   /// @param since 数据时长， 本日，本周，本月
   /// @param languageType 语言
-  static getTrendDao(
+  static getTrendRequest(
       {since = 'daily', languageType, page = 0, needDb = true}) async {
     TrendRepositoryDbProvider provider = TrendRepositoryDbProvider();
     String languageTypeDb = languageType ?? "*";
@@ -107,7 +107,7 @@ class ReposDao {
   }
 
   /// 仓库的详情数据
-  static getRepositoryDetailDao(userName, reposName, branch,
+  static getRepositoryDetailRequest(userName, reposName, branch,
       {needDb = true}) async {
     String? fullName = userName + "/$reposName" + "v3";
     RepositoryDetailDbProvider provider = RepositoryDetailDbProvider();
@@ -123,7 +123,7 @@ class ReposDao {
         if (needDb) {
           provider.insert(fullName, json.encode(data));
         }
-        saveHistoryDao(fullName, DateTime.now(), json.encode(data));
+        saveHistoryRequest(fullName, DateTime.now(), json.encode(data));
         return DataResult(repositoryQL, true);
       } else {
         return DataResult(null, false);
@@ -142,7 +142,7 @@ class ReposDao {
   }
 
   /// 仓库活动事件
-  static getRepositoryEventDao(userName, reposName,
+  static getRepositoryEventRequest(userName, reposName,
       {page = 0, branch = "master", needDb = false}) async {
     String? fullName = userName + "/$reposName";
     RepositoryEventDbProvider provider = RepositoryEventDbProvider();
@@ -181,7 +181,7 @@ class ReposDao {
   }
 
   /// 获取用户对当前仓库的star、watcher状态
-  static getRepositoryStatusDao(userName, reposName) async {
+  static getRepositoryStatusRequest(userName, reposName) async {
     String urls = Address.resolveStarRepos(userName, reposName);
     String urlw = Address.resolveWatcherRepos(userName, reposName);
     var resS = await httpManager.netFetch(urls, null, null, null, noTip: true);
@@ -191,7 +191,7 @@ class ReposDao {
   }
 
   /// 获取仓库的提交列表
-  static getReposCommitsDao(userName, reposName,
+  static getReposCommitsRequest(userName, reposName,
       {page = 0, branch = "master", needDb = false}) async {
     String? fullName = userName + "/$reposName";
 
@@ -233,7 +233,7 @@ class ReposDao {
 
   /// *
   /// 获取仓库的文件列表
-  static getReposFileDirDao(userName, reposName,
+  static getReposFileDirRequest(userName, reposName,
       {path = '', branch, text = false, isHtml = false}) async {
     String url = Address.reposDataDir(userName, reposName, path, branch);
     var res = await httpManager.netFetch(
@@ -273,7 +273,7 @@ class ReposDao {
   }
 
   /// star仓库
-  static Future<DataResult> doRepositoryStarDao(
+  static Future<DataResult> doRepositoryStarRequest(
       userName, reposName, star) async {
     String url = Address.resolveStarRepos(userName, reposName);
     var res = await httpManager.netFetch(
@@ -284,7 +284,7 @@ class ReposDao {
   }
 
   /// watcher仓库
-  static doRepositoryWatchDao(userName, reposName, watch) async {
+  static doRepositoryWatchRequest(userName, reposName, watch) async {
     String url = Address.resolveWatcherRepos(userName, reposName);
     var res = await httpManager.netFetch(
         url, null, null, Options(method: !watch ? 'PUT' : 'DELETE'));
@@ -292,7 +292,7 @@ class ReposDao {
   }
 
   /// 获取当前仓库所有订阅用户
-  static getRepositoryWatcherDao(userName, reposName, page,
+  static getRepositoryWatcherRequest(userName, reposName, page,
       {needDb = false}) async {
     String? fullName =  "$userName/$reposName";
     RepositoryWatcherDbProvider provider = RepositoryWatcherDbProvider();
@@ -331,7 +331,7 @@ class ReposDao {
   }
 
   /// 获取当前仓库所有star用户
-  static getRepositoryStarDao(userName, reposName, page,
+  static getRepositoryStarRequest(userName, reposName, page,
       {needDb = false}) async {
     String? fullName =  "$userName/$reposName";
     RepositoryStarDbProvider provider = RepositoryStarDbProvider();
@@ -369,7 +369,7 @@ class ReposDao {
   }
 
   /// 获取仓库的fork分支
-  static getRepositoryForksDao(userName, reposName, page,
+  static getRepositoryForksRequest(userName, reposName, page,
       {needDb = false}) async {
     String? fullName =  "$userName/$reposName";
     RepositoryForkDbProvider provider = RepositoryForkDbProvider();
@@ -408,7 +408,7 @@ class ReposDao {
   }
 
   /// 获取用户所有star
-  static getStarRepositoryDao(userName, page, sort, {needDb = false}) async {
+  static getStarRepositoryRequest(userName, page, sort, {needDb = false}) async {
     UserStaredDbProvider provider = UserStaredDbProvider();
     next() async {
       String url =
@@ -445,7 +445,7 @@ class ReposDao {
   }
 
   /// 用户的仓库
-  static getUserRepositoryDao(userName, page, sort, {needDb = false}) async {
+  static getUserRepositoryRequest(userName, page, sort, {needDb = false}) async {
     UserReposDbProvider provider = UserReposDbProvider();
     next() async {
       String url =
@@ -482,7 +482,7 @@ class ReposDao {
   }
 
   /// 创建仓库的fork分支
-  static createForkDao(userName, reposName) async {
+  static createForkRequest(userName, reposName) async {
     String url = Address.createFork(userName, reposName);
     var res = await httpManager.netFetch(
         url, null, null, Options(method: "POST"));
@@ -490,7 +490,7 @@ class ReposDao {
   }
 
   /// 获取当前仓库所有分支
-  static getBranchesDao(userName, reposName) async {
+  static getBranchesRequest(userName, reposName) async {
     String url = Address.getbranches(userName, reposName);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
@@ -522,7 +522,7 @@ class ReposDao {
   }
 
   /// 用户的前100仓库
-  static getUserRepository100StatusDao(userName) async {
+  static getUserRepository100StatusRequest(userName) async {
     String url = Address.userRepos(userName, 'pushed') + "&page=1&per_page=100";
     var res = await httpManager.netFetch(url, null, null, null);
     List<Repository> honorList = [];
@@ -542,7 +542,7 @@ class ReposDao {
   }
 
   /// 详情的remde数据
-  static getRepositoryDetailReadmeDao(userName, reposName, branch,
+  static getRepositoryDetailReadmeRequest(userName, reposName, branch,
       {needDb = true}) async {
     String? fullName = "$userName/$reposName";
     RepositoryDetailReadmeDbProvider provider =
@@ -583,7 +583,7 @@ class ReposDao {
   /// @param type 搜索类型，人或者仓库 null \ 'user',
   /// @param page
   /// @param pageSize
-  static searchRepositoryDao(
+  static searchRepositoryRequest(
       q, language, sort, order, type, page, pageSize) async {
     if (language != null) {
       q = q + "%2Blanguage%3A$language";
@@ -623,7 +623,7 @@ class ReposDao {
   }
 
   /// 获取仓库的单个提交详情
-  static getReposCommitsInfoDao(userName, reposName, sha) async {
+  static getReposCommitsInfoRequest(userName, reposName, sha) async {
     String url = Address.getReposCommitsInfo(userName, reposName, sha);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -635,7 +635,7 @@ class ReposDao {
   }
 
   /// 获取仓库的release列表
-  static getRepositoryReleaseDao(userName, reposName, page,
+  static getRepositoryReleaseRequest(userName, reposName, page,
       {needHtml = true, release = true}) async {
     String url = release
         ? Address.getReposRelease(userName, reposName) +
@@ -673,7 +673,7 @@ class ReposDao {
     if (Platform.isIOS) {
       return;
     }
-    var res = await getRepositoryReleaseDao("CarGuo", 'gsy_github_app_flutter', 1,
+    var res = await getRepositoryReleaseRequest("CarGuo", 'gsy_github_app_flutter', 1,
         needHtml: false);
     if (res != null && res.result && res.data.length > 0) {
       Release release = res.data[0];
@@ -720,7 +720,7 @@ class ReposDao {
   }
 
   /// 获取issue总数
-  static getRepositoryIssueStatusDao(userName, repository) async {
+  static getRepositoryIssueStatusRequest(userName, repository) async {
     String url = Address.getReposIssue(userName, repository, null, null, null) +
         "&per_page=1";
     var res = await httpManager.netFetch(url, null, null, null);
@@ -746,7 +746,7 @@ class ReposDao {
   }
 
   /// 搜索话题
-  static searchTopicRepositoryDao(searchTopic, {page = 0}) async {
+  static searchTopicRepositoryRequest(searchTopic, {page = 0}) async {
     String url =
         Address.searchTopic(searchTopic) + Address.getPageParams("&", page);
     var res = await httpManager.netFetch(url, null, null, null);
@@ -770,7 +770,7 @@ class ReposDao {
   }
 
   /// 获取阅读历史
-  static getHistoryDao(page) async {
+  static getHistoryRequest(page) async {
     ReadHistoryDbProvider provider = ReadHistoryDbProvider();
     List<RepositoryQL?>? list = await provider.geData(page);
     if (list == null || list.isEmpty) {
@@ -780,7 +780,7 @@ class ReposDao {
   }
 
   /// 保存阅读历史
-  static saveHistoryDao(String? fullName, DateTime dateTime, String data) {
+  static saveHistoryRequest(String? fullName, DateTime dateTime, String data) {
     ReadHistoryDbProvider provider = ReadHistoryDbProvider();
     provider.insert(fullName, dateTime, data);
   }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/Issue.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -123,14 +123,14 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     if (page <= 1) {
       _getHeaderInfo();
     }
-    return await IssueDao.getIssueCommentDao(
+    return await IssueRepository.getIssueCommentRequest(
         widget.userName, widget.reposName, widget.issueNum,
         page: page, needDb: page <= 1);
   }
 
   ///获取头部数据
   _getHeaderInfo() {
-    IssueDao.getIssueInfoDao(widget.userName, widget.reposName, widget.issueNum)
+    IssueRepository.getIssueInfoRequest(widget.userName, widget.reposName, widget.issueNum)
         .then((res) {
       if (res != null && res.result) {
         _resolveHeaderInfo(res);
@@ -176,7 +176,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         }
         CommonUtils.showLoadingDialog(context);
         //提交修改
-        IssueDao.editCommentDao(widget.userName, widget.reposName,
+        IssueRepository.editCommentRequest(widget.userName, widget.reposName,
             widget.issueNum, id, {"body": contentData}).then((result) {
           showRefreshLoading();
           Navigator.pop(context);
@@ -193,7 +193,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     Navigator.pop(context);
     CommonUtils.showLoadingDialog(context);
     //提交修改
-    IssueDao.deleteCommentDao(
+    IssueRepository.deleteCommentRequest(
             widget.userName, widget.reposName, widget.issueNum, id)
         .then((result) {
       Navigator.pop(context);
@@ -232,7 +232,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         }
         CommonUtils.showLoadingDialog(context);
         //提交修改
-        IssueDao.editIssueDao(widget.userName, widget.reposName,
+        IssueRepository.editIssueRequest(widget.userName, widget.reposName,
             widget.issueNum, {"title": title, "body": content}).then((result) {
           _getHeaderInfo();
           Navigator.pop(context);
@@ -267,7 +267,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         }
         CommonUtils.showLoadingDialog(context);
         //提交评论
-        IssueDao.addIssueCommentDao(
+        IssueRepository.addIssueCommentRequest(
                 widget.userName, widget.reposName, widget.issueNum, content)
             .then((result) {
           showRefreshLoading();
@@ -314,7 +314,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                 TextButton(
                     onPressed: () {
                       CommonUtils.showLoadingDialog(context);
-                      IssueDao.editIssueDao(
+                      IssueRepository.editIssueRequest(
                           widget.userName, widget.reposName, widget.issueNum, {
                         "state": (issueHeaderViewModel.state == "closed")
                             ? 'open'
@@ -336,7 +336,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                 TextButton(
                     onPressed: () {
                       CommonUtils.showLoadingDialog(context);
-                      IssueDao.lockIssueDao(widget.userName, widget.reposName,
+                      IssueRepository.lockIssueRequest(widget.userName, widget.reposName,
                               widget.issueNum, issueHeaderViewModel.locked)
                           .then((result) {
                         _getHeaderInfo();

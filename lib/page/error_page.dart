@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/dao/issue_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -99,7 +99,7 @@ class ErrorPageState extends State<ErrorPage> {
                           return;
                         }
                         CommonUtils.showLoadingDialog(context);
-                        IssueDao.createIssueDao(
+                        IssueRepository.createIssueRequest(
                             "CarGuo", "gsy_github_app_flutter", {
                           "title": GSYLocalizations.i18n(context)!.home_reply,
                           "body": content

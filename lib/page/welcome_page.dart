@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerState, ConsumerStatefulWidget;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -16,7 +18,7 @@ import 'package:rive/rive.dart' as rive;
 /// Created by guoshuyu
 /// Date: 2018-07-16
 
-class WelcomePage extends StatefulWidget {
+class WelcomePage extends ConsumerStatefulWidget {
   static const String sName = "/";
 
   const WelcomePage({super.key});
@@ -25,7 +27,7 @@ class WelcomePage extends StatefulWidget {
   _WelcomePageState createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends ConsumerState<WelcomePage> {
   bool hadInit = false;
 
   String text = "";
@@ -54,7 +56,7 @@ class _WelcomePageState extends State<WelcomePage> {
       });
     });
     Future.delayed(const Duration(seconds: 3, milliseconds: 500), () {
-      UserDao.initUserInfo(store).then((res) {
+      UserRepository.initUserInfo(store, ref).then((res) {
         if (res != null && res.result) {
           NavigatorUtils.goHome(context);
         } else {

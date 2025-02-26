@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_drawer.dart';
 
 class SearchBLoC {
@@ -27,7 +27,7 @@ class SearchBLoC {
 
   ///获取搜索数据
   getDataLogic(int page) async {
-    return await ReposDao.searchRepositoryDao(searchText, language, type, sort,
+    return await ReposRepository.searchRepositoryRequest(searchText, language, type, sort,
         selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
   }
 

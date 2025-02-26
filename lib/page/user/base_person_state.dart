@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
@@ -72,7 +72,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   @protected
   getUserOrg(String? userName) {
     if (page <= 1 && userName != null) {
-      UserDao.getUserOrgsDao(userName, page, needDb: true).then((res) {
+      UserRepository.getUserOrgsRequest(userName, page, needDb: true).then((res) {
         if (res != null && res.result) {
           setState(() {
             orgList.clear();
@@ -148,6 +148,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
                   padding: const EdgeInsets.only(bottom: 10, left: 0, right: 0),
 
                   /// MultiProvider 共享 HonorModel 状态
+                  /// 这里是为了简单 Demo 展示 Provider 的使用，而多加入出来的一种状态管理框架
                   child: MultiProvider(
                     providers: [
                       ChangeNotifierProvider(create: (_) => honorModel),
@@ -193,7 +194,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
 
   ///获取用户仓库前100个star统计数据
   getHonor(name) {
-    ReposDao.getUserRepository100StatusDao(name).then((res) {
+    ReposRepository.getUserRepository100StatusRequest(name).then((res) {
       if (res != null && res.result) {
         if (isShow) {
           ///提交到  Provider  HonorMode

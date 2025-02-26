@@ -1,7 +1,7 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:redux/redux.dart';
@@ -59,7 +59,7 @@ Stream<dynamic> userInfoEpic(
     if (kDebugMode) {
       print("*********** userInfoEpic _loadUserInfo ***********");
     }
-    var res = await UserDao.getUserInfo(null);
+    var res = await UserRepository.getUserInfo(null);
     yield UpdateUserAction(res.data);
   }
 

@@ -92,7 +92,7 @@ class NavigatorUtils {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              RepositoryDetailPage(userName, reposName),
+              RepositoryDetailPage(userName!, reposName!),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             double begin = 0;
             double end = 1;

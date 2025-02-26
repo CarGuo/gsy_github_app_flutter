@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -20,7 +20,7 @@ class SqlManager {
   static init() async {
     // open the database
     var databasesPath = await getDatabasesPath();
-    var userRes = await UserDao.getUserInfoLocal();
+    var userRes = await UserRepository.getUserInfoLocal();
     String dbName = _NAME;
     if (userRes != null && userRes.result) {
       User? user = userRes.data;

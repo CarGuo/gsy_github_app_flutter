@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
@@ -67,7 +67,7 @@ class _UserProfileState extends State<UserProfileInfo> {
       }
       CommonUtils.showLoadingDialog(context);
 
-      UserDao.updateUserDao({key: content}, store).then((res) {
+      UserRepository.updateUserRequest({key: content}, store).then((res) {
         Navigator.of(context).pop();
         if (res != null && res.result) {
           Navigator.of(context).pop();

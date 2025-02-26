@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/scoped_model/scoped_model.dart';
 import 'package:gsy_github_app_flutter/model/FileModel.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/page/repos/scope/repos_detail_model.dart';
+import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
+import 'package:provider/provider.dart';
 
 /// 仓库文件列表
 /// Created by guoshuyu
 /// on 2018/7/20.
 
 class RepositoryDetailFileListPage extends StatefulWidget {
-  final String? userName;
-
-  final String? reposName;
-
-  const RepositoryDetailFileListPage(this.userName, this.reposName,
-      {super.key});
+  const RepositoryDetailFileListPage({super.key});
 
   @override
   RepositoryDetailFileListPageState createState() =>
@@ -115,6 +109,7 @@ class RepositoryDetailFileListPageState
 
   ///item文件列表点击
   _resolveItemClick(FileItemViewModel fileItemViewModel) {
+    var provider = context.read<ReposDetailProvider>();
     if (fileItemViewModel.type == "dir") {
       if (isLoading) {
         Fluttertoast.showToast(
@@ -139,18 +134,19 @@ class RepositoryDetailFileListPageState
         NavigatorUtils.gotoCodeDetailPlatform(
           context,
           title: fileItemViewModel.name,
-          reposName: widget.reposName,
-          userName: widget.userName,
+          reposName: provider.reposName,
+          userName: provider.userName,
           path: path,
-          branch: ReposDetailModel.of(context).currentBranch,
+          branch: context.read<ReposDetailProvider>().currentBranch,
         );
       }
     }
   }
 
   _getDataLogic(String? searchString) async {
-    return await ReposDao.getReposFileDirDao(widget.userName, widget.reposName,
-        path: path, branch: ReposDetailModel.of(context).currentBranch);
+    return await context
+        .read<ReposDetailProvider>()
+        .getReposFileDirRequest(path: path);
   }
 
   @override
@@ -175,6 +171,7 @@ class RepositoryDetailFileListPageState
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
+    var proivder = context.watch<ReposDetailProvider>();
     return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
       appBar: AppBar(
@@ -184,23 +181,18 @@ class RepositoryDetailFileListPageState
         elevation: 0.0,
       ),
       body: PopScope(
-        canPop: ReposDetailModel.of(context).currentIndex != 3 &&
-            headerList.length == 1,
+        canPop: proivder.currentIndex != 3 && headerList.length == 1,
         onPopInvokedWithResult: (didPop, _) {
           if (didPop == false) {
             _resolveHeaderClick(headerList.length - 2);
           }
         },
-        child: ScopedModelDescendant<ReposDetailModel>(
-          builder: (context, child, model) {
-            return GSYPullLoadWidget(
-              pullLoadWidgetControl,
-              (BuildContext context, int index) => _renderEventItem(index),
-              handleRefresh,
-              onLoadMore,
-              refreshKey: refreshIndicatorKey,
-            );
-          },
+        child: GSYPullLoadWidget(
+          pullLoadWidgetControl,
+          (BuildContext context, int index) => _renderEventItem(index),
+          handleRefresh,
+          onLoadMore,
+          refreshKey: refreshIndicatorKey,
         ),
       ),
     );

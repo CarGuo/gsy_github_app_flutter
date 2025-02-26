@@ -1,5 +1,5 @@
 import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/dao/event_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 
 /// Created by guoshuyu
@@ -13,7 +13,7 @@ class DynamicBloc {
   requestRefresh(String? userName, {doNextFlag = true}) async {
     pageReset();
     var res =
-        await EventDao.getEventReceived(userName, page: _page, needDb: true);
+        await EventRepository.getEventReceived(userName, page: _page, needDb: true);
     changeLoadMoreStatus(getLoadMoreStatus(res));
     refreshData(res);
     if (doNextFlag) {
@@ -24,7 +24,7 @@ class DynamicBloc {
 
   requestLoadMore(String? userName) async {
     pageUp();
-    var res = await EventDao.getEventReceived(userName, page: _page);
+    var res = await EventRepository.getEventReceived(userName, page: _page);
     changeLoadMoreStatus(getLoadMoreStatus(res));
     loadMoreData(res);
     return res;

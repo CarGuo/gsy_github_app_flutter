@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:gsy_github_app_flutter/db/provider/event/received_event_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/event/user_event_db_provider.dart';
-import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 
-class EventDao {
+class EventRepository {
   static getEventReceived(String? userName,
       {page = 1, bool needDb = false}) async {
     if (userName == null) {
@@ -50,7 +50,7 @@ class EventDao {
   }
 
   /// 用户行为事件
-  static getEventDao(userName, {page = 0, bool needDb = false}) async {
+  static getEventRequest(userName, {page = 0, bool needDb = false}) async {
     UserEventDbProvider provider = UserEventDbProvider();
     next() async {
       String url =

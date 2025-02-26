@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: no_leading_underscores_for_local_identifiers
-
 part of 'Branch.dart';
 
 // **************************************************************************
@@ -52,21 +50,21 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
-      final key = iterator.current as String;
+      final key = iterator.current! as String;
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
         case 'name':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'tarball_url':
           result.tarballUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'zipball_url':
           result.zipballUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -84,7 +82,7 @@ class _$Branch extends Branch {
   final String? zipballUrl;
 
   factory _$Branch([void Function(BranchBuilder)? updates]) =>
-      (new BranchBuilder()..update(updates)).build();
+      (new BranchBuilder()..update(updates))._build();
 
   _$Branch._({this.name, this.tarballUrl, this.zipballUrl}) : super._();
 
@@ -106,13 +104,17 @@ class _$Branch extends Branch {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc(0, name.hashCode), tarballUrl.hashCode), zipballUrl.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, tarballUrl.hashCode);
+    _$hash = $jc(_$hash, zipballUrl.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Branch')
+    return (newBuiltValueToStringHelper(r'Branch')
           ..add('name', name)
           ..add('tarballUrl', tarballUrl)
           ..add('zipballUrl', zipballUrl))
@@ -160,7 +162,9 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
   }
 
   @override
-  _$Branch build() {
+  Branch build() => _build();
+
+  _$Branch _build() {
     final _$result = _$v ??
         new _$Branch._(
             name: name, tarballUrl: tarballUrl, zipballUrl: zipballUrl);
@@ -169,4 +173,4 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

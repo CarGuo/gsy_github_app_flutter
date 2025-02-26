@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/db/sql_manager.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -62,7 +62,7 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
     if (action is LogoutAction) {
-      UserDao.clearAll(store);
+      UserRepository.clearAll(store);
       WebViewCookieManager().clearCookies();
       SqlManager.close();
       NavigatorUtils.goLogin(action.context);
@@ -77,7 +77,7 @@ Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
       LoginAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
     var nv = Navigator.of(action.context);
-    var res = await UserDao.login(
+    var res = await UserRepository.login(
         action.username!.trim(), action.password!.trim(), store);
     nv.pop(action);
     yield LoginSuccessAction(action.context, (res != null && res.result));
@@ -91,7 +91,7 @@ Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   Stream<dynamic> loginIn(
       OAuthAction action, EpicStore<GSYState> store) async* {
     CommonUtils.showLoadingDialog(action.context);
-    var res = await UserDao.oauth(action.code, store);
+    var res = await UserRepository.oauth(action.code, store);
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
-import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
+import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/CommonListDataType.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
@@ -73,32 +73,32 @@ class _CommonListPageState extends State<CommonListPage>
 
   _getDataLogic() async {
     return switch (widget.dataType) {
-      CommonListDataType.follower => await UserDao.getFollowerListDao(
+      CommonListDataType.follower => await UserRepository.getFollowerListRequest(
           widget.userName, page,
           needDb: page <= 1),
-      CommonListDataType.followed => await UserDao.getFollowedListDao(
+      CommonListDataType.followed => await UserRepository.getFollowedListRequest(
           widget.userName, page,
           needDb: page <= 1),
-      CommonListDataType.userRepos => await ReposDao.getUserRepositoryDao(
+      CommonListDataType.userRepos => await ReposRepository.getUserRepositoryRequest(
           widget.userName, page, null,
           needDb: page <= 1),
-      CommonListDataType.userStar => await ReposDao.getStarRepositoryDao(
+      CommonListDataType.userStar => await ReposRepository.getStarRepositoryRequest(
           widget.userName, page, null,
           needDb: page <= 1),
-      CommonListDataType.repoStar => await ReposDao.getRepositoryStarDao(
+      CommonListDataType.repoStar => await ReposRepository.getRepositoryStarRequest(
           widget.userName, widget.reposName, page,
           needDb: page <= 1),
-      CommonListDataType.repoWatcher => await ReposDao.getRepositoryWatcherDao(
+      CommonListDataType.repoWatcher => await ReposRepository.getRepositoryWatcherRequest(
           widget.userName, widget.reposName, page,
           needDb: page <= 1),
-      CommonListDataType.repoFork => await ReposDao.getRepositoryForksDao(
+      CommonListDataType.repoFork => await ReposRepository.getRepositoryForksRequest(
           widget.userName, widget.reposName, page,
           needDb: page <= 1),
-      CommonListDataType.history => await ReposDao.getHistoryDao(page),
+      CommonListDataType.history => await ReposRepository.getHistoryRequest(page),
       CommonListDataType.topics =>
-        await ReposDao.searchTopicRepositoryDao(widget.userName, page: page),
+        await ReposRepository.searchTopicRepositoryRequest(widget.userName, page: page),
       CommonListDataType.userOrgs =>
-        await UserDao.getUserOrgsDao(widget.userName, page, needDb: page <= 1),
+        await UserRepository.getUserOrgsRequest(widget.userName, page, needDb: page <= 1),
       _ => null,
     };
   }
