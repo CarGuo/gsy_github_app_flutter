@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
+import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -14,6 +17,7 @@ import 'package:redux/redux.dart';
 /// Date: 2018-07-16
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
+
   @override
   MyPageState createState() => MyPageState();
 }
@@ -114,7 +118,7 @@ class MyPageState extends BasePersonState<MyPage> {
       getUserOrg(_getUserName());
 
       ///获取用户仓库前100个star统计数据
-      getHonor(_getUserName());
+      getHonor(globalContainer, _getUserName());
       _refreshNotify();
     }
     return await _getDataLogic();
@@ -142,27 +146,35 @@ class MyPageState extends BasePersonState<MyPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    return StoreBuilder<GSYState>(
-      builder: (context, store) {
-        return GSYNestedPullLoadWidget(
-          pullLoadWidgetControl,
-          (BuildContext context, int index) => renderItem(
-              index, store.state.userInfo!, beStaredCount, notifyColor, () {
-            _refreshNotify();
-          }, orgList),
-          handleRefresh,
-          onLoadMore,
-          scrollController: scrollController,
-          refreshKey: refreshIKey,
-          headerSliverBuilder: (context,  innerBoxIsScrolled) {
-            return sliverBuilder(
-                context, innerBoxIsScrolled, store.state.userInfo!, notifyColor, beStaredCount,
-                () {
+    return Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      var result = ref.watch(fetchHonorDataProvider(_getUserName()));
+      return StoreBuilder<GSYState>(
+        builder: (context, store) {
+          return GSYNestedPullLoadWidget(
+            pullLoadWidgetControl,
+            (BuildContext context, int index) => renderItem(
+                index, store.state.userInfo!, beStaredCount, notifyColor, () {
               _refreshNotify();
-            });
-          },
-        );
-      },
-    );
+            }, orgList),
+            handleRefresh,
+            onLoadMore,
+            scrollController: scrollController,
+            refreshKey: refreshIKey,
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return sliverBuilder(
+                  context,
+                  innerBoxIsScrolled,
+                  store.state.userInfo!,
+                  notifyColor,
+                  beStaredCount,
+                  result.value, () {
+                _refreshNotify();
+              });
+            },
+          );
+        },
+      );
+    });
   }
 }

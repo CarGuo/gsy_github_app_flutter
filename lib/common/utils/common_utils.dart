@@ -19,7 +19,6 @@ import 'package:gsy_github_app_flutter/page/issue/issue_edit_dIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// 通用逻辑

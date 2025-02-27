@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
@@ -72,13 +73,19 @@ mixin GSYListState<T extends StatefulWidget>
     isLoading = true;
     isRefreshing = true;
     page = 1;
-    var res = await requestRefresh();
-    resolveRefreshResult(res);
-    resolveDataResult(res);
-    if (res.next != null) {
-      var resNext = await res.next();
-      resolveRefreshResult(resNext);
-      resolveDataResult(resNext);
+    try {
+      var res = await requestRefresh();
+      resolveRefreshResult(res);
+      resolveDataResult(res);
+      if (res.next != null) {
+        var resNext = await res.next();
+        resolveRefreshResult(resNext);
+        resolveDataResult(resNext);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
     isLoading = false;
     isRefreshing = false;

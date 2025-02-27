@@ -182,7 +182,7 @@ class _SearchTrendUserRequestProviderElement
   String? get cursor => (origin as SearchTrendUserRequestProvider).cursor;
 }
 
-String _$trendCNUserListHash() => r'55a8ec11b63788e84c8799d232b89addde082712';
+String _$trendCNUserListHash() => r'9c4debc4e7ca77fb2c8614d800382f4db529c6be';
 
 /// See also [TrendCNUserList].
 @ProviderFor(TrendCNUserList)

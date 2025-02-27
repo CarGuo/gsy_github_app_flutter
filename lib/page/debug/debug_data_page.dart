@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/page/error_page.dart';
 import 'package:gsy_github_app_flutter/test/demo_tab_page.dart';
 import 'package:gsy_github_app_flutter/widget/flutter_json_widget.dart';
 
-import '../error_page.dart';
 
 ///请求数据调
 class DebugDataPage extends StatefulWidget {

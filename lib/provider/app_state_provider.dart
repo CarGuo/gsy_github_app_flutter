@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../common/style/gsy_style.dart';
 
 part 'app_state_provider.g.dart';
 

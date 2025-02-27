@@ -2,20 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_header.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
-import 'package:provider/provider.dart';
 
 /// Created by guoshuyu
 /// Date: 2018-08-30
@@ -29,8 +29,6 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       GlobalKey<NestedScrollViewRefreshIndicatorState>();
 
   final List<UserOrg> orgList = [];
-
-  final HonorModel honorModel = HonorModel();
 
   @override
   showRefreshLoading() {
@@ -72,7 +70,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   @protected
   getUserOrg(String? userName) {
     if (page <= 1 && userName != null) {
-      UserRepository.getUserOrgsRequest(userName, page, needDb: true).then((res) {
+      UserRepository.getUserOrgsRequest(userName, page, needDb: true)
+          .then((res) {
         if (res != null && res.result) {
           setState(() {
             orgList.clear();
@@ -93,12 +92,19 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   }
 
   @protected
-  List<Widget> sliverBuilder(BuildContext context, bool innerBoxIsScrolled,
-      User userInfo, Color? notifyColor, String beStaredCount, refreshCallBack) {
+  List<Widget> sliverBuilder(
+      BuildContext context,
+      bool innerBoxIsScrolled,
+      User userInfo,
+      Color? notifyColor,
+      String beStaredCount,
+      HonorModel? honorModel,
+      refreshCallBack) {
     double headerSize = 210;
     double bottomSize = 70;
     double chartSize =
         (userInfo.login != null && userInfo.type == "Organization") ? 70 : 215;
+
     return <Widget>[
       ///头部信息
       SliverPersistentHeader(
@@ -146,22 +152,10 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               return SizedBox.expand(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10, left: 0, right: 0),
-
-                  /// MultiProvider 共享 HonorModel 状态
-                  /// 这里是为了简单 Demo 展示 Provider 的使用，而多加入出来的一种状态管理框架
-                  child: MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider(create: (_) => honorModel),
-                    ],
-                    child: Consumer<HonorModel>(
-                      builder: (context, honorModel, _) {
-                        return UserHeaderBottom(
-                            userInfo,
-                            honorModel.beStaredCount?.toString() ?? "---",
-                            radius,
-                            honorModel.honorList);
-                      },
-                    ),
+                  child: UserHeaderBottom(
+                    userInfo,
+                    honorModel,
+                    radius,
                   ),
                 ),
               );
@@ -193,36 +187,8 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   }
 
   ///获取用户仓库前100个star统计数据
-  getHonor(name) {
-    ReposRepository.getUserRepository100StatusRequest(name).then((res) {
-      if (res != null && res.result) {
-        if (isShow) {
-          ///提交到  Provider  HonorMode
-          honorModel.beStaredCount = res.data["stared"];
-          honorModel.honorList = res.data["list"];
-        }
-      }
-    });
-  }
-}
-
-/// Provider  HonorModel
-class HonorModel extends ChangeNotifier {
-  int? _beStaredCount;
-
-  int? get beStaredCount => _beStaredCount;
-
-  set beStaredCount(int? value) {
-    _beStaredCount = value;
-    notifyListeners();
-  }
-
-  List? _honorList;
-
-  List? get honorList => _honorList;
-
-  set honorList(List? value) {
-    _honorList = value;
-    notifyListeners();
+  getHonor(ProviderContainer ref, String name) async {
+    var _ = ref.refresh(fetchHonorDataProvider(name));
+    await ref.read(fetchHonorDataProvider(name).future);
   }
 }

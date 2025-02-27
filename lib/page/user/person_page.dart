@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
@@ -11,6 +12,8 @@ import 'package:gsy_github_app_flutter/common/localization/default_localizations
 import 'package:gsy_github_app_flutter/model/User.dart';
 import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
@@ -62,7 +65,8 @@ class PersonState extends BasePersonState<PersonPage> {
     page = 1;
 
     ///获取网络用户数据
-    var userResult = await UserRepository.getUserInfo(widget.userName, needDb: true);
+    var userResult =
+        await UserRepository.getUserInfo(widget.userName, needDb: true);
     if (userResult != null && userResult.result) {
       _resolveUserInfo(userResult);
       if (userResult.next != null) {
@@ -89,7 +93,7 @@ class PersonState extends BasePersonState<PersonPage> {
     _getFocusStatus();
 
     ///获取用户仓库前100个star统计数据
-    getHonor(_getUserName());
+    getHonor(globalContainer, _getUserName());
     return;
   }
 
@@ -144,47 +148,55 @@ class PersonState extends BasePersonState<PersonPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        appBar: AppBar(
-            title: GSYTitleBar(
-          (userInfo != null && userInfo!.login != null) ? userInfo!.login : "",
-          rightWidget: GSYCommonOptionWidget(
-            url: userInfo?.html_url,
-          ),
-        )),
-        floatingActionButton: FloatingActionButton(
-            child: AutoSizeText(
-              focus,
-              minFontSize: 8,
-              maxLines: 1,
+    return Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      var result = ref.watch(fetchHonorDataProvider(_getUserName()));
+      return Scaffold(
+          appBar: AppBar(
+              title: GSYTitleBar(
+            (userInfo != null && userInfo!.login != null)
+                ? userInfo!.login
+                : "",
+            rightWidget: GSYCommonOptionWidget(
+              url: userInfo?.html_url,
             ),
-            onPressed: () {
-              ///非组织成员可以关注
-              if (focus == '') {
-                return;
-              }
-              if (userInfo!.type == "Organization") {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context)!.user_focus_no_support);
-                return;
-              }
-              CommonUtils.showLoadingDialog(context);
-              UserRepository.doFollowRequest(widget.userName, focusStatus).then((res) {
-                Navigator.pop(context);
-                _getFocusStatus();
-              });
-            }),
-        body: GSYNestedPullLoadWidget(
-          pullLoadWidgetControl,
-          (BuildContext context, int index) =>
-              renderItem(index, userInfo!, beStaredCount, null, null, orgList),
-          handleRefresh,
-          onLoadMore,
-          refreshKey: refreshIKey,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return sliverBuilder(context, innerBoxIsScrolled, userInfo!, null,
-                beStaredCount, null);
-          },
-        ));
+          )),
+          floatingActionButton: FloatingActionButton(
+              child: AutoSizeText(
+                focus,
+                minFontSize: 8,
+                maxLines: 1,
+              ),
+              onPressed: () {
+                ///非组织成员可以关注
+                if (focus == '') {
+                  return;
+                }
+                if (userInfo!.type == "Organization") {
+                  Fluttertoast.showToast(
+                      msg: GSYLocalizations.i18n(context)!
+                          .user_focus_no_support);
+                  return;
+                }
+                CommonUtils.showLoadingDialog(context);
+                UserRepository.doFollowRequest(widget.userName, focusStatus)
+                    .then((res) {
+                  Navigator.pop(context);
+                  _getFocusStatus();
+                });
+              }),
+          body: GSYNestedPullLoadWidget(
+            pullLoadWidgetControl,
+            (BuildContext context, int index) => renderItem(
+                index, userInfo!, beStaredCount, null, null, orgList),
+            handleRefresh,
+            onLoadMore,
+            refreshKey: refreshIKey,
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return sliverBuilder(context, innerBoxIsScrolled, userInfo!, null,
+                  beStaredCount, result.value, null);
+            },
+          ));
+    });
   }
 }

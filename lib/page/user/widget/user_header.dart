@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
@@ -131,8 +132,7 @@ class UserHeaderItem extends StatelessWidget {
         Row(
           children: <Widget>[
             ///用户名
-            Text(userInfo.login ?? "",
-                style: GSYConstant.largeTextWhiteBold),
+            Text(userInfo.login ?? "", style: GSYConstant.largeTextWhiteBold),
             _getNotifyIcon(context, notifyColor),
           ],
         ),
@@ -255,12 +255,11 @@ class UserHeaderItem extends StatelessWidget {
 
 class UserHeaderBottom extends StatelessWidget {
   final User userInfo;
-  final String beStaredCount;
   final Radius radius;
-  final List? honorList;
+  final HonorModel? honorModel;
 
-  const UserHeaderBottom(
-      this.userInfo, this.beStaredCount, this.radius, this.honorList, {super.key});
+  const UserHeaderBottom(this.userInfo, this.honorModel, this.radius,
+      {super.key});
 
   ///底部状态栏
   _getBottomItem(String? title, var value, onPressed) {
@@ -309,8 +308,8 @@ class UserHeaderBottom extends StatelessWidget {
               GSYLocalizations.of(context)!.currentLocalized!.user_tab_repos,
               userInfo.public_repos,
               () {
-                NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "repository", CommonListDataType.userRepos,
+                NavigatorUtils.gotoCommonList(context, userInfo.login,
+                    "repository", CommonListDataType.userRepos,
                     userName: userInfo.login);
               },
             ),
@@ -323,8 +322,8 @@ class UserHeaderBottom extends StatelessWidget {
               GSYLocalizations.i18n(context)!.user_tab_fans,
               userInfo.followers,
               () {
-                NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "user", CommonListDataType.follower,
+                NavigatorUtils.gotoCommonList(context, userInfo.login, "user",
+                    CommonListDataType.follower,
                     userName: userInfo.login);
               },
             ),
@@ -337,8 +336,8 @@ class UserHeaderBottom extends StatelessWidget {
               GSYLocalizations.i18n(context)!.user_tab_focus,
               userInfo.following,
               () {
-                NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "user", CommonListDataType.followed,
+                NavigatorUtils.gotoCommonList(context, userInfo.login, "user",
+                    CommonListDataType.followed,
                     userName: userInfo.login);
               },
             ),
@@ -351,8 +350,8 @@ class UserHeaderBottom extends StatelessWidget {
               GSYLocalizations.i18n(context)!.user_tab_star,
               userInfo.starred,
               () {
-                NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "repository", CommonListDataType.userStar,
+                NavigatorUtils.gotoCommonList(context, userInfo.login,
+                    "repository", CommonListDataType.userStar,
                     userName: userInfo.login);
               },
             ),
@@ -361,15 +360,12 @@ class UserHeaderBottom extends StatelessWidget {
                 height: 40.0,
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
-            _getBottomItem(
-              GSYLocalizations.i18n(context)!.user_tab_honor,
-              beStaredCount,
-              () {
-                if (honorList != null) {
-                  NavigatorUtils.goHonorListPage(context, honorList);
-                }
-              },
-            ),
+            _getBottomItem(GSYLocalizations.i18n(context)!.user_tab_honor,
+                honorModel?.beStaredCount, () {
+              if (honorModel?.honorList != null) {
+                NavigatorUtils.goHonorListPage(context, honorModel?.honorList);
+              }
+            }),
           ],
         ),
       ),
@@ -390,8 +386,8 @@ class UserHeaderChart extends StatelessWidget {
     }
     return (userInfo.login != null)
         ? Card(
-            margin:
-                const EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0, bottom: 0.0),
+            margin: const EdgeInsets.only(
+                top: 0.0, left: 10.0, right: 10.0, bottom: 0.0),
             color: GSYColors.white,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
