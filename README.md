@@ -19,26 +19,21 @@
 
 
 
+
 ## 相关文章
-
-- ## [Flutter系列文章专栏](https://juejin.cn/column/6960546078202527774)
-
-----
-- ## [Flutter 独立简单学习演示项目](https://github.com/CarGuo/gsy_flutter_demo)
-- ## [Flutter 完整开发实战详解 Gitbook 预览下载](https://github.com/CarGuo/gsy_flutter_book)
-- ## [所有运行问题请点击这里](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)
-
-
-
-
-* ### GSY老书：[《Flutter开发实战详解》](https://item.jd.com/12883054.html)上架啦：[京东](https://item.jd.com/12883054.html) / [当当](http://product.dangdang.com/28558519.html) / 电子版[京东读书](https://e.jd.com/30624414.html)和[Kindle](https://www.amazon.cn/dp/B08BHQ4TKK/ref=sr_1_5?__mk_zh_CN=亚马逊网站&keywords=flutter&qid=1593498531&s=digital-text&sr=1-5)
-
-[![](http://img.cdn.guoshuyu.cn/WechatIMG65.jpeg)](https://item.jd.com/12883054.html)
-
 
 | 公众号   | 掘金     |  知乎    |  CSDN   |   简书   
 |---------|---------|--------- |---------|---------|
-| GSYTech  |  [点我](https://juejin.im/user/582aca2ba22b9d006b59ae68/posts)    |   [点我](https://www.zhihu.com/people/carguo)       |   [点我](https://blog.csdn.net/ZuoYueLiang)  |   [点我](https://www.jianshu.com/u/6e613846e1ea)  
+| GSYTech  |  [点我](https://juejin.cn/user/582aca2ba22b9d006b59ae68/posts)    |   [点我](https://www.zhihu.com/people/carguo)       |   [点我](https://blog.csdn.net/ZuoYueLiang)  |   [点我](https://www.jianshu.com/u/6e613846e1ea)  
+
+- ### [Flutter系列文章专栏](https://juejin.cn/column/6960546078202527774)
+
+----
+- ### [Flutter 独立简单学习演示项目](https://github.com/CarGuo/gsy_flutter_demo)
+- ### [Flutter 完整开发实战详解 Gitbook 预览下载](https://github.com/CarGuo/gsy_flutter_book)
+- ### [所有运行问题请点击这里](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)
+
+* ### GSY老书：[《Flutter开发实战详解》](https://item.jd.com/12883054.html)上架啦：[京东](https://item.jd.com/12883054.html) / [当当](http://product.dangdang.com/28558519.html) / 电子版[京东读书](https://e.jd.com/30624414.html)和[Kindle](https://www.amazon.cn/dp/B08BHQ4TKK/ref=sr_1_5?__mk_zh_CN=亚马逊网站&keywords=flutter&qid=1593498531&s=digital-text&sr=1-5)
 
 - ### [如果克隆太慢或者图片看不到，可尝试从码云地址下载](https://gitee.com/CarGuo/GSYGithubAppFlutter)
 
