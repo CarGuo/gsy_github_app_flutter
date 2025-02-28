@@ -29,13 +29,6 @@
 - ## [For all running issues please click here](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)
 
 
-
-
-* ### GSY's book: ["Flutter Development Practical Guide"](https://item.jd.com/12883054.html) is now available: [JD](https://item.jd.com/12883054.html) / [Dangdang](http://product.dangdang.com/28558519.html) / E-version [JD Reading](https://e.jd.com/30624414.html) and [Kindle](https://www.amazon.cn/dp/B08BHQ4TKK/ref=sr_1_5?__mk_zh_CN=亚马逊网站&keywords=flutter&qid=1593498531&s=digital-text&sr=1-5)
-
-[![](http://img.cdn.guoshuyu.cn/WechatIMG65.jpeg)](https://item.jd.com/12883054.html)
-
-
 | WeChat Official Account   | Juejin     |  Zhihu    |  CSDN   |   Jianshu   
 |---------|---------|--------- |---------|---------|
 | GSYTech  |  [Click me](https://juejin.im/user/582aca2ba22b9d006b59ae68/posts)    |   [Click me](https://www.zhihu.com/people/carguo)       |   [Click me](https://blog.csdn.net/ZuoYueLiang)  |   [Click me](https://www.jianshu.com/u/6e613846e1ea)  
@@ -365,9 +358,6 @@ Provider page state management:
 [![Star History Chart](https://api.star-history.com/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)](https://star-history.com/#CarGuo/gsy_github_app_flutter&Date)
 
 
-![](http://img.cdn.guoshuyu.cn/thanks.jpg)
-
-![](http://img.cdn.guoshuyu.cn/wechat_qq.png)
 
 
 ### LICENSE
