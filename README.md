@@ -42,17 +42,7 @@
 
 - ### [如果克隆太慢或者图片看不到，可尝试从码云地址下载](https://gitee.com/CarGuo/GSYGithubAppFlutter)
 
-```!
-基于Flutter开发，适配 Android 与 iOS。
 
-项目的目的是为方便个人日常维护和查阅Github，更好的沉浸于码友之间的互基，Github就是你的家。
-
-项目同时适合Flutter的练手学习，覆盖了各种框架的使用，与原生的交互等。
-
-随着项目的使用情况和反馈，将时不时根据更新并完善用户体验与功能优化吗，欢迎提出问题。
-```
-
-![](http://img.cdn.guoshuyu.cn/wechat_qq.png)
 
 -----
 
@@ -377,6 +367,8 @@ provider 页面内状态管理：
 
 ![](http://img.cdn.guoshuyu.cn/thanks.jpg)
 
+![](http://img.cdn.guoshuyu.cn/wechat_qq.png)
+
 
 ### LICENSE
 ```
@@ -388,6 +380,4 @@ Contributors provide an express grant of patent rights.
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 ```
 
-
-
-​    
+ 
