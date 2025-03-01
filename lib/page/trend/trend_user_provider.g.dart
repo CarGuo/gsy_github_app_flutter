@@ -7,7 +7,7 @@ part of 'trend_user_provider.dart';
 // **************************************************************************
 
 String _$searchTrendUserRequestHash() =>
-    r'75fbb074b1095d1600afc4dcc97e6a68454ea95b';
+    r'8798f3da6e8e2812e4913b4e8801889430d95e29';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -198,12 +198,14 @@ class _SearchTrendUserRequestProviderElement
   String? get cursor => (origin as SearchTrendUserRequestProvider).cursor;
 }
 
-String _$trendCNUserListHash() => r'9c4debc4e7ca77fb2c8614d800382f4db529c6be';
+String _$trendCNUserListHash() => r'22a8b9e754a9d970ec1e6184b5d220e8fd426e93';
 
-/// See also [TrendCNUserList].
+///无需释放
+///
+/// Copied from [TrendCNUserList].
 @ProviderFor(TrendCNUserList)
 final trendCNUserListProvider =
-    AutoDisposeNotifierProvider<TrendCNUserList, List<SearchUserQL>>.internal(
+    NotifierProvider<TrendCNUserList, List<SearchUserQL>>.internal(
   TrendCNUserList.new,
   name: r'trendCNUserListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -213,6 +215,6 @@ final trendCNUserListProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$TrendCNUserList = AutoDisposeNotifier<List<SearchUserQL>>;
+typedef _$TrendCNUserList = Notifier<List<SearchUserQL>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

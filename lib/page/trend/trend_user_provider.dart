@@ -7,27 +7,27 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'trend_user_provider.g.dart';
 
-@riverpod
+///无需释放，这样内存里就会保存着列表，下次进来不会空数据
+@Riverpod(keepAlive: true)
 class TrendCNUserList extends _$TrendCNUserList {
-  List<SearchUserQL> data = [];
 
+  ///如果调用 ref.refresh ，数据会被重置
   @override
-  List<SearchUserQL> build() => data;
+  List<SearchUserQL> build() {
+    return [];
+  }
 
   void setList(List<SearchUserQL> list) {
-    data = list;
-    state = data;
+    state = list;
   }
 
   void addList(List<SearchUserQL> list) {
-    data.addAll(list);
-
-    ///需要 toList 为新的列表，不然不会触发更新
-    state = data.toList();
+    state.addAll(list);
+    ///需要为新的列表，不然不会触发更新
+    state = [...state, ...list];
   }
 
   void clear() {
-    data.clear();
     state = [];
   }
 }
@@ -46,7 +46,8 @@ Future<(List<SearchUserQL>, String)?> searchTrendUserRequest(
     } else {
       trendRef.addList(value.$1);
     }
-    var _ = ref.refresh(trendCNUserListProvider.notifier);
+    // 这里 refresh 会导致数据在更新后又被清空
+    //var _ = ref.refresh(trendCNUserListProvider.notifier);
     return result.value;
   }
   return null;
