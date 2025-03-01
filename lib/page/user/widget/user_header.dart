@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
@@ -12,10 +13,13 @@ import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
+import 'package:gsy_github_app_flutter/widget/only_share_widget.dart';
 
 /// 用户详情头部
 /// Created by guoshuyu
 /// Date: 2018-07-17
+///
+///
 class UserHeaderItem extends StatelessWidget {
   final User userInfo;
 
@@ -256,10 +260,8 @@ class UserHeaderItem extends StatelessWidget {
 class UserHeaderBottom extends StatelessWidget {
   final User userInfo;
   final Radius radius;
-  final HonorModel? honorModel;
 
-  const UserHeaderBottom(this.userInfo, this.honorModel, this.radius,
-      {super.key});
+  const UserHeaderBottom(this.userInfo, this.radius, {super.key});
 
   ///底部状态栏
   _getBottomItem(String? title, var value, onPressed) {
@@ -360,12 +362,37 @@ class UserHeaderBottom extends StatelessWidget {
                 height: 40.0,
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
-            _getBottomItem(GSYLocalizations.i18n(context)!.user_tab_honor,
-                honorModel?.beStaredCount, () {
-              if (honorModel?.honorList != null) {
-                NavigatorUtils.goHonorListPage(context, honorModel?.honorList);
-              }
-            }),
+            Consumer(
+                builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              var data = ref.watch(
+                  OnlyShareInstanceWidget.of<FetchHonorDataProvider>(context)!);
+              return _getBottomItem(
+                GSYLocalizations.i18n(context)!.user_tab_honor,
+                switch (data) {
+                  AsyncData(:final value) =>
+                    value?.beStaredCount.toString() ?? "---",
+                  AsyncError() => "----",
+                  _ => "---",
+                },
+                () {
+                  var list = data.when(
+                      data: (result) {
+                        return result?.honorList;
+                      },
+                      error: (_, __) => null,
+                      loading: () => null);
+                  if (list != null && list.isNotEmpty) {
+                    NavigatorUtils.goHonorListPage(context, list);
+                  }
+                },
+              );
+            })
+            // _getBottomItem(GSYLocalizations.i18n(context)!.user_tab_honor,
+            //     honorModel?.beStaredCount, () {
+            //   if (honorModel?.honorList != null) {
+            //     NavigatorUtils.goHonorListPage(context, honorModel?.honorList);
+            //   }
+            // }),
           ],
         ),
       ),

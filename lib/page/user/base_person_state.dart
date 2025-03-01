@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
@@ -10,7 +9,9 @@ import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
+import 'package:gsy_github_app_flutter/widget/only_share_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
@@ -68,6 +69,9 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   bool get needHeader => true;
 
   @protected
+  FetchHonorDataProvider get headerProvider;
+
+  @protected
   getUserOrg(String? userName) {
     if (page <= 1 && userName != null) {
       UserRepository.getUserOrgsRequest(userName, page, needDb: true)
@@ -98,7 +102,6 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       User userInfo,
       Color? notifyColor,
       String beStaredCount,
-      HonorModel? honorModel,
       refreshCallBack) {
     double headerSize = 210;
     double bottomSize = 70;
@@ -152,10 +155,9 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               return SizedBox.expand(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10, left: 0, right: 0),
-                  child: UserHeaderBottom(
-                    userInfo,
-                    honorModel,
-                    radius,
+                  child: OnlyShareInstanceWidget(
+                    value: headerProvider,
+                    child: UserHeaderBottom(userInfo, radius),
                   ),
                 ),
               );
@@ -187,8 +189,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   }
 
   ///获取用户仓库前100个star统计数据
-  getHonor(ProviderContainer ref, String name) async {
-    var _ = ref.refresh(fetchHonorDataProvider(name));
-    await ref.read(fetchHonorDataProvider(name).future);
+  getHonor() async {
+    var _ = globalContainer.refresh(headerProvider);
   }
 }

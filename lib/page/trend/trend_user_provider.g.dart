@@ -7,7 +7,7 @@ part of 'trend_user_provider.dart';
 // **************************************************************************
 
 String _$searchTrendUserRequestHash() =>
-    r'b018ed2759bb7a323022bcd74a75d5be7f5f7e8a';
+    r'75fbb074b1095d1600afc4dcc97e6a68454ea95b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,11 +42,13 @@ class SearchTrendUserRequestFamily
 
   /// See also [searchTrendUserRequest].
   SearchTrendUserRequestProvider call(
-    String location, {
+    String location,
+    bool isRefresh, {
     String? cursor,
   }) {
     return SearchTrendUserRequestProvider(
       location,
+      isRefresh,
       cursor: cursor,
     );
   }
@@ -57,6 +59,7 @@ class SearchTrendUserRequestFamily
   ) {
     return call(
       provider.location,
+      provider.isRefresh,
       cursor: provider.cursor,
     );
   }
@@ -81,12 +84,14 @@ class SearchTrendUserRequestProvider
     extends AutoDisposeFutureProvider<(List<SearchUserQL>, String)?> {
   /// See also [searchTrendUserRequest].
   SearchTrendUserRequestProvider(
-    String location, {
+    String location,
+    bool isRefresh, {
     String? cursor,
   }) : this._internal(
           (ref) => searchTrendUserRequest(
             ref as SearchTrendUserRequestRef,
             location,
+            isRefresh,
             cursor: cursor,
           ),
           from: searchTrendUserRequestProvider,
@@ -99,6 +104,7 @@ class SearchTrendUserRequestProvider
           allTransitiveDependencies:
               SearchTrendUserRequestFamily._allTransitiveDependencies,
           location: location,
+          isRefresh: isRefresh,
           cursor: cursor,
         );
 
@@ -110,10 +116,12 @@ class SearchTrendUserRequestProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.location,
+    required this.isRefresh,
     required this.cursor,
   }) : super.internal();
 
   final String location;
+  final bool isRefresh;
   final String? cursor;
 
   @override
@@ -132,6 +140,7 @@ class SearchTrendUserRequestProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         location: location,
+        isRefresh: isRefresh,
         cursor: cursor,
       ),
     );
@@ -147,6 +156,7 @@ class SearchTrendUserRequestProvider
   bool operator ==(Object other) {
     return other is SearchTrendUserRequestProvider &&
         other.location == location &&
+        other.isRefresh == isRefresh &&
         other.cursor == cursor;
   }
 
@@ -154,6 +164,7 @@ class SearchTrendUserRequestProvider
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, location.hashCode);
+    hash = _SystemHash.combine(hash, isRefresh.hashCode);
     hash = _SystemHash.combine(hash, cursor.hashCode);
 
     return _SystemHash.finish(hash);
@@ -167,6 +178,9 @@ mixin SearchTrendUserRequestRef
   /// The parameter `location` of this provider.
   String get location;
 
+  /// The parameter `isRefresh` of this provider.
+  bool get isRefresh;
+
   /// The parameter `cursor` of this provider.
   String? get cursor;
 }
@@ -178,6 +192,8 @@ class _SearchTrendUserRequestProviderElement
 
   @override
   String get location => (origin as SearchTrendUserRequestProvider).location;
+  @override
+  bool get isRefresh => (origin as SearchTrendUserRequestProvider).isRefresh;
   @override
   String? get cursor => (origin as SearchTrendUserRequestProvider).cursor;
 }

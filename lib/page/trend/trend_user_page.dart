@@ -24,17 +24,12 @@ class _TrendUserPageState extends ConsumerState<TrendUserPage> {
   }
 
   Future<void> loadData(WidgetRef ref, {bool isRefresh = false}) async {
+    /// getTrendUserProvider 这里只有一处地方使用，所以不需要做局部单实例共享
     final result = await ref.read(
-        searchTrendUserRequestProvider("China", cursor: endCursor).future);
+        searchTrendUserRequestProvider("China", isRefresh, cursor: endCursor)
+            .future);
     if (result != null) {
       var (dataList, cursor) = result;
-      var trendRef = ref.read(trendCNUserListProvider.notifier);
-      if (isRefresh) {
-        trendRef.setList(dataList);
-      } else {
-        trendRef.addList(dataList);
-      }
-      var _ = ref.refresh(trendCNUserListProvider.notifier);
       endCursor = cursor;
     }
   }

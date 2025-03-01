@@ -34,9 +34,20 @@ class TrendCNUserList extends _$TrendCNUserList {
 
 @riverpod
 Future<(List<SearchUserQL>, String)?> searchTrendUserRequest(
-    Ref ref, String location,
+    Ref ref, String location, bool isRefresh,
     {String? cursor}) async {
   var result =
       await UserRepository.searchTrendUserRequest("China", cursor: cursor);
-  return result.data;
+  if (result.data != null) {
+    var value = result.data;
+    var trendRef = ref.read(trendCNUserListProvider.notifier);
+    if (isRefresh) {
+      trendRef.setList(value.$1);
+    } else {
+      trendRef.addList(value.$1);
+    }
+    var _ = ref.refresh(trendCNUserListProvider.notifier);
+    return result.value;
+  }
+  return null;
 }
