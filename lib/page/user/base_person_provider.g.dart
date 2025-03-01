@@ -6,7 +6,7 @@ part of 'base_person_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchHonorDataHash() => r'297fc6d470a18eec56cb77bf38c7be96803cf291';
+String _$fetchHonorDataHash() => r'7f84f6895bdda593859d93add87021d7c91dce4d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,16 +29,24 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchHonorData].
+///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+///
+/// Copied from [fetchHonorData].
 @ProviderFor(fetchHonorData)
 const fetchHonorDataProvider = FetchHonorDataFamily();
 
-/// See also [fetchHonorData].
+///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+///
+/// Copied from [fetchHonorData].
 class FetchHonorDataFamily extends Family<AsyncValue<HonorModel?>> {
-  /// See also [fetchHonorData].
+  ///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+  ///
+  /// Copied from [fetchHonorData].
   const FetchHonorDataFamily();
 
-  /// See also [fetchHonorData].
+  ///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+  ///
+  /// Copied from [fetchHonorData].
   FetchHonorDataProvider call(
     String userName,
   ) {
@@ -56,12 +64,14 @@ class FetchHonorDataFamily extends Family<AsyncValue<HonorModel?>> {
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  static final Iterable<ProviderOrFamily> _dependencies =
+      const <ProviderOrFamily>[];
 
   @override
   Iterable<ProviderOrFamily>? get dependencies => _dependencies;
 
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  static final Iterable<ProviderOrFamily> _allTransitiveDependencies =
+      const <ProviderOrFamily>{};
 
   @override
   Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
@@ -71,9 +81,13 @@ class FetchHonorDataFamily extends Family<AsyncValue<HonorModel?>> {
   String? get name => r'fetchHonorDataProvider';
 }
 
-/// See also [fetchHonorData].
+///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+///
+/// Copied from [fetchHonorData].
 class FetchHonorDataProvider extends AutoDisposeFutureProvider<HonorModel?> {
-  /// See also [fetchHonorData].
+  ///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+  ///
+  /// Copied from [fetchHonorData].
   FetchHonorDataProvider(
     String userName,
   ) : this._internal(

@@ -7,7 +7,7 @@ part of 'trend_user_provider.dart';
 // **************************************************************************
 
 String _$searchTrendUserRequestHash() =>
-    r'8798f3da6e8e2812e4913b4e8801889430d95e29';
+    r'ac778f5a6b971be10cac54dba88243725747e346';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -198,9 +198,9 @@ class _SearchTrendUserRequestProviderElement
   String? get cursor => (origin as SearchTrendUserRequestProvider).cursor;
 }
 
-String _$trendCNUserListHash() => r'22a8b9e754a9d970ec1e6184b5d220e8fd426e93';
+String _$trendCNUserListHash() => r'aea06336b92d3cc570f969d63fda016132cdf064';
 
-///无需释放
+///无需释放，这样内存里就会保存着列表，下次进来不会空数据
 ///
 /// Copied from [TrendCNUserList].
 @ProviderFor(TrendCNUserList)

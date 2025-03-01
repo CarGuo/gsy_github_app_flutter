@@ -5,7 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'base_person_provider.g.dart';
 
 
-@riverpod
+///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
+@Riverpod(dependencies: [])
 Future<HonorModel?> fetchHonorData(Ref ref, String userName) async {
   var res = await ReposRepository.getUserRepository100StatusRequest(userName);
   if (res != null && res.result) {
