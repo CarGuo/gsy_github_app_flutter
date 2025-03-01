@@ -144,8 +144,7 @@ class PersonState extends BasePersonState<PersonPage> {
   bool get needHeader => false;
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
+  Widget buildContainer(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: GSYTitleBar(

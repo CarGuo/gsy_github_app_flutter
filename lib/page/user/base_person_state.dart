@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/Event.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
@@ -70,6 +71,9 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
 
   @protected
   FetchHonorDataProvider get headerProvider;
+
+  @protected
+  Widget buildContainer(BuildContext context);
 
   @protected
   getUserOrg(String? userName) {
@@ -186,6 +190,18 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
             }),
       ),
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);// See AutomaticKeepAliveClientMixin.
+    ///局部 scoped 的 riverpod provider 方案
+    ///配合 @Riverpod(dependencies: [])
+    return ProviderScope(
+      /// 必要时还可以覆盖
+      //overrides: [],
+      child: buildContainer(context),
+    );
   }
 
   ///获取用户仓库前100个star统计数据

@@ -147,8 +147,7 @@ class MyPageState extends BasePersonState<MyPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context); // See AutomaticKeepAliveClientMixin.
+  Widget buildContainer(BuildContext context) {
     return StoreBuilder<GSYState>(
       builder: (context, store) {
         return GSYNestedPullLoadWidget(
