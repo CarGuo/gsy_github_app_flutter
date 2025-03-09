@@ -6,8 +6,8 @@ import 'package:gsy_github_app_flutter/common/localization/default_localizations
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/model/CommonListDataType.dart';
-import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
+import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
+import 'package:gsy_github_app_flutter/model/repository_ql.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 

@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_string_escapes
 
 import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/model/trending_repo_model.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';

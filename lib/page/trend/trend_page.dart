@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/model/trending_repo_model.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_provider.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';

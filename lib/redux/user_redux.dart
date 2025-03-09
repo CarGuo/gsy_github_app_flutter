@@ -2,7 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';

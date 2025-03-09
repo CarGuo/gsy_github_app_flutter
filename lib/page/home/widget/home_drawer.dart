@@ -7,8 +7,8 @@ import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/model/CommonListDataType.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';

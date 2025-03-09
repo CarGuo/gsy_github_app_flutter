@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
+import 'package:gsy_github_app_flutter/model/search_user_ql.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 

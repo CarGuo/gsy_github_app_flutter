@@ -10,7 +10,7 @@ import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';

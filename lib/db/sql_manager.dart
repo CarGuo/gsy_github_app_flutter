@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// 数据库管理

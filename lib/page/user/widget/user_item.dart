@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
-import 'package:gsy_github_app_flutter/model/User.dart';
-import 'package:gsy_github_app_flutter/model/UserOrg.dart';
+import 'package:gsy_github_app_flutter/model/search_user_ql.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
+import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';

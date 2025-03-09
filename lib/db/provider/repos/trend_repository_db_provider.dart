@@ -3,7 +3,7 @@ import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/db/sql_provider.dart';
-import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/model/trending_repo_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// 趋势表

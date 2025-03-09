@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
-import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
+import 'package:gsy_github_app_flutter/model/search_user_ql.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 ///展示 riverpod ，并且支持翻页场景

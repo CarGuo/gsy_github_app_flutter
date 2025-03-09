@@ -1,6 +1,6 @@
 // ignore_for_file: implicit_call_tearoffs
 
-import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/redux/user_redux.dart';
 import 'package:redux/redux.dart';

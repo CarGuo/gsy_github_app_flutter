@@ -3,7 +3,7 @@ import 'package:gsy_github_app_flutter/common/utils/code_utils.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/db/sql_provider.dart';
-import 'package:gsy_github_app_flutter/model/RepoCommit.dart';
+import 'package:gsy_github_app_flutter/model/repo_commit.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// 仓库提交信息表
