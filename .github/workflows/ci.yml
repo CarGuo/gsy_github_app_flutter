@@ -55,7 +55,7 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk --release --target-platform=android-arm64 --no-shrink
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk
           path: build/app/outputs/apk/release/app-release.apk
