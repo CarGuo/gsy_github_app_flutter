@@ -253,6 +253,7 @@ class NavigatorUtils {
       String? path,
       String? data,
       String? branch,
+      String? lang,
       String? htmlUrl}) {
     NavigatorRouter(
         context,
@@ -262,6 +263,7 @@ class NavigatorUtils {
           reposName: reposName,
           path: path,
           data: data,
+          lang: lang,
           branch: branch,
           htmlUrl: htmlUrl,
         ));
@@ -275,6 +277,7 @@ class NavigatorUtils {
       String? path,
       String? data,
       String? branch,
+      String? lang,
       String? htmlUrl}) {
     NavigatorUtils.gotoCodeDetailPageWeb(
       context,
@@ -283,6 +286,7 @@ class NavigatorUtils {
       userName: userName,
       data: data,
       path: path,
+      lang: lang,
       branch: branch,
     );
   }

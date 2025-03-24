@@ -12,8 +12,8 @@ class HtmlUtils {
       String lang = 'java',
       userBR = true}) {
     String currentData = (mdData != null && !mdData.contains("<code>"))
-        ? "<body>\n<pre class=\"pre\">\n<code lang='$lang'>\n$mdData</code>\n</pre>\n</body>\n"
-        : "<body>\n<pre class=\"pre\">\n${mdData!}</pre>\n</body>\n";
+        ? "<body>\n<pre>\n<code lang='$lang'>\n$mdData</code>\n</pre>\n</body>\n"
+        : "<body>\n<pre>\n${mdData!}</pre>\n</body>\n";
     return generateHtml(currentData,
         backgroundColor: backgroundColor, userBR: userBR);
   }
@@ -101,20 +101,8 @@ class HtmlUtils {
       String actionColor = GSYColors.actionBlueString,
       userBR = true}) {
     // ignore: prefer_interpolation_to_compose_strings
-    return "${"${"<html>\n" +
-        "<head>\n" +
-        "<meta charset=\"utf-8\" />\n" +
-        "<title></title>\n" +
-        "<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>" +
-        "<meta name=\“app-mobile-web-app-capable\”  content=\“yes\" /> " +
-        "<link href=\"https:\/\/cdn.bootcss.com/highlight.js/9.12.0/styles/dracula.min.css\" rel=\"stylesheet\">\n" +
-        "<script src=\"https:\/\/cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js\"></script>  " +
-        "<script>hljs.configure({'useBR': ${userBR.toString()}"
-        "});hljs.initHighlightingOnLoad();</script> " +
-        "<style>" +
-        "body{background: $backgroundColor"
-        };}a {color:$actionColor !important;}.highlight pre, pre { word-wrap: ${wrap ? "break-word" : "normal"};  white-space: ${wrap ? "pre-wrap" : "pre"}; }thead, tr {background:${GSYColors.miWhiteString};}td, th {padding: 5px 10px;font-size: 12px;direction:hor}.highlight {overflow: scroll; background: ${GSYColors.miWhiteString}}tr:nth-child(even) {background:${GSYColors.primaryLightValueString};color:${GSYColors.miWhiteString};}tr:nth-child(odd) {background: ${GSYColors.miWhiteString};color:${GSYColors.primaryLightValueString};}th {font-size: 14px;color:${GSYColors.miWhiteString};background:${GSYColors.primaryLightValueString};}</style></head>\n<body>\n" +
-        mdHTML}</body>\n</html>";
+    return "${"${"<html>\n" + "<head>\n" + "<meta charset=\"utf-8\" />\n" + "<title></title>\n" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\"/>" + "<meta name=\“app-mobile-web-app-capable\”  content=\“yes\" /> " + "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css\">\n" + "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js\"></script>" + "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js\"></script>" + "<script>hljs.configure({'useBR': ${userBR.toString()}"
+        "});hljs.initHighlightingOnLoad();</script> " + "<style>" + "body{background: $backgroundColor"};}a {color:$actionColor !important;}.highlight pre, pre { word-wrap: ${wrap ? "break-word" : "normal"};  white-space: ${wrap ? "pre-wrap" : "pre"}; }thead, tr {background:${GSYColors.miWhiteString};}td, th {padding: 5px 10px;font-size: 12px;direction:hor}.highlight {overflow: scroll; background: ${GSYColors.miWhiteString}}tr:nth-child(even) {background:${GSYColors.primaryLightValueString};color:${GSYColors.miWhiteString};}tr:nth-child(odd) {background: ${GSYColors.miWhiteString};color:${GSYColors.primaryLightValueString};}th {font-size: 14px;color:${GSYColors.miWhiteString};background:${GSYColors.primaryLightValueString};}</style></head>\n<body>\n" + mdHTML}</body>\n</html>";
   }
 
   static parseDiffSource(String? diffSource, bool wrap) {
@@ -158,7 +146,8 @@ class HtmlUtils {
       lineNumberStr = getDiffLineNumber(
           curRemoveNumber == -1 ? "" : ("$curRemoveNumber"),
           curAddNumber == -1 ? "" : ("$curAddNumber"));
-      source = "$source<div $classStr>${wrap ? "" : lineNumberStr! + getBlank(1)}$line</div>";
+      source =
+          "$source<div $classStr>${wrap ? "" : lineNumberStr! + getBlank(1)}$line</div>";
     }
     return source;
   }
@@ -213,7 +202,7 @@ class HtmlUtils {
         }
       }
       lang ??= defaultLang;
-      if ('markdown' == lang) {
+      if ('markdown' == lang || 'md' == lang) {
         return generateHtml(res.data, backgroundColor: GSYColors.miWhiteString);
       } else {
         return generateCode2HTml(res.data,
