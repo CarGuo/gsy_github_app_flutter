@@ -187,7 +187,7 @@ class RepositoryDetailFileListPageState
         elevation: 0.0,
       ),
       body: PopScope(
-        canPop: proivder.currentIndex != 3 && headerList.length == 1,
+        canPop: proivder.currentIndex != 3 || headerList.length == 1,
         onPopInvokedWithResult: (didPop, _) {
           if (didPop == false) {
             _resolveHeaderClick(headerList.length - 2);
