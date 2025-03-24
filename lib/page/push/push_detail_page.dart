@@ -88,9 +88,7 @@ class _PushDetailPageState extends State<PushDetailPage>
         reposName: widget.reposName,
         userName: widget.userName,
         path: itemViewModel.patch,
-        data: Uri.dataFromString(html,
-                mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
-            .toString(),
+        data: html,
         branch: "",
       );
     });

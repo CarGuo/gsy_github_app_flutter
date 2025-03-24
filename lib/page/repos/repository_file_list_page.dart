@@ -131,12 +131,18 @@ class RepositoryDetailFileListPageState
         NavigatorUtils.gotoPhotoViewPage(
             context, "${fileItemViewModel.htmlUrl!}?raw=true");
       } else {
+        String? lang;
+        var typeIndex = fileItemViewModel.name!.lastIndexOf(".");
+        if(typeIndex != -1) {
+          lang = fileItemViewModel.name!.substring(typeIndex + 1);
+        }
         NavigatorUtils.gotoCodeDetailPlatform(
           context,
           title: fileItemViewModel.name,
           reposName: provider.reposName,
           userName: provider.userName,
           path: path,
+          lang: lang,
           branch: context.read<ReposDetailProvider>().currentBranch,
         );
       }

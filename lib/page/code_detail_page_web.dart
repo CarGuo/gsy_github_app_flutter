@@ -28,12 +28,16 @@ class CodeDetailPageWeb extends StatefulWidget {
 
   final String? htmlUrl;
 
+  final String? lang;
+
   const CodeDetailPageWeb(
-      {super.key, this.title,
+      {super.key,
+      this.title,
       this.userName,
       this.reposName,
       this.path,
       this.data,
+      this.lang,
       this.branch,
       this.htmlUrl});
 
@@ -56,13 +60,14 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
 
   Future<Uri?> _getData() async {
     if (widget.data != null) {
-      return Uri.dataFromString(widget.data!);
+      return Uri.dataFromString(widget.data!,
+          mimeType: 'text/html', encoding: Encoding.getByName("utf-8"));
     }
     var res = await ReposRepository.getReposFileDirRequest(
         widget.userName, widget.reposName,
         path: widget.path, branch: widget.branch, text: true, isHtml: true);
     if (res != null && res.result) {
-      String data2 = HtmlUtils.resolveHtmlFile(res, "java");
+      String data2 = HtmlUtils.resolveHtmlFile(res, widget.lang ?? "java");
       return Uri.dataFromString(data2,
           mimeType: 'text/html', encoding: Encoding.getByName("utf-8"));
     }
@@ -84,8 +89,6 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
         title: GSYTitleBar(widget.title),
       ),
       body: FutureBuilder<Uri?>(
-        initialData:
-            widget.data != null ? Uri.dataFromString(widget.data!) : null,
         future: _getData(),
         builder: (context, result) {
           if (result.data == null) {
@@ -97,11 +100,9 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SpinKitDoubleBounce(
-                        color: Theme.of(context).primaryColor),
+                    SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Text(
-                        GSYLocalizations.i18n(context)!.loading_text,
+                    Text(GSYLocalizations.i18n(context)!.loading_text,
                         style: GSYConstant.middleText),
                   ],
                 ),
