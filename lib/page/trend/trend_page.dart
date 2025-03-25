@@ -17,6 +17,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
+import 'package:lottie/lottie.dart';
 
 /// 主页趋势tab页
 /// 目前采用纯 bloc 的 rxdart(stream) + streamBuilder
@@ -298,14 +299,10 @@ class TrendPageState extends ConsumerState<TrendPage>
       ),
       closedColor: Theme.of(context).primaryColor,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
-        return const SizedBox(
+        return SizedBox(
           width: size,
           height: size,
-          child: Icon(
-            Icons.person,
-            size: 30,
-            color: Colors.white,
-          ),
+          child: Lottie.asset("static/file/user.json", fit: BoxFit.cover),
         );
       },
     );
