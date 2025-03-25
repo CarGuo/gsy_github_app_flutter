@@ -76,6 +76,7 @@ dependencies:
   simple_animations: 5.0.2
   supercharged: 2.1.1
   animations: 2.0.11
+  lottie: 3.0.0
   auto_size_text: 3.0.0
   flutter_localizations:
     sdk: flutter
