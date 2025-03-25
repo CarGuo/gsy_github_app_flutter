@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/page/trend/trend_page.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:gsy_github_app_flutter/page/home/widget/home_drawer.dart';
+import 'package:lottie/lottie.dart';
 
 /// 主页
 /// Created by guoshuyu
@@ -28,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<DynamicPageState> dynamicKey = GlobalKey();
   final GlobalKey<TrendPageState> trendKey = GlobalKey();
   final GlobalKey<MyPageState> myKey = GlobalKey();
+  final GlobalKey rightKey = GlobalKey();
 
   /// 不退出
   _dialogExitApp(BuildContext context) async {
@@ -54,7 +56,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
-      _renderTab(GSYICons.MAIN_DT, GSYLocalizations.i18n(context)!.home_dynamic),
+      _renderTab(
+          GSYICons.MAIN_DT, GSYLocalizations.i18n(context)!.home_dynamic),
       _renderTab(GSYICons.MAIN_QS, GSYLocalizations.i18n(context)!.home_trend),
       _renderTab(GSYICons.MAIN_MY, GSYLocalizations.i18n(context)!.home_my),
     ];
@@ -91,11 +94,28 @@ class _HomePageState extends State<HomePage> {
         indicatorColor: GSYColors.white,
         title: GSYTitleBar(
           GSYLocalizations.of(context)!.currentLocalized!.app_name,
-          iconData: GSYICons.MAIN_SEARCH,
-          needRightLocalIcon: true,
-          onRightIconPressed: (centerPosition) {
-            NavigatorUtils.goSearchPage(context, centerPosition);
-          },
+          rightWidget: InkWell(
+            onTap: () {
+              RenderBox renderBox2 =
+                  rightKey.currentContext?.findRenderObject() as RenderBox;
+              var position = renderBox2.localToGlobal(Offset.zero);
+              var size = renderBox2.size;
+              var centerPosition = Offset(
+                position.dx + size.width / 2,
+                position.dy + size.height / 2,
+              );
+              NavigatorUtils.goSearchPage(context, centerPosition);
+            },
+            child: Container(
+              key: rightKey,
+              alignment: Alignment.centerRight,
+              child: Lottie.asset('static/file/search.json',
+                  width: 70,
+                  height: 80,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.centerRight),
+            ),
+          ),
         ),
       ),
     );
