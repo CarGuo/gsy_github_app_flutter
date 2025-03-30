@@ -14,8 +14,7 @@ class GitHubTrending {
     var res = await httpManager.netFetch(
         url, null, null, Options(contentType: "text/plain; charset=utf-8"));
     if (res != null && res.result && res.data != null) {
-      return ResultData(
-          TrendingUtil.htmlToRepo(res.data), true, Code.SUCCESS);
+      return ResultData(TrendingUtil.htmlToRepo(res.data), true, Code.SUCCESS);
     } else {
       return res;
     }
@@ -44,7 +43,7 @@ class TrendingUtil {
   static htmlToRepo(String responseData) {
     try {
       responseData = responseData.replaceAll(RegExp('\n'), '');
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {}
     var repos = [];
     var splitWithH3 = responseData.split('<article');
@@ -137,14 +136,14 @@ class TrendingUtil {
     repo.language = trim(content);
   }
 
-  static parseRepoContributors(repo, htmlContributors) {
+  static parseRepoContributors(TrendingRepoModel repo, htmlContributors) {
     htmlContributors =
         parseContentWithNote(htmlContributors, 'Built by', '<\/a>');
     var splitWitSemicolon = htmlContributors.split('\"');
     if (splitWitSemicolon.length > 1) {
       repo.contributorsUrl = splitWitSemicolon[1];
     }
-    var contributors = [];
+    List<String>? contributors = [];
     for (var i = 0; i < splitWitSemicolon.length; i++) {
       String url = splitWitSemicolon[i];
       if (url.contains('http')) {
