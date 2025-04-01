@@ -83,7 +83,7 @@ class _ReleasePageState extends State<ReleasePage>
 
   _getDataLogic() async {
     return await ReposRepository.getRepositoryReleaseRequest(
-        widget.userName, widget.reposName, page,
+        widget.userName!, widget.reposName!, page,
         needHtml: true, release: selectIndex == 0);
   }
 

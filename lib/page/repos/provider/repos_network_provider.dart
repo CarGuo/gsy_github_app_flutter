@@ -10,12 +10,13 @@ class ReposNetWorkProvider with ChangeNotifier {
         userName, reposName, currentBranch);
   }
 
-  getRepositoryDetailRequest(userName, reposName, branch, {needDb = true}) {
+  getRepositoryDetailRequest(String userName, String reposName, String branch,
+      {needDb = true}) {
     return ReposRepository.getRepositoryDetailRequest(
         userName, reposName, branch);
   }
 
-  getReposCommitsRequest(userName, reposName,
+  getReposCommitsRequest(String userName, String reposName,
       {page = 0, branch = "master", needDb = false}) async {
     return ReposRepository.getReposCommitsRequest(
       userName,
@@ -26,7 +27,7 @@ class ReposNetWorkProvider with ChangeNotifier {
     );
   }
 
-  getRepositoryEventRequest(userName, reposName,
+  getRepositoryEventRequest(String userName, String reposName,
       {page = 0, branch = "master", needDb = false}) async {
     return ReposRepository.getRepositoryEventRequest(
       userName,
@@ -37,37 +38,38 @@ class ReposNetWorkProvider with ChangeNotifier {
     );
   }
 
-  createForkRequest(userName, reposName) async {
+  createForkRequest(String userName, String reposName) async {
     return ReposRepository.createForkRequest(userName, reposName);
   }
 
-  doRepositoryWatchRequest(userName, reposName, watch) async {
+  doRepositoryWatchRequest(String userName, String reposName, watch) async {
     return ReposRepository.doRepositoryWatchRequest(userName, reposName, watch);
   }
 
-  doRepositoryStarRequest(userName, reposName, star) async {
+  doRepositoryStarRequest(String userName, String reposName, star) async {
     return ReposRepository.doRepositoryStarRequest(userName, reposName, star);
   }
 
-  getReposFileDirRequest(userName, reposName,
+  getReposFileDirRequest(String userName, String reposName,
       {path = '', branch, text = false, isHtml = false}) async {
     return ReposRepository.getReposFileDirRequest(userName, reposName,
         path: path, branch: branch, text: text, isHtml: isHtml);
   }
 
-  getRepositoryIssueRequest(userName, repository, state,
+  getRepositoryIssueRequest(String userName, String repository, state,
       {sort, direction, page = 0, needDb = false}) async {
     return IssueRepository.getRepositoryIssueRequest(
         userName, repository, state,
         sort: sort, direction: direction, page: page, needDb: needDb);
   }
 
-  searchRepositoryRequest(q, name, reposName, state, {page = 1}) async {
+  searchRepositoryRequest(String q, String name, String reposName, state,
+      {page = 1}) async {
     return IssueRepository.searchRepositoryRequest(q, name, reposName, state,
         page: page);
   }
 
-  createIssueRequest(userName, repository, issue) async {
+  createIssueRequest(String userName, String repository, issue) async {
     return IssueRepository.createIssueRequest(userName, repository, issue);
   }
 }

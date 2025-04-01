@@ -72,7 +72,7 @@ class Address {
   }
 
   ///仓库Issue get
-  static getReposIssue(reposOwner, reposName, state, sort, direction) {
+  static getReposIssue(String reposOwner, String reposName, state, sort, direction) {
     state ??= 'all';
     sort ??= 'created';
     direction ??= 'desc';

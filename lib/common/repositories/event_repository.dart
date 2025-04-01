@@ -50,7 +50,7 @@ class EventRepository {
   }
 
   /// 用户行为事件
-  static getEventRequest(userName, {page = 0, bool needDb = false}) async {
+  static getEventRequest(String userName, {page = 0, bool needDb = false}) async {
     UserEventDbProvider provider = UserEventDbProvider();
     next() async {
       String url =

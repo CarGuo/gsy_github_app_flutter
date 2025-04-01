@@ -64,7 +64,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
           mimeType: 'text/html', encoding: Encoding.getByName("utf-8"));
     }
     var res = await ReposRepository.getReposFileDirRequest(
-        widget.userName, widget.reposName,
+        widget.userName!, widget.reposName!,
         path: widget.path, branch: widget.branch, text: true, isHtml: true);
     if (res != null && res.result) {
       String data2 = HtmlUtils.resolveHtmlFile(res, widget.lang ?? "java");

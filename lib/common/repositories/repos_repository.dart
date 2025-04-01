@@ -58,7 +58,7 @@ class ReposRepository {
           url, null, {"api-token": Config.API_TOKEN}, null,
           noTip: true);
       if (result != null && result.result && result.data is List) {
-        List<TrendingRepoModel> list =[];
+        List<TrendingRepoModel> list = [];
         var data = result.data;
         if (data == null || data.length == 0) {
           return DataResult(null, false);
@@ -107,9 +107,9 @@ class ReposRepository {
   }
 
   /// 仓库的详情数据
-  static getRepositoryDetailRequest(userName, reposName, branch,
+  static getRepositoryDetailRequest(String userName, String reposName, branch,
       {needDb = true}) async {
-    String? fullName = userName + "/$reposName" + "v3";
+    String? fullName = "$userName/${reposName}v3";
     RepositoryDetailDbProvider provider = RepositoryDetailDbProvider();
 
     next() async {
@@ -142,9 +142,9 @@ class ReposRepository {
   }
 
   /// 仓库活动事件
-  static getRepositoryEventRequest(userName, reposName,
+  static getRepositoryEventRequest(String userName, String reposName,
       {page = 0, branch = "master", needDb = false}) async {
-    String? fullName = userName + "/$reposName";
+    String? fullName = "$userName/$reposName";
     RepositoryEventDbProvider provider = RepositoryEventDbProvider();
 
     next() async {
@@ -181,7 +181,7 @@ class ReposRepository {
   }
 
   /// 获取用户对当前仓库的star、watcher状态
-  static getRepositoryStatusRequest(userName, reposName) async {
+  static getRepositoryStatusRequest(String userName, String reposName) async {
     String urls = Address.resolveStarRepos(userName, reposName);
     String urlw = Address.resolveWatcherRepos(userName, reposName);
     var resS = await httpManager.netFetch(urls, null, null, null, noTip: true);
@@ -191,9 +191,9 @@ class ReposRepository {
   }
 
   /// 获取仓库的提交列表
-  static getReposCommitsRequest(userName, reposName,
+  static getReposCommitsRequest(String userName, String reposName,
       {page = 0, branch = "master", needDb = false}) async {
-    String? fullName = userName + "/$reposName";
+    String? fullName = "$userName/$reposName";
 
     RepositoryCommitsDbProvider provider = RepositoryCommitsDbProvider();
 
@@ -233,7 +233,7 @@ class ReposRepository {
 
   /// *
   /// 获取仓库的文件列表
-  static getReposFileDirRequest(userName, reposName,
+  static getReposFileDirRequest(String userName, String reposName,
       {path = '', branch, text = false, isHtml = false}) async {
     String url = Address.reposDataDir(userName, reposName, path, branch);
     var res = await httpManager.netFetch(
@@ -274,7 +274,7 @@ class ReposRepository {
 
   /// star仓库
   static Future<DataResult> doRepositoryStarRequest(
-      userName, reposName, star) async {
+      String userName, String reposName, star) async {
     String url = Address.resolveStarRepos(userName, reposName);
     var res = await httpManager.netFetch(
         url, null, null, Options(method: !star ? 'PUT' : 'DELETE'));
@@ -284,7 +284,8 @@ class ReposRepository {
   }
 
   /// watcher仓库
-  static doRepositoryWatchRequest(userName, reposName, watch) async {
+  static doRepositoryWatchRequest(
+      String userName, String reposName, watch) async {
     String url = Address.resolveWatcherRepos(userName, reposName);
     var res = await httpManager.netFetch(
         url, null, null, Options(method: !watch ? 'PUT' : 'DELETE'));
@@ -292,9 +293,9 @@ class ReposRepository {
   }
 
   /// 获取当前仓库所有订阅用户
-  static getRepositoryWatcherRequest(userName, reposName, page,
+  static getRepositoryWatcherRequest(String userName, String reposName, page,
       {needDb = false}) async {
-    String? fullName =  "$userName/$reposName";
+    String? fullName = "$userName/$reposName";
     RepositoryWatcherDbProvider provider = RepositoryWatcherDbProvider();
 
     next() async {
@@ -331,9 +332,9 @@ class ReposRepository {
   }
 
   /// 获取当前仓库所有star用户
-  static getRepositoryStarRequest(userName, reposName, page,
+  static getRepositoryStarRequest(String userName, String reposName, page,
       {needDb = false}) async {
-    String? fullName =  "$userName/$reposName";
+    String? fullName = "$userName/$reposName";
     RepositoryStarDbProvider provider = RepositoryStarDbProvider();
     next() async {
       String url = Address.getReposStar(userName, reposName) +
@@ -369,9 +370,9 @@ class ReposRepository {
   }
 
   /// 获取仓库的fork分支
-  static getRepositoryForksRequest(userName, reposName, page,
+  static getRepositoryForksRequest(String userName, String reposName, page,
       {needDb = false}) async {
-    String? fullName =  "$userName/$reposName";
+    String? fullName = "$userName/$reposName";
     RepositoryForkDbProvider provider = RepositoryForkDbProvider();
     next() async {
       String url = Address.getReposForks(userName, reposName) +
@@ -408,7 +409,8 @@ class ReposRepository {
   }
 
   /// 获取用户所有star
-  static getStarRepositoryRequest(userName, page, sort, {needDb = false}) async {
+  static getStarRepositoryRequest(String userName, page, sort,
+      {needDb = false}) async {
     UserStaredDbProvider provider = UserStaredDbProvider();
     next() async {
       String url =
@@ -445,7 +447,8 @@ class ReposRepository {
   }
 
   /// 用户的仓库
-  static getUserRepositoryRequest(userName, page, sort, {needDb = false}) async {
+  static getUserRepositoryRequest(String userName, page, sort,
+      {needDb = false}) async {
     UserReposDbProvider provider = UserReposDbProvider();
     next() async {
       String url =
@@ -482,10 +485,10 @@ class ReposRepository {
   }
 
   /// 创建仓库的fork分支
-  static createForkRequest(userName, reposName) async {
+  static createForkRequest(String userName, String reposName) async {
     String url = Address.createFork(userName, reposName);
-    var res = await httpManager.netFetch(
-        url, null, null, Options(method: "POST"));
+    var res =
+        await httpManager.netFetch(url, null, null, Options(method: "POST"));
     return DataResult(null, res!.result);
   }
 
@@ -505,10 +508,12 @@ class ReposRepository {
         ///测试代码
         Serializer<Branch?> serializerForType =
             serializers.serializerForType(Branch) as Serializer<Branch?>;
-        var test = serializers.deserializeWith<Branch?>(serializerForType, data);
+        var test =
+            serializers.deserializeWith<Branch?>(serializerForType, data);
 
         /// 反序列化
-        Map result = serializers.serializeWith(serializerForType, test) as Map<dynamic, dynamic>;
+        Map result = serializers.serializeWith(serializerForType, test)
+            as Map<dynamic, dynamic>;
         if (kDebugMode) {
           print("###### $test $result");
         }
@@ -522,7 +527,7 @@ class ReposRepository {
   }
 
   /// 用户的前100仓库
-  static getUserRepository100StatusRequest(userName) async {
+  static getUserRepository100StatusRequest(String userName) async {
     String url = Address.userRepos(userName, 'pushed') + "&page=1&per_page=100";
     var res = await httpManager.netFetch(url, null, null, null);
     List<Repository> honorList = [];
@@ -542,7 +547,8 @@ class ReposRepository {
   }
 
   /// 详情的remde数据
-  static getRepositoryDetailReadmeRequest(userName, reposName, branch,
+  static getRepositoryDetailReadmeRequest(
+      String userName, String reposName, branch,
       {needDb = true}) async {
     String? fullName = "$userName/$reposName";
     RepositoryDetailReadmeDbProvider provider =
@@ -623,7 +629,8 @@ class ReposRepository {
   }
 
   /// 获取仓库的单个提交详情
-  static getReposCommitsInfoRequest(userName, reposName, sha) async {
+  static getReposCommitsInfoRequest(
+      String userName, String reposName, sha) async {
     String url = Address.getReposCommitsInfo(userName, reposName, sha);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -635,7 +642,7 @@ class ReposRepository {
   }
 
   /// 获取仓库的release列表
-  static getRepositoryReleaseRequest(userName, reposName, page,
+  static getRepositoryReleaseRequest(String userName, String reposName, page,
       {needHtml = true, release = true}) async {
     String url = release
         ? Address.getReposRelease(userName, reposName) +
@@ -673,7 +680,8 @@ class ReposRepository {
     if (Platform.isIOS) {
       return;
     }
-    var res = await getRepositoryReleaseRequest("CarGuo", 'gsy_github_app_flutter', 1,
+    var res = await getRepositoryReleaseRequest(
+        "CarGuo", 'gsy_github_app_flutter', 1,
         needHtml: false);
     if (res != null && res.result && res.data.length > 0) {
       Release release = res.data[0];
@@ -720,7 +728,8 @@ class ReposRepository {
   }
 
   /// 获取issue总数
-  static getRepositoryIssueStatusRequest(userName, repository) async {
+  static getRepositoryIssueStatusRequest(
+      String userName, String repository) async {
     String url = Address.getReposIssue(userName, repository, null, null, null) +
         "&per_page=1";
     var res = await httpManager.netFetch(url, null, null, null);

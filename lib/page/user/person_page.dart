@@ -97,7 +97,7 @@ class PersonState extends BasePersonState<PersonPage> {
 
   ///获取当前用户的关注状态
   _getFocusStatus() async {
-    var focusRes = await UserRepository.checkFollowRequest(widget.userName);
+    var focusRes = await UserRepository.checkFollowRequest(widget.userName!);
     if (isShow) {
       setState(() {
         focus = (focusRes != null && focusRes.result)
@@ -170,7 +170,7 @@ class PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               CommonUtils.showLoadingDialog(context);
-              UserRepository.doFollowRequest(widget.userName, focusStatus)
+              UserRepository.doFollowRequest(widget.userName!, focusStatus)
                   .then((res) {
                 Navigator.pop(context);
                 _getFocusStatus();

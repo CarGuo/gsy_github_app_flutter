@@ -179,7 +179,7 @@ class ReposDetailProvider with ChangeNotifier {
 
   getRepositoryIssueRequest(state,
       {sort, direction, page = 0, needDb = false}) async {
-    return network.getRepositoryIssueRequest(userName, repository, state,
+    return network.getRepositoryIssueRequest(userName, reposName, state,
         sort: sort, direction: direction, page: page, needDb: needDb);
   }
 
@@ -189,6 +189,6 @@ class ReposDetailProvider with ChangeNotifier {
   }
 
   createIssueRequest(issue) async {
-    return network.createIssueRequest(userName, repository, issue);
+    return network.createIssueRequest(userName, reposName, issue);
   }
 }

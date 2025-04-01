@@ -21,7 +21,7 @@ class IssueRepository {
   /// @param state issue状态
   /// @param sort 排序类型 created updated等
   /// @param direction 正序或者倒序
-  static getRepositoryIssueRequest(userName, repository, state,
+  static getRepositoryIssueRequest(String userName, String repository, state,
       {sort, direction, page = 0, needDb = false}) async {
     String? fullName = "$userName/$repository";
     String dbState = state ?? "*";
