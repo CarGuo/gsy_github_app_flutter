@@ -59,7 +59,7 @@ class UserRepository {
     return DataResult(resultData, res!.result);
   }
 
-  static login(userName, password, store) async {
+  static login(String userName, String password, store) async {
     String type = "$userName:$password";
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
@@ -130,7 +130,7 @@ class UserRepository {
   }
 
   ///获取用户详细信息
-  static getUserInfo(userName, {needDb = false}) async {
+  static getUserInfo(String? userName, {needDb = false}) async {
     UserInfoDbProvider provider = UserInfoDbProvider();
     next() async {
       dynamic res;
@@ -182,7 +182,7 @@ class UserRepository {
   }
 
   /// 在header中提起stared count
-  static getUserStaredCountNet(userName) async {
+  static getUserStaredCountNet(String userName) async {
     String url = Address.userStar(userName, null) + "&per_page=1";
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.headers != null) {
@@ -207,7 +207,7 @@ class UserRepository {
   }
 
   /// 获取用户粉丝列表
-  static getFollowerListRequest(userName, page, {needDb = false}) async {
+  static getFollowerListRequest(String userName, page, {needDb = false}) async {
     UserFollowerDbProvider provider = UserFollowerDbProvider();
 
     next() async {
@@ -244,7 +244,7 @@ class UserRepository {
   }
 
   /// 获取用户关注列表
-  static getFollowedListRequest(userName, page, {needDb = false}) async {
+  static getFollowedListRequest(String userName, page, {needDb = false}) async {
     UserFollowedDbProvider provider = UserFollowedDbProvider();
     next() async {
       String url =
@@ -317,14 +317,14 @@ class UserRepository {
   }
 
   /// 检查用户关注状态
-  static checkFollowRequest(name) async {
+  static checkFollowRequest(String name) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(url, null, null, null, noTip: true);
     return DataResult(res!.data, res.result);
   }
 
   /// 关注用户
-  static doFollowRequest(name, bool followed) async {
+  static doFollowRequest(String name, bool followed) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(
         url, null, null, Options(method: !followed ? "PUT" : "DELETE"),
@@ -333,7 +333,7 @@ class UserRepository {
   }
 
   /// 组织成员
-  static getMemberRequest(userName, page) async {
+  static getMemberRequest(String userName, page) async {
     String url = Address.getMember(userName) + Address.getPageParams("?", page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -368,7 +368,7 @@ class UserRepository {
   }
 
   /// 获取用户组织
-  static getUserOrgsRequest(userName, page, {needDb = false}) async {
+  static getUserOrgsRequest(String userName, page, {needDb = false}) async {
     UserOrgsDbProvider provider = UserOrgsDbProvider();
     next() async {
       String url =

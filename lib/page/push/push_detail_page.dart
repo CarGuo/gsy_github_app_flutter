@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
@@ -96,7 +95,7 @@ class _PushDetailPageState extends State<PushDetailPage>
 
   _getDataLogic() async {
     return await ReposRepository.getReposCommitsInfoRequest(
-        widget.userName, widget.reposName, widget.sha);
+        widget.userName!, widget.reposName!, widget.sha);
   }
 
   @override

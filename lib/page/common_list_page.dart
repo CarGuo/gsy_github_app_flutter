@@ -74,31 +74,31 @@ class _CommonListPageState extends State<CommonListPage>
   _getDataLogic() async {
     return switch (widget.dataType) {
       CommonListDataType.follower => await UserRepository.getFollowerListRequest(
-          widget.userName, page,
+          widget.userName!, page,
           needDb: page <= 1),
       CommonListDataType.followed => await UserRepository.getFollowedListRequest(
-          widget.userName, page,
+          widget.userName!, page,
           needDb: page <= 1),
       CommonListDataType.userRepos => await ReposRepository.getUserRepositoryRequest(
-          widget.userName, page, null,
+          widget.userName!, page, null,
           needDb: page <= 1),
       CommonListDataType.userStar => await ReposRepository.getStarRepositoryRequest(
-          widget.userName, page, null,
+          widget.userName!, page, null,
           needDb: page <= 1),
       CommonListDataType.repoStar => await ReposRepository.getRepositoryStarRequest(
-          widget.userName, widget.reposName, page,
+          widget.userName!, widget.reposName!, page,
           needDb: page <= 1),
       CommonListDataType.repoWatcher => await ReposRepository.getRepositoryWatcherRequest(
-          widget.userName, widget.reposName, page,
+          widget.userName!, widget.reposName!, page,
           needDb: page <= 1),
       CommonListDataType.repoFork => await ReposRepository.getRepositoryForksRequest(
-          widget.userName, widget.reposName, page,
+          widget.userName!, widget.reposName!, page,
           needDb: page <= 1),
       CommonListDataType.history => await ReposRepository.getHistoryRequest(page),
       CommonListDataType.topics =>
         await ReposRepository.searchTopicRepositoryRequest(widget.userName, page: page),
       CommonListDataType.userOrgs =>
-        await UserRepository.getUserOrgsRequest(widget.userName, page, needDb: page <= 1),
+        await UserRepository.getUserOrgsRequest(widget.userName!, page, needDb: page <= 1),
       _ => null,
     };
   }
