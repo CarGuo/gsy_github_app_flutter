@@ -13,7 +13,7 @@ class GSYLocalizations {
 
   ///根据不同 locale.languageCode 加载不同语言对应
   ///GSYStringEn和GSYStringZh都继承了GSYStringBase
-  static final Map<String, GSYStringBase> _localizedValues = {
+  static final Map<String, GSYStringBase> localizedValues = {
     'en': GSYStringEn(),
     'zh': GSYStringZh(),
     'ja': GSYStringJa(),
@@ -21,7 +21,7 @@ class GSYLocalizations {
   };
 
   GSYStringBase? get currentLocalized {
-    return _localizedValues[locale.languageCode];
+    return localizedValues[locale.languageCode];
   }
 
   ///通过 Localizations 加载当前的 GSYLocalizations

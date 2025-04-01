@@ -48,6 +48,24 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
 
   NavigatorObserver navigatorObserver = NavigatorObserver();
 
+  // Helper method to check if the locale is supported
+  Locale _checkSupportedLocale(Locale locale) {
+    // Define the supported locales
+    final supportedLocales = GSYLocalizations.localizedValues;
+
+    // Check if the requested locale is supported
+    for (final supportedLocale in supportedLocales.keys) {
+      if (supportedLocale == locale.languageCode) {
+        return locale;
+      }
+    }
+
+    // Fall back to English if the locale is not supported
+    return const Locale('en', 'US');
+  }
+
+
+
   @override
   void initState() {
     super.initState();
@@ -71,6 +89,11 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
           final (greyApp, appLocale, themeData) = ref.watch(appStateProvider);
 
+
+
+          // Make sure the locale is supported or fall back to a default one
+          final effectiveLocale = _checkSupportedLocale(appLocale);
+
           /// 使用 flutter_redux 做部分状态共享
           /// 通过 StoreProvider 应用 store
           /// 这里是为了展示使用 flutter_redux 的能力所以使用了多种状态管理
@@ -87,8 +110,8 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                     GlobalWidgetsLocalizations.delegate,
                     GSYLocalizationsDelegate.delegate,
                   ],
-                  supportedLocales: [appLocale],
-                  locale: appLocale,
+                  supportedLocales: [effectiveLocale],
+                  locale: effectiveLocale,
                   theme: themeData,
                   navigatorObservers: [navigatorObserver],
 
