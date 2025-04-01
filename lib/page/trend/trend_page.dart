@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:animations/animations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/trending_repo_model.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_provider.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
@@ -112,8 +112,7 @@ class TrendPageState extends ConsumerState<TrendPage>
             _renderHeaderPopItem(selectTime!.name, trendTimeList,
                 (TrendTypeModel result) {
               if (trendLoadingState) {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context)!.loading_text);
+                Fluttertoast.showToast(msg: context.l10n.loading_text);
                 return;
               }
               scrollController
@@ -132,8 +131,7 @@ class TrendPageState extends ConsumerState<TrendPage>
             _renderHeaderPopItem(selectType!.name, trendTypeList,
                 (TrendTypeModel result) {
               if (trendLoadingState) {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context)!.loading_text);
+                Fluttertoast.showToast(msg: context.l10n.loading_text);
                 return;
               }
               scrollController
@@ -233,8 +231,7 @@ class TrendPageState extends ConsumerState<TrendPage>
                   width: 70.0,
                   height: 70.0),
             ),
-            Text(GSYLocalizations.i18n(context)!.app_empty,
-                style: GSYConstant.normalText),
+            Text(context.l10n.app_empty, style: GSYConstant.normalText),
           ],
         ),
       ),
@@ -354,16 +351,16 @@ class TrendTypeModel {
 ///趋势数据时间过滤
 List<TrendTypeModel> trendTime(BuildContext context) {
   return [
-    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_day, "daily"),
-    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_week, "weekly"),
-    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_month, "monthly"),
+    TrendTypeModel(context.l10n.trend_day, "daily"),
+    TrendTypeModel(context.l10n.trend_week, "weekly"),
+    TrendTypeModel(context.l10n.trend_month, "monthly"),
   ];
 }
 
 ///趋势数据语言过滤
 List<TrendTypeModel> trendType(BuildContext context) {
   return [
-    TrendTypeModel(GSYLocalizations.i18n(context)!.trend_all, null),
+    TrendTypeModel(context.l10n.trend_all, null),
     TrendTypeModel("Java", "Java"),
     TrendTypeModel("Kotlin", "Kotlin"),
     TrendTypeModel("Dart", "Dart"),

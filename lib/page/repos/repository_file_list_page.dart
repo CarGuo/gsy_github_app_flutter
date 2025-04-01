@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -87,7 +87,7 @@ class RepositoryDetailFileListPageState
   ///头部列表点击
   _resolveHeaderClick(index) {
     if (isLoading) {
-      Fluttertoast.showToast(msg: GSYLocalizations.i18n(context)!.loading_text);
+      Fluttertoast.showToast(msg: context.l10n.loading_text);
       return;
     }
     if (headerList.isNotEmpty && index != -1 && headerList[index] != ".") {
@@ -112,8 +112,7 @@ class RepositoryDetailFileListPageState
     var provider = context.read<ReposDetailProvider>();
     if (fileItemViewModel.type == "dir") {
       if (isLoading) {
-        Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context)!.loading_text);
+        Fluttertoast.showToast(msg: context.l10n.loading_text);
         return;
       }
       setState(() {
@@ -133,7 +132,7 @@ class RepositoryDetailFileListPageState
       } else {
         String? lang;
         var typeIndex = fileItemViewModel.name!.lastIndexOf(".");
-        if(typeIndex != -1) {
+        if (typeIndex != -1) {
           lang = fileItemViewModel.name!.substring(typeIndex + 1);
         }
         NavigatorUtils.gotoCodeDetailPlatform(

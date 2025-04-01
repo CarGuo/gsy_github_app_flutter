@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /// 搜索输入框
@@ -39,7 +39,7 @@ class GSYSearchInputWidget extends StatelessWidget {
                 autofocus: false,
                 controller: controller,
                 decoration: InputDecoration(
-                  hintText: GSYLocalizations.i18n(context)!.repos_issue_search,
+                  hintText: context.l10n.repos_issue_search,
                   hintStyle: GSYConstant.middleSubText,
                   border: InputBorder.none,
                   isDense: true,

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
@@ -263,8 +263,8 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
                   padding: EdgeInsets.only(bottom: 10, left: lr, right: lr),
                   child: GSYSelectItemWidget(
                     [
-                      GSYLocalizations.i18n(context)!.repos_tab_activity,
-                      GSYLocalizations.i18n(context)!.repos_tab_commits,
+                      context.l10n.repos_tab_activity,
+                      context.l10n.repos_tab_commits,
                     ],
                     (index) {
                       ///切换时先滑动

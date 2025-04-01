@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/search/search_bloc.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
@@ -185,7 +185,7 @@ class _SearchPageState extends State<SearchPage>
                   });
                 },
               ),
-              title: Text(GSYLocalizations.i18n(context)!.search_title),
+              title: Text(context.l10n.search_title),
               bottom: SearchBottom(
                   textEditingController: searchBLoC.textEditingController,
                   onSubmitted: (_) {
@@ -243,8 +243,8 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
             onSubmitPressed: onSubmitPressed),
         GSYSelectItemWidget(
           [
-            GSYLocalizations.i18n(context)!.search_tab_repos,
-            GSYLocalizations.i18n(context)!.search_tab_user,
+            context.l10n.search_tab_repos,
+            context.l10n.search_tab_user,
           ],
           selectItemChanged,
           elevation: 0.0,

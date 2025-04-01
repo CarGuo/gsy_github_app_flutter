@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
 import 'package:gsy_github_app_flutter/common/event/index.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
-import 'package:gsy_github_app_flutter/common/localization/gsy_localizations_delegate.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
@@ -51,11 +50,11 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   // Helper method to check if the locale is supported
   Locale _checkSupportedLocale(Locale locale) {
     // Define the supported locales
-    final supportedLocales = GSYLocalizations.localizedValues;
+    const supportedLocales = AppLocalizations.supportedLocales;
 
     // Check if the requested locale is supported
-    for (final supportedLocale in supportedLocales.keys) {
-      if (supportedLocale == locale.languageCode) {
+    for (final supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
         return locale;
       }
     }
@@ -63,8 +62,6 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
     // Fall back to English if the locale is not supported
     return const Locale('en', 'US');
   }
-
-
 
   @override
   void initState() {
@@ -89,8 +86,6 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
           final (greyApp, appLocale, themeData) = ref.watch(appStateProvider);
 
-
-
           // Make sure the locale is supported or fall back to a default one
           final effectiveLocale = _checkSupportedLocale(appLocale);
 
@@ -104,12 +99,8 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                   navigatorKey: navKey,
 
                   ///多语言实现代理
-                  localizationsDelegates: [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GSYLocalizationsDelegate.delegate,
-                  ],
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
                   supportedLocales: [effectiveLocale],
                   locale: effectiveLocale,
                   theme: themeData,
@@ -195,31 +186,30 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
     var context = navKey.currentContext!;
     switch (code) {
       case Code.NETWORK_ERROR:
-        showToast(GSYLocalizations.i18n(context)!.network_error);
+        showToast(context.l10n.network_error);
         break;
       case 401:
-        showToast(GSYLocalizations.i18n(context)!.network_error_401);
+        showToast(context.l10n.network_error_401);
         break;
       case 403:
-        showToast(GSYLocalizations.i18n(context)!.network_error_403);
+        showToast(context.l10n.network_error_403);
         break;
       case 404:
-        showToast(GSYLocalizations.i18n(context)!.network_error_404);
+        showToast(context.l10n.network_error_404);
         break;
       case 422:
-        showToast(GSYLocalizations.i18n(context)!.network_error_422);
+        showToast(context.l10n.network_error_422);
         break;
       case Code.NETWORK_TIMEOUT:
         //超时
-        showToast(GSYLocalizations.i18n(context)!.network_error_timeout);
+        showToast(context.l10n.network_error_timeout);
         break;
       case Code.GITHUB_API_REFUSED:
         //Github API 异常
-        showToast(GSYLocalizations.i18n(context)!.github_refused);
+        showToast(context.l10n.github_refused);
         break;
       default:
-        showToast(
-            "${GSYLocalizations.i18n(context)!.network_error_unknown} $message");
+        showToast("${context.l10n.network_error_unknown} $message");
         break;
     }
   }

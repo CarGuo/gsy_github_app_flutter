@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -20,21 +20,22 @@ class GSYEventItem extends StatelessWidget {
 
   final bool needImage;
 
-  const GSYEventItem(this.eventViewModel, {super.key, this.onPressed, this.needImage = true});
+  const GSYEventItem(this.eventViewModel,
+      {super.key, this.onPressed, this.needImage = true});
 
   @override
   Widget build(BuildContext context) {
-    Widget des = (eventViewModel.actionDes == null ||
-            eventViewModel.actionDes!.isEmpty)
-        ? Container()
-        : Container(
-            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              eventViewModel.actionDes!,
-              style: GSYConstant.smallSubText,
-              maxLines: 3,
-            ));
+    Widget des =
+        (eventViewModel.actionDes == null || eventViewModel.actionDes!.isEmpty)
+            ? Container()
+            : Container(
+                margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  eventViewModel.actionDes!,
+                  style: GSYConstant.smallSubText,
+                  maxLines: 3,
+                ));
 
     Widget userImage = (needImage)
         ? GSYUserIconWidget(
@@ -105,9 +106,10 @@ class EventViewModel {
     actionUser = eventMap.repository!.fullName;
     String? type = eventMap.subject!.type;
     String status = eventMap.unread!
-        ? GSYLocalizations.i18n(context)!.notify_unread
-        : GSYLocalizations.i18n(context)!.notify_readed;
-    actionDes = "${eventMap.reason!}${GSYLocalizations.i18n(context)!.notify_type}：$type，${GSYLocalizations.i18n(context)!.notify_status}：$status";
+        ? context.l10n.notify_unread
+        : context.l10n.notify_readed;
+    actionDes =
+        "${eventMap.reason!}${context.l10n.notify_type}：$type，${context.l10n.notify_status}：$status";
     actionTarget = eventMap.subject!.title;
   }
 }

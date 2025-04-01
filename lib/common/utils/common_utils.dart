@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -239,11 +239,11 @@ class CommonUtils {
 
   static showLanguageDialog(WidgetRef ref) {
     StringList list = [
-      GSYLocalizations.i18n(ref.context)!.home_language_default,
-      GSYLocalizations.i18n(ref.context)!.home_language_zh,
-      GSYLocalizations.i18n(ref.context)!.home_language_en,
-      GSYLocalizations.i18n(ref.context)!.home_language_ko,
-      GSYLocalizations.i18n(ref.context)!.home_language_ja,
+      ref.context.l10n.home_language_default,
+      ref.context.l10n.home_language_zh,
+      ref.context.l10n.home_language_en,
+      ref.context.l10n.home_language_ko,
+      ref.context.l10n.home_language_ja,
     ];
     CommonUtils.showCommitOptionDialog(ref.context, list, (index) {
       ref.read(appLocalStateProvider.notifier).changeLocale(index.toString());
@@ -260,7 +260,6 @@ class CommonUtils {
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
     return iosInfo.model;
   }
-
 
   static List<Color> getThemeListColor() {
     return [
@@ -289,8 +288,7 @@ class CommonUtils {
   static copy(String? data, BuildContext context) {
     if (data != null) {
       Clipboard.setData(ClipboardData(text: data));
-      Fluttertoast.showToast(
-          msg: GSYLocalizations.i18n(context)!.option_share_copy_success);
+      Fluttertoast.showToast(msg: context.l10n.option_share_copy_success);
     }
   }
 
@@ -343,12 +341,12 @@ class CommonUtils {
   }
 
   static launchOutURL(String? url, BuildContext context) async {
-    var gl = GSYLocalizations.i18n(context);
     if (url != null && await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
       Fluttertoast.showToast(
-          msg: "${gl!.option_web_launcher_error}: ${url ?? ""}");
+          // ignore: use_build_context_synchronously
+          msg: "${context.l10n.option_web_launcher_error}: ${url ?? ""}");
     }
   }
 
@@ -375,7 +373,7 @@ class CommonUtils {
                       children: <Widget>[
                         const SpinKitCubeGrid(color: GSYColors.white),
                         Container(height: 10.0),
-                        Text(GSYLocalizations.i18n(context)!.loading_text,
+                        Text(context.l10n.loading_text,
                             style: GSYConstant.normalTextWhite),
                       ],
                     ),
@@ -467,21 +465,21 @@ class CommonUtils {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(GSYLocalizations.i18n(context)!.app_version_title),
+            title: Text(context.l10n.app_version_title),
             content: Text(contentMsg),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(GSYLocalizations.i18n(context)!.app_cancel)),
+                  child: Text(context.l10n.app_cancel)),
               TextButton(
                   onPressed: () {
                     launchUrl(Uri.parse(Address.updateUrl),
                         mode: LaunchMode.externalApplication);
                     Navigator.pop(context);
                   },
-                  child: Text(GSYLocalizations.i18n(context)!.app_ok)),
+                  child: Text(context.l10n.app_ok)),
             ],
           );
         });

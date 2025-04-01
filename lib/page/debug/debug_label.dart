@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/env/config_wrapper.dart';
@@ -20,11 +20,11 @@ class DebugLabel {
       return false;
     }
     hadShow = true;
-    var gl = GSYLocalizations.of(context);
+    var gl = context.l10n;
     var overlayState = Overlay.of(context);
     var (version, platform) = await _getDeviceInfo();
     PackageInfo packInfo = await PackageInfo.fromPlatform();
-    var language = gl!.locale.languageCode;
+    var language = gl.localeName;
     if (_overlayEntry != null) {
       _overlayEntry!.remove();
       _overlayEntry = null;

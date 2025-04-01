@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
@@ -102,7 +102,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
                   children: <Widget>[
                     SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Text(GSYLocalizations.i18n(context)!.loading_text,
+                    Text(context.l10n.loading_text,
                         style: GSYConstant.middleText),
                   ],
                 ),

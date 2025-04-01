@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -20,8 +20,7 @@ class ErrorPageState extends State<ErrorPage> {
   static List<Map<String, dynamic>?> sErrorStack = [];
   static List<String?> sErrorName = [];
 
-  final TextEditingController textEditingController =
-      TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
 
   addError(FlutterErrorDetails details) {
     try {
@@ -39,8 +38,7 @@ class ErrorPageState extends State<ErrorPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width =
-        MediaQueryData.fromView(View.of(context)).size.width;
+    double width = MediaQueryData.fromView(View.of(context)).size.width;
     return Container(
       color: GSYColors.primaryValue,
       child: Center(
@@ -90,9 +88,7 @@ class ErrorPageState extends State<ErrorPage> {
                       String content = widget.errorMessage;
                       textEditingController.text = content;
                       CommonUtils.showEditDialog(
-                          context,
-                          GSYLocalizations.i18n(context)!.home_reply,
-                          (title) {}, (res) {
+                          context, context.l10n.home_reply, (title) {}, (res) {
                         content = res;
                       }, () {
                         if (content.isEmpty) {
@@ -101,7 +97,7 @@ class ErrorPageState extends State<ErrorPage> {
                         CommonUtils.showLoadingDialog(context);
                         IssueRepository.createIssueRequest(
                             "CarGuo", "gsy_github_app_flutter", {
-                          "title": GSYLocalizations.i18n(context)!.home_reply,
+                          "title": context.l10n.home_reply,
                           "body": content
                         }).then((result) {
                           Navigator.pop(context);

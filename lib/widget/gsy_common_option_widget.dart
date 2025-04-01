@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:share_plus/share_plus.dart';
@@ -40,18 +40,16 @@ class GSYCommonOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<GSYOptionModel> constList = [
-      GSYOptionModel(GSYLocalizations.i18n(context)!.option_web,
-          GSYLocalizations.i18n(context)!.option_web, (model) {
+      GSYOptionModel(context.l10n.option_web, context.l10n.option_web, (model) {
         CommonUtils.launchOutURL(url, context);
       }),
-      GSYOptionModel(GSYLocalizations.i18n(context)!.option_copy,
-          GSYLocalizations.i18n(context)!.option_copy, (model) {
+      GSYOptionModel(context.l10n.option_copy, context.l10n.option_copy,
+          (model) {
         CommonUtils.copy(url ?? "", context);
       }),
-      GSYOptionModel(GSYLocalizations.i18n(context)!.option_share,
-          GSYLocalizations.i18n(context)!.option_share, (model) {
-        Share.share(
-            GSYLocalizations.i18n(context)!.option_share_title + (url ?? ""));
+      GSYOptionModel(context.l10n.option_share, context.l10n.option_share,
+          (model) {
+        Share.share(context.l10n.option_share_title + (url ?? ""));
       }),
     ];
     var list = [...constList, ...?otherList];

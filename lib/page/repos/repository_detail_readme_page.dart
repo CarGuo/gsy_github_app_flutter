@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
@@ -20,7 +20,6 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
 class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
     with AutomaticKeepAliveClientMixin {
-
   RepositoryDetailReadmePageState();
 
   Future? request;
@@ -46,6 +45,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     ///展示 select
     var markdownData =
         context.select<ReposDetailProvider, String?>((p) => p.markdownData);
@@ -60,7 +60,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
                 children: <Widget>[
                   SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                   Container(width: 10.0),
-                  Text(GSYLocalizations.i18n(context)!.loading_text,
+                  Text(context.l10n.loading_text,
                       style: GSYConstant.middleText),
                 ],
               ),

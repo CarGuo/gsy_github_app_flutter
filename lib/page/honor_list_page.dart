@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 
@@ -29,7 +29,7 @@ class _HonorListPageState extends State<HonorListPage> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        GSYLocalizations.i18n(context)!.user_tab_honor,
+        context.l10n.user_tab_honor,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       )),

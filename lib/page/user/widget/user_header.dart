@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
@@ -79,7 +79,7 @@ class UserHeaderItem extends StatelessWidget {
 
     int length = orgList.length > 3 ? 3 : orgList.length;
 
-    list.add(Text("${GSYLocalizations.i18n(context)!.user_orgs_title}:",
+    list.add(Text("${context.l10n.user_orgs_title}:",
         style: GSYConstant.smallSubLightText));
 
     for (int i = 0; i < length; i++) {
@@ -90,7 +90,7 @@ class UserHeaderItem extends StatelessWidget {
           onPressed: () {
             NavigatorUtils.gotoCommonList(
                 context,
-                "${userInfo.login!} ${GSYLocalizations.i18n(context)!.user_orgs_title}",
+                "${userInfo.login!} ${context.l10n.user_orgs_title}",
                 "org",
                 CommonListDataType.userOrgs,
                 userName: userInfo.login);
@@ -146,7 +146,7 @@ class UserHeaderItem extends StatelessWidget {
         ///用户组织
         GSYIConText(
           GSYICons.USER_ITEM_COMPANY,
-          userInfo.company ?? GSYLocalizations.i18n(context)!.nothing_now,
+          userInfo.company ?? context.l10n.nothing_now,
           GSYConstant.smallSubLightText,
           GSYColors.subLightTextColor,
           10.0,
@@ -156,7 +156,7 @@ class UserHeaderItem extends StatelessWidget {
         ///用户位置
         GSYIConText(
           GSYICons.USER_ITEM_LOCATION,
-          userInfo.location ?? GSYLocalizations.i18n(context)!.nothing_now,
+          userInfo.location ?? context.l10n.nothing_now,
           GSYConstant.smallSubLightText,
           GSYColors.subLightTextColor,
           10.0,
@@ -185,7 +185,7 @@ class UserHeaderItem extends StatelessWidget {
           constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
           child: GSYIConText(
             GSYICons.USER_ITEM_LINK,
-            userInfo.blog ?? GSYLocalizations.i18n(context)!.nothing_now,
+            userInfo.blog ?? context.l10n.nothing_now,
             (userInfo.blog == null)
                 ? GSYConstant.smallSubLightText
                 : GSYConstant.smallActionLightText,
@@ -245,7 +245,7 @@ class UserHeaderItem extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                   alignment: Alignment.topLeft,
                   child: Text(
-                    GSYLocalizations.i18n(context)!.user_create_at +
+                    context.l10n.user_create_at +
                         CommonUtils.getDateStr(userInfo.created_at),
                     style: GSYConstant.smallSubLightText,
                     overflow: TextOverflow.ellipsis,
@@ -307,7 +307,7 @@ class UserHeaderBottom extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             _getBottomItem(
-              GSYLocalizations.of(context)!.currentLocalized!.user_tab_repos,
+              context.l10n.user_tab_repos,
               userInfo.public_repos,
               () {
                 NavigatorUtils.gotoCommonList(context, userInfo.login,
@@ -321,7 +321,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              GSYLocalizations.i18n(context)!.user_tab_fans,
+              context.l10n.user_tab_fans,
               userInfo.followers,
               () {
                 NavigatorUtils.gotoCommonList(context, userInfo.login, "user",
@@ -335,7 +335,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              GSYLocalizations.i18n(context)!.user_tab_focus,
+              context.l10n.user_tab_focus,
               userInfo.following,
               () {
                 NavigatorUtils.gotoCommonList(context, userInfo.login, "user",
@@ -349,7 +349,7 @@ class UserHeaderBottom extends StatelessWidget {
                 alignment: Alignment.center,
                 color: GSYColors.subLightTextColor),
             _getBottomItem(
-              GSYLocalizations.i18n(context)!.user_tab_star,
+              context.l10n.user_tab_star,
               userInfo.starred,
               () {
                 NavigatorUtils.gotoCommonList(context, userInfo.login,
@@ -367,7 +367,7 @@ class UserHeaderBottom extends StatelessWidget {
               var data = ref.watch(
                   OnlyShareInstanceWidget.of<FetchHonorDataProvider>(context)!);
               return _getBottomItem(
-                GSYLocalizations.i18n(context)!.user_tab_honor,
+                context.l10n.user_tab_honor,
                 switch (data) {
                   AsyncData(:final value) =>
                     value?.beStaredCount.toString() ?? "---",
@@ -387,7 +387,7 @@ class UserHeaderBottom extends StatelessWidget {
                 },
               );
             })
-            // _getBottomItem(GSYLocalizations.i18n(context)!.user_tab_honor,
+            // _getBottomItem(context.l10n.user_tab_honor,
             //     honorModel?.beStaredCount, () {
             //   if (honorModel?.honorList != null) {
             //     NavigatorUtils.goHonorListPage(context, honorModel?.honorList);
@@ -458,8 +458,8 @@ class UserHeaderChart extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Text(
               (userInfo.type == "Organization")
-                  ? GSYLocalizations.i18n(context)!.user_dynamic_group
-                  : GSYLocalizations.i18n(context)!.user_dynamic_title,
+                  ? context.l10n.user_dynamic_group
+                  : context.l10n.user_dynamic_title,
               style: GSYConstant.normalTextBold,
               overflow: TextOverflow.ellipsis,
             )),

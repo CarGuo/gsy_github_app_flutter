@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/dynamic/dynamic_page.dart';
@@ -57,9 +57,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> tabs = [
       _renderTab(
-          GSYICons.MAIN_DT, GSYLocalizations.i18n(context)!.home_dynamic),
-      _renderTab(GSYICons.MAIN_QS, GSYLocalizations.i18n(context)!.home_trend),
-      _renderTab(GSYICons.MAIN_MY, GSYLocalizations.i18n(context)!.home_my),
+          GSYICons.MAIN_DT, context.l10n.home_dynamic),
+      _renderTab(GSYICons.MAIN_QS, context.l10n.home_trend),
+      _renderTab(GSYICons.MAIN_MY, context.l10n.home_my),
     ];
 
     ///增加返回按键监听
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: GSYColors.primarySwatch,
         indicatorColor: GSYColors.white,
         title: GSYTitleBar(
-          GSYLocalizations.of(context)!.currentLocalized!.app_name,
+          context.l10n.app_name,
           rightWidget: InkWell(
             onTap: () {
               RenderBox renderBox2 =

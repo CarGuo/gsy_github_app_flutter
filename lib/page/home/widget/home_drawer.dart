@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
@@ -29,9 +29,9 @@ class HomeDrawer extends StatelessWidget {
     NavigatorUtils.showGSYDialog(
         context: context,
         builder: (BuildContext context) => AboutDialog(
-              applicationName: GSYLocalizations.i18n(context)!.app_name,
+              applicationName: context.l10n.app_name,
               applicationVersion:
-                  "${GSYLocalizations.i18n(context)!.app_version}: ${versionName ?? ""}",
+                  "${context.l10n.app_version}: ${versionName ?? ""}",
               applicationIcon: const Image(
                   image: AssetImage(GSYICons.DEFAULT_USER_ICON),
                   width: 50.0,
@@ -42,13 +42,13 @@ class HomeDrawer extends StatelessWidget {
 
   showThemeDialog(BuildContext context, WidgetRef ref) {
     StringList list = [
-      GSYLocalizations.i18n(context)!.home_theme_default,
-      GSYLocalizations.i18n(context)!.home_theme_1,
-      GSYLocalizations.i18n(context)!.home_theme_2,
-      GSYLocalizations.i18n(context)!.home_theme_3,
-      GSYLocalizations.i18n(context)!.home_theme_4,
-      GSYLocalizations.i18n(context)!.home_theme_5,
-      GSYLocalizations.i18n(context)!.home_theme_6,
+      context.l10n.home_theme_default,
+      context.l10n.home_theme_1,
+      context.l10n.home_theme_2,
+      context.l10n.home_theme_3,
+      context.l10n.home_theme_4,
+      context.l10n.home_theme_5,
+      context.l10n.home_theme_6,
     ];
     CommonUtils.showCommitOptionDialog(context, list, (index) {
       ref.read(appThemeStateProvider.notifier).pushTheme(index.toString());
@@ -106,14 +106,14 @@ class HomeDrawer extends StatelessWidget {
                         ),
                         ListTile(
                           title: Text(
-                            GSYLocalizations.i18n(context)!.home_reply,
+                            context.l10n.home_reply,
                             style: GSYConstant.normalText,
                           ),
                           onTap: () {
                             String content = "";
                             CommonUtils.showEditDialog(
                               context,
-                              GSYLocalizations.i18n(context)!.home_reply,
+                              context.l10n.home_reply,
                               (title) {},
                               (res) {
                                 content = res;
@@ -125,8 +125,7 @@ class HomeDrawer extends StatelessWidget {
                                 CommonUtils.showLoadingDialog(context);
                                 IssueRepository.createIssueRequest(
                                     "CarGuo", "gsy_github_app_flutter", {
-                                  "title": GSYLocalizations.i18n(context)!
-                                      .home_reply,
+                                  "title": context.l10n.home_reply,
                                   "body": content
                                 }).then((result) {
                                   Navigator.pop(context);
@@ -136,20 +135,19 @@ class HomeDrawer extends StatelessWidget {
                               titleController: TextEditingController(),
                               valueController: TextEditingController(),
                               needTitle: false,
-                              hintText:
-                                  GSYLocalizations.i18n(context)!.feed_back_tip,
+                              hintText: context.l10n.feed_back_tip,
                             );
                           },
                         ),
                         ListTile(
                             title: Text(
-                              GSYLocalizations.i18n(context)!.home_history,
+                              context.l10n.home_history,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
                               NavigatorUtils.gotoCommonList(
                                   context,
-                                  GSYLocalizations.i18n(context)!.home_history,
+                                  context.l10n.home_history,
                                   "repositoryql",
                                   CommonListDataType.history,
                                   userName: "",
@@ -161,8 +159,7 @@ class HomeDrawer extends StatelessWidget {
                                 child: Material(
                                     color: Colors.transparent,
                                     child: Text(
-                                      GSYLocalizations.i18n(context)!
-                                          .home_user_info,
+                                      context.l10n.home_user_info,
                                       style: GSYConstant.normalTextBold,
                                     ))),
                             onTap: () {
@@ -170,7 +167,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         ListTile(
                             title: Text(
-                              GSYLocalizations.i18n(context)!.home_change_theme,
+                              context.l10n.home_change_theme,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -178,8 +175,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         ListTile(
                             title: Text(
-                              GSYLocalizations.i18n(context)!
-                                  .home_change_language,
+                              context.l10n.home_change_language,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -187,7 +183,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         ListTile(
                             title: Text(
-                              GSYLocalizations.i18n(context)!.home_change_grey,
+                              context.l10n.home_change_grey,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -197,7 +193,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         ListTile(
                             title: Text(
-                              GSYLocalizations.i18n(context)!.home_check_update,
+                              context.l10n.home_check_update,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
@@ -205,9 +201,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         ListTile(
                             title: Text(
-                              GSYLocalizations.of(context)!
-                                  .currentLocalized!
-                                  .home_about,
+                              context.l10n.home_about,
                               style: GSYConstant.normalText,
                             ),
                             onLongPress: () {
@@ -224,7 +218,7 @@ class HomeDrawer extends StatelessWidget {
                             }),
                         ListTile(
                             title: GSYFlexButton(
-                              text: GSYLocalizations.i18n(context)!.Login_out,
+                              text: context.l10n.login_out,
                               color: Colors.redAccent,
                               textColor: GSYColors.textWhite,
                               onPress: () {

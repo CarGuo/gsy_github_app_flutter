@@ -1,7 +1,7 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/search_user_ql.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_provider.dart';
@@ -49,7 +49,7 @@ class _TrendUserPageState extends ConsumerState<TrendUserPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-          GSYLocalizations.i18n(context)!.trend_user_title,
+          context.l10n.trend_user_title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         )),
