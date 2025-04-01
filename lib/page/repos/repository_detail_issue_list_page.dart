@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
@@ -154,7 +154,7 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                         width: 70.0,
                         height: 70.0),
                   ),
-                  Text(GSYLocalizations.i18n(context)!.repos_no_support_issue,
+                  Text(context.l10n.repos_no_support_issue,
                       style: GSYConstant.normalText),
                 ],
               ),
@@ -205,9 +205,9 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                       EdgeInsets.only(top: lr, bottom: 10, left: lr, right: lr),
                   child: GSYSelectItemWidget(
                     [
-                      GSYLocalizations.i18n(context)!.repos_tab_issue_all,
-                      GSYLocalizations.i18n(context)!.repos_tab_issue_open,
-                      GSYLocalizations.i18n(context)!.repos_tab_issue_closed,
+                      context.l10n.repos_tab_issue_all,
+                      context.l10n.repos_tab_issue_open,
+                      context.l10n.repos_tab_issue_closed,
                     ],
                     (selectIndex) {
                       this.selectIndex = selectIndex;

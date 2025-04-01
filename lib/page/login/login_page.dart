@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
@@ -72,8 +72,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                 height: 90.0),
                             const Padding(padding: EdgeInsets.all(10.0)),
                             GSYInputWidget(
-                              hintText: GSYLocalizations.i18n(context)!
-                                  .login_username_hint_text,
+                              hintText: context.l10n.login_username_hint_text,
                               iconData: GSYICons.LOGIN_USER,
                               onChanged: (String value) {
                                 _userName = value;
@@ -82,8 +81,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                             ),
                             const Padding(padding: EdgeInsets.all(10.0)),
                             GSYInputWidget(
-                              hintText: GSYLocalizations.i18n(context)!
-                                  .login_password_hint_text,
+                              hintText: context.l10n.login_password_hint_text,
                               iconData: GSYICons.LOGIN_PW,
                               obscureText: true,
                               onChanged: (String value) {
@@ -98,8 +96,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                 children: <Widget>[
                                   Expanded(
                                     child: GSYFlexButton(
-                                      text: GSYLocalizations.i18n(context)!
-                                          .login_text,
+                                      text: context.l10n.login_text,
                                       color: Theme.of(context).primaryColor,
                                       textColor: GSYColors.textWhite,
                                       fontSize: 16,
@@ -111,8 +108,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                   ),
                                   Expanded(
                                     child: GSYFlexButton(
-                                      text: GSYLocalizations.i18n(context)!
-                                          .oauth_text,
+                                      text: context.l10n.oauth_text,
                                       color: Theme.of(context).primaryColor,
                                       textColor: GSYColors.textWhite,
                                       fontSize: 16,
@@ -128,7 +124,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                 CommonUtils.showLanguageDialog(ref);
                               },
                               child: Text(
-                                GSYLocalizations.i18n(context)!.switch_language,
+                                context.l10n.switch_language,
                                 style: const TextStyle(
                                     color: GSYColors.subTextColor),
                               ),
@@ -188,7 +184,7 @@ mixin LoginBLoC on State<LoginPage> {
 
   loginIn() async {
     Fluttertoast.showToast(
-        msg: GSYLocalizations.i18n(context)!.Login_deprecated,
+        msg: context.l10n.login_deprecated,
         gravity: ToastGravity.CENTER,
         toastLength: Toast.LENGTH_LONG);
     return;
@@ -206,8 +202,8 @@ mixin LoginBLoC on State<LoginPage> {
 
   oauthLogin() async {
     var st = StoreProvider.of<GSYState>(context);
-    String? code = await NavigatorUtils.goLoginWebView(context,
-        Address.getOAuthUrl(), GSYLocalizations.i18n(context)!.oauth_text);
+    String? code = await NavigatorUtils.goLoginWebView(
+        context, Address.getOAuthUrl(), context.l10n.oauth_text);
 
     if (code != null && code.isNotEmpty) {
       ///通过 redux 去执行登陆流程

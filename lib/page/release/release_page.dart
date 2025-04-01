@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
@@ -64,11 +64,11 @@ class _ReleasePageState extends State<ReleasePage>
   ///打开外部url
   _launchURL() async {
     String url = _getUrl();
-    var gl = GSYLocalizations.i18n(context);
+    var gl = context.l10n;
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
-      Fluttertoast.showToast(msg: "${gl!.option_web_launcher_error}: $url");
+      Fluttertoast.showToast(msg: "${gl.option_web_launcher_error}: $url");
     }
   }
 
@@ -120,8 +120,8 @@ class _ReleasePageState extends State<ReleasePage>
         ),
         bottom: GSYSelectItemWidget(
           [
-            GSYLocalizations.i18n(context)!.release_tab_release,
-            GSYLocalizations.i18n(context)!.release_tab_tag,
+            context.l10n.release_tab_release,
+            context.l10n.release_tab_tag,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;

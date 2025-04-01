@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 ///通用下上刷新控件
@@ -113,7 +113,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
       key: widget.refreshKey,
 
       ///下拉刷新触发，返回的是一个Future
-      onRefresh: widget.onRefresh ?? ()async{},
+      onRefresh: widget.onRefresh ?? () async {},
       child: ListView.builder(
         ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
         physics: const AlwaysScrollableScrollPhysics(),
@@ -146,8 +146,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
                 width: 70.0,
                 height: 70.0),
           ),
-          Text(GSYLocalizations.i18n(context)!.app_empty,
-              style: GSYConstant.normalText),
+          Text(context.l10n.app_empty, style: GSYConstant.normalText),
         ],
       ),
     );
@@ -157,26 +156,23 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
     Widget bottomWidget = (widget.control!.needLoadMore.value)
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-                ///loading框
-                SpinKitRotatingCircle(
-                    color: Theme.of(context).primaryColor),
-                Container(
-                  width: 5.0,
-                ),
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            ///loading框
+            SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
+            Container(
+              width: 5.0,
+            ),
 
-                ///加载中文本
-                Text(
-                  GSYLocalizations.i18n(context)!.load_more_text,
-                  style: const TextStyle(
-                    color: Color(0xFF121917),
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ])
+            ///加载中文本
+            Text(
+              context.l10n.load_more_text,
+              style: const TextStyle(
+                color: Color(0xFF121917),
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ])
 
         /// 不需要加载
         : Container();

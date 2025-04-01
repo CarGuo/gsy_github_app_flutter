@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -60,10 +60,10 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   ///渲染 Tab 的 Item
   _renderTabItem() {
     var itemList = [
-      GSYLocalizations.i18n(context)!.repos_tab_info,
-      GSYLocalizations.i18n(context)!.repos_tab_readme,
-      GSYLocalizations.i18n(context)!.repos_tab_issue,
-      GSYLocalizations.i18n(context)!.repos_tab_file,
+      context.l10n.repos_tab_info,
+      context.l10n.repos_tab_readme,
+      context.l10n.repos_tab_issue,
+      context.l10n.repos_tab_file,
     ];
     renderItem(String item, int i) {
       return Container(
@@ -86,8 +86,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   _getMoreOtherItem(RepositoryQL? repository) {
     return [
       ///Release Page
-      GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_release,
-          GSYLocalizations.i18n(context)!.repos_option_release, (model) {
+      GSYOptionModel(
+          context.l10n.repos_option_release, context.l10n.repos_option_release,
+          (model) {
         String releaseUrl = "";
         String tagUrl = "";
         if (infoListKey.currentState == null) {
@@ -106,8 +107,9 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       }),
 
       ///Branch Page
-      GSYOptionModel(GSYLocalizations.i18n(context)!.repos_option_branch,
-          GSYLocalizations.i18n(context)!.repos_option_branch, (model) {
+      GSYOptionModel(
+          context.l10n.repos_option_branch, context.l10n.repos_option_branch,
+          (model) {
         if (reposDetailProvider.branchList!.isEmpty) {
           return;
         }
@@ -136,8 +138,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   _createIssue(ReposDetailProvider provider) {
     String title = "";
     String content = "";
-    CommonUtils.showEditDialog(
-        context, GSYLocalizations.i18n(context)!.issue_edit_issue,
+    CommonUtils.showEditDialog(context, context.l10n.issue_edit_issue,
         (titleValue) {
       title = titleValue;
     }, (contentValue) {
@@ -145,14 +146,12 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
     }, () {
       if (title.trim().isEmpty) {
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context)!
-                .issue_edit_issue_title_not_be_null);
+            msg: context.l10n.issue_edit_issue_title_not_be_null);
         return;
       }
       if (content.trim().isEmpty) {
         Fluttertoast.showToast(
-            msg: GSYLocalizations.i18n(context)!
-                .issue_edit_issue_content_not_be_null);
+            msg: context.l10n.issue_edit_issue_content_not_be_null);
         return;
       }
       CommonUtils.showLoadingDialog(context);
@@ -244,8 +243,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
               onPressed: () {
                 if (provider.repository?.hasIssuesEnabled == false) {
                   Fluttertoast.showToast(
-                      msg: GSYLocalizations.i18n(context)!
-                          .repos_no_support_issue);
+                      msg: context.l10n.repos_no_support_issue);
                   return;
                 }
                 _createIssue(provider);

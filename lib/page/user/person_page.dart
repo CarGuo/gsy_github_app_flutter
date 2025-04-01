@@ -5,9 +5,9 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -101,8 +101,8 @@ class PersonState extends BasePersonState<PersonPage> {
     if (isShow) {
       setState(() {
         focus = (focusRes != null && focusRes.result)
-            ? GSYLocalizations.i18n(context)!.user_focus
-            : GSYLocalizations.i18n(context)!.user_un_focus;
+            ? context.l10n.user_focus
+            : context.l10n.user_un_focus;
         focusStatus = (focusRes != null && focusRes.result);
       });
     }
@@ -165,8 +165,7 @@ class PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               if (userInfo!.type == "Organization") {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context)!.user_focus_no_support);
+                Fluttertoast.showToast(msg: context.l10n.user_focus_no_support);
                 return;
               }
               CommonUtils.showLoadingDialog(context);

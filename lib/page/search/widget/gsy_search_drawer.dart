@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /// 搜索drawer
@@ -45,20 +45,20 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     list.add(Container(
       width: itemWidth,
     ));
-    list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_type));
+    list.add(_renderTitle(context.l10n.search_type));
     for (int i = 0; i < searchFilterType.length; i++) {
       FilterModel model = searchFilterType[i];
       list.add(_renderItem(model, searchFilterType, i, widget.typeCallback));
       list.add(_renderDivider());
     }
-    list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_sort));
+    list.add(_renderTitle(context.l10n.search_sort));
 
     for (int i = 0; i < sortType.length; i++) {
       FilterModel model = sortType[i];
       list.add(_renderItem(model, sortType, i, widget.sortCallback));
       list.add(_renderDivider());
     }
-    list.add(_renderTitle(GSYLocalizations.i18n(context)!.search_language));
+    list.add(_renderTitle(context.l10n.search_language));
     for (int i = 0; i < searchLanguageType.length; i++) {
       FilterModel model = searchLanguageType[i];
       list.add(

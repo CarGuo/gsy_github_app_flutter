@@ -6,7 +6,6 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/transformer.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/read_history_db_provider.dart';
@@ -720,7 +719,7 @@ class ReposRepository {
         } else {
           if (showTip) {
             Fluttertoast.showToast(
-                msg: GSYLocalizations.i18n(context)!.app_not_new_version);
+                msg: context.l10n.app_not_new_version);
           }
         }
       }

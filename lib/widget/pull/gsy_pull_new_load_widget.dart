@@ -1,6 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
     as IOS;
 import 'package:flutter/material.dart';
@@ -36,7 +36,10 @@ class GSYPullLoadWidget extends StatefulWidget {
 
   const GSYPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
-      {super.key, this.refreshKey, this.scrollController, this.userIos = false});
+      {super.key,
+      this.refreshKey,
+      this.scrollController,
+      this.userIos = false});
 
   @override
   _GSYPullLoadWidgetState createState() => _GSYPullLoadWidgetState();
@@ -125,8 +128,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
         widget.control.dataList!.isNotEmpty) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (!widget.control.needHeader &&
-        widget.control.dataList!.isEmpty) {
+    } else if (!widget.control.needHeader && widget.control.dataList!.isEmpty) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {
@@ -265,8 +267,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
                 width: 70.0,
                 height: 70.0),
           ),
-          Text(GSYLocalizations.i18n(context)!.app_empty,
-              style: GSYConstant.normalText),
+          Text(context.l10n.app_empty, style: GSYConstant.normalText),
         ],
       ),
     );
@@ -276,26 +277,23 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
     Widget bottomWidget = (widget.control.needLoadMore)
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-                ///loading框
-                SpinKitRotatingCircle(
-                    color: Theme.of(context).primaryColor),
-                Container(
-                  width: 5.0,
-                ),
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            ///loading框
+            SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
+            Container(
+              width: 5.0,
+            ),
 
-                ///加载中文本
-                Text(
-                  GSYLocalizations.i18n(context)!.load_more_text,
-                  style: const TextStyle(
-                    color: Color(0xFF121917),
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ])
+            ///加载中文本
+            Text(
+              context.l10n.load_more_text,
+              style: const TextStyle(
+                color: Color(0xFF121917),
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ])
 
         /// 不需要加载
         : Container();
@@ -358,7 +356,7 @@ class GSYPullLoadWidgetControl extends ChangeNotifier {
 
   List? get dataList => _dataList;
 
- set dataList(List? value) {
+  set dataList(List? value) {
     _dataList.clear();
     if (value != null) {
       _dataList.addAll(value);

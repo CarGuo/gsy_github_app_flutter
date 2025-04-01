@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
@@ -27,7 +27,10 @@ class GSYNestedPullLoadWidget extends StatefulWidget {
 
   const GSYNestedPullLoadWidget(
       this.control, this.itemBuilder, this.onRefresh, this.onLoadMore,
-      {super.key, this.refreshKey, this.headerSliverBuilder, this.scrollController});
+      {super.key,
+      this.refreshKey,
+      this.headerSliverBuilder,
+      this.scrollController});
 
   @override
   _GSYNestedPullLoadWidgetState createState() =>
@@ -76,8 +79,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
         widget.control.dataList.isNotEmpty) {
       ///如果需要头部，并且数据不为0，当index等于实际渲染长度 - 1时，渲染加载更多Item（因为index是从0开始）
       return _buildProgressIndicator();
-    } else if (!widget.control.needHeader &&
-        widget.control.dataList.isEmpty) {
+    } else if (!widget.control.needHeader && widget.control.dataList.isEmpty) {
       ///如果不需要头部，并且数据为0，渲染空页面
       return _buildEmpty();
     } else {
@@ -135,8 +137,7 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
                 width: 70.0,
                 height: 70.0),
           ),
-          Text(GSYLocalizations.i18n(context)!.app_empty,
-              style: GSYConstant.normalText),
+          Text(context.l10n.app_empty, style: GSYConstant.normalText),
         ],
       ),
     );
@@ -146,26 +147,23 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
   Widget _buildProgressIndicator() {
     ///是否需要显示上拉加载更多的loading
     Widget bottomWidget = (widget.control.needLoadMore.value)
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-                ///loading框
-                SpinKitRotatingCircle(
-                    color: Theme.of(context).primaryColor),
-                Container(
-                  width: 5.0,
-                ),
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            ///loading框
+            SpinKitRotatingCircle(color: Theme.of(context).primaryColor),
+            Container(
+              width: 5.0,
+            ),
 
-                ///加载中文本
-                Text(
-                  GSYLocalizations.i18n(context)!.load_more_text,
-                  style: const TextStyle(
-                    color: Color(0xFF121917),
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ])
+            ///加载中文本
+            Text(
+              context.l10n.load_more_text,
+              style: const TextStyle(
+                color: Color(0xFF121917),
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ])
 
         /// 不需要加载
         : Container();

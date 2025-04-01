@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -28,10 +28,10 @@ class _GSYWebViewState extends State<GSYWebView> {
     return Row(children: [
       Expanded(
           child: Text(
-            widget.title!,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )),
+        widget.title!,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      )),
       GSYCommonOptionWidget(url: widget.url),
     ]);
   }
@@ -95,11 +95,9 @@ class _GSYWebViewState extends State<GSYWebView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SpinKitDoubleBounce(
-                        color: Theme.of(context).primaryColor),
+                    SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
                     Container(width: 10.0),
-                    Text(
-                        GSYLocalizations.i18n(context)!.loading_text,
+                    Text(context.l10n.loading_text,
                         style: GSYConstant.middleText),
                   ],
                 ),

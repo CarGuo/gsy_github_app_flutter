@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -20,7 +20,8 @@ class ReposHeaderItem extends StatefulWidget {
 
   final ValueChanged<Size>? layoutListener;
 
-  const ReposHeaderItem(this.reposHeaderViewModel, {super.key, this.layoutListener});
+  const ReposHeaderItem(this.reposHeaderViewModel,
+      {super.key, this.layoutListener});
 
   @override
   _ReposHeaderItemState createState() => _ReposHeaderItemState();
@@ -62,15 +63,16 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             ? layoutLastTopicKey
             : null,
         onPressed: () {
-          NavigatorUtils.gotoCommonList(context, item, "repository", CommonListDataType.topics,
+          NavigatorUtils.gotoCommonList(
+              context, item, "repository", CommonListDataType.topics,
               userName: item, reposName: "");
         },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: const EdgeInsets.all(0.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: Container(
-          padding:
-              const EdgeInsets.only(left: 5.0, right: 5.0, top: 2.5, bottom: 2.5),
+          padding: const EdgeInsets.only(
+              left: 5.0, right: 5.0, top: 2.5, bottom: 2.5),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
             color: Colors.white30,
@@ -113,11 +115,11 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
   ///仓库创建和提交状态信息
   _getInfoText(BuildContext context) {
     String createStr = widget.reposHeaderViewModel.repositoryIsFork!
-        ? '${GSYLocalizations.i18n(context)!.repos_fork_at}${widget.reposHeaderViewModel.repositoryParentName!}\n'
-        : "${GSYLocalizations.i18n(context)!.repos_create_at}${widget.reposHeaderViewModel.created_at}\n";
+        ? '${context.l10n.repos_fork_at}${widget.reposHeaderViewModel.repositoryParentName!}\n'
+        : "${context.l10n.repos_create_at}${widget.reposHeaderViewModel.created_at}\n";
 
-    String updateStr = GSYLocalizations.i18n(context)!.repos_last_commit +
-        widget.reposHeaderViewModel.push_at;
+    String updateStr =
+        context.l10n.repos_last_commit + widget.reposHeaderViewModel.push_at;
 
     return createStr + updateStr;
   }
@@ -223,10 +225,12 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         child: Text(_getInfoText(context),
             style: widget.reposHeaderViewModel.repositoryIsFork!
                 ? GSYConstant.smallActionLightText.copyWith(shadows: [
-                    const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+                    const BoxShadow(
+                        color: Colors.grey, offset: Offset(0.5, 0.5))
                   ])
                 : GSYConstant.smallSubLightText.copyWith(shadows: [
-                    const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
+                    const BoxShadow(
+                        color: Colors.grey, offset: Offset(0.5, 0.5))
                   ])),
       ),
     );
@@ -327,11 +331,11 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                   return;
                 }
                 StringList list = [
-                  GSYLocalizations.i18n(context)!.repos_all_issue_count +
+                  context.l10n.repos_all_issue_count +
                       widget.reposHeaderViewModel.allIssueCount.toString(),
-                  GSYLocalizations.i18n(context)!.repos_open_issue_count +
+                  context.l10n.repos_open_issue_count +
                       widget.reposHeaderViewModel.openIssuesCount.toString(),
-                  GSYLocalizations.i18n(context)!.repos_close_issue_count +
+                  context.l10n.repos_close_issue_count +
                       (widget.reposHeaderViewModel.allIssueCount! -
                               widget.reposHeaderViewModel.openIssuesCount!)
                           .toString(),
@@ -351,15 +355,15 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
     ///如果存在tag，根据tag去判断，修复溢出
     Future.delayed(const Duration(seconds: 0), () {
       /// tag 所在 container
-      RenderBox? renderBox2 =
-          layoutTopicContainerKey.currentContext?.findRenderObject() as RenderBox?;
+      RenderBox? renderBox2 = layoutTopicContainerKey.currentContext
+          ?.findRenderObject() as RenderBox?;
 
       var dy = renderBox2
               ?.localToGlobal(Offset.zero,
-                  ancestor: layoutKey.currentContext!.findRenderObject()).dy ??
+                  ancestor: layoutKey.currentContext!.findRenderObject())
+              .dy ??
           0;
-      var sizeTagContainer =
-          layoutTopicContainerKey.currentContext?.size;
+      var sizeTagContainer = layoutTopicContainerKey.currentContext?.size;
       var headerSize = layoutKey.currentContext?.size;
       if (dy > 0 && headerSize != null && sizeTagContainer != null) {
         /// 20是 card 的上下 padding
@@ -459,7 +463,8 @@ class ReposHeaderViewModel {
 
   ReposHeaderViewModel();
 
-  ReposHeaderViewModel.fromHttpMap(this.ownerName, reposName, RepositoryQL? map) {
+  ReposHeaderViewModel.fromHttpMap(
+      this.ownerName, reposName, RepositoryQL? map) {
     if (map == null || map.ownerName == null) {
       return;
     }
@@ -472,20 +477,16 @@ class ReposHeaderViewModel {
     repositoryFork = map.forkCount != null ? map.forkCount.toString() : "";
     repositoryWatch =
         map.watcherCount != null ? map.watcherCount.toString() : "";
-    repositoryIssue =
-        map.issuesOpen != null ? map.issuesOpen.toString() : "";
+    repositoryIssue = map.issuesOpen != null ? map.issuesOpen.toString() : "";
     //this.repositoryIssueClose = map.closedIssuesCount != null ? map.closed_issues_count.toString() : "";
     //this.repositoryIssueAll = map.all_issues_count != null ? map.all_issues_count.toString() : "";
-    repositorySize =
-        "${(map.size! / 1024.0).toString().substring(0, 3)}M";
+    repositorySize = "${(map.size! / 1024.0).toString().substring(0, 3)}M";
     repositoryType = map.language;
     repositoryDes = map.shortDescriptionHTML;
     repositoryIsFork = map.isFork;
     license = map.license ?? "";
-    repositoryParentName =
-        map.parent?.reposName;
-    repositoryParentUser =
-        map.parent?.ownerName;
+    repositoryParentName = map.parent?.reposName;
+    repositoryParentUser = map.parent?.ownerName;
     created_at = CommonUtils.getNewsTimeStr(DateTime.parse(map.createdAt!));
     push_at = CommonUtils.getNewsTimeStr((DateTime.parse(map.pushAt!)));
   }

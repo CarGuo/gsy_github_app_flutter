@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
@@ -50,8 +50,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
             child: GSYInputWidget(
               onChanged: widget.onTitleChanged,
               controller: widget.titleController,
-              hintText:
-                  GSYLocalizations.i18n(context)!.issue_edit_issue_title_tip,
+              hintText: context.l10n.issue_edit_issue_title_tip,
               obscureText: false,
             ))
         : Container();
@@ -154,8 +153,8 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                     controller: widget.valueController,
                                     decoration: InputDecoration(
                                       hintText: widget.hintText ??
-                                          GSYLocalizations.i18n(context)!
-                                              .issue_edit_issue_title_tip,
+                                          context
+                                              .l10n.issue_edit_issue_title_tip,
                                       hintStyle: GSYConstant.middleSubText,
                                       isDense: true,
                                       border: InputBorder.none,
@@ -181,9 +180,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       padding: const EdgeInsets.all(4.0),
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
-                                      child: Text(
-                                          GSYLocalizations.i18n(context)!
-                                              .app_cancel,
+                                      child: Text(context.l10n.app_cancel,
                                           style: GSYConstant.normalSubText),
                                       onPressed: () {
                                         Navigator.pop(context);
@@ -202,9 +199,7 @@ class _IssueEditDialogState extends State<IssueEditDialog> {
                                       constraints: const BoxConstraints(
                                           minWidth: 0.0, minHeight: 0.0),
                                       onPressed: widget.onPressed,
-                                      child: Text(
-                                          GSYLocalizations.i18n(context)!
-                                              .app_ok,
+                                      child: Text(context.l10n.app_ok,
                                           style: GSYConstant.normalTextBold))),
                             ],
                           )

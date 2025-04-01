@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
-import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -28,7 +28,6 @@ class _NotifyPageState extends State<NotifyPage>
         AutomaticKeepAliveClientMixin<NotifyPage>,
         GSYListState<NotifyPage>,
         SingleTickerProviderStateMixin {
-
   int selectIndex = 0;
 
   ///绘制 Item
@@ -45,18 +44,20 @@ class _NotifyPageState extends State<NotifyPage>
         dragDismissible: false,
         motion: const ScrollMotion(),
         dismissible: DismissiblePane(onDismissed: () {
-          UserRepository.setNotificationAsReadRequest(notification.id.toString())
+          UserRepository.setNotificationAsReadRequest(
+                  notification.id.toString())
               .then((res) {
             showRefreshLoading();
           });
         }),
         children: [
           SlidableAction(
-            label: GSYLocalizations.i18n(context)!.notify_readed,
+            label: context.l10n.notify_readed,
             backgroundColor: Colors.redAccent,
             icon: Icons.delete,
             onPressed: (c) {
-              UserRepository.setNotificationAsReadRequest(notification.id.toString())
+              UserRepository.setNotificationAsReadRequest(
+                      notification.id.toString())
                   .then((res) {
                 showRefreshLoading();
               });
@@ -98,7 +99,8 @@ class _NotifyPageState extends State<NotifyPage>
   }
 
   _getDataLogic() async {
-    return await UserRepository.getNotifyRequest(selectIndex == 2, selectIndex == 1, page);
+    return await UserRepository.getNotifyRequest(
+        selectIndex == 2, selectIndex == 1, page);
   }
 
   @override
@@ -127,7 +129,7 @@ class _NotifyPageState extends State<NotifyPage>
       backgroundColor: GSYColors.mainBackgroundColor,
       appBar: AppBar(
         title: GSYTitleBar(
-          GSYLocalizations.i18n(context)!.notify_title,
+          context.l10n.notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
           needRightLocalIcon: true,
           onRightIconPressed: (_) {
@@ -140,9 +142,9 @@ class _NotifyPageState extends State<NotifyPage>
         ),
         bottom: GSYSelectItemWidget(
           [
-            GSYLocalizations.i18n(context)!.notify_tab_unread,
-            GSYLocalizations.i18n(context)!.notify_tab_part,
-            GSYLocalizations.i18n(context)!.notify_tab_all,
+            context.l10n.notify_tab_unread,
+            context.l10n.notify_tab_part,
+            context.l10n.notify_tab_all,
           ],
           (selectIndex) {
             this.selectIndex = selectIndex;
