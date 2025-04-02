@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
-import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';

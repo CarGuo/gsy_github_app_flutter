@@ -1,15 +1,17 @@
+import 'package:easy_refresh/easy_refresh.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
-import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:signals/signals_flutter.dart';
 
 /// 仓库文件列表
 /// Created by guoshuyu
@@ -27,18 +29,24 @@ class RepositoryDetailFileListPageState
     extends State<RepositoryDetailFileListPage>
     with
         AutomaticKeepAliveClientMixin<RepositoryDetailFileListPage>,
-        GSYListState<RepositoryDetailFileListPage> {
+        SignalsMixin {
+  ///使用 signal 例子，整个页面没用 setState
+  late var dataList = createListSignal<FileModel>([]);
+  late var headerList = createListSignal<String>(["."]);
+
+  final EasyRefreshController controller = EasyRefreshController();
+
+  bool _isLoading = false;
+
   String path = '';
 
   String? searchText;
   String? issueState;
 
-  List<String?> headerList = ["."];
-
   ///渲染文件item
   _renderEventItem(index) {
-    FileItemViewModel fileItemViewModel =
-        FileItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
+    var item = dataList.value[index];
+    FileItemViewModel fileItemViewModel = FileItemViewModel.fromMap(item);
     IconData iconData = (fileItemViewModel.type == "file")
         ? GSYICons.REPOS_ITEM_FILE
         : GSYICons.REPOS_ITEM_DIR;
@@ -76,7 +84,7 @@ class RepositoryDetailFileListPageState
               _resolveHeaderClick(index);
             },
             child:
-                Text("${headerList[index]!} > ", style: GSYConstant.smallText),
+                Text("${headerList[index]} > ", style: GSYConstant.smallText),
           );
         },
         itemCount: headerList.length,
@@ -86,23 +94,19 @@ class RepositoryDetailFileListPageState
 
   ///头部列表点击
   _resolveHeaderClick(index) {
-    if (isLoading) {
+    if (_isLoading) {
       Fluttertoast.showToast(msg: context.l10n.loading_text);
       return;
     }
     if (headerList.isNotEmpty && index != -1 && headerList[index] != ".") {
-      List<String?> newHeaderList = headerList.sublist(0, index + 1);
+      List<String> newHeaderList = headerList.sublist(0, index + 1);
       String path = newHeaderList.sublist(1, newHeaderList.length).join("/");
-      setState(() {
-        this.path = path;
-        headerList = newHeaderList;
-      });
+      this.path = path;
+      headerList.value = newHeaderList;
       showRefreshLoading();
     } else {
-      setState(() {
-        path = "";
-        headerList = ["."];
-      });
+      path = "";
+      headerList.value = ["."];
       showRefreshLoading();
     }
   }
@@ -111,17 +115,14 @@ class RepositoryDetailFileListPageState
   _resolveItemClick(FileItemViewModel fileItemViewModel) {
     var provider = context.read<ReposDetailProvider>();
     if (fileItemViewModel.type == "dir") {
-      if (isLoading) {
+      if (_isLoading) {
         Fluttertoast.showToast(msg: context.l10n.loading_text);
         return;
       }
-      setState(() {
-        headerList.add(fileItemViewModel.name);
-      });
+
+      headerList.add(fileItemViewModel.name!);
       String path = headerList.sublist(1, headerList.length).join("/");
-      setState(() {
-        this.path = path;
-      });
+      this.path = path;
       showRefreshLoading();
     } else {
       String path =
@@ -148,35 +149,52 @@ class RepositoryDetailFileListPageState
     }
   }
 
-  _getDataLogic(String? searchString) async {
+  Future<DataResult> _getDataLogic(String? searchString) async {
     return await context
         .read<ReposDetailProvider>()
         .getReposFileDirRequest(path: path);
   }
 
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  bool get needHeader => false;
-
-  @override
-  bool get isRefreshFirst => true;
-
-  @override
-  requestLoadMore() async {
-    return await _getDataLogic(searchText);
+  /// 模拟IOS下拉显示刷新
+  showRefreshLoading() {
+    ///直接触发下拉
+    Future.delayed(const Duration(seconds: 0), () {
+      controller.callRefresh();
+      return true;
+    });
   }
 
   @override
+  bool get wantKeepAlive => true;
+
   requestRefresh() async {
-    return await _getDataLogic(searchText);
+    _isLoading = true;
+    var res = await _getDataLogic(searchText);
+    try {
+      if (res.result) {
+        var data = res.data;
+        if (data != null) {
+          dataList.value = data as List<FileModel>;
+        }
+      }
+      if (res.next != null) {
+        var data = await res.next?.call();
+        if (data != null) {
+          dataList.value = data as List<FileModel>;
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    _isLoading = false;
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    var proivder = context.watch<ReposDetailProvider>();
+    var provider = context.watch<ReposDetailProvider>();
     return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
       appBar: AppBar(
@@ -186,18 +204,21 @@ class RepositoryDetailFileListPageState
         elevation: 0.0,
       ),
       body: PopScope(
-        canPop: proivder.currentIndex != 3 || headerList.length == 1,
+        canPop: provider.currentIndex != 3 || headerList.length == 1,
         onPopInvokedWithResult: (didPop, _) {
           if (didPop == false) {
             _resolveHeaderClick(headerList.length - 2);
           }
         },
-        child: GSYPullLoadWidget(
-          pullLoadWidgetControl,
-          (BuildContext context, int index) => _renderEventItem(index),
-          handleRefresh,
-          onLoadMore,
-          refreshKey: refreshIndicatorKey,
+        child: EasyRefresh(
+          controller: controller,
+          header: const MaterialHeader(),
+          refreshOnStart: true,
+          onRefresh: requestRefresh,
+          child: ListView.builder(
+            itemBuilder: (_, int index) => _renderEventItem(index),
+            itemCount: dataList.length,
+          ),
         ),
       ),
     );
