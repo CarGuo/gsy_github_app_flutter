@@ -89,7 +89,7 @@ class GSYMarkdownWidget extends StatelessWidget {
     );
   }
 
-  _getBackgroundColor(context) {
+  _getBackgroundColor(BuildContext context) {
     Color background = GSYColors.white;
     switch (style) {
       case DARK_LIGHT:

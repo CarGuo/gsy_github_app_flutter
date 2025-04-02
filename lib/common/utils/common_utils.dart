@@ -292,7 +292,7 @@ class CommonUtils {
     }
   }
 
-  static gsyLaunchUrl(context, String? url) {
+  static gsyLaunchUrl(BuildContext context, String? url) {
     if (url == null && url!.isEmpty) return;
     Uri parseUrl = Uri.parse(url);
     bool isImage = isImageEnd(parseUrl.toString());

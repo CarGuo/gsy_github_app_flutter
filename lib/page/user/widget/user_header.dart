@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
@@ -107,7 +108,7 @@ class UserHeaderItem extends StatelessWidget {
     return Row(children: list);
   }
 
-  _renderImg(context) {
+  _renderImg(BuildContext context) {
     return RawMaterialButton(
         onPressed: () {
           if (userInfo.avatar_url != null) {
@@ -129,7 +130,7 @@ class UserHeaderItem extends StatelessWidget {
         ));
   }
 
-  _renderUserInfo(context) {
+  _renderUserInfo(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -166,7 +167,7 @@ class UserHeaderItem extends StatelessWidget {
     );
   }
 
-  _renderBlog(context) {
+  _renderBlog(BuildContext context) {
     return Container(
 
         ///用户博客
@@ -405,7 +406,7 @@ class UserHeaderChart extends StatelessWidget {
 
   const UserHeaderChart(this.userInfo, {super.key});
 
-  _renderChart(context) {
+  _renderChart(BuildContext context) {
     double height = 140.0;
     double width = 3 * MediaQuery.sizeOf(context).width / 2;
     if (userInfo.login != null && userInfo.type == "Organization") {

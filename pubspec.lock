@@ -942,6 +942,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.5.1"
+  preact_signals:
+    dependency: transitive
+    description:
+      name: preact_signals
+      sha256: a5b445796a02244b85fa43d79a7030fbfbbb08f7c48277ee93c636140a8fb2e0
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.8.3"
   provider:
     dependency: "direct main"
     description:
@@ -1118,6 +1126,30 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
+  signals:
+    dependency: "direct main"
+    description:
+      name: signals
+      sha256: "85225d03e71720b6fff62a8296ba7328a3e363d1ffbb9f3a85efaa05d9e85e67"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.0.2"
+  signals_core:
+    dependency: transitive
+    description:
+      name: signals_core
+      sha256: "5668ff1fb953fe48c88b03d50d43c5fe128cd7c831b932a4157f5f6be868b80f"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.0.2"
+  signals_flutter:
+    dependency: transitive
+    description:
+      name: signals_flutter
+      sha256: "66b36ed0b5961cc7d8d0606813bc3fd66758dc1728cbfcffef0d2a97c7a706a2"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.0.2"
   simple_animations:
     dependency: "direct main"
     description:

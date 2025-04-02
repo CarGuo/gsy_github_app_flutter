@@ -57,6 +57,7 @@ dependencies:
   rive: 0.13.13
   # 固定版本
   easy_refresh: 3.4.0
+  signals: 6.0.2
   flutter_redux: 0.10.0
   rxdart: 0.27.1
   graphql: 5.1.3
