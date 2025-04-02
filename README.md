@@ -49,15 +49,15 @@
 > 
 > 1、 TrendPage ： 目前采用纯  riverpod  状态管理，演示
 >
-> 2、 Scoped Model：目前在 RepositoryDetailPage 出使用
+> 2、 Provider：目前在 RepositoryDetailPage 出使用
 >
 > 3、 Redux：目前展示了全局登陆和用户信息等上面使用。
 > 
-> 4、 ReposDetailPage：目前使用了 Provider 状态管理展示组合使用。
+> 4、 Provider：目前用于管理全局灰度，多语言。
 >
-> 5、 LoginPage：另类的 BLoC 模式。
+> 5、 Repos 等请求展示了 graphQL
 > 
-> 6、 Repos 等请求展示了 graphQL
+> 6、 Redux：目前展示了全局登陆和用户信息等上面使用。
 > 
 > **列表显示有多个，其中：**
 > 
