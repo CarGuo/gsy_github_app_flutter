@@ -118,15 +118,20 @@ class UserHeaderItem extends StatelessWidget {
         padding: const EdgeInsets.all(0.0),
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: ClipOval(
-          child: FadeInImage.assetNetwork(
-            placeholder: GSYICons.DEFAULT_USER_ICON,
-            //预览图
-            fit: BoxFit.fitWidth,
-            image: userInfo.avatar_url ?? GSYICons.DEFAULT_REMOTE_PIC,
-            width: 80.0,
-            height: 80.0,
-          ),
-        ));
+            child: FadeInImage.assetNetwork(
+          placeholder: GSYICons.DEFAULT_USER_ICON,
+          key: (userInfo.avatar_url != null && userInfo.avatar_url!.isNotEmpty)
+              ? ValueKey(userInfo.avatar_url)
+              : null,
+          //预览图
+          fit: BoxFit.fitWidth,
+          image: (userInfo.avatar_url != null &&
+                  userInfo.avatar_url!.isNotEmpty)
+              ? userInfo.avatar_url!
+              : "https://github.com/CarGuo/gsy_github_app_flutter/blob/master/logo.png?raw=true",
+          width: 80.0,
+          height: 80.0,
+        )));
   }
 
   _renderUserInfo(BuildContext context) {

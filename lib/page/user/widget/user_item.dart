@@ -17,19 +17,28 @@ class UserItem extends StatelessWidget {
 
   final bool needImage;
 
-  const UserItem(this.userItemViewModel, {super.key, this.onPressed, this.needImage = true});
+  const UserItem(this.userItemViewModel,
+      {super.key, this.onPressed, this.needImage = true});
 
   @override
   Widget build(BuildContext context) {
     var me = StoreProvider.of<GSYState>(context).state.userInfo!;
     Widget userImage = IconButton(
-        padding: const EdgeInsets.only(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
+        padding: const EdgeInsets.only(
+            top: 0.0, left: 0.0, bottom: 0.0, right: 10.0),
         icon: ClipOval(
           child: FadeInImage.assetNetwork(
             placeholder: GSYICons.DEFAULT_USER_ICON,
+            key: (userItemViewModel.userPic != null &&
+                    userItemViewModel.userPic!.isNotEmpty)
+                ? ValueKey(userItemViewModel.userPic)
+                : null,
             //预览图
             fit: BoxFit.fitWidth,
-            image: userItemViewModel.userPic ?? "https://github.com/CarGuo/gsy_github_app_flutter/blob/master/logo.png?raw=true",
+            image: (userItemViewModel.userPic != null &&
+                    userItemViewModel.userPic!.isNotEmpty)
+                ? userItemViewModel.userPic!
+                : "https://github.com/CarGuo/gsy_github_app_flutter/blob/master/logo.png?raw=true",
             width: 40.0,
             height: 40.0,
           ),
