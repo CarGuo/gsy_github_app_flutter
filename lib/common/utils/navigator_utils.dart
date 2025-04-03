@@ -12,7 +12,7 @@ import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
 import 'package:gsy_github_app_flutter/page/issue/issue_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_webview.dart';
-import 'package:gsy_github_app_flutter/page/notify_page.dart';
+import 'package:gsy_github_app_flutter/page/notify/notify_page.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
 import 'package:gsy_github_app_flutter/page/user/person_page.dart';
 import 'package:gsy_github_app_flutter/page/photoview_page.dart';

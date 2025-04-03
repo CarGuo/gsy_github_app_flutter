@@ -43,19 +43,21 @@
 
 > **Since this is primarily a learning and demonstration project, it includes various patterns, libraries, UIs, etc. Please don't mind the diversity**
 > 
-> 0. Global state management currently has multiple patterns, including Provider, Redux, Riverpod, etc.
+> 1. Global state management includes multiple approaches: Provider, Redux, Riverpod, etc.  
 > 
-> 1. TrendPage: Currently uses pure Riverpod state management for demonstration
->
-> 2. Scoped Model: Currently used in RepositoryDetailPage
->
-> 3. Redux: Currently demonstrated for global login and user information, etc.
+> 2. TrendPage: Currently demonstrates pure Riverpod state management  
 > 
-> 4. ReposDetailPage: Currently uses Provider state management to demonstrate combined usage
->
-> 5. LoginPage: An alternative BLoC pattern
+> 3. Provider: Currently used in RepositoryDetailPage  
 > 
-> 6. Repos and other requests demonstrate graphQL
+> 4. Redux: Currently demonstrates global login and user information management  
+> 
+> 5. Provider: Currently used to manage global grayscale mode and multi-language support  
+> 
+> 6. Repos and other requests demonstrate GraphQL implementation  
+> 
+> 7. Redux: Currently demonstrates global login and user information management  
+> 
+> 8. Signals: Currently used for in-page state management in NotifyPage and RepositoryDetailFileListPage
 > 
 > **There are multiple list displays, including:**
 > 
@@ -143,7 +145,7 @@
 >Current Flutter SDK version 3.29
 
 ```
-User Interaction → UI Layer(Widget/Page) → State Layer(Redux/Provider/Riverpod) → Service Layer(Repositories) 
+User Interaction → UI Layer(Widget/Page) → State Layer(Redux/Provider/Riverpod/Signals) → Service Layer(Repositories) 
        → Network Layer(Net) → GitHub API → Data Model(Model) → Local Storage(DB) → UI Update
 ```
 
@@ -165,6 +167,10 @@ User Interaction → UI Layer(Widget/Page) → State Layer(Redux/Provider/Riverp
 │  ┌─────────┐│  ┌─────────┐  │                │                 │
 │  │Common UI││  │Riverpod │  │                │                 │
 │  └─────────┘│  └─────────┘  │                │                 │
+│             │               │                │                 │
+│             │  ┌─────────┐  │                │                 │
+│             │  │ Signals │  │                │                 │
+│             │  └─────────┘  │                │                 │
 │             │               │                │                 │
 └─────────────┴───────────────┴────────────────┴─────────────────┘
 ```
@@ -222,7 +228,7 @@ Riverpod page state management:
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                           TrendPage Architecture                           │
+│                         Page Architecture Overview                         │
 └───────────────────────────────────────────────────────────────────────────┘
                                       │
                                       ▼
@@ -234,58 +240,42 @@ Riverpod page state management:
 │  └───────────────────┘   └────────────────────┘   └────────────────────┘  │
 └───────────────────────────────────────────────────────────────────────────┘
                                       │
-                                      ▼
-┌───────────────────────────────────────────────────────────────────────────┐
-│                         TrendPage Specific State                           │
-├───────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐  │
-│  │                      Riverpod Providers                             │  │
-│  │  ┌───────────────────────────────┐  ┌─────────────────────────────┐ │  │
-│  │  │        trendFirstProvider     │  │     trendSecondProvider     │ │  │
-│  │  │ (Primary Data Source)         │  │ (Secondary Data Source)     │ │  │
-│  │  │ - Takes time & language params│  │ - Depends on firstProvider  │ │  │
-│  │  │ - Fetches trending repos      │  │ - Processes additional data │ │  │
-│  │  └───────────────────────────────┘  └─────────────────────────────┘ │  │
-│  └─────────────────────────────────────────────────────────────────────┘  │
-│                                    │                                      │
-│                                    ▼                                      │
-│  ┌─────────────────────────────────────────────────────────────────────┐  │
-│  │                   Local State (StatefulWidget)                      │  │
-│  │  ┌───────────────────────────┐  ┌───────────────────────────────┐  │  │
-│  │  │ User Interface Controls   │  │ Filter Parameters             │  │  │
-│  │  │ - scrollController        │  │ - selectTime (daily/weekly)   │  │  │
-│  │  │ - _isOpen                 │  │ - selectType (language)       │  │  │
-│  │  │ - refreshIndicatorKey     │  │ - selectTimeIndex            │  │  │
-│  │  └───────────────────────────┘  │ - selectTypeIndex            │  │  │
-│  │                                 └───────────────────────────────┘  │
-│  └─────────────────────────────────────────────────────────────────────┘  │
-│                                    │                                      │
-│                                    ▼                                      │
-│  ┌─────────────────────────────────────────────────────────────────────┐  │
-│  │                     Global State Flags                             │  │
-│  │  ┌───────────────────────────────┐  ┌─────────────────────────────┐ │  │
-│  │  │ trendLoadingState (boolean)   │  │ trendRequestedState (bool)  │ │  │
-│  │  │ - Tracks loading status       │  │ - Tracks if data requested  │ │  │
-│  │  └───────────────────────────────┘  └─────────────────────────────┘ │  │
-│  └─────────────────────────────────────────────────────────────────────┘  │
-│                                                                           │
-└───────────────────────────────────────────────────────────────────────────┘
-                                      │
+                     ┌────────────────┴────────────────┐
+                     ▼                                 ▼
+┌─────────────────────────────────┐  ┌─────────────────────────────────────┐
+│     TrendPage (Riverpod)        │  │       NotifyPage (Signals)          │
+├─────────────────────────────────┤  ├─────────────────────────────────────┤
+│                                 │  │                                     │
+│┌─────────────────────────────┐  │  │┌───────────────────────────────────┐│
+││      Riverpod Providers     │  │  ││         Signals State             ││
+││┌───────────────────────────┐│  │  ││┌─────────────────────────────────┐││
+│││    trendFirstProvider     ││  │  │││   notifySignal (List)           │││
+│││    trendSecondProvider    ││  │  │││   notifyIndexSignal (int)       │││
+││└───────────────────────────┘│  │  │││   signalPage (int)              │││
+│└─────────────────────────────┘  │  ││└─────────────────────────────────┘││
+│                                 │  │└───────────────────────────────────┘│
+│┌─────────────────────────────┐  │  │┌───────────────────────────────────┐│
+││  Local State (StatefulWidget)│  │  ││     SignalsMixin Processing      ││
+││  - UI Controls              │  │  ││  - createEffect() for reactions   ││
+││  - Filter Parameters        │  │  ││  - Manages data loading           ││
+│└─────────────────────────────┘  │  ││  - Updates UI based on signals    ││
+│                                 │  │└───────────────────────────────────┘│
+└─────────────────────────────────┘  └─────────────────────────────────────┘
+                     │                                 │
+                     └────────────────┬────────────────┘
                                       ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
 │                            Data Layer                                      │
 │  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │                       ReposRepository                                 │ │
+│  │                  ReposRepository / UserRepository                     │ │
 │  │  ┌────────────────────────┐       ┌─────────────────────────────────┐ │ │
-│  │  │ Network Request        │───┬──▶│ TrendRepositoryDbProvider       │ │ │
-│  │  │ - API calls            │   │   │ - Database caching              │ │ │
-│  │  └────────────────────────┘   │   │ - Offline data retrieval        │ │ │
-│  │                               │   └─────────────────────────────────┘ │ │
+│  │  │ Network Request        │───┬──▶│ Database Providers              │ │ │
+│  │  │ - API calls            │   │   │ - Data caching                  │ │ │
+│  │  └────────────────────────┘   │   └─────────────────────────────────┘ │ │
 │  │                               │                                       │ │
 │  │                               │   ┌─────────────────────────────────┐ │ │
-│  │                               └──▶│ TrendingRepoModel               │ │ │
-│  │                                   │ - Data model for trending repos │ │ │
+│  │                               └──▶│ Data Models                     │ │ │
+│  │                                   │ - Structure definitions         │ │ │
 │  │                                   └─────────────────────────────────┘ │ │
 │  └───────────────────────────────────────────────────────────────────────┘ │
 └───────────────────────────────────────────────────────────────────────────┘
@@ -293,12 +283,11 @@ Riverpod page state management:
                                       ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
 │                              UI Components                                 │
-│  ┌────────────────────────────┐ ┌─────────────────────────┐ ┌───────────┐ │
-│  │ TrendTypeModel             │ │ ReposViewModel          │ │ ReposItem │  │
-│  │ - Filter options           │ │ - UI data wrapper       │ │ - UI      │ │
-│  └────────────────────────────┘ └─────────────────────────┘ └───────────┘ │
+│  ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐   │
+│  │ View Models        │  │ List Items         │  │ Interactive UI     │   │
+│  │ - Data Formatting  │  │ - Item Rendering   │  │ - User Actions     │   │
+│  └────────────────────┘  └────────────────────┘  └────────────────────┘   │
 └───────────────────────────────────────────────────────────────────────────┘
-
 ```
 
 Provider page state management:

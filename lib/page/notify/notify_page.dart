@@ -1,16 +1,20 @@
+import 'dart:async';
+
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
-import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
-import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gsy_github_app_flutter/model/notification.dart' as Model;
+import 'package:signals/signals_flutter.dart';
 
 /// 通知消息
 /// Created by guoshuyu
@@ -26,20 +30,60 @@ class NotifyPage extends StatefulWidget {
 class _NotifyPageState extends State<NotifyPage>
     with
         AutomaticKeepAliveClientMixin<NotifyPage>,
-        GSYListState<NotifyPage>,
-        SingleTickerProviderStateMixin {
-  int selectIndex = 0;
+        SingleTickerProviderStateMixin,
+        SignalsMixin {
+  final EasyRefreshController controller =
+      EasyRefreshController(controlFinishLoad: true);
+
+  late Completer<bool> isLoading;
+
+  late var notifySignal = createListSignal<Model.Notification>([]);
+  late var notifyIndexSignal = createSignal<int>(0);
+  late var signalPage = createSignal<int>(-1);
+
+  @override
+  void initState() {
+    super.initState();
+    createEffect(() async {
+      notifyIndexSignal.value;
+      signalPage.value;
+      loadData();
+    });
+  }
+
+  loadData() async {
+    if (signalPage.value == -1) {
+      return;
+    }
+    DataResult res = await _getDataLogic(signalPage.value);
+    if (res.result && res.data is List<Model.Notification>) {
+      var data = res.data as List<Model.Notification>;
+      if (data.length < Config.PAGE_SIZE) {
+        controller.finishLoad(IndicatorResult.noMore);
+      } else {
+        controller.finishLoad(IndicatorResult.success);
+      }
+      if (signalPage.value == 0) {
+        notifySignal.value = data;
+      } else {
+        notifySignal.addAll(data);
+      }
+    }
+    if (!isLoading.isCompleted) {
+      isLoading.complete(true);
+    }
+  }
 
   ///绘制 Item
   _renderItem(index) {
-    Model.Notification notification = pullLoadWidgetControl.dataList[index];
-    if (selectIndex != 0) {
+    Model.Notification notification = notifySignal[index];
+    if (notifyIndexSignal.value != 0) {
       return _renderEventItem(notification);
     }
 
     ///只有未读消息支持 Slidable 滑动效果
     return Slidable(
-      key: ValueKey<String>("${index}_$selectIndex"),
+      key: ValueKey<String>("${index}_${notifyIndexSignal.value}"),
       endActionPane: ActionPane(
         dragDismissible: false,
         motion: const ScrollMotion(),
@@ -47,7 +91,7 @@ class _NotifyPageState extends State<NotifyPage>
           UserRepository.setNotificationAsReadRequest(
                   notification.id.toString())
               .then((res) {
-            showRefreshLoading();
+            notifySignal.remove(notification);
           });
         }),
         children: [
@@ -59,7 +103,7 @@ class _NotifyPageState extends State<NotifyPage>
               UserRepository.setNotificationAsReadRequest(
                       notification.id.toString())
                   .then((res) {
-                showRefreshLoading();
+                notifySignal.remove(notification);
               });
             },
           ),
@@ -86,41 +130,37 @@ class _NotifyPageState extends State<NotifyPage>
         NavigatorUtils.goIssueDetail(context, userName, reposName, number,
                 needRightLocalIcon: true)
             .then((res) {
-          showRefreshLoading();
+          _forceRefresh();
         });
       }
     }, needImage: false);
   }
 
-  ///切换tab
-  _resolveSelectIndex() {
-    clearData();
-    showRefreshLoading();
+  _getDataLogic(int page) async {
+    return await UserRepository.getNotifyRequest(
+        notifyIndexSignal.value == 2, notifyIndexSignal.value == 1, page);
   }
 
-  _getDataLogic() async {
-    return await UserRepository.getNotifyRequest(
-        selectIndex == 2, selectIndex == 1, page);
+  requestLoadMore() async {
+    isLoading = Completer<bool>();
+    signalPage.value++;
+    await isLoading.future;
+  }
+
+  requestRefresh() async {
+    isLoading = Completer<bool>();
+    controller.finishLoad(IndicatorResult.none);
+    signalPage.value = 0;
+    await isLoading.future;
+  }
+
+  _forceRefresh() async {
+    signalPage.value = -1;
+    controller.callRefresh();
   }
 
   @override
   bool get wantKeepAlive => true;
-
-  @override
-  bool get needHeader => false;
-
-  @override
-  bool get isRefreshFirst => true;
-
-  @override
-  requestLoadMore() async {
-    return await _getDataLogic();
-  }
-
-  @override
-  requestRefresh() async {
-    return await _getDataLogic();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +176,7 @@ class _NotifyPageState extends State<NotifyPage>
             CommonUtils.showLoadingDialog(context);
             UserRepository.setAllNotificationAsReadRequest().then((res) {
               Navigator.pop(context);
-              _resolveSelectIndex();
+              _forceRefresh();
             });
           },
         ),
@@ -147,8 +187,7 @@ class _NotifyPageState extends State<NotifyPage>
             context.l10n.notify_tab_all,
           ],
           (selectIndex) {
-            this.selectIndex = selectIndex;
-            _resolveSelectIndex();
+            notifyIndexSignal.value = selectIndex;
           },
           height: 30.0,
           margin: const EdgeInsets.all(0.0),
@@ -156,12 +195,17 @@ class _NotifyPageState extends State<NotifyPage>
         ),
         elevation: 4.0,
       ),
-      body: GSYPullLoadWidget(
-        pullLoadWidgetControl,
-        (BuildContext context, int index) => _renderItem(index),
-        handleRefresh,
-        onLoadMore,
-        refreshKey: refreshIndicatorKey,
+      body: EasyRefresh(
+        controller: controller,
+        header: const MaterialHeader(),
+        footer: const BezierFooter(),
+        refreshOnStart: true,
+        onRefresh: requestRefresh,
+        onLoad: requestLoadMore,
+        child: ListView.builder(
+          itemBuilder: (_, int index) => _renderItem(index),
+          itemCount: notifySignal.length,
+        ),
       ),
     );
   }
