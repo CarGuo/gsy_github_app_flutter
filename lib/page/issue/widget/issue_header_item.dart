@@ -41,8 +41,7 @@ class IssueHeaderItem extends StatelessWidget {
         const Padding(padding: EdgeInsets.all(2.0)),
 
         ///issue issue编码
-        Text(issueHeaderViewModel.issueTag,
-            style: GSYConstant.smallTextWhite),
+        Text(issueHeaderViewModel.issueTag, style: GSYConstant.smallTextWhite),
         const Padding(padding: EdgeInsets.all(2.0)),
 
         ///issue 评论数
@@ -107,8 +106,7 @@ class IssueHeaderItem extends StatelessWidget {
                           children: <Widget>[
                             ///名称
                             Expanded(
-                                child: Text(
-                                    issueHeaderViewModel.actionUser!,
+                                child: Text(issueHeaderViewModel.actionUser!,
                                     style: GSYConstant.normalTextWhite)),
 
                             ///时间
@@ -126,7 +124,8 @@ class IssueHeaderItem extends StatelessWidget {
                         Container(
 
                             ///评论标题
-                            margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                            margin:
+                                const EdgeInsets.only(top: 6.0, bottom: 2.0),
                             alignment: Alignment.topLeft,
 
                             ///评论标题
@@ -146,8 +145,10 @@ class IssueHeaderItem extends StatelessWidget {
 
               ///评论内容
               GSYMarkdownWidget(
-                  markdownData: issueHeaderViewModel.issueDesHtml,
-                  style: GSYMarkdownWidget.DARK_THEME),
+                markdownData: issueHeaderViewModel.issueDesHtml,
+                style: GSYMarkdownWidget.DARK_THEME,
+                baseUrl: "",
+              ),
 
               ///close 用户
               _renderCloseByText()
@@ -182,9 +183,8 @@ class IssueHeaderViewModel {
     closedBy = issueMap.closeBy != null ? issueMap.closeBy!.login : "";
     locked = issueMap.locked;
     issueComment = issueMap.title;
-    issueDesHtml = issueMap.bodyHtml ?? ((issueMap.body != null)
-            ? issueMap.body
-            : "");
+    issueDesHtml =
+        issueMap.bodyHtml ?? ((issueMap.body != null) ? issueMap.body : "");
     commentCount = "${issueMap.commentNum}";
     state = issueMap.state;
     issueDes = issueMap.body != null ? ": \n${issueMap.body!}" : '';

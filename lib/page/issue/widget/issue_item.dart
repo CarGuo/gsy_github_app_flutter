@@ -27,7 +27,8 @@ class IssueItem extends StatelessWidget {
   final bool limitComment;
 
   const IssueItem(this.issueItemViewModel,
-      {super.key, this.onPressed,
+      {super.key,
+      this.onPressed,
       this.onLongPress,
       this.hideBottom = false,
       this.limitComment = true});
@@ -85,7 +86,10 @@ class IssueItem extends StatelessWidget {
               maxLines: limitComment ? 2 : 1000,
             ),
           )
-        : GSYMarkdownWidget(markdownData: issueItemViewModel.issueComment);
+        : GSYMarkdownWidget(
+            markdownData: issueItemViewModel.issueComment,
+            baseUrl: "",
+          );
   }
 
   @override
@@ -148,7 +152,8 @@ class IssueItem extends StatelessWidget {
 class IssueItemViewModel {
   String actionTime = "---";
   String? actionUser = "---";
-  String? actionUserPic ;
+  String? actionUserPic;
+
   String issueComment = "---";
   String commentCount = "---";
   String? state = "---";

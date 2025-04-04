@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,7 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
     ///展示 select
     var markdownData =
         context.select<ReposDetailProvider, String?>((p) => p.markdownData);
+    var rp = context.read<ReposDetailProvider>();
     var widget = (markdownData == null)
         ? Center(
             child: Container(
@@ -66,7 +68,12 @@ class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
               ),
             ),
           )
-        : GSYMarkdownWidget(markdownData: markdownData);
+        : GSYMarkdownWidget(
+            markdownData: markdownData,
+            baseUrl: getRawBaseUrl(
+                repoName: rp.reposName,
+                userName: rp.userName,
+                branch: rp.currentBranch));
 
     return widget;
   }

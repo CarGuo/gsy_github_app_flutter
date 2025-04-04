@@ -485,3 +485,10 @@ class CommonUtils {
         });
   }
 }
+
+String getRawBaseUrl(
+    {required String userName,
+    required String repoName,
+    required String branch}) {
+  return "https://raw.githubusercontent.com/$userName/$repoName/$branch/";
+}
