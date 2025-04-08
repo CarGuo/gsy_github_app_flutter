@@ -242,8 +242,7 @@ class GSYMarkdownWidget extends StatelessWidget {
     return Container(
       color: _getBackgroundColor(context),
       padding: const EdgeInsets.all(5.0),
-      child: SingleChildScrollView(
-        child: MarkdownBody(
+      child: Markdown(
           styleSheet: _getStyle(context),
           syntaxHighlighter: GSYHighlighter(),
           data: _processMarkdownImages(markdownData!, baseUrl),
@@ -266,7 +265,6 @@ class GSYMarkdownWidget extends StatelessWidget {
             CommonUtils.gsyLaunchUrl(context, href);
           },
         ),
-      ),
     );
   }
 }
