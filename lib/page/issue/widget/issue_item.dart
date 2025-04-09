@@ -89,6 +89,8 @@ class IssueItem extends StatelessWidget {
         : GSYMarkdownWidget(
             markdownData: issueItemViewModel.issueComment,
             baseUrl: "",
+            shrinkWrap: true,
+            scroll: false,
           );
   }
 

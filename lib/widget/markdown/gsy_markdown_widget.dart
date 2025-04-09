@@ -29,11 +29,15 @@ class GSYMarkdownWidget extends StatelessWidget {
   final String baseUrl;
 
   final int style;
+  final bool shrinkWrap;
+  final bool scroll;
 
   const GSYMarkdownWidget(
       {super.key,
       this.markdownData = "",
       required this.baseUrl,
+      this.shrinkWrap = false,
+      this.scroll = true,
       this.style = DARK_WHITE});
 
   _getCommonSheet(BuildContext context, Color codeBackground) {
@@ -243,28 +247,30 @@ class GSYMarkdownWidget extends StatelessWidget {
       color: _getBackgroundColor(context),
       padding: const EdgeInsets.all(5.0),
       child: Markdown(
-          styleSheet: _getStyle(context),
-          syntaxHighlighter: GSYHighlighter(),
-          data: _processMarkdownImages(markdownData!, baseUrl),
-          imageBuilder: (Uri? uri, String? title, String? alt) {
-            if (uri == null || uri.toString().isEmpty) return const SizedBox();
-            final StringList parts = uri.toString().split('#');
-            double? width;
-            double? height;
-            if (parts.length == 2) {
-              final StringList dimensions = parts.last.split('x');
-              if (dimensions.length == 2) {
-                var [ws, hs] = dimensions;
-                width = double.parse(ws);
-                height = double.parse(hs);
-              }
+        styleSheet: _getStyle(context),
+        syntaxHighlighter: GSYHighlighter(),
+        shrinkWrap: shrinkWrap,
+        physics: scroll ? null : const NeverScrollableScrollPhysics(),
+        data: _processMarkdownImages(markdownData!, baseUrl),
+        imageBuilder: (Uri? uri, String? title, String? alt) {
+          if (uri == null || uri.toString().isEmpty) return const SizedBox();
+          final StringList parts = uri.toString().split('#');
+          double? width;
+          double? height;
+          if (parts.length == 2) {
+            final StringList dimensions = parts.last.split('x');
+            if (dimensions.length == 2) {
+              var [ws, hs] = dimensions;
+              width = double.parse(ws);
+              height = double.parse(hs);
             }
-            return kDefaultImageBuilder(uri, "", width, height);
-          },
-          onTapLink: (String text, String? href, String title) {
-            CommonUtils.gsyLaunchUrl(context, href);
-          },
-        ),
+          }
+          return kDefaultImageBuilder(uri, "", width, height);
+        },
+        onTapLink: (String text, String? href, String title) {
+          CommonUtils.gsyLaunchUrl(context, href);
+        },
+      ),
     );
   }
 }

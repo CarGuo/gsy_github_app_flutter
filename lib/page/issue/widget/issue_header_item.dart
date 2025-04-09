@@ -148,6 +148,8 @@ class IssueHeaderItem extends StatelessWidget {
                 markdownData: issueHeaderViewModel.issueDesHtml,
                 style: GSYMarkdownWidget.DARK_THEME,
                 baseUrl: "",
+                shrinkWrap: true,
+                scroll: false,
               ),
 
               ///close 用户
