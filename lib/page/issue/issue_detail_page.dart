@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -168,8 +168,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       },
       () {
         if (contentData == null || contentData!.trim().isEmpty) {
-          Fluttertoast.showToast(
-              msg: context.l10n.issue_edit_issue_content_not_be_null);
+          showToast(context.l10n.issue_edit_issue_content_not_be_null);
           return;
         }
         CommonUtils.showLoadingDialog(context);
@@ -217,13 +216,11 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       },
       () {
         if (title == null || title!.trim().isEmpty) {
-          Fluttertoast.showToast(
-              msg: context.l10n.issue_edit_issue_title_not_be_null);
+          showToast(context.l10n.issue_edit_issue_title_not_be_null);
           return;
         }
         if (content == null || content!.trim().isEmpty) {
-          Fluttertoast.showToast(
-              msg: context.l10n.issue_edit_issue_content_not_be_null);
+          showToast(context.l10n.issue_edit_issue_content_not_be_null);
           return;
         }
         CommonUtils.showLoadingDialog(context);
@@ -256,8 +253,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       },
       () {
         if (content == null || content?.trim().isEmpty == true) {
-          Fluttertoast.showToast(
-              msg: context.l10n.issue_edit_issue_content_not_be_null);
+          showToast(context.l10n.issue_edit_issue_content_not_be_null);
           return;
         }
         CommonUtils.showLoadingDialog(context);

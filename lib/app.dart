@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
 import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
@@ -214,10 +214,4 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
     }
   }
 
-  showToast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        gravity: ToastGravity.CENTER,
-        toastLength: Toast.LENGTH_LONG);
-  }
 }

@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/transformer.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/read_history_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/repository_commits_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/repos/repository_detail_db_provider.dart';
@@ -718,8 +718,7 @@ class ReposRepository {
               context, "${release.name!}: ${release.body!}");
         } else {
           if (showTip) {
-            Fluttertoast.showToast(
-                msg: context.l10n.app_not_new_version);
+            showToast(context.l10n.app_not_new_version);
           }
         }
       }

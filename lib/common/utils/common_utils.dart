@@ -6,11 +6,11 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -288,7 +288,7 @@ class CommonUtils {
   static copy(String? data, BuildContext context) {
     if (data != null) {
       Clipboard.setData(ClipboardData(text: data));
-      Fluttertoast.showToast(msg: context.l10n.option_share_copy_success);
+      showToast(context.l10n.option_share_copy_success);
     }
   }
 
@@ -344,9 +344,9 @@ class CommonUtils {
     if (url != null && await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
-      Fluttertoast.showToast(
+      showToast(
           // ignore: use_build_context_synchronously
-          msg: "${context.l10n.option_web_launcher_error}: ${url ?? ""}");
+          "${context.l10n.option_web_launcher_error}: ${url ?? ""}");
     }
   }
 

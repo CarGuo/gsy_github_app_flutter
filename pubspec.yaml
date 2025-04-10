@@ -99,6 +99,9 @@ dev_dependencies:
   build_runner: ^2.4.14
   json_serializable: 6.8.0
   flutter_lints: 4.0.0
+  # error handle
+  talker_flutter: 4.7.1
+  talker_dio_logger: 4.7.1
 #  flutter_test:
 #    sdk: flutter
 

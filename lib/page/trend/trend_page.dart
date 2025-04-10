@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:animations/animations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/model/trending_repo_model.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_provider.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
@@ -112,7 +112,7 @@ class TrendPageState extends ConsumerState<TrendPage>
             _renderHeaderPopItem(selectTime!.name, trendTimeList,
                 (TrendTypeModel result) {
               if (trendLoadingState) {
-                Fluttertoast.showToast(msg: context.l10n.loading_text);
+                showToast(context.l10n.loading_text);
                 return;
               }
               scrollController
@@ -131,7 +131,7 @@ class TrendPageState extends ConsumerState<TrendPage>
             _renderHeaderPopItem(selectType!.name, trendTypeList,
                 (TrendTypeModel result) {
               if (trendLoadingState) {
-                Fluttertoast.showToast(msg: context.l10n.loading_text);
+                showToast(context.l10n.loading_text);
                 return;
               }
               scrollController

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/repository_ql.dart';
@@ -145,13 +145,11 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       content = contentValue;
     }, () {
       if (title.trim().isEmpty) {
-        Fluttertoast.showToast(
-            msg: context.l10n.issue_edit_issue_title_not_be_null);
+        showToast(context.l10n.issue_edit_issue_title_not_be_null);
         return;
       }
       if (content.trim().isEmpty) {
-        Fluttertoast.showToast(
-            msg: context.l10n.issue_edit_issue_content_not_be_null);
+        showToast(context.l10n.issue_edit_issue_content_not_be_null);
         return;
       }
       CommonUtils.showLoadingDialog(context);
@@ -242,8 +240,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             child: FloatingActionButton(
               onPressed: () {
                 if (provider.repository?.hasIssuesEnabled == false) {
-                  Fluttertoast.showToast(
-                      msg: context.l10n.repos_no_support_issue);
+                  showToast(context.l10n.repos_no_support_issue);
                   return;
                 }
                 _createIssue(provider);

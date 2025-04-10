@@ -1,9 +1,9 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -95,7 +95,7 @@ class RepositoryDetailFileListPageState
   ///头部列表点击
   _resolveHeaderClick(index) {
     if (_isLoading) {
-      Fluttertoast.showToast(msg: context.l10n.loading_text);
+      showToast(context.l10n.loading_text);
       return;
     }
     if (headerList.isNotEmpty && index != -1 && headerList[index] != ".") {
@@ -116,7 +116,7 @@ class RepositoryDetailFileListPageState
     var provider = context.read<ReposDetailProvider>();
     if (fileItemViewModel.type == "dir") {
       if (_isLoading) {
-        Fluttertoast.showToast(msg: context.l10n.loading_text);
+        showToast(context.l10n.loading_text);
         return;
       }
 

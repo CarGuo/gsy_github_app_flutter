@@ -4,10 +4,10 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -165,7 +165,7 @@ class PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               if (userInfo!.type == "Organization") {
-                Fluttertoast.showToast(msg: context.l10n.user_focus_no_support);
+                showToast(context.l10n.user_focus_no_support);
                 return;
               }
               CommonUtils.showLoadingDialog(context);
