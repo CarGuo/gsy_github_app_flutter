@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/transformer.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
@@ -513,10 +513,7 @@ class ReposRepository {
         /// 反序列化
         Map result = serializers.serializeWith(serializerForType, test)
             as Map<dynamic, dynamic>;
-        if (kDebugMode) {
-          print("###### $test $result");
-        }
-
+        printLog("###### $test $result");
         list.add(data['name']);
       }
       return DataResult(list, true);
@@ -687,31 +684,23 @@ class ReposRepository {
       String? versionName = release.name;
       if (versionName != null) {
         if (Config.DEBUG!) {
-          if (kDebugMode) {
-            print("versionName $versionName");
-          }
+          printLog("versionName $versionName");
         }
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
         var appVersion = packageInfo.version;
 
         if (Config.DEBUG!) {
-          if (kDebugMode) {
-            print("appVersion $appVersion");
-          }
+          printLog("appVersion $appVersion");
         }
         Version versionNameNum = Version.parse(versionName);
         Version currentNum = Version.parse(appVersion);
         int result = versionNameNum.compareTo(currentNum);
         if (Config.DEBUG!) {
-          if (kDebugMode) {
-            print("versionNameNum $versionNameNum currentNum $currentNum");
-          }
+          printLog("versionNameNum $versionNameNum currentNum $currentNum");
         }
         if (Config.DEBUG!) {
-          if (kDebugMode) {
-            print("newsHad $result");
-          }
+          printLog("newsHad $result");
         }
         if (result > 0) {
           CommonUtils.showUpdateDialog(
@@ -744,9 +733,7 @@ class ReposRepository {
           }
         }
       } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
+        printLog(e);
       }
     }
     return DataResult(null, false);

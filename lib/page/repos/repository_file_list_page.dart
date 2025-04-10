@@ -1,7 +1,7 @@
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
@@ -184,9 +184,7 @@ class RepositoryDetailFileListPageState
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
     _isLoading = false;
   }

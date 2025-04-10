@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_string_escapes, prefer_adjacent_string_concatenation
 
-import 'package:flutter/foundation.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /// Created by guoshuyu
@@ -38,9 +38,7 @@ class HtmlUtils {
         mdDataCode = mdDataCode.replaceAll(m.group(0)!, match);
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
     try {
       RegExp exp = RegExp(regExPre);
@@ -52,9 +50,7 @@ class HtmlUtils {
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
 
     try {
@@ -67,9 +63,7 @@ class HtmlUtils {
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
     try {
       RegExp exp = RegExp("href=\"(.*?)\"");
@@ -84,9 +78,7 @@ class HtmlUtils {
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
 
     return generateCodeHtml(mdDataCode, false,

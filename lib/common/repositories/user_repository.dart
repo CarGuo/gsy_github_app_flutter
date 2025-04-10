@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_followed_db_provider.dart';
 import 'package:gsy_github_app_flutter/db/provider/user/user_follower_db_provider.dart';
@@ -45,11 +45,9 @@ class UserRepository {
 
       resultData = await getUserInfo(null);
       if (Config.DEBUG!) {
-        if (kDebugMode) {
-          print("user result ${resultData.result}");
-          print(resultData.data);
-          print(res.data.toString());
-        }
+        printLog("user result ${resultData.result}");
+        printLog(resultData.data);
+        printLog(res.data.toString());
       }
       if (resultData.result == true) {
         store.dispatch(UpdateUserAction(resultData.data));
@@ -64,9 +62,7 @@ class UserRepository {
     var bytes = utf8.encode(type);
     var base64Str = base64.encode(bytes);
     if (Config.DEBUG!) {
-      if (kDebugMode) {
-        print("base64Str login $base64Str");
-      }
+      printLog("base64Str login $base64Str");
     }
 
     await LocalStorage.save(Config.USER_NAME_KEY, userName);
@@ -87,11 +83,9 @@ class UserRepository {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
       if (Config.DEBUG!) {
-        if (kDebugMode) {
-          print("user result ${resultData.result}");
-          print(resultData.data);
-          print(res.data.toString());
-        }
+        printLog("user result ${resultData.result}");
+        printLog(resultData.data);
+        printLog(res.data.toString());
       }
       store.dispatch(UpdateUserAction(resultData.data));
     }
@@ -198,9 +192,7 @@ class UserRepository {
           }
         }
       } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
+        printLog(e);
       }
     }
     return DataResult(null, false);

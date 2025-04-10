@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart';
@@ -197,17 +197,13 @@ class GSYMarkdownWidget extends StatelessWidget {
         }
       } catch (e) {
         // 如果 URL 解析失败 (格式错误)，尝试作为相对路径直接拼接
-        if (kDebugMode) {
-          print(
-              'Warning: Could not parse URL "$originalUrl". Treating as relative path. Error: $e');
-        }
+        printLog(
+            'Warning: Could not parse URL "$originalUrl". Treating as relative path. Error: $e');
         try {
           processedUrl = baseUri.resolve(originalUrl.trim()).toString();
         } catch (resolveError) {
-          if (kDebugMode) {
-            print(
-                'Error: Could not resolve relative path "$originalUrl" with base "$baseUrl". Keeping original. Error: $resolveError');
-          }
+          printLog(
+              'Error: Could not resolve relative path "$originalUrl" with base "$baseUrl". Keeping original. Error: $resolveError');
           processedUrl = originalUrl.trim(); // 拼接也失败，保留原始值
         }
       }
@@ -227,10 +223,8 @@ class GSYMarkdownWidget extends StatelessWidget {
         }
         // 注意: Uri.replace 会自动处理 ? 和 & 的添加
       } catch (e) {
-        if (kDebugMode) {
-          print(
-              'Warning: Could not parse final URL "$processedUrl" for adding raw=true. Skipping. Error: $e');
-        }
+        printLog(
+            'Warning: Could not parse final URL "$processedUrl" for adding raw=true. Skipping. Error: $e');
         // 解析失败，无法添加 raw=true，保留之前的 processedUrl
       }
 
@@ -370,9 +364,7 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
       throw const FormatException("URL 必须是绝对的 http 或 https URL");
     }
   } catch (e) {
-    if (kDebugMode) {
-      print("无效的 URL 格式: $urlString - $e");
-    }
+    printLog("无效的 URL 格式: $urlString - $e");
     return false;
   }
 
@@ -400,9 +392,7 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
       // if (headResponse.statusCode != null && headResponse.statusCode! >= 200 && headResponse.statusCode! < 300) {
       final contentType = headResponse.headers
           .value(Headers.contentTypeHeader); // 获取 Content-Type
-      if (kDebugMode) {
-        print("HEAD Content-Type for $urlString: $contentType");
-      }
+      printLog("HEAD Content-Type for $urlString: $contentType");
       if (contentType != null &&
           contentType.toLowerCase().contains('image/svg+xml')) {
         return true; // 明确是 SVG
@@ -413,15 +403,11 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
       // HEAD 请求失败很常见 (例如 405 Method Not Allowed)，不应阻止尝试 GET
       if (e.type == DioExceptionType.badResponse &&
           e.response?.statusCode == 405) {
-        if (kDebugMode) {
-          print(
-              "HEAD request received 405 (Method Not Allowed) for $urlString. Falling back to GET.");
-        }
+        printLog(
+            "HEAD request received 405 (Method Not Allowed) for $urlString. Falling back to GET.");
       } else {
-        if (kDebugMode) {
-          print(
-              "HEAD request failed for $urlString: ${e.type} - ${e.message}. Falling back to GET.");
-        }
+        printLog(
+            "HEAD request failed for $urlString: ${e.type} - ${e.message}. Falling back to GET.");
       }
       // 继续执行 GET 请求
     }
@@ -440,9 +426,7 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
         response.statusCode! < 300) {
       // 2.1 再次检查 GET 请求的 Content-Type Header
       final contentType = response.headers.value(Headers.contentTypeHeader);
-      if (kDebugMode) {
-        print("GET Content-Type for $urlString: $contentType");
-      }
+      printLog("GET Content-Type for $urlString: $contentType");
       if (contentType != null &&
           contentType.toLowerCase().contains('image/svg+xml')) {
         return true; // 明确是 SVG
@@ -452,9 +436,7 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
       if (response.data is List<int>) {
         final bodyBytes = response.data as List<int>;
         if (bodyBytes.isEmpty) {
-          if (kDebugMode) {
-            print("Response body is empty for $urlString.");
-          }
+          printLog("Response body is empty for $urlString.");
           return false; // 空内容不是 SVG
         }
 
@@ -471,60 +453,48 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
           // 检查是否以 <svg 开头，或以 <?xml 开头且包含 <svg
           if (bodyStart.startsWith('<svg') ||
               (bodyStart.startsWith('<?xml') && bodyStart.contains('<svg'))) {
-            if (kDebugMode) {
-              print("Content start matches SVG pattern for $urlString.");
-            }
+            printLog("Content start matches SVG pattern for $urlString.");
             return true; // 内容看起来像 SVG
           } else {
             // 打印开头一小段供调试（注意可能包含非打印字符）
-            if (kDebugMode) {
-              print(
-                  "Content start does not look like SVG for $urlString. Start (limited length): '${bodyStart.substring(0, bodyStart.length > 50 ? 50 : bodyStart.length)}'");
-            }
+            printLog(
+                "Content start does not look like SVG for $urlString. Start (limited length): '${bodyStart.substring(0, bodyStart.length > 50 ? 50 : bodyStart.length)}'");
           }
         } catch (e) {
-          if (kDebugMode) {
-            print(
-                "Error decoding or checking response body start for $urlString: $e");
-          }
+          printLog(
+              "Error decoding or checking response body start for $urlString: $e");
           // 解码错误可能意味着它不是基于文本的 SVG
           return false;
         }
       } else {
         // 这通常不应该发生，因为我们设置了 ResponseType.bytes
-        if (kDebugMode) {
-          print(
-              "Unexpected response data type: ${response.data?.runtimeType} for $urlString");
-        }
+        printLog(
+            "Unexpected response data type: ${response.data?.runtimeType} for $urlString");
         return false;
       }
     } else {
       // 如果自定义了 validateStatus，需要在这里处理非 2xx 状态码
-      if (kDebugMode) {
-        print(
-            "GET request failed or returned non-2xx status: ${response.statusCode} for $urlString");
-      }
+      printLog(
+          "GET request failed or returned non-2xx status: ${response.statusCode} for $urlString");
       return false;
     }
   } on DioException catch (e) {
     // 处理 Dio 的特定异常
-    if (kDebugMode) {
-      print("DioException caught while checking URL $urlString:");
-      print("  Type: ${e.type}");
-      if (e.response != null) {
-        print("  Status Code: ${e.response?.statusCode}");
-        print("  Status Message: ${e.response?.statusMessage}");
-      }
-      if (e.message != null) {
-        print("  Message: ${e.message}");
-      }
+
+    printLog("DioException caught while checking URL $urlString:");
+    printLog("  Type: ${e.type}");
+    if (e.response != null) {
+      printLog("  Status Code: ${e.response?.statusCode}");
+      printLog("  Status Message: ${e.response?.statusMessage}");
     }
+    if (e.message != null) {
+      printLog("  Message: ${e.message}");
+    }
+
     return false;
   } catch (e) {
     // 捕获其他任何意外错误
-    if (kDebugMode) {
-      print("Unexpected error checking URL $urlString: $e");
-    }
+    printLog("Unexpected error checking URL $urlString: $e");
     return false;
   }
 

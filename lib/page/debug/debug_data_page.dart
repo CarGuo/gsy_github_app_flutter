@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
-import 'package:gsy_github_app_flutter/page/error_page.dart';
 import 'package:gsy_github_app_flutter/test/demo_tab_page.dart';
 import 'package:gsy_github_app_flutter/widget/flutter_json_widget.dart';
-
+import 'package:talker_flutter/talker_flutter.dart';
 
 ///请求数据调
 class DebugDataPage extends StatefulWidget {
@@ -39,8 +38,8 @@ class _DebugDataPageState extends State<DebugDataPage> {
         tabItems: [
           _renderTab("Responses", 0),
           _renderTab("Request", 1),
-          _renderTab("Error", 2),
-          _renderTab("ErrorWidget", 3),
+          _renderTab("HttpError", 2),
+          _renderTab("ErrorLog", 3),
         ],
         title: const Text(
           "Debug",
@@ -53,7 +52,11 @@ class _DebugDataPageState extends State<DebugDataPage> {
               LogsInterceptors.sRequestHttpUrl, LogsInterceptors.sHttpRequest),
           DebugDataList(
               LogsInterceptors.sHttpErrorUrl, LogsInterceptors.sHttpError),
-          DebugDataList(ErrorPageState.sErrorName, ErrorPageState.sErrorStack),
+          TalkerScreen(
+            talker: talker,
+            appBarLeading: const SizedBox(),
+            appBarTitle: "",
+          )
         ],
         indicatorColor: GSYColors.primaryValue,
         onTap: (index) {
@@ -114,7 +117,8 @@ class _DebugDataListState extends State<DebugDataList>
                   ),
                   Expanded(
                       child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Text(
                       widget.titles[index] ?? "",
                       style: const TextStyle(fontSize: 15),
@@ -129,9 +133,7 @@ class _DebugDataListState extends State<DebugDataList>
                     ClipboardData(text: "${widget.titles[index]}"));
                 showToast("复制链接成功");
               } catch (e) {
-                if (kDebugMode) {
-                  print(e);
-                }
+                printLog(e);
               }
             },
             onDoubleTap: () {
@@ -140,9 +142,7 @@ class _DebugDataListState extends State<DebugDataList>
                     ClipboardData(text: "${widget.dataList[index]}"));
                 showToast("复制数据成功");
               } catch (e) {
-                if (kDebugMode) {
-                  print(e);
-                }
+                printLog(e);
               }
             },
             onTap: () {
@@ -157,8 +157,8 @@ class _DebugDataListState extends State<DebugDataList>
                             padding: const EdgeInsets.only(top: 30),
                             color: Colors.white,
                             child: SingleChildScrollView(
-                                child:
-                                    JsonViewerWidget(widget.dataList[index] as Map<String, dynamic>)),
+                                child: JsonViewerWidget(widget.dataList[index]
+                                    as Map<String, dynamic>)),
                           ),
                           Transform.translate(
                             offset: const Offset(0, -10),

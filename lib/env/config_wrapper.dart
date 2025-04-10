@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/env/env_config.dart';
 
 ///往下共享环境配置
@@ -12,7 +13,7 @@ class ConfigWrapper extends StatelessWidget {
     ///设置 Config.DEBUG 的静态变量
     Config.DEBUG = config?.debug;
     if (kDebugMode) {
-      print("ConfigWrapper build ${Config.DEBUG}");
+      printLog("ConfigWrapper build ${Config.DEBUG}");
     }
     return _InheritedConfig(config: config, child: child!);
   }

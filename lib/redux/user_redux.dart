@@ -1,6 +1,6 @@
 // ignore_for_file: implicit_call_tearoffs
 
-import 'package:flutter/foundation.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
@@ -43,9 +43,7 @@ class UserInfoMiddleware implements MiddlewareClass<GSYState> {
   @override
   void call(Store<GSYState> store, dynamic action, NextDispatcher next) {
     if (action is UpdateUserAction) {
-      if (kDebugMode) {
-        print("*********** UserInfoMiddleware *********** ");
-      }
+      printLog("*********** UserInfoMiddleware *********** ");
     }
     // Make sure to forward actions to the next middleware in the chain!
     next(action);
@@ -56,9 +54,7 @@ Stream<dynamic> userInfoEpic(
     Stream<dynamic> actions, EpicStore<GSYState> store) {
   // Use the async* function to make easier
   Stream<dynamic> loadUserInfo() async* {
-    if (kDebugMode) {
-      print("*********** userInfoEpic _loadUserInfo ***********");
-    }
+    printLog("*********** userInfoEpic _loadUserInfo ***********");
     var res = await UserRepository.getUserInfo(null);
     yield UpdateUserAction(res.data);
   }

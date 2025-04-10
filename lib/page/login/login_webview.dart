@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -86,9 +86,7 @@ class _LoginWebViewState extends State<LoginWebView> {
               var url = navigationAction.request.url!.toString();
               if (url.startsWith("gsygithubapp://authed")) {
                 var code = Uri.parse(url).queryParameters["code"];
-                if (kDebugMode) {
-                  print("code $code");
-                }
+                printLog("code $code");
                 Navigator.of(context).pop(code);
                 return NavigationActionPolicy.CANCEL;
               }
@@ -100,9 +98,7 @@ class _LoginWebViewState extends State<LoginWebView> {
               });
               if (url.toString().startsWith("gsygithubapp://authed")) {
                 var code = Uri.parse(url.toString()).queryParameters["code"];
-                if (kDebugMode) {
-                  print("code $code");
-                }
+                printLog("code $code");
                 Navigator.of(context).pop(code);
               }
             },

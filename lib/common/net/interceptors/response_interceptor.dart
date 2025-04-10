@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 
@@ -20,9 +20,7 @@ class ResponseInterceptors extends InterceptorsWrapper {
             headers: response.headers);
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e.toString() + option.path);
-      }
+      printLog(e.toString() + option.path);
       value = ResultData(response.data, false, response.statusCode,
           headers: response.headers);
     }

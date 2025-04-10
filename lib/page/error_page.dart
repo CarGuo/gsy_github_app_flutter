@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -30,9 +30,7 @@ class ErrorPageState extends State<ErrorPage> {
           sErrorName, details.exception.runtimeType.toString());
       LogsInterceptors.addLogic(sErrorStack, map);
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
   }
 

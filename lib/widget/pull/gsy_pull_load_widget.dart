@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 ///通用下上刷新控件
@@ -41,9 +41,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
           _scrollController.notifyListeners();
         });
       } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
+        printLog(e);
       }
     });
 

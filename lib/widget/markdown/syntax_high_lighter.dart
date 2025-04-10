@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:string_scanner/string_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -346,9 +346,7 @@ class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
         lastLoopPosition = _scanner.position;
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e.toString());
-      }
+      printLog(e);
     }
 
     _simplify();

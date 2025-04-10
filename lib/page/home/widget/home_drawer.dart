@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
@@ -209,9 +209,7 @@ class HomeDrawer extends StatelessWidget {
                             },
                             onTap: () {
                               PackageInfo.fromPlatform().then((value) {
-                                if (kDebugMode) {
-                                  print(value);
-                                }
+                                printLog(value);
                                 if (!context.mounted) return;
                                 showAboutDialog(context, value.version);
                               });

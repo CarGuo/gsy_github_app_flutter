@@ -1,6 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
     as IOS;
 import 'package:flutter/material.dart';
@@ -84,9 +84,7 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
           _scrollController!.notifyListeners();
         });
       } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
+        printLog(e);
       }
     });
     super.initState();

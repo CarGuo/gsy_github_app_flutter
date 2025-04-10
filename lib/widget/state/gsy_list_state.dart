@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 
 /// 上下拉刷新列表的通用State
@@ -83,9 +83,7 @@ mixin GSYListState<T extends StatefulWidget>
         resolveDataResult(resNext);
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      printLog(e);
     }
     isLoading = false;
     isRefreshing = false;
