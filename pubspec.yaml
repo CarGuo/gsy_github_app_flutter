@@ -162,3 +162,6 @@ flutter:
     - family: google_kavivanar
       fonts:
         - asset: static/font/google_kavivanar.ttf
+    - family: Akronim
+      fonts:
+        - asset: static/font/akronim.ttf
