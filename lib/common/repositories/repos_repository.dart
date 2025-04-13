@@ -70,27 +70,30 @@ class ReposRepository {
           list.add(model);
         }
         return DataResult(list, true);
-      } else {
-        String url = Address.trending(since, languageType);
-        var res = await GitHubTrending().fetchTrending(url);
-        if (res != null && res.result && res.data.length > 0) {
-          List<TrendingRepoModel?> list = [];
-          var data = res.data;
-          if (data == null || data.length == 0) {
-            return DataResult(null, false);
-          }
-          if (needDb) {
-            provider.insert("${languageTypeDb}V2", since, json.encode(data));
-          }
-          for (int i = 0; i < data.length; i++) {
-            TrendingRepoModel? model = data[i];
-            list.add(model);
-          }
-          return DataResult(list, true);
-        } else {
-          return DataResult(null, false);
-        }
       }
+      // else {
+      //   String url = Address.trending(since, languageType);
+      //   var res = await GitHubTrending().fetchTrending(url);
+      //   if (res != null && res.result && res.data.length > 0) {
+      //     List<TrendingRepoModel> list = [];
+      //     var data = res.data;
+      //     if (data == null || data.length == 0) {
+      //       return DataResult(null, false);
+      //     }
+      //     if (needDb) {
+      //       provider.insert("${languageTypeDb}V2", since, json.encode(data));
+      //     }
+      //     for (int i = 0; i < data.length; i++) {
+      //       if(data != null) {
+      //       TrendingRepoModel model = data[i];
+      //       list.add(model);
+      //       }
+      //     }
+      //     return DataResult(list, true);
+      //   } else {
+      //     return DataResult(null, false);
+      //   }
+      // }
     }
 
     if (needDb) {
