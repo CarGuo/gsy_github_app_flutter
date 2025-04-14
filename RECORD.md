@@ -135,3 +135,21 @@ AS 检索匹配中文
 
 
 serve --ssl-key *.key --ssl-cert *.crt
+
+
+获取崩溃日志
+
+/// 清空
+adb logcat -d *:W > crash.log
+
+/// 输出
+
+win 平台可以
+
+adb logcat -d *:E | Select-String "com.shuyu.gsygithub.gsygithubappflutter" > crash.log
+
+mac 可以
+
+adb logcat -d *:E | grep "com.shuyu.gsygithub.gsygithubappflutter" > crash.log
+
+获取更进准

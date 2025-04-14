@@ -6,7 +6,7 @@ environment:
   sdk: '>=3.6.0 <4.0.0'
 
 
-dependency_overrides:
+#dependency_overrides:
 #analyzer: 1.1.0
 #web_socket_channel: 2.0.0
 #pub_semver: 1.4.2
