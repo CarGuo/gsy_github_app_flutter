@@ -39,7 +39,7 @@ dependencies:
   flutter_spinkit: 5.2.1
   sqflite: 2.3.3+1
   pub_semver: 2.1.4
-  flutter_svg: 2.0.17
+  flutter_svg: 2.1.0
   flutter_slidable: 3.1.2
   dio: 5.6.0
   #fconsole: 2.2.1
