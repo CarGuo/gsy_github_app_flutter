@@ -153,3 +153,8 @@ mac 可以
 adb logcat -d *:E | grep "com.shuyu.gsygithub.gsygithubappflutter" > crash.log
 
 获取更进准
+
+flutter build web --no-web-resources-cdn 
+
+
+
