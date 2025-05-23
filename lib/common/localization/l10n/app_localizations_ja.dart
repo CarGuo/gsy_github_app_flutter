@@ -159,7 +159,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get network_error_404 => 'Http 404';
 
   @override
-  String get network_error_422 => 'リクエストボディエラー、Github ClientIdまたはアカウント/パスワードを確認してください';
+  String get network_error_422 =>
+      'リクエストボディエラー、Github ClientIdまたはアカウント/パスワードを確認してください';
 
   @override
   String get network_error_timeout => 'Http タイムアウト';
@@ -171,7 +172,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get network_error => 'ネットワークエラー';
 
   @override
-  String get github_refused => 'Github APIエラー[OSエラー: 接続拒否]。ネットワークを切り替えるか、後でもう一度お試しください';
+  String get github_refused =>
+      'Github APIエラー[OSエラー: 接続拒否]。ネットワークを切り替えるか、後でもう一度お試しください';
 
   @override
   String get load_more_not => 'これ以上ありません';

@@ -171,7 +171,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get network_error => '네트워크 오류';
 
   @override
-  String get github_refused => 'Github API 오류[OS 오류: 연결 거부]. 네트워크를 전환하거나 나중에 다시 시도하세요';
+  String get github_refused =>
+      'Github API 오류[OS 오류: 연결 거부]. 네트워크를 전환하거나 나중에 다시 시도하세요';
 
   @override
   String get load_more_not => '더 이상 없음';

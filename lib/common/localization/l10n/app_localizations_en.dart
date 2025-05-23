@@ -75,7 +75,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_out => 'Logout';
 
   @override
-  String get login_deprecated => 'The API via password authentication will remove on November 13, 2020 by Github';
+  String get login_deprecated =>
+      'The API via password authentication will remove on November 13, 2020 by Github';
 
   @override
   String get home_reply => 'Feedback';
@@ -159,7 +160,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get network_error_404 => 'Http 404';
 
   @override
-  String get network_error_422 => 'Request Body Error, Please check Github ClientId or Account/PW';
+  String get network_error_422 =>
+      'Request Body Error, Please check Github ClientId or Account/PW';
 
   @override
   String get network_error_timeout => 'Http timeout';
@@ -171,7 +173,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get network_error => 'Network error';
 
   @override
-  String get github_refused => 'Github Api error[OS Error: Connection refused]. Please switch networks or try again later';
+  String get github_refused =>
+      'Github Api error[OS Error: Connection refused]. Please switch networks or try again later';
 
   @override
   String get load_more_not => 'Nothing';
@@ -414,5 +417,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_language => 'Language';
 
   @override
-  String get feed_back_tip => 'Your feedback will be sent to Github as a public issue';
+  String get feed_back_tip =>
+      'Your feedback will be sent to Github as a public issue';
 }

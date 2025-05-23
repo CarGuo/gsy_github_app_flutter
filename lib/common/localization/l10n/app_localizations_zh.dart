@@ -171,7 +171,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get network_error => '网络错误';
 
   @override
-  String get github_refused => 'Github Api 出现异常[Connection refused]，建议换个网络环境或者稍后再试';
+  String get github_refused =>
+      'Github Api 出现异常[Connection refused]，建议换个网络环境或者稍后再试';
 
   @override
   String get load_more_not => '没有更多数据';
