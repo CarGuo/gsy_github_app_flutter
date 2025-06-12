@@ -53,7 +53,7 @@
 >
 > 3、 Redux：目前展示了全局登陆和用户信息等上面使用。
 > 
-> 4、 Provider：目前用于管理全局灰度，多语言。
+> 4、 riverpod：目前用于管理全局灰度，多语言。
 >
 > 5、 Repos 等请求展示了 graphQL
 > 
@@ -129,6 +129,7 @@
 
 * [如果克隆太慢，可尝试码云地址下载](https://gitee.com/CarGuo/GSYGithubAppFlutter)
 
+### 示例图片
 ### 示例图片
 
 ![](./ios.gif)

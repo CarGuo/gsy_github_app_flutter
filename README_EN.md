@@ -51,7 +51,7 @@
 > 
 > 4. Redux: Currently demonstrates global login and user information management  
 > 
-> 5. Provider: Currently used to manage global grayscale mode and multi-language support  
+> 5. riverpod: Currently used to manage global grayscale mode and multi-language support  
 > 
 > 6. Repos and other requests demonstrate GraphQL implementation  
 > 
