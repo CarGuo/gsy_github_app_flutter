@@ -5,6 +5,8 @@
 [![GitHub forks](https://img.shields.io/github/forks/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/network)
 [![GitHub issues](https://img.shields.io/github/issues/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/issues)
 [![GitHub license](https://img.shields.io/github/license/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/LICENSE)
+[![star](https://gitcode.com/ZuoYueLiang/gsy_github_app_flutter/star/badge.svg)](https://gitcode.com/ZuoYueLiang/gsy_github_app_flutter)
+
 
 ### [English Readme](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/README_EN.md)
 
