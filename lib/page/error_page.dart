@@ -22,10 +22,18 @@ class ErrorPageState extends State<ErrorPage> {
 
   final TextEditingController textEditingController = TextEditingController();
 
-  addError(FlutterErrorDetails details) {
+  // Constants for better performance
+  static const double _imageSize = 90.0;
+  static const double _spacingLarge = 40.0;
+  static const double _spacingMedium = 11.0;
+  static const double _spacingSmall = 40.0;
+  static const String _errorText = "Error Occur";
+  static const String _reportText = "Report";
+  static const String _backText = "Back";
+
+  void addError(FlutterErrorDetails details) {
     try {
-      var map = <String, dynamic>{};
-      map["error"] = details.toString();
+      final map = <String, dynamic>{'error': details.toString()};
       LogsInterceptors.addLogic(
           sErrorName, details.exception.runtimeType.toString());
       LogsInterceptors.addLogic(sErrorStack, map);
@@ -36,7 +44,9 @@ class ErrorPageState extends State<ErrorPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQueryData.fromView(View.of(context)).size.width;
+    final mediaQuery = MediaQueryData.fromView(View.of(context));
+    final double width = mediaQuery.size.width;
+    
     return Container(
       color: GSYColors.primaryValue,
       child: Center(
@@ -46,84 +56,93 @@ class ErrorPageState extends State<ErrorPage> {
           height: width,
           decoration: BoxDecoration(
             color: Colors.white.withAlpha(30),
-            gradient:
-                RadialGradient(tileMode: TileMode.mirror, radius: 0.1, colors: [
-              Colors.white.withAlpha(10),
-              GSYColors.primaryValue.withAlpha(100),
-            ]),
-            borderRadius: BorderRadius.all(Radius.circular(width / 2)),
+            gradient: RadialGradient(
+              tileMode: TileMode.mirror, 
+              radius: 0.1, 
+              colors: [
+                Colors.white.withAlpha(10),
+                GSYColors.primaryValue.withAlpha(100),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(width / 2),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const Image(
-                  image: AssetImage(GSYICons.DEFAULT_USER_ICON),
-                  width: 90.0,
-                  height: 90.0),
-              const SizedBox(
-                height: 11,
+                image: AssetImage(GSYICons.DEFAULT_USER_ICON),
+                width: _imageSize,
+                height: _imageSize,
               ),
+              const SizedBox(height: _spacingMedium),
               const Material(
                 color: GSYColors.primaryValue,
                 child: Text(
-                  "Error Occur",
+                  _errorText,
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: _spacingLarge),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: GSYColors.white.withAlpha(100),
-                    ),
-                    onPressed: () {
-                      String content = widget.errorMessage;
-                      textEditingController.text = content;
-                      CommonUtils.showEditDialog(
-                          context, context.l10n.home_reply, (title) {}, (res) {
-                        content = res;
-                      }, () {
-                        if (content.isEmpty) {
-                          return;
-                        }
-                        CommonUtils.showLoadingDialog(context);
-                        IssueRepository.createIssueRequest(
-                            "CarGuo", "gsy_github_app_flutter", {
-                          "title": context.l10n.home_reply,
-                          "body": content
-                        }).then((result) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        });
-                      },
-                          titleController: TextEditingController(),
-                          valueController: textEditingController,
-                          needTitle: false);
-                    },
-                    child: const Text("Report"),
+                  _buildButton(
+                    text: _reportText,
+                    onPressed: _handleReportError,
                   ),
-                  const SizedBox(
-                    width: 40,
+                  const SizedBox(width: _spacingSmall),
+                  _buildButton(
+                    text: _backText,
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
-                  TextButton(
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.white.withAlpha(100)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text("Back")),
                 ],
               )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildButton({required String text, required VoidCallback onPressed}) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: GSYColors.white.withAlpha(100),
+      ),
+      onPressed: onPressed,
+      child: Text(text),
+    );
+  }
+
+  void _handleReportError() {
+    String content = widget.errorMessage;
+    textEditingController.text = content;
+    CommonUtils.showEditDialog(
+      context, 
+      context.l10n.home_reply, 
+      (title) {}, 
+      (res) => content = res,
+      () {
+        if (content.isEmpty) return;
+        
+        CommonUtils.showLoadingDialog(context);
+        IssueRepository.createIssueRequest(
+          "CarGuo", 
+          "gsy_github_app_flutter", 
+          {
+            "title": context.l10n.home_reply,
+            "body": content
+          },
+        ).then((result) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+      },
+      titleController: TextEditingController(),
+      valueController: textEditingController,
+      needTitle: false,
     );
   }
 }

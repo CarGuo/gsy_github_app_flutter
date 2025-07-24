@@ -5,97 +5,85 @@ version: 1.7.0+32
 environment:
   sdk: '>=3.6.0 <4.0.0'
 
-
-#dependency_overrides:
-#analyzer: 1.1.0
-#web_socket_channel: 2.0.0
-#pub_semver: 1.4.2
-#glob: 2.0.0
-#crypto: 3.0.0
-#args: 1.0.0
-#string_scanner: 1.1.0
-#convert: 1.0.0
-#rxdart: 0.25.0
-#http: 0.13.0
-#gql_http_link: 0.3.2
-#http_parser: 4.0.0
-# fix inappwebview R8 issue https://github.com/pichillilorenzo/flutter_inappwebview/issues/2193
-#  flutter_inappwebview_android:
-#    git:
-#      url: https://github.com/holzgeist/flutter_inappwebview
-#      path: flutter_inappwebview_android
-#      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
-
 dependencies:
+  # Core Flutter
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   intl: any
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # UI Components
   cupertino_icons: ^1.0.4
-  fluttertoast: 8.2.10
-  share_plus: 10.0.1
   flutter_spinkit: 5.2.1
-  sqflite: 2.3.3+1
-  pub_semver: 2.1.4
   flutter_svg: 2.1.0
   flutter_slidable: 3.1.2
+  auto_size_text: 3.0.0
+  photo_view: 0.15.0
+  animations: 2.0.11
+  lottie: 3.0.0
+  simple_animations: 5.0.2
+
+  # Network & API
   dio: 5.6.0
-  #fconsole: 2.2.1
+  graphql: 5.2.0
+  connectivity_plus: 6.0.5
+
+  # State Management
+  flutter_redux: 0.10.0
+  redux: any
+  flutter_riverpod: 2.6.1
+  riverpod_annotation: 2.6.1
+  signals: 6.0.2
+  provider: 6.1.2
+
+  # Storage & Data
+  sqflite: 2.3.3+1
+  shared_preferences: 2.3.1
   path_provider: 2.1.4
+
+  # Utilities
+  fluttertoast: 8.2.10
+  share_plus: 10.0.1
+  pub_semver: 2.1.4
+  package_info_plus: 8.0.2
+  device_info_plus: 10.1.2
+  permission_handler: 11.3.1
+  url_launcher: 6.3.0
+  android_intent_plus: 5.1.0
+
+  # Web & WebView
   webview_flutter: 4.10.0
-  # 高版本目前和👆兼容有问题
-  flutter_inappwebview: 6.1.0+1
-  #bezier: ^1.1.5
+  webview_flutter_android: any
+  webview_flutter_wkwebview: any
+  flutter_inappwebview: 6.1.0+1 # Fixed version for compatibility
+
+  # UI Enhancements
+  easy_refresh: 3.4.0 # Fixed version
+  flutter_markdown: 0.7.6+2
+  google_fonts: 6.2.1
+  supercharged: 2.1.1
+
+  # Animation Libraries
   flare_flutter:
     git:
       url: https://gitee.com/CarGuo/Flare-Flutter.git
       ref: d9c4ca55cbea3f283491679847ff1e9b4bc74192
       path: flare_flutter/
-
   rive: 0.13.13
-  # 固定版本
-  easy_refresh: 3.4.0
-  signals: 6.0.2
-  flutter_redux: 0.10.0
-  rxdart: 0.27.1
-  graphql: 5.2.0
-  #flutter_cache_manager: 3.0.0-nullsafety.0
-  provider: 6.1.2
-  permission_handler: 11.3.1
-  json_annotation: 4.9.0
-  package_info_plus: 8.0.2
-  connectivity_plus: 6.0.5
-  flutter_markdown: 0.7.6+2
-  device_info_plus: 10.1.2
-  url_launcher: 6.3.0
-  google_fonts: 6.2.1
-  android_intent_plus: 5.1.0
-  shared_preferences: 2.3.1
-  built_value: 8.9.2
-  simple_animations: 5.0.2
-  supercharged: 2.1.1
-  animations: 2.0.11
-  lottie: 3.0.0
-  auto_size_text: 3.0.0
-  flutter_localizations:
-    sdk: flutter
-  photo_view: 0.15.0
-  #    git:
-  #      url: https://github.com/CarSmallGuo/photo_view.git
-  #      ref: master
 
-  redux: any
-  webview_flutter_android: any
-  webview_flutter_wkwebview: any
-  string_scanner: any
-  meta: any
-  flutter_riverpod: 2.6.1
-  riverpod_annotation: 2.6.1
-  # error handle
+  # Development & Debugging
   talker_flutter: 4.7.1
   talker_dio_logger: 4.7.1
+
+  # Code Generation
+  json_annotation: 4.9.0
+  built_value: 8.9.2
+
+  # Misc
+  rxdart: 0.27.1
+  string_scanner: any
+  meta: any
 
 dev_dependencies:
   riverpod_generator: 2.6.1

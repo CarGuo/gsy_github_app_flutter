@@ -1,50 +1,49 @@
 import 'package:flutter/material.dart';
 
 /// 带图标的输入框
-class GSYInputWidget extends StatefulWidget {
+class GSYInputWidget extends StatelessWidget {
   final bool obscureText;
-
   final String? hintText;
-
   final IconData? iconData;
-
   final ValueChanged<String>? onChanged;
-
   final TextStyle? textStyle;
-
   final TextEditingController? controller;
 
-  const GSYInputWidget(
-      {super.key,
-      this.hintText,
-      this.iconData,
-      this.onChanged,
-      this.textStyle,
-      this.controller,
-      this.obscureText = false});
+  static const TextMagnifierConfiguration _magnifierConfig = 
+      TextMagnifierConfiguration(
+        magnifierBuilder: _magnifierBuilder,
+      );
 
-  @override
-  _GSYInputWidgetState createState() => _GSYInputWidgetState();
-}
+  const GSYInputWidget({
+    super.key,
+    this.hintText,
+    this.iconData,
+    this.onChanged,
+    this.textStyle,
+    this.controller,
+    this.obscureText = false,
+  });
 
-/// State for [GSYInputWidget] widgets.
-class _GSYInputWidgetState extends State<GSYInputWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-        controller: widget.controller,
-        onChanged: widget.onChanged,
-        obscureText: widget.obscureText,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          icon: widget.iconData == null ? null : Icon(widget.iconData),
-        ),
-        magnifierConfiguration: TextMagnifierConfiguration(magnifierBuilder: (
-          BuildContext context,
-          MagnifierController controller,
-          ValueNotifier<MagnifierInfo> magnifierInfo,
-        ) {
-          return null;
-        }));
+      controller: controller,
+      onChanged: onChanged,
+      obscureText: obscureText,
+      style: textStyle,
+      decoration: InputDecoration(
+        hintText: hintText,
+        icon: iconData != null ? Icon(iconData) : null,
+      ),
+      magnifierConfiguration: _magnifierConfig,
+    );
+  }
+
+  static Widget? _magnifierBuilder(
+    BuildContext context,
+    MagnifierController controller,
+    ValueNotifier<MagnifierInfo> magnifierInfo,
+  ) {
+    return null;
   }
 }
