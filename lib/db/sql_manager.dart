@@ -8,46 +8,77 @@ import 'package:sqflite/sqflite.dart';
 /// 数据库管理
 /// Created by guoshuyu
 /// Date: 2018-08-03
-
 class SqlManager {
-  static const _VERSION = 1;
-
-  static const _NAME = "gsy_github_app_flutter.db";
+  static const int _VERSION = 1;
+  static const String _NAME = "gsy_github_app_flutter.db";
 
   static Database? _database;
+  static String? _currentDbPath;
+  static final Completer<Database> _dbCompleter = Completer<Database>();
+  static bool _isInitializing = false;
 
-  ///初始化
-  static init() async {
-    // open the database
-    var databasesPath = await getDatabasesPath();
-    var userRes = await UserRepository.getUserInfoLocal();
-    String dbName = _NAME;
-    if (userRes != null && userRes.result) {
-      User? user = userRes.data;
-      if (user != null && user.login != null) {
-        dbName = "${user.login!}_$_NAME";
+  /// 初始化数据库 - 使用单例模式避免重复初始化
+  static Future<void> init() async {
+    if (_database != null) return;
+    if (_isInitializing) {
+      await _dbCompleter.future;
+      return;
+    }
+
+    _isInitializing = true;
+
+    try {
+      final databasesPath = await getDatabasesPath();
+      final userRes = await UserRepository.getUserInfoLocal();
+      
+      String dbName = _NAME;
+      if (userRes?.result == true) {
+        final user = userRes!.data as User?;
+        if (user?.login != null) {
+          dbName = "${user!.login!}_$_NAME";
+        }
       }
-    }
-    String path = databasesPath + dbName;
-    if (Platform.isIOS) {
-      path = "$databasesPath/$dbName";
-    }
-    _database = await openDatabase(path, version: _VERSION,
+
+      final path = Platform.isIOS 
+          ? "$databasesPath/$dbName" 
+          : databasesPath + dbName;
+      
+      _currentDbPath = path;
+      
+      _database = await openDatabase(
+        path, 
+        version: _VERSION,
         onCreate: (Database db, int version) async {
-      // When creating the db, create the table
-      //await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)");
-    });
+          // Database creation logic can be added here
+        },
+      );
+
+      if (!_dbCompleter.isCompleted) {
+        _dbCompleter.complete(_database!);
+      }
+    } catch (e) {
+      if (!_dbCompleter.isCompleted) {
+        _dbCompleter.completeError(e);
+      }
+      rethrow;
+    } finally {
+      _isInitializing = false;
+    }
   }
 
-  /// 表是否存在
-  static isTableExits(String tableName) async {
-    await getCurrentDatabase();
-    var res = await _database?.rawQuery(
-        "select * from Sqlite_master where type = 'table' and name = '$tableName'");
-    return res != null && res.isNotEmpty;
+  /// 检查表是否存在 - 优化查询性能
+  static Future<bool> isTableExits(String tableName) async {
+    final database = await getCurrentDatabase();
+    if (database == null) return false;
+
+    final res = await database.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+      [tableName],
+    );
+    return res.isNotEmpty;
   }
 
-  ///获取当前数据库对象
+  /// 获取当前数据库对象
   static Future<Database?> getCurrentDatabase() async {
     if (_database == null) {
       await init();
@@ -55,9 +86,14 @@ class SqlManager {
     return _database;
   }
 
-  ///关闭
-  static close() {
-    _database?.close();
+  /// 关闭数据库连接
+  static Future<void> close() async {
+    await _database?.close();
     _database = null;
+    _currentDbPath = null;
   }
+
+  /// 获取当前数据库路径（用于调试）
+  static String? get currentDbPath => _currentDbPath;
+}
 }
