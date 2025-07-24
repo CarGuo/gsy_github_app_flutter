@@ -52,21 +52,5 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android related
-android/.gradle/
-android/app/build/
-android/gradle/
-android/local.properties
-
-# iOS related
-ios/Flutter/
-ios/Pods/
-ios/Runner/GeneratedPluginRegistrant.m
-ios/.symlinks/
-
-# Large assets and generated files
-*.large
-*.tmp
-
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

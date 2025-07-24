@@ -1,32 +1,29 @@
 import 'package:flutter/foundation.dart';
-import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-/// Global logger instance with optimized settings
 final talker = TalkerFlutter.init(
   settings: TalkerSettings(
-    enabled: Config.DEBUG,
-    useHistory: Config.DEBUG,
-    maxHistoryItems: Config.DEBUG ? 100 : 10, // Reduce memory in production
-    useConsoleLogs: Config.DEBUG,
+    /// You can enable/disable all talker processes with this field
+    enabled: true,
+
+    /// You can enable/disable saving logs data in history
+    useHistory: true,
+
+    /// Length of history that saving logs data
+    maxHistoryItems: 100,
+
+    /// You can enable/disable console logs
+    useConsoleLogs: true,
   ),
 );
 
-/// Optimized logging function with better type checking
-void printLog(Object msg) {
-  // Only process logs in debug mode for performance
-  if (!Config.DEBUG) return;
-
-  switch (msg) {
-    case Error():
-      talker.error("Catch Running Error：", msg);
-      break;
-    case Exception():
-      talker.error("Catch Running Exception：", msg);
-      break;
-    default:
-      if (kDebugMode) {
-        print(msg);
-      }
+printLog(Object msg) {
+  if (msg is Error) {
+    talker.error("Catch Running Error：", msg);
+  } else if (msg is Exception) {
+    talker.error("Catch Running Exception：", msg);
+  }
+  if (kDebugMode) {
+    print(msg);
   }
 }

@@ -45,29 +45,35 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
     ),
   );
 
-  final NavigatorObserver navigatorObserver = NavigatorObserver();
-
-  // Pre-computed fallback locale for performance
-  static const Locale _fallbackLocale = Locale('en', 'US');
+  NavigatorObserver navigatorObserver = NavigatorObserver();
 
   // Helper method to check if the locale is supported
   Locale _checkSupportedLocale(Locale locale) {
     // Define the supported locales
     const supportedLocales = AppLocalizations.supportedLocales;
 
-    // Check if the requested locale is supported - optimized lookup
-    final isSupported = supportedLocales.any(
-      (supportedLocale) => supportedLocale.languageCode == locale.languageCode,
-    );
+    // Check if the requested locale is supported
+    for (final supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return locale;
+      }
+    }
 
-    return isSupported ? locale : _fallbackLocale;
+    // Fall back to English if the locale is not supported
+    return const Locale('en', 'US');
   }
 
   @override
   void initState() {
     super.initState();
-    // Remove unnecessary Future.delayed for performance
-    // Access context and navigator only when needed
+    Future.delayed(const Duration(seconds: 0), () {
+      /// 通过 with NavigatorObserver ，在这里可以获取可以往上获取到
+      /// MaterialApp 和 StoreProvider 的 context
+      /// 还可以获取到 navigator;
+      /// 比如在这里增加一个监听，如果 token 失效就退回登陆页。
+      navigatorObserver.navigator!.context;
+      navigatorObserver.navigator;
+    });
   }
 
   @override

@@ -29,18 +29,19 @@ typedef StringList = List<String>;
 
 class CommonUtils {
   static const double MILLIS_LIMIT = 1000.0;
-  static const double SECONDS_LIMIT = 60 * MILLIS_LIMIT;
-  static const double MINUTES_LIMIT = 60 * SECONDS_LIMIT;
-  static const double HOURS_LIMIT = 24 * MINUTES_LIMIT;
-  static const double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
-  // Pre-computed color string for performance
-  static const String _primaryColorString = "24292E"; // GSYColors.primaryValueString without #
+  static const double SECONDS_LIMIT = 60 * MILLIS_LIMIT;
+
+  static const double MINUTES_LIMIT = 60 * SECONDS_LIMIT;
+
+  static const double HOURS_LIMIT = 24 * MINUTES_LIMIT;
+
+  static const double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
   static Locale? curLocale;
 
   static String getDateStr(DateTime? date) {
-    if (date == null || date.toString().isEmpty) {
+    if (date == null || date.toString() == "") {
       return "";
     } else if (date.toString().length < 10) {
       return date.toString();
@@ -49,7 +50,7 @@ class CommonUtils {
   }
 
   static String getUserChartAddress(String userName) {
-    return "${Address.graphicHost}$_primaryColorString/$userName";
+    return "${Address.graphicHost}${GSYColors.primaryValueString.replaceAll("#", "")}/$userName";
   }
 
   ///日期格式转换
