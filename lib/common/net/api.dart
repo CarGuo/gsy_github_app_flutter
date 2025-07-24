@@ -13,24 +13,26 @@ import 'package:gsy_github_app_flutter/common/net/result_data.dart';
 
 ///http请求
 class HttpManager {
-  static const CONTENT_TYPE_JSON = "application/json";
-  static const CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
+  static const String CONTENT_TYPE_JSON = "application/json";
+  static const String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
 
-  final Dio _dio = Dio(); // 使用默认配置
+  late final Dio _dio;
+  late final TokenInterceptors _tokenInterceptors;
 
-  final TokenInterceptors _tokenInterceptors = TokenInterceptors();
-
-  HttpManager() {
-    _dio.interceptors.add(HeaderInterceptors());
-
-    _dio.interceptors.add(_tokenInterceptors);
-
-    _dio.interceptors.add(LogsInterceptors());
-
-    _dio.interceptors.add(ErrorInterceptors());
-
-    _dio.interceptors.add(ResponseInterceptors());
+  HttpManager._internal() {
+    _dio = Dio(); // 使用默认配置
+    _tokenInterceptors = TokenInterceptors();
+    
+    _dio.interceptors.addAll([
+      HeaderInterceptors(),
+      _tokenInterceptors,
+      LogsInterceptors(),
+      ErrorInterceptors(),
+      ResponseInterceptors(),
+    ]);
   }
+
+  static final HttpManager _instance = HttpManager._internal();
 
   ///发起网络请求
   ///[ url] 请求url
@@ -91,6 +93,9 @@ class HttpManager {
   getAuthorization() async {
     return _tokenInterceptors.getAuthorization();
   }
+
+  /// 提供单例访问
+  static HttpManager get instance => _instance;
 }
 
-final HttpManager httpManager = HttpManager();
+final HttpManager httpManager = HttpManager.instance;

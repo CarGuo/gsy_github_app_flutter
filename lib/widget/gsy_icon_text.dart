@@ -5,31 +5,26 @@ import 'package:flutter/material.dart';
 /// Date: 2018-07-16
 class GSYIConText extends StatelessWidget {
   final String? iconText;
-
   final IconData iconData;
-
   final TextStyle textStyle;
-
   final Color iconColor;
-
   final double padding;
-
   final double iconSize;
-
   final VoidCallback? onPressed;
-
   final MainAxisAlignment mainAxisAlignment;
-
   final MainAxisSize mainAxisSize;
-
   final double textWidth;
+
+  static const TextStyle _baselineTextStyle = 
+      TextStyle(textBaseline: TextBaseline.alphabetic);
 
   const GSYIConText(
     this.iconData,
     this.iconText,
     this.textStyle,
     this.iconColor,
-    this.iconSize, {super.key, 
+    this.iconSize, {
+    super.key,
     this.padding = 0.0,
     this.onPressed,
     this.mainAxisAlignment = MainAxisAlignment.start,
@@ -39,26 +34,24 @@ class GSYIConText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget showText = (textWidth == -1)
+    final mergedTextStyle = textStyle.merge(_baselineTextStyle);
+    
+    final Widget showText = (textWidth == -1)
         ? Text(
-          iconText ?? "",
-          style: textStyle
-              .merge(const TextStyle(textBaseline: TextBaseline.alphabetic)),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        )
+            iconText ?? "",
+            style: mergedTextStyle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          )
         : SizedBox(
             width: textWidth,
-            child:
-
-                ///显示数量文本
-                Text(
+            child: Text(
               iconText!,
-              style: textStyle
-                  .merge(const TextStyle(textBaseline: TextBaseline.alphabetic)),
+              style: mergedTextStyle,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-            ));
+            ),
+          );
 
     return Row(
       textBaseline: TextBaseline.alphabetic,
@@ -71,8 +64,8 @@ class GSYIConText extends StatelessWidget {
           size: iconSize,
           color: iconColor,
         ),
-        Padding(padding: EdgeInsets.all(padding)),
-        showText
+        if (padding > 0) Padding(padding: EdgeInsets.all(padding)),
+        showText,
       ],
     );
   }
