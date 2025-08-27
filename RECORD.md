@@ -157,4 +157,6 @@ adb logcat -d *:E | grep "com.shuyu.gsygithub.gsygithubappflutter" > crash.log
 flutter build web --no-web-resources-cdn 
 
 
+adb shell setprop log.tag.gralloc4 SILENT
+
 
