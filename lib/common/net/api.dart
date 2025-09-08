@@ -3,6 +3,8 @@ import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 import 'dart:collection';
 
+//import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:gsy_github_app_flutter/common/net/interceptors/error_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/header_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
@@ -58,10 +60,11 @@ class HttpManager {
       if (e.response != null) {
         errorResponse = e.response;
       } else {
-        errorResponse = Response(statusCode: 666, requestOptions: RequestOptions(path: url));
+        errorResponse = Response(
+            statusCode: 666, requestOptions: RequestOptions(path: url));
       }
       if (e.type == DioExceptionType.connectionTimeout ||
-      e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
         errorResponse!.statusCode = Code.NETWORK_TIMEOUT;
       }
@@ -98,3 +101,48 @@ class HttpManager {
 }
 
 final HttpManager httpManager = HttpManager.instance;
+
+//
+//
+// initDio() {
+//   DioClient.getInstance();
+//   initializeNetworkListener();
+// }
+//
+// class DioClient {
+//   static Dio? _dio;
+//
+//   DioClient._();
+//
+//   static Future<Dio> getInstance() async {
+//     if (_dio == null) {
+//       await _initialize();
+//     }
+//     return _dio!;
+//   }
+//
+//   static Future<void> _initialize() async {
+//     _dio = Dio(BaseOptions(
+//       connectTimeout: const Duration(seconds: 10),
+//       receiveTimeout: const Duration(seconds: 10),
+//     ));
+//
+//     _dio!.interceptors.add(LogInterceptor(
+//       requestHeader: true,
+//       requestBody: true,
+//       responseHeader: true,
+//       responseBody: true,
+//     ));
+//   }
+//
+//   static void reset() {
+//     _dio?.close();
+//     _dio = null;
+//   }
+// }
+//
+// void initializeNetworkListener() {
+//   Connectivity().onConnectivityChanged.listen((result) {
+//     DioClient.reset();
+//   });
+// }
