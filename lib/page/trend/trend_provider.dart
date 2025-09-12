@@ -2,14 +2,15 @@ import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+part 'trend_provider.g.dart';
+
 ///展示非注解 riverpod ，并且针对处理数据库 & 服务器数据请求,两个 provider 先后顺序
 
 bool trendLoadingState = false;
 bool trendRequestedState = false;
 
-final trendFirstProvider =
-    FutureProvider.family<DataResult?, (String?, String?)>((ref, query) async {
-  var (since, selectType) = query;
+@riverpod
+Future<DataResult?> trendFirst(Ref ref, String? since, String? selectType) async {
   trendLoadingState = true;
   var res = await ReposRepository.getTrendRequest(
       since: since, languageType: selectType);
@@ -19,12 +20,12 @@ final trendFirstProvider =
     return res;
   }
   return null;
-});
+}
 
-final trendSecondProvider =
-    FutureProvider.family<DataResult?, (String?, String?)>((ref, query) async {
+@riverpod
+Future<DataResult?> trendSecond(Ref ref, String? since, String? selectType) async {
   trendLoadingState = true;
-  final res = await ref.watch(trendFirstProvider(query).future);
+  final res = await ref.watch(trendFirstProvider(since, selectType).future);
   trendLoadingState = false;
   trendRequestedState = true;
   if (res != null && res.next != null) {
@@ -34,4 +35,4 @@ final trendSecondProvider =
     }
   }
   return null;
-});
+}

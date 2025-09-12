@@ -3,7 +3,13 @@ description: Github Application
 version: 1.7.0+32
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
+
+dependency_overrides:
+  web_socket_channel: ^3.0.1
+  test_api: 0.7.7
+  matcher: 0.12.17
+
 
 
 #dependency_overrides:
@@ -60,7 +66,7 @@ dependencies:
   signals: 6.0.2
   flutter_redux: 0.10.0
   rxdart: 0.27.1
-  graphql: 5.2.0
+  graphql: 5.2.2
   #flutter_cache_manager: 3.0.0-nullsafety.0
   provider: 6.1.2
   permission_handler: 11.3.1
@@ -73,7 +79,7 @@ dependencies:
   google_fonts: 6.2.1
   android_intent_plus: 5.1.0
   shared_preferences: 2.3.1
-  built_value: 8.9.2
+  built_value: 8.12.0
   simple_animations: 5.0.2
   supercharged: 2.1.1
   animations: 2.0.11
@@ -91,17 +97,17 @@ dependencies:
   webview_flutter_wkwebview: any
   string_scanner: any
   meta: any
-  flutter_riverpod: 2.6.1
-  riverpod_annotation: 2.6.1
+  flutter_riverpod:  3.0.0
+  riverpod_annotation: 3.0.0
   # error handle
   talker_flutter: 4.7.1
   talker_dio_logger: 4.7.1
 
 dev_dependencies:
-  riverpod_generator: 2.6.1
-  built_value_generator: 8.9.2
+  riverpod_generator:  3.0.0
+  built_value_generator: 8.12.0
   build_runner: ^2.4.14
-  json_serializable: 6.8.0
+  json_serializable: 6.11.1
   flutter_lints: 4.0.0
 #  flutter_test:
 #    sdk: flutter

@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/search_user_ql.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'trend_user_provider.g.dart';
 
-///无需释放，这样内存里就会保存着列表，下次进来不会空数据
+///无需释放，这样内存里就会保存着列表，��次进来不会空数据
 @Riverpod(keepAlive: true)
 class TrendCNUserList extends _$TrendCNUserList {
 
@@ -23,7 +22,7 @@ class TrendCNUserList extends _$TrendCNUserList {
 
   void addList(List<SearchUserQL> list) {
     state.addAll(list);
-    ///需要为新的列表，不然不会触发更新
+    ///需要为新的列���，不然不会触发更新
     state = [...state, ...list];
   }
 

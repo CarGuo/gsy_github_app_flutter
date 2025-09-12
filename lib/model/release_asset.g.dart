@@ -7,24 +7,24 @@ part of 'release_asset.dart';
 // **************************************************************************
 
 ReleaseAsset _$ReleaseAssetFromJson(Map<String, dynamic> json) => ReleaseAsset(
-      (json['id'] as num?)?.toInt(),
-      json['name'] as String?,
-      json['label'] as String?,
-      json['uploader'] == null
-          ? null
-          : User.fromJson(json['uploader'] as Map<String, dynamic>),
-      json['content_type'] as String?,
-      json['state'] as String?,
-      (json['size'] as num?)?.toInt(),
-      (json['downloadCout'] as num?)?.toInt(),
-      json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
-      json['updated_at'] == null
-          ? null
-          : DateTime.parse(json['updated_at'] as String),
-      json['browser_download_url'] as String?,
-    );
+  (json['id'] as num?)?.toInt(),
+  json['name'] as String?,
+  json['label'] as String?,
+  json['uploader'] == null
+      ? null
+      : User.fromJson(json['uploader'] as Map<String, dynamic>),
+  json['content_type'] as String?,
+  json['state'] as String?,
+  (json['size'] as num?)?.toInt(),
+  (json['downloadCout'] as num?)?.toInt(),
+  json['created_at'] == null
+      ? null
+      : DateTime.parse(json['created_at'] as String),
+  json['updated_at'] == null
+      ? null
+      : DateTime.parse(json['updated_at'] as String),
+  json['browser_download_url'] as String?,
+);
 
 Map<String, dynamic> _$ReleaseAssetToJson(ReleaseAsset instance) =>
     <String, dynamic>{

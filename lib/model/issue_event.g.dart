@@ -7,22 +7,22 @@ part of 'issue_event.dart';
 // **************************************************************************
 
 IssueEvent _$IssueEventFromJson(Map<String, dynamic> json) => IssueEvent(
-      (json['id'] as num?)?.toInt(),
-      json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
-      json['updated_at'] == null
-          ? null
-          : DateTime.parse(json['updated_at'] as String),
-      json['author_association'] as String?,
-      json['body'] as String?,
-      json['body_html'] as String?,
-      json['event'] as String?,
-      json['html_url'] as String?,
-    );
+  (json['id'] as num?)?.toInt(),
+  json['user'] == null
+      ? null
+      : User.fromJson(json['user'] as Map<String, dynamic>),
+  json['created_at'] == null
+      ? null
+      : DateTime.parse(json['created_at'] as String),
+  json['updated_at'] == null
+      ? null
+      : DateTime.parse(json['updated_at'] as String),
+  json['author_association'] as String?,
+  json['body'] as String?,
+  json['body_html'] as String?,
+  json['event'] as String?,
+  json['html_url'] as String?,
+);
 
 Map<String, dynamic> _$IssueEventToJson(IssueEvent instance) =>
     <String, dynamic>{

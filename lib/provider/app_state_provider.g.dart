@@ -6,58 +6,180 @@ part of 'app_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// 控制 App 灰度效果
+
+@ProviderFor(AppGrepState)
+const appGrepStateProvider = AppGrepStateProvider._();
+
+/// 控制 App 灰度效果
+final class AppGrepStateProvider extends $NotifierProvider<AppGrepState, bool> {
+  /// 控制 App 灰度效果
+  const AppGrepStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appGrepStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appGrepStateHash();
+
+  @$internal
+  @override
+  AppGrepState create() => AppGrepState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
 String _$appGrepStateHash() => r'2d597c1ee2158b81668c77d0c4c4773dae175e41';
 
 /// 控制 App 灰度效果
-///
-/// Copied from [AppGrepState].
-@ProviderFor(AppGrepState)
-final appGrepStateProvider =
-    AutoDisposeNotifierProvider<AppGrepState, bool>.internal(
-  AppGrepState.new,
-  name: r'appGrepStateProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appGrepStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef _$AppGrepState = AutoDisposeNotifier<bool>;
+abstract class _$AppGrepState extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// 控制 App 语言
+
+@ProviderFor(AppLocalState)
+const appLocalStateProvider = AppLocalStateProvider._();
+
+/// 控制 App 语言
+final class AppLocalStateProvider
+    extends $NotifierProvider<AppLocalState, Locale> {
+  /// 控制 App 语言
+  const AppLocalStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appLocalStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appLocalStateHash();
+
+  @$internal
+  @override
+  AppLocalState create() => AppLocalState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Locale value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Locale>(value),
+    );
+  }
+}
+
 String _$appLocalStateHash() => r'094022d96deb55273c2bc53466ad2bf5ee8bdce0';
 
 /// 控制 App 语言
-///
-/// Copied from [AppLocalState].
-@ProviderFor(AppLocalState)
-final appLocalStateProvider =
-    AutoDisposeNotifierProvider<AppLocalState, Locale>.internal(
-  AppLocalState.new,
-  name: r'appLocalStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appLocalStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef _$AppLocalState = AutoDisposeNotifier<Locale>;
+abstract class _$AppLocalState extends $Notifier<Locale> {
+  Locale build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<Locale, Locale>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Locale, Locale>,
+              Locale,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// 控制 App 主题
+
+@ProviderFor(AppThemeState)
+const appThemeStateProvider = AppThemeStateProvider._();
+
+/// 控制 App 主题
+final class AppThemeStateProvider
+    extends $NotifierProvider<AppThemeState, ThemeData> {
+  /// 控制 App 主题
+  const AppThemeStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appThemeStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appThemeStateHash();
+
+  @$internal
+  @override
+  AppThemeState create() => AppThemeState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ThemeData value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ThemeData>(value),
+    );
+  }
+}
+
 String _$appThemeStateHash() => r'a02ca99fb2b47827f007b77c8d1d371cb171b17e';
 
 /// 控制 App 主题
-///
-/// Copied from [AppThemeState].
-@ProviderFor(AppThemeState)
-final appThemeStateProvider =
-    AutoDisposeNotifierProvider<AppThemeState, ThemeData>.internal(
-  AppThemeState.new,
-  name: r'appThemeStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appThemeStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef _$AppThemeState = AutoDisposeNotifier<ThemeData>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$AppThemeState extends $Notifier<ThemeData> {
+  ThemeData build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ThemeData, ThemeData>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ThemeData, ThemeData>,
+              ThemeData,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

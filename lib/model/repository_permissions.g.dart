@@ -7,17 +7,17 @@ part of 'repository_permissions.dart';
 // **************************************************************************
 
 RepositoryPermissions _$RepositoryPermissionsFromJson(
-        Map<String, dynamic> json) =>
-    RepositoryPermissions(
-      json['admin'] as bool?,
-      json['push'] as bool?,
-      json['pull'] as bool?,
-    );
+  Map<String, dynamic> json,
+) => RepositoryPermissions(
+  json['admin'] as bool?,
+  json['push'] as bool?,
+  json['pull'] as bool?,
+);
 
 Map<String, dynamic> _$RepositoryPermissionsToJson(
-        RepositoryPermissions instance) =>
-    <String, dynamic>{
-      'admin': instance.admin,
-      'push': instance.push,
-      'pull': instance.pull,
-    };
+  RepositoryPermissions instance,
+) => <String, dynamic>{
+  'admin': instance.admin,
+  'push': instance.push,
+  'pull': instance.pull,
+};

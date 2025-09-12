@@ -179,9 +179,8 @@ class TrendPageState extends ConsumerState<TrendPage>
   }
 
   Future<void> requestRefresh() async {
-    var query = (selectTime?.value, selectType?.value);
-    var _ = ref.refresh(trendFirstProvider(query));
-    await ref.read(trendFirstProvider(query).future);
+    var _ = ref.refresh(trendFirstProvider(selectTime?.value, selectType?.value));
+    await ref.read(trendFirstProvider(selectTime?.value, selectType?.value).future);
   }
 
   @override
@@ -246,9 +245,9 @@ class TrendPageState extends ConsumerState<TrendPage>
     return Consumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
       final firstAsync =
-          ref.watch(trendFirstProvider((selectTime?.value, selectType?.value)));
+          ref.watch(trendFirstProvider(selectTime?.value, selectType?.value));
       final secondAsync = ref
-          .watch(trendSecondProvider((selectTime?.value, selectType?.value)));
+          .watch(trendSecondProvider(selectTime?.value, selectType?.value));
       var result = secondAsync.value?.data as List<TrendingRepoModel>? ??
           firstAsync.value?.data as List<TrendingRepoModel>?;
 

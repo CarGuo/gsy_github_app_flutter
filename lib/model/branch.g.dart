@@ -6,7 +6,7 @@ part of 'branch.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<Branch> _$branchSerializer = new _$BranchSerializer();
+Serializer<Branch> _$branchSerializer = _$BranchSerializer();
 
 class _$BranchSerializer implements StructuredSerializer<Branch> {
   @override
@@ -15,38 +15,47 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
   final String wireName = 'Branch';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, Branch object,
-      {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(
+    Serializers serializers,
+    Branch object, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
     final result = <Object?>[];
     Object? value;
     value = object.name;
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.tarballUrl;
     if (value != null) {
       result
         ..add('tarball_url')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.zipballUrl;
     if (value != null) {
       result
         ..add('zipball_url')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     return result;
   }
 
   @override
-  Branch deserialize(Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new BranchBuilder();
+  Branch deserialize(
+    Serializers serializers,
+    Iterable<Object?> serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
+    final result = BranchBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -55,16 +64,28 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
       final Object? value = iterator.current;
       switch (key) {
         case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.name =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'tarball_url':
-          result.tarballUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.tarballUrl =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'zipball_url':
-          result.zipballUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.zipballUrl =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
       }
     }
@@ -82,16 +103,15 @@ class _$Branch extends Branch {
   final String? zipballUrl;
 
   factory _$Branch([void Function(BranchBuilder)? updates]) =>
-      (new BranchBuilder()..update(updates))._build();
+      (BranchBuilder()..update(updates))._build();
 
   _$Branch._({this.name, this.tarballUrl, this.zipballUrl}) : super._();
-
   @override
   Branch rebuild(void Function(BranchBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  BranchBuilder toBuilder() => new BranchBuilder()..replace(this);
+  BranchBuilder toBuilder() => BranchBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -152,7 +172,6 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
 
   @override
   void replace(Branch other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Branch;
   }
 
@@ -165,9 +184,9 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
   Branch build() => _build();
 
   _$Branch _build() {
-    final _$result = _$v ??
-        new _$Branch._(
-            name: name, tarballUrl: tarballUrl, zipballUrl: zipballUrl);
+    final _$result =
+        _$v ??
+        _$Branch._(name: name, tarballUrl: tarballUrl, zipballUrl: zipballUrl);
     replace(_$result);
     return _$result;
   }

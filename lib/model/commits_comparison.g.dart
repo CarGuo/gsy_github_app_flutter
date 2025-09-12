@@ -16,7 +16,8 @@ CommitsComparison _$CommitsComparisonFromJson(Map<String, dynamic> json) =>
       json['merge_base_commit'] == null
           ? null
           : RepoCommit.fromJson(
-              json['merge_base_commit'] as Map<String, dynamic>),
+              json['merge_base_commit'] as Map<String, dynamic>,
+            ),
       json['status'] as String?,
       (json['total_commits'] as num?)?.toInt(),
       (json['commits'] as List<dynamic>?)

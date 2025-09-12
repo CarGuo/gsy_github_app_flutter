@@ -14,9 +14,9 @@ NotificationSubject _$NotificationSubjectFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$NotificationSubjectToJson(
-        NotificationSubject instance) =>
-    <String, dynamic>{
-      'title': instance.title,
-      'url': instance.url,
-      'type': instance.type,
-    };
+  NotificationSubject instance,
+) => <String, dynamic>{
+  'title': instance.title,
+  'url': instance.url,
+  'type': instance.type,
+};
