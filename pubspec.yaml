@@ -91,14 +91,14 @@ dependencies:
   webview_flutter_wkwebview: any
   string_scanner: any
   meta: any
-  flutter_riverpod: 2.6.1
-  riverpod_annotation: 2.6.1
+  flutter_riverpod: ^3.0.0
+  riverpod_annotation: ^3.0.0
   # error handle
   talker_flutter: 4.7.1
   talker_dio_logger: 4.7.1
 
 dev_dependencies:
-  riverpod_generator: 2.6.1
+  riverpod_generator: ^3.0.0
   built_value_generator: 8.9.2
   build_runner: ^2.4.14
   json_serializable: 6.8.0
