@@ -58,29 +58,29 @@ class GSYConstant {
   static const minTextSize = 12.0;
 
   static const minText = TextStyle(
-    color: GSYColors.subLightTextColor,
-    fontSize: minTextSize,
+    color: .subLightTextColor,
+    fontSize: .minTextSize,
   );
 
   static const smallTextWhite = TextStyle(
-    color: GSYColors.textColorWhite,
-    fontSize: smallTextSize,
+    color: .textColorWhite,
+    fontSize: .smallTextSize,
   );
 
   static const smallText = TextStyle(
-    color: GSYColors.mainTextColor,
-    fontSize: smallTextSize,
+    color: .mainTextColor,
+    fontSize: .smallTextSize,
   );
 
   static const smallTextBold = TextStyle(
-    color: GSYColors.mainTextColor,
-    fontSize: smallTextSize,
-    fontWeight: FontWeight.bold,
+    color: .mainTextColor,
+    fontSize: .smallTextSize,
+    fontWeight: .bold,
   );
 
   static const smallSubLightText = TextStyle(
-    color: GSYColors.subLightTextColor,
-    fontSize: smallTextSize,
+    color: .subLightTextColor,
+    fontSize: .smallTextSize,
   );
 
   static const smallActionLightText = TextStyle(
@@ -119,9 +119,9 @@ class GSYConstant {
   );
 
   static const middleTextBold = TextStyle(
-    color: GSYColors.mainTextColor,
-    fontSize: middleTextWhiteSize,
-    fontWeight: FontWeight.bold,
+    color: .mainTextColor,
+    fontSize: .middleTextWhiteSize,
+    fontWeight: .bold,
   );
 
   static const middleTextWhiteBold = TextStyle(

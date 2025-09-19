@@ -45,8 +45,7 @@ class _MoleState extends State<Mole> {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            if (_moleIsVisible)
-              GestureDetector(onTap: () => _hitMole(), child: _mole()),
+            ...?_moleIsVisible ? [GestureDetector(onTap: () => _hitMole(), child: _mole())] : null,
             ...particles.map((it) => it.buildWidget())
           ],
         );
@@ -58,7 +57,7 @@ class _MoleState extends State<Mole> {
     return Container(
       decoration: BoxDecoration(
           color: GSYColors.primaryValue,
-          borderRadius: BorderRadius.circular(50)),
+          borderRadius: .circular(50)),
     );
   }
 
