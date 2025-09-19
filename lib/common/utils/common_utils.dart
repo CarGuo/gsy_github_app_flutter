@@ -364,9 +364,9 @@ class CommonUtils {
                     height: 200.0,
                     padding: const EdgeInsets.all(4.0),
                     decoration: const BoxDecoration(
-                      color: Colors.transparent,
+                      color: .transparent,
                       //用一个BoxDecoration装饰器提供背景图片
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      borderRadius: .all(.circular(4.0)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -433,7 +433,7 @@ class CommonUtils {
               decoration: const BoxDecoration(
                 color: GSYColors.white,
                 //用一个BoxDecoration装饰器提供背景图片
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                borderRadius: .all(.circular(4.0)),
               ),
               child: ListView.builder(
                   itemCount: commitMaps?.length ?? 0,

@@ -71,7 +71,7 @@ class GSYIConText extends StatelessWidget {
           size: iconSize,
           color: iconColor,
         ),
-        Padding(padding: EdgeInsets.all(padding)),
+        Padding(padding: .all(padding)),
         showText
       ],
     );
