@@ -78,7 +78,7 @@
 
 ## 编译运行流程
 
-1、配置好Flutter开发环境(目前Flutter SDK 版本 **3.32**)，可参阅 [【搭建环境】](https://flutterchina.club)。
+1、配置好Flutter开发环境(目前Flutter SDK 版本 **3.35**)，可参阅 [【搭建环境】](https://flutterchina.club)。
 
 2、clone代码，执行`Packages get`安装第三方包。(因为某些不可抗力原因，国内可能需要设置代理: [代理环境变量](https://flutterchina.club/setup-windows/))
 
@@ -102,7 +102,7 @@
 
 ### 5、运行之前请注意下
 
->### 1、本地 Flutter SDK 版本 3.32 ； 2、是否执行过 `flutter pub get`；3、 网络等问题参考: [如果出现登陆失败或者请求失败 ](https://github.com/CarGuo/gsy_github_app_flutter/issues/643)
+>### 1、本地 Flutter SDK 版本 3.35 ； 2、是否执行过 `flutter pub get`；3、 网络等问题参考: [如果出现登陆失败或者请求失败 ](https://github.com/CarGuo/gsy_github_app_flutter/issues/643)
 
 
 ### 下载
@@ -147,7 +147,7 @@
 
 ### 框架
 
->当前 Flutter SDK 版本 3.32
+>当前 Flutter SDK 版本 3.35
 
 ```
 用户交互 → UI层(Widget/Page) → 状态层(Redux/Provider/Riverpod) → 服务层(Repositories) 
