@@ -298,19 +298,19 @@ class _JsonArrayViewerWidgetState extends State<JsonArrayViewerWidget> {
       return Expanded(
           child: Text(
         '\"$content\"',
-        style: const TextStyle(color: Colors.redAccent),
+        style: const TextStyle(color: .redAccent),
       ));
     } else if (content is bool) {
       return Expanded(
           child: Text(
         content.toString(),
-        style: const TextStyle(color: Colors.purple),
+        style: const TextStyle(color: .purple),
       ));
     } else if (content is double) {
       return Expanded(
           child: Text(
         content.toString(),
-        style: const TextStyle(color: Colors.teal),
+        style: const TextStyle(color: .teal),
       ));
     } else if (content is List) {
       if (content.isEmpty) {

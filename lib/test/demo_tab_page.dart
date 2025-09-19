@@ -80,7 +80,7 @@ class TabWidget extends StatefulWidget {
     this.type = TabType.top,
     this.tabItems,
     this.tabViews,
-    this.indicatorColor = Colors.green,
+    this.indicatorColor = .green,
     this.title,
     this.initTabIndex = 0,
     this.pageController,
