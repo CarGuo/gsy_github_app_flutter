@@ -79,7 +79,9 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                     ),
                                     backgroundColor:
                                         Theme.of(context).primaryColor),
-                                onPressed: loginIn,
+                                onPressed: (){
+                                  loginIn(context);
+                                },
                                 child: const Text("登陆",
                                     style: TextStyle(fontSize: 14),
                                     textAlign: TextAlign.center,
@@ -141,7 +143,7 @@ mixin LoginBLoC on State<LoginPage> {
     pwController.value = TextEditingValue(text: _password ?? "");
   }
 
-  loginIn() async {
+  loginIn(BuildContext ctx) async {
     if (_userName == null || _userName!.isEmpty) {
       return;
     }
@@ -151,9 +153,10 @@ mixin LoginBLoC on State<LoginPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("username", _userName!);
     await prefs.setString("password", _password!);
-
-    ///通过 redux 去执行登陆流程
-    StoreProvider.of<GSYState>(context)
-        .dispatch(LoginAction(context, _userName, _password));
+    if(ctx.mounted) {
+      ///通过 redux 去执行登陆流程
+      StoreProvider.of<GSYState>(ctx)
+          .dispatch(LoginAction(ctx, _userName, _password));
+    }
   }
 }
