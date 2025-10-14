@@ -98,7 +98,7 @@ class EventUtils {
         des = '';
         String descSpan = '';
 
-        int count = event.payload!.commits!.length;
+        int count = event.payload?.commits?.length ?? 0;
         int maxLines = 4;
         int max = count > maxLines ? maxLines - 1 : count;
 
