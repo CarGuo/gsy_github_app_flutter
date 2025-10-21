@@ -91,29 +91,33 @@ class EventUtils {
         break;
 
       case "PushEvent":
-        String ref = event.payload!.ref!;
-        ref = ref.substring(ref.lastIndexOf("/") + 1);
-        actionStr = "Push to $ref at ${event.repo!.name!}";
+        if (event.payload != null && event.payload?.ref != null) {
+          String ref = event.payload!.ref!;
+          ref = ref.substring(ref.lastIndexOf("/") + 1);
+          actionStr = "Push to $ref at ${event.repo!.name!}";
 
-        des = '';
-        String descSpan = '';
+          des = '';
+          String descSpan = '';
 
-        int count = event.payload?.commits?.length ?? 0;
-        int maxLines = 4;
-        int max = count > maxLines ? maxLines - 1 : count;
+          int count = event.payload?.commits?.length ?? 0;
+          int maxLines = 4;
+          int max = count > maxLines ? maxLines - 1 : count;
 
-        for (int i = 0; i < max; i++) {
-          PushEventCommit commit = event.payload!.commits![i];
-          if (i != 0) {
-            descSpan += ("\n");
+          for (int i = 0; i < max; i++) {
+            PushEventCommit commit = event.payload!.commits![i];
+            if (i != 0) {
+              descSpan += ("\n");
+            }
+            String sha = commit.sha!.substring(0, 7);
+            descSpan += sha;
+            descSpan += " ";
+            descSpan += commit.message!;
           }
-          String sha = commit.sha!.substring(0, 7);
-          descSpan += sha;
-          descSpan += " ";
-          descSpan += commit.message!;
-        }
-        if (count > maxLines) {
-          descSpan = "$descSpan\n...";
+          if (count > maxLines) {
+            descSpan = "$descSpan\n...";
+          }
+        } else {
+          actionStr = "";
         }
         break;
       case "ReleaseEvent":
@@ -143,7 +147,10 @@ class EventUtils {
           return;
         }
         NavigatorUtils.goReposDetail(
-            context, event.actor!.login!, repositoryName);
+          context,
+          event.actor!.login!,
+          repositoryName,
+        );
         break;
       case 'PushEvent':
         if (event.payload!.commits == null) {
@@ -152,17 +159,28 @@ class EventUtils {
           }
           NavigatorUtils.goReposDetail(context, owner, repositoryName);
         } else if (event.payload!.commits!.length == 1) {
-          NavigatorUtils.goPushDetailPage(context, owner, repositoryName,
-              event.payload!.commits![0].sha, true);
+          NavigatorUtils.goPushDetailPage(
+            context,
+            owner,
+            repositoryName,
+            event.payload!.commits![0].sha,
+            true,
+          );
         } else {
           StringList list = [];
           for (int i = 0; i < event.payload!.commits!.length; i++) {
             list.add(
-                "${event.payload!.commits![i].message!} ${event.payload!.commits![i].sha!.substring(0, 4)}");
+              "${event.payload!.commits![i].message!} ${event.payload!.commits![i].sha!.substring(0, 4)}",
+            );
           }
           CommonUtils.showCommitOptionDialog(context, list, (index) {
-            NavigatorUtils.goPushDetailPage(context, owner, repositoryName,
-                event.payload!.commits![index].sha, true);
+            NavigatorUtils.goPushDetailPage(
+              context,
+              owner,
+              repositoryName,
+              event.payload!.commits![index].sha,
+              true,
+            );
           });
         }
         break;
@@ -172,9 +190,13 @@ class EventUtils {
         break;
       case 'IssueCommentEvent':
       case 'IssuesEvent':
-        NavigatorUtils.goIssueDetail(context, owner, repositoryName,
-            event.payload!.issue!.number.toString(),
-            needRightLocalIcon: true);
+        NavigatorUtils.goIssueDetail(
+          context,
+          owner,
+          repositoryName,
+          event.payload!.issue!.number.toString(),
+          needRightLocalIcon: true,
+        );
         break;
       default:
         if (fullName.toLowerCase() == currentRepository.toLowerCase()) {
