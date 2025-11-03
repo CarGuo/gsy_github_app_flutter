@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/repo_commit.dart';
 import 'package:gsy_github_app_flutter/model/repository_ql.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
@@ -71,18 +72,29 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         onPressed: () {
           RepoCommit model = pullLoadWidgetControl.dataList[index];
           NavigatorUtils.goPushDetailPage(
-              context, provider.userName, provider.reposName, model.sha, false);
+            context,
+            provider.userName,
+            provider.reposName,
+            model.sha,
+            false,
+          );
         },
         needImage: false,
       );
+    } else if (selectIndex == 0 && item is Event) {
+      return GSYEventItem(
+        EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
+        onPressed: () {
+          EventUtils.ActionUtils(
+            context,
+            pullLoadWidgetControl.dataList[index],
+            "${provider.userName}/${provider.reposName}",
+          );
+        },
+      );
+    } else {
+      return const SizedBox();
     }
-    return GSYEventItem(
-      EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
-      onPressed: () {
-        EventUtils.ActionUtils(context, pullLoadWidgetControl.dataList[index],
-            "${provider.userName}/${provider.reposName}");
-      },
-    );
   }
 
   ///获取列表
@@ -102,9 +114,9 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
   ///获取详情
   _getReposDetail() {
-    context
-        .read<ReposDetailProvider>()
-        .getRepositoryDetailRequest(_getBottomWidget);
+    context.read<ReposDetailProvider>().getRepositoryDetailRequest(
+      _getBottomWidget,
+    );
   }
 
   ///绘制底部状态
@@ -115,26 +127,31 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         : <Widget>[
             /// star
             _renderBottomItem(
-                provider.bottomModel!.starText, provider.bottomModel!.starIcon,
-                () {
-              CommonUtils.showLoadingDialog(context);
-              return provider.doRepositoryStarRequest().then((result) {
-                showRefreshLoading();
-                var context = this.context;
-                if (!context.mounted) return;
-                Navigator.pop(context);
-              });
-            }),
+              provider.bottomModel!.starText,
+              provider.bottomModel!.starIcon,
+              () {
+                CommonUtils.showLoadingDialog(context);
+                return provider.doRepositoryStarRequest().then((result) {
+                  showRefreshLoading();
+                  var context = this.context;
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                });
+              },
+            ),
 
             /// watch
-            _renderBottomItem(provider.bottomModel!.watchText,
-                provider.bottomModel!.watchIcon, () {
-              CommonUtils.showLoadingDialog(context);
-              return provider.doRepositoryWatchRequest().then((result) {
-                showRefreshLoading();
-                Navigator.pop(context);
-              });
-            }),
+            _renderBottomItem(
+              provider.bottomModel!.watchText,
+              provider.bottomModel!.watchIcon,
+              () {
+                CommonUtils.showLoadingDialog(context);
+                return provider.doRepositoryWatchRequest().then((result) {
+                  showRefreshLoading();
+                  Navigator.pop(context);
+                });
+              },
+            ),
 
             ///fork
             _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
@@ -151,16 +168,17 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   ///绘制底部状态 item
   _renderBottomItem(var text, var icon, var onPressed) {
     return TextButton(
-        onPressed: onPressed,
-        child: GSYIConText(
-          icon,
-          text,
-          GSYConstant.smallText,
-          GSYColors.primaryValue,
-          15.0,
-          padding: 5.0,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ));
+      onPressed: onPressed,
+      child: GSYIConText(
+        icon,
+        text,
+        GSYConstant.smallText,
+        GSYColors.primaryValue,
+        15.0,
+        padding: 5.0,
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    );
   }
 
   @override
@@ -205,14 +223,20 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       scrollController: scrollController,
       headerSliverBuilder: (context, innerBoxIsScrolled) {
         return _sliverBuilder(
-            context, innerBoxIsScrolled, context.read<ReposDetailProvider>());
+          context,
+          innerBoxIsScrolled,
+          context.read<ReposDetailProvider>(),
+        );
       },
     );
   }
 
   ///绘制内置Header，支持部分停靠支持
-  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled,
-      ReposDetailProvider provider) {
+  List<Widget> _sliverBuilder(
+    BuildContext context,
+    bool innerBoxIsScrolled,
+    ReposDetailProvider provider,
+  ) {
     return <Widget>[
       ///头部信息
       SliverPersistentHeader(
@@ -228,7 +252,10 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             maxHeight: 1000,
             child: ReposHeaderItem(
               ReposHeaderViewModel.fromHttpMap(
-                  provider.userName, provider.reposName, provider.repository),
+                provider.userName,
+                provider.reposName,
+                provider.repository,
+              ),
               layoutListener: (size) {
                 setState(() {
                   headerSize = size.height;
@@ -245,47 +272,54 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
 
         /// SliverPersistentHeaderDelegate 的实现
         delegate: GSYSliverHeaderDelegate(
-            maxHeight: 60,
-            minHeight: 60,
-            changeSize: true,
-            vSyncs: this,
-            snapConfig: FloatingHeaderSnapConfiguration(
-              curve: Curves.bounceInOut,
-              duration: const Duration(milliseconds: 10),
-            ),
-            builder: (BuildContext context, double shrinkOffset,
-                bool overlapsContent) {
-              ///根据数值计算偏差
-              var lr = 10 - shrinkOffset / 60 * 10;
-              var radius = Radius.circular(4 - shrinkOffset / 60 * 4);
-              return SizedBox.expand(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 10, left: lr, right: lr),
-                  child: GSYSelectItemWidget(
-                    [
-                      context.l10n.repos_tab_activity,
-                      context.l10n.repos_tab_commits,
-                    ],
-                    (index) {
-                      ///切换时先滑动
-                      scrollController
-                          .animateTo(0,
+          maxHeight: 60,
+          minHeight: 60,
+          changeSize: true,
+          vSyncs: this,
+          snapConfig: FloatingHeaderSnapConfiguration(
+            curve: Curves.bounceInOut,
+            duration: const Duration(milliseconds: 10),
+          ),
+          builder:
+              (
+                BuildContext context,
+                double shrinkOffset,
+                bool overlapsContent,
+              ) {
+                ///根据数值计算偏差
+                var lr = 10 - shrinkOffset / 60 * 10;
+                var radius = Radius.circular(4 - shrinkOffset / 60 * 4);
+                return SizedBox.expand(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 10, left: lr, right: lr),
+                    child: GSYSelectItemWidget(
+                      [
+                        context.l10n.repos_tab_activity,
+                        context.l10n.repos_tab_commits,
+                      ],
+                      (index) {
+                        ///切换时先滑动
+                        scrollController
+                            .animateTo(
+                              0,
                               duration: const Duration(milliseconds: 200),
-                              curve: Curves.bounceInOut)
-                          .then((_) {
-                        selectIndex = index;
-                        clearData();
-                        showRefreshLoading();
-                      });
-                    },
-                    margin: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(radius),
+                              curve: Curves.bounceInOut,
+                            )
+                            .then((_) {
+                              selectIndex = index;
+                              clearData();
+                              showRefreshLoading();
+                            });
+                      },
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(radius),
+                      ),
                     ),
                   ),
-                ),
-              );
-            }),
+                );
+              },
+        ),
       ),
     ];
   }
