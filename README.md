@@ -17,7 +17,7 @@
 * ### 同款Weex版 （ https://github.com/CarGuo/GSYGithubAppWeex ）
 * ### 同款ReactNative版 （ https://github.com/CarGuo/GSYGithubApp ）
 * ### 同款Android Kotlin View版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
-* ### 同款Android Compose版本（ https://github.com/CarGuo/GSYGithubAppKotlinCompose ）
+* ### 同款Android Compose版本（ https://github.com/CarGuo/GSYGithubAppCompose ）
 
 * ### 简单 Flutter 独立学习项目 ( https://github.com/CarGuo/gsy_flutter_demo )
 
