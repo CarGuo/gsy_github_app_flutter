@@ -351,6 +351,8 @@ provider 页面内状态管理：
 ![](p3.png)
 ![](p4.png)
 
+> 更多可见：https://codewiki.google/github.com/carguo/gsy_github_app_flutter
+
 ## Star History Chart
 
 [![Star History Chart](https://api.star-history.com/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)](https://star-history.com/#CarGuo/gsy_github_app_flutter&Date)
