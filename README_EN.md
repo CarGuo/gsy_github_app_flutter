@@ -5,6 +5,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/network)
 [![GitHub issues](https://img.shields.io/github/issues/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/issues)
 [![GitHub license](https://img.shields.io/github/license/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/LICENSE)
+[![star](https://gitcode.com/ZuoYueLiang/gsy_github_app_flutter/star/badge.svg)](https://gitcode.com/ZuoYueLiang/gsy_github_app_flutter)
 
 ### [Chinese Readme](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/README.md)
 
@@ -12,10 +13,12 @@
 ## A cross-platform open source Github client App, offering richer features and better experience. Designed for better daily management and maintenance of your personal Github account, providing a more convenient driving experience～～Σ(￣。￣ﾉ)ﾉ. The project involves various common widgets, networking, databases, design patterns, theme switching, multi-language support, state management (Redux, Riverpod, Provider), and more. During the development and learning process, it provides rich comparisons with equivalent implementations:
 
 
-* ### Simple Flutter standalone learning project ( https://github.com/CarGuo/gsy_flutter_demo )
 * ### Same Weex version ( https://github.com/CarGuo/GSYGithubAppWeex )
 * ### Same ReactNative version ( https://github.com/CarGuo/GSYGithubApp )
-* ### Same Android Kotlin version ( https://github.com/CarGuo/GSYGithubAppKotlin )
+* ### Same Android Kotlin View version ( https://github.com/CarGuo/GSYGithubAppKotlin )
+* ### Same Android Compose version ( https://github.com/CarGuo/GSYGithubAppCompose )
+
+* ### Simple Flutter standalone learning project ( https://github.com/CarGuo/gsy_flutter_demo )
 
 
 
@@ -28,10 +31,7 @@
 - ## [Flutter Complete Development Practical Detailed Gitbook Preview Download](https://github.com/CarGuo/gsy_flutter_book)
 - ## [For all running issues please click here](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)
 
-
-| WeChat Official Account   | Juejin     |  Zhihu    |  CSDN   |   Jianshu   
-|---------|---------|--------- |---------|---------|
-| GSYTech  |  [Click me](https://juejin.im/user/582aca2ba22b9d006b59ae68/posts)    |   [Click me](https://www.zhihu.com/people/carguo)       |   [Click me](https://blog.csdn.net/ZuoYueLiang)  |   [Click me](https://www.jianshu.com/u/6e613846e1ea)  
+* ### GSY's old book: [《Flutter Development in Action》](https://item.jd.com/12883054.html) is available: [JD.com](https://item.jd.com/12883054.html) / [Dangdang](http://product.dangdang.com/28558519.html) / E-book [JD Reading](https://e.jd.com/30624414.html) and [Kindle](https://www.amazon.cn/dp/B08BHQ4TKK/ref=sr_1_5?__mk_zh_CN=亚马逊网站&keywords=flutter&qid=1593498531&s=digital-text&sr=1-5)
 
 - ### [If cloning is too slow or if images don't display, you can try downloading from the Gitee address](https://gitee.com/CarGuo/GSYGithubAppFlutter)
 
@@ -43,28 +43,28 @@
 
 > **Since this is primarily a learning and demonstration project, it includes various patterns, libraries, UIs, etc. Please don't mind the diversity**
 > 
-> 1. Global state management includes multiple approaches: Provider, Redux, Riverpod, etc.  
+> 0. Global state management currently has multiple modes, including Provider, Redux, Riverpod, etc.
 > 
-> 2. TrendPage: Currently demonstrates pure Riverpod state management  
+> 1. TrendPage: Currently uses pure riverpod state management for demonstration
+>
+> 2. Provider: Currently used in RepositoryDetailPage
+>
+> 3. Redux: Currently demonstrated for global login and user information.
 > 
-> 3. Provider: Currently used in RepositoryDetailPage  
+> 4. riverpod: Currently used to manage global grayscale and multi-language.
+>
+> 5. Repos and other requests demonstrate graphQL
 > 
-> 4. Redux: Currently demonstrates global login and user information management  
+> 6. Redux: Currently demonstrated for global login and user information.
 > 
-> 5. riverpod: Currently used to manage global grayscale mode and multi-language support  
-> 
-> 6. Repos and other requests demonstrate GraphQL implementation  
-> 
-> 7. Redux: Currently demonstrates global login and user information management  
-> 
-> 8. Signals: Currently used for in-page state management in NotifyPage and RepositoryDetailFileListPage
+> 7. Signals: Currently used for in-page state management in NotifyPage, RepositoryDetailFileListPage
 > 
 > **There are multiple list displays, including:**
 > 
-> 1. **gsy_pull_load_widget.dart**
+> 1. **gsy_pull_load_widget.dart.dart**
 > `Used in common_list_page.dart, etc., paired with gsy_list_state.dart`
 >
-> 2. **gsy_pull_new_load_widget.dart**
+> 2. **gsy_pull_new_load_widget.dart.dart**
 > `Used in dynamic_page.dart, etc., paired with gsy_bloc_list_state.dart`
 > `Supports both iOS and Android pull-to-refresh styles`
 > 
@@ -145,7 +145,7 @@
 >Current Flutter SDK version 3.35
 
 ```
-User Interaction → UI Layer(Widget/Page) → State Layer(Redux/Provider/Riverpod/Signals) → Service Layer(Repositories) 
+User Interaction → UI Layer(Widget/Page) → State Layer(Redux/Provider/Riverpod) → Service Layer(Repositories) 
        → Network Layer(Net) → GitHub API → Data Model(Model) → Local Storage(DB) → UI Update
 ```
 
