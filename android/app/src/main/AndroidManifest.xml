@@ -60,11 +60,11 @@
         <meta-data
             android:name="io.flutter.embedded_views_preview"
             android:value="true" />
-        <meta-data
-            android:name="io.flutter.embedding.android.DisableMergedPlatformUIThread"
-            android:value="true" />
-        <meta-data
-            android:name="io.flutter.embedding.android.EnableImpeller"
-        android:value="false" />
+<!--        <meta-data-->
+<!--            android:name="io.flutter.embedding.android.DisableMergedPlatformUIThread"-->
+<!--            android:value="true" />-->
+<!--        <meta-data-->
+<!--            android:name="io.flutter.embedding.android.EnableImpeller"-->
+<!--        android:value="false" />-->
     </application>
 </manifest>
