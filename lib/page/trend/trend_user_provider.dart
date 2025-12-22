@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'trend_user_provider.g.dart';
 
-///无需释放，这样内存里就会保存着列表，��次进来不会空数据
+///无需释放，这样内存里就会保存着列表，下次进来不会空数据
 @Riverpod(keepAlive: true)
 class TrendCNUserList extends _$TrendCNUserList {
 
@@ -21,8 +21,7 @@ class TrendCNUserList extends _$TrendCNUserList {
   }
 
   void addList(List<SearchUserQL> list) {
-    state.addAll(list);
-    ///需要为新的列���，不然不会触发更新
+    ///需要为新的列表，不然不会触发更新
     state = [...state, ...list];
   }
 
@@ -35,11 +34,11 @@ class TrendCNUserList extends _$TrendCNUserList {
 Future<(List<SearchUserQL>, String)?> searchTrendUserRequest(
     Ref ref, String location, bool isRefresh,
     {String? cursor}) async {
+  var trendRef = ref.read(trendCNUserListProvider.notifier);
   var result =
       await UserRepository.searchTrendUserRequest("China", cursor: cursor);
   if (result.data != null) {
     var value = result.data;
-    var trendRef = ref.read(trendCNUserListProvider.notifier);
     if (isRefresh) {
       trendRef.setList(value.$1);
     } else {
