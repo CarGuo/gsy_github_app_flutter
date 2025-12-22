@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/transformer.dart';
@@ -673,7 +675,7 @@ class ReposRepository {
   }
 
   /// 版本更新
-  static getNewsVersion(context, showTip) async {
+  static getNewsVersion(BuildContext context, showTip) async {
     //ios不检查更新
     if (Platform.isIOS) {
       return;
