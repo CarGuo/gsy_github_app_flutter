@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerState, ConsumerStatefulWidget;
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
@@ -84,7 +84,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
                   alignment: const Alignment(0.0, 0.3),
                   child: DiffScaleText(
                     text: text,
-                    textStyle: GoogleFonts.akronim().copyWith(
+                    textStyle: const TextStyle(fontFamily: 'Akronim').copyWith(
                       color: GSYColors.primaryDarkValue,
                       fontSize: fontSize,
                     ),
