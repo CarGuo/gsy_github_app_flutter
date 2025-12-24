@@ -707,10 +707,12 @@ class ReposRepository {
           printLog("newsHad $result");
         }
         if (result > 0) {
+          if (!context.mounted) return;
           CommonUtils.showUpdateDialog(
               context, "${release.name!}: ${release.body!}");
         } else {
           if (showTip) {
+            if (!context.mounted) return;
             showToast(context.l10n.app_not_new_version);
           }
         }

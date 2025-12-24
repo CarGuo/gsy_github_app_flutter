@@ -24,8 +24,8 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
+    lint {
+        disable += 'InvalidPackage'
     }
 
     defaultConfig {
@@ -62,8 +62,8 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    lintOptions {
-        abortOnError false
+    lint {
+        abortOnError = false
     }
 
     dependenciesInfo {

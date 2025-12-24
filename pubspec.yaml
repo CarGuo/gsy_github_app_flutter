@@ -41,18 +41,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.4
   fluttertoast: 8.2.10
-  share_plus: 10.0.1
+  share_plus: 12.0.1
   flutter_spinkit: 5.2.1
   sqflite: 2.3.3+1
   pub_semver: 2.1.4
   flutter_svg: 2.1.0
   flutter_slidable: 3.1.2
-  dio: 5.6.0
+  dio: 5.9.0
   #fconsole: 2.2.1
   path_provider: 2.1.4
   webview_flutter: 4.10.0
   # 高版本目前和👆兼容有问题
-  flutter_inappwebview: 6.1.0+1
+  flutter_inappwebview: 6.1.5
   #bezier: ^1.1.5
   flare_flutter:
     git:
@@ -63,27 +63,28 @@ dependencies:
   rive: 0.13.13
   # 固定版本
   easy_refresh: 3.4.0
-  signals: 6.0.2
+  signals: 6.3.0
   flutter_redux: 0.10.0
   rxdart: 0.27.1
   graphql: 5.2.2
   #flutter_cache_manager: 3.0.0-nullsafety.0
-  provider: 6.1.2
+  provider: 6.1.5+1
   permission_handler: 11.3.1
   json_annotation: 4.9.0
   package_info_plus: 8.0.2
   connectivity_plus: 6.0.5
-  flutter_markdown: 0.7.6+2
+  # flutter_markdown 已停止维护，使用 flutter_markdown_plus 替代
+  flutter_markdown_plus: 1.0.6
   device_info_plus: 10.1.2
-  url_launcher: 6.3.0
+  url_launcher: 6.3.2
   google_fonts: 6.2.1
   android_intent_plus: 5.1.0
-  shared_preferences: 2.3.1
+  shared_preferences: 2.5.4
   built_value: 8.12.0
-  simple_animations: 5.0.2
+  simple_animations: 5.2.0
   supercharged: 2.1.1
-  animations: 2.0.11
-  lottie: 3.0.0
+  animations: 2.1.1
+  lottie: 3.3.2
   auto_size_text: 3.0.0
   flutter_localizations:
     sdk: flutter
@@ -97,18 +98,18 @@ dependencies:
   webview_flutter_wkwebview: any
   string_scanner: any
   meta: any
-  flutter_riverpod:  3.0.0
-  riverpod_annotation: 3.0.0
+  flutter_riverpod: 3.0.3
+  riverpod_annotation: 3.0.3
   # error handle
-  talker_flutter: 4.7.1
-  talker_dio_logger: 4.7.1
+  talker_flutter: 5.1.9
+  talker_dio_logger: 5.1.9
 
 dev_dependencies:
-  riverpod_generator:  3.0.0
+  riverpod_generator: 3.0.3
   built_value_generator: 8.12.0
   build_runner: ^2.4.14
   json_serializable: 6.11.1
-  flutter_lints: 4.0.0
+  flutter_lints: 5.0.0
 #  flutter_test:
 #    sdk: flutter
 

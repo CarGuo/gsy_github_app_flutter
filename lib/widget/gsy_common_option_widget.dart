@@ -49,7 +49,7 @@ class GSYCommonOptionWidget extends StatelessWidget {
       }),
       GSYOptionModel(context.l10n.option_share, context.l10n.option_share,
           (model) {
-        Share.share(context.l10n.option_share_title + (url ?? ""));
+        SharePlus.instance.share(ShareParams(text: context.l10n.option_share_title + (url ?? "")));
       }),
     ];
     var list = [...constList, ...?otherList];
