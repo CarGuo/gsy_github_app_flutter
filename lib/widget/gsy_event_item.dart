@@ -69,7 +69,7 @@ class GSYEventItem extends StatelessWidget {
                   Container(
                       margin: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                       alignment: Alignment.topLeft,
-                      child: Text(eventViewModel.actionTarget!,
+                      child: Text(eventViewModel.actionTarget ?? "",
                           style: GSYConstant.smallTextBold)),
                   des,
                 ],
