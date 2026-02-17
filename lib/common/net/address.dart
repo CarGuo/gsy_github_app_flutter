@@ -71,6 +71,11 @@ class Address {
     return "${host}repos/$reposOwner/$reposName/commits/$sha";
   }
 
+  ///仓库提交比较 get
+  static getReposCompare(reposOwner, reposName, base, head) {
+    return "${host}repos/$reposOwner/$reposName/compare/$base...$head";
+  }
+
   ///仓库Issue get
   static getReposIssue(String reposOwner, String reposName, state, sort, direction) {
     state ??= 'all';
