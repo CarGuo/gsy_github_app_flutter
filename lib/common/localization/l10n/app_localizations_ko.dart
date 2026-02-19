@@ -84,6 +84,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get home_change_language => '언어';
 
   @override
+  String get home_vibration => '진동 피드백';
+
+  @override
   String get home_change_grey => '그레이스케일';
 
   @override

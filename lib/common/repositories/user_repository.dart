@@ -72,12 +72,16 @@ class UserRepository {
       "scopes": ['user', 'repo', 'gist', 'notifications'],
       "note": "admin_script",
       "client_id": NetConfig.CLIENT_ID,
-      "client_secret": NetConfig.CLIENT_SECRET
+      "client_secret": NetConfig.CLIENT_SECRET,
     };
     httpManager.clearAuthorization();
 
-    var res = await httpManager.netFetch(Address.getAuthorization(),
-        json.encode(requestParams), null, Options(method: "post"));
+    var res = await httpManager.netFetch(
+      Address.getAuthorization(),
+      json.encode(requestParams),
+      null,
+      Options(method: "post"),
+    );
     dynamic resultData;
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
@@ -108,6 +112,13 @@ class UserRepository {
     String? localeIndex = await LocalStorage.get(Config.LOCALE);
     ref.read(appLocalStateProvider.notifier).changeLocale(localeIndex);
 
+    ///震动开关
+    String? vibrationEnable = await LocalStorage.get(Config.VIBRATION_ENABLE);
+    bool enable = vibrationEnable != "false";
+    ref
+        .read(appVibrationStateProvider.notifier)
+        .changeVibration(enable, save: false);
+
     return DataResult(res.data, (res.result && (token != null)));
   }
 
@@ -130,10 +141,18 @@ class UserRepository {
       dynamic res;
       if (userName == null) {
         res = await httpManager.netFetch(
-            Address.getMyUserInfo(), null, null, null);
+          Address.getMyUserInfo(),
+          null,
+          null,
+          null,
+        );
       } else {
         res = await httpManager.netFetch(
-            Address.getUserInfo(userName), null, null, null);
+          Address.getUserInfo(userName),
+          null,
+          null,
+          null,
+        );
       }
       if (res != null && res.result) {
         String? starred = "---";
@@ -274,7 +293,8 @@ class UserRepository {
   /// 获取用户相关通知
   static getNotifyRequest(bool all, bool participating, page) async {
     String tag = (!all && !participating) ? '?' : "&";
-    String url = Address.getNotifation(all, participating) +
+    String url =
+        Address.getNotifation(all, participating) +
         Address.getPageParams(tag, page);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result) {
@@ -295,16 +315,25 @@ class UserRepository {
   /// 设置单个通知已读
   static setNotificationAsReadRequest(id) async {
     String url = Address.setNotificationAsRead(id);
-    var res = await httpManager
-        .netFetch(url, null, null, Options(method: "PATCH"), noTip: true);
+    var res = await httpManager.netFetch(
+      url,
+      null,
+      null,
+      Options(method: "PATCH"),
+      noTip: true,
+    );
     return res;
   }
 
   /// 设置所有通知已读
   static setAllNotificationAsReadRequest() async {
     String url = Address.setAllNotificationAsRead();
-    var res =
-        await httpManager.netFetch(url, null, null, Options(method: "PUT"));
+    var res = await httpManager.netFetch(
+      url,
+      null,
+      null,
+      Options(method: "PUT"),
+    );
     return DataResult(res!.data, res.result);
   }
 
@@ -319,8 +348,12 @@ class UserRepository {
   static doFollowRequest(String name, bool followed) async {
     String url = Address.doFollow(name);
     var res = await httpManager.netFetch(
-        url, null, null, Options(method: !followed ? "PUT" : "DELETE"),
-        noTip: true);
+      url,
+      null,
+      null,
+      Options(method: !followed ? "PUT" : "DELETE"),
+      noTip: true,
+    );
     return DataResult(res!.data, res.result);
   }
 
@@ -346,8 +379,12 @@ class UserRepository {
   /// 更新用户信息
   static updateUserRequest(params, Store store) async {
     String url = Address.getMyUserInfo();
-    var res =
-        await httpManager.netFetch(url, params, null, Options(method: "PATCH"));
+    var res = await httpManager.netFetch(
+      url,
+      params,
+      null,
+      Options(method: "PATCH"),
+    );
     if (res != null && res.result) {
       var localResult = await getUserInfoLocal();
       User newUser = User.fromJson(res.data);

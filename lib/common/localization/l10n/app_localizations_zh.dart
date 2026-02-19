@@ -84,6 +84,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get home_change_language => '语言切换';
 
   @override
+  String get home_vibration => '震动反馈';
+
+  @override
   String get home_change_grey => '灰度模式';
 
   @override

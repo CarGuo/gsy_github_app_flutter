@@ -24,6 +24,7 @@
   "login_deprecated": "密码登陆API将在2020年11月13日被Github移除",
   "home_reply": "问题反馈",
   "home_change_language": "语言切换",
+  "home_vibration": "震动反馈",
   "home_change_grey": "灰度模式",
   "home_about": "关于",
   "home_check_update": "检测更新",
