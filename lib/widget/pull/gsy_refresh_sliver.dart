@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
@@ -417,7 +418,10 @@ class CupertinoSliverRefreshControlState
   bool needRefresh = false;
   bool draging = false;
 
-  bool get vibrationEnable => globalContainer.read(appVibrationStateProvider);
+  bool get vibrationEnable => ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(appVibrationStateProvider);
 
   @override
   void initState() {

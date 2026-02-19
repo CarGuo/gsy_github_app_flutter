@@ -33,8 +33,8 @@ android {
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 35
-        versionCode 68
-        versionName "7.9.2"
+        versionCode 69
+        versionName "7.9.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

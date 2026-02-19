@@ -21,7 +21,10 @@ final appStateProvider = Provider<(bool, Locale, ThemeData)>((ref) {
 @riverpod
 class AppVibrationState extends _$AppVibrationState {
   @override
-  bool build() => true;
+  bool build() {
+    ref.keepAlive();
+    return true;
+  }
 
   void changeVibration(bool enable, {bool save = true}) {
     state = enable;
