@@ -84,6 +84,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get home_change_language => '言語';
 
   @override
+  String get home_vibration => '振動フィードバック';
+
+  @override
   String get home_change_grey => 'グレースケール';
 
   @override

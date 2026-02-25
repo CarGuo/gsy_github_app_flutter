@@ -24,6 +24,7 @@
   "login_deprecated": "비밀번호 인증 API는 2020년 11월 13일에 Github에서 제거됩니다",
   "home_reply": "피드백",
   "home_change_language": "언어",
+  "home_vibration": "진동 피드백",
   "home_change_grey": "그레이스케일",
   "home_about": "정보",
   "home_check_update": "업데이트 확인",

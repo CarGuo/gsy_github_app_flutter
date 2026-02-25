@@ -85,6 +85,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_change_language => 'Language';
 
   @override
+  String get home_vibration => 'Vibration';
+
+  @override
   String get home_change_grey => 'Grey';
 
   @override

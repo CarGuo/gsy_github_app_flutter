@@ -24,6 +24,7 @@
   "login_deprecated": "The API via password authentication will remove on November 13, 2020 by Github",
   "home_reply": "Feedback",
   "home_change_language": "Language",
+  "home_vibration": "Vibration",
   "home_change_grey": "Grey",
   "home_about": "About",
   "home_check_update": "Check Update",

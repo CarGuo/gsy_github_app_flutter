@@ -252,6 +252,12 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get home_change_language;
 
+  /// No description provided for @home_vibration.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration'**
+  String get home_vibration;
+
   /// No description provided for @home_change_grey.
   ///
   /// In en, this message translates to:

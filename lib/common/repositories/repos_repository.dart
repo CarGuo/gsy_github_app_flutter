@@ -24,6 +24,7 @@ import 'package:gsy_github_app_flutter/db/provider/user/user_stared_db_provider.
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/branch.dart';
+import 'package:gsy_github_app_flutter/model/commits_comparison.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
 import 'package:gsy_github_app_flutter/model/push_commit.dart';
@@ -636,6 +637,19 @@ class ReposRepository {
     if (res != null && res.result) {
       PushCommit pushCommit = PushCommit.fromJson(res.data);
       return DataResult(pushCommit, true);
+    } else {
+      return DataResult(null, false);
+    }
+  }
+
+  /// 获取两个提交之间的比较信息
+  static getReposCompareRequest(
+      String userName, String reposName, String base, String head) async {
+    String url = Address.getReposCompare(userName, reposName, base, head);
+    var res = await httpManager.netFetch(url, null, null, null, noTip: true);
+    if (res != null && res.result) {
+      CommitsComparison comparison = CommitsComparison.fromJson(res.data);
+      return DataResult(comparison, true);
     } else {
       return DataResult(null, false);
     }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gsy_github_app_flutter/common/config/config.dart';
+import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 
 part 'app_state_provider.g.dart';
 
@@ -17,30 +18,44 @@ final appStateProvider = Provider<(bool, Locale, ThemeData)>((ref) {
   return (var1, var2, var3);
 });
 
-ColorFilter greyscale = const ColorFilter.matrix(
-  <double>[
-    0.2126,
-    0.7152,
-    0.0722,
-    0,
-    0,
-    0.2126,
-    0.7152,
-    0.0722,
-    0,
-    0,
-    0.2126,
-    0.7152,
-    0.0722,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    0,
-  ],
-);
+@riverpod
+class AppVibrationState extends _$AppVibrationState {
+  @override
+  bool build() {
+    ref.keepAlive();
+    return true;
+  }
+
+  void changeVibration(bool enable, {bool save = true}) {
+    state = enable;
+    if (save) {
+      LocalStorage.save(Config.VIBRATION_ENABLE, enable.toString());
+    }
+  }
+}
+
+ColorFilter greyscale = const ColorFilter.matrix(<double>[
+  0.2126,
+  0.7152,
+  0.0722,
+  0,
+  0,
+  0.2126,
+  0.7152,
+  0.0722,
+  0,
+  0,
+  0.2126,
+  0.7152,
+  0.0722,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+]);
 
 /// 控制 App 灰度效果
 @riverpod
@@ -77,8 +92,9 @@ class AppLocalState extends _$AppLocalState {
   }
 
   void changeLocale(String? index) {
-    int? localeIndex =
-        (index != null && index.isNotEmpty) ? int.parse(index) : null;
+    int? localeIndex = (index != null && index.isNotEmpty)
+        ? int.parse(index)
+        : null;
     state = _getLocale(localeIndex);
   }
 }
@@ -92,8 +108,9 @@ class AppThemeState extends _$AppThemeState {
   }
 
   void pushTheme(String? index) {
-    int? localeIndex =
-        (index != null && index.isNotEmpty) ? int.parse(index) : null;
+    int? localeIndex = (index != null && index.isNotEmpty)
+        ? int.parse(index)
+        : null;
     if (localeIndex != null) {
       List<Color> colors = CommonUtils.getThemeListColor();
       state = _getThemeData(colors[localeIndex]);
@@ -108,7 +125,6 @@ class AppThemeState extends _$AppThemeState {
       primarySwatch: color as MaterialColor,
 
       /// Card 在 M3 下，会有 apply Overlay
-
       colorScheme: ColorScheme.fromSeed(
         seedColor: color,
         primary: color,
@@ -132,14 +148,12 @@ class AppThemeState extends _$AppThemeState {
 
       ///修改 FloatingActionButton的默认主题行为
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-          foregroundColor: Colors.white,
-          backgroundColor: color,
-          shape: const CircleBorder()),
+        foregroundColor: Colors.white,
+        backgroundColor: color,
+        shape: const CircleBorder(),
+      ),
       appBarTheme: AppBarTheme(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-          size: 24.0,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white, size: 24.0),
         backgroundColor: color,
         titleTextStyle: Typography.dense2021.titleLarge,
         systemOverlayStyle: SystemUiOverlayStyle.light,

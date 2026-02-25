@@ -24,6 +24,7 @@
   "login_deprecated": "パスワード認証APIは2020年11月13日にGithubによって削除されます",
   "home_reply": "フィードバック",
   "home_change_language": "言語",
+  "home_vibration": "振動フィードバック",
   "home_change_grey": "グレースケール",
   "home_about": "について",
   "home_check_update": "更新確認",
