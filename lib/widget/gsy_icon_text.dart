@@ -61,10 +61,9 @@ class GSYIConText extends StatelessWidget {
             ));
 
     return Row(
-      textBaseline: TextBaseline.alphabetic,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
-      crossAxisAlignment: CrossAxisAlignment.baseline,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Icon(
           iconData,

@@ -37,6 +37,8 @@ class _NotifyPageState extends State<NotifyPage>
 
   late Completer<bool> isLoading;
 
+  bool _hasMore = true;
+
   late var notifySignal = createListSignal<Model.Notification>([]);
   late var notifyIndexSignal = createSignal<int>(0);
   late var signalPage = createSignal<int>(-1);
@@ -58,12 +60,13 @@ class _NotifyPageState extends State<NotifyPage>
     DataResult res = await _getDataLogic(signalPage.value);
     if (res.result && res.data is List<Model.Notification>) {
       var data = res.data as List<Model.Notification>;
-      if (data.length < Config.PAGE_SIZE) {
-        controller.finishLoad(IndicatorResult.noMore);
-      } else {
+      _hasMore = data.length >= Config.PAGE_SIZE;
+      if (_hasMore) {
         controller.finishLoad(IndicatorResult.success);
+      } else {
+        controller.finishLoad(IndicatorResult.noMore);
       }
-      if (signalPage.value == 0) {
+      if (signalPage.value == 1) {
         notifySignal.value = data;
       } else {
         notifySignal.addAll(data);
@@ -142,6 +145,10 @@ class _NotifyPageState extends State<NotifyPage>
   }
 
   requestLoadMore() async {
+    if (!_hasMore) {
+      controller.finishLoad(IndicatorResult.noMore);
+      return;
+    }
     isLoading = Completer<bool>();
     signalPage.value++;
     await isLoading.future;
@@ -149,8 +156,9 @@ class _NotifyPageState extends State<NotifyPage>
 
   requestRefresh() async {
     isLoading = Completer<bool>();
+    _hasMore = true;
     controller.finishLoad(IndicatorResult.none);
-    signalPage.value = 0;
+    signalPage.value = 1;
     await isLoading.future;
   }
 
