@@ -24,11 +24,22 @@ class SearchBLoC {
 
   final TextEditingController textEditingController  = TextEditingController();
 
-
   ///获取搜索数据
   getDataLogic(int page) async {
     return await ReposRepository.searchRepositoryRequest(searchText, language, type, sort,
         selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
   }
 
+  void resetFilters() {
+    resetSearchDrawerFilters();
+    type = searchFilterType[0].value;
+    sort = sortType[0].value;
+    language = searchLanguageType[0].value;
+    selectIndex = 0;
+  }
+
+  void dispose() {
+    resetFilters();
+    textEditingController.dispose();
+  }
 }

@@ -22,6 +22,50 @@
 * ### 简单 Flutter 独立学习项目 ( https://github.com/CarGuo/gsy_flutter_demo )
 
 
+## AI 协作与贡献入口
+
+如果你希望用 AI 或更工程化的方式参与这个仓库，建议不要只看本 README，先看下面这些文档入口：
+
+- 总导航：`docs/CONTRIBUTING_AI.md`
+- 文档索引：`docs/README.md`
+- 项目地图：`docs/00-overview/project-map.md`
+- 分层边界：`docs/01-architecture/app-layering.md`
+- 状态管理边界：`docs/01-architecture/state-management-matrix.md`
+- 手工回归矩阵：`docs/04-quality/smoke-matrix.md`
+
+按任务类型进入：
+
+- 修 Bug：`docs/05-ai/task-playbooks/fix-bug.md`
+- 新增页面：`docs/05-ai/task-playbooks/add-page.md`
+- 新增接口：`docs/05-ai/task-playbooks/add-api.md`
+- 状态整理：`docs/05-ai/task-playbooks/refactor-state.md`
+
+按功能域进入：
+
+- 仓库详情：`docs/05-ai/feature-playbooks/repos-change.md`
+- 趋势页：`docs/05-ai/feature-playbooks/trend-change.md`
+- 通知页：`docs/05-ai/feature-playbooks/notify-change.md`
+- Issue：`docs/05-ai/feature-playbooks/issue-change.md`
+- 搜索：`docs/05-ai/feature-playbooks/search-change.md`
+- 用户页：`docs/05-ai/feature-playbooks/user-change.md`
+- 首页容器：`docs/05-ai/feature-playbooks/home-change.md`
+- 动态页：`docs/05-ai/feature-playbooks/dynamic-change.md`
+- Release：`docs/05-ai/feature-playbooks/release-change.md`
+- Push 提交详情：`docs/05-ai/feature-playbooks/push-change.md`
+- 调试页：`docs/05-ai/feature-playbooks/debug-change.md`
+
+长期规则：
+
+- 状态管理收敛策略：`docs/06-decisions/ADR-0001-状态管理收敛策略.md`
+- 新增功能默认状态方案：`docs/06-decisions/ADR-0002-新增功能默认状态方案.md`
+
+Review harness：
+
+- author / reviewer 分离：`docs/05-ai/review-harness.md`
+- reviewer prompt：`docs/05-ai/prompts/reviewer-system.md`
+- review bundle 脚本（可选辅助）：`tool/ai/build_review_bundle.ps1`
+
+
 
 ## 相关文章
 

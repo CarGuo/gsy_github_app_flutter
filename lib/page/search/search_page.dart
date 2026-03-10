@@ -64,13 +64,6 @@ class _SearchPageState extends State<SearchPage>
     return await searchBLoC.getDataLogic(page);
   }
 
-  ///清空过滤数据
-  _clearSelect(List<FilterModel> list) {
-    for (FilterModel model in list) {
-      model.select = false;
-    }
-  }
-
   @override
   bool get wantKeepAlive => true;
 
@@ -128,14 +121,9 @@ class _SearchPageState extends State<SearchPage>
 
   @override
   void dispose() {
-    super.dispose();
-    _clearSelect(sortType);
-    sortType[0].select = true;
-    _clearSelect(searchLanguageType);
-    searchLanguageType[0].select = true;
-    _clearSelect(searchFilterType);
-    searchFilterType[0].select = true;
+    searchBLoC.dispose();
     controller.dispose();
+    super.dispose();
   }
 
   @override

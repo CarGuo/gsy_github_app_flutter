@@ -161,3 +161,15 @@ var searchLanguageType = [
   FilterModel(name: "HTML", value: 'HTML', select: false),
   FilterModel(name: "CSS", value: 'CSS', select: false),
 ];
+
+void resetSearchDrawerFilters() {
+  _resetFilterList(sortType);
+  _resetFilterList(searchFilterType);
+  _resetFilterList(searchLanguageType);
+}
+
+void _resetFilterList(List<FilterModel> list) {
+  for (int i = 0; i < list.length; i++) {
+    list[i].select = i == 0;
+  }
+}
