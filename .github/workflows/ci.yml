@@ -36,7 +36,7 @@ jobs:
           java-version: 21
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.38.4'
+          flutter-version: '3.41.6'
       - name: Create config file
         run: |
           echo 'class NetConfig { static const CLIENT_ID = "${{ secrets.CLIENT_ID }}"; static const CLIENT_SECRET = "${{ secrets.CLIENT_SECRET }}";}' > lib/common/config/ignoreConfig.dart
@@ -67,7 +67,7 @@ jobs:
           java-version: 21
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.38.4'
+          flutter-version: '3.41.6'
       - name: Create config file
         run: |
           echo 'class NetConfig { static const CLIENT_ID = "${{ secrets.CLIENT_ID }}"; static const CLIENT_SECRET = "${{ secrets.CLIENT_SECRET }}";}' > lib/common/config/ignoreConfig.dart
