@@ -33,8 +33,8 @@ android {
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 35
-        versionCode 69
-        versionName "7.9.3"
+        versionCode 70
+        versionName "8.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'arm64-v8a'
