@@ -17,6 +17,7 @@
 * ### Same ReactNative version ( https://github.com/CarGuo/GSYGithubApp )
 * ### Same Android Kotlin View version ( https://github.com/CarGuo/GSYGithubAppKotlin )
 * ### Same Android Compose version ( https://github.com/CarGuo/GSYGithubAppCompose )
+* ### Same Compose Multiplatform version ( https://github.com/CarGuo/GSYGithubAppCMP )
 
 * ### Simple Flutter standalone learning project ( https://github.com/CarGuo/gsy_flutter_demo )
 
