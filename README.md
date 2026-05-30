@@ -1,14 +1,14 @@
 ![](./logo.png)
 
 [![Github Actions](https://github.com/CarGuo/gsy_github_app_flutter/workflows/CI/badge.svg)](https://github.com/CarGuo/gsy_github_app_flutter/actions)
-[![GitHub stars](https://img.shields.io/github/stars/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/network)
-[![GitHub issues](https://img.shields.io/github/issues/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/issues)
-[![GitHub license](https://img.shields.io/github/license/CarGuo/GSYGithubAppFlutter.svg)](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/CarGuo/gsy_github_app_flutter.svg)](https://github.com/CarGuo/gsy_github_app_flutter/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/CarGuo/gsy_github_app_flutter.svg)](https://github.com/CarGuo/gsy_github_app_flutter/network)
+[![GitHub issues](https://img.shields.io/github/issues/CarGuo/gsy_github_app_flutter.svg)](https://github.com/CarGuo/gsy_github_app_flutter/issues)
+[![GitHub license](https://img.shields.io/github/license/CarGuo/gsy_github_app_flutter.svg)](https://github.com/CarGuo/gsy_github_app_flutter/blob/master/LICENSE)
 [![star](https://gitcode.com/ZuoYueLiang/gsy_github_app_flutter/star/badge.svg)](https://gitcode.com/ZuoYueLiang/gsy_github_app_flutter)
 
 
-### [English Readme](https://github.com/CarGuo/GSYGithubAppFlutter/blob/master/README_EN.md)
+### [English Readme](https://github.com/CarGuo/gsy_github_app_flutter/blob/master/README_EN.md)
 
 
 ## 一款跨平台的开源Github客户端App，提供更丰富的功能，更好体验，旨在更好的日常管理和维护个人Github，提供更好更方便的驾车体验～～Σ(￣。￣ﾉ)ﾉ。项目涉及各种常用控件、网络、数据库、设计模式、主题切换、多语言、状态管理（Redux、Riverpod、Provider）等。在开发学习过程中，提供丰富的同款对比：
@@ -19,6 +19,7 @@
 * ### 同款Android Kotlin View版本（ https://github.com/CarGuo/GSYGithubAppKotlin ）
 * ### 同款Android Compose版本（ https://github.com/CarGuo/GSYGithubAppCompose ）
 * ### 同款Compose Multiplatform版本（ https://github.com/CarGuo/GSYGithubAppCMP ）
+* ### 同款HarmonyOS ArkUI版本（ https://github.com/CarGuo/GSYGithubAppOH ）
 
 * ### 简单 Flutter 独立学习项目 ( https://github.com/CarGuo/gsy_flutter_demo )
 
@@ -83,7 +84,7 @@ Review harness：
 
 * ### GSY老书：[《Flutter开发实战详解》](https://item.jd.com/12883054.html)上架啦：[京东](https://item.jd.com/12883054.html) / [当当](http://product.dangdang.com/28558519.html) / 电子版[京东读书](https://e.jd.com/30624414.html)和[Kindle](https://www.amazon.cn/dp/B08BHQ4TKK/ref=sr_1_5?__mk_zh_CN=亚马逊网站&keywords=flutter&qid=1593498531&s=digital-text&sr=1-5)
 
-- ### [如果克隆太慢或者图片看不到，可尝试从码云地址下载](https://gitee.com/CarGuo/GSYGithubAppFlutter)
+- ### [如果克隆太慢或者图片看不到，可尝试从码云地址下载](https://gitee.com/CarGuo/gsy_github_app_flutter)
 
 
 
@@ -173,9 +174,9 @@ Review harness：
 
 ### 常见问题
 
-* 如果包同步失败，一般都是因为没设置包代理，可以参考：[环境变量问题](https://github.com/CarGuo/GSYGithubAppFlutter/issues/13)
+* 如果包同步失败，一般都是因为没设置包代理，可以参考：[环境变量问题](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)
 
-* [如果克隆太慢，可尝试码云地址下载](https://gitee.com/CarGuo/GSYGithubAppFlutter)
+* [如果克隆太慢，可尝试码云地址下载](https://gitee.com/CarGuo/gsy_github_app_flutter)
 
 ### 示例图片
 ### 示例图片
@@ -410,7 +411,7 @@ provider 页面内状态管理：
 
 ### LICENSE
 ```
-CarGuo/GSYGithubAppFlutter is licensed under the
+CarGuo/gsy_github_app_flutter is licensed under the
 Apache License 2.0
 
 A permissive license whose main conditions require preservation of copyright and license notices. 
