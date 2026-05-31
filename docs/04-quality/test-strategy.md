@@ -32,6 +32,11 @@
 
 - `docs/04-quality/smoke-matrix.md`
 
+当前 Patrol 自动回归入口见：
+
+- `docs/04-quality/patrol-regression.md`
+- `patrol_test/app_regression_test.dart`
+
 ## 第一批值得补的测试
 
 - 高频模型的序列化测试

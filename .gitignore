@@ -39,6 +39,8 @@ flutter_export_environment.sh
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+**/ios/Flutter/ephemeral/
+patrol_test/test_bundle.dart
 
 .pub-cache/
 /build/
@@ -57,3 +59,4 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+env.local
