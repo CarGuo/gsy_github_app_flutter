@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/db/provider/issue/issue_detail_db_provide
 import 'package:gsy_github_app_flutter/db/provider/repos/repository_issue_db_provider.dart';
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
+import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 
@@ -107,9 +108,9 @@ class IssueRepository {
 
     next() async {
       String url = Address.getIssueInfo(userName, repository, number);
-      //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
+      //full+json 会带上 reactions/author_association/body_html/labels 等
       var res = await httpManager.netFetch(
-          url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
+          url, null, {"Accept": 'application/vnd.github.VERSION.full+json'}, null);
       if (res != null && res.result) {
         if (needDb) {
           provider.insert(fullName, number, json.encode(res.data));
@@ -140,9 +141,12 @@ class IssueRepository {
     next() async {
       String url = Address.getIssueComment(userName, repository, number) +
           Address.getPageParams("?", page);
-      //{"Accept": 'application/vnd.github.html,application/vnd.github.VERSION.raw'}
+      //full+json 会带上 reactions/author_association/body_html
       var res = await httpManager.netFetch(
-          url, null, {"Accept": 'application/vnd.github.VERSION.raw'}, null);
+          url,
+          null,
+          {"Accept": 'application/vnd.github.VERSION.full+json'},
+          null);
       if (res != null && res.result) {
         List<Issue> list = [];
         var data = res.data;
@@ -259,5 +263,118 @@ class IssueRepository {
     } else {
       return DataResult(null, false);
     }
+  }
+
+  /// 拉取 issue timeline，含 labeled/assigned/milestoned/renamed/closed/reopened/
+  /// locked/unlocked/referenced/cross-referenced/commented 等事件
+  /// 注意：timeline 端点在 GitHub 早期需要 `mockingbird-preview` Accept，目前已 GA。
+  /// 我们在请求头里附加旧的 preview 值以兼容自建 GHE。
+  static getIssueTimelineRequest(userName, repository, number,
+      {page = 1}) async {
+    String url = Address.getIssueTimeline(userName, repository, number) +
+        Address.getPageParams("?", page);
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.mockingbird-preview+json,application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        null,
+        noTip: true);
+    if (res != null && res.result) {
+      final data = res.data;
+      if (data is! List || data.isEmpty) {
+        return DataResult(<IssueTimelineEvent>[], true);
+      }
+      final list = <IssueTimelineEvent>[];
+      for (final item in data) {
+        if (item is Map) {
+          list.add(IssueTimelineEvent.fromJson(
+              Map<String, dynamic>.from(item)));
+        }
+      }
+      return DataResult(list, true);
+    }
+    return DataResult(<IssueTimelineEvent>[], false);
+  }
+
+  /// 添加 issue reaction
+  static addIssueReactionRequest(
+      userName, repository, number, String content) async {
+    String url = Address.getIssueReactions(userName, repository, number);
+    var res = await httpManager.netFetch(
+        url,
+        {"content": content},
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'POST'),
+        noTip: true);
+    if (res != null && res.result) {
+      return DataResult(res.data, true);
+    }
+    return DataResult(null, false);
+  }
+
+  /// 删除 issue reaction
+  static deleteIssueReactionRequest(
+      userName, repository, number, reactionId) async {
+    String url = Address.deleteIssueReaction(
+        userName, repository, number, reactionId);
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'DELETE'),
+        noTip: true);
+    if (res != null && res.result) {
+      return DataResult(res.data, true);
+    }
+    return DataResult(null, false);
+  }
+
+  /// 添加 issue comment reaction
+  static addCommentReactionRequest(
+      userName, repository, commentId, String content) async {
+    String url =
+        Address.getIssueCommentReactions(userName, repository, commentId);
+    var res = await httpManager.netFetch(
+        url,
+        {"content": content},
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'POST'),
+        noTip: true);
+    if (res != null && res.result) {
+      return DataResult(res.data, true);
+    }
+    return DataResult(null, false);
+  }
+
+  /// 删除 issue comment reaction
+  static deleteCommentReactionRequest(
+      userName, repository, commentId, reactionId) async {
+    String url = Address.deleteIssueCommentReaction(
+        userName, repository, commentId, reactionId);
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'DELETE'),
+        noTip: true);
+    if (res != null && res.result) {
+      return DataResult(res.data, true);
+    }
+    return DataResult(null, false);
   }
 }

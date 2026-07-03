@@ -5,6 +5,8 @@ import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
+import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
+import 'package:gsy_github_app_flutter/model/reactions.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -15,10 +17,19 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_header_item.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
+import 'package:gsy_github_app_flutter/page/issue/widget/issue_timeline_item.dart';
 
 /// Issue 详情页面
 /// Created by guoshuyu
 /// on 2018/7/21.
+///
+/// 本次改造对齐 GitHub 官方能力：
+/// - 头部：labels/assignees/milestone/author_association/bot/edited 展示，
+///   以及 reactions 汇总条（可加/减）。
+/// - 列表：合并 timeline 事件与 comments，按时间序展示 label 增减、assigned、
+///   milestoned、renamed、referenced、closed、reopened、locked/unlocked 等。
+/// - 评论：显示 author_association 徽章、bot、edited、minimized 折叠态，
+///   以及 comment 级 reactions 汇总条（可加/减）。
 
 class IssueDetailPage extends StatefulWidget {
   final String? userName;
@@ -56,17 +67,30 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///控制编辑时issue的content
   TextEditingController issueInfoValueControl = TextEditingController();
 
+  /// 第一页拉到的 timeline 事件（评论合并进 dataList，其它事件单独渲染）
+  List<IssueTimelineEvent> _timelineEvents = <IssueTimelineEvent>[];
+
   ///绘制item
   _renderEventItem(index) {
     ///第一个绘制的是头部
     if (index == 0) {
-      return IssueHeaderItem(issueHeaderViewModel, onPressed: () {});
+      return IssueHeaderItem(
+        issueHeaderViewModel,
+        onPressed: () {},
+        onReactionToggle: _onIssueReactionToggle,
+      );
     }
-    Issue issue = pullLoadWidgetControl.dataList[index - 1];
+    final data = pullLoadWidgetControl.dataList[index - 1];
+    if (data is IssueTimelineEvent) {
+      return IssueTimelineItem(data);
+    }
+    Issue issue = data as Issue;
     return IssueItem(
       IssueItemViewModel.fromMap(issue, needTitle: false),
       hideBottom: true,
       limitComment: false,
+      onReactionToggle: (content, isAdd) =>
+          _onCommentReactionToggle(issue, content, isAdd),
       onPressed: () {
         NavigatorUtils.showGSYDialog(
             context: context,
@@ -116,14 +140,66 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   }
 
   ///获取页面数据
+  ///
+  /// 页面刷新时：先拉头部，再并行拉 timeline，再拉 comments，
+  /// 最终把 timeline（非 commented 类型）和 comments 按时间序合并展示。
   _getDataLogic() async {
-    ///刷新时同时更新头部信息
     if (page <= 1) {
       _getHeaderInfo();
+      // 与 comments 并行拉取 timeline，仅第一页刷新
+      await _refreshTimeline();
     }
-    return await IssueRepository.getIssueCommentRequest(
+    final res = await IssueRepository.getIssueCommentRequest(
         widget.userName, widget.reposName, widget.issueNum,
         page: page, needDb: page <= 1);
+    if (page <= 1) {
+      _decorateWithTimeline(res);
+    }
+    return res;
+  }
+
+  /// 拉 timeline，缓存到 [_timelineEvents]，后续通过 [_decorateWithTimeline] 注入 dataList。
+  Future<void> _refreshTimeline() async {
+    try {
+      final res = await IssueRepository.getIssueTimelineRequest(
+          widget.userName, widget.reposName, widget.issueNum);
+      if (res.result && res.data is List<IssueTimelineEvent>) {
+        _timelineEvents = List<IssueTimelineEvent>.from(res.data);
+      } else {
+        _timelineEvents = <IssueTimelineEvent>[];
+      }
+    } catch (_) {
+      _timelineEvents = <IssueTimelineEvent>[];
+    }
+  }
+
+  /// 把非 commented 的 timeline 事件按时间序穿插到 comments 列表中。
+  ///
+  /// 说明：
+  /// - 评论仍以 [Issue] 形式承接（复用 comments 端点旧模型）。
+  /// - 事件以 [IssueTimelineEvent] 形式承接。
+  /// - _renderEventItem 通过 runtimeType 分发到不同 widget。
+  void _decorateWithTimeline(dynamic res) {
+    if (res == null || res.data is! List<Issue>) return;
+    final comments = List<Issue>.from(res.data as List<Issue>);
+    final events = _timelineEvents.where((e) => e.event != 'commented');
+    final merged = <dynamic>[...comments, ...events];
+    merged.sort((a, b) {
+      final ta = _timeOf(a);
+      final tb = _timeOf(b);
+      if (ta == null && tb == null) return 0;
+      if (ta == null) return 1;
+      if (tb == null) return -1;
+      return ta.compareTo(tb);
+    });
+    // 直接改写 res.data，让 GSYListState.resolveRefreshResult 一次性 addAll
+    res.data = merged;
+  }
+
+  DateTime? _timeOf(dynamic v) {
+    if (v is Issue) return v.createdAt;
+    if (v is IssueTimelineEvent) return v.createdAt;
+    return null;
   }
 
   ///获取头部数据
@@ -151,6 +227,55 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       htmlUrl = issue.htmlUrl;
       headerStatus = true;
     });
+  }
+
+  /// issue 头部 reaction 加/减
+  ///
+  /// 说明：GitHub REST 删除 reaction 需要 reactionId（issue 级 reaction 列表
+  /// 端点里才能拿到），此处交互简化为「点击 chip 加、长按 chip 减」，长按删除
+  /// 采取「本地即时扣减 + 触发头部刷新」的乐观策略，服务端最终一致以头部返回为准。
+  Future<void> _onIssueReactionToggle(String content, bool isAdd) async {
+    final failedText = context.l10n.issue_reaction_failed;
+    final current = issueHeaderViewModel.reactions ?? Reactions.empty();
+    setState(() {
+      issueHeaderViewModel.reactions =
+          current.increment(content, isAdd ? 1 : -1);
+    });
+    if (!isAdd) {
+      // 无 reactionId，退化为拉一次头部对齐服务端
+      _getHeaderInfo();
+      return;
+    }
+    final res = await IssueRepository.addIssueReactionRequest(
+        widget.userName, widget.reposName, widget.issueNum, content);
+    if (res == null || res.result != true) {
+      setState(() {
+        issueHeaderViewModel.reactions = current;
+      });
+      showToast(failedText);
+    } else {
+      _getHeaderInfo();
+    }
+  }
+
+  /// 单条评论的 reaction 加/减
+  ///
+  /// 说明：删除 comment reaction 需要 reactionId（`/issues/comments/{id}/reactions`
+  /// GET 才能拿到）。此处采用与头部相同的乐观策略：add 走 POST，remove 只做本地态。
+  Future<void> _onCommentReactionToggle(
+      Issue comment, String content, bool isAdd) async {
+    final current = comment.reactions ?? Reactions.empty();
+    setState(() {
+      comment.reactions = current.increment(content, isAdd ? 1 : -1);
+    });
+    if (!isAdd || comment.id == null) return;
+    final res = await IssueRepository.addCommentReactionRequest(
+        widget.userName, widget.reposName, comment.id, content);
+    if (res == null || res.result != true) {
+      setState(() {
+        comment.reactions = current;
+      });
+    }
   }
 
   ///编辑回复

@@ -135,6 +135,33 @@ class Address {
     return "${host}search/issues?q=$q";
   }
 
+  ///仓库Issue timeline get
+  static getIssueTimeline(reposOwner, reposName, issueNumber) {
+    return "${host}repos/$reposOwner/$reposName/issues/$issueNumber/timeline";
+  }
+
+  ///issue reactions get/post
+  static getIssueReactions(reposOwner, reposName, issueNumber) {
+    return "${host}repos/$reposOwner/$reposName/issues/$issueNumber/reactions";
+  }
+
+  ///删除 issue reaction delete
+  static deleteIssueReaction(reposOwner, reposName, issueNumber, reactionId) {
+    return "${host}repos/$reposOwner/$reposName/issues/$issueNumber/reactions/$reactionId";
+  }
+
+  ///issue comment reactions get/post
+  static getIssueCommentReactions(reposOwner, reposName, commentId) {
+    return "${host}repos/$reposOwner/$reposName/issues/comments/$commentId/reactions";
+  }
+
+  ///删除 issue comment reaction delete
+  static deleteIssueCommentReaction(
+      reposOwner, reposName, commentId, reactionId) {
+    return "${host}repos/$reposOwner/$reposName/issues/comments/$commentId/reactions/$reactionId";
+  }
+
+
   ///编辑评论 patch, delete
   static editComment(reposOwner, reposName, commentId) {
     return "${host}repos/$reposOwner/$reposName/issues/comments/$commentId";

@@ -32,6 +32,13 @@ Issue _$IssueFromJson(Map<String, dynamic> json) => Issue(
   json['closed_by'] == null
       ? null
       : User.fromJson(json['closed_by'] as Map<String, dynamic>),
+  authorAssociation: json['author_association'] as String?,
+  labels: _labelsFromJson(json['labels']),
+  assignees: _assigneesFromJson(json['assignees']),
+  milestone: json['milestone'] == null
+      ? null
+      : Milestone.fromJson(json['milestone'] as Map<String, dynamic>),
+  reactions: _reactionsFromJson(json['reactions']),
 );
 
 Map<String, dynamic> _$IssueToJson(Issue instance) => <String, dynamic>{
@@ -46,8 +53,13 @@ Map<String, dynamic> _$IssueToJson(Issue instance) => <String, dynamic>{
   'closed_at': instance.closedAt?.toIso8601String(),
   'body': instance.body,
   'body_html': instance.bodyHtml,
-  'user': instance.user,
+  'user': instance.user?.toJson(),
   'repository_url': instance.repoUrl,
   'html_url': instance.htmlUrl,
-  'closed_by': instance.closeBy,
+  'closed_by': instance.closeBy?.toJson(),
+  'author_association': instance.authorAssociation,
+  'labels': _labelsToJson(instance.labels),
+  'assignees': _assigneesToJson(instance.assignees),
+  'milestone': instance.milestone?.toJson(),
+  'reactions': _reactionsToJson(instance.reactions),
 };
