@@ -1,5 +1,6 @@
 import 'package:gsy_github_app_flutter/model/label.dart';
 import 'package:gsy_github_app_flutter/model/milestone.dart';
+import 'package:gsy_github_app_flutter/model/pull_request.dart';
 import 'package:gsy_github_app_flutter/model/reactions.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -67,6 +68,15 @@ class Issue {
   )
   Reactions? reactions;
 
+  /// issue payload 上的 `pull_request` 字段。命中即当前 issue 其实是 PR。
+  /// 只是一个轻量指针，真正详情需要再打 /pulls/:n。
+  @JsonKey(
+    name: "pull_request",
+    fromJson: _pullRequestRefFromJson,
+    toJson: _pullRequestRefToJson,
+  )
+  PullRequestRef? pullRequest;
+
 
   Issue(
     this.id,
@@ -89,6 +99,7 @@ class Issue {
     this.assignees,
     this.milestone,
     this.reactions,
+    this.pullRequest,
   });
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
@@ -146,4 +157,13 @@ Map<String, dynamic>? _reactionsToJson(Reactions? r) {
     'rocket': r.rocket,
     'eyes': r.eyes,
   };
+}
+
+PullRequestRef? _pullRequestRefFromJson(dynamic v) {
+  if (v is Map<String, dynamic>) return PullRequestRef.fromJson(v);
+  return null;
+}
+
+Map<String, dynamic>? _pullRequestRefToJson(PullRequestRef? r) {
+  return r?.toJson();
 }

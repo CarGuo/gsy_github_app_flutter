@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/db/provider/repos/repository_issue_db_pro
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
+import 'package:gsy_github_app_flutter/model/pull_request.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 
@@ -98,6 +99,22 @@ class IssueRepository {
       return DataResult(names, true);
     }
     return DataResult(<String>[], false);
+  }
+
+  /// 拉取 PR 详情。当 issue payload 的 `pull_request` 字段命中时使用。
+  ///
+  /// 只做一次 REST 请求；调用方拿 [PullRequest] 后自行合并到 header 展示。
+  /// 不做 DB 缓存 —— PR 详情里的 mergeable/mergeable_state 是服务端后台
+  /// 计算的动态值，缓存意义不大。
+  static getPullRequestDetailRequest(
+      String userName, String repository, int number) async {
+    String url = Address.getRepoPull(userName, repository, number);
+    var res = await httpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data is Map<String, dynamic>) {
+      final pr = PullRequest.fromJson(res.data as Map<String, dynamic>);
+      return DataResult(pr, true);
+    }
+    return DataResult(null, false);
   }
 
   /// 搜索仓库issue

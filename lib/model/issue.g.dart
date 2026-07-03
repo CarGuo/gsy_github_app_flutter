@@ -39,6 +39,7 @@ Issue _$IssueFromJson(Map<String, dynamic> json) => Issue(
       ? null
       : Milestone.fromJson(json['milestone'] as Map<String, dynamic>),
   reactions: _reactionsFromJson(json['reactions']),
+  pullRequest: _pullRequestRefFromJson(json['pull_request']),
 );
 
 Map<String, dynamic> _$IssueToJson(Issue instance) => <String, dynamic>{
@@ -62,4 +63,5 @@ Map<String, dynamic> _$IssueToJson(Issue instance) => <String, dynamic>{
   'assignees': _assigneesToJson(instance.assignees),
   'milestone': instance.milestone?.toJson(),
   'reactions': _reactionsToJson(instance.reactions),
+  'pull_request': _pullRequestRefToJson(instance.pullRequest),
 };

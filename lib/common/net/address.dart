@@ -98,6 +98,14 @@ class Address {
     return "${host}repos/$reposOwner/$reposName/labels";
   }
 
+  ///PR 详情 get
+  ///
+  /// GitHub REST：GET /repos/:o/:r/pulls/:number 会返回 issue payload 里没有的
+  /// merged/mergeable/draft/base/head/additions/deletions/... 字段。
+  static getRepoPull(String reposOwner, String reposName, int number) {
+    return "${host}repos/$reposOwner/$reposName/pulls/$number";
+  }
+
   ///仓release get
   static getReposRelease(reposOwner, reposName) {
     return "${host}repos/$reposOwner/$reposName/releases";
