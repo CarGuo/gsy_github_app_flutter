@@ -48,9 +48,18 @@ class EventUtils {
             "Delete ${event.payload!.refType!} ${event.payload!.ref!} at ${event.repo!.name!}";
         break;
       case "ForkEvent":
-        String oriRepo = event.repo!.name!;
-        String newRepo = "${event.actor!.login!}/${event.repo!.name!}";
-        actionStr = "Forked $oriRepo to $newRepo";
+        // Fork event 的 repo/actor 字段在部分历史 payload 里可能缺失
+        // （已 fork 到私仓/账号删除/GitHub API 变更），这里做 null-safe，
+        // 避免整个 dynamic tile 崩掉。
+        final String? oriRepo = event.repo?.name;
+        final String? forker = event.actor?.login;
+        if (oriRepo != null && forker != null) {
+          actionStr = "Forked $oriRepo to $forker/$oriRepo";
+        } else if (oriRepo != null) {
+          actionStr = "Forked $oriRepo";
+        } else {
+          actionStr = "Forked a repository";
+        }
         break;
       case "GollumEvent":
         actionStr = "${event.actor!.login!} a wiki page ";
