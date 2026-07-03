@@ -26,6 +26,9 @@ class IssueRepository {
       {sort, direction, page = 0, needDb = false}) async {
     String? fullName = "$userName/$repository";
     String dbState = state ?? "*";
+    String dbSort = (sort ?? '') as String;
+    String dbDirection = (direction ?? '') as String;
+    const String dbLabels = '';
     RepositoryIssueDbProvider provider = RepositoryIssueDbProvider();
 
     next() async {
@@ -50,7 +53,8 @@ class IssueRepository {
           list.add(Issue.fromJson(data[i]));
         }
         if (needDb) {
-          provider.insert(fullName, dbState, json.encode(data));
+          provider.insert(fullName, dbState, json.encode(data),
+              sort: dbSort, direction: dbDirection, labels: dbLabels);
         }
         return DataResult(list, true);
       } else {
@@ -59,7 +63,8 @@ class IssueRepository {
     }
 
     if (needDb) {
-      List<Issue>? list = await provider.getData(fullName, dbState);
+      List<Issue>? list = await provider.getData(fullName, dbState,
+          sort: dbSort, direction: dbDirection, labels: dbLabels);
       if (list == null) {
         return await next();
       }
