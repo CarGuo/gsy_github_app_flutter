@@ -143,6 +143,10 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///
   /// 页面刷新时：先拉头部，再并行拉 timeline，再拉 comments，
   /// 最终把 timeline（非 commented 类型）和 comments 按时间序合并展示。
+  ///
+  /// 注意：[GSYListState.handleRefresh] 会先消费当前 res，再看 res.next 追加一次，
+  /// 因此本地 db 命中分支返回的 res 和 res.next() 返回的网络分支 res 都要各自合并 timeline，
+  /// 否则会出现「本地 db 命中时能看到 timeline，网络 next() 覆盖时又消失」的一闪现象。
   _getDataLogic() async {
     if (page <= 1) {
       _getHeaderInfo();
@@ -154,6 +158,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
         page: page, needDb: page <= 1);
     if (page <= 1) {
       _decorateWithTimeline(res);
+      _wrapNextWithTimeline(res);
     }
     return res;
   }
@@ -180,8 +185,10 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   /// - 事件以 [IssueTimelineEvent] 形式承接。
   /// - _renderEventItem 通过 runtimeType 分发到不同 widget。
   void _decorateWithTimeline(dynamic res) {
-    if (res == null || res.data is! List<Issue>) return;
-    final comments = List<Issue>.from(res.data as List<Issue>);
+    if (res == null || res.data is! List) return;
+    final rawList = res.data as List;
+    final comments = rawList.whereType<Issue>().toList();
+    if (comments.isEmpty && rawList.isNotEmpty) return; // 已合并过则跳过
     final events = _timelineEvents.where((e) => e.event != 'commented');
     final merged = <dynamic>[...comments, ...events];
     merged.sort((a, b) {
@@ -194,6 +201,19 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     });
     // 直接改写 res.data，让 GSYListState.resolveRefreshResult 一次性 addAll
     res.data = merged;
+  }
+
+  /// 包一层 res.next：让 handleRefresh 在追加网络分支时也合并 timeline，
+  /// 避免网络 res 覆盖掉已经合并好的 db res。
+  void _wrapNextWithTimeline(dynamic res) {
+    if (res == null) return;
+    final original = res.next;
+    if (original == null) return;
+    res.next = () async {
+      final resNext = await original();
+      _decorateWithTimeline(resNext);
+      return resNext;
+    };
   }
 
   DateTime? _timeOf(dynamic v) {
