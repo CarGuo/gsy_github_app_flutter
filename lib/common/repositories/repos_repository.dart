@@ -146,8 +146,11 @@ class ReposRepository {
   }
 
   /// 仓库活动事件
+  /// 注意：GitHub REST `/repos/:owner/:repo/events` 不支持按 branch 过滤，
+  /// 因此本方法不接收 branch 参数。历史上曾存在 branch 入参但在 URL 中被静默丢弃，
+  /// 会误导上层调用方以为切分支能刷新事件流，已移除。
   static getRepositoryEventRequest(String userName, String reposName,
-      {page = 0, branch = "master", needDb = false}) async {
+      {page = 0, needDb = false}) async {
     String? fullName = "$userName/$reposName";
     RepositoryEventDbProvider provider = RepositoryEventDbProvider();
 
@@ -501,25 +504,20 @@ class ReposRepository {
     String url = Address.getbranches(userName, reposName);
     var res = await httpManager.netFetch(url, null, null, null);
     if (res != null && res.result && res.data.length > 0) {
-      List<String?> list = [];
+      List<Branch> list = [];
       var dataList = res.data;
       if (dataList == null || dataList.length == 0) {
         return DataResult(null, false);
       }
+      Serializer<Branch?> serializerForType =
+          serializers.serializerForType(Branch) as Serializer<Branch?>;
       for (int i = 0; i < dataList.length; i++) {
         var data = dataList[i];
-
-        ///测试代码
-        Serializer<Branch?> serializerForType =
-            serializers.serializerForType(Branch) as Serializer<Branch?>;
-        var test =
+        Branch? branch =
             serializers.deserializeWith<Branch?>(serializerForType, data);
-
-        /// 反序列化
-        Map result = serializers.serializeWith(serializerForType, test)
-            as Map<dynamic, dynamic>;
-        printLog("###### $test $result");
-        list.add(data['name']);
+        if (branch != null) {
+          list.add(branch);
+        }
       }
       return DataResult(list, true);
     } else {

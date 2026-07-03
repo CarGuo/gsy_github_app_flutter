@@ -10,6 +10,9 @@ abstract class Branch implements Built<Branch, BranchBuilder> {
   String? get name;
 
 
+  bool? get protected;
+
+
   @BuiltValueField(wireName: 'tarball_url')
   String? get tarballUrl;
 

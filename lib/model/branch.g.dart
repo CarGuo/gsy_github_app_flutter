@@ -30,6 +30,14 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
           serializers.serialize(value, specifiedType: const FullType(String)),
         );
     }
+    value = object.protected;
+    if (value != null) {
+      result
+        ..add('protected')
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(bool)),
+        );
+    }
     value = object.tarballUrl;
     if (value != null) {
       result
@@ -71,6 +79,14 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
                   )
                   as String?;
           break;
+        case 'protected':
+          result.protected =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool?;
+          break;
         case 'tarball_url':
           result.tarballUrl =
               serializers.deserialize(
@@ -98,6 +114,8 @@ class _$Branch extends Branch {
   @override
   final String? name;
   @override
+  final bool? protected;
+  @override
   final String? tarballUrl;
   @override
   final String? zipballUrl;
@@ -105,7 +123,8 @@ class _$Branch extends Branch {
   factory _$Branch([void Function(BranchBuilder)? updates]) =>
       (BranchBuilder()..update(updates))._build();
 
-  _$Branch._({this.name, this.tarballUrl, this.zipballUrl}) : super._();
+  _$Branch._({this.name, this.protected, this.tarballUrl, this.zipballUrl})
+    : super._();
   @override
   Branch rebuild(void Function(BranchBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -118,6 +137,7 @@ class _$Branch extends Branch {
     if (identical(other, this)) return true;
     return other is Branch &&
         name == other.name &&
+        protected == other.protected &&
         tarballUrl == other.tarballUrl &&
         zipballUrl == other.zipballUrl;
   }
@@ -126,6 +146,7 @@ class _$Branch extends Branch {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, protected.hashCode);
     _$hash = $jc(_$hash, tarballUrl.hashCode);
     _$hash = $jc(_$hash, zipballUrl.hashCode);
     _$hash = $jf(_$hash);
@@ -136,6 +157,7 @@ class _$Branch extends Branch {
   String toString() {
     return (newBuiltValueToStringHelper(r'Branch')
           ..add('name', name)
+          ..add('protected', protected)
           ..add('tarballUrl', tarballUrl)
           ..add('zipballUrl', zipballUrl))
         .toString();
@@ -148,6 +170,10 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
   String? _name;
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
+
+  bool? _protected;
+  bool? get protected => _$this._protected;
+  set protected(bool? protected) => _$this._protected = protected;
 
   String? _tarballUrl;
   String? get tarballUrl => _$this._tarballUrl;
@@ -163,6 +189,7 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
     final $v = _$v;
     if ($v != null) {
       _name = $v.name;
+      _protected = $v.protected;
       _tarballUrl = $v.tarballUrl;
       _zipballUrl = $v.zipballUrl;
       _$v = null;
@@ -186,7 +213,12 @@ class BranchBuilder implements Builder<Branch, BranchBuilder> {
   _$Branch _build() {
     final _$result =
         _$v ??
-        _$Branch._(name: name, tarballUrl: tarballUrl, zipballUrl: zipballUrl);
+        _$Branch._(
+          name: name,
+          protected: protected,
+          tarballUrl: tarballUrl,
+          zipballUrl: zipballUrl,
+        );
     replace(_$result);
     return _$result;
   }
