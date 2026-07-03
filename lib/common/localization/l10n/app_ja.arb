@@ -184,5 +184,10 @@
   "issue_timeline_mentioned": "{actor} がメンションされました",
   "issue_timeline_subscribed": "{actor} が購読しました",
   "issue_timeline_unsubscribed": "{actor} が購読を解除しました",
-  "issue_timeline_generic": "{actor} {event}"
+  "issue_timeline_generic": "{actor} {event}",
+  "pr_state_merged": "マージ済み",
+  "pr_state_draft": "下書き",
+  "pr_review_requested": "レビュー依頼：",
+  "pr_files_changed": "{count} 件のファイル変更",
+  "pr_commits": "{count} 件のコミット"
 }

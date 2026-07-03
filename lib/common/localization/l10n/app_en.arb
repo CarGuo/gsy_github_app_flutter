@@ -269,5 +269,21 @@
       "actor": {"type": "String"},
       "event": {"type": "String"}
     }
+  },
+
+  "pr_state_merged": "merged",
+  "pr_state_draft": "draft",
+  "pr_review_requested": "Review requested:",
+  "pr_files_changed": "{count} files changed",
+  "@pr_files_changed": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "pr_commits": "{count} commits",
+  "@pr_commits": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
   }
 }

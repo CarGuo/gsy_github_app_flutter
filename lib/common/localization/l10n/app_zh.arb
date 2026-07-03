@@ -184,5 +184,10 @@
   "issue_timeline_mentioned": "{actor} 被提及",
   "issue_timeline_subscribed": "{actor} 订阅了此 issue",
   "issue_timeline_unsubscribed": "{actor} 取消订阅",
-  "issue_timeline_generic": "{actor} {event}"
+  "issue_timeline_generic": "{actor} {event}",
+  "pr_state_merged": "已合并",
+  "pr_state_draft": "草稿",
+  "pr_review_requested": "请求评审：",
+  "pr_files_changed": "{count} 个文件变动",
+  "pr_commits": "{count} 次提交"
 }

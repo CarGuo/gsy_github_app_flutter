@@ -597,4 +597,23 @@ class AppLocalizationsZh extends AppLocalizations {
   String issue_timeline_generic(String actor, String event) {
     return '$actor $event';
   }
+
+  @override
+  String get pr_state_merged => '已合并';
+
+  @override
+  String get pr_state_draft => '草稿';
+
+  @override
+  String get pr_review_requested => '请求评审：';
+
+  @override
+  String pr_files_changed(int count) {
+    return '$count 个文件变动';
+  }
+
+  @override
+  String pr_commits(int count) {
+    return '$count 次提交';
+  }
 }

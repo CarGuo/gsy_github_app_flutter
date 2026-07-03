@@ -1199,6 +1199,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{actor} {event}'**
   String issue_timeline_generic(String actor, String event);
+
+  /// No description provided for @pr_state_merged.
+  ///
+  /// In en, this message translates to:
+  /// **'merged'**
+  String get pr_state_merged;
+
+  /// No description provided for @pr_state_draft.
+  ///
+  /// In en, this message translates to:
+  /// **'draft'**
+  String get pr_state_draft;
+
+  /// No description provided for @pr_review_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'Review requested:'**
+  String get pr_review_requested;
+
+  /// No description provided for @pr_files_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} files changed'**
+  String pr_files_changed(int count);
+
+  /// No description provided for @pr_commits.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} commits'**
+  String pr_commits(int count);
 }
 
 class _AppLocalizationsDelegate

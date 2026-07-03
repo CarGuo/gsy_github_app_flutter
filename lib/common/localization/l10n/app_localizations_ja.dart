@@ -598,4 +598,23 @@ class AppLocalizationsJa extends AppLocalizations {
   String issue_timeline_generic(String actor, String event) {
     return '$actor $event';
   }
+
+  @override
+  String get pr_state_merged => 'マージ済み';
+
+  @override
+  String get pr_state_draft => '下書き';
+
+  @override
+  String get pr_review_requested => 'レビュー依頼：';
+
+  @override
+  String pr_files_changed(int count) {
+    return '$count 件のファイル変更';
+  }
+
+  @override
+  String pr_commits(int count) {
+    return '$count 件のコミット';
+  }
 }

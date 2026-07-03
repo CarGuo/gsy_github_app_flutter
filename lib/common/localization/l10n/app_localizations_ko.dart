@@ -597,4 +597,23 @@ class AppLocalizationsKo extends AppLocalizations {
   String issue_timeline_generic(String actor, String event) {
     return '$actor $event';
   }
+
+  @override
+  String get pr_state_merged => '머지됨';
+
+  @override
+  String get pr_state_draft => '초안';
+
+  @override
+  String get pr_review_requested => '리뷰 요청:';
+
+  @override
+  String pr_files_changed(int count) {
+    return '$count개 파일 변경';
+  }
+
+  @override
+  String pr_commits(int count) {
+    return '$count개 커밋';
+  }
 }

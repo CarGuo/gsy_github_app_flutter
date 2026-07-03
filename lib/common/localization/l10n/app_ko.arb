@@ -184,5 +184,10 @@
   "issue_timeline_mentioned": "{actor} 님이 언급되었습니다",
   "issue_timeline_subscribed": "{actor} 님이 구독했습니다",
   "issue_timeline_unsubscribed": "{actor} 님이 구독을 해제했습니다",
-  "issue_timeline_generic": "{actor} {event}"
+  "issue_timeline_generic": "{actor} {event}",
+  "pr_state_merged": "머지됨",
+  "pr_state_draft": "초안",
+  "pr_review_requested": "리뷰 요청:",
+  "pr_files_changed": "{count}개 파일 변경",
+  "pr_commits": "{count}개 커밋"
 }

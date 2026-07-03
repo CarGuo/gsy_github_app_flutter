@@ -600,4 +600,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String issue_timeline_generic(String actor, String event) {
     return '$actor $event';
   }
+
+  @override
+  String get pr_state_merged => 'merged';
+
+  @override
+  String get pr_state_draft => 'draft';
+
+  @override
+  String get pr_review_requested => 'Review requested:';
+
+  @override
+  String pr_files_changed(int count) {
+    return '$count files changed';
+  }
+
+  @override
+  String pr_commits(int count) {
+    return '$count commits';
+  }
 }
