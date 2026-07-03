@@ -28,12 +28,11 @@ class ReposNetWorkProvider with ChangeNotifier {
   }
 
   getRepositoryEventRequest(String userName, String reposName,
-      {page = 0, branch = "master", needDb = false}) async {
+      {page = 0, needDb = false}) async {
     return ReposRepository.getRepositoryEventRequest(
       userName,
       reposName,
       page: page,
-      branch: branch,
       needDb: page <= 1,
     );
   }

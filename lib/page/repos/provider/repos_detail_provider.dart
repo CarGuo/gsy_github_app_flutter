@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/model/branch.dart';
 import 'package:gsy_github_app_flutter/model/repository_ql.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_network_provider.dart';
@@ -26,10 +27,23 @@ class ReposDetailProvider with ChangeNotifier {
 
   String _currentBranch = "";
 
+  /// 用户是否手动切过分支。true 时，后续 repo detail 请求返回的 defaultBranch
+  /// 不会再覆盖用户的选择，避免"切了分支被静默回滚"。
+  bool _userSelectedBranch = false;
+
+  bool get isUserSelectedBranch => _userSelectedBranch;
+
   String get currentBranch => _currentBranch;
 
   set currentBranch(String data) {
     _currentBranch = data;
+    notifyListeners();
+  }
+
+  /// 用户主动通过 branch picker 选择分支时调用，会锁定 defaultBranch 覆盖逻辑。
+  void selectBranch(String data) {
+    _currentBranch = data;
+    _userSelectedBranch = true;
     notifyListeners();
   }
 
@@ -51,11 +65,11 @@ class ReposDetailProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<String>? _branchList;
+  List<Branch>? _branchList;
 
-  List<String>? get branchList => _branchList;
+  List<Branch>? get branchList => _branchList;
 
-  set branchList(List<String>? data) {
+  set branchList(List<Branch>? data) {
     _branchList = data;
     notifyListeners();
   }
@@ -102,8 +116,7 @@ class ReposDetailProvider with ChangeNotifier {
   getBranchList() async {
     var result = await ReposRepository.getBranchesRequest(userName, reposName);
     if (result != null && result.result) {
-      var res = result.data as List<String?>;
-      branchList = res.where((item) => item != null).cast<String>().toList();
+      branchList = (result.data as List<Branch>);
     }
   }
 
@@ -124,7 +137,8 @@ class ReposDetailProvider with ChangeNotifier {
       List<Widget> Function(ReposDetailProvider p) getBottomWidget) async {
     var result = await network.getRepositoryDetailRequest(
         userName, reposName, currentBranch);
-    if (result.data.defaultBranch != null &&
+    if (!_userSelectedBranch &&
+        result.data.defaultBranch != null &&
         result.data.defaultBranch.length > 0) {
       currentBranch = result.data.defaultBranch;
     }
@@ -133,6 +147,11 @@ class ReposDetailProvider with ChangeNotifier {
 
     if (result.next != null) {
       result = await result.next?.call();
+      if (!_userSelectedBranch &&
+          result.data.defaultBranch != null &&
+          result.data.defaultBranch.length > 0) {
+        currentBranch = result.data.defaultBranch;
+      }
       repository = result.data;
       getReposStatus(getBottomWidget);
     }
@@ -153,7 +172,6 @@ class ReposDetailProvider with ChangeNotifier {
       userName,
       reposName,
       page: page,
-      branch: currentBranch,
       needDb: page <= 1,
     );
   }

@@ -110,24 +110,33 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       GSYOptionModel(
           context.l10n.repos_option_branch, context.l10n.repos_option_branch,
           (model) {
-        if (reposDetailProvider.branchList!.isEmpty) {
+        if (reposDetailProvider.branchList == null ||
+            reposDetailProvider.branchList!.isEmpty) {
           return;
         }
-        CommonUtils.showCommitOptionDialog(
-            context, reposDetailProvider.branchList, (value) {
-          reposDetailProvider.currentBranch =
-              reposDetailProvider.branchList![value];
+        final branches = reposDetailProvider.branchList!;
+        final branchNames = branches
+            .map((b) => b.name)
+            .where((n) => n != null && n.isNotEmpty)
+            .cast<String>()
+            .toList();
+        CommonUtils.showCommitOptionDialog(context, branchNames, (value) {
+          reposDetailProvider.selectBranch(branchNames[value]);
           if (infoListKey.currentState != null &&
               infoListKey.currentState!.mounted) {
             infoListKey.currentState!.showRefreshLoading();
           }
           if (fileListKey.currentState != null &&
               fileListKey.currentState!.mounted) {
-            fileListKey.currentState!.showRefreshLoading();
+            fileListKey.currentState!.resetToRoot();
           }
           if (readmeKey.currentState != null &&
               readmeKey.currentState!.mounted) {
             readmeKey.currentState!.refreshReadme();
+          }
+          if (issueListKey.currentState != null &&
+              issueListKey.currentState!.mounted) {
+            issueListKey.currentState!.showRefreshLoading();
           }
         });
       }),

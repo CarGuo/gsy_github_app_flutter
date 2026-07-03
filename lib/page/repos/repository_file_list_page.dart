@@ -164,6 +164,14 @@ class RepositoryDetailFileListPageState
     });
   }
 
+  /// 切换分支等场景需要清空当前面包屑与路径，回到根目录再刷新，避免
+  /// 旧分支的路径在新分支上 404。
+  void resetToRoot() {
+    path = '';
+    headerList.value = ["."];
+    showRefreshLoading();
+  }
+
   @override
   bool get wantKeepAlive => true;
 
