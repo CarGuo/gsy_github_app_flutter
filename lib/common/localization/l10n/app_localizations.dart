@@ -923,6 +923,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your feedback will be sent to Github as a public issue'**
   String get feed_back_tip;
+
+  /// No description provided for @issue_badge_bot.
+  ///
+  /// In en, this message translates to:
+  /// **'bot'**
+  String get issue_badge_bot;
+
+  /// No description provided for @issue_badge_edited.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get issue_badge_edited;
+
+  /// No description provided for @issue_comment_minimized.
+  ///
+  /// In en, this message translates to:
+  /// **'This comment has been minimized'**
+  String get issue_comment_minimized;
+
+  /// No description provided for @issue_reactions_add_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add reaction'**
+  String get issue_reactions_add_tooltip;
+
+  /// No description provided for @issue_reaction_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reaction failed'**
+  String get issue_reaction_failed;
+
+  /// No description provided for @issue_assoc_owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get issue_assoc_owner;
+
+  /// No description provided for @issue_assoc_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get issue_assoc_member;
+
+  /// No description provided for @issue_assoc_collaborator.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaborator'**
+  String get issue_assoc_collaborator;
+
+  /// No description provided for @issue_assoc_contributor.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributor'**
+  String get issue_assoc_contributor;
+
+  /// No description provided for @issue_assoc_first_time_contributor.
+  ///
+  /// In en, this message translates to:
+  /// **'First-time contributor'**
+  String get issue_assoc_first_time_contributor;
+
+  /// No description provided for @issue_assoc_first_timer.
+  ///
+  /// In en, this message translates to:
+  /// **'First-timer'**
+  String get issue_assoc_first_timer;
+
+  /// No description provided for @issue_assoc_mannequin.
+  ///
+  /// In en, this message translates to:
+  /// **'Mannequin'**
+  String get issue_assoc_mannequin;
+
+  /// No description provided for @issue_timeline_labeled.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} added the label {label}'**
+  String issue_timeline_labeled(String actor, String label);
+
+  /// No description provided for @issue_timeline_unlabeled.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} removed the label {label}'**
+  String issue_timeline_unlabeled(String actor, String label);
+
+  /// No description provided for @issue_timeline_assigned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} assigned {assignee}'**
+  String issue_timeline_assigned(String actor, String assignee);
+
+  /// No description provided for @issue_timeline_unassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} unassigned {assignee}'**
+  String issue_timeline_unassigned(String actor, String assignee);
+
+  /// No description provided for @issue_timeline_milestoned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} added this to the {milestone} milestone'**
+  String issue_timeline_milestoned(String actor, String milestone);
+
+  /// No description provided for @issue_timeline_demilestoned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} removed this from the {milestone} milestone'**
+  String issue_timeline_demilestoned(String actor, String milestone);
+
+  /// No description provided for @issue_timeline_renamed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} changed the title from {from} to {to}'**
+  String issue_timeline_renamed(String actor, String from, String to);
+
+  /// No description provided for @issue_timeline_closed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} closed this'**
+  String issue_timeline_closed(String actor);
+
+  /// No description provided for @issue_timeline_reopened.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} reopened this'**
+  String issue_timeline_reopened(String actor);
+
+  /// No description provided for @issue_timeline_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} locked this conversation'**
+  String issue_timeline_locked(String actor);
+
+  /// No description provided for @issue_timeline_unlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} unlocked this conversation'**
+  String issue_timeline_unlocked(String actor);
+
+  /// No description provided for @issue_timeline_pinned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} pinned this'**
+  String issue_timeline_pinned(String actor);
+
+  /// No description provided for @issue_timeline_unpinned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} unpinned this'**
+  String issue_timeline_unpinned(String actor);
+
+  /// No description provided for @issue_timeline_merged.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} merged this'**
+  String issue_timeline_merged(String actor);
+
+  /// No description provided for @issue_timeline_referenced.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} referenced this'**
+  String issue_timeline_referenced(String actor);
+
+  /// No description provided for @issue_timeline_cross_referenced.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} mentioned this from another issue'**
+  String issue_timeline_cross_referenced(String actor);
+
+  /// No description provided for @issue_timeline_mentioned.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} was mentioned'**
+  String issue_timeline_mentioned(String actor);
+
+  /// No description provided for @issue_timeline_subscribed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} subscribed'**
+  String issue_timeline_subscribed(String actor);
+
+  /// No description provided for @issue_timeline_unsubscribed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} unsubscribed'**
+  String issue_timeline_unsubscribed(String actor);
+
+  /// No description provided for @issue_timeline_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} {event}'**
+  String issue_timeline_generic(String actor, String event);
 }
 
 class _AppLocalizationsDelegate

@@ -419,4 +419,140 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get feed_back_tip => '您的反馈会作为公共Issue提交到Github，您确定要继续吗？';
+
+  @override
+  String get issue_badge_bot => '机器人';
+
+  @override
+  String get issue_badge_edited => '已编辑';
+
+  @override
+  String get issue_comment_minimized => '该评论已被折叠';
+
+  @override
+  String get issue_reactions_add_tooltip => '添加表情回应';
+
+  @override
+  String get issue_reaction_failed => '表情回应失败';
+
+  @override
+  String get issue_assoc_owner => '所有者';
+
+  @override
+  String get issue_assoc_member => '成员';
+
+  @override
+  String get issue_assoc_collaborator => '协作者';
+
+  @override
+  String get issue_assoc_contributor => '贡献者';
+
+  @override
+  String get issue_assoc_first_time_contributor => '首次贡献者';
+
+  @override
+  String get issue_assoc_first_timer => '首次参与者';
+
+  @override
+  String get issue_assoc_mannequin => '占位账号';
+
+  @override
+  String issue_timeline_labeled(String actor, String label) {
+    return '$actor 添加了标签 $label';
+  }
+
+  @override
+  String issue_timeline_unlabeled(String actor, String label) {
+    return '$actor 移除了标签 $label';
+  }
+
+  @override
+  String issue_timeline_assigned(String actor, String assignee) {
+    return '$actor 指派给 $assignee';
+  }
+
+  @override
+  String issue_timeline_unassigned(String actor, String assignee) {
+    return '$actor 取消指派 $assignee';
+  }
+
+  @override
+  String issue_timeline_milestoned(String actor, String milestone) {
+    return '$actor 添加到里程碑 $milestone';
+  }
+
+  @override
+  String issue_timeline_demilestoned(String actor, String milestone) {
+    return '$actor 从里程碑 $milestone 移除';
+  }
+
+  @override
+  String issue_timeline_renamed(String actor, String from, String to) {
+    return '$actor 将标题从 $from 修改为 $to';
+  }
+
+  @override
+  String issue_timeline_closed(String actor) {
+    return '$actor 关闭了此 issue';
+  }
+
+  @override
+  String issue_timeline_reopened(String actor) {
+    return '$actor 重新打开了此 issue';
+  }
+
+  @override
+  String issue_timeline_locked(String actor) {
+    return '$actor 锁定了讨论';
+  }
+
+  @override
+  String issue_timeline_unlocked(String actor) {
+    return '$actor 解锁了讨论';
+  }
+
+  @override
+  String issue_timeline_pinned(String actor) {
+    return '$actor 置顶了此 issue';
+  }
+
+  @override
+  String issue_timeline_unpinned(String actor) {
+    return '$actor 取消置顶';
+  }
+
+  @override
+  String issue_timeline_merged(String actor) {
+    return '$actor 合并了此变更';
+  }
+
+  @override
+  String issue_timeline_referenced(String actor) {
+    return '$actor 引用了此 issue';
+  }
+
+  @override
+  String issue_timeline_cross_referenced(String actor) {
+    return '$actor 在其它 issue 中引用了此 issue';
+  }
+
+  @override
+  String issue_timeline_mentioned(String actor) {
+    return '$actor 被提及';
+  }
+
+  @override
+  String issue_timeline_subscribed(String actor) {
+    return '$actor 订阅了此 issue';
+  }
+
+  @override
+  String issue_timeline_unsubscribed(String actor) {
+    return '$actor 取消订阅';
+  }
+
+  @override
+  String issue_timeline_generic(String actor, String event) {
+    return '$actor $event';
+  }
 }

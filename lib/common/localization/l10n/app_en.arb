@@ -135,5 +135,125 @@
   "search_type": "Type",
   "search_sort": "Sort",
   "search_language": "Language",
-  "feed_back_tip": "Your feedback will be sent to Github as a public issue"
+  "feed_back_tip": "Your feedback will be sent to Github as a public issue",
+
+  "issue_badge_bot": "bot",
+  "issue_badge_edited": "edited",
+  "issue_comment_minimized": "This comment has been minimized",
+  "issue_reactions_add_tooltip": "Add reaction",
+  "issue_reaction_failed": "Reaction failed",
+
+  "issue_assoc_owner": "Owner",
+  "issue_assoc_member": "Member",
+  "issue_assoc_collaborator": "Collaborator",
+  "issue_assoc_contributor": "Contributor",
+  "issue_assoc_first_time_contributor": "First-time contributor",
+  "issue_assoc_first_timer": "First-timer",
+  "issue_assoc_mannequin": "Mannequin",
+
+  "issue_timeline_labeled": "{actor} added the label {label}",
+  "@issue_timeline_labeled": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "label": {"type": "String"}
+    }
+  },
+  "issue_timeline_unlabeled": "{actor} removed the label {label}",
+  "@issue_timeline_unlabeled": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "label": {"type": "String"}
+    }
+  },
+  "issue_timeline_assigned": "{actor} assigned {assignee}",
+  "@issue_timeline_assigned": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "assignee": {"type": "String"}
+    }
+  },
+  "issue_timeline_unassigned": "{actor} unassigned {assignee}",
+  "@issue_timeline_unassigned": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "assignee": {"type": "String"}
+    }
+  },
+  "issue_timeline_milestoned": "{actor} added this to the {milestone} milestone",
+  "@issue_timeline_milestoned": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "milestone": {"type": "String"}
+    }
+  },
+  "issue_timeline_demilestoned": "{actor} removed this from the {milestone} milestone",
+  "@issue_timeline_demilestoned": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "milestone": {"type": "String"}
+    }
+  },
+  "issue_timeline_renamed": "{actor} changed the title from {from} to {to}",
+  "@issue_timeline_renamed": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "from": {"type": "String"},
+      "to": {"type": "String"}
+    }
+  },
+  "issue_timeline_closed": "{actor} closed this",
+  "@issue_timeline_closed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_reopened": "{actor} reopened this",
+  "@issue_timeline_reopened": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_locked": "{actor} locked this conversation",
+  "@issue_timeline_locked": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_unlocked": "{actor} unlocked this conversation",
+  "@issue_timeline_unlocked": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_pinned": "{actor} pinned this",
+  "@issue_timeline_pinned": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_unpinned": "{actor} unpinned this",
+  "@issue_timeline_unpinned": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_merged": "{actor} merged this",
+  "@issue_timeline_merged": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_referenced": "{actor} referenced this",
+  "@issue_timeline_referenced": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_cross_referenced": "{actor} mentioned this from another issue",
+  "@issue_timeline_cross_referenced": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_mentioned": "{actor} was mentioned",
+  "@issue_timeline_mentioned": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_subscribed": "{actor} subscribed",
+  "@issue_timeline_subscribed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_unsubscribed": "{actor} unsubscribed",
+  "@issue_timeline_unsubscribed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_generic": "{actor} {event}",
+  "@issue_timeline_generic": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "event": {"type": "String"}
+    }
+  }
 }

@@ -419,4 +419,140 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get feed_back_tip => '귀하의 피드백은 Github에 공개 이슈로 제출됩니다';
+
+  @override
+  String get issue_badge_bot => '봇';
+
+  @override
+  String get issue_badge_edited => '편집됨';
+
+  @override
+  String get issue_comment_minimized => '이 댓글은 접혔습니다';
+
+  @override
+  String get issue_reactions_add_tooltip => '리액션 추가';
+
+  @override
+  String get issue_reaction_failed => '리액션 실패';
+
+  @override
+  String get issue_assoc_owner => '소유자';
+
+  @override
+  String get issue_assoc_member => '멤버';
+
+  @override
+  String get issue_assoc_collaborator => '협업자';
+
+  @override
+  String get issue_assoc_contributor => '기여자';
+
+  @override
+  String get issue_assoc_first_time_contributor => '첫 기여자';
+
+  @override
+  String get issue_assoc_first_timer => '첫 참여자';
+
+  @override
+  String get issue_assoc_mannequin => '마네킹';
+
+  @override
+  String issue_timeline_labeled(String actor, String label) {
+    return '$actor 님이 라벨 $label 을(를) 추가했습니다';
+  }
+
+  @override
+  String issue_timeline_unlabeled(String actor, String label) {
+    return '$actor 님이 라벨 $label 을(를) 제거했습니다';
+  }
+
+  @override
+  String issue_timeline_assigned(String actor, String assignee) {
+    return '$actor 님이 $assignee 을(를) 할당했습니다';
+  }
+
+  @override
+  String issue_timeline_unassigned(String actor, String assignee) {
+    return '$actor 님이 $assignee 의 할당을 해제했습니다';
+  }
+
+  @override
+  String issue_timeline_milestoned(String actor, String milestone) {
+    return '$actor 님이 마일스톤 $milestone 에 추가했습니다';
+  }
+
+  @override
+  String issue_timeline_demilestoned(String actor, String milestone) {
+    return '$actor 님이 마일스톤 $milestone 에서 제거했습니다';
+  }
+
+  @override
+  String issue_timeline_renamed(String actor, String from, String to) {
+    return '$actor 님이 제목을 $from 에서 $to (으)로 변경했습니다';
+  }
+
+  @override
+  String issue_timeline_closed(String actor) {
+    return '$actor 님이 이 이슈를 닫았습니다';
+  }
+
+  @override
+  String issue_timeline_reopened(String actor) {
+    return '$actor 님이 이 이슈를 다시 열었습니다';
+  }
+
+  @override
+  String issue_timeline_locked(String actor) {
+    return '$actor 님이 대화를 잠갔습니다';
+  }
+
+  @override
+  String issue_timeline_unlocked(String actor) {
+    return '$actor 님이 대화 잠금을 해제했습니다';
+  }
+
+  @override
+  String issue_timeline_pinned(String actor) {
+    return '$actor 님이 고정했습니다';
+  }
+
+  @override
+  String issue_timeline_unpinned(String actor) {
+    return '$actor 님이 고정을 해제했습니다';
+  }
+
+  @override
+  String issue_timeline_merged(String actor) {
+    return '$actor 님이 병합했습니다';
+  }
+
+  @override
+  String issue_timeline_referenced(String actor) {
+    return '$actor 님이 이 이슈를 참조했습니다';
+  }
+
+  @override
+  String issue_timeline_cross_referenced(String actor) {
+    return '$actor 님이 다른 이슈에서 이 이슈를 언급했습니다';
+  }
+
+  @override
+  String issue_timeline_mentioned(String actor) {
+    return '$actor 님이 언급되었습니다';
+  }
+
+  @override
+  String issue_timeline_subscribed(String actor) {
+    return '$actor 님이 구독했습니다';
+  }
+
+  @override
+  String issue_timeline_unsubscribed(String actor) {
+    return '$actor 님이 구독을 해제했습니다';
+  }
+
+  @override
+  String issue_timeline_generic(String actor, String event) {
+    return '$actor $event';
+  }
 }

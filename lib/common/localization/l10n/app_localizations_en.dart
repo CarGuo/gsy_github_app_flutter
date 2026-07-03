@@ -422,4 +422,140 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get feed_back_tip =>
       'Your feedback will be sent to Github as a public issue';
+
+  @override
+  String get issue_badge_bot => 'bot';
+
+  @override
+  String get issue_badge_edited => 'edited';
+
+  @override
+  String get issue_comment_minimized => 'This comment has been minimized';
+
+  @override
+  String get issue_reactions_add_tooltip => 'Add reaction';
+
+  @override
+  String get issue_reaction_failed => 'Reaction failed';
+
+  @override
+  String get issue_assoc_owner => 'Owner';
+
+  @override
+  String get issue_assoc_member => 'Member';
+
+  @override
+  String get issue_assoc_collaborator => 'Collaborator';
+
+  @override
+  String get issue_assoc_contributor => 'Contributor';
+
+  @override
+  String get issue_assoc_first_time_contributor => 'First-time contributor';
+
+  @override
+  String get issue_assoc_first_timer => 'First-timer';
+
+  @override
+  String get issue_assoc_mannequin => 'Mannequin';
+
+  @override
+  String issue_timeline_labeled(String actor, String label) {
+    return '$actor added the label $label';
+  }
+
+  @override
+  String issue_timeline_unlabeled(String actor, String label) {
+    return '$actor removed the label $label';
+  }
+
+  @override
+  String issue_timeline_assigned(String actor, String assignee) {
+    return '$actor assigned $assignee';
+  }
+
+  @override
+  String issue_timeline_unassigned(String actor, String assignee) {
+    return '$actor unassigned $assignee';
+  }
+
+  @override
+  String issue_timeline_milestoned(String actor, String milestone) {
+    return '$actor added this to the $milestone milestone';
+  }
+
+  @override
+  String issue_timeline_demilestoned(String actor, String milestone) {
+    return '$actor removed this from the $milestone milestone';
+  }
+
+  @override
+  String issue_timeline_renamed(String actor, String from, String to) {
+    return '$actor changed the title from $from to $to';
+  }
+
+  @override
+  String issue_timeline_closed(String actor) {
+    return '$actor closed this';
+  }
+
+  @override
+  String issue_timeline_reopened(String actor) {
+    return '$actor reopened this';
+  }
+
+  @override
+  String issue_timeline_locked(String actor) {
+    return '$actor locked this conversation';
+  }
+
+  @override
+  String issue_timeline_unlocked(String actor) {
+    return '$actor unlocked this conversation';
+  }
+
+  @override
+  String issue_timeline_pinned(String actor) {
+    return '$actor pinned this';
+  }
+
+  @override
+  String issue_timeline_unpinned(String actor) {
+    return '$actor unpinned this';
+  }
+
+  @override
+  String issue_timeline_merged(String actor) {
+    return '$actor merged this';
+  }
+
+  @override
+  String issue_timeline_referenced(String actor) {
+    return '$actor referenced this';
+  }
+
+  @override
+  String issue_timeline_cross_referenced(String actor) {
+    return '$actor mentioned this from another issue';
+  }
+
+  @override
+  String issue_timeline_mentioned(String actor) {
+    return '$actor was mentioned';
+  }
+
+  @override
+  String issue_timeline_subscribed(String actor) {
+    return '$actor subscribed';
+  }
+
+  @override
+  String issue_timeline_unsubscribed(String actor) {
+    return '$actor unsubscribed';
+  }
+
+  @override
+  String issue_timeline_generic(String actor, String event) {
+    return '$actor $event';
+  }
 }
