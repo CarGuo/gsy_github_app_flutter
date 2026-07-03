@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
+import 'package:gsy_github_app_flutter/model/pull_request.dart';
 import 'package:gsy_github_app_flutter/model/reactions.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -223,19 +224,45 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   }
 
   ///获取头部数据
+  ///
+  /// 除了拉 issue payload 本身之外，如果发现这个 issue 其实是 PR
+  /// （`issue.pullRequest != null`），额外并发一次 /pulls/:n，把 merged /
+  /// mergeable / draft / head / base / additions / deletions / commits /
+  /// requestedReviewers 塞进 [IssueHeaderViewModel]。失败不阻塞主 header。
   _getHeaderInfo() {
     IssueRepository.getIssueInfoRequest(
             widget.userName, widget.reposName, widget.issueNum)
         .then((res) {
       if (res != null && res.result) {
         _resolveHeaderInfo(res);
+        _maybeFetchPullRequest(res.data);
         return res.next?.call();
       }
       return Future.value(null);
     }).then((res) {
       if (res != null && res.result) {
         _resolveHeaderInfo(res);
+        _maybeFetchPullRequest(res.data);
       }
+    });
+  }
+
+  /// 若当前 issue 其实是 PR，则拉一次 pull detail 并合入 header viewModel。
+  void _maybeFetchPullRequest(Issue? issue) {
+    if (issue == null) return;
+    if (issue.pullRequest == null) return;
+    final number = issue.number;
+    if (number == null) return;
+    IssueRepository.getPullRequestDetailRequest(
+      widget.userName ?? '',
+      widget.reposName ?? '',
+      number,
+    ).then((res) {
+      if (!mounted) return;
+      if (res == null || res.result != true) return;
+      setState(() {
+        issueHeaderViewModel.pullRequest = res.data as PullRequest?;
+      });
     });
   }
 
@@ -243,7 +270,10 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   _resolveHeaderInfo(res) {
     Issue? issue = res.data;
     setState(() {
+      // 保留已加载的 PR 详情，避免二次拉 header 时被 fromMap 清掉
+      final prevPullRequest = issueHeaderViewModel.pullRequest;
       issueHeaderViewModel = IssueHeaderViewModel.fromMap(issue!);
+      issueHeaderViewModel.pullRequest = prevPullRequest;
       htmlUrl = issue.htmlUrl;
       headerStatus = true;
     });

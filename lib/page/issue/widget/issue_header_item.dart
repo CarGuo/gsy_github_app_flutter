@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/label.dart';
+import 'package:gsy_github_app_flutter/model/pull_request.dart';
 import 'package:gsy_github_app_flutter/model/reactions.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -34,9 +35,24 @@ class IssueHeaderItem extends StatelessWidget {
     this.onReactionToggle,
   });
 
-  _renderBottomContainer() {
-    Color issueStateColor =
-        issueHeaderViewModel.state == "open" ? Colors.green : Colors.red;
+  _renderBottomContainer(BuildContext context) {
+    // 判定 PR 特殊状态：merged / draft 覆盖普通 open/closed 徽章
+    final pr = issueHeaderViewModel.pullRequest;
+    final ref = issueHeaderViewModel.pullRequestRef;
+    final rawState = issueHeaderViewModel.state ?? '';
+
+    Color issueStateColor;
+    String stateLabel;
+    if (pr?.merged == true || ref?.mergedAt != null) {
+      issueStateColor = const Color(0xFF8250DF); // GitHub merged 紫
+      stateLabel = context.l10n.pr_state_merged;
+    } else if (pr?.draft == true) {
+      issueStateColor = Colors.grey;
+      stateLabel = context.l10n.pr_state_draft;
+    } else {
+      issueStateColor = rawState == 'open' ? Colors.green : Colors.red;
+      stateLabel = rawState;
+    }
 
     ///底部Issue状态
     Widget bottomContainer = Row(
@@ -44,7 +60,7 @@ class IssueHeaderItem extends StatelessWidget {
         ///issue 关闭打开状态
         GSYIConText(
           GSYICons.ISSUE_ITEM_ISSUE,
-          issueHeaderViewModel.state,
+          stateLabel,
           TextStyle(
             color: issueStateColor,
             fontSize: GSYConstant.smallTextSize,
@@ -178,6 +194,129 @@ class IssueHeaderItem extends StatelessWidget {
     );
   }
 
+  /// PR 独有信息展示区
+  ///
+  /// 只在 issue 其实是 PR、且 /pulls/:n 已经拉回来时渲染。
+  /// 分三行：
+  ///   1) `base ← head` 分支引用；
+  ///   2) `+additions / -deletions`，changed_files，commits 摘要；
+  ///   3) requested reviewers 头像。
+  Widget _renderPullRequestSection(BuildContext context) {
+    final pr = issueHeaderViewModel.pullRequest;
+    if (pr == null) return const SizedBox.shrink();
+
+    final l = context.l10n;
+    final rows = <Widget>[];
+
+    // base ← head
+    final baseRef = pr.base?.ref;
+    final headLabel = pr.head?.label ?? pr.head?.ref;
+    if (baseRef != null && headLabel != null) {
+      rows.add(Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          children: [
+            const Icon(Icons.call_merge, size: 14, color: Colors.white70),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                '$headLabel  →  $baseRef',
+                style:
+                    GSYConstant.smallSubLightText.copyWith(color: Colors.white),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ));
+    }
+
+    // additions / deletions / changed files / commits 摘要
+    final additions = pr.additions;
+    final deletions = pr.deletions;
+    final changedFiles = pr.changedFiles;
+    final commits = pr.commits;
+    if (additions != null ||
+        deletions != null ||
+        changedFiles != null ||
+        commits != null) {
+      final parts = <Widget>[];
+      if (additions != null) {
+        parts.add(Text('+$additions',
+            style: const TextStyle(
+                color: Color(0xFF3FB950),
+                fontSize: 12,
+                fontWeight: FontWeight.w600)));
+      }
+      if (deletions != null) {
+        parts.add(Text('-$deletions',
+            style: const TextStyle(
+                color: Color(0xFFF85149),
+                fontSize: 12,
+                fontWeight: FontWeight.w600)));
+      }
+      if (changedFiles != null) {
+        parts.add(Text(l.pr_files_changed(changedFiles),
+            style: GSYConstant.smallSubLightText
+                .copyWith(color: Colors.white70)));
+      }
+      if (commits != null) {
+        parts.add(Text(l.pr_commits(commits),
+            style: GSYConstant.smallSubLightText
+                .copyWith(color: Colors.white70)));
+      }
+      rows.add(Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Wrap(spacing: 10, runSpacing: 4, children: parts),
+      ));
+    }
+
+    // requested reviewers
+    final reviewers = pr.requestedReviewers;
+    if (reviewers != null && reviewers.isNotEmpty) {
+      rows.add(Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Row(
+          children: [
+            Text(l.pr_review_requested,
+                style: GSYConstant.smallSubLightText
+                    .copyWith(color: Colors.white70)),
+            const SizedBox(width: 6),
+            Expanded(
+              child: SizedBox(
+                height: 22,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: reviewers.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 4),
+                  itemBuilder: (_, i) {
+                    final u = reviewers[i];
+                    final avatar = u.avatar_url ?? '';
+                    return Tooltip(
+                      message: u.login ?? '',
+                      child: CircleAvatar(
+                        radius: 11,
+                        backgroundColor: Colors.white24,
+                        backgroundImage:
+                            avatar.isEmpty ? null : NetworkImage(avatar),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ));
+    }
+
+    if (rows.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: rows,
+    );
+  }
+
   Widget _renderReactions() {
     final r = issueHeaderViewModel.reactions;
     if (r == null || r.totalCount == 0 && onReactionToggle == null) {
@@ -260,7 +399,7 @@ class IssueHeaderItem extends StatelessWidget {
                         const Padding(padding: EdgeInsets.all(2.0)),
 
                         ///底部Item
-                        _renderBottomContainer(),
+                        _renderBottomContainer(context),
                         Container(
 
                             ///评论标题
@@ -288,6 +427,10 @@ class IssueHeaderItem extends StatelessWidget {
 
               ///assignees + milestone
               _renderAssigneesAndMilestone(),
+
+              ///PR 独有信息（merged/draft 徽章走 _renderBottomContainer；
+              ///这里输出分支引用/统计/reviewers）
+              _renderPullRequestSection(context),
 
               ///评论内容
               GSYMarkdownWidget(
@@ -334,6 +477,12 @@ class IssueHeaderViewModel {
   Reactions? reactions;
   bool edited = false;
 
+  /// 当前 issue 其实是 PR 时的额外详情。null = 普通 issue 或 PR 详情尚未拉到。
+  PullRequest? pullRequest;
+
+  /// issue payload 上的轻量 pull_request 指针（用于第一时间识别 PR）
+  PullRequestRef? pullRequestRef;
+
   IssueHeaderViewModel();
 
   IssueHeaderViewModel.fromMap(Issue issueMap) {
@@ -360,5 +509,6 @@ class IssueHeaderViewModel {
     edited = issueMap.updatedAt != null &&
         issueMap.createdAt != null &&
         issueMap.updatedAt!.isAfter(issueMap.createdAt!);
+    pullRequestRef = issueMap.pullRequest;
   }
 }
