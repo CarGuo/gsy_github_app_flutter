@@ -271,6 +271,48 @@ class AppLocalizationsZh extends AppLocalizations {
   String get repos_tab_issue_closed => '关闭';
 
   @override
+  String get repos_issue_filter => '筛选';
+
+  @override
+  String get repos_issue_filter_title => '筛选与排序';
+
+  @override
+  String get repos_issue_filter_sort => '排序方式';
+
+  @override
+  String get repos_issue_filter_sort_created => '创建时间';
+
+  @override
+  String get repos_issue_filter_sort_updated => '更新时间';
+
+  @override
+  String get repos_issue_filter_sort_comments => '评论数';
+
+  @override
+  String get repos_issue_filter_direction => '顺序';
+
+  @override
+  String get repos_issue_filter_direction_asc => '升序';
+
+  @override
+  String get repos_issue_filter_direction_desc => '降序';
+
+  @override
+  String get repos_issue_filter_labels => '标签';
+
+  @override
+  String get repos_issue_filter_labels_loading => '加载中…';
+
+  @override
+  String get repos_issue_filter_labels_empty => '该仓库暂无标签';
+
+  @override
+  String get repos_issue_filter_apply => '应用';
+
+  @override
+  String get repos_issue_filter_clear => '清除';
+
+  @override
   String get repos_option_release => '版本';
 
   @override

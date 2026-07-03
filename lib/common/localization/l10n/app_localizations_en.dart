@@ -273,6 +273,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get repos_tab_issue_closed => 'Closed';
 
   @override
+  String get repos_issue_filter => 'Filter';
+
+  @override
+  String get repos_issue_filter_title => 'Filter & Sort';
+
+  @override
+  String get repos_issue_filter_sort => 'Sort by';
+
+  @override
+  String get repos_issue_filter_sort_created => 'Newest';
+
+  @override
+  String get repos_issue_filter_sort_updated => 'Recently updated';
+
+  @override
+  String get repos_issue_filter_sort_comments => 'Most commented';
+
+  @override
+  String get repos_issue_filter_direction => 'Direction';
+
+  @override
+  String get repos_issue_filter_direction_asc => 'Ascending';
+
+  @override
+  String get repos_issue_filter_direction_desc => 'Descending';
+
+  @override
+  String get repos_issue_filter_labels => 'Labels';
+
+  @override
+  String get repos_issue_filter_labels_loading => 'Loading…';
+
+  @override
+  String get repos_issue_filter_labels_empty => 'No labels on this repository';
+
+  @override
+  String get repos_issue_filter_apply => 'Apply';
+
+  @override
+  String get repos_issue_filter_clear => 'Clear';
+
+  @override
   String get repos_option_release => 'Release';
 
   @override

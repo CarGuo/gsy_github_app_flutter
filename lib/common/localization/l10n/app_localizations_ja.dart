@@ -272,6 +272,48 @@ class AppLocalizationsJa extends AppLocalizations {
   String get repos_tab_issue_closed => 'クローズ';
 
   @override
+  String get repos_issue_filter => '絞り込み';
+
+  @override
+  String get repos_issue_filter_title => '絞り込みと並び順';
+
+  @override
+  String get repos_issue_filter_sort => '並び順';
+
+  @override
+  String get repos_issue_filter_sort_created => '作成日時';
+
+  @override
+  String get repos_issue_filter_sort_updated => '更新日時';
+
+  @override
+  String get repos_issue_filter_sort_comments => 'コメント数';
+
+  @override
+  String get repos_issue_filter_direction => '順序';
+
+  @override
+  String get repos_issue_filter_direction_asc => '昇順';
+
+  @override
+  String get repos_issue_filter_direction_desc => '降順';
+
+  @override
+  String get repos_issue_filter_labels => 'ラベル';
+
+  @override
+  String get repos_issue_filter_labels_loading => '読み込み中…';
+
+  @override
+  String get repos_issue_filter_labels_empty => 'このリポジトリにはラベルがありません';
+
+  @override
+  String get repos_issue_filter_apply => '適用';
+
+  @override
+  String get repos_issue_filter_clear => 'クリア';
+
+  @override
   String get repos_option_release => 'リリース';
 
   @override

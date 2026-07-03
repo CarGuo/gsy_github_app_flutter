@@ -271,6 +271,48 @@ class AppLocalizationsKo extends AppLocalizations {
   String get repos_tab_issue_closed => '닫힘';
 
   @override
+  String get repos_issue_filter => '필터';
+
+  @override
+  String get repos_issue_filter_title => '필터 및 정렬';
+
+  @override
+  String get repos_issue_filter_sort => '정렬 기준';
+
+  @override
+  String get repos_issue_filter_sort_created => '생성일';
+
+  @override
+  String get repos_issue_filter_sort_updated => '업데이트일';
+
+  @override
+  String get repos_issue_filter_sort_comments => '댓글 수';
+
+  @override
+  String get repos_issue_filter_direction => '정렬 순서';
+
+  @override
+  String get repos_issue_filter_direction_asc => '오름차순';
+
+  @override
+  String get repos_issue_filter_direction_desc => '내림차순';
+
+  @override
+  String get repos_issue_filter_labels => '라벨';
+
+  @override
+  String get repos_issue_filter_labels_loading => '로딩 중…';
+
+  @override
+  String get repos_issue_filter_labels_empty => '이 저장소에는 라벨이 없습니다';
+
+  @override
+  String get repos_issue_filter_apply => '적용';
+
+  @override
+  String get repos_issue_filter_clear => '지우기';
+
+  @override
   String get repos_option_release => '릴리스';
 
   @override

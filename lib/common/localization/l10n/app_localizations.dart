@@ -624,6 +624,90 @@ abstract class AppLocalizations {
   /// **'Closed'**
   String get repos_tab_issue_closed;
 
+  /// No description provided for @repos_issue_filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get repos_issue_filter;
+
+  /// No description provided for @repos_issue_filter_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter & Sort'**
+  String get repos_issue_filter_title;
+
+  /// No description provided for @repos_issue_filter_sort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get repos_issue_filter_sort;
+
+  /// No description provided for @repos_issue_filter_sort_created.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get repos_issue_filter_sort_created;
+
+  /// No description provided for @repos_issue_filter_sort_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently updated'**
+  String get repos_issue_filter_sort_updated;
+
+  /// No description provided for @repos_issue_filter_sort_comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Most commented'**
+  String get repos_issue_filter_sort_comments;
+
+  /// No description provided for @repos_issue_filter_direction.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get repos_issue_filter_direction;
+
+  /// No description provided for @repos_issue_filter_direction_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get repos_issue_filter_direction_asc;
+
+  /// No description provided for @repos_issue_filter_direction_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get repos_issue_filter_direction_desc;
+
+  /// No description provided for @repos_issue_filter_labels.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels'**
+  String get repos_issue_filter_labels;
+
+  /// No description provided for @repos_issue_filter_labels_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get repos_issue_filter_labels_loading;
+
+  /// No description provided for @repos_issue_filter_labels_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No labels on this repository'**
+  String get repos_issue_filter_labels_empty;
+
+  /// No description provided for @repos_issue_filter_apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get repos_issue_filter_apply;
+
+  /// No description provided for @repos_issue_filter_clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get repos_issue_filter_clear;
+
   /// No description provided for @repos_option_release.
   ///
   /// In en, this message translates to:
