@@ -74,6 +74,13 @@ class ReposDetailProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// 仓库 labels 缓存，供 issue 列表筛选 chip 使用。
+  /// 首次进入 issue tab 时懒加载一次，后续切分支/切 issue 状态时不重复拉取
+  /// （labels 是 repo scope，跨 branch 相同）。
+  List<String>? _labelsCache;
+
+  List<String>? get labelsCache => _labelsCache;
+
   RepositoryQL? _repository;
 
   RepositoryQL? get repository => _repository;
@@ -196,9 +203,30 @@ class ReposDetailProvider with ChangeNotifier {
   }
 
   getRepositoryIssueRequest(state,
-      {sort, direction, page = 0, needDb = false}) async {
+      {sort, direction, labels, page = 0, needDb = false}) async {
     return network.getRepositoryIssueRequest(userName, reposName, state,
-        sort: sort, direction: direction, page: page, needDb: needDb);
+        sort: sort,
+        direction: direction,
+        labels: labels,
+        page: page,
+        needDb: needDb);
+  }
+
+  /// 拉取仓库 labels 列表并缓存。首次调用后，labelsCache 会被填充；再次调用
+  /// 若 [force] 为 false 会直接返回缓存，供 filter dialog 打开时快速展示 chip。
+  Future<List<String>> getRepositoryLabels({bool force = false}) async {
+    if (!force && _labelsCache != null) {
+      return _labelsCache!;
+    }
+    final result =
+        await network.getRepositoryLabelsRequest(userName, reposName);
+    if (result != null && result.result == true && result.data is List) {
+      _labelsCache = List<String>.from(result.data as List);
+      notifyListeners();
+      return _labelsCache!;
+    }
+    _labelsCache = <String>[];
+    return _labelsCache!;
   }
 
   searchRepositoryRequest(q, state, {page = 1}) async {

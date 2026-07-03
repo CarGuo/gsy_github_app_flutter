@@ -22,18 +22,20 @@ class IssueRepository {
   /// @param state issue状态
   /// @param sort 排序类型 created updated等
   /// @param direction 正序或者倒序
+  /// @param labels 逗号拼接的 label 名（AND 匹配），传空串等价于不过滤
   static getRepositoryIssueRequest(String userName, String repository, state,
-      {sort, direction, page = 0, needDb = false}) async {
+      {sort, direction, labels, page = 0, needDb = false}) async {
     String? fullName = "$userName/$repository";
     String dbState = state ?? "*";
     String dbSort = (sort ?? '') as String;
     String dbDirection = (direction ?? '') as String;
-    const String dbLabels = '';
+    String dbLabels = (labels ?? '') as String;
     RepositoryIssueDbProvider provider = RepositoryIssueDbProvider();
 
     next() async {
       String url =
-          Address.getReposIssue(userName, repository, state, sort, direction) +
+          Address.getReposIssue(userName, repository, state, sort, direction,
+                  dbLabels.isEmpty ? null : dbLabels) +
               Address.getPageParams("&", page);
       var res = await httpManager.netFetch(
           url,
@@ -72,6 +74,30 @@ class IssueRepository {
       return dataResult;
     }
     return await next();
+  }
+
+  /// 拉取仓库定义的 labels 列表
+  ///
+  /// 仅返回 name/color/description 简要信息，供 issue 列表筛选 UI 展示 chip。
+  /// GitHub REST 端点 /repos/:o/:r/labels 默认每页 30 个，我们支持翻页
+  static getRepositoryLabelsRequest(userName, repository, {page = 1}) async {
+    String url = Address.getReposLabels(userName, repository) +
+        Address.getPageParams("?", page);
+    var res = await httpManager.netFetch(url, null, null, null);
+    if (res != null && res.result) {
+      final data = res.data;
+      if (data is! List || data.isEmpty) {
+        return DataResult(<String>[], false);
+      }
+      final names = <String>[];
+      for (final item in data) {
+        if (item is Map && item['name'] is String) {
+          names.add(item['name'] as String);
+        }
+      }
+      return DataResult(names, true);
+    }
+    return DataResult(<String>[], false);
   }
 
   /// 搜索仓库issue

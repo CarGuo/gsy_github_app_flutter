@@ -77,11 +77,25 @@ class Address {
   }
 
   ///仓库Issue get
-  static getReposIssue(String reposOwner, String reposName, state, sort, direction) {
+  ///
+  /// [labels] 为逗号拼接的 label 名字符串，例如 "bug,help wanted"，GitHub REST
+  /// 会做 AND 匹配（同时具备这些 label 的 issue）。传空串等价于不加 label 过滤。
+  static getReposIssue(String reposOwner, String reposName, state, sort, direction,
+      [String? labels]) {
     state ??= 'all';
     sort ??= 'created';
     direction ??= 'desc';
-    return "${host}repos/$reposOwner/$reposName/issues?state=$state&sort=$sort&direction=$direction";
+    final base =
+        "${host}repos/$reposOwner/$reposName/issues?state=$state&sort=$sort&direction=$direction";
+    if (labels == null || labels.isEmpty) {
+      return base;
+    }
+    return "$base&labels=${Uri.encodeQueryComponent(labels)}";
+  }
+
+  ///仓库labels get
+  static getReposLabels(reposOwner, reposName) {
+    return "${host}repos/$reposOwner/$reposName/labels";
   }
 
   ///仓release get

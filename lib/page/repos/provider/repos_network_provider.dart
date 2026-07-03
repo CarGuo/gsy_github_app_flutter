@@ -56,16 +56,24 @@ class ReposNetWorkProvider with ChangeNotifier {
   }
 
   getRepositoryIssueRequest(String userName, String repository, state,
-      {sort, direction, page = 0, needDb = false}) async {
+      {sort, direction, labels, page = 0, needDb = false}) async {
     return IssueRepository.getRepositoryIssueRequest(
         userName, repository, state,
-        sort: sort, direction: direction, page: page, needDb: needDb);
+        sort: sort,
+        direction: direction,
+        labels: labels,
+        page: page,
+        needDb: needDb);
   }
 
   searchRepositoryRequest(String q, String name, String reposName, state,
       {page = 1}) async {
     return IssueRepository.searchRepositoryRequest(q, name, reposName, state,
         page: page);
+  }
+
+  getRepositoryLabelsRequest(String userName, String repository) async {
+    return IssueRepository.getRepositoryLabelsRequest(userName, repository);
   }
 
   createIssueRequest(String userName, String repository, issue) async {
