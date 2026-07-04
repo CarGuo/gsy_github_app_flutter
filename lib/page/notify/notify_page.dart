@@ -89,30 +89,30 @@ class _NotifyPageState extends State<NotifyPage>
     // key 里带上 tab index 是为了让 Slidable 在 tab 切换时重建、避免残留展开状态
     final actions = <Widget>[];
     if (isUnread) {
-      actions.add(SlidableAction(
+      actions.add(_buildSlideAction(
         label: context.l10n.notify_readed,
         backgroundColor: Colors.redAccent,
         icon: Icons.done,
-        onPressed: (_) => _markAsRead(notification),
+        onPressed: () => _markAsRead(notification),
       ));
     }
-    actions.add(SlidableAction(
+    actions.add(_buildSlideAction(
       label: context.l10n.notify_subscribe,
       backgroundColor: Colors.blueAccent,
       icon: Icons.notifications_active,
-      onPressed: (_) => _subscribeThread(notification),
+      onPressed: () => _subscribeThread(notification),
     ));
-    actions.add(SlidableAction(
+    actions.add(_buildSlideAction(
       label: context.l10n.notify_unsubscribe,
       backgroundColor: Colors.grey,
       icon: Icons.notifications_off,
-      onPressed: (_) => _unsubscribeThread(notification),
+      onPressed: () => _unsubscribeThread(notification),
     ));
-    actions.add(SlidableAction(
+    actions.add(_buildSlideAction(
       label: context.l10n.notify_archive,
       backgroundColor: Colors.deepOrange,
       icon: Icons.archive,
-      onPressed: (_) => _archiveThread(notification),
+      onPressed: () => _archiveThread(notification),
     ));
 
     return Slidable(
@@ -120,6 +120,7 @@ class _NotifyPageState extends State<NotifyPage>
       endActionPane: ActionPane(
         dragDismissible: false,
         motion: const ScrollMotion(),
+        extentRatio: isUnread ? 0.78 : 0.62,
         // 滑到底的默认动作：未读 tab 走"已读"，其它 tab 走"归档"
         // 这个默认动作和用户潜在预期一致：未读用户想清读、已读用户想清 inbox
         dismissible: DismissiblePane(
@@ -134,6 +135,39 @@ class _NotifyPageState extends State<NotifyPage>
         children: actions,
       ),
       child: _renderEventItem(notification),
+    );
+  }
+
+  /// 侧滑按钮统一封装：走 CustomSlidableAction，label 用 FittedBox scaleDown
+  /// 包裹，超过按钮宽度自动缩小字号而不是变成"..."。i18n 全语言鲁棒。
+  Widget _buildSlideAction({
+    required String label,
+    required IconData icon,
+    required Color backgroundColor,
+    required VoidCallback onPressed,
+  }) {
+    return CustomSlidableAction(
+      backgroundColor: backgroundColor,
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      onPressed: (_) => onPressed(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 22),
+          const SizedBox(height: 4),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              maxLines: 1,
+              softWrap: false,
+              style: const TextStyle(fontSize: 13, height: 1.1),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
