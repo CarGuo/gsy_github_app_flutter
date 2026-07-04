@@ -425,4 +425,65 @@ class IssueRepository {
     }
     return DataResult(null, false);
   }
+
+  /// 查询当前用户在指定 issue 上、指定 content 的 reaction id
+  /// 找不到返回 null；请求失败也返回 null（上层按"不做事"处理）
+  ///
+  /// 注意：`content` 里的 `+1` 直接拼进 query 会被服务端解释为空格 → 必须做 URL 编码
+  static Future<int?> findMyIssueReactionIdRequest(
+      userName, repository, number, String content, String login) async {
+    final encoded = Uri.encodeQueryComponent(content);
+    String url =
+        "${Address.getIssueReactions(userName, repository, number)}?content=$encoded&per_page=100";
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'GET'),
+        noTip: true);
+    if (res != null && res.result && res.data is List) {
+      for (var item in res.data) {
+        if (item is Map &&
+            item['user'] is Map &&
+            item['user']['login'] == login &&
+            item['content'] == content) {
+          final id = item['id'];
+          if (id is int) return id;
+        }
+      }
+    }
+    return null;
+  }
+
+  /// 查询当前用户在指定 issue comment 上、指定 content 的 reaction id
+  static Future<int?> findMyCommentReactionIdRequest(
+      userName, repository, commentId, String content, String login) async {
+    final encoded = Uri.encodeQueryComponent(content);
+    String url =
+        "${Address.getIssueCommentReactions(userName, repository, commentId)}?content=$encoded&per_page=100";
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'GET'),
+        noTip: true);
+    if (res != null && res.result && res.data is List) {
+      for (var item in res.data) {
+        if (item is Map &&
+            item['user'] is Map &&
+            item['user']['login'] == login &&
+            item['content'] == content) {
+          final id = item['id'];
+          if (id is int) return id;
+        }
+      }
+    }
+    return null;
+  }
 }

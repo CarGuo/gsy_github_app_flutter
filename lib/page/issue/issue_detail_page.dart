@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
@@ -8,6 +9,7 @@ import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
 import 'package:gsy_github_app_flutter/model/pull_request.dart';
 import 'package:gsy_github_app_flutter/model/reactions.dart';
+import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -281,50 +283,132 @@ class _IssueDetailPageState extends State<IssueDetailPage>
 
   /// issue 头部 reaction 加/减
   ///
-  /// 说明：GitHub REST 删除 reaction 需要 reactionId（issue 级 reaction 列表
-  /// 端点里才能拿到），此处交互简化为「点击 chip 加、长按 chip 减」，长按删除
-  /// 采取「本地即时扣减 + 触发头部刷新」的乐观策略，服务端最终一致以头部返回为准。
+  /// 交互语义（对齐 GitHub 官方）：
+  /// - `isAdd=true`（点击「+」入口选一个）→ POST /reactions（幂等 200/201）
+  /// - `isAdd=false`（点已存在 chip）→ GET 反查当前用户的 reactionId：
+  ///   - 拿到 id → DELETE
+  ///   - **拿不到 id** → 说明当前用户没 react 过（chip 是别人加的），**降级为 add**
+  ///     实现 toggle 语义
+  /// - 成功后 `_getHeaderInfo()` 拉一次头部对齐服务端；失败 setState 回滚 + toast
   Future<void> _onIssueReactionToggle(String content, bool isAdd) async {
-    final failedText = context.l10n.issue_reaction_failed;
+    final addFailedText = context.l10n.issue_reaction_failed;
+    final removeFailedText = context.l10n.issue_reaction_remove_failed;
     final current = issueHeaderViewModel.reactions ?? Reactions.empty();
     setState(() {
       issueHeaderViewModel.reactions =
           current.increment(content, isAdd ? 1 : -1);
     });
-    if (!isAdd) {
-      // 无 reactionId，退化为拉一次头部对齐服务端
-      _getHeaderInfo();
+    if (isAdd) {
+      final res = await IssueRepository.addIssueReactionRequest(
+          widget.userName, widget.reposName, widget.issueNum, content);
+      if (res == null || res.result != true) {
+        setState(() {
+          issueHeaderViewModel.reactions = current;
+        });
+        showToast(addFailedText);
+      } else {
+        _getHeaderInfo();
+      }
       return;
     }
-    final res = await IssueRepository.addIssueReactionRequest(
-        widget.userName, widget.reposName, widget.issueNum, content);
+    // remove 分支：需要当前用户 login 才能 GET 反查
+    final login =
+        StoreProvider.of<GSYState>(context).state.userInfo?.login;
+    if (login == null || login.isEmpty) {
+      setState(() {
+        issueHeaderViewModel.reactions = current;
+      });
+      showToast(removeFailedText);
+      return;
+    }
+    final reactionId = await IssueRepository.findMyIssueReactionIdRequest(
+        widget.userName, widget.reposName, widget.issueNum, content, login);
+    if (reactionId == null) {
+      // 当前用户没 react 过这条，降级为 add（toggle 语义）
+      // 先把乐观扣减撤回，再加 1，让 UI 呈现"添加了"
+      setState(() {
+        issueHeaderViewModel.reactions = current.increment(content, 1);
+      });
+      final res = await IssueRepository.addIssueReactionRequest(
+          widget.userName, widget.reposName, widget.issueNum, content);
+      if (res == null || res.result != true) {
+        setState(() {
+          issueHeaderViewModel.reactions = current;
+        });
+        showToast(addFailedText);
+      } else {
+        _getHeaderInfo();
+      }
+      return;
+    }
+    final res = await IssueRepository.deleteIssueReactionRequest(
+        widget.userName, widget.reposName, widget.issueNum, reactionId);
     if (res == null || res.result != true) {
       setState(() {
         issueHeaderViewModel.reactions = current;
       });
-      showToast(failedText);
+      showToast(removeFailedText);
     } else {
       _getHeaderInfo();
     }
   }
 
-  /// 单条评论的 reaction 加/减
-  ///
-  /// 说明：删除 comment reaction 需要 reactionId（`/issues/comments/{id}/reactions`
-  /// GET 才能拿到）。此处采用与头部相同的乐观策略：add 走 POST，remove 只做本地态。
+  /// 单条评论的 reaction 加/减，语义同头部：
+  /// - 点「+」入口 = add
+  /// - 点已存在 chip = 尝试 remove，找不到当前用户的 reactionId 时降级为 add
   Future<void> _onCommentReactionToggle(
       Issue comment, String content, bool isAdd) async {
+    if (comment.id == null) return;
+    final addFailedText = context.l10n.issue_reaction_failed;
+    final removeFailedText = context.l10n.issue_reaction_remove_failed;
     final current = comment.reactions ?? Reactions.empty();
     setState(() {
       comment.reactions = current.increment(content, isAdd ? 1 : -1);
     });
-    if (!isAdd || comment.id == null) return;
-    final res = await IssueRepository.addCommentReactionRequest(
-        widget.userName, widget.reposName, comment.id, content);
+    if (isAdd) {
+      final res = await IssueRepository.addCommentReactionRequest(
+          widget.userName, widget.reposName, comment.id, content);
+      if (res == null || res.result != true) {
+        setState(() {
+          comment.reactions = current;
+        });
+        showToast(addFailedText);
+      }
+      return;
+    }
+    final login =
+        StoreProvider.of<GSYState>(context).state.userInfo?.login;
+    if (login == null || login.isEmpty) {
+      setState(() {
+        comment.reactions = current;
+      });
+      showToast(removeFailedText);
+      return;
+    }
+    final reactionId = await IssueRepository.findMyCommentReactionIdRequest(
+        widget.userName, widget.reposName, comment.id, content, login);
+    if (reactionId == null) {
+      // 当前用户没 react 过这条，降级为 add
+      setState(() {
+        comment.reactions = current.increment(content, 1);
+      });
+      final res = await IssueRepository.addCommentReactionRequest(
+          widget.userName, widget.reposName, comment.id, content);
+      if (res == null || res.result != true) {
+        setState(() {
+          comment.reactions = current;
+        });
+        showToast(addFailedText);
+      }
+      return;
+    }
+    final res = await IssueRepository.deleteCommentReactionRequest(
+        widget.userName, widget.reposName, comment.id, reactionId);
     if (res == null || res.result != true) {
       setState(() {
         comment.reactions = current;
       });
+      showToast(removeFailedText);
     }
   }
 

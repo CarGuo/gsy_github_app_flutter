@@ -156,6 +156,7 @@
   "issue_comment_minimized": "This comment has been minimized",
   "issue_reactions_add_tooltip": "Add reaction",
   "issue_reaction_failed": "Reaction failed",
+  "issue_reaction_remove_failed": "Failed to remove reaction",
 
   "issue_assoc_owner": "Owner",
   "issue_assoc_member": "Member",

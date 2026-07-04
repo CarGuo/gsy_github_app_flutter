@@ -156,6 +156,7 @@
   "issue_comment_minimized": "该评论已被折叠",
   "issue_reactions_add_tooltip": "添加表情回应",
   "issue_reaction_failed": "表情回应失败",
+  "issue_reaction_remove_failed": "取消表情回应失败",
 
   "issue_assoc_owner": "所有者",
   "issue_assoc_member": "成员",

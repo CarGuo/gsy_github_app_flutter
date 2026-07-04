@@ -478,6 +478,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get issue_reaction_failed => '리액션 실패';
 
   @override
+  String get issue_reaction_remove_failed => '리액션 취소 실패';
+
+  @override
   String get issue_assoc_owner => '소유자';
 
   @override

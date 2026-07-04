@@ -1038,6 +1038,12 @@ abstract class AppLocalizations {
   /// **'Reaction failed'**
   String get issue_reaction_failed;
 
+  /// No description provided for @issue_reaction_remove_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to remove reaction'**
+  String get issue_reaction_remove_failed;
+
   /// No description provided for @issue_assoc_owner.
   ///
   /// In en, this message translates to:

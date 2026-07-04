@@ -156,6 +156,7 @@
   "issue_comment_minimized": "このコメントは折りたたまれています",
   "issue_reactions_add_tooltip": "リアクションを追加",
   "issue_reaction_failed": "リアクションに失敗しました",
+  "issue_reaction_remove_failed": "リアクションの取り消しに失敗しました",
 
   "issue_assoc_owner": "オーナー",
   "issue_assoc_member": "メンバー",

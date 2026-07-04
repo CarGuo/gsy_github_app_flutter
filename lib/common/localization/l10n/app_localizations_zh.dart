@@ -478,6 +478,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get issue_reaction_failed => '表情回应失败';
 
   @override
+  String get issue_reaction_remove_failed => '取消表情回应失败';
+
+  @override
   String get issue_assoc_owner => '所有者';
 
   @override

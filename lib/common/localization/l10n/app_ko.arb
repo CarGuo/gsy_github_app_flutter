@@ -156,6 +156,7 @@
   "issue_comment_minimized": "이 댓글은 접혔습니다",
   "issue_reactions_add_tooltip": "리액션 추가",
   "issue_reaction_failed": "리액션 실패",
+  "issue_reaction_remove_failed": "리액션 취소 실패",
 
   "issue_assoc_owner": "소유자",
   "issue_assoc_member": "멤버",

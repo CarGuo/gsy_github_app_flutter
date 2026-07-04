@@ -8,8 +8,13 @@ import 'package:gsy_github_app_flutter/model/reactions.dart';
 /// 参考 GitHub 官方 UI（截图 4/5）：只展示 count > 0 的 emoji chip；
 /// 点击 chip 会通过 [onToggle] 通知外部执行 add / remove。
 ///
-/// 因为 REST 端点 POST 后返回该 reaction 的 id，删除需要用该 id；
-/// 上层不需要在 chip 上追踪 id，直接调用 [onToggle]，外部按 (content, isAdd) 处理。
+/// 交互语义（对齐 GitHub 官方 web/mobile）：
+/// - 点击「+」入口选一个 emoji = add
+/// - 点击已有的 emoji chip = **toggle**（外部按当前用户是否已 react 决定加或删）
+///
+/// 为什么不用长按删除：Android 上 Comment 卡片自身也绑定了长按弹菜单（编辑/删除/
+/// 复制），会吸掉 chip 的 long press，remove 路径永远走不到。改用「点已存在 chip
+/// = toggle」既对齐官方，也避开手势冲突。
 class ReactionsBar extends StatelessWidget {
   final Reactions reactions;
 
@@ -18,7 +23,7 @@ class ReactionsBar extends StatelessWidget {
 
   /// 点击 chip 回调
   /// - [content] 官方 8 种之一：+1/-1/laugh/hooray/confused/heart/rocket/eyes
-  /// - [isAdd]  true=添加，false=删除
+  /// - [isAdd]  true=添加，false=删除（点已存在 chip 走 false，"+"入口选一个走 true）
   final void Function(String content, bool isAdd)? onToggle;
 
   const ReactionsBar({
@@ -39,13 +44,9 @@ class ReactionsBar extends StatelessWidget {
         onTap: onToggle == null
             ? null
             : () {
-                // 简单交互：点击已有 chip 视为再次 +1（GitHub 无法在无用户上下文
-                // 判断本地当前用户是否已 react，这里退化为 add 语义）。
-                onToggle!(e.content, true);
-              },
-        onLongPress: onToggle == null
-            ? null
-            : () {
+                // 点已存在 chip = 尝试 remove；上层若发现当前用户其实没 react
+                // 过（GET 反查拿不到 reactionId），会降级为 add，实现 toggle
+                // 语义。
                 onToggle!(e.content, false);
               },
       ));
@@ -69,13 +70,11 @@ class _ReactionChip extends StatelessWidget {
   final String emoji;
   final int count;
   final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
 
   const _ReactionChip({
     required this.emoji,
     required this.count,
     this.onTap,
-    this.onLongPress,
   });
 
   @override
@@ -83,7 +82,6 @@ class _ReactionChip extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: onTap,
-      onLongPress: onLongPress,
       child: Container(
         padding:
             const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

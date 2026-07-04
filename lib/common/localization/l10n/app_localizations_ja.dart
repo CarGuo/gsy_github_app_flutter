@@ -479,6 +479,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get issue_reaction_failed => 'リアクションに失敗しました';
 
   @override
+  String get issue_reaction_remove_failed => 'リアクションの取り消しに失敗しました';
+
+  @override
   String get issue_assoc_owner => 'オーナー';
 
   @override

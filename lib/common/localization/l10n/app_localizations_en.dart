@@ -481,6 +481,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get issue_reaction_failed => 'Reaction failed';
 
   @override
+  String get issue_reaction_remove_failed => 'Failed to remove reaction';
+
+  @override
   String get issue_assoc_owner => 'Owner';
 
   @override
