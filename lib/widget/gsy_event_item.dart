@@ -85,11 +85,11 @@ class EventViewModel {
   late String actionTime;
   String? actionTarget;
 
-  EventViewModel.fromEventMap(Event event) {
+  EventViewModel.fromEventMap(BuildContext context, Event event) {
     actionTime = CommonUtils.getNewsTimeStr(event.createdAt!);
     actionUser = event.actor!.login;
     actionUserPic = event.actor!.avatar_url;
-    var as = EventUtils.getActionAndDes(event);
+    var as = EventUtils.getActionAndDes(context, event);
     actionDes = as.des;
     actionTarget = as.actionStr;
   }

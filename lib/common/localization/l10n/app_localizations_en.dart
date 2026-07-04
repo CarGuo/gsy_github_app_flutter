@@ -739,4 +739,272 @@ class AppLocalizationsEn extends AppLocalizations {
   String issue_timeline_issue_type_added(String actor) {
     return '$actor set the issue type';
   }
+
+  @override
+  String event_dynamic_commit_comment(String repo) {
+    return 'Commit comment at $repo';
+  }
+
+  @override
+  String event_dynamic_create_repository(String repo) {
+    return 'Created repository $repo';
+  }
+
+  @override
+  String event_dynamic_create_ref(String refType, String ref, String repo) {
+    return 'Created $refType $ref at $repo';
+  }
+
+  @override
+  String event_dynamic_delete_ref(String refType, String ref, String repo) {
+    return 'Deleted $refType $ref at $repo';
+  }
+
+  @override
+  String event_dynamic_fork_full(String fromRepo, String forker) {
+    return 'Forked $fromRepo to $forker/$fromRepo';
+  }
+
+  @override
+  String event_dynamic_fork_repo(String repo) {
+    return 'Forked $repo';
+  }
+
+  @override
+  String get event_dynamic_fork_generic => 'Forked a repository';
+
+  @override
+  String event_dynamic_gollum(String actor) {
+    return '$actor edited a wiki page';
+  }
+
+  @override
+  String event_dynamic_installation(String action) {
+    return '$action a GitHub App';
+  }
+
+  @override
+  String event_dynamic_installation_repos(String action) {
+    return '$action repository from an installation';
+  }
+
+  @override
+  String event_dynamic_issue_comment(
+    String action,
+    String number,
+    String repo,
+  ) {
+    return '$action comment on issue #$number in $repo';
+  }
+
+  @override
+  String event_dynamic_issue(String action, String number, String repo) {
+    return '$action issue #$number in $repo';
+  }
+
+  @override
+  String event_dynamic_marketplace(String action) {
+    return '$action marketplace plan';
+  }
+
+  @override
+  String event_dynamic_member(String action, String repo) {
+    return '$action member to $repo';
+  }
+
+  @override
+  String event_dynamic_org_block(String action) {
+    return '$action a user';
+  }
+
+  @override
+  String event_dynamic_project_card(String action) {
+    return '$action a project card';
+  }
+
+  @override
+  String event_dynamic_project_column(String action) {
+    return '$action a project column';
+  }
+
+  @override
+  String event_dynamic_project(String action) {
+    return '$action a project';
+  }
+
+  @override
+  String event_dynamic_public(String repo) {
+    return 'Made $repo public';
+  }
+
+  @override
+  String event_dynamic_pull_request(String action, String repo) {
+    return '$action pull request in $repo';
+  }
+
+  @override
+  String event_dynamic_pull_request_review(String action, String repo) {
+    return '$action pull request review at $repo';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_comment(String action, String repo) {
+    return '$action pull request review comment at $repo';
+  }
+
+  @override
+  String event_dynamic_push(String ref, String repo) {
+    return 'Pushed to $ref at $repo';
+  }
+
+  @override
+  String event_dynamic_release(String action, String tag, String repo) {
+    return '$action release $tag at $repo';
+  }
+
+  @override
+  String event_dynamic_watch(String action, String repo) {
+    return '$action $repo';
+  }
+
+  @override
+  String event_dynamic_watch_started(String repo) {
+    return 'Starred $repo';
+  }
+
+  @override
+  String event_dynamic_push_head(String sha) {
+    return 'head: $sha';
+  }
+
+  @override
+  String get event_dynamic_push_commit_fallback => 'Commit';
+
+  @override
+  String get event_action_started => 'started';
+
+  @override
+  String get event_action_opened => 'opened';
+
+  @override
+  String get event_action_edited => 'edited';
+
+  @override
+  String get event_action_closed => 'closed';
+
+  @override
+  String get event_action_reopened => 'reopened';
+
+  @override
+  String get event_action_assigned => 'assigned';
+
+  @override
+  String get event_action_unassigned => 'unassigned';
+
+  @override
+  String get event_action_labeled => 'labeled';
+
+  @override
+  String get event_action_unlabeled => 'unlabeled';
+
+  @override
+  String get event_action_created => 'created';
+
+  @override
+  String get event_action_deleted => 'deleted';
+
+  @override
+  String get event_action_review_requested => 'requested review on';
+
+  @override
+  String get event_action_review_request_removed => 'removed review request on';
+
+  @override
+  String get event_action_synchronize => 'updated';
+
+  @override
+  String get event_action_ready_for_review => 'marked ready for review';
+
+  @override
+  String get event_action_dismissed => 'dismissed';
+
+  @override
+  String get event_action_submitted => 'submitted';
+
+  @override
+  String get event_action_published => 'published';
+
+  @override
+  String get event_action_prereleased => 'prereleased';
+
+  @override
+  String get event_action_released => 'released';
+
+  @override
+  String get event_action_added => 'added';
+
+  @override
+  String get event_action_removed => 'removed';
+
+  @override
+  String get event_action_suspend => 'suspended';
+
+  @override
+  String get event_action_unsuspend => 'unsuspended';
+
+  @override
+  String get event_action_new_permissions_accepted =>
+      'accepted new permissions on';
+
+  @override
+  String get event_action_purchased => 'purchased';
+
+  @override
+  String get event_action_cancelled => 'cancelled';
+
+  @override
+  String get event_action_pending_change => 'pending change on';
+
+  @override
+  String get event_action_pending_change_cancelled =>
+      'cancelled pending change on';
+
+  @override
+  String get event_action_changed => 'changed';
+
+  @override
+  String get event_action_moved => 'moved';
+
+  @override
+  String get event_action_blocked => 'blocked';
+
+  @override
+  String get event_action_unblocked => 'unblocked';
+
+  @override
+  String get event_action_merged => 'merged';
+
+  @override
+  String get event_action_converted_to_draft => 'converted to draft';
+
+  @override
+  String get event_action_locked => 'locked';
+
+  @override
+  String get event_action_unlocked => 'unlocked';
+
+  @override
+  String get event_action_pinned => 'pinned';
+
+  @override
+  String get event_action_unpinned => 'unpinned';
+
+  @override
+  String get event_action_transferred => 'transferred';
+
+  @override
+  String get event_action_milestoned => 'milestoned';
+
+  @override
+  String get event_action_demilestoned => 'demilestoned';
 }

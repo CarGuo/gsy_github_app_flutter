@@ -736,4 +736,270 @@ class AppLocalizationsKo extends AppLocalizations {
   String issue_timeline_issue_type_added(String actor) {
     return '$actor 님이 Issue 유형을 설정했습니다';
   }
+
+  @override
+  String event_dynamic_commit_comment(String repo) {
+    return '$repo 에서 커밋에 댓글을 남겼습니다';
+  }
+
+  @override
+  String event_dynamic_create_repository(String repo) {
+    return '리포지토리 $repo 를 생성했습니다';
+  }
+
+  @override
+  String event_dynamic_create_ref(String refType, String ref, String repo) {
+    return '$repo 에서 $refType $ref 를 생성했습니다';
+  }
+
+  @override
+  String event_dynamic_delete_ref(String refType, String ref, String repo) {
+    return '$repo 에서 $refType $ref 를 삭제했습니다';
+  }
+
+  @override
+  String event_dynamic_fork_full(String fromRepo, String forker) {
+    return '$fromRepo 를 $forker/$fromRepo 로 fork 했습니다';
+  }
+
+  @override
+  String event_dynamic_fork_repo(String repo) {
+    return '$repo 를 fork 했습니다';
+  }
+
+  @override
+  String get event_dynamic_fork_generic => '리포지토리를 fork 했습니다';
+
+  @override
+  String event_dynamic_gollum(String actor) {
+    return '$actor 님이 wiki 를 편집했습니다';
+  }
+
+  @override
+  String event_dynamic_installation(String action) {
+    return 'GitHub App 을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_installation_repos(String action) {
+    return '설치의 리포지토리를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_issue_comment(
+    String action,
+    String number,
+    String repo,
+  ) {
+    return '$repo 의 issue #$number 댓글을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_issue(String action, String number, String repo) {
+    return '$repo 의 issue #$number 를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_marketplace(String action) {
+    return 'marketplace 요금제를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_member(String action, String repo) {
+    return '$repo 의 멤버를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_org_block(String action) {
+    return '사용자를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_project_card(String action) {
+    return '프로젝트 카드를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_project_column(String action) {
+    return '프로젝트 열을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_project(String action) {
+    return '프로젝트를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_public(String repo) {
+    return '$repo 를 공개했습니다';
+  }
+
+  @override
+  String event_dynamic_pull_request(String action, String repo) {
+    return '$repo 에서 PR 을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_pull_request_review(String action, String repo) {
+    return '$repo 에서 PR review 를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_comment(String action, String repo) {
+    return '$repo 에서 PR review 댓글을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_push(String ref, String repo) {
+    return '$repo 의 $ref 에 push 했습니다';
+  }
+
+  @override
+  String event_dynamic_release(String action, String tag, String repo) {
+    return '$repo 에서 release $tag 를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_watch(String action, String repo) {
+    return '$repo 를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_watch_started(String repo) {
+    return '$repo 에 별표를 표시했습니다';
+  }
+
+  @override
+  String event_dynamic_push_head(String sha) {
+    return 'head: $sha';
+  }
+
+  @override
+  String get event_dynamic_push_commit_fallback => '커밋';
+
+  @override
+  String get event_action_started => '스타를 눌렀습니다';
+
+  @override
+  String get event_action_opened => '열기';
+
+  @override
+  String get event_action_edited => '편집';
+
+  @override
+  String get event_action_closed => '닫기';
+
+  @override
+  String get event_action_reopened => '다시 열기';
+
+  @override
+  String get event_action_assigned => '할당';
+
+  @override
+  String get event_action_unassigned => '할당 해제';
+
+  @override
+  String get event_action_labeled => '라벨 지정';
+
+  @override
+  String get event_action_unlabeled => '라벨 제거';
+
+  @override
+  String get event_action_created => '생성';
+
+  @override
+  String get event_action_deleted => '삭제';
+
+  @override
+  String get event_action_review_requested => '리뷰 요청';
+
+  @override
+  String get event_action_review_request_removed => '리뷰 요청 취소';
+
+  @override
+  String get event_action_synchronize => '업데이트';
+
+  @override
+  String get event_action_ready_for_review => '리뷰 준비됨으로 변경';
+
+  @override
+  String get event_action_dismissed => '거절';
+
+  @override
+  String get event_action_submitted => '제출';
+
+  @override
+  String get event_action_published => '게시';
+
+  @override
+  String get event_action_prereleased => '프리릴리스';
+
+  @override
+  String get event_action_released => '릴리스';
+
+  @override
+  String get event_action_added => '추가';
+
+  @override
+  String get event_action_removed => '제거';
+
+  @override
+  String get event_action_suspend => '일시 중지';
+
+  @override
+  String get event_action_unsuspend => '재개';
+
+  @override
+  String get event_action_new_permissions_accepted => '새 권한 수락';
+
+  @override
+  String get event_action_purchased => '구매';
+
+  @override
+  String get event_action_cancelled => '취소';
+
+  @override
+  String get event_action_pending_change => '변경 대기 중';
+
+  @override
+  String get event_action_pending_change_cancelled => '대기 중인 변경 취소';
+
+  @override
+  String get event_action_changed => '변경';
+
+  @override
+  String get event_action_moved => '이동';
+
+  @override
+  String get event_action_blocked => '차단';
+
+  @override
+  String get event_action_unblocked => '차단 해제';
+
+  @override
+  String get event_action_merged => '병합';
+
+  @override
+  String get event_action_converted_to_draft => '초안으로 변환';
+
+  @override
+  String get event_action_locked => '잠금';
+
+  @override
+  String get event_action_unlocked => '잠금 해제';
+
+  @override
+  String get event_action_pinned => '고정';
+
+  @override
+  String get event_action_unpinned => '고정 해제';
+
+  @override
+  String get event_action_transferred => '이관';
+
+  @override
+  String get event_action_milestoned => '마일스톤 지정';
+
+  @override
+  String get event_action_demilestoned => '마일스톤 해제';
 }

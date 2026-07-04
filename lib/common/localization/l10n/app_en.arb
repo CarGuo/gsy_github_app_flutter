@@ -395,5 +395,196 @@
   "issue_timeline_issue_type_added": "{actor} set the issue type",
   "@issue_timeline_issue_type_added": {
     "placeholders": {"actor": {"type": "String"}}
-  }
+  },
+  "event_dynamic_commit_comment": "Commit comment at {repo}",
+  "@event_dynamic_commit_comment": {
+    "placeholders": {"repo": {"type": "String"}}
+  },
+  "event_dynamic_create_repository": "Created repository {repo}",
+  "@event_dynamic_create_repository": {
+    "placeholders": {"repo": {"type": "String"}}
+  },
+  "event_dynamic_create_ref": "Created {refType} {ref} at {repo}",
+  "@event_dynamic_create_ref": {
+    "placeholders": {
+      "refType": {"type": "String"},
+      "ref": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_delete_ref": "Deleted {refType} {ref} at {repo}",
+  "@event_dynamic_delete_ref": {
+    "placeholders": {
+      "refType": {"type": "String"},
+      "ref": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_fork_full": "Forked {fromRepo} to {forker}/{fromRepo}",
+  "@event_dynamic_fork_full": {
+    "placeholders": {
+      "fromRepo": {"type": "String"},
+      "forker": {"type": "String"}
+    }
+  },
+  "event_dynamic_fork_repo": "Forked {repo}",
+  "@event_dynamic_fork_repo": {
+    "placeholders": {"repo": {"type": "String"}}
+  },
+  "event_dynamic_fork_generic": "Forked a repository",
+  "event_dynamic_gollum": "{actor} edited a wiki page",
+  "@event_dynamic_gollum": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "event_dynamic_installation": "{action} a GitHub App",
+  "@event_dynamic_installation": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_installation_repos": "{action} repository from an installation",
+  "@event_dynamic_installation_repos": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_issue_comment": "{action} comment on issue #{number} in {repo}",
+  "@event_dynamic_issue_comment": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "number": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_issue": "{action} issue #{number} in {repo}",
+  "@event_dynamic_issue": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "number": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_marketplace": "{action} marketplace plan",
+  "@event_dynamic_marketplace": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_member": "{action} member to {repo}",
+  "@event_dynamic_member": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_org_block": "{action} a user",
+  "@event_dynamic_org_block": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_project_card": "{action} a project card",
+  "@event_dynamic_project_card": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_project_column": "{action} a project column",
+  "@event_dynamic_project_column": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_project": "{action} a project",
+  "@event_dynamic_project": {
+    "placeholders": {"action": {"type": "String"}}
+  },
+  "event_dynamic_public": "Made {repo} public",
+  "@event_dynamic_public": {
+    "placeholders": {"repo": {"type": "String"}}
+  },
+  "event_dynamic_pull_request": "{action} pull request in {repo}",
+  "@event_dynamic_pull_request": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_pull_request_review": "{action} pull request review at {repo}",
+  "@event_dynamic_pull_request_review": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_pull_request_review_comment": "{action} pull request review comment at {repo}",
+  "@event_dynamic_pull_request_review_comment": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_push": "Pushed to {ref} at {repo}",
+  "@event_dynamic_push": {
+    "placeholders": {
+      "ref": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_release": "{action} release {tag} at {repo}",
+  "@event_dynamic_release": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "tag": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_watch": "{action} {repo}",
+  "@event_dynamic_watch": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_watch_started": "Starred {repo}",
+  "@event_dynamic_watch_started": {
+    "placeholders": {
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_push_head": "head: {sha}",
+  "@event_dynamic_push_head": {
+    "placeholders": {"sha": {"type": "String"}}
+  },
+  "event_dynamic_push_commit_fallback": "Commit",
+  "event_action_started": "started",
+  "event_action_opened": "opened",
+  "event_action_edited": "edited",
+  "event_action_closed": "closed",
+  "event_action_reopened": "reopened",
+  "event_action_assigned": "assigned",
+  "event_action_unassigned": "unassigned",
+  "event_action_labeled": "labeled",
+  "event_action_unlabeled": "unlabeled",
+  "event_action_created": "created",
+  "event_action_deleted": "deleted",
+  "event_action_review_requested": "requested review on",
+  "event_action_review_request_removed": "removed review request on",
+  "event_action_synchronize": "updated",
+  "event_action_ready_for_review": "marked ready for review",
+  "event_action_dismissed": "dismissed",
+  "event_action_submitted": "submitted",
+  "event_action_published": "published",
+  "event_action_prereleased": "prereleased",
+  "event_action_released": "released",
+  "event_action_added": "added",
+  "event_action_removed": "removed",
+  "event_action_suspend": "suspended",
+  "event_action_unsuspend": "unsuspended",
+  "event_action_new_permissions_accepted": "accepted new permissions on",
+  "event_action_purchased": "purchased",
+  "event_action_cancelled": "cancelled",
+  "event_action_pending_change": "pending change on",
+  "event_action_pending_change_cancelled": "cancelled pending change on",
+  "event_action_changed": "changed",
+  "event_action_moved": "moved",
+  "event_action_blocked": "blocked",
+  "event_action_unblocked": "unblocked",
+  "event_action_merged": "merged",
+  "event_action_converted_to_draft": "converted to draft",
+  "event_action_locked": "locked",
+  "event_action_unlocked": "unlocked",
+  "event_action_pinned": "pinned",
+  "event_action_unpinned": "unpinned",
+  "event_action_transferred": "transferred",
+  "event_action_milestoned": "milestoned",
+  "event_action_demilestoned": "demilestoned"
 }

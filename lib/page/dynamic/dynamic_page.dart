@@ -80,7 +80,7 @@ class DynamicPageState extends State<DynamicPage>
   }
 
   _renderEventItem(Event e) {
-    EventViewModel eventViewModel = EventViewModel.fromEventMap(e);
+    EventViewModel eventViewModel = EventViewModel.fromEventMap(context, e);
     return GSYEventItem(
       eventViewModel,
       onPressed: () {

@@ -1,0 +1,283 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
+import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
+import 'package:gsy_github_app_flutter/model/event.dart';
+
+/// 事件描述测试：
+/// - 覆盖 GitHub Events API 关键事件类型的多语言输出（zh 场景）
+/// - 覆盖未识别事件的 [EventUtils.loggedUnknownEventTypes] 遥测
+///
+/// 与 [issue_timeline_item_test.dart] 平行；两个模块 event 命名完全不同，
+/// 不要合并。Event 构造统一走 [Event.fromJson] 以模拟 API 真实 payload。
+
+Widget _harness(void Function(BuildContext ctx) probe, {Locale locale = const Locale('zh')}) {
+  return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    locale: locale,
+    home: Builder(builder: (ctx) {
+      probe(ctx);
+      return const Scaffold(body: SizedBox.shrink());
+    }),
+  );
+}
+
+/// dart 字面量 `{...}` 默认为 `Map<dynamic, dynamic>`，
+/// 而 `Event.fromJson` / 嵌套子对象的 `fromJson` 要求 `Map<String, dynamic>`，
+/// 这里递归强转一次，避免每个用例反复 `<String, dynamic>` 打字面量类型。
+Map<String, dynamic> _m(Map<String, Object?> raw) {
+  Object? conv(Object? v) {
+    if (v is Map) {
+      return v.map<String, dynamic>(
+        (k, vv) => MapEntry(k.toString(), conv(vv)),
+      );
+    }
+    if (v is List) {
+      return v.map(conv).toList();
+    }
+    return v;
+  }
+  return conv(raw) as Map<String, dynamic>;
+}
+
+void main() {
+  setUp(() {
+    EventUtils.resetUnknownEventLogForTest();
+  });
+
+  testWidgets('PushEvent → 中文文案 + 短 sha 描述', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PushEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy_github_app_flutter'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'ref': 'refs/heads/master',
+        'head': 'abcdef1234567890',
+        'commits': [
+          {'sha': 'a1b2c3d4e5f6a1b2c3d4', 'message': 'fix: null-safe fork actor'}
+        ]
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('推送'));
+    expect(got.actionStr, contains('master'));
+    expect(got.actionStr, contains('CarGuo/gsy_github_app_flutter'));
+    expect(got.des, contains('a1b2c3d'));
+    expect(got.des, contains('fix: null-safe fork actor'));
+  });
+
+  testWidgets('IssuesEvent → 中文 issue 文案', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'IssuesEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'opened',
+        'issue': {'number': 42, 'title': '标题占位'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('打开'));
+    expect(got.actionStr, contains('42'));
+    expect(got.actionStr, contains('CarGuo/gsy'));
+    expect(got.des, '标题占位');
+  });
+
+  testWidgets('ForkEvent → 缺 actor 时走 fork_repo 分支不崩', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'ForkEvent',
+      'actor': null,
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, isNotNull);
+    expect(got.actionStr, contains('CarGuo/gsy'));
+  });
+
+  testWidgets('未知事件 → actionStr 为空 + 登记到 loggedUnknownEventTypes',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SponsorshipEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, '');
+    expect(
+      EventUtils.loggedUnknownEventTypes.contains('SponsorshipEvent'),
+      isTrue,
+      reason: 'default 分支必须把未知事件类型登记到 debug-only 集合',
+    );
+  });
+
+  testWidgets('未知事件同类型重复触发 → 只登记一次', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'WeirdEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {}
+    }));
+
+    await tester.pumpWidget(_harness((ctx) {
+      EventUtils.getActionAndDes(ctx, ee);
+      EventUtils.getActionAndDes(ctx, ee);
+      EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(EventUtils.loggedUnknownEventTypes.length, 1);
+    expect(EventUtils.loggedUnknownEventTypes.first, 'WeirdEvent');
+  });
+
+  testWidgets('l10n extension 可用性冒烟：context.l10n 非空', (tester) async {
+    AppLocalizations? seen;
+    await tester.pumpWidget(_harness((ctx) {
+      seen = ctx.l10n;
+    }));
+    expect(seen, isNotNull);
+  });
+
+  testWidgets('WatchEvent + started → 走独立整句 key（zh：关注了 xxx）', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'WatchEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'started'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // WatchEvent started 用独立整句 key，避免英语侧读成 "started xxx" 不通顺
+    expect(got.actionStr, contains('关注了'));
+    expect(got.actionStr, isNot(contains('started')),
+        reason: 'WatchEvent started 分支必须走独立句，不允许英文透出');
+    expect(got.actionStr, contains('CarGuo/gsy'));
+  });
+
+  testWidgets('WatchEvent + started → 英文 locale 走独立整句（Starred xxx）', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'WatchEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'started'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }, locale: const Locale('en')));
+
+    // 英语侧文法完整：Starred CarGuo/gsy，而不是通用词典拼出的 "started CarGuo/gsy"
+    expect(got.actionStr, contains('Starred'));
+    expect(got.actionStr, contains('CarGuo/gsy'));
+  });
+
+  testWidgets('PullRequestEvent + synchronize → 翻译为"更新"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PullRequestEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'synchronize'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('更新'));
+    expect(got.actionStr, isNot(contains('synchronize')));
+  });
+
+  testWidgets('未知 action → 原样返回英文 + 遥测独立表登记', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'IssuesEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'brand_new_action_from_github',
+        'issue': {'number': 1, 'title': 't'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // 未识别 action 兜底原样透传，UI 不空白
+    expect(got.actionStr, contains('brand_new_action_from_github'));
+    // 遥测走独立表，避免和事件类型未知混在一起
+    expect(
+      EventUtils.loggedUnknownActions.contains('brand_new_action_from_github'),
+      isTrue,
+    );
+    // 事件类型是 IssuesEvent（已识别），未知事件表里不应出现该 action
+    expect(
+      EventUtils.loggedUnknownEventTypes.any((e) => e.contains('brand_new_action')),
+      isFalse,
+    );
+  });
+}

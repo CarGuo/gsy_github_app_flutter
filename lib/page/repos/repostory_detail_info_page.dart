@@ -83,7 +83,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       );
     } else if (selectIndex == 0 && item is Event) {
       return GSYEventItem(
-        EventViewModel.fromEventMap(pullLoadWidgetControl.dataList[index]),
+        EventViewModel.fromEventMap(context, pullLoadWidgetControl.dataList[index]),
         onPressed: () {
           EventUtils.ActionUtils(
             context,

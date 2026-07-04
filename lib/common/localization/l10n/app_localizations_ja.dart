@@ -737,4 +737,270 @@ class AppLocalizationsJa extends AppLocalizations {
   String issue_timeline_issue_type_added(String actor) {
     return '$actor が Issue のタイプを設定しました';
   }
+
+  @override
+  String event_dynamic_commit_comment(String repo) {
+    return '$repo でコミットにコメントしました';
+  }
+
+  @override
+  String event_dynamic_create_repository(String repo) {
+    return 'リポジトリ $repo を作成しました';
+  }
+
+  @override
+  String event_dynamic_create_ref(String refType, String ref, String repo) {
+    return '$repo で $refType $ref を作成しました';
+  }
+
+  @override
+  String event_dynamic_delete_ref(String refType, String ref, String repo) {
+    return '$repo で $refType $ref を削除しました';
+  }
+
+  @override
+  String event_dynamic_fork_full(String fromRepo, String forker) {
+    return '$fromRepo を $forker/$fromRepo に fork しました';
+  }
+
+  @override
+  String event_dynamic_fork_repo(String repo) {
+    return '$repo を fork しました';
+  }
+
+  @override
+  String get event_dynamic_fork_generic => 'リポジトリを fork しました';
+
+  @override
+  String event_dynamic_gollum(String actor) {
+    return '$actor が wiki を編集しました';
+  }
+
+  @override
+  String event_dynamic_installation(String action) {
+    return 'GitHub App を $action しました';
+  }
+
+  @override
+  String event_dynamic_installation_repos(String action) {
+    return 'インストールのリポジトリを $action しました';
+  }
+
+  @override
+  String event_dynamic_issue_comment(
+    String action,
+    String number,
+    String repo,
+  ) {
+    return '$repo の issue #$number のコメントを $action しました';
+  }
+
+  @override
+  String event_dynamic_issue(String action, String number, String repo) {
+    return '$repo の issue #$number を $action しました';
+  }
+
+  @override
+  String event_dynamic_marketplace(String action) {
+    return 'marketplace プランを $action しました';
+  }
+
+  @override
+  String event_dynamic_member(String action, String repo) {
+    return '$repo のメンバーを $action しました';
+  }
+
+  @override
+  String event_dynamic_org_block(String action) {
+    return 'ユーザーを $action しました';
+  }
+
+  @override
+  String event_dynamic_project_card(String action) {
+    return 'プロジェクトカードを $action しました';
+  }
+
+  @override
+  String event_dynamic_project_column(String action) {
+    return 'プロジェクト列を $action しました';
+  }
+
+  @override
+  String event_dynamic_project(String action) {
+    return 'プロジェクトを $action しました';
+  }
+
+  @override
+  String event_dynamic_public(String repo) {
+    return '$repo を公開しました';
+  }
+
+  @override
+  String event_dynamic_pull_request(String action, String repo) {
+    return '$repo で PR を $action しました';
+  }
+
+  @override
+  String event_dynamic_pull_request_review(String action, String repo) {
+    return '$repo で PR review を $action しました';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_comment(String action, String repo) {
+    return '$repo で PR review コメントを $action しました';
+  }
+
+  @override
+  String event_dynamic_push(String ref, String repo) {
+    return '$repo の $ref に push しました';
+  }
+
+  @override
+  String event_dynamic_release(String action, String tag, String repo) {
+    return '$repo で release $tag を $action しました';
+  }
+
+  @override
+  String event_dynamic_watch(String action, String repo) {
+    return '$repo を $action しました';
+  }
+
+  @override
+  String event_dynamic_watch_started(String repo) {
+    return '$repo をスターしました';
+  }
+
+  @override
+  String event_dynamic_push_head(String sha) {
+    return 'head: $sha';
+  }
+
+  @override
+  String get event_dynamic_push_commit_fallback => 'コミット';
+
+  @override
+  String get event_action_started => 'スターしました';
+
+  @override
+  String get event_action_opened => 'オープン';
+
+  @override
+  String get event_action_edited => '編集';
+
+  @override
+  String get event_action_closed => 'クローズ';
+
+  @override
+  String get event_action_reopened => '再オープン';
+
+  @override
+  String get event_action_assigned => '割り当て';
+
+  @override
+  String get event_action_unassigned => '割り当て解除';
+
+  @override
+  String get event_action_labeled => 'ラベル付け';
+
+  @override
+  String get event_action_unlabeled => 'ラベル削除';
+
+  @override
+  String get event_action_created => '作成';
+
+  @override
+  String get event_action_deleted => '削除';
+
+  @override
+  String get event_action_review_requested => 'レビュー依頼';
+
+  @override
+  String get event_action_review_request_removed => 'レビュー依頼を取り消し';
+
+  @override
+  String get event_action_synchronize => '更新';
+
+  @override
+  String get event_action_ready_for_review => 'レビュー可能に変更';
+
+  @override
+  String get event_action_dismissed => '却下';
+
+  @override
+  String get event_action_submitted => '提出';
+
+  @override
+  String get event_action_published => '公開';
+
+  @override
+  String get event_action_prereleased => 'プレリリース';
+
+  @override
+  String get event_action_released => 'リリース';
+
+  @override
+  String get event_action_added => '追加';
+
+  @override
+  String get event_action_removed => '削除';
+
+  @override
+  String get event_action_suspend => '停止';
+
+  @override
+  String get event_action_unsuspend => '再開';
+
+  @override
+  String get event_action_new_permissions_accepted => '新しい権限を承認';
+
+  @override
+  String get event_action_purchased => '購入';
+
+  @override
+  String get event_action_cancelled => 'キャンセル';
+
+  @override
+  String get event_action_pending_change => '変更待ち';
+
+  @override
+  String get event_action_pending_change_cancelled => '変更待ちをキャンセル';
+
+  @override
+  String get event_action_changed => '変更';
+
+  @override
+  String get event_action_moved => '移動';
+
+  @override
+  String get event_action_blocked => 'ブロック';
+
+  @override
+  String get event_action_unblocked => 'ブロック解除';
+
+  @override
+  String get event_action_merged => 'マージ';
+
+  @override
+  String get event_action_converted_to_draft => 'ドラフトに変換';
+
+  @override
+  String get event_action_locked => 'ロック';
+
+  @override
+  String get event_action_unlocked => 'ロック解除';
+
+  @override
+  String get event_action_pinned => 'ピン留め';
+
+  @override
+  String get event_action_unpinned => 'ピン留め解除';
+
+  @override
+  String get event_action_transferred => '転送';
+
+  @override
+  String get event_action_milestoned => 'マイルストーン設定';
+
+  @override
+  String get event_action_demilestoned => 'マイルストーン解除';
 }

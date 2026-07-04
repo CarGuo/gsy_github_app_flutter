@@ -1373,6 +1373,426 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{actor} set the issue type'**
   String issue_timeline_issue_type_added(String actor);
+
+  /// No description provided for @event_dynamic_commit_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Commit comment at {repo}'**
+  String event_dynamic_commit_comment(String repo);
+
+  /// No description provided for @event_dynamic_create_repository.
+  ///
+  /// In en, this message translates to:
+  /// **'Created repository {repo}'**
+  String event_dynamic_create_repository(String repo);
+
+  /// No description provided for @event_dynamic_create_ref.
+  ///
+  /// In en, this message translates to:
+  /// **'Created {refType} {ref} at {repo}'**
+  String event_dynamic_create_ref(String refType, String ref, String repo);
+
+  /// No description provided for @event_dynamic_delete_ref.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted {refType} {ref} at {repo}'**
+  String event_dynamic_delete_ref(String refType, String ref, String repo);
+
+  /// No description provided for @event_dynamic_fork_full.
+  ///
+  /// In en, this message translates to:
+  /// **'Forked {fromRepo} to {forker}/{fromRepo}'**
+  String event_dynamic_fork_full(String fromRepo, String forker);
+
+  /// No description provided for @event_dynamic_fork_repo.
+  ///
+  /// In en, this message translates to:
+  /// **'Forked {repo}'**
+  String event_dynamic_fork_repo(String repo);
+
+  /// No description provided for @event_dynamic_fork_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'Forked a repository'**
+  String get event_dynamic_fork_generic;
+
+  /// No description provided for @event_dynamic_gollum.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} edited a wiki page'**
+  String event_dynamic_gollum(String actor);
+
+  /// No description provided for @event_dynamic_installation.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a GitHub App'**
+  String event_dynamic_installation(String action);
+
+  /// No description provided for @event_dynamic_installation_repos.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} repository from an installation'**
+  String event_dynamic_installation_repos(String action);
+
+  /// No description provided for @event_dynamic_issue_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} comment on issue #{number} in {repo}'**
+  String event_dynamic_issue_comment(String action, String number, String repo);
+
+  /// No description provided for @event_dynamic_issue.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} issue #{number} in {repo}'**
+  String event_dynamic_issue(String action, String number, String repo);
+
+  /// No description provided for @event_dynamic_marketplace.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} marketplace plan'**
+  String event_dynamic_marketplace(String action);
+
+  /// No description provided for @event_dynamic_member.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} member to {repo}'**
+  String event_dynamic_member(String action, String repo);
+
+  /// No description provided for @event_dynamic_org_block.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a user'**
+  String event_dynamic_org_block(String action);
+
+  /// No description provided for @event_dynamic_project_card.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a project card'**
+  String event_dynamic_project_card(String action);
+
+  /// No description provided for @event_dynamic_project_column.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a project column'**
+  String event_dynamic_project_column(String action);
+
+  /// No description provided for @event_dynamic_project.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a project'**
+  String event_dynamic_project(String action);
+
+  /// No description provided for @event_dynamic_public.
+  ///
+  /// In en, this message translates to:
+  /// **'Made {repo} public'**
+  String event_dynamic_public(String repo);
+
+  /// No description provided for @event_dynamic_pull_request.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} pull request in {repo}'**
+  String event_dynamic_pull_request(String action, String repo);
+
+  /// No description provided for @event_dynamic_pull_request_review.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} pull request review at {repo}'**
+  String event_dynamic_pull_request_review(String action, String repo);
+
+  /// No description provided for @event_dynamic_pull_request_review_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} pull request review comment at {repo}'**
+  String event_dynamic_pull_request_review_comment(String action, String repo);
+
+  /// No description provided for @event_dynamic_push.
+  ///
+  /// In en, this message translates to:
+  /// **'Pushed to {ref} at {repo}'**
+  String event_dynamic_push(String ref, String repo);
+
+  /// No description provided for @event_dynamic_release.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} release {tag} at {repo}'**
+  String event_dynamic_release(String action, String tag, String repo);
+
+  /// No description provided for @event_dynamic_watch.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} {repo}'**
+  String event_dynamic_watch(String action, String repo);
+
+  /// No description provided for @event_dynamic_watch_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Starred {repo}'**
+  String event_dynamic_watch_started(String repo);
+
+  /// No description provided for @event_dynamic_push_head.
+  ///
+  /// In en, this message translates to:
+  /// **'head: {sha}'**
+  String event_dynamic_push_head(String sha);
+
+  /// No description provided for @event_dynamic_push_commit_fallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Commit'**
+  String get event_dynamic_push_commit_fallback;
+
+  /// No description provided for @event_action_started.
+  ///
+  /// In en, this message translates to:
+  /// **'started'**
+  String get event_action_started;
+
+  /// No description provided for @event_action_opened.
+  ///
+  /// In en, this message translates to:
+  /// **'opened'**
+  String get event_action_opened;
+
+  /// No description provided for @event_action_edited.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get event_action_edited;
+
+  /// No description provided for @event_action_closed.
+  ///
+  /// In en, this message translates to:
+  /// **'closed'**
+  String get event_action_closed;
+
+  /// No description provided for @event_action_reopened.
+  ///
+  /// In en, this message translates to:
+  /// **'reopened'**
+  String get event_action_reopened;
+
+  /// No description provided for @event_action_assigned.
+  ///
+  /// In en, this message translates to:
+  /// **'assigned'**
+  String get event_action_assigned;
+
+  /// No description provided for @event_action_unassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'unassigned'**
+  String get event_action_unassigned;
+
+  /// No description provided for @event_action_labeled.
+  ///
+  /// In en, this message translates to:
+  /// **'labeled'**
+  String get event_action_labeled;
+
+  /// No description provided for @event_action_unlabeled.
+  ///
+  /// In en, this message translates to:
+  /// **'unlabeled'**
+  String get event_action_unlabeled;
+
+  /// No description provided for @event_action_created.
+  ///
+  /// In en, this message translates to:
+  /// **'created'**
+  String get event_action_created;
+
+  /// No description provided for @event_action_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'deleted'**
+  String get event_action_deleted;
+
+  /// No description provided for @event_action_review_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'requested review on'**
+  String get event_action_review_requested;
+
+  /// No description provided for @event_action_review_request_removed.
+  ///
+  /// In en, this message translates to:
+  /// **'removed review request on'**
+  String get event_action_review_request_removed;
+
+  /// No description provided for @event_action_synchronize.
+  ///
+  /// In en, this message translates to:
+  /// **'updated'**
+  String get event_action_synchronize;
+
+  /// No description provided for @event_action_ready_for_review.
+  ///
+  /// In en, this message translates to:
+  /// **'marked ready for review'**
+  String get event_action_ready_for_review;
+
+  /// No description provided for @event_action_dismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'dismissed'**
+  String get event_action_dismissed;
+
+  /// No description provided for @event_action_submitted.
+  ///
+  /// In en, this message translates to:
+  /// **'submitted'**
+  String get event_action_submitted;
+
+  /// No description provided for @event_action_published.
+  ///
+  /// In en, this message translates to:
+  /// **'published'**
+  String get event_action_published;
+
+  /// No description provided for @event_action_prereleased.
+  ///
+  /// In en, this message translates to:
+  /// **'prereleased'**
+  String get event_action_prereleased;
+
+  /// No description provided for @event_action_released.
+  ///
+  /// In en, this message translates to:
+  /// **'released'**
+  String get event_action_released;
+
+  /// No description provided for @event_action_added.
+  ///
+  /// In en, this message translates to:
+  /// **'added'**
+  String get event_action_added;
+
+  /// No description provided for @event_action_removed.
+  ///
+  /// In en, this message translates to:
+  /// **'removed'**
+  String get event_action_removed;
+
+  /// No description provided for @event_action_suspend.
+  ///
+  /// In en, this message translates to:
+  /// **'suspended'**
+  String get event_action_suspend;
+
+  /// No description provided for @event_action_unsuspend.
+  ///
+  /// In en, this message translates to:
+  /// **'unsuspended'**
+  String get event_action_unsuspend;
+
+  /// No description provided for @event_action_new_permissions_accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'accepted new permissions on'**
+  String get event_action_new_permissions_accepted;
+
+  /// No description provided for @event_action_purchased.
+  ///
+  /// In en, this message translates to:
+  /// **'purchased'**
+  String get event_action_purchased;
+
+  /// No description provided for @event_action_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'cancelled'**
+  String get event_action_cancelled;
+
+  /// No description provided for @event_action_pending_change.
+  ///
+  /// In en, this message translates to:
+  /// **'pending change on'**
+  String get event_action_pending_change;
+
+  /// No description provided for @event_action_pending_change_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'cancelled pending change on'**
+  String get event_action_pending_change_cancelled;
+
+  /// No description provided for @event_action_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'changed'**
+  String get event_action_changed;
+
+  /// No description provided for @event_action_moved.
+  ///
+  /// In en, this message translates to:
+  /// **'moved'**
+  String get event_action_moved;
+
+  /// No description provided for @event_action_blocked.
+  ///
+  /// In en, this message translates to:
+  /// **'blocked'**
+  String get event_action_blocked;
+
+  /// No description provided for @event_action_unblocked.
+  ///
+  /// In en, this message translates to:
+  /// **'unblocked'**
+  String get event_action_unblocked;
+
+  /// No description provided for @event_action_merged.
+  ///
+  /// In en, this message translates to:
+  /// **'merged'**
+  String get event_action_merged;
+
+  /// No description provided for @event_action_converted_to_draft.
+  ///
+  /// In en, this message translates to:
+  /// **'converted to draft'**
+  String get event_action_converted_to_draft;
+
+  /// No description provided for @event_action_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'locked'**
+  String get event_action_locked;
+
+  /// No description provided for @event_action_unlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'unlocked'**
+  String get event_action_unlocked;
+
+  /// No description provided for @event_action_pinned.
+  ///
+  /// In en, this message translates to:
+  /// **'pinned'**
+  String get event_action_pinned;
+
+  /// No description provided for @event_action_unpinned.
+  ///
+  /// In en, this message translates to:
+  /// **'unpinned'**
+  String get event_action_unpinned;
+
+  /// No description provided for @event_action_transferred.
+  ///
+  /// In en, this message translates to:
+  /// **'transferred'**
+  String get event_action_transferred;
+
+  /// No description provided for @event_action_milestoned.
+  ///
+  /// In en, this message translates to:
+  /// **'milestoned'**
+  String get event_action_milestoned;
+
+  /// No description provided for @event_action_demilestoned.
+  ///
+  /// In en, this message translates to:
+  /// **'demilestoned'**
+  String get event_action_demilestoned;
 }
 
 class _AppLocalizationsDelegate

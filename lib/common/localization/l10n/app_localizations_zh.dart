@@ -736,4 +736,270 @@ class AppLocalizationsZh extends AppLocalizations {
   String issue_timeline_issue_type_added(String actor) {
     return '$actor 设置了 Issue 类型';
   }
+
+  @override
+  String event_dynamic_commit_comment(String repo) {
+    return '在 $repo 提交了 commit 评论';
+  }
+
+  @override
+  String event_dynamic_create_repository(String repo) {
+    return '创建了仓库 $repo';
+  }
+
+  @override
+  String event_dynamic_create_ref(String refType, String ref, String repo) {
+    return '在 $repo 创建 $refType $ref';
+  }
+
+  @override
+  String event_dynamic_delete_ref(String refType, String ref, String repo) {
+    return '在 $repo 删除 $refType $ref';
+  }
+
+  @override
+  String event_dynamic_fork_full(String fromRepo, String forker) {
+    return '将 $fromRepo fork 到 $forker/$fromRepo';
+  }
+
+  @override
+  String event_dynamic_fork_repo(String repo) {
+    return 'fork 了 $repo';
+  }
+
+  @override
+  String get event_dynamic_fork_generic => 'fork 了一个仓库';
+
+  @override
+  String event_dynamic_gollum(String actor) {
+    return '$actor 编辑了 wiki';
+  }
+
+  @override
+  String event_dynamic_installation(String action) {
+    return '$action 一个 GitHub App';
+  }
+
+  @override
+  String event_dynamic_installation_repos(String action) {
+    return '$action 一个 installation 的仓库';
+  }
+
+  @override
+  String event_dynamic_issue_comment(
+    String action,
+    String number,
+    String repo,
+  ) {
+    return '在 $repo 的 issue #$number $action 评论';
+  }
+
+  @override
+  String event_dynamic_issue(String action, String number, String repo) {
+    return '在 $repo $action issue #$number';
+  }
+
+  @override
+  String event_dynamic_marketplace(String action) {
+    return '$action marketplace 订阅';
+  }
+
+  @override
+  String event_dynamic_member(String action, String repo) {
+    return '$action $repo 的成员';
+  }
+
+  @override
+  String event_dynamic_org_block(String action) {
+    return '$action 一个用户';
+  }
+
+  @override
+  String event_dynamic_project_card(String action) {
+    return '$action 一张项目卡片';
+  }
+
+  @override
+  String event_dynamic_project_column(String action) {
+    return '$action 一个项目栏';
+  }
+
+  @override
+  String event_dynamic_project(String action) {
+    return '$action 一个项目';
+  }
+
+  @override
+  String event_dynamic_public(String repo) {
+    return '将 $repo 设为公开';
+  }
+
+  @override
+  String event_dynamic_pull_request(String action, String repo) {
+    return '在 $repo $action PR';
+  }
+
+  @override
+  String event_dynamic_pull_request_review(String action, String repo) {
+    return '在 $repo $action PR review';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_comment(String action, String repo) {
+    return '在 $repo $action PR review 评论';
+  }
+
+  @override
+  String event_dynamic_push(String ref, String repo) {
+    return '推送到 $repo 的 $ref';
+  }
+
+  @override
+  String event_dynamic_release(String action, String tag, String repo) {
+    return '在 $repo $action release $tag';
+  }
+
+  @override
+  String event_dynamic_watch(String action, String repo) {
+    return '$action $repo';
+  }
+
+  @override
+  String event_dynamic_watch_started(String repo) {
+    return '关注了 $repo';
+  }
+
+  @override
+  String event_dynamic_push_head(String sha) {
+    return 'head: $sha';
+  }
+
+  @override
+  String get event_dynamic_push_commit_fallback => 'Commit';
+
+  @override
+  String get event_action_started => '开始关注';
+
+  @override
+  String get event_action_opened => '打开';
+
+  @override
+  String get event_action_edited => '编辑';
+
+  @override
+  String get event_action_closed => '关闭';
+
+  @override
+  String get event_action_reopened => '重新打开';
+
+  @override
+  String get event_action_assigned => '指派';
+
+  @override
+  String get event_action_unassigned => '取消指派';
+
+  @override
+  String get event_action_labeled => '打标签';
+
+  @override
+  String get event_action_unlabeled => '移除标签';
+
+  @override
+  String get event_action_created => '创建';
+
+  @override
+  String get event_action_deleted => '删除';
+
+  @override
+  String get event_action_review_requested => '请求评审';
+
+  @override
+  String get event_action_review_request_removed => '撤销评审请求';
+
+  @override
+  String get event_action_synchronize => '更新';
+
+  @override
+  String get event_action_ready_for_review => '标记为可评审';
+
+  @override
+  String get event_action_dismissed => '驳回';
+
+  @override
+  String get event_action_submitted => '提交';
+
+  @override
+  String get event_action_published => '发布';
+
+  @override
+  String get event_action_prereleased => '发布预览版';
+
+  @override
+  String get event_action_released => '正式发布';
+
+  @override
+  String get event_action_added => '添加';
+
+  @override
+  String get event_action_removed => '移除';
+
+  @override
+  String get event_action_suspend => '暂停';
+
+  @override
+  String get event_action_unsuspend => '恢复';
+
+  @override
+  String get event_action_new_permissions_accepted => '接受新权限';
+
+  @override
+  String get event_action_purchased => '购买';
+
+  @override
+  String get event_action_cancelled => '取消';
+
+  @override
+  String get event_action_pending_change => '变更待处理';
+
+  @override
+  String get event_action_pending_change_cancelled => '取消待处理变更';
+
+  @override
+  String get event_action_changed => '变更';
+
+  @override
+  String get event_action_moved => '移动';
+
+  @override
+  String get event_action_blocked => '封禁';
+
+  @override
+  String get event_action_unblocked => '解封';
+
+  @override
+  String get event_action_merged => '合并';
+
+  @override
+  String get event_action_converted_to_draft => '转为草稿';
+
+  @override
+  String get event_action_locked => '锁定';
+
+  @override
+  String get event_action_unlocked => '解锁';
+
+  @override
+  String get event_action_pinned => '置顶';
+
+  @override
+  String get event_action_unpinned => '取消置顶';
+
+  @override
+  String get event_action_transferred => '转移';
+
+  @override
+  String get event_action_milestoned => '设置里程碑';
+
+  @override
+  String get event_action_demilestoned => '移除里程碑';
 }

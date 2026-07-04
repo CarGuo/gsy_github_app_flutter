@@ -54,7 +54,7 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       });
     } else {
       Event event = pullLoadWidgetControl.dataList[index];
-      return GSYEventItem(EventViewModel.fromEventMap(event), onPressed: () {
+      return GSYEventItem(EventViewModel.fromEventMap(context, event), onPressed: () {
         EventUtils.ActionUtils(context, event, "");
       });
     }
