@@ -325,6 +325,63 @@ class UserRepository {
     return res;
   }
 
+  /// 归档单个通知（对应官方 App 的 "Done / mark as done"）
+  /// GitHub API：DELETE /notifications/threads/{id}
+  /// 返回 DataResult 让上层能区分成功/失败，UI 层可以按结果做提示或回滚。
+  static archiveNotificationThreadRequest(id) async {
+    String url = Address.archiveNotificationThread(id);
+    var res = await httpManager.netFetch(
+      url,
+      null,
+      null,
+      Options(method: "DELETE"),
+      noTip: true,
+    );
+    return DataResult(res?.data, res?.result ?? false);
+  }
+
+  /// 获取单个 thread 的订阅状态（GET，noTip 因为 404 也算正常）。
+  /// 200 时 body 里 subscribed / ignored 反映当前状态。
+  static getNotificationThreadSubscriptionRequest(id) async {
+    String url = Address.notificationThreadSubscription(id);
+    var res = await httpManager.netFetch(
+      url,
+      null,
+      null,
+      null,
+      noTip: true,
+    );
+    return DataResult(res?.data, res?.result ?? false);
+  }
+
+  /// 订阅 thread（subscribed=true, ignored=false）。
+  /// GitHub API：PUT /notifications/threads/{id}/subscription
+  static subscribeNotificationThreadRequest(id) async {
+    String url = Address.notificationThreadSubscription(id);
+    var res = await httpManager.netFetch(
+      url,
+      {"subscribed": true, "ignored": false},
+      null,
+      Options(method: "PUT"),
+      noTip: true,
+    );
+    return DataResult(res?.data, res?.result ?? false);
+  }
+
+  /// 取消订阅 thread（等价于恢复到 none 状态）。
+  /// GitHub API：DELETE /notifications/threads/{id}/subscription
+  static unsubscribeNotificationThreadRequest(id) async {
+    String url = Address.notificationThreadSubscription(id);
+    var res = await httpManager.netFetch(
+      url,
+      null,
+      null,
+      Options(method: "DELETE"),
+      noTip: true,
+    );
+    return DataResult(res?.data, res?.result ?? false);
+  }
+
   /// 设置所有通知已读
   static setAllNotificationAsReadRequest() async {
     String url = Address.setAllNotificationAsRead();

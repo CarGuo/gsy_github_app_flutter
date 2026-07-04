@@ -143,6 +143,15 @@
       }
     }
   },
+  "notify_archive": "Archive",
+  "notify_subscribe": "Subscribe",
+  "notify_unsubscribe": "Unsubscribe",
+  "notify_read_failed": "Failed to mark as read, please try again",
+  "notify_archive_failed": "Failed to archive, please try again",
+  "notify_subscribe_failed": "Subscription action failed, please try again",
+  "notify_subscribe_success": "Subscribed to this thread",
+  "notify_unsubscribe_success": "Unsubscribed from this thread",
+  "notify_archive_success": "Archived",
   "search_title": "Search",
   "search_tab_repos": "Repository",
   "search_tab_user": "User",

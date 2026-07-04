@@ -143,6 +143,15 @@
       }
     }
   },
+  "notify_archive": "보관",
+  "notify_subscribe": "구독",
+  "notify_unsubscribe": "구독 취소",
+  "notify_read_failed": "읽음으로 표시하지 못했습니다. 다시 시도해 주세요",
+  "notify_archive_failed": "보관에 실패했습니다. 다시 시도해 주세요",
+  "notify_subscribe_failed": "구독 작업에 실패했습니다. 다시 시도해 주세요",
+  "notify_subscribe_success": "이 스레드를 구독했습니다",
+  "notify_unsubscribe_success": "이 스레드 구독을 취소했습니다",
+  "notify_archive_success": "보관되었습니다",
   "search_title": "검색",
   "search_tab_repos": "저장소",
   "search_tab_user": "사용자",

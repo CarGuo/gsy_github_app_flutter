@@ -424,6 +424,33 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get notify_archive => 'アーカイブ';
+
+  @override
+  String get notify_subscribe => '購読';
+
+  @override
+  String get notify_unsubscribe => '購読解除';
+
+  @override
+  String get notify_read_failed => '既読への設定に失敗しました。もう一度お試しください';
+
+  @override
+  String get notify_archive_failed => 'アーカイブに失敗しました。もう一度お試しください';
+
+  @override
+  String get notify_subscribe_failed => '購読の操作に失敗しました。もう一度お試しください';
+
+  @override
+  String get notify_subscribe_success => 'このスレッドを購読しました';
+
+  @override
+  String get notify_unsubscribe_success => 'このスレッドの購読を解除しました';
+
+  @override
+  String get notify_archive_success => 'アーカイブしました';
+
+  @override
   String get search_title => '検索';
 
   @override

@@ -423,6 +423,33 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get notify_archive => '보관';
+
+  @override
+  String get notify_subscribe => '구독';
+
+  @override
+  String get notify_unsubscribe => '구독 취소';
+
+  @override
+  String get notify_read_failed => '읽음으로 표시하지 못했습니다. 다시 시도해 주세요';
+
+  @override
+  String get notify_archive_failed => '보관에 실패했습니다. 다시 시도해 주세요';
+
+  @override
+  String get notify_subscribe_failed => '구독 작업에 실패했습니다. 다시 시도해 주세요';
+
+  @override
+  String get notify_subscribe_success => '이 스레드를 구독했습니다';
+
+  @override
+  String get notify_unsubscribe_success => '이 스레드 구독을 취소했습니다';
+
+  @override
+  String get notify_archive_success => '보관되었습니다';
+
+  @override
   String get search_title => '검색';
 
   @override

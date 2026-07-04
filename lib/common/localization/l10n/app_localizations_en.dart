@@ -425,6 +425,34 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get notify_archive => 'Archive';
+
+  @override
+  String get notify_subscribe => 'Subscribe';
+
+  @override
+  String get notify_unsubscribe => 'Unsubscribe';
+
+  @override
+  String get notify_read_failed => 'Failed to mark as read, please try again';
+
+  @override
+  String get notify_archive_failed => 'Failed to archive, please try again';
+
+  @override
+  String get notify_subscribe_failed =>
+      'Subscription action failed, please try again';
+
+  @override
+  String get notify_subscribe_success => 'Subscribed to this thread';
+
+  @override
+  String get notify_unsubscribe_success => 'Unsubscribed from this thread';
+
+  @override
+  String get notify_archive_success => 'Archived';
+
+  @override
   String get search_title => 'Search';
 
   @override

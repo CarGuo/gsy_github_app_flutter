@@ -924,6 +924,60 @@ abstract class AppLocalizations {
   /// **'Unsupported notification type: {type}, opened in browser'**
   String notify_unsupported_type(String type);
 
+  /// No description provided for @notify_archive.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get notify_archive;
+
+  /// No description provided for @notify_subscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get notify_subscribe;
+
+  /// No description provided for @notify_unsubscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsubscribe'**
+  String get notify_unsubscribe;
+
+  /// No description provided for @notify_read_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to mark as read, please try again'**
+  String get notify_read_failed;
+
+  /// No description provided for @notify_archive_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to archive, please try again'**
+  String get notify_archive_failed;
+
+  /// No description provided for @notify_subscribe_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription action failed, please try again'**
+  String get notify_subscribe_failed;
+
+  /// No description provided for @notify_subscribe_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribed to this thread'**
+  String get notify_subscribe_success;
+
+  /// No description provided for @notify_unsubscribe_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsubscribed from this thread'**
+  String get notify_unsubscribe_success;
+
+  /// No description provided for @notify_archive_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get notify_archive_success;
+
   /// No description provided for @search_title.
   ///
   /// In en, this message translates to:

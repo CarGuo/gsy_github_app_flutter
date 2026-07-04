@@ -318,6 +318,16 @@ class Address {
     return "${host}notifications/threads/$threadId";
   }
 
+  ///delete 同一个 URL：GitHub 的"归档/mark-as-done"就是 DELETE thread
+  static archiveNotificationThread(threadId) {
+    return "${host}notifications/threads/$threadId";
+  }
+
+  ///get / put / delete 都用这个 URL，做 thread 订阅管理
+  static notificationThreadSubscription(threadId) {
+    return "${host}notifications/threads/$threadId/subscription";
+  }
+
   ///put
   static setAllNotificationAsRead() {
     return "${host}notifications";

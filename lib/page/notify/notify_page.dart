@@ -81,40 +81,111 @@ class _NotifyPageState extends State<NotifyPage>
   ///绘制 Item
   _renderItem(index) {
     Model.Notification notification = notifySignal[index];
-    if (notifyIndexSignal.value != 0) {
-      return _renderEventItem(notification);
-    }
+    final isUnread = notifyIndexSignal.value == 0;
 
-    ///只有未读消息支持 Slidable 滑动效果
+    // 所有 tab 都需要侧滑面板：
+    // - 未读 tab：标记已读 + 订阅切换 + 归档
+    // - 已读/全部 tab：订阅切换 + 归档（"已读"对已读消息没意义）
+    // key 里带上 tab index 是为了让 Slidable 在 tab 切换时重建、避免残留展开状态
+    final actions = <Widget>[];
+    if (isUnread) {
+      actions.add(SlidableAction(
+        label: context.l10n.notify_readed,
+        backgroundColor: Colors.redAccent,
+        icon: Icons.done,
+        onPressed: (_) => _markAsRead(notification),
+      ));
+    }
+    actions.add(SlidableAction(
+      label: context.l10n.notify_subscribe,
+      backgroundColor: Colors.blueAccent,
+      icon: Icons.notifications_active,
+      onPressed: (_) => _subscribeThread(notification),
+    ));
+    actions.add(SlidableAction(
+      label: context.l10n.notify_unsubscribe,
+      backgroundColor: Colors.grey,
+      icon: Icons.notifications_off,
+      onPressed: (_) => _unsubscribeThread(notification),
+    ));
+    actions.add(SlidableAction(
+      label: context.l10n.notify_archive,
+      backgroundColor: Colors.deepOrange,
+      icon: Icons.archive,
+      onPressed: (_) => _archiveThread(notification),
+    ));
+
     return Slidable(
-      key: ValueKey<String>("${index}_${notifyIndexSignal.value}"),
+      key: ValueKey<String>("${notification.id}_${notifyIndexSignal.value}"),
       endActionPane: ActionPane(
         dragDismissible: false,
         motion: const ScrollMotion(),
-        dismissible: DismissiblePane(onDismissed: () {
-          UserRepository.setNotificationAsReadRequest(
-                  notification.id.toString())
-              .then((res) {
-            notifySignal.remove(notification);
-          });
-        }),
-        children: [
-          SlidableAction(
-            label: context.l10n.notify_readed,
-            backgroundColor: Colors.redAccent,
-            icon: Icons.delete,
-            onPressed: (c) {
-              UserRepository.setNotificationAsReadRequest(
-                      notification.id.toString())
-                  .then((res) {
-                notifySignal.remove(notification);
-              });
-            },
-          ),
-        ],
+        // 滑到底的默认动作：未读 tab 走"已读"，其它 tab 走"归档"
+        // 这个默认动作和用户潜在预期一致：未读用户想清读、已读用户想清 inbox
+        dismissible: DismissiblePane(
+          onDismissed: () {
+            if (isUnread) {
+              _markAsRead(notification);
+            } else {
+              _archiveThread(notification);
+            }
+          },
+        ),
+        children: actions,
       ),
       child: _renderEventItem(notification),
     );
+  }
+
+  /// 标记已读：成功再从列表移除；失败保留 item + toast 提示，避免服务端与 UI 不一致。
+  Future<void> _markAsRead(Model.Notification notification) async {
+    final res = await UserRepository.setNotificationAsReadRequest(
+        notification.id.toString());
+    if (!mounted) return;
+    final ok = res != null && res.result == true;
+    if (ok) {
+      notifySignal.remove(notification);
+    } else {
+      showToast(context.l10n.notify_read_failed);
+    }
+  }
+
+  /// 归档：对应官方 App "Done"；DELETE /notifications/threads/{id}
+  /// 成功后从当前列表移除（所有 tab 都从当前视图消失）。
+  Future<void> _archiveThread(Model.Notification notification) async {
+    final res = await UserRepository.archiveNotificationThreadRequest(
+        notification.id.toString());
+    if (!mounted) return;
+    if (res.result == true) {
+      notifySignal.remove(notification);
+      showToast(context.l10n.notify_archive_success);
+    } else {
+      showToast(context.l10n.notify_archive_failed);
+    }
+  }
+
+  /// 订阅 thread：不改变列表可见性，仅 toast 反馈结果。
+  Future<void> _subscribeThread(Model.Notification notification) async {
+    final res = await UserRepository.subscribeNotificationThreadRequest(
+        notification.id.toString());
+    if (!mounted) return;
+    if (res.result == true) {
+      showToast(context.l10n.notify_subscribe_success);
+    } else {
+      showToast(context.l10n.notify_subscribe_failed);
+    }
+  }
+
+  /// 取消订阅：同上，仅 toast。
+  Future<void> _unsubscribeThread(Model.Notification notification) async {
+    final res = await UserRepository.unsubscribeNotificationThreadRequest(
+        notification.id.toString());
+    if (!mounted) return;
+    if (res.result == true) {
+      showToast(context.l10n.notify_unsubscribe_success);
+    } else {
+      showToast(context.l10n.notify_subscribe_failed);
+    }
   }
 
   ///绘制实际的内容数据item

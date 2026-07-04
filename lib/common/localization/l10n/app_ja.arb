@@ -143,6 +143,15 @@
       }
     }
   },
+  "notify_archive": "アーカイブ",
+  "notify_subscribe": "購読",
+  "notify_unsubscribe": "購読解除",
+  "notify_read_failed": "既読への設定に失敗しました。もう一度お試しください",
+  "notify_archive_failed": "アーカイブに失敗しました。もう一度お試しください",
+  "notify_subscribe_failed": "購読の操作に失敗しました。もう一度お試しください",
+  "notify_subscribe_success": "このスレッドを購読しました",
+  "notify_unsubscribe_success": "このスレッドの購読を解除しました",
+  "notify_archive_success": "アーカイブしました",
   "search_title": "検索",
   "search_tab_repos": "リポジトリ",
   "search_tab_user": "ユーザー",

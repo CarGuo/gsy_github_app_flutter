@@ -423,6 +423,33 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get notify_archive => '归档';
+
+  @override
+  String get notify_subscribe => '订阅';
+
+  @override
+  String get notify_unsubscribe => '取消订阅';
+
+  @override
+  String get notify_read_failed => '标记已读失败，请稍后重试';
+
+  @override
+  String get notify_archive_failed => '归档失败，请稍后重试';
+
+  @override
+  String get notify_subscribe_failed => '订阅操作失败，请稍后重试';
+
+  @override
+  String get notify_subscribe_success => '已订阅该通知';
+
+  @override
+  String get notify_unsubscribe_success => '已取消订阅';
+
+  @override
+  String get notify_archive_success => '已归档';
+
+  @override
   String get search_title => '搜索';
 
   @override
