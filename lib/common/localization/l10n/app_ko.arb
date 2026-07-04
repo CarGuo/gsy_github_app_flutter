@@ -135,6 +135,14 @@
   "notify_readed": "읽음",
   "notify_status": "상태",
   "notify_type": "유형",
+  "notify_unsupported_type": "지원되지 않는 알림 유형: {type}, 브라우저에서 열림",
+  "@notify_unsupported_type": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
   "search_title": "검색",
   "search_tab_repos": "저장소",
   "search_tab_user": "사용자",

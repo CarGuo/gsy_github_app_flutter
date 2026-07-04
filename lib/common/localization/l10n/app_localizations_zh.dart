@@ -418,6 +418,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notify_type => '类型';
 
   @override
+  String notify_unsupported_type(String type) {
+    return '暂不支持的通知类型：$type，已用浏览器打开';
+  }
+
+  @override
   String get search_title => '搜索';
 
   @override

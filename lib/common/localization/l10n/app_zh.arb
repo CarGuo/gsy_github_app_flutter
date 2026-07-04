@@ -135,6 +135,14 @@
   "notify_readed": "已读",
   "notify_status": "状态",
   "notify_type": "类型",
+  "notify_unsupported_type": "暂不支持的通知类型：{type}，已用浏览器打开",
+  "@notify_unsupported_type": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
   "search_title": "搜索",
   "search_tab_repos": "仓库",
   "search_tab_user": "用户",

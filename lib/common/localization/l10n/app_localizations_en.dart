@@ -420,6 +420,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notify_type => 'Type';
 
   @override
+  String notify_unsupported_type(String type) {
+    return 'Unsupported notification type: $type, opened in browser';
+  }
+
+  @override
   String get search_title => 'Search';
 
   @override

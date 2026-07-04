@@ -418,6 +418,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notify_type => '유형';
 
   @override
+  String notify_unsupported_type(String type) {
+    return '지원되지 않는 알림 유형: $type, 브라우저에서 열림';
+  }
+
+  @override
   String get search_title => '검색';
 
   @override

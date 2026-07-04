@@ -419,6 +419,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notify_type => 'タイプ';
 
   @override
+  String notify_unsupported_type(String type) {
+    return '未対応の通知タイプ：$type、ブラウザで開きました';
+  }
+
+  @override
   String get search_title => '検索';
 
   @override

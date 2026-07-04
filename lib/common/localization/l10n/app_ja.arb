@@ -135,6 +135,14 @@
   "notify_readed": "既読",
   "notify_status": "ステータス",
   "notify_type": "タイプ",
+  "notify_unsupported_type": "未対応の通知タイプ：{type}、ブラウザで開きました",
+  "@notify_unsupported_type": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
   "search_title": "検索",
   "search_tab_repos": "リポジトリ",
   "search_tab_user": "ユーザー",

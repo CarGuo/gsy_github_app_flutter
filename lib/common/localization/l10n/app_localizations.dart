@@ -918,6 +918,12 @@ abstract class AppLocalizations {
   /// **'Type'**
   String get notify_type;
 
+  /// No description provided for @notify_unsupported_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported notification type: {type}, opened in browser'**
+  String notify_unsupported_type(String type);
+
   /// No description provided for @search_title.
   ///
   /// In en, this message translates to:

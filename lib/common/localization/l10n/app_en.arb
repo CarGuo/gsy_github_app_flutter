@@ -135,6 +135,14 @@
   "notify_readed": "Read",
   "notify_status": "Status",
   "notify_type": "Type",
+  "notify_unsupported_type": "Unsupported notification type: {type}, opened in browser",
+  "@notify_unsupported_type": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
   "search_title": "Search",
   "search_tab_repos": "Repository",
   "search_tab_user": "User",
