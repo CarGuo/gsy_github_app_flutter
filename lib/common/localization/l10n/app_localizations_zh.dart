@@ -498,6 +498,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notify_reason_team_mention => '@提及你的团队';
 
   @override
+  String get notify_filter_repo => '按仓库筛选';
+
+  @override
+  String get notify_filter_repo_all => '所有仓库';
+
+  @override
+  String get notify_filter_repo_empty_hint => '该仓库暂无通知';
+
+  @override
   String get search_title => '搜索';
 
   @override

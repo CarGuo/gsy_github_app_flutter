@@ -498,6 +498,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notify_reason_team_mention => '당신 팀이 멘션됨';
 
   @override
+  String get notify_filter_repo => '저장소로 필터링';
+
+  @override
+  String get notify_filter_repo_all => '모든 저장소';
+
+  @override
+  String get notify_filter_repo_empty_hint => '이 저장소에 대한 알림이 없습니다';
+
+  @override
   String get search_title => '검색';
 
   @override

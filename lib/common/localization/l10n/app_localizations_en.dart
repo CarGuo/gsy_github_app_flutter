@@ -503,6 +503,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notify_reason_team_mention => 'Your team was mentioned';
 
   @override
+  String get notify_filter_repo => 'Filter by repo';
+
+  @override
+  String get notify_filter_repo_all => 'All repos';
+
+  @override
+  String get notify_filter_repo_empty_hint => 'No notifications for this repo';
+
+  @override
   String get search_title => 'Search';
 
   @override

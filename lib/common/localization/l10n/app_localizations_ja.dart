@@ -499,6 +499,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notify_reason_team_mention => 'チームがメンション';
 
   @override
+  String get notify_filter_repo => 'リポジトリで絞り込み';
+
+  @override
+  String get notify_filter_repo_all => 'すべてのリポジトリ';
+
+  @override
+  String get notify_filter_repo_empty_hint => 'このリポジトリの通知はありません';
+
+  @override
   String get search_title => '検索';
 
   @override

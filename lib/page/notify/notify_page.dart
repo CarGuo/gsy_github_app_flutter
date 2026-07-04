@@ -44,6 +44,11 @@ class _NotifyPageState extends State<NotifyPage>
   late var notifyIndexSignal = createSignal<int>(0);
   late var signalPage = createSignal<int>(-1);
 
+  /// 按仓库过滤 - 值为 `owner/name`（Repository.fullName），null 表示"所有仓库"。
+  /// 只在客户端对已加载数据做筛选，不改数据请求 —— GitHub 官方 `GET /notifications`
+  /// 不支持 repo 查询参数。切换 tab / 强制刷新时保持不变，切页面重建时归位 null。
+  late var selectedRepoSignal = createSignal<String?>(null);
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +56,13 @@ class _NotifyPageState extends State<NotifyPage>
       notifyIndexSignal.value;
       signalPage.value;
       loadData();
+    });
+    // 切 tab 时把"按仓库筛选"重置回"所有仓库"。
+    // 原因：新 tab 拉的数据集通常包含新的仓库子集，保留旧筛选值可能筛出空列表，
+    // 让用户以为"这个 tab 没数据"，反而更混乱。
+    createEffect(() {
+      notifyIndexSignal.value;
+      selectedRepoSignal.value = null;
     });
   }
 
@@ -79,8 +91,7 @@ class _NotifyPageState extends State<NotifyPage>
   }
 
   ///绘制 Item
-  _renderItem(index) {
-    Model.Notification notification = notifySignal[index];
+  _renderItem(Model.Notification notification) {
     final isUnread = notifyIndexSignal.value == 0;
 
     // 所有 tab 都需要侧滑面板：
@@ -168,6 +179,120 @@ class _NotifyPageState extends State<NotifyPage>
           ),
         ],
       ),
+    );
+  }
+
+  /// 顶部筛选条：显示当前"按仓库筛选"状态；点击弹底部 sheet 选择 repo。
+  /// [visibleCount] 是当前过滤后可见条数，仅在筛选态下展示反馈信息。
+  Widget _buildRepoFilterBar(int visibleCount) {
+    final selectedRepo = selectedRepoSignal.value;
+    final isFiltered = selectedRepo != null;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: _showRepoFilterSheet,
+      child: Container(
+        color: isFiltered
+            ? Colors.blueAccent.withValues(alpha: 0.08)
+            : Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: [
+            Icon(
+              Icons.filter_list,
+              size: 18,
+              color: isFiltered ? Colors.blueAccent : Colors.grey.shade600,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                isFiltered
+                    ? "${context.l10n.notify_filter_repo}: $selectedRepo ($visibleCount)"
+                    : context.l10n.notify_filter_repo_all,
+                style: TextStyle(
+                  fontSize: 13,
+                  color:
+                      isFiltered ? Colors.blueAccent : Colors.grey.shade700,
+                  fontWeight:
+                      isFiltered ? FontWeight.w500 : FontWeight.normal,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (isFiltered)
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => selectedRepoSignal.value = null,
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Icon(Icons.close, size: 18, color: Colors.grey),
+                ),
+              )
+            else
+              Icon(Icons.arrow_drop_down,
+                  size: 20, color: Colors.grey.shade600),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 按当前 selectedRepoSignal 从 notifySignal 里过滤出可见列表。
+  /// 单独抽出来是因为 filter bar 显示 count 和 ListView 都要用同一份数据，
+  /// 避免过滤逻辑写两遍导致漂移。
+  List<Model.Notification> _currentFilteredList() {
+    final selectedRepo = selectedRepoSignal.value;
+    if (selectedRepo == null) {
+      return notifySignal.toList();
+    }
+    return notifySignal
+        .where((n) => n.repository?.fullName == selectedRepo)
+        .toList();
+  }
+
+  /// 弹出 BottomSheet 让用户从当前已加载通知里出现过的所有 repo 中选一个。
+  /// 用 Set 去重再排序，避免重复项；把"所有仓库"作为第一项 sentinel。
+  void _showRepoFilterSheet() {
+    final repoNames = notifySignal
+        .map((n) => n.repository?.fullName)
+        .whereType<String>()
+        .toSet()
+        .toList()
+      ..sort();
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (sheetCtx) {
+        return SafeArea(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: repoNames.length + 1,
+            itemBuilder: (_, i) {
+              if (i == 0) {
+                return ListTile(
+                  leading: const Icon(Icons.all_inbox),
+                  title: Text(context.l10n.notify_filter_repo_all),
+                  selected: selectedRepoSignal.value == null,
+                  onTap: () {
+                    selectedRepoSignal.value = null;
+                    Navigator.pop(sheetCtx);
+                  },
+                );
+              }
+              final repo = repoNames[i - 1];
+              return ListTile(
+                leading: const Icon(Icons.folder_outlined),
+                title: Text(repo,
+                    maxLines: 1, overflow: TextOverflow.ellipsis),
+                selected: selectedRepoSignal.value == repo,
+                onTap: () {
+                  selectedRepoSignal.value = repo;
+                  Navigator.pop(sheetCtx);
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -421,17 +546,46 @@ class _NotifyPageState extends State<NotifyPage>
         ),
         elevation: 4.0,
       ),
-      body: EasyRefresh(
-        controller: controller,
-        header: const MaterialHeader(),
-        footer: const BezierFooter(),
-        refreshOnStart: true,
-        onRefresh: requestRefresh,
-        onLoad: requestLoadMore,
-        child: ListView.builder(
-          itemBuilder: (_, int index) => _renderItem(index),
-          itemCount: notifySignal.length,
-        ),
+      body: Column(
+        children: [
+          // 筛选条独立在 EasyRefresh 之外，避免 EasyRefresh 手势层遮挡点击、
+          // 也防止筛选条被下拉刷新一起滚走。
+          Watch((_) => _buildRepoFilterBar(_currentFilteredList().length)),
+          Expanded(
+            child: EasyRefresh(
+              controller: controller,
+              header: const MaterialHeader(),
+              footer: const BezierFooter(),
+              refreshOnStart: true,
+              onRefresh: requestRefresh,
+              onLoad: requestLoadMore,
+              child: Watch((_) {
+                // 依赖 signal 变化重建：selectedRepoSignal / notifySignal 任一变化都刷视图。
+                final selectedRepo = selectedRepoSignal.value;
+                final filtered = _currentFilteredList();
+                if (filtered.isEmpty && selectedRepo != null) {
+                  return ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Center(
+                          child: Text(
+                            context.l10n.notify_filter_repo_empty_hint,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return ListView.builder(
+                  itemBuilder: (_, int index) => _renderItem(filtered[index]),
+                  itemCount: filtered.length,
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }

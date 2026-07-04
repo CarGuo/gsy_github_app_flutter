@@ -1074,6 +1074,24 @@ abstract class AppLocalizations {
   /// **'Your team was mentioned'**
   String get notify_reason_team_mention;
 
+  /// No description provided for @notify_filter_repo.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by repo'**
+  String get notify_filter_repo;
+
+  /// No description provided for @notify_filter_repo_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All repos'**
+  String get notify_filter_repo_all;
+
+  /// No description provided for @notify_filter_repo_empty_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications for this repo'**
+  String get notify_filter_repo_empty_hint;
+
   /// No description provided for @search_title.
   ///
   /// In en, this message translates to:
