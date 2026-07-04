@@ -507,6 +507,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notify_filter_repo_empty_hint => '该仓库暂无通知';
 
   @override
+  String get notify_filter_reason => '按原因筛选';
+
+  @override
+  String get notify_filter_reason_all => '全部原因';
+
+  @override
+  String get notify_filter_reason_empty_hint => '该原因下暂无通知';
+
+  @override
   String get search_title => '搜索';
 
   @override

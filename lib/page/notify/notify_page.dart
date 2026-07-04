@@ -9,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart'
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
@@ -49,6 +50,11 @@ class _NotifyPageState extends State<NotifyPage>
   /// 不支持 repo 查询参数。切换 tab / 强制刷新时保持不变，切页面重建时归位 null。
   late var selectedRepoSignal = createSignal<String?>(null);
 
+  /// 按 reason 过滤 - 值为 GitHub 原始 reason 字符串（如 "mention" / "review_requested"），
+  /// null 表示"全部原因"。与 repo 筛并存，AND 语义。
+  /// 同样纯客户端过滤，`GET /notifications` 也不支持 reason 查询参数。
+  late var selectedReasonSignal = createSignal<String?>(null);
+
   @override
   void initState() {
     super.initState();
@@ -57,12 +63,13 @@ class _NotifyPageState extends State<NotifyPage>
       signalPage.value;
       loadData();
     });
-    // 切 tab 时把"按仓库筛选"重置回"所有仓库"。
-    // 原因：新 tab 拉的数据集通常包含新的仓库子集，保留旧筛选值可能筛出空列表，
+    // 切 tab 时把"按仓库筛选"和"按原因筛选"都重置。
+    // 原因：新 tab 拉的数据集通常包含新的仓库/reason 子集，保留旧筛选值可能筛出空列表，
     // 让用户以为"这个 tab 没数据"，反而更混乱。
     createEffect(() {
       notifyIndexSignal.value;
       selectedRepoSignal.value = null;
+      selectedReasonSignal.value = null;
     });
   }
 
@@ -237,17 +244,22 @@ class _NotifyPageState extends State<NotifyPage>
     );
   }
 
-  /// 按当前 selectedRepoSignal 从 notifySignal 里过滤出可见列表。
-  /// 单独抽出来是因为 filter bar 显示 count 和 ListView 都要用同一份数据，
-  /// 避免过滤逻辑写两遍导致漂移。
+  /// 按当前 selectedRepoSignal + selectedReasonSignal 从 notifySignal 里过滤出可见列表。
+  /// 两个筛选是 AND 语义：都不选=全部；只选一个=按该维度筛；都选=同时满足。
+  /// 单独抽出来是因为多个地方（chip 计数、count 提示、ListView）都要用同一份数据，
+  /// 避免过滤逻辑写多遍导致漂移。
   List<Model.Notification> _currentFilteredList() {
     final selectedRepo = selectedRepoSignal.value;
-    if (selectedRepo == null) {
-      return notifySignal.toList();
-    }
-    return notifySignal
-        .where((n) => n.repository?.fullName == selectedRepo)
-        .toList();
+    final selectedReason = selectedReasonSignal.value;
+    return notifySignal.where((n) {
+      if (selectedRepo != null && n.repository?.fullName != selectedRepo) {
+        return false;
+      }
+      if (selectedReason != null && n.reason != selectedReason) {
+        return false;
+      }
+      return true;
+    }).toList();
   }
 
   /// 弹出 BottomSheet 让用户从当前已加载通知里出现过的所有 repo 中选一个。
@@ -293,6 +305,71 @@ class _NotifyPageState extends State<NotifyPage>
           ),
         );
       },
+    );
+  }
+
+  /// 从当前 notifySignal 里抽出所有出现过的 reason，按"出现次数从多到少"排序。
+  /// 只按 repo 筛之外的原始数据统计——即使用户选了 repo，chip 也展示当前 tab 全量 reason，
+  /// 避免"选了 repo 后 chip 变少让人不知道能不能取消"的死锁体验。
+  /// 返回列表元素是 (reason, count)。
+  List<MapEntry<String, int>> _availableReasons() {
+    final Map<String, int> counter = {};
+    for (final n in notifySignal) {
+      final r = n.reason;
+      if (r == null || r.isEmpty) continue;
+      counter[r] = (counter[r] ?? 0) + 1;
+    }
+    final entries = counter.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    return entries;
+  }
+
+  /// 横滑 reason 快速筛选 chip 行。
+  /// 首个固定为"全部原因" sentinel；后面按出现频次从高到低。
+  /// 空列表（notifySignal 为空或全无 reason）不渲染，避免空白占位。
+  Widget _buildReasonFilterChips() {
+    final reasons = _availableReasons();
+    if (reasons.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final selected = selectedReasonSignal.value;
+    return Container(
+      height: 44,
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: reasons.length + 1,
+        separatorBuilder: (_, __) => const SizedBox(width: 6),
+        itemBuilder: (chipCtx, i) {
+          if (i == 0) {
+            final isAll = selected == null;
+            return Center(
+              child: ChoiceChip(
+                label: Text(context.l10n.notify_filter_reason_all),
+                selected: isAll,
+                onSelected: (_) => selectedReasonSignal.value = null,
+              ),
+            );
+          }
+          final entry = reasons[i - 1];
+          final rawReason = entry.key;
+          final count = entry.value;
+          final isSelected = selected == rawReason;
+          final label = EventUtils.translateNotifyReason(
+              context.l10n, rawReason);
+          return Center(
+            child: ChoiceChip(
+              label: Text('$label ($count)'),
+              selected: isSelected,
+              onSelected: (_) {
+                // 二次点已选 chip 视为取消，回到"全部"
+                selectedReasonSignal.value = isSelected ? null : rawReason;
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -551,6 +628,8 @@ class _NotifyPageState extends State<NotifyPage>
           // 筛选条独立在 EasyRefresh 之外，避免 EasyRefresh 手势层遮挡点击、
           // 也防止筛选条被下拉刷新一起滚走。
           Watch((_) => _buildRepoFilterBar(_currentFilteredList().length)),
+          // reason 快速筛选 chip 行；空数据时不占位。
+          Watch((_) => _buildReasonFilterChips()),
           Expanded(
             child: EasyRefresh(
               controller: controller,
@@ -560,17 +639,24 @@ class _NotifyPageState extends State<NotifyPage>
               onRefresh: requestRefresh,
               onLoad: requestLoadMore,
               child: Watch((_) {
-                // 依赖 signal 变化重建：selectedRepoSignal / notifySignal 任一变化都刷视图。
+                // 依赖 signal 变化重建：任一 signal / notifySignal 变化都刷视图。
                 final selectedRepo = selectedRepoSignal.value;
+                final selectedReason = selectedReasonSignal.value;
                 final filtered = _currentFilteredList();
-                if (filtered.isEmpty && selectedRepo != null) {
+                if (filtered.isEmpty &&
+                    (selectedRepo != null || selectedReason != null)) {
+                  // 优先展示更具体的空态：reason 独立选中 → reason 空态；
+                  // 只 repo 选中 → repo 空态；两个都选 → repo 空态（更靠近用户脑图）。
+                  final hint = selectedRepo != null
+                      ? context.l10n.notify_filter_repo_empty_hint
+                      : context.l10n.notify_filter_reason_empty_hint;
                   return ListView(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(40),
                         child: Center(
                           child: Text(
-                            context.l10n.notify_filter_repo_empty_hint,
+                            hint,
                             style: const TextStyle(color: Colors.grey),
                           ),
                         ),

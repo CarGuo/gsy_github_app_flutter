@@ -512,6 +512,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notify_filter_repo_empty_hint => 'No notifications for this repo';
 
   @override
+  String get notify_filter_reason => 'Filter by reason';
+
+  @override
+  String get notify_filter_reason_all => 'All reasons';
+
+  @override
+  String get notify_filter_reason_empty_hint =>
+      'No notifications for this reason';
+
+  @override
   String get search_title => 'Search';
 
   @override

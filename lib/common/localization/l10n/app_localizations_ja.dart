@@ -508,6 +508,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notify_filter_repo_empty_hint => 'このリポジトリの通知はありません';
 
   @override
+  String get notify_filter_reason => '理由で絞り込み';
+
+  @override
+  String get notify_filter_reason_all => 'すべての理由';
+
+  @override
+  String get notify_filter_reason_empty_hint => 'この理由の通知はありません';
+
+  @override
   String get search_title => '検索';
 
   @override

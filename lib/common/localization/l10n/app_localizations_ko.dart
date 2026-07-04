@@ -507,6 +507,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notify_filter_repo_empty_hint => '이 저장소에 대한 알림이 없습니다';
 
   @override
+  String get notify_filter_reason => '사유로 필터링';
+
+  @override
+  String get notify_filter_reason_all => '모든 사유';
+
+  @override
+  String get notify_filter_reason_empty_hint => '이 사유에 대한 알림이 없습니다';
+
+  @override
   String get search_title => '검색';
 
   @override

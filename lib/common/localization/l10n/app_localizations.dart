@@ -1092,6 +1092,24 @@ abstract class AppLocalizations {
   /// **'No notifications for this repo'**
   String get notify_filter_repo_empty_hint;
 
+  /// No description provided for @notify_filter_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by reason'**
+  String get notify_filter_reason;
+
+  /// No description provided for @notify_filter_reason_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All reasons'**
+  String get notify_filter_reason_all;
+
+  /// No description provided for @notify_filter_reason_empty_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications for this reason'**
+  String get notify_filter_reason_empty_hint;
+
   /// No description provided for @search_title.
   ///
   /// In en, this message translates to:
