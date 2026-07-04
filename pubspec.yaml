@@ -75,6 +75,9 @@ dependencies:
   connectivity_plus: 6.0.5
   # flutter_markdown 已停止维护，使用 flutter_markdown_plus 替代
   flutter_markdown_plus: 1.0.6
+  # Dart 官方 HTML 解析器，用于把 GitHub 评论 body 里内嵌的 HTML 白名单标签
+  # 前置转成 Markdown 等价语法（flutter_markdown_plus 本身不支持 inline HTML）
+  html: 0.15.5
   device_info_plus: 10.1.2
   url_launcher: 6.3.2
   google_fonts: 6.2.1
