@@ -426,44 +426,43 @@ class IssueRepository {
     return DataResult(null, false);
   }
 
-  /// 查询当前用户在指定 issue 上、指定 content 的 reaction id
-  /// 找不到返回 null；请求失败也返回 null（上层按"不做事"处理）
-  ///
-  /// 注意：`content` 里的 `+1` 直接拼进 query 会被服务端解释为空格 → 必须做 URL 编码
-  static Future<int?> findMyIssueReactionIdRequest(
-      userName, repository, number, String content, String login) async {
-    final encoded = Uri.encodeQueryComponent(content);
-    String url =
-        "${Address.getIssueReactions(userName, repository, number)}?content=$encoded&per_page=100";
-    var res = await httpManager.netFetch(
-        url,
-        null,
-        {
-          "Accept":
-              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
-        },
-        Options(method: 'GET'),
-        noTip: true);
-    if (res != null && res.result && res.data is List) {
-      for (var item in res.data) {
-        if (item is Map &&
-            item['user'] is Map &&
-            item['user']['login'] == login &&
-            item['content'] == content) {
-          final id = item['id'];
-          if (id is int) return id;
-        }
+  /// 单页上限：GitHub reactions API `per_page` 最大 100
+  static const int _kReactionsPageSize = 100;
+
+  /// 从返回列表里匹配当前用户的 reactionId
+  /// - GitHub `login` 大小写不敏感，这里统一 lower 后比较，避免账号大小写漂移漏匹配
+  static int? _pickMyReactionId(List<dynamic> data, String content, String login) {
+    final target = login.toLowerCase();
+    for (var item in data) {
+      if (item is Map &&
+          item['user'] is Map &&
+          (item['user']['login'] is String) &&
+          (item['user']['login'] as String).toLowerCase() == target &&
+          item['content'] == content) {
+        final id = item['id'];
+        if (id is int) return id;
       }
     }
     return null;
   }
 
-  /// 查询当前用户在指定 issue comment 上、指定 content 的 reaction id
-  static Future<int?> findMyCommentReactionIdRequest(
-      userName, repository, commentId, String content, String login) async {
+  /// 查询当前用户在指定 issue 上、指定 content 的 reaction id
+  ///
+  /// 返回三态：
+  /// - `result=true, data=<int>`：拿到了 reactionId
+  /// - `result=true, data=null`：服务端确认当前用户没 react 过这个 content
+  ///   （**必须**同时满足：单页没找到 + 返回条数 < per_page，即没有下一页）
+  /// - `result=false, data=null`：请求失败或分页可能遗漏，语义未知
+  ///
+  /// 上层需要区分后两者：确认没有才能降级为 add；请求失败必须回滚+报错，
+  /// 不能把网络失败或"分页没翻到"当成"用户没 react 过"，否则 remove 会静默变 add。
+  ///
+  /// 注意：`content` 里的 `+1` 直接拼进 query 会被服务端解释为空格 → 必须做 URL 编码
+  static Future<DataResult> findMyIssueReactionIdRequest(
+      userName, repository, number, String content, String login) async {
     final encoded = Uri.encodeQueryComponent(content);
     String url =
-        "${Address.getIssueCommentReactions(userName, repository, commentId)}?content=$encoded&per_page=100";
+        "${Address.getIssueReactions(userName, repository, number)}?content=$encoded&per_page=$_kReactionsPageSize";
     var res = await httpManager.netFetch(
         url,
         null,
@@ -473,17 +472,51 @@ class IssueRepository {
         },
         Options(method: 'GET'),
         noTip: true);
-    if (res != null && res.result && res.data is List) {
-      for (var item in res.data) {
-        if (item is Map &&
-            item['user'] is Map &&
-            item['user']['login'] == login &&
-            item['content'] == content) {
-          final id = item['id'];
-          if (id is int) return id;
-        }
-      }
+    if (res == null || res.result != true) {
+      return DataResult(null, false);
     }
-    return null;
+    if (res.data is List) {
+      final list = res.data as List;
+      final id = _pickMyReactionId(list, content, login);
+      if (id != null) return DataResult(id, true);
+      // 单页没找到，只有在"这一页没满"时才能断言服务端确实没有；
+      // 页已满意味着可能还有下一页藏着当前用户的记录，此时不能降级 add
+      if (list.length < _kReactionsPageSize) {
+        return DataResult(null, true);
+      }
+      return DataResult(null, false);
+    }
+    return DataResult(null, false);
+  }
+
+  /// 查询当前用户在指定 issue comment 上、指定 content 的 reaction id
+  /// 三态语义同 [findMyIssueReactionIdRequest]
+  static Future<DataResult> findMyCommentReactionIdRequest(
+      userName, repository, commentId, String content, String login) async {
+    final encoded = Uri.encodeQueryComponent(content);
+    String url =
+        "${Address.getIssueCommentReactions(userName, repository, commentId)}?content=$encoded&per_page=$_kReactionsPageSize";
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'GET'),
+        noTip: true);
+    if (res == null || res.result != true) {
+      return DataResult(null, false);
+    }
+    if (res.data is List) {
+      final list = res.data as List;
+      final id = _pickMyReactionId(list, content, login);
+      if (id != null) return DataResult(id, true);
+      if (list.length < _kReactionsPageSize) {
+        return DataResult(null, true);
+      }
+      return DataResult(null, false);
+    }
+    return DataResult(null, false);
   }
 }

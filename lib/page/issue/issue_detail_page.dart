@@ -59,6 +59,12 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///头部信息数据是否加载成功，成功了就可以显示底部状态
   bool headerStatus = false;
 
+  /// 当前正在进行 reaction 请求的 key 集合，防止用户快速连点同一 chip 造成
+  /// 竞态（乐观 UI 与服务端错序、回滚基线互相覆盖）。key 语义：
+  /// - `issue:<content>`
+  /// - `comment:<commentId>:<content>`
+  final Set<String> _reactionInFlight = {};
+
   String? htmlUrl;
 
   /// issue 的头部数据显示
@@ -281,134 +287,196 @@ class _IssueDetailPageState extends State<IssueDetailPage>
     });
   }
 
+  /// setState 前必须校验 mounted，避免用户已离开页面后 setState 抛
+  /// "setState called after dispose"。所有 reaction toggle 里的 setState 走这里
+  void _safeSetState(VoidCallback fn) {
+    if (!mounted) return;
+    setState(fn);
+  }
+
   /// issue 头部 reaction 加/减
   ///
   /// 交互语义（对齐 GitHub 官方）：
   /// - `isAdd=true`（点击「+」入口选一个）→ POST /reactions（幂等 200/201）
-  /// - `isAdd=false`（点已存在 chip）→ GET 反查当前用户的 reactionId：
+  /// - `isAdd=false`（点已存在 chip）→ GET 反查当前用户的 reactionId，三态处理：
   ///   - 拿到 id → DELETE
-  ///   - **拿不到 id** → 说明当前用户没 react 过（chip 是别人加的），**降级为 add**
-  ///     实现 toggle 语义
-  /// - 成功后 `_getHeaderInfo()` 拉一次头部对齐服务端；失败 setState 回滚 + toast
+  ///   - **服务端确认没有** → 说明当前用户没 react 过（chip 是别人加的），
+  ///     **降级为 add** 实现 toggle 语义
+  ///   - **反查请求失败**（网络抖动/限流等） → 回滚 UI + toast，**不降级**，
+  ///     否则用户点"删除"会静默变成"再加一次"
+  /// - 同一 `(target, content)` 加 in-flight 锁，防止快速连点造成竞态
+  /// - 回滚一律走**反向 increment**（细粒度），不把整块 reactions 换回快照，
+  ///   否则并发的其它 content chip 的乐观值会被这一路的回滚抹掉
+  /// - 所有 setState 前先校验 mounted，避免离开页面后崩
+  /// - 成功后 `_getHeaderInfo()` 拉一次头部对齐服务端
   Future<void> _onIssueReactionToggle(String content, bool isAdd) async {
-    final addFailedText = context.l10n.issue_reaction_failed;
-    final removeFailedText = context.l10n.issue_reaction_remove_failed;
-    final current = issueHeaderViewModel.reactions ?? Reactions.empty();
-    setState(() {
-      issueHeaderViewModel.reactions =
-          current.increment(content, isAdd ? 1 : -1);
-    });
-    if (isAdd) {
-      final res = await IssueRepository.addIssueReactionRequest(
-          widget.userName, widget.reposName, widget.issueNum, content);
-      if (res == null || res.result != true) {
-        setState(() {
-          issueHeaderViewModel.reactions = current;
-        });
-        showToast(addFailedText);
-      } else {
-        _getHeaderInfo();
+    final key = 'issue:$content';
+    if (_reactionInFlight.contains(key)) return;
+    _reactionInFlight.add(key);
+    try {
+      final addFailedText = context.l10n.issue_reaction_failed;
+      final removeFailedText = context.l10n.issue_reaction_remove_failed;
+      // 乐观 UI：加 delta；回滚时对同一 content 增量 -delta
+      final int delta = isAdd ? 1 : -1;
+      _safeSetState(() {
+        final base = issueHeaderViewModel.reactions ?? Reactions.empty();
+        issueHeaderViewModel.reactions = base.increment(content, delta);
+      });
+      if (isAdd) {
+        final res = await IssueRepository.addIssueReactionRequest(
+            widget.userName, widget.reposName, widget.issueNum, content);
+        if (res == null || res.result != true) {
+          _safeSetState(() {
+            final now = issueHeaderViewModel.reactions ?? Reactions.empty();
+            issueHeaderViewModel.reactions = now.increment(content, -delta);
+          });
+          if (mounted) showToast(addFailedText);
+        } else {
+          if (mounted) _getHeaderInfo();
+        }
+        return;
       }
-      return;
-    }
-    // remove 分支：需要当前用户 login 才能 GET 反查
-    final login =
-        StoreProvider.of<GSYState>(context).state.userInfo?.login;
-    if (login == null || login.isEmpty) {
-      setState(() {
-        issueHeaderViewModel.reactions = current;
-      });
-      showToast(removeFailedText);
-      return;
-    }
-    final reactionId = await IssueRepository.findMyIssueReactionIdRequest(
-        widget.userName, widget.reposName, widget.issueNum, content, login);
-    if (reactionId == null) {
-      // 当前用户没 react 过这条，降级为 add（toggle 语义）
-      // 先把乐观扣减撤回，再加 1，让 UI 呈现"添加了"
-      setState(() {
-        issueHeaderViewModel.reactions = current.increment(content, 1);
-      });
-      final res = await IssueRepository.addIssueReactionRequest(
-          widget.userName, widget.reposName, widget.issueNum, content);
-      if (res == null || res.result != true) {
-        setState(() {
-          issueHeaderViewModel.reactions = current;
+      // remove 分支：需要当前用户 login 才能 GET 反查
+      if (!mounted) return;
+      final login =
+          StoreProvider.of<GSYState>(context).state.userInfo?.login;
+      if (login == null || login.isEmpty) {
+        _safeSetState(() {
+          final now = issueHeaderViewModel.reactions ?? Reactions.empty();
+          issueHeaderViewModel.reactions = now.increment(content, -delta);
         });
-        showToast(addFailedText);
-      } else {
-        _getHeaderInfo();
+        if (mounted) showToast(removeFailedText);
+        return;
       }
-      return;
-    }
-    final res = await IssueRepository.deleteIssueReactionRequest(
-        widget.userName, widget.reposName, widget.issueNum, reactionId);
-    if (res == null || res.result != true) {
-      setState(() {
-        issueHeaderViewModel.reactions = current;
-      });
-      showToast(removeFailedText);
-    } else {
-      _getHeaderInfo();
+      final findRes = await IssueRepository.findMyIssueReactionIdRequest(
+          widget.userName, widget.reposName, widget.issueNum, content, login);
+      if (findRes.result != true) {
+        // 反查请求失败或分页可能遗漏：语义未知，不降级 add，回滚 UI + 报错
+        _safeSetState(() {
+          final now = issueHeaderViewModel.reactions ?? Reactions.empty();
+          issueHeaderViewModel.reactions = now.increment(content, -delta);
+        });
+        if (mounted) showToast(removeFailedText);
+        return;
+      }
+      final reactionId = findRes.data as int?;
+      if (reactionId == null) {
+        // 服务端确认当前用户没 react 过这条，降级为 add（toggle 语义）
+        // 先撤销乐观扣减（-delta = +1），再加 +1，让 UI 呈现"添加了"
+        _safeSetState(() {
+          final now = issueHeaderViewModel.reactions ?? Reactions.empty();
+          issueHeaderViewModel.reactions = now.increment(content, -delta + 1);
+        });
+        final res = await IssueRepository.addIssueReactionRequest(
+            widget.userName, widget.reposName, widget.issueNum, content);
+        if (res == null || res.result != true) {
+          _safeSetState(() {
+            final now = issueHeaderViewModel.reactions ?? Reactions.empty();
+            // 撤销上一步的 +(-delta + 1) = 撤 +2，回到函数入口状态
+            issueHeaderViewModel.reactions = now.increment(content, delta - 1);
+          });
+          if (mounted) showToast(addFailedText);
+        } else {
+          if (mounted) _getHeaderInfo();
+        }
+        return;
+      }
+      final res = await IssueRepository.deleteIssueReactionRequest(
+          widget.userName, widget.reposName, widget.issueNum, reactionId);
+      if (res == null || res.result != true) {
+        _safeSetState(() {
+          final now = issueHeaderViewModel.reactions ?? Reactions.empty();
+          issueHeaderViewModel.reactions = now.increment(content, -delta);
+        });
+        if (mounted) showToast(removeFailedText);
+      } else {
+        if (mounted) _getHeaderInfo();
+      }
+    } finally {
+      _reactionInFlight.remove(key);
     }
   }
 
   /// 单条评论的 reaction 加/减，语义同头部：
   /// - 点「+」入口 = add
-  /// - 点已存在 chip = 尝试 remove，找不到当前用户的 reactionId 时降级为 add
+  /// - 点已存在 chip = 尝试 remove；服务端确认没 react → 降级 add；反查失败 → 回滚
+  /// - 回滚一律走反向 increment（细粒度），避免并发抹掉其它 content 的乐观值
   Future<void> _onCommentReactionToggle(
       Issue comment, String content, bool isAdd) async {
     if (comment.id == null) return;
-    final addFailedText = context.l10n.issue_reaction_failed;
-    final removeFailedText = context.l10n.issue_reaction_remove_failed;
-    final current = comment.reactions ?? Reactions.empty();
-    setState(() {
-      comment.reactions = current.increment(content, isAdd ? 1 : -1);
-    });
-    if (isAdd) {
-      final res = await IssueRepository.addCommentReactionRequest(
-          widget.userName, widget.reposName, comment.id, content);
-      if (res == null || res.result != true) {
-        setState(() {
-          comment.reactions = current;
-        });
-        showToast(addFailedText);
+    final key = 'comment:${comment.id}:$content';
+    if (_reactionInFlight.contains(key)) return;
+    _reactionInFlight.add(key);
+    try {
+      final addFailedText = context.l10n.issue_reaction_failed;
+      final removeFailedText = context.l10n.issue_reaction_remove_failed;
+      final int delta = isAdd ? 1 : -1;
+      _safeSetState(() {
+        final base = comment.reactions ?? Reactions.empty();
+        comment.reactions = base.increment(content, delta);
+      });
+      if (isAdd) {
+        final res = await IssueRepository.addCommentReactionRequest(
+            widget.userName, widget.reposName, comment.id, content);
+        if (res == null || res.result != true) {
+          _safeSetState(() {
+            final now = comment.reactions ?? Reactions.empty();
+            comment.reactions = now.increment(content, -delta);
+          });
+          if (mounted) showToast(addFailedText);
+        }
+        return;
       }
-      return;
-    }
-    final login =
-        StoreProvider.of<GSYState>(context).state.userInfo?.login;
-    if (login == null || login.isEmpty) {
-      setState(() {
-        comment.reactions = current;
-      });
-      showToast(removeFailedText);
-      return;
-    }
-    final reactionId = await IssueRepository.findMyCommentReactionIdRequest(
-        widget.userName, widget.reposName, comment.id, content, login);
-    if (reactionId == null) {
-      // 当前用户没 react 过这条，降级为 add
-      setState(() {
-        comment.reactions = current.increment(content, 1);
-      });
-      final res = await IssueRepository.addCommentReactionRequest(
-          widget.userName, widget.reposName, comment.id, content);
-      if (res == null || res.result != true) {
-        setState(() {
-          comment.reactions = current;
+      if (!mounted) return;
+      final login =
+          StoreProvider.of<GSYState>(context).state.userInfo?.login;
+      if (login == null || login.isEmpty) {
+        _safeSetState(() {
+          final now = comment.reactions ?? Reactions.empty();
+          comment.reactions = now.increment(content, -delta);
         });
-        showToast(addFailedText);
+        if (mounted) showToast(removeFailedText);
+        return;
       }
-      return;
-    }
-    final res = await IssueRepository.deleteCommentReactionRequest(
-        widget.userName, widget.reposName, comment.id, reactionId);
-    if (res == null || res.result != true) {
-      setState(() {
-        comment.reactions = current;
-      });
-      showToast(removeFailedText);
+      final findRes = await IssueRepository.findMyCommentReactionIdRequest(
+          widget.userName, widget.reposName, comment.id, content, login);
+      if (findRes.result != true) {
+        _safeSetState(() {
+          final now = comment.reactions ?? Reactions.empty();
+          comment.reactions = now.increment(content, -delta);
+        });
+        if (mounted) showToast(removeFailedText);
+        return;
+      }
+      final reactionId = findRes.data as int?;
+      if (reactionId == null) {
+        // 服务端确认当前用户没 react 过，降级为 add
+        _safeSetState(() {
+          final now = comment.reactions ?? Reactions.empty();
+          comment.reactions = now.increment(content, -delta + 1);
+        });
+        final res = await IssueRepository.addCommentReactionRequest(
+            widget.userName, widget.reposName, comment.id, content);
+        if (res == null || res.result != true) {
+          _safeSetState(() {
+            final now = comment.reactions ?? Reactions.empty();
+            comment.reactions = now.increment(content, delta - 1);
+          });
+          if (mounted) showToast(addFailedText);
+        }
+        return;
+      }
+      final res = await IssueRepository.deleteCommentReactionRequest(
+          widget.userName, widget.reposName, comment.id, reactionId);
+      if (res == null || res.result != true) {
+        _safeSetState(() {
+          final now = comment.reactions ?? Reactions.empty();
+          comment.reactions = now.increment(content, -delta);
+        });
+        if (mounted) showToast(removeFailedText);
+      }
+    } finally {
+      _reactionInFlight.remove(key);
     }
   }
 
