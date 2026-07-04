@@ -313,6 +313,36 @@ class IssueRepository {
     }
   }
 
+  /// 单条 issue comment 详情 GET
+  ///
+  /// 用途：reaction toggle 成功后，把单条 comment 与服务端对齐（拿回权威的
+  /// `reactions` summary），避免"本地乐观值"和"服务端真实值"之间偏移。
+  /// 走 `application/vnd.github.squirrel-girl-preview+json` 才能确保 reactions
+  /// 字段被返回；同时带 `.full+json` 拿 body_html 保持与列表项一致。
+  ///
+  /// `noTip=true`：这是**成功后的对齐请求**，即使失败也不该弹错，UI 只是
+  /// 暂时保留本地乐观值（下次下拉刷新会再对齐），不能给用户看到"成功了但报错"。
+  static Future<DataResult> getIssueCommentDetailRequest(
+      userName, repository, commentId) async {
+    String url = Address.editComment(userName, repository, commentId);
+    var res = await httpManager.netFetch(
+        url,
+        null,
+        {
+          "Accept":
+              'application/vnd.github.squirrel-girl-preview+json,application/vnd.github.VERSION.full+json'
+        },
+        Options(method: 'GET'),
+        noTip: true);
+    if (res == null || res.result != true) {
+      return DataResult(null, false);
+    }
+    if (res.data is Map) {
+      return DataResult(Issue.fromJson(Map<String, dynamic>.from(res.data)), true);
+    }
+    return DataResult(null, false);
+  }
+
   /// 拉取 issue timeline，含 labeled/assigned/milestoned/renamed/closed/reopened/
   /// locked/unlocked/referenced/cross-referenced/commented 等事件
   /// 注意：timeline 端点在 GitHub 早期需要 `mockingbird-preview` Accept，目前已 GA。

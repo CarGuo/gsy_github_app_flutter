@@ -401,6 +401,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   /// - 点「+」入口 = add
   /// - 点已存在 chip = 尝试 remove；服务端确认没 react → 降级 add；反查失败 → 回滚
   /// - 回滚一律走反向 increment（细粒度），避免并发抹掉其它 content 的乐观值
+  /// - 成功后异步拉一次单条 comment 详情，把 reactions 与服务端对齐，避免
+  ///   乐观值和服务端权威值偏移（若对齐请求本身失败则保留本地值，下次刷新恢复）
   Future<void> _onCommentReactionToggle(
       Issue comment, String content, bool isAdd) async {
     if (comment.id == null) return;
@@ -424,6 +426,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
             comment.reactions = now.increment(content, -delta);
           });
           if (mounted) showToast(addFailedText);
+        } else {
+          await _refreshCommentReactions(comment);
         }
         return;
       }
@@ -463,6 +467,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
             comment.reactions = now.increment(content, delta - 1);
           });
           if (mounted) showToast(addFailedText);
+        } else {
+          await _refreshCommentReactions(comment);
         }
         return;
       }
@@ -474,10 +480,31 @@ class _IssueDetailPageState extends State<IssueDetailPage>
           comment.reactions = now.increment(content, -delta);
         });
         if (mounted) showToast(removeFailedText);
+      } else {
+        await _refreshCommentReactions(comment);
       }
     } finally {
       _reactionInFlight.remove(key);
     }
+  }
+
+  /// 单条 comment reaction 成功后与服务端对齐
+  ///
+  /// - 只对齐 reactions 字段，其它字段（body/updatedAt 等）保留本地值，
+  ///   避免用户已经 hover/select 的状态被覆盖
+  /// - 对齐请求本身失败静默保留本地乐观值，下次列表刷新自然恢复
+  /// - `mounted` 校验前置，避免离开页面后 setState 抛
+  Future<void> _refreshCommentReactions(Issue comment) async {
+    if (comment.id == null) return;
+    final res = await IssueRepository.getIssueCommentDetailRequest(
+        widget.userName, widget.reposName, comment.id);
+    if (!mounted) return;
+    if (res.result != true) return;
+    final fresh = res.data;
+    if (fresh is! Issue) return;
+    _safeSetState(() {
+      comment.reactions = fresh.reactions;
+    });
   }
 
   ///编辑回复
