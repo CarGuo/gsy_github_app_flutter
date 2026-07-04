@@ -208,6 +208,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trend_all => '전체';
 
   @override
+  String get trend_all_languages => '모든 언어';
+
+  @override
   String get user_tab_repos => '저장소';
 
   @override

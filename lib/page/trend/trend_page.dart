@@ -109,7 +109,9 @@ class TrendPageState extends ConsumerState<TrendPage>
             const EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
         child: Row(
           children: <Widget>[
-            _renderHeaderPopItem(selectTime!.name, trendTimeList,
+            // 左边：时间维筛（今日 / 本周 / 本月）— 用 access_time icon 强化"时间"语义
+            _renderHeaderPopItem(
+                selectTime!.name, trendTimeList, Icons.access_time,
                 (TrendTypeModel result) {
               if (trendLoadingState) {
                 showToast(context.l10n.loading_text);
@@ -128,7 +130,11 @@ class TrendPageState extends ConsumerState<TrendPage>
               });
             }),
             Container(height: 10.0, width: 0.5, color: GSYColors.white),
-            _renderHeaderPopItem(selectType!.name, trendTypeList,
+            // 右边：语言维筛（所有语言 / Java / Kotlin / …）— 用 code icon 强化"编程语言"语义
+            // 之前默认文案是"全部"，与时间维的"今日"放一起容易被误解成两个都是时间维度，
+            // 现在文案改成"所有语言" + 图标双重区分。
+            _renderHeaderPopItem(
+                selectType!.name, trendTypeList, Icons.code,
                 (TrendTypeModel result) {
               if (trendLoadingState) {
                 showToast(context.l10n.loading_text);
@@ -153,7 +159,7 @@ class TrendPageState extends ConsumerState<TrendPage>
   }
 
   ///或者头部可选弹出item容器
-  _renderHeaderPopItem(String data, List<TrendTypeModel> list,
+  _renderHeaderPopItem(String data, List<TrendTypeModel> list, IconData icon,
       PopupMenuItemSelected<TrendTypeModel> onSelected) {
     return Expanded(
       child: PopupMenuButton<TrendTypeModel>(
@@ -161,7 +167,27 @@ class TrendPageState extends ConsumerState<TrendPage>
         itemBuilder: (BuildContext context) {
           return _renderHeaderPopItemChild(list);
         },
-        child: Center(child: Text(data, style: GSYConstant.middleTextWhite)),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 16, color: GSYColors.white),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  data,
+                  style: GSYConstant.middleTextWhite,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 2),
+              Icon(Icons.arrow_drop_down,
+                  size: 18, color: GSYColors.white),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -359,7 +385,7 @@ List<TrendTypeModel> trendTime(BuildContext context) {
 ///趋势数据语言过滤
 List<TrendTypeModel> trendType(BuildContext context) {
   return [
-    TrendTypeModel(context.l10n.trend_all, null),
+    TrendTypeModel(context.l10n.trend_all_languages, null),
     TrendTypeModel("Java", "Java"),
     TrendTypeModel("Kotlin", "Kotlin"),
     TrendTypeModel("Dart", "Dart"),

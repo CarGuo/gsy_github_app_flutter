@@ -208,6 +208,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trend_all => '全部';
 
   @override
+  String get trend_all_languages => '所有语言';
+
+  @override
   String get user_tab_repos => '仓库';
 
   @override

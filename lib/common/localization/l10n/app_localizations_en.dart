@@ -210,6 +210,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trend_all => 'all';
 
   @override
+  String get trend_all_languages => 'All languages';
+
+  @override
   String get user_tab_repos => 'Repository';
 
   @override

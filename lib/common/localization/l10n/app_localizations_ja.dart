@@ -209,6 +209,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trend_all => 'すべて';
 
   @override
+  String get trend_all_languages => 'すべての言語';
+
+  @override
   String get user_tab_repos => 'リポジトリ';
 
   @override

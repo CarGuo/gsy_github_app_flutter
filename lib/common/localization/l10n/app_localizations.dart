@@ -498,6 +498,12 @@ abstract class AppLocalizations {
   /// **'all'**
   String get trend_all;
 
+  /// No description provided for @trend_all_languages.
+  ///
+  /// In en, this message translates to:
+  /// **'All languages'**
+  String get trend_all_languages;
+
   /// No description provided for @user_tab_repos.
   ///
   /// In en, this message translates to:

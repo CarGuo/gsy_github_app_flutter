@@ -65,6 +65,7 @@
   "trend_week": "week",
   "trend_month": "month",
   "trend_all": "all",
+  "trend_all_languages": "All languages",
   "user_tab_repos": "Repository",
   "user_tab_fans": "Follower",
   "user_tab_focus": "Focus",
