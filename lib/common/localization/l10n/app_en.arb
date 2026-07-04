@@ -285,5 +285,115 @@
     "placeholders": {
       "count": {"type": "int"}
     }
+  },
+
+  "pr_timeline_reviewed_approved": "{actor} approved these changes",
+  "@pr_timeline_reviewed_approved": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_reviewed_changes_requested": "{actor} requested changes",
+  "@pr_timeline_reviewed_changes_requested": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_reviewed_commented": "{actor} reviewed",
+  "@pr_timeline_reviewed_commented": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_reviewed_dismissed": "{actor} dismissed a review",
+  "@pr_timeline_reviewed_dismissed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_review_requested": "{actor} requested a review from {reviewer}",
+  "@pr_timeline_review_requested": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "reviewer": {"type": "String"}
+    }
+  },
+  "pr_timeline_review_request_removed": "{actor} removed the review request from {reviewer}",
+  "@pr_timeline_review_request_removed": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "reviewer": {"type": "String"}
+    }
+  },
+  "pr_timeline_ready_for_review": "{actor} marked this pull request as ready for review",
+  "@pr_timeline_ready_for_review": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_convert_to_draft": "{actor} marked this pull request as draft",
+  "@pr_timeline_convert_to_draft": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_head_ref_force_pushed": "{actor} force-pushed the head branch",
+  "@pr_timeline_head_ref_force_pushed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_base_ref_force_pushed": "{actor} force-pushed the base branch",
+  "@pr_timeline_base_ref_force_pushed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_head_ref_deleted": "{actor} deleted the head branch",
+  "@pr_timeline_head_ref_deleted": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_head_ref_restored": "{actor} restored the head branch",
+  "@pr_timeline_head_ref_restored": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_base_ref_changed": "{actor} changed the base branch",
+  "@pr_timeline_base_ref_changed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_auto_merge_enabled": "{actor} enabled auto-merge",
+  "@pr_timeline_auto_merge_enabled": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_auto_merge_disabled": "{actor} disabled auto-merge",
+  "@pr_timeline_auto_merge_disabled": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_committed": "{actor} committed {shortSha} — {message}",
+  "@pr_timeline_committed": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "shortSha": {"type": "String"},
+      "message": {"type": "String"}
+    }
+  },
+  "pr_timeline_committed_no_message": "{actor} committed {shortSha}",
+  "@pr_timeline_committed_no_message": {
+    "placeholders": {
+      "actor": {"type": "String"},
+      "shortSha": {"type": "String"}
+    }
+  },
+  "pr_timeline_copilot_work_started": "{actor} started working on this PR",
+  "@pr_timeline_copilot_work_started": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_copilot_work_finished": "{actor} finished working on this PR",
+  "@pr_timeline_copilot_work_finished": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_added_to_merge_queue": "{actor} added this pull request to the merge queue",
+  "@pr_timeline_added_to_merge_queue": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "pr_timeline_removed_from_merge_queue": "{actor} removed this pull request from the merge queue",
+  "@pr_timeline_removed_from_merge_queue": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_added_to_project": "{actor} added this to a project",
+  "@issue_timeline_added_to_project": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_project_status_changed": "{actor} changed the project status",
+  "@issue_timeline_project_status_changed": {
+    "placeholders": {"actor": {"type": "String"}}
+  },
+  "issue_timeline_issue_type_added": "{actor} set the issue type",
+  "@issue_timeline_issue_type_added": {
+    "placeholders": {"actor": {"type": "String"}}
   }
 }

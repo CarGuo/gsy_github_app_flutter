@@ -616,4 +616,124 @@ class AppLocalizationsKo extends AppLocalizations {
   String pr_commits(int count) {
     return '$count개 커밋';
   }
+
+  @override
+  String pr_timeline_reviewed_approved(String actor) {
+    return '$actor 님이 변경 사항을 승인했습니다';
+  }
+
+  @override
+  String pr_timeline_reviewed_changes_requested(String actor) {
+    return '$actor 님이 변경을 요청했습니다';
+  }
+
+  @override
+  String pr_timeline_reviewed_commented(String actor) {
+    return '$actor 님이 리뷰했습니다';
+  }
+
+  @override
+  String pr_timeline_reviewed_dismissed(String actor) {
+    return '$actor 님이 리뷰를 취소했습니다';
+  }
+
+  @override
+  String pr_timeline_review_requested(String actor, String reviewer) {
+    return '$actor 님이 $reviewer 에게 리뷰를 요청했습니다';
+  }
+
+  @override
+  String pr_timeline_review_request_removed(String actor, String reviewer) {
+    return '$actor 님이 $reviewer 에 대한 리뷰 요청을 취소했습니다';
+  }
+
+  @override
+  String pr_timeline_ready_for_review(String actor) {
+    return '$actor 님이 이 PR을 리뷰 가능 상태로 표시했습니다';
+  }
+
+  @override
+  String pr_timeline_convert_to_draft(String actor) {
+    return '$actor 님이 이 PR을 초안으로 전환했습니다';
+  }
+
+  @override
+  String pr_timeline_head_ref_force_pushed(String actor) {
+    return '$actor 님이 헤드 브랜치를 강제 푸시했습니다';
+  }
+
+  @override
+  String pr_timeline_base_ref_force_pushed(String actor) {
+    return '$actor 님이 베이스 브랜치를 강제 푸시했습니다';
+  }
+
+  @override
+  String pr_timeline_head_ref_deleted(String actor) {
+    return '$actor 님이 헤드 브랜치를 삭제했습니다';
+  }
+
+  @override
+  String pr_timeline_head_ref_restored(String actor) {
+    return '$actor 님이 헤드 브랜치를 복원했습니다';
+  }
+
+  @override
+  String pr_timeline_base_ref_changed(String actor) {
+    return '$actor 님이 베이스 브랜치를 변경했습니다';
+  }
+
+  @override
+  String pr_timeline_auto_merge_enabled(String actor) {
+    return '$actor 님이 자동 병합을 활성화했습니다';
+  }
+
+  @override
+  String pr_timeline_auto_merge_disabled(String actor) {
+    return '$actor 님이 자동 병합을 비활성화했습니다';
+  }
+
+  @override
+  String pr_timeline_committed(String actor, String shortSha, String message) {
+    return '$actor 님이 $shortSha 를 커밋했습니다 — $message';
+  }
+
+  @override
+  String pr_timeline_committed_no_message(String actor, String shortSha) {
+    return '$actor 님이 $shortSha 를 커밋했습니다';
+  }
+
+  @override
+  String pr_timeline_copilot_work_started(String actor) {
+    return '$actor 님이 이 PR 작업을 시작했습니다';
+  }
+
+  @override
+  String pr_timeline_copilot_work_finished(String actor) {
+    return '$actor 님이 이 PR 작업을 완료했습니다';
+  }
+
+  @override
+  String pr_timeline_added_to_merge_queue(String actor) {
+    return '$actor 님이 이 PR을 병합 대기열에 추가했습니다';
+  }
+
+  @override
+  String pr_timeline_removed_from_merge_queue(String actor) {
+    return '$actor 님이 이 PR을 병합 대기열에서 제거했습니다';
+  }
+
+  @override
+  String issue_timeline_added_to_project(String actor) {
+    return '$actor 님이 프로젝트에 추가했습니다';
+  }
+
+  @override
+  String issue_timeline_project_status_changed(String actor) {
+    return '$actor 님이 프로젝트 상태를 변경했습니다';
+  }
+
+  @override
+  String issue_timeline_issue_type_added(String actor) {
+    return '$actor 님이 Issue 유형을 설정했습니다';
+  }
 }

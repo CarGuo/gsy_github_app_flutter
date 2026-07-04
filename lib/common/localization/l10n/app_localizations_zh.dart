@@ -616,4 +616,124 @@ class AppLocalizationsZh extends AppLocalizations {
   String pr_commits(int count) {
     return '$count 次提交';
   }
+
+  @override
+  String pr_timeline_reviewed_approved(String actor) {
+    return '$actor 通过了此次变更';
+  }
+
+  @override
+  String pr_timeline_reviewed_changes_requested(String actor) {
+    return '$actor 请求修改';
+  }
+
+  @override
+  String pr_timeline_reviewed_commented(String actor) {
+    return '$actor 提交了评审意见';
+  }
+
+  @override
+  String pr_timeline_reviewed_dismissed(String actor) {
+    return '$actor 撤销了一次评审';
+  }
+
+  @override
+  String pr_timeline_review_requested(String actor, String reviewer) {
+    return '$actor 请求 $reviewer 评审';
+  }
+
+  @override
+  String pr_timeline_review_request_removed(String actor, String reviewer) {
+    return '$actor 取消了对 $reviewer 的评审请求';
+  }
+
+  @override
+  String pr_timeline_ready_for_review(String actor) {
+    return '$actor 将此 PR 标记为可评审';
+  }
+
+  @override
+  String pr_timeline_convert_to_draft(String actor) {
+    return '$actor 将此 PR 转为草稿';
+  }
+
+  @override
+  String pr_timeline_head_ref_force_pushed(String actor) {
+    return '$actor 对源分支执行了强制推送';
+  }
+
+  @override
+  String pr_timeline_base_ref_force_pushed(String actor) {
+    return '$actor 对目标分支执行了强制推送';
+  }
+
+  @override
+  String pr_timeline_head_ref_deleted(String actor) {
+    return '$actor 删除了源分支';
+  }
+
+  @override
+  String pr_timeline_head_ref_restored(String actor) {
+    return '$actor 恢复了源分支';
+  }
+
+  @override
+  String pr_timeline_base_ref_changed(String actor) {
+    return '$actor 修改了目标分支';
+  }
+
+  @override
+  String pr_timeline_auto_merge_enabled(String actor) {
+    return '$actor 启用了自动合并';
+  }
+
+  @override
+  String pr_timeline_auto_merge_disabled(String actor) {
+    return '$actor 关闭了自动合并';
+  }
+
+  @override
+  String pr_timeline_committed(String actor, String shortSha, String message) {
+    return '$actor 提交了 $shortSha — $message';
+  }
+
+  @override
+  String pr_timeline_committed_no_message(String actor, String shortSha) {
+    return '$actor 提交了 $shortSha';
+  }
+
+  @override
+  String pr_timeline_copilot_work_started(String actor) {
+    return '$actor 开始处理此 PR';
+  }
+
+  @override
+  String pr_timeline_copilot_work_finished(String actor) {
+    return '$actor 完成了对此 PR 的处理';
+  }
+
+  @override
+  String pr_timeline_added_to_merge_queue(String actor) {
+    return '$actor 将此 PR 加入合并队列';
+  }
+
+  @override
+  String pr_timeline_removed_from_merge_queue(String actor) {
+    return '$actor 将此 PR 移出合并队列';
+  }
+
+  @override
+  String issue_timeline_added_to_project(String actor) {
+    return '$actor 将其加入项目';
+  }
+
+  @override
+  String issue_timeline_project_status_changed(String actor) {
+    return '$actor 变更了项目状态';
+  }
+
+  @override
+  String issue_timeline_issue_type_added(String actor) {
+    return '$actor 设置了 Issue 类型';
+  }
 }

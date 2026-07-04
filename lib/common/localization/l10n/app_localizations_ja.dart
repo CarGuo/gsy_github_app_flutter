@@ -617,4 +617,124 @@ class AppLocalizationsJa extends AppLocalizations {
   String pr_commits(int count) {
     return '$count 件のコミット';
   }
+
+  @override
+  String pr_timeline_reviewed_approved(String actor) {
+    return '$actor が変更を承認しました';
+  }
+
+  @override
+  String pr_timeline_reviewed_changes_requested(String actor) {
+    return '$actor が変更を要求しました';
+  }
+
+  @override
+  String pr_timeline_reviewed_commented(String actor) {
+    return '$actor がレビューしました';
+  }
+
+  @override
+  String pr_timeline_reviewed_dismissed(String actor) {
+    return '$actor がレビューを却下しました';
+  }
+
+  @override
+  String pr_timeline_review_requested(String actor, String reviewer) {
+    return '$actor が $reviewer にレビューを依頼しました';
+  }
+
+  @override
+  String pr_timeline_review_request_removed(String actor, String reviewer) {
+    return '$actor が $reviewer へのレビュー依頼を取り消しました';
+  }
+
+  @override
+  String pr_timeline_ready_for_review(String actor) {
+    return '$actor がこの PR をレビュー可能に設定しました';
+  }
+
+  @override
+  String pr_timeline_convert_to_draft(String actor) {
+    return '$actor がこの PR を下書きに変更しました';
+  }
+
+  @override
+  String pr_timeline_head_ref_force_pushed(String actor) {
+    return '$actor がヘッドブランチに強制プッシュしました';
+  }
+
+  @override
+  String pr_timeline_base_ref_force_pushed(String actor) {
+    return '$actor がベースブランチに強制プッシュしました';
+  }
+
+  @override
+  String pr_timeline_head_ref_deleted(String actor) {
+    return '$actor がヘッドブランチを削除しました';
+  }
+
+  @override
+  String pr_timeline_head_ref_restored(String actor) {
+    return '$actor がヘッドブランチを復元しました';
+  }
+
+  @override
+  String pr_timeline_base_ref_changed(String actor) {
+    return '$actor がベースブランチを変更しました';
+  }
+
+  @override
+  String pr_timeline_auto_merge_enabled(String actor) {
+    return '$actor が自動マージを有効にしました';
+  }
+
+  @override
+  String pr_timeline_auto_merge_disabled(String actor) {
+    return '$actor が自動マージを無効にしました';
+  }
+
+  @override
+  String pr_timeline_committed(String actor, String shortSha, String message) {
+    return '$actor が $shortSha をコミットしました — $message';
+  }
+
+  @override
+  String pr_timeline_committed_no_message(String actor, String shortSha) {
+    return '$actor が $shortSha をコミットしました';
+  }
+
+  @override
+  String pr_timeline_copilot_work_started(String actor) {
+    return '$actor がこの PR の作業を開始しました';
+  }
+
+  @override
+  String pr_timeline_copilot_work_finished(String actor) {
+    return '$actor がこの PR の作業を完了しました';
+  }
+
+  @override
+  String pr_timeline_added_to_merge_queue(String actor) {
+    return '$actor がこの PR をマージキューに追加しました';
+  }
+
+  @override
+  String pr_timeline_removed_from_merge_queue(String actor) {
+    return '$actor がこの PR をマージキューから削除しました';
+  }
+
+  @override
+  String issue_timeline_added_to_project(String actor) {
+    return '$actor がプロジェクトに追加しました';
+  }
+
+  @override
+  String issue_timeline_project_status_changed(String actor) {
+    return '$actor がプロジェクトのステータスを変更しました';
+  }
+
+  @override
+  String issue_timeline_issue_type_added(String actor) {
+    return '$actor が Issue のタイプを設定しました';
+  }
 }

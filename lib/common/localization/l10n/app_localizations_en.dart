@@ -619,4 +619,124 @@ class AppLocalizationsEn extends AppLocalizations {
   String pr_commits(int count) {
     return '$count commits';
   }
+
+  @override
+  String pr_timeline_reviewed_approved(String actor) {
+    return '$actor approved these changes';
+  }
+
+  @override
+  String pr_timeline_reviewed_changes_requested(String actor) {
+    return '$actor requested changes';
+  }
+
+  @override
+  String pr_timeline_reviewed_commented(String actor) {
+    return '$actor reviewed';
+  }
+
+  @override
+  String pr_timeline_reviewed_dismissed(String actor) {
+    return '$actor dismissed a review';
+  }
+
+  @override
+  String pr_timeline_review_requested(String actor, String reviewer) {
+    return '$actor requested a review from $reviewer';
+  }
+
+  @override
+  String pr_timeline_review_request_removed(String actor, String reviewer) {
+    return '$actor removed the review request from $reviewer';
+  }
+
+  @override
+  String pr_timeline_ready_for_review(String actor) {
+    return '$actor marked this pull request as ready for review';
+  }
+
+  @override
+  String pr_timeline_convert_to_draft(String actor) {
+    return '$actor marked this pull request as draft';
+  }
+
+  @override
+  String pr_timeline_head_ref_force_pushed(String actor) {
+    return '$actor force-pushed the head branch';
+  }
+
+  @override
+  String pr_timeline_base_ref_force_pushed(String actor) {
+    return '$actor force-pushed the base branch';
+  }
+
+  @override
+  String pr_timeline_head_ref_deleted(String actor) {
+    return '$actor deleted the head branch';
+  }
+
+  @override
+  String pr_timeline_head_ref_restored(String actor) {
+    return '$actor restored the head branch';
+  }
+
+  @override
+  String pr_timeline_base_ref_changed(String actor) {
+    return '$actor changed the base branch';
+  }
+
+  @override
+  String pr_timeline_auto_merge_enabled(String actor) {
+    return '$actor enabled auto-merge';
+  }
+
+  @override
+  String pr_timeline_auto_merge_disabled(String actor) {
+    return '$actor disabled auto-merge';
+  }
+
+  @override
+  String pr_timeline_committed(String actor, String shortSha, String message) {
+    return '$actor committed $shortSha — $message';
+  }
+
+  @override
+  String pr_timeline_committed_no_message(String actor, String shortSha) {
+    return '$actor committed $shortSha';
+  }
+
+  @override
+  String pr_timeline_copilot_work_started(String actor) {
+    return '$actor started working on this PR';
+  }
+
+  @override
+  String pr_timeline_copilot_work_finished(String actor) {
+    return '$actor finished working on this PR';
+  }
+
+  @override
+  String pr_timeline_added_to_merge_queue(String actor) {
+    return '$actor added this pull request to the merge queue';
+  }
+
+  @override
+  String pr_timeline_removed_from_merge_queue(String actor) {
+    return '$actor removed this pull request from the merge queue';
+  }
+
+  @override
+  String issue_timeline_added_to_project(String actor) {
+    return '$actor added this to a project';
+  }
+
+  @override
+  String issue_timeline_project_status_changed(String actor) {
+    return '$actor changed the project status';
+  }
+
+  @override
+  String issue_timeline_issue_type_added(String actor) {
+    return '$actor set the issue type';
+  }
 }

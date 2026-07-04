@@ -1229,6 +1229,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} commits'**
   String pr_commits(int count);
+
+  /// No description provided for @pr_timeline_reviewed_approved.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} approved these changes'**
+  String pr_timeline_reviewed_approved(String actor);
+
+  /// No description provided for @pr_timeline_reviewed_changes_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} requested changes'**
+  String pr_timeline_reviewed_changes_requested(String actor);
+
+  /// No description provided for @pr_timeline_reviewed_commented.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} reviewed'**
+  String pr_timeline_reviewed_commented(String actor);
+
+  /// No description provided for @pr_timeline_reviewed_dismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} dismissed a review'**
+  String pr_timeline_reviewed_dismissed(String actor);
+
+  /// No description provided for @pr_timeline_review_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} requested a review from {reviewer}'**
+  String pr_timeline_review_requested(String actor, String reviewer);
+
+  /// No description provided for @pr_timeline_review_request_removed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} removed the review request from {reviewer}'**
+  String pr_timeline_review_request_removed(String actor, String reviewer);
+
+  /// No description provided for @pr_timeline_ready_for_review.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} marked this pull request as ready for review'**
+  String pr_timeline_ready_for_review(String actor);
+
+  /// No description provided for @pr_timeline_convert_to_draft.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} marked this pull request as draft'**
+  String pr_timeline_convert_to_draft(String actor);
+
+  /// No description provided for @pr_timeline_head_ref_force_pushed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} force-pushed the head branch'**
+  String pr_timeline_head_ref_force_pushed(String actor);
+
+  /// No description provided for @pr_timeline_base_ref_force_pushed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} force-pushed the base branch'**
+  String pr_timeline_base_ref_force_pushed(String actor);
+
+  /// No description provided for @pr_timeline_head_ref_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} deleted the head branch'**
+  String pr_timeline_head_ref_deleted(String actor);
+
+  /// No description provided for @pr_timeline_head_ref_restored.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} restored the head branch'**
+  String pr_timeline_head_ref_restored(String actor);
+
+  /// No description provided for @pr_timeline_base_ref_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} changed the base branch'**
+  String pr_timeline_base_ref_changed(String actor);
+
+  /// No description provided for @pr_timeline_auto_merge_enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} enabled auto-merge'**
+  String pr_timeline_auto_merge_enabled(String actor);
+
+  /// No description provided for @pr_timeline_auto_merge_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} disabled auto-merge'**
+  String pr_timeline_auto_merge_disabled(String actor);
+
+  /// No description provided for @pr_timeline_committed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} committed {shortSha} — {message}'**
+  String pr_timeline_committed(String actor, String shortSha, String message);
+
+  /// No description provided for @pr_timeline_committed_no_message.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} committed {shortSha}'**
+  String pr_timeline_committed_no_message(String actor, String shortSha);
+
+  /// No description provided for @pr_timeline_copilot_work_started.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} started working on this PR'**
+  String pr_timeline_copilot_work_started(String actor);
+
+  /// No description provided for @pr_timeline_copilot_work_finished.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} finished working on this PR'**
+  String pr_timeline_copilot_work_finished(String actor);
+
+  /// No description provided for @pr_timeline_added_to_merge_queue.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} added this pull request to the merge queue'**
+  String pr_timeline_added_to_merge_queue(String actor);
+
+  /// No description provided for @pr_timeline_removed_from_merge_queue.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} removed this pull request from the merge queue'**
+  String pr_timeline_removed_from_merge_queue(String actor);
+
+  /// No description provided for @issue_timeline_added_to_project.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} added this to a project'**
+  String issue_timeline_added_to_project(String actor);
+
+  /// No description provided for @issue_timeline_project_status_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} changed the project status'**
+  String issue_timeline_project_status_changed(String actor);
+
+  /// No description provided for @issue_timeline_issue_type_added.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} set the issue type'**
+  String issue_timeline_issue_type_added(String actor);
 }
 
 class _AppLocalizationsDelegate

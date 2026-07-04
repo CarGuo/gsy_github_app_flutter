@@ -63,9 +63,90 @@
 - 改 ARB 或本地化输入时跑 `flutter gen-l10n`
 - 改 Android 构建、依赖或运行时关键路径时跑 APK 构建
 
+## 运行时冒烟验证（强制）
+
+**"能编译过 + 装机不崩" 不算测试通过。**
+任何涉及运行时行为（UI 渲染、事件解析、状态流转、网络分支、多语言文案）的改动，
+在宣告完成前，author 必须在真机或模拟器上跑通对应改动路径，
+并把真实证据（截图 / 文案 dump / 错误日志）**以文件形式产出并写清路径**，
+禁止只凭"app 启动了、日志没红"就报完成。
+
+强制的是**证据本身**，不是具体工具。工具链按可用性挑：
+
+### 工具选型（按可用性挑一条主路径 + 一条 fallback）
+
+1. **主路径 — `mcp_dart`（debug 构建、DTD 在线时首选）**
+   - `dtd` → `listDtdUris` / `connect` 建立 DTD 连接
+   - `widget_inspector` → `get_widget_tree` / `get_selected_widget` 抓真实渲染出的 widget 树
+   - `get_runtime_errors` 拉 Dart 层异常（改动前后各拉一次）
+   - `flutter_driver_command` 只在工程已引入 `flutter_driver` / `integration_test`
+     并且 `main.dart` 里显式调用 `enableFlutterDriverExtension()` 时才可用。
+     本仓库目前**未引入这套依赖**，因此该子工具默认不可用，不得作为唯一验证手段。
+
+2. **Fallback — `adb`（release 构建、DTD 掉线、driver 未启用时的一等公民）**
+   - `adb devices` 确认设备可见
+   - `adb shell input tap/swipe/text/keyevent` 驱动 UI
+   - `adb exec-out screencap -p > /tmp/xxx.png` 抓真实渲染截图
+   - `adb logcat -d -s flutter` 抓 Dart 侧输出
+   - **截图文件路径必须写进完成汇报**，reviewer 需要能拿到该路径复核。
+   - 反复用到的 tap 序列必须沉淀到 [`tool/ai/smoke/`](tool/ai/smoke/)，
+     不允许把已经跑通的坐标序列扔在一次对话里就丢掉。
+
+3. **Web / DevTools 类改动**：用 `integrated_browser` 走同样"操作 → 截图 → 抓日志"流程。
+
+### 强制流程
+
+1. `flutter run` 或已装机的 build 起到已连接设备。
+2. 按上表挑工具组合抓证据；`mcp_dart` 不可用时直接切 `adb`，不视为破例。
+3. 走一遍改动**直接覆盖**的路径（例：改了 PR timeline 事件行 → 真的进 PR 详情页把
+   timeline 滚一遍，抓到目标文案的截图或 `get_text` 输出）。
+4. 覆盖不到的分支（例：`base_ref_force_pushed` 真机上罕见）必须在完成汇报里
+   **显式列为已知缺口**，不能糊成"通过"。稀有分支覆盖率无法靠真机保证时，
+   优先考虑加模型层单测 + 真实 JSON fixture 补齐。
+
+### 分级要求（避免形式主义）
+
+| 改动类型 | 最低证据要求 |
+|---|---|
+| 纯模型 / 纯工具函数 | `flutter analyze` + 单测（若 test 目录已存在）；无需截图 |
+| UI 渲染 / 文案 / 事件行 | 至少 1 张真机截图 + `get_runtime_errors` 或 `logcat` 空异常 |
+| 关键路径（登录 / 网络栈 / 根装配 / 状态边界） | 主路径截图 + 至少 1 个失败/边界分支的证据 |
+
+### 完成汇报三段式（必填）
+
+**看代码**：改了哪些文件、哪些函数、为什么这么改。
+**看编译**：`flutter analyze` / `build_runner` / `gen-l10n` 的产物结论。
+**看运行**：设备 id、所用工具组合（mcp_dart 或 adb）、**截图文件绝对路径**、
+`get_runtime_errors` 或 `logcat` 结果、无法覆盖的分支列表。
+
+三段任一缺失 = 任务未完成。
+
+### 禁止行为
+
+- ❌ 只跑 `flutter analyze` 就报"测试通过"
+- ❌ 把"app 启动到首页"当成本次功能验证
+- ❌ 让用户手动操作 UI 代替 author 自测（除非物理上无法自动化，且已说明原因）
+- ❌ 拿"日志里没 Exception"当作行为正确的证据
+- ❌ 只把截图放在自己上下文里而不写路径，导致 reviewer 拿不到证据
+
 ## 当前已知约束
 
-- 仓库目前没有提交进来的 `test/` 测试目录
+- 仓库既有 `test/`（纯 Dart 单测 + widget test）也有 `patrol_test/`（Patrol 集成测试脚手架，pubspec 中已引入 `patrol`）；两条测试路径并存，按改动性质挑合适档次
 - CI 使用 GitHub Actions，当前偏重构建成功
 - 项目同时使用 Redux、Riverpod、Provider、Signals
 - OAuth 登录相关流程依赖本地 `ignoreConfig.dart`
+- **GSY 是 GitHub 的只读 + 评论客户端**，不承担写 PR / 提交 review / 建仓库这类"作者行为"。冒烟或回归时**禁止通过 gh cli 或 GitHub API 新建仓库、造 PR 或提交 review**去伪造证据，一律用既有仓库里的真实数据
+
+## 真机验证专用 fixture（写死，不允许随手换）
+
+以下 PR/仓库是真机冒烟脚本 `tool/ai/smoke/open_pr_timeline.sh` 默认命中的证据源。改动 timeline 相关代码时，优先复用它们；只有在明确覆盖不到时才另外找 PR。
+
+- **fixture 账号**：`CarSmallGuo`（当前 adb 设备与 gh cli 登录的账号，token 有 `repo` 权限但**只做读**）
+- **fixture 仓库**：`CarGuo/gsy_github_app_flutter`（GSY 主仓库自身）
+- **fixture PR**：
+  - `#938`：Copilot 提交的 `reviewed / state=commented`，body 788 字符，同时覆盖 `ready_for_review` / `review_requested` / `assigned` / `merged` / `closed` / 未知事件兜底等新事件类型
+    - 打开方式：`bash tool/ai/smoke/open_pr_timeline.sh`（默认参数即可）
+    - 期望截图证据：`/tmp/gsy_smoke_07_issue_detail_scrolled.png` 与随后一屏能同时看到"Copilot 提交了评审意见"这一行**和其下方灰底 body 卡片**
+  - 后续若需要 approved/changes_requested body 场景，请在 `CarGuo` 名下的其它 PR 里挑选并把 PR 号写回本段落，不要造 PR
+
+
