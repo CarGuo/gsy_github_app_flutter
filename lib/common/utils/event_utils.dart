@@ -52,11 +52,19 @@ class EventUtils {
   @visibleForTesting
   static final Set<String> loggedUnknownActions = <String>{};
 
-  /// 测试专用：重置两张遥测表。
+  /// 已登记的未知 notification reason 集合。**debug-only**。
+  /// 与前两张表继续分开：Events / Timeline 的 action 和 Notifications 的
+  /// reason 是 GitHub 上完全不同的两条 API 命名空间，混在一起会让"新事件"
+  /// 遥测告警的可读性下降。
+  @visibleForTesting
+  static final Set<String> loggedUnknownNotifyReasons = <String>{};
+
+  /// 测试专用：重置三张遥测表。
   @visibleForTesting
   static void resetUnknownEventLogForTest() {
     loggedUnknownEventTypes.clear();
     loggedUnknownActions.clear();
+    loggedUnknownNotifyReasons.clear();
   }
 
   static void _logUnknownEventTypeOnce(String? type) {
@@ -581,5 +589,68 @@ class EventUtils {
         NavigatorUtils.goReposDetail(context, owner, repositoryName);
         break;
     }
+  }
+
+  /// 把 GitHub Notifications API 的 reason 枚举翻译为当前语言。
+  ///
+  /// reason 是 GitHub 通知 API 独有的字段（不是 Events 也不是 Timeline），
+  /// 官方文档列出 15 个已知值：approval_requested / assign / author /
+  /// ci_activity / comment / invitation / manual / member_feature_requested /
+  /// mention / review_requested / security_advisory_credit / security_alert /
+  /// state_change / subscribed / team_mention。
+  ///
+  /// - 命中已知词典 → 返回本地化短语（"@提及你" / "请求你审阅" 等）
+  /// - 未命中 → 记录到 [loggedUnknownNotifyReasons]（debug 遥测），
+  ///   同时返回原始英文，保证 UI 不空白，也让开发者一眼看到新 reason
+  static String translateNotifyReason(AppLocalizations l, String? rawReason) {
+    if (rawReason == null || rawReason.isEmpty) {
+      return "";
+    }
+    switch (rawReason) {
+      case 'approval_requested':
+        return l.notify_reason_approval_requested;
+      case 'assign':
+        return l.notify_reason_assign;
+      case 'author':
+        return l.notify_reason_author;
+      case 'ci_activity':
+        return l.notify_reason_ci_activity;
+      case 'comment':
+        return l.notify_reason_comment;
+      case 'invitation':
+        return l.notify_reason_invitation;
+      case 'manual':
+        return l.notify_reason_manual;
+      case 'member_feature_requested':
+        return l.notify_reason_member_feature_requested;
+      case 'mention':
+        return l.notify_reason_mention;
+      case 'review_requested':
+        return l.notify_reason_review_requested;
+      case 'security_advisory_credit':
+        return l.notify_reason_security_advisory_credit;
+      case 'security_alert':
+        return l.notify_reason_security_alert;
+      case 'state_change':
+        return l.notify_reason_state_change;
+      case 'subscribed':
+        return l.notify_reason_subscribed;
+      case 'team_mention':
+        return l.notify_reason_team_mention;
+      default:
+        _logUnknownNotifyReasonOnce(rawReason);
+        return rawReason;
+    }
+  }
+
+  static void _logUnknownNotifyReasonOnce(String? reason) {
+    if (!kDebugMode) return;
+    if (reason == null || reason.isEmpty) return;
+    if (loggedUnknownNotifyReasons.contains(reason)) return;
+    loggedUnknownNotifyReasons.add(reason);
+    _talkerWarn(
+      '[EventUtils] Unknown notification reason="$reason". '
+      'Consider adding a case in translateNotifyReason and notify_reason_* arb.',
+    );
   }
 }

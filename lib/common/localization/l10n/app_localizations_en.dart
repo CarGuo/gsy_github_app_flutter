@@ -453,6 +453,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notify_archive_success => 'Archived';
 
   @override
+  String get notify_reason => 'Reason';
+
+  @override
+  String get notify_reason_approval_requested => 'Approval requested';
+
+  @override
+  String get notify_reason_assign => 'Assigned to you';
+
+  @override
+  String get notify_reason_author => 'You authored';
+
+  @override
+  String get notify_reason_ci_activity => 'Actions run finished';
+
+  @override
+  String get notify_reason_comment => 'You commented';
+
+  @override
+  String get notify_reason_invitation => 'Repo invitation accepted';
+
+  @override
+  String get notify_reason_manual => 'You subscribed';
+
+  @override
+  String get notify_reason_member_feature_requested =>
+      'Member feature requested';
+
+  @override
+  String get notify_reason_mention => '@mentioned you';
+
+  @override
+  String get notify_reason_review_requested => 'Review requested';
+
+  @override
+  String get notify_reason_security_advisory_credit =>
+      'Security advisory credit';
+
+  @override
+  String get notify_reason_security_alert => 'Security alert';
+
+  @override
+  String get notify_reason_state_change => 'You changed state';
+
+  @override
+  String get notify_reason_subscribed => 'You watch this repo';
+
+  @override
+  String get notify_reason_team_mention => 'Your team was mentioned';
+
+  @override
   String get search_title => 'Search';
 
   @override

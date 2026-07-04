@@ -450,6 +450,54 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notify_archive_success => '보관되었습니다';
 
   @override
+  String get notify_reason => '이유';
+
+  @override
+  String get notify_reason_approval_requested => '배포 승인 요청';
+
+  @override
+  String get notify_reason_assign => '당신에게 할당됨';
+
+  @override
+  String get notify_reason_author => '당신이 작성함';
+
+  @override
+  String get notify_reason_ci_activity => 'Actions 실행 완료';
+
+  @override
+  String get notify_reason_comment => '당신이 댓글 작성함';
+
+  @override
+  String get notify_reason_invitation => '협업 초대 수락함';
+
+  @override
+  String get notify_reason_manual => '당신이 구독함';
+
+  @override
+  String get notify_reason_member_feature_requested => '구성원 기능 요청';
+
+  @override
+  String get notify_reason_mention => '당신을 @멘션함';
+
+  @override
+  String get notify_reason_review_requested => '리뷰 요청됨';
+
+  @override
+  String get notify_reason_security_advisory_credit => '보안 권고 크레딧';
+
+  @override
+  String get notify_reason_security_alert => '보안 경고';
+
+  @override
+  String get notify_reason_state_change => '당신이 상태 변경함';
+
+  @override
+  String get notify_reason_subscribed => '이 저장소를 Watch';
+
+  @override
+  String get notify_reason_team_mention => '당신 팀이 멘션됨';
+
+  @override
   String get search_title => '검색';
 
   @override

@@ -108,8 +108,16 @@ class EventViewModel {
     String status = eventMap.unread!
         ? context.l10n.notify_unread
         : context.l10n.notify_readed;
+    // 原来这里直接拼 raw reason 英文（如 "subscribed类型：PullRequest"），
+    // 违反规则 4（多语言）。改走 EventUtils.translateNotifyReason 词典，
+    // 未识别的 reason 会自动进 debug 遥测集合，跟 event/action 未知项同标准。
+    final reasonLabel =
+        EventUtils.translateNotifyReason(context.l10n, eventMap.reason);
+    final reasonPrefix = reasonLabel.isEmpty
+        ? ""
+        : "${context.l10n.notify_reason}：$reasonLabel，";
     actionDes =
-        "${eventMap.reason!}${context.l10n.notify_type}：$type，${context.l10n.notify_status}：$status";
+        "$reasonPrefix${context.l10n.notify_type}：$type，${context.l10n.notify_status}：$status";
     actionTarget = eventMap.subject!.title;
   }
 }

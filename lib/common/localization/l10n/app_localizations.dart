@@ -978,6 +978,102 @@ abstract class AppLocalizations {
   /// **'Archived'**
   String get notify_archive_success;
 
+  /// No description provided for @notify_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get notify_reason;
+
+  /// No description provided for @notify_reason_approval_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval requested'**
+  String get notify_reason_approval_requested;
+
+  /// No description provided for @notify_reason_assign.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to you'**
+  String get notify_reason_assign;
+
+  /// No description provided for @notify_reason_author.
+  ///
+  /// In en, this message translates to:
+  /// **'You authored'**
+  String get notify_reason_author;
+
+  /// No description provided for @notify_reason_ci_activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions run finished'**
+  String get notify_reason_ci_activity;
+
+  /// No description provided for @notify_reason_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'You commented'**
+  String get notify_reason_comment;
+
+  /// No description provided for @notify_reason_invitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Repo invitation accepted'**
+  String get notify_reason_invitation;
+
+  /// No description provided for @notify_reason_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'You subscribed'**
+  String get notify_reason_manual;
+
+  /// No description provided for @notify_reason_member_feature_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'Member feature requested'**
+  String get notify_reason_member_feature_requested;
+
+  /// No description provided for @notify_reason_mention.
+  ///
+  /// In en, this message translates to:
+  /// **'@mentioned you'**
+  String get notify_reason_mention;
+
+  /// No description provided for @notify_reason_review_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'Review requested'**
+  String get notify_reason_review_requested;
+
+  /// No description provided for @notify_reason_security_advisory_credit.
+  ///
+  /// In en, this message translates to:
+  /// **'Security advisory credit'**
+  String get notify_reason_security_advisory_credit;
+
+  /// No description provided for @notify_reason_security_alert.
+  ///
+  /// In en, this message translates to:
+  /// **'Security alert'**
+  String get notify_reason_security_alert;
+
+  /// No description provided for @notify_reason_state_change.
+  ///
+  /// In en, this message translates to:
+  /// **'You changed state'**
+  String get notify_reason_state_change;
+
+  /// No description provided for @notify_reason_subscribed.
+  ///
+  /// In en, this message translates to:
+  /// **'You watch this repo'**
+  String get notify_reason_subscribed;
+
+  /// No description provided for @notify_reason_team_mention.
+  ///
+  /// In en, this message translates to:
+  /// **'Your team was mentioned'**
+  String get notify_reason_team_mention;
+
   /// No description provided for @search_title.
   ///
   /// In en, this message translates to:

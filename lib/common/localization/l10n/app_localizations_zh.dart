@@ -450,6 +450,54 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notify_archive_success => '已归档';
 
   @override
+  String get notify_reason => '原因';
+
+  @override
+  String get notify_reason_approval_requested => '请求审批部署';
+
+  @override
+  String get notify_reason_assign => '分配给你';
+
+  @override
+  String get notify_reason_author => '你创建的';
+
+  @override
+  String get notify_reason_ci_activity => 'Actions 运行完成';
+
+  @override
+  String get notify_reason_comment => '你评论过';
+
+  @override
+  String get notify_reason_invitation => '接受协作邀请';
+
+  @override
+  String get notify_reason_manual => '你订阅了';
+
+  @override
+  String get notify_reason_member_feature_requested => '成员申请功能';
+
+  @override
+  String get notify_reason_mention => '@提及你';
+
+  @override
+  String get notify_reason_review_requested => '请求你审阅';
+
+  @override
+  String get notify_reason_security_advisory_credit => '安全公告致谢';
+
+  @override
+  String get notify_reason_security_alert => '安全告警';
+
+  @override
+  String get notify_reason_state_change => '你改变了状态';
+
+  @override
+  String get notify_reason_subscribed => '你关注仓库';
+
+  @override
+  String get notify_reason_team_mention => '@提及你的团队';
+
+  @override
   String get search_title => '搜索';
 
   @override

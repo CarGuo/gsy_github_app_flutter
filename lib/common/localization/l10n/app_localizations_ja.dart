@@ -451,6 +451,54 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notify_archive_success => 'アーカイブしました';
 
   @override
+  String get notify_reason => '理由';
+
+  @override
+  String get notify_reason_approval_requested => 'デプロイの承認依頼';
+
+  @override
+  String get notify_reason_assign => 'あなたに割り当て';
+
+  @override
+  String get notify_reason_author => 'あなたが作成';
+
+  @override
+  String get notify_reason_ci_activity => 'Actions 実行完了';
+
+  @override
+  String get notify_reason_comment => 'あなたがコメント';
+
+  @override
+  String get notify_reason_invitation => 'コラボ招待を承諾';
+
+  @override
+  String get notify_reason_manual => 'あなたが購読';
+
+  @override
+  String get notify_reason_member_feature_requested => 'メンバー機能リクエスト';
+
+  @override
+  String get notify_reason_mention => '@メンション';
+
+  @override
+  String get notify_reason_review_requested => 'レビュー依頼';
+
+  @override
+  String get notify_reason_security_advisory_credit => 'セキュリティ勧告への貢献';
+
+  @override
+  String get notify_reason_security_alert => 'セキュリティ警告';
+
+  @override
+  String get notify_reason_state_change => '状態を変更';
+
+  @override
+  String get notify_reason_subscribed => 'リポジトリを Watch';
+
+  @override
+  String get notify_reason_team_mention => 'チームがメンション';
+
+  @override
   String get search_title => '検索';
 
   @override
