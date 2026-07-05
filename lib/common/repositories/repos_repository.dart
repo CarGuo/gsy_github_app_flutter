@@ -593,7 +593,11 @@ class ReposRepository {
   static searchRepositoryRequest(
       q, language, sort, order, type, page, pageSize) async {
     if (language != null) {
-      q = q + "%2Blanguage%3A$language";
+      // 直接拼原文，`+language:` 里的 `+` 是 GitHub AND 分隔符、`:` 是修饰符
+      // 分隔符。`Address.search` 走 [Uri.encodeFull]，两者字面保留。
+      // 之前这里写死 `%2Blanguage%3A` 是绕历史 bug 的半成品，现在必须回退，
+      // 否则 encodeFull 会把 `%` → `%25`，GitHub 会解成字面 `%2B`。
+      q = q + "+language:$language";
     }
     String url = Address.search(q, sort, order, type, page, pageSize);
     var res = await httpManager.netFetch(url, null, null, null);

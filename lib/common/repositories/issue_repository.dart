@@ -188,10 +188,13 @@ class IssueRepository {
   /// @param state 问题状态，all open closed
   static searchRepositoryRequest(q, name, reposName, state, {page = 1}) async {
     String? qu;
+    // 拼原文修饰符，`+` / `:` / `/` 交给 [Address.repositoryIssueSearch]
+    // 走 encodeQueryComponent 统一处理，避免历史上 `%2F` `%3A` 半成品在这里
+    // 与 Address 层重复 encode。
     if (state == null || state == 'all') {
-      qu = q + "+repo%3A$name%2F$reposName";
+      qu = q + "+repo:$name/$reposName";
     } else {
-      qu = q + "+repo%3A$name%2F$reposName+state%3A$state";
+      qu = q + "+repo:$name/$reposName+state:$state";
     }
     String url =
         Address.repositoryIssueSearch(qu) + Address.getPageParams("&", page);

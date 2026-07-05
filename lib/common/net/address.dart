@@ -14,32 +14,61 @@ class Address {
   }
 
   ///搜索 get
+  ///
+  /// GitHub search q 参数**不是标准 URL query 语义**，而是 GitHub 自家的
+  /// mini-DSL：`+` 表示 boolean AND，`:` 用于修饰符（`user:xxx` / `language:xxx`）。
+  /// 因此不能用 [Uri.encodeQueryComponent]（会把 `+` → `%2B` 让 GitHub 解成
+  /// 字面加号导致 total=0）。
+  ///
+  /// [_encodeGitHubQuery] 走 [Uri.encodeFull] 保留 `+` / `:` / `/` / `-` 等
+  /// GitHub 语法字符字面，然后单独把 `#` 手工替换成 `%23` —— 因为 encodeFull
+  /// 不 encode `#`（当 URL fragment 分隔符），但 GitHub language:C# 里的 `#`
+  /// 必须字面上传。
+  ///
+  /// 调用方直接传原文（`flutter+user:CarGuo`、`language:C#`），
+  /// 由本方法统一编码。
   static search(q, sort, order, type, page, [pageSize = Config.PAGE_SIZE]) {
+    final String qEnc = _encodeGitHubQuery(q?.toString() ?? '');
     if (type == 'user') {
-      return "${host}search/users?q=$q&page=$page&per_page=$pageSize";
+      return "${host}search/users?q=$qEnc&page=$page&per_page=$pageSize";
     }
     if (type == 'issue') {
       // GitHub 的 issue 搜索也会包含 PR。sort 支持 comments/reactions/created/updated；
       // 传入的 sort 目前和 repo 复用（stars/forks），对 issue 无意义，
       // 让 GitHub 走默认 best match，稳字为先。
-      return "${host}search/issues?q=$q&order=${order ?? 'desc'}&page=$page&per_page=$pageSize";
+      return "${host}search/issues?q=$qEnc&order=${order ?? 'desc'}&page=$page&per_page=$pageSize";
     }
     if (type == 'code') {
       // GitHub 的 /search/code 强制要 token 且只支持 relevance 排序,
       // 没有 sort/order 参数。要求 token 有 repo scope,
       // 未认证或权限不够时会 403,让上层 UI 感知空结果。
-      return "${host}search/code?q=$q&page=$page&per_page=$pageSize";
+      return "${host}search/code?q=$qEnc&page=$page&per_page=$pageSize";
     }
-    sort ??= "best%20match";
+    // sort 走 `best match` 原文，encodeFull 会把空格转 `%20`，
+    // 避免直接写死 `best%20match` 这种半成品。
+    sort ??= "best match";
     order ??= "desc";
     page ??= 1;
     pageSize ??= Config.PAGE_SIZE;
-    return "${host}search/repositories?q=$q&sort=$sort&order=$order&page=$page&per_page=$pageSize";
+    final String sortEnc = Uri.encodeFull(sort.toString());
+    return "${host}search/repositories?q=$qEnc&sort=$sortEnc&order=$order&page=$page&per_page=$pageSize";
   }
 
   ///搜索topic tag
   static searchTopic(topic) {
-    return "${host}search/repositories?q=topic:$topic&sort=stars&order=desc";
+    // 与 [search] 走同一路径：[_encodeGitHubQuery] 保留 `:` 字面。
+    final String qEnc = _encodeGitHubQuery("topic:$topic");
+    return "${host}search/repositories?q=$qEnc&sort=stars&order=desc";
+  }
+
+  /// GitHub search q 参数的专用编码器。
+  ///
+  /// - `+` / `:` / `/` / `-` 是 GitHub 语法字符，encodeFull 天然保留字面
+  /// - 空格、中文由 encodeFull 转成 `%20` / `%E4%B8%AD`
+  /// - `#` encodeFull 不管（它是 URL fragment 分隔符），但 GitHub
+  ///   `language:C#` 里的 `#` 必须字面上传，这里手工替换成 `%23`
+  static String _encodeGitHubQuery(String raw) {
+    return Uri.encodeFull(raw).replaceAll('#', '%23');
   }
 
   ///用户的仓库 get
@@ -187,8 +216,12 @@ class Address {
   }
 
   ///搜索issue
+  ///
+  /// 与 [search] 同一策略：q 走 [_encodeGitHubQuery]，保留 GitHub 语法字符
+  /// （`+` AND / `:` 修饰符 / `/` 仓库名分隔）字面语义。调用方传原文。
   static repositoryIssueSearch(q) {
-    return "${host}search/issues?q=$q";
+    final String qEnc = _encodeGitHubQuery(q?.toString() ?? '');
+    return "${host}search/issues?q=$qEnc";
   }
 
   ///仓库Issue timeline get

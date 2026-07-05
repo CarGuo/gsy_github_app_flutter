@@ -167,8 +167,11 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 /// - [labelBuilder]：接受 [AppLocalizations] 返回本地化显示文案（走 arb）；
 ///   对固定不需要翻译的名字（比如 `Java` / `Kotlin` / `Objective-C`），
 ///   labelBuilder 可以直接返回字面量。
-/// - [value]：送去 GitHub API 的原始值，**保持不动**（含 URL 编码，例如
-///   `best%20match` 和 `c%23`）。
+/// - [value]：送去 GitHub API 的原始值，**保持原文不做 URL 编码**。
+///   `Address.search` 走 `Uri.encodeFull` 统一处理，会保留 `+` / `:` /
+///   `#` 等 GitHub 语法字符，只把空格、中文等真正会破坏 URL 的字符编码。
+///   所以这里手工写 `best%20match` / `c%23` 反而会 double-encode 成
+///   `best%2520match` / `c%2523`，被 GitHub 当成字面字符。
 /// - [select]：是否选中，UI 状态。
 class FilterModel {
   final String Function(AppLocalizations l10n) labelBuilder;
@@ -190,7 +193,7 @@ var sortType = [
   FilterModel(labelBuilder: (l) => l.search_sort_asc, value: 'asc', select: false),
 ];
 var searchFilterType = [
-  FilterModel(labelBuilder: (l) => l.search_filter_type_best_match, value: 'best%20match', select: true),
+  FilterModel(labelBuilder: (l) => l.search_filter_type_best_match, value: 'best match', select: true),
   FilterModel(labelBuilder: (l) => l.search_filter_type_stars, value: 'stars', select: false),
   FilterModel(labelBuilder: (l) => l.search_filter_type_forks, value: 'forks', select: false),
   FilterModel(labelBuilder: (l) => l.search_filter_type_updated, value: 'updated', select: false),
@@ -214,7 +217,7 @@ var searchLanguageType = [
   FilterModel(labelBuilder: (_) => 'HTML', value: 'HTML', select: false),
   FilterModel(labelBuilder: (_) => 'CSS', value: 'CSS', select: false),
   FilterModel(labelBuilder: (_) => 'Python', value: 'Python', select: false),
-  FilterModel(labelBuilder: (_) => 'C#', value: 'c%23', select: false),
+  FilterModel(labelBuilder: (_) => 'C#', value: 'C#', select: false),
 ];
 
 void resetSearchDrawerFilters() {
