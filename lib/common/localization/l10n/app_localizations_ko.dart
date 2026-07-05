@@ -579,6 +579,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get search_sort_asc => '오름차순';
 
   @override
+  String get search_history_title => '검색 기록';
+
+  @override
+  String get search_history_empty_hint => '키워드를 입력하여 검색을 시작하세요';
+
+  @override
+  String get search_history_clear => '지우기';
+
+  @override
+  String get search_history_clear_confirm => '검색 기록을 지우시겠습니까?';
+
+  @override
   String get feed_back_tip => '귀하의 피드백은 Github에 공개 이슈로 제출됩니다';
 
   @override

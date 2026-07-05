@@ -580,6 +580,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get search_sort_asc => '昇順';
 
   @override
+  String get search_history_title => '検索履歴';
+
+  @override
+  String get search_history_empty_hint => 'キーワードを入力して検索を開始';
+
+  @override
+  String get search_history_clear => 'クリア';
+
+  @override
+  String get search_history_clear_confirm => '検索履歴をクリアしますか？';
+
+  @override
   String get feed_back_tip => 'あなたのフィードバックは公開IssueとしてGitHubに送信されます';
 
   @override

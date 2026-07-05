@@ -195,6 +195,10 @@
   "search_filter_type_updated": "最近更新",
   "search_sort_desc": "降順",
   "search_sort_asc": "昇順",
+  "search_history_title": "検索履歴",
+  "search_history_empty_hint": "キーワードを入力して検索を開始",
+  "search_history_clear": "クリア",
+  "search_history_clear_confirm": "検索履歴をクリアしますか？",
   "feed_back_tip": "あなたのフィードバックは公開IssueとしてGitHubに送信されます",
 
   "issue_badge_bot": "ボット",

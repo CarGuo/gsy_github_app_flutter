@@ -195,6 +195,10 @@
   "search_filter_type_updated": "最近更新",
   "search_sort_desc": "从高到低",
   "search_sort_asc": "从低到高",
+  "search_history_title": "搜索历史",
+  "search_history_empty_hint": "输入关键字开始搜索",
+  "search_history_clear": "清空",
+  "search_history_clear_confirm": "确认清空搜索历史？",
   "feed_back_tip": "您的反馈会作为公共Issue提交到Github，您确定要继续吗？",
 
   "issue_badge_bot": "机器人",

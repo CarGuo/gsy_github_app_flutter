@@ -585,6 +585,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_sort_asc => 'Ascending';
 
   @override
+  String get search_history_title => 'Search history';
+
+  @override
+  String get search_history_empty_hint => 'Type a keyword to start searching';
+
+  @override
+  String get search_history_clear => 'Clear';
+
+  @override
+  String get search_history_clear_confirm => 'Clear search history?';
+
+  @override
   String get feed_back_tip =>
       'Your feedback will be sent to Github as a public issue';
 

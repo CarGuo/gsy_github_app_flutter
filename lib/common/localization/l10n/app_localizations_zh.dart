@@ -579,6 +579,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get search_sort_asc => '从低到高';
 
   @override
+  String get search_history_title => '搜索历史';
+
+  @override
+  String get search_history_empty_hint => '输入关键字开始搜索';
+
+  @override
+  String get search_history_clear => '清空';
+
+  @override
+  String get search_history_clear_confirm => '确认清空搜索历史？';
+
+  @override
   String get feed_back_tip => '您的反馈会作为公共Issue提交到Github，您确定要继续吗？';
 
   @override

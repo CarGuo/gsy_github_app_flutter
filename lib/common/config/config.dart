@@ -19,4 +19,10 @@ class Config {
   static const THEME_COLOR = "theme-color";
   static const LOCALE = "locale";
   static const VIBRATION_ENABLE = "vibration-enable";
+
+  /// 搜索历史（JSON 编码的 `List<String>`）
+  static const SEARCH_HISTORY_KEY = "search-history";
+
+  /// 搜索历史最大保留条数
+  static const SEARCH_HISTORY_MAX = 10;
 }

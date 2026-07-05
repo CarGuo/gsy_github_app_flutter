@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/repositories/search_history_repository.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/search/search_bloc.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
@@ -35,6 +36,12 @@ class _SearchPageState extends State<SearchPage>
   late AnimationController controller;
   Animation? animation;
   bool endAnima = false;
+
+  /// 搜索历史（本地持久化）
+  ///
+  /// 仅在数据列表为空 & 搜索框为空时以 chip 形式展示，
+  /// 避免遮挡有效搜索结果。
+  List<String> _history = const [];
 
   ///绘制item
   _renderItem(index) {
@@ -92,6 +99,49 @@ class _SearchPageState extends State<SearchPage>
       return;
     }
     _resolveSelectIndex();
+    // 搜索请求完成后延后刷新历史 chip。请求路径见 [SearchBLoC.getDataLogic]，
+    // 那里只在 page==1 且成功时写库，所以这里 delay 500ms 拉最新数据即可。
+    Future.delayed(const Duration(milliseconds: 500), _loadHistory);
+  }
+
+  Future<void> _loadHistory() async {
+    final list = await SearchHistoryRepository.load();
+    if (!mounted) return;
+    setState(() {
+      _history = list;
+    });
+  }
+
+  void _onHistoryTap(String query) {
+    searchBLoC.textEditingController.text = query;
+    searchBLoC.textEditingController.selection =
+        TextSelection.collapsed(offset: query.length);
+    _search();
+  }
+
+  Future<void> _onHistoryClear() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        content: Text(ctx.l10n.search_history_clear_confirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(ctx.l10n.app_cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(ctx.l10n.search_history_clear),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    await SearchHistoryRepository.clear();
+    if (!mounted) return;
+    setState(() {
+      _history = const [];
+    });
   }
 
   @override
@@ -117,6 +167,8 @@ class _SearchPageState extends State<SearchPage>
         });
       });
     });
+
+    _loadHistory();
   }
 
   @override
@@ -193,12 +245,33 @@ class _SearchPageState extends State<SearchPage>
                     searchBLoC.selectIndex = selectIndex;
                     _resolveSelectIndex();
                   })),
-          body: GSYPullLoadWidget(
-            pullLoadWidgetControl,
-            (BuildContext context, int index) => _renderItem(index),
-            handleRefresh,
-            onLoadMore,
-            refreshKey: refreshIndicatorKey,
+          body: Stack(
+            children: [
+              GSYPullLoadWidget(
+                pullLoadWidgetControl,
+                (BuildContext context, int index) => _renderItem(index),
+                handleRefresh,
+                onLoadMore,
+                refreshKey: refreshIndicatorKey,
+              ),
+              // 输入框空 & 数据列表空 时才显示搜索历史面板。
+              // 一开始就有搜索结果或用户已在输入 → 直接透传给 GSYPullLoadWidget。
+              if (pullLoadWidgetControl.dataList.isEmpty &&
+                  (searchBLoC.searchText?.trim().isEmpty ?? true))
+                Positioned.fill(
+                  child: IgnorePointer(
+                    ignoring: false,
+                    child: Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: _SearchHistoryPanel(
+                        history: _history,
+                        onTap: _onHistoryTap,
+                        onClear: _onHistoryClear,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),
@@ -330,3 +403,73 @@ class AnimationClipper extends CustomClipper<Path> {
     return sqrt(width * width + height * height);
   }
 }
+
+/// 搜索历史 chip 面板。
+///
+/// 无历史 → 提示"输入关键字开始搜索"，避免出现空白面板让用户以为坏了。
+/// 有历史 → 顶部标题 + 右上"清空"按钮 + Wrap 排列 chip。
+/// 只做纯展示与回调，不持有任何持久化逻辑，方便被 review。
+class _SearchHistoryPanel extends StatelessWidget {
+  final List<String> history;
+  final ValueChanged<String> onTap;
+  final VoidCallback onClear;
+
+  const _SearchHistoryPanel({
+    required this.history,
+    required this.onTap,
+    required this.onClear,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    if (history.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text(
+            l10n.search_history_empty_hint,
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.search_history_title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                TextButton(
+                  onPressed: onClear,
+                  child: Text(l10n.search_history_clear),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final q in history)
+                  ActionChip(
+                    label: Text(q),
+                    onPressed: () => onTap(q),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

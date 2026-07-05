@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
+import 'package:gsy_github_app_flutter/common/repositories/search_history_repository.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_drawer.dart';
 
 class SearchBLoC {
@@ -25,9 +28,16 @@ class SearchBLoC {
   final TextEditingController textEditingController  = TextEditingController();
 
   ///获取搜索数据
+  ///
+  /// 搜索成功后异步写入搜索历史；写入失败不影响主流程。
   getDataLogic(int page) async {
-    return await ReposRepository.searchRepositoryRequest(searchText, language, type, sort,
+    final query = searchText;
+    final res = await ReposRepository.searchRepositoryRequest(query, language, type, sort,
         selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
+    if (page == 1 && res != null && res.result == true) {
+      unawaited(SearchHistoryRepository.add(query ?? ''));
+    }
+    return res;
   }
 
   void resetFilters() {
@@ -43,3 +53,4 @@ class SearchBLoC {
     textEditingController.dispose();
   }
 }
+

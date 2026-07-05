@@ -1236,6 +1236,30 @@ abstract class AppLocalizations {
   /// **'Ascending'**
   String get search_sort_asc;
 
+  /// No description provided for @search_history_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Search history'**
+  String get search_history_title;
+
+  /// No description provided for @search_history_empty_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a keyword to start searching'**
+  String get search_history_empty_hint;
+
+  /// No description provided for @search_history_clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get search_history_clear;
+
+  /// No description provided for @search_history_clear_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search history?'**
+  String get search_history_clear_confirm;
+
   /// No description provided for @feed_back_tip.
   ///
   /// In en, this message translates to:

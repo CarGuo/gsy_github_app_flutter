@@ -195,6 +195,10 @@
   "search_filter_type_updated": "Recently updated",
   "search_sort_desc": "Descending",
   "search_sort_asc": "Ascending",
+  "search_history_title": "Search history",
+  "search_history_empty_hint": "Type a keyword to start searching",
+  "search_history_clear": "Clear",
+  "search_history_clear_confirm": "Clear search history?",
   "feed_back_tip": "Your feedback will be sent to Github as a public issue",
 
   "issue_badge_bot": "bot",
