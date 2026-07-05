@@ -51,14 +51,23 @@ class SearchBLoC {
   /// 搜索成功后异步写入搜索历史；写入失败不影响主流程。
   getDataLogic(int page) async {
     final query = searchText;
-    // language 过滤器只对 repositories 搜索有效。GitHub 的 /search/users
-    // 与 /search/issues 支持 language 修饰符但语义不同，这里为了避免歧义，
-    // 只有 repo 搜索时才拼接 language。
-    final effectiveLanguage = selectIndex == 0 ? language : null;
+    // 空查询直接短路，避免拿 "q=" 打 GitHub search API。
+    // 触发链路：抽屉里选 language / sort 会调 _resolveSelectIndex → 强制 refresh，
+    // 这里如果不拦，就会以空 q 触发 400/422，被 UI 弹成"请确保 ClientId 正确"，
+    // 迷惑用户以为登录挂了。核心问题是"没输入词也不该发请求"，从这里根治。
+    if (query == null || query.trim().isEmpty) {
+      return null;
+    }
+    // language 过滤器：
+    // - repositories 搜索通过拼 `+language:xxx` 修饰符生效，
+    // - /search/code 支持相同的 `language:` 修饰符（GitHub 官方语法），
+    // - /search/users 与 /search/issues 语义不同，为了避免歧义关掉。
+    final effectiveLanguage =
+        (selectIndex == 0 || selectIndex == 3) ? language : null;
     final res = await ReposRepository.searchRepositoryRequest(
         query, effectiveLanguage, type, sort, _apiType, page, Config.PAGE_SIZE);
     if (page == 1 && res != null && res.result == true) {
-      unawaited(SearchHistoryRepository.add(query ?? ''));
+      unawaited(SearchHistoryRepository.add(query));
     }
     return res;
   }

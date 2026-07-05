@@ -14,7 +14,20 @@ class GSYSearchDrawer extends StatefulWidget {
   final SearchSelectItemChanged<String?> sortCallback;
   final SearchSelectItemChanged<String?> languageCallback;
 
-  const GSYSearchDrawer(this.typeCallback, this.sortCallback, this.languageCallback, {super.key});
+  /// 当前搜索 tab 索引：0 repo / 1 user / 2 issue / 3 code。
+  ///
+  /// 抽屉按此索引隐藏对上游 GitHub API 无意义的分段，避免用户在
+  /// Code tab 上瞎调 sort（GitHub 只支持 relevance，调了也没用），
+  /// 也避免在 User tab 上勾语言（BLoC 已经把 language 关掉了）。
+  final int selectIndex;
+
+  const GSYSearchDrawer(
+    this.typeCallback,
+    this.sortCallback,
+    this.languageCallback, {
+    super.key,
+    this.selectIndex = 0,
+  });
 
   @override
   _GSYSearchDrawerState createState() => _GSYSearchDrawerState();
@@ -23,6 +36,15 @@ class GSYSearchDrawer extends StatefulWidget {
 class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   final double itemWidth = 200.0;
+
+  /// Code tab：GitHub 官方只支持 relevance，不支持排序，
+  /// 所以隐藏「排序类型」+「升降序」两段。
+  bool get _showSort => widget.selectIndex != 3;
+
+  /// User tab：BLoC 层已明确把 language 关掉（仅 repo 生效）；
+  /// Code tab：GitHub 支持 `language:` 修饰符，走 q 拼接依然有效。
+  /// 所以只在 User 上隐藏语言段。
+  bool get _showLanguage => widget.selectIndex != 1;
 
   @override
   Widget build(BuildContext context) {
@@ -46,25 +68,29 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     list.add(Container(
       width: itemWidth,
     ));
-    list.add(_renderTitle(context.l10n.search_type));
-    for (int i = 0; i < searchFilterType.length; i++) {
-      FilterModel model = searchFilterType[i];
-      list.add(_renderItem(model, searchFilterType, i, widget.typeCallback));
-      list.add(_renderDivider());
-    }
-    list.add(_renderTitle(context.l10n.search_sort));
+    if (_showSort) {
+      list.add(_renderTitle(context.l10n.search_type));
+      for (int i = 0; i < searchFilterType.length; i++) {
+        FilterModel model = searchFilterType[i];
+        list.add(_renderItem(model, searchFilterType, i, widget.typeCallback));
+        list.add(_renderDivider());
+      }
+      list.add(_renderTitle(context.l10n.search_sort));
 
-    for (int i = 0; i < sortType.length; i++) {
-      FilterModel model = sortType[i];
-      list.add(_renderItem(model, sortType, i, widget.sortCallback));
-      list.add(_renderDivider());
+      for (int i = 0; i < sortType.length; i++) {
+        FilterModel model = sortType[i];
+        list.add(_renderItem(model, sortType, i, widget.sortCallback));
+        list.add(_renderDivider());
+      }
     }
-    list.add(_renderTitle(context.l10n.search_language));
-    for (int i = 0; i < searchLanguageType.length; i++) {
-      FilterModel model = searchLanguageType[i];
-      list.add(
-          _renderItem(model, searchLanguageType, i, widget.languageCallback));
-      list.add(_renderDivider());
+    if (_showLanguage) {
+      list.add(_renderTitle(context.l10n.search_language));
+      for (int i = 0; i < searchLanguageType.length; i++) {
+        FilterModel model = searchLanguageType[i];
+        list.add(
+            _renderItem(model, searchLanguageType, i, widget.languageCallback));
+        list.add(_renderDivider());
+      }
     }
     return list;
   }

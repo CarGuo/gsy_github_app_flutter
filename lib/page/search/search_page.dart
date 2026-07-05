@@ -243,6 +243,7 @@ class _SearchPageState extends State<SearchPage>
               Navigator.pop(context);
               _resolveSelectIndex();
             },
+            selectIndex: searchBLoC.selectIndex,
           ),
           appBar: AppBar(
               leading: IconButton(
@@ -272,6 +273,10 @@ class _SearchPageState extends State<SearchPage>
                     // 顺序会造成 UI 高亮和实际请求类型不一致（Issue tab 亮着
                     // 但实际发的是 repo 请求）。
                     searchBLoC.selectIndex = selectIndex;
+                    // 抽屉是按 selectIndex 动态显示分段（隐藏 Code sort、隐藏
+                    // User language），tab 一变必须触发 rebuild，否则抽屉里
+                    // 拿到的还是旧 selectIndex，隐藏逻辑就错位了。
+                    if (mounted) setState(() {});
                     // 只有已经有搜索词、且当前没在拉数据时才立刻刷新。
                     // 没搜索词的话不需要发请求，等用户输入完再搜。
                     if (searchBLoC.searchText == null ||
