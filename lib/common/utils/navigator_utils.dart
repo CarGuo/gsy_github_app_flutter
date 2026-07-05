@@ -10,6 +10,7 @@ import 'package:gsy_github_app_flutter/page/gsy_webview.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
 import 'package:gsy_github_app_flutter/page/issue/issue_detail_page.dart';
+import 'package:gsy_github_app_flutter/page/issue/pull_request_files_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_page.dart';
 import 'package:gsy_github_app_flutter/page/login/login_webview.dart';
 import 'package:gsy_github_app_flutter/page/notify/notify_page.dart';
@@ -233,6 +234,13 @@ class NavigatorUtils {
           reposName,
           needHomeIcon: needHomeIcon,
         ));
+  }
+
+  ///PR 变更文件页
+  static Future goPullRequestFiles(BuildContext context, String userName,
+      String reposName, int number) {
+    return NavigatorRouter(
+        context, PullRequestFilesPage(userName, reposName, number));
   }
 
   ///全屏Web页面

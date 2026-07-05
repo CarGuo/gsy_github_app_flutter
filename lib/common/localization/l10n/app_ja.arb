@@ -337,5 +337,14 @@
   "event_action_unpinned": "ピン留め解除",
   "event_action_transferred": "転送",
   "event_action_milestoned": "マイルストーン設定",
-  "event_action_demilestoned": "マイルストーン解除"
+  "event_action_demilestoned": "マイルストーン解除",
+  "option_pr_files": "変更ファイル",
+  "pr_files_title": "PR #{number} の変更ファイル",
+  "@pr_files_title": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -1151,4 +1151,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => 'demilestoned';
+
+  @override
+  String get option_pr_files => 'Files changed';
+
+  @override
+  String pr_files_title(int number) {
+    return 'PR #$number files changed';
+  }
 }

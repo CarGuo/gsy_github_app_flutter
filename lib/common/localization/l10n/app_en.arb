@@ -639,5 +639,14 @@
   "event_action_unpinned": "unpinned",
   "event_action_transferred": "transferred",
   "event_action_milestoned": "milestoned",
-  "event_action_demilestoned": "demilestoned"
+  "event_action_demilestoned": "demilestoned",
+  "option_pr_files": "Files changed",
+  "pr_files_title": "PR #{number} files changed",
+  "@pr_files_title": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  }
 }

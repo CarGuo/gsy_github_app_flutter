@@ -1142,4 +1142,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => '마일스톤 해제';
+
+  @override
+  String get option_pr_files => '변경 파일';
+
+  @override
+  String pr_files_title(int number) {
+    return 'PR #$number 변경 파일';
+  }
 }

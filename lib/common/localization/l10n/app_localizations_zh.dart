@@ -1142,4 +1142,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => '移除里程碑';
+
+  @override
+  String get option_pr_files => '变更文件';
+
+  @override
+  String pr_files_title(int number) {
+    return 'PR #$number 变更文件';
+  }
 }

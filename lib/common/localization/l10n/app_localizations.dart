@@ -2069,6 +2069,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'demilestoned'**
   String get event_action_demilestoned;
+
+  /// No description provided for @option_pr_files.
+  ///
+  /// In en, this message translates to:
+  /// **'Files changed'**
+  String get option_pr_files;
+
+  /// No description provided for @pr_files_title.
+  ///
+  /// In en, this message translates to:
+  /// **'PR #{number} files changed'**
+  String pr_files_title(int number);
 }
 
 class _AppLocalizationsDelegate

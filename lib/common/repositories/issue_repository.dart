@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
 import 'package:gsy_github_app_flutter/model/pull_request.dart';
+import 'package:gsy_github_app_flutter/model/commitFile.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
 
@@ -113,6 +114,30 @@ class IssueRepository {
     if (res != null && res.result && res.data is Map<String, dynamic>) {
       final pr = PullRequest.fromJson(res.data as Map<String, dynamic>);
       return DataResult(pr, true);
+    }
+    return DataResult(null, false);
+  }
+
+  /// 拉取 PR 变更文件列表（GET /repos/:o/:r/pulls/:number/files）
+  ///
+  /// - 分页参数走 [Address.getPageParams]，与其他列表对齐
+  /// - payload schema 与 commit files 一致，直接复用 [CommitFile] model
+  /// - 不做 DB 缓存 —— diff patch 体积大且更新频繁，缓存性价比低
+  static getPullRequestFilesRequest(
+      String userName, String repository, int number,
+      {int page = 1}) async {
+    String url = Address.getRepoPullFiles(userName, repository, number) +
+        Address.getPageParams("?", page);
+    var res = await httpManager.netFetch(url, null, null, null);
+    if (res != null && res.result && res.data is List) {
+      final List data = res.data as List;
+      List<CommitFile> list = [];
+      for (var item in data) {
+        if (item is Map<String, dynamic>) {
+          list.add(CommitFile.fromJson(item));
+        }
+      }
+      return DataResult(list, true);
     }
     return DataResult(null, false);
   }

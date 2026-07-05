@@ -1143,4 +1143,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => 'マイルストーン解除';
+
+  @override
+  String get option_pr_files => '変更ファイル';
+
+  @override
+  String pr_files_title(int number) {
+    return 'PR #$number の変更ファイル';
+  }
 }

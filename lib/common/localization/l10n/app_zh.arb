@@ -337,5 +337,14 @@
   "event_action_unpinned": "取消置顶",
   "event_action_transferred": "转移",
   "event_action_milestoned": "设置里程碑",
-  "event_action_demilestoned": "移除里程碑"
+  "event_action_demilestoned": "移除里程碑",
+  "option_pr_files": "变更文件",
+  "pr_files_title": "PR #{number} 变更文件",
+  "@pr_files_title": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  }
 }

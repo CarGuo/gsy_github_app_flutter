@@ -118,6 +118,16 @@ class Address {
     return "${host}repos/$reposOwner/$reposName/pulls/$number";
   }
 
+  ///PR 变更文件列表 get
+  ///
+  /// GitHub REST：GET /repos/:o/:r/pulls/:number/files
+  /// 返回每个文件的 filename/status/additions/deletions/changes/patch/blob_url。
+  /// payload 与 CommitFile schema 完全一致，可直接复用 [CommitFile] model。
+  /// 默认分页 30，最大 100；大 PR 通过分页拉取。
+  static getRepoPullFiles(String reposOwner, String reposName, int number) {
+    return "${host}repos/$reposOwner/$reposName/pulls/$number/files";
+  }
+
   ///仓release get
   static getReposRelease(reposOwner, reposName) {
     return "${host}repos/$reposOwner/$reposName/releases";

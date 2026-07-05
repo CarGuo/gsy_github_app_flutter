@@ -337,5 +337,14 @@
   "event_action_unpinned": "고정 해제",
   "event_action_transferred": "이관",
   "event_action_milestoned": "마일스톤 지정",
-  "event_action_demilestoned": "마일스톤 해제"
+  "event_action_demilestoned": "마일스톤 해제",
+  "option_pr_files": "변경 파일",
+  "pr_files_title": "PR #{number} 변경 파일",
+  "@pr_files_title": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  }
 }

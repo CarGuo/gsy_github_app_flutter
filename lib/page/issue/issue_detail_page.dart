@@ -724,8 +724,29 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    Widget? widgetContent =
-        (widget.needHomeIcon) ? null : GSYCommonOptionWidget(url: htmlUrl);
+    // 只有已识别为 PR（issue payload 上带 pull_request 指针，或已经拉到 PR
+    // 详情）时才把「变更文件」入口挂到 popup menu；普通 issue 不显示，避免
+    // 打开一个必然空列表的页面。
+    final bool isPull = issueHeaderViewModel.pullRequestRef != null ||
+        issueHeaderViewModel.pullRequest != null;
+    final int? prNumber = int.tryParse(widget.issueNum);
+    final List<GSYOptionModel> otherOptions = [];
+    if (isPull && prNumber != null) {
+      otherOptions.add(GSYOptionModel(
+        context.l10n.option_pr_files,
+        context.l10n.option_pr_files,
+        (model) {
+          NavigatorUtils.goPullRequestFiles(
+              context, widget.userName!, widget.reposName!, prNumber);
+        },
+      ));
+    }
+    Widget? widgetContent = (widget.needHomeIcon)
+        ? null
+        : GSYCommonOptionWidget(
+            url: htmlUrl,
+            otherList: otherOptions.isEmpty ? null : otherOptions,
+          );
     return Scaffold(
       persistentFooterButtons: _getBottomWidget(),
       appBar: AppBar(
