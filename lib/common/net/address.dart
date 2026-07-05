@@ -128,6 +128,18 @@ class Address {
     return "${host}repos/$reposOwner/$reposName/pulls/$number/files";
   }
 
+  ///PR 行级评审评论列表 get
+  ///
+  /// GitHub REST：GET /repos/:o/:r/pulls/:number/comments
+  /// 返回每条 review comment：path/position/line/original_line/body/user/html_url。
+  /// position 是 hunk 内行索引（从 hunk header 后开始数）。
+  /// 与 issue comments（/issues/:n/comments）不同，那个是整条 PR 的对话，
+  /// 这个是行级评审评论。
+  static getRepoPullReviewComments(
+      String reposOwner, String reposName, int number) {
+    return "${host}repos/$reposOwner/$reposName/pulls/$number/comments";
+  }
+
   ///仓release get
   static getReposRelease(reposOwner, reposName) {
     return "${host}repos/$reposOwner/$reposName/releases";

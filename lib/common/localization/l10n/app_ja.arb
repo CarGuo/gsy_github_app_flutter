@@ -346,5 +346,22 @@
         "type": "int"
       }
     }
-  }
+  },
+  "pr_files_review_comments_count": "レビューコメント {count} 件",
+  "@pr_files_review_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_line": "{line} 行目",
+  "@pr_files_review_line": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_outdated": "このコメントは古くなっています"
 }

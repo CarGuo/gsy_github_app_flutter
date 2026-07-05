@@ -346,5 +346,22 @@
         "type": "int"
       }
     }
-  }
+  },
+  "pr_files_review_comments_count": "리뷰 코멘트 {count}개",
+  "@pr_files_review_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_line": "{line}번째 줄",
+  "@pr_files_review_line": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_outdated": "이 코멘트는 오래되었습니다"
 }

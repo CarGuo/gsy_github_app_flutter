@@ -1151,4 +1151,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String pr_files_title(int number) {
     return 'PR #$number の変更ファイル';
   }
+
+  @override
+  String pr_files_review_comments_count(int count) {
+    return 'レビューコメント $count 件';
+  }
+
+  @override
+  String pr_files_review_line(int line) {
+    return '$line 行目';
+  }
+
+  @override
+  String get pr_files_review_outdated => 'このコメントは古くなっています';
 }

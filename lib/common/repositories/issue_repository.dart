@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
 import 'package:gsy_github_app_flutter/model/pull_request.dart';
+import 'package:gsy_github_app_flutter/model/pull_review_comment.dart';
 import 'package:gsy_github_app_flutter/model/commitFile.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
@@ -123,7 +124,7 @@ class IssueRepository {
   /// - 分页参数走 [Address.getPageParams]，与其他列表对齐
   /// - payload schema 与 commit files 一致，直接复用 [CommitFile] model
   /// - 不做 DB 缓存 —— diff patch 体积大且更新频繁，缓存性价比低
-  static getPullRequestFilesRequest(
+  static Future<DataResult> getPullRequestFilesRequest(
       String userName, String repository, int number,
       {int page = 1}) async {
     String url = Address.getRepoPullFiles(userName, repository, number) +
@@ -140,6 +141,43 @@ class IssueRepository {
       return DataResult(list, true);
     }
     return DataResult(null, false);
+  }
+
+  /// 拉取 PR 行级评审评论（GET /repos/:o/:r/pulls/:number/comments）
+  ///
+  /// - 分页大小 100（GitHub 上限），自动翻到空页为止；不做上限截断
+  /// - 结果按 path 聚合的责任交给调用方，本方法只负责一次性把整条 PR
+  ///   的行级评论拉完；这样上层 files 页可以按文件 O(1) 反查
+  /// - 大 PR（几十个 review comment）通常 1~2 页搞定，比在 UI 层
+  ///   分页展开每个文件更省心
+  static Future<DataResult> getPullReviewCommentsRequest(
+      String userName, String repository, int number) async {
+    final List<PullReviewComment> all = [];
+    const int pageSize = 100;
+    int page = 1;
+    while (true) {
+      final url =
+          "${Address.getRepoPullReviewComments(userName, repository, number)}?per_page=$pageSize&page=$page";
+      final res = await httpManager.netFetch(url, null, null, null);
+      if (res == null || !res.result || res.data is! List) {
+        // 首页就失败视为整体失败；已有部分数据也直接返回让 UI 显示可拿到的
+        if (all.isEmpty) return DataResult(null, false);
+        break;
+      }
+      final List data = res.data as List;
+      if (data.isEmpty) break;
+      for (var item in data) {
+        if (item is Map<String, dynamic>) {
+          all.add(PullReviewComment.fromJson(item));
+        }
+      }
+      if (data.length < pageSize) break;
+      page++;
+      // 兜底：极端情况下防止死循环（>=50 页 = 5000 条 review comment，
+      // 现实中不会有 PR 到这个量级，触到就直接停）
+      if (page > 50) break;
+    }
+    return DataResult(all, true);
   }
 
   /// 搜索仓库issue

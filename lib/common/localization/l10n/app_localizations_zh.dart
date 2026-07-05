@@ -1150,4 +1150,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String pr_files_title(int number) {
     return 'PR #$number 变更文件';
   }
+
+  @override
+  String pr_files_review_comments_count(int count) {
+    return '$count 条评审评论';
+  }
+
+  @override
+  String pr_files_review_line(int line) {
+    return '第 $line 行';
+  }
+
+  @override
+  String get pr_files_review_outdated => '该评论已过时';
 }

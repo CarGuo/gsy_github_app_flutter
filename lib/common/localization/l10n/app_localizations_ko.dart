@@ -1150,4 +1150,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String pr_files_title(int number) {
     return 'PR #$number 변경 파일';
   }
+
+  @override
+  String pr_files_review_comments_count(int count) {
+    return '리뷰 코멘트 $count개';
+  }
+
+  @override
+  String pr_files_review_line(int line) {
+    return '$line번째 줄';
+  }
+
+  @override
+  String get pr_files_review_outdated => '이 코멘트는 오래되었습니다';
 }

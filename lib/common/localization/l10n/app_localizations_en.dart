@@ -1159,4 +1159,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String pr_files_title(int number) {
     return 'PR #$number files changed';
   }
+
+  @override
+  String pr_files_review_comments_count(int count) {
+    return '$count review comments';
+  }
+
+  @override
+  String pr_files_review_line(int line) {
+    return 'Line $line';
+  }
+
+  @override
+  String get pr_files_review_outdated => 'This comment is outdated';
 }

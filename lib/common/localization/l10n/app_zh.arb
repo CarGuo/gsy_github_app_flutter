@@ -346,5 +346,22 @@
         "type": "int"
       }
     }
-  }
+  },
+  "pr_files_review_comments_count": "{count} 条评审评论",
+  "@pr_files_review_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_line": "第 {line} 行",
+  "@pr_files_review_line": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_outdated": "该评论已过时"
 }

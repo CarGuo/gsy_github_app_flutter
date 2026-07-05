@@ -220,11 +220,18 @@ class IssueTimelineItem extends StatelessWidget {
   }
 
   Widget _reviewBodyCard(BuildContext context) {
+    // 按 reviewState 上色，让 approved/changes_requested/dismissed/commented
+    // 视觉上立刻可分。左侧 3px 色带 + 同色半透边框，色相直接复用 [_iconColor]，
+    // 避免颜色语义在图标与卡片之间不一致（例如图标绿、卡片灰）。
+    final Color accent = _iconColor;
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border.all(
-            color: GSYColors.subLightTextColor.withValues(alpha: 0.5),
-            width: 0.5),
+        border: Border(
+          left: BorderSide(color: accent, width: 3),
+          top: BorderSide(color: accent.withValues(alpha: 0.4), width: 0.5),
+          right: BorderSide(color: accent.withValues(alpha: 0.4), width: 0.5),
+          bottom: BorderSide(color: accent.withValues(alpha: 0.4), width: 0.5),
+        ),
         borderRadius: BorderRadius.circular(6),
       ),
       child: ClipRRect(

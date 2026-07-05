@@ -2081,6 +2081,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PR #{number} files changed'**
   String pr_files_title(int number);
+
+  /// No description provided for @pr_files_review_comments_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} review comments'**
+  String pr_files_review_comments_count(int count);
+
+  /// No description provided for @pr_files_review_line.
+  ///
+  /// In en, this message translates to:
+  /// **'Line {line}'**
+  String pr_files_review_line(int line);
+
+  /// No description provided for @pr_files_review_outdated.
+  ///
+  /// In en, this message translates to:
+  /// **'This comment is outdated'**
+  String get pr_files_review_outdated;
 }
 
 class _AppLocalizationsDelegate

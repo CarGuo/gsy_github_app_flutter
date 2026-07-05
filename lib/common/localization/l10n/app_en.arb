@@ -648,5 +648,22 @@
         "type": "int"
       }
     }
-  }
+  },
+  "pr_files_review_comments_count": "{count} review comments",
+  "@pr_files_review_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_line": "Line {line}",
+  "@pr_files_review_line": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "pr_files_review_outdated": "This comment is outdated"
 }
