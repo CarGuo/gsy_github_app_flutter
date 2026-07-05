@@ -1007,6 +1007,26 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String event_dynamic_discussion(String action, String repo) {
+    return '$action a discussion at $repo';
+  }
+
+  @override
+  String event_dynamic_discussion_comment(String action, String repo) {
+    return '$action a discussion comment at $repo';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_thread(String action, String repo) {
+    return '$action a PR review thread at $repo';
+  }
+
+  @override
+  String event_dynamic_sponsorship(String action) {
+    return '$action a sponsorship';
+  }
+
+  @override
   String event_dynamic_watch(String action, String repo) {
     return '$action $repo';
   }
@@ -1151,6 +1171,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => 'demilestoned';
+
+  @override
+  String get event_action_answered => 'marked as answered';
+
+  @override
+  String get event_action_unanswered => 'removed answer mark';
+
+  @override
+  String get event_action_category_changed => 'changed category';
+
+  @override
+  String get event_action_resolved => 'resolved';
+
+  @override
+  String get event_action_unresolved => 'unresolved';
 
   @override
   String get option_pr_files => 'Files changed';

@@ -1000,6 +1000,26 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String event_dynamic_discussion(String action, String repo) {
+    return '$repo 에서 토론을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_discussion_comment(String action, String repo) {
+    return '$repo 에서 토론 댓글을 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_thread(String action, String repo) {
+    return '$repo 에서 PR 리뷰 스레드를 $action 했습니다';
+  }
+
+  @override
+  String event_dynamic_sponsorship(String action) {
+    return '스폰서십을 $action 했습니다';
+  }
+
+  @override
   String event_dynamic_watch(String action, String repo) {
     return '$repo 를 $action 했습니다';
   }
@@ -1142,6 +1162,21 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => '마일스톤 해제';
+
+  @override
+  String get event_action_answered => '답변으로 표시';
+
+  @override
+  String get event_action_unanswered => '답변 표시 해제';
+
+  @override
+  String get event_action_category_changed => '카테고리 변경';
+
+  @override
+  String get event_action_resolved => '해결됨으로 표시';
+
+  @override
+  String get event_action_unresolved => '해결됨 취소';
 
   @override
   String get option_pr_files => '변경 파일';

@@ -126,9 +126,11 @@ void main() {
 
   testWidgets('未知事件 → actionStr 为空 + 登记到 loggedUnknownEventTypes',
       (tester) async {
+    // SecurityAdvisoryEvent: webhook 里有，Events API 不 emit，属"文档滞后 + 尚未收编"
+    // 一旦 GitHub 把它加进 events feed 且我们扩了 case，这个样本可以再换
     final ee = Event.fromJson(_m({
       'id': 'x',
-      'type': 'SponsorshipEvent',
+      'type': 'SecurityAdvisoryEvent',
       'actor': {'login': 'alice'},
       'repo': {'name': 'CarGuo/gsy'},
       'org': null,
@@ -144,10 +146,126 @@ void main() {
 
     expect(got.actionStr, '');
     expect(
-      EventUtils.loggedUnknownEventTypes.contains('SponsorshipEvent'),
+      EventUtils.loggedUnknownEventTypes.contains('SecurityAdvisoryEvent'),
       isTrue,
       reason: 'default 分支必须把未知事件类型登记到 debug-only 集合',
     );
+  });
+
+  testWidgets('DiscussionEvent + created → 走 event_dynamic_discussion 整句', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DiscussionEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'created'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('讨论'));
+    expect(got.actionStr, contains('CarGuo/gsy'));
+    // action 走通用词典 → created 翻成"创建"
+    expect(got.actionStr, contains('创建'));
+    expect(
+      EventUtils.loggedUnknownEventTypes.contains('DiscussionEvent'),
+      isFalse,
+      reason: 'DiscussionEvent 已收编，不应再进 unknown 遥测',
+    );
+  });
+
+  testWidgets('DiscussionCommentEvent + answered → action 词典化为"标记回答"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DiscussionCommentEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'answered'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('讨论评论'));
+    expect(got.actionStr, contains('标记回答'),
+        reason: 'answered 必须走 event_action_answered 词典，不允许英文透出');
+    expect(got.actionStr, isNot(contains('answered')));
+  });
+
+  testWidgets('PullRequestReviewThreadEvent + resolved → PR 评审讨论串整句', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PullRequestReviewThreadEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'resolved'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('PR 评审讨论串'));
+    expect(got.actionStr, contains('CarGuo/gsy'));
+  });
+
+  testWidgets('SponsorshipEvent → 独立整句，不含 repo（payload 里没有 repo 语义）', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SponsorshipEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'created'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // sponsorship 语义在账户维度，模板里没塞 repo 槽位
+    expect(got.actionStr, contains('赞助'));
+    expect(got.actionStr, contains('创建'));
+  });
+
+  testWidgets('通用 action category_changed → 词典化"变更分类"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DiscussionEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'category_changed'}
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('变更分类'));
+    expect(got.actionStr, isNot(contains('category_changed')),
+        reason: 'category_changed 必须走 event_action_category_changed 词典');
   });
 
   testWidgets('未知事件同类型重复触发 → 只登记一次', (tester) async {

@@ -1001,6 +1001,26 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String event_dynamic_discussion(String action, String repo) {
+    return '$repo でディスカッションを $action しました';
+  }
+
+  @override
+  String event_dynamic_discussion_comment(String action, String repo) {
+    return '$repo でディスカッションコメントを $action しました';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_thread(String action, String repo) {
+    return '$repo で PR レビュースレッドを $action しました';
+  }
+
+  @override
+  String event_dynamic_sponsorship(String action) {
+    return 'スポンサーシップを $action しました';
+  }
+
+  @override
   String event_dynamic_watch(String action, String repo) {
     return '$repo を $action しました';
   }
@@ -1143,6 +1163,21 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => 'マイルストーン解除';
+
+  @override
+  String get event_action_answered => '回答としてマーク';
+
+  @override
+  String get event_action_unanswered => '回答マーク解除';
+
+  @override
+  String get event_action_category_changed => 'カテゴリ変更';
+
+  @override
+  String get event_action_resolved => '解決済みにマーク';
+
+  @override
+  String get event_action_unresolved => '解決済みを取り消し';
 
   @override
   String get option_pr_files => '変更ファイル';

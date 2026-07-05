@@ -1794,6 +1794,30 @@ abstract class AppLocalizations {
   /// **'{action} release {tag} at {repo}'**
   String event_dynamic_release(String action, String tag, String repo);
 
+  /// No description provided for @event_dynamic_discussion.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a discussion at {repo}'**
+  String event_dynamic_discussion(String action, String repo);
+
+  /// No description provided for @event_dynamic_discussion_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a discussion comment at {repo}'**
+  String event_dynamic_discussion_comment(String action, String repo);
+
+  /// No description provided for @event_dynamic_pull_request_review_thread.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a PR review thread at {repo}'**
+  String event_dynamic_pull_request_review_thread(String action, String repo);
+
+  /// No description provided for @event_dynamic_sponsorship.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a sponsorship'**
+  String event_dynamic_sponsorship(String action);
+
   /// No description provided for @event_dynamic_watch.
   ///
   /// In en, this message translates to:
@@ -2069,6 +2093,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'demilestoned'**
   String get event_action_demilestoned;
+
+  /// No description provided for @event_action_answered.
+  ///
+  /// In en, this message translates to:
+  /// **'marked as answered'**
+  String get event_action_answered;
+
+  /// No description provided for @event_action_unanswered.
+  ///
+  /// In en, this message translates to:
+  /// **'removed answer mark'**
+  String get event_action_unanswered;
+
+  /// No description provided for @event_action_category_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'changed category'**
+  String get event_action_category_changed;
+
+  /// No description provided for @event_action_resolved.
+  ///
+  /// In en, this message translates to:
+  /// **'resolved'**
+  String get event_action_resolved;
+
+  /// No description provided for @event_action_unresolved.
+  ///
+  /// In en, this message translates to:
+  /// **'unresolved'**
+  String get event_action_unresolved;
 
   /// No description provided for @option_pr_files.
   ///

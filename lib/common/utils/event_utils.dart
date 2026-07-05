@@ -20,7 +20,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 /// event 命名和 payload 形态**完全不同**，不要混用。
 ///
 /// 事件识别原则：
-/// - 已识别的 22 种事件走 [AppLocalizations] 生成多语言整句
+/// - 已识别的 26 种事件走 [AppLocalizations] 生成多语言整句
 /// - 未识别的事件走 default 分支返回空 actionStr（widget 侧会显示空 tile
 ///   而不是英文 raw 事件类型名），并在 debug 构建下将事件类型登记到
 ///   [loggedUnknownEventTypes]，用 [Talker] 打 warning 提醒开发者补 case
@@ -215,6 +215,16 @@ class EventUtils {
         return l.event_action_milestoned;
       case 'demilestoned':
         return l.event_action_demilestoned;
+      case 'answered':
+        return l.event_action_answered;
+      case 'unanswered':
+        return l.event_action_unanswered;
+      case 'category_changed':
+        return l.event_action_category_changed;
+      case 'resolved':
+        return l.event_action_resolved;
+      case 'unresolved':
+        return l.event_action_unresolved;
       default:
         _logUnknownActionOnce(rawAction);
         return rawAction;
@@ -333,6 +343,40 @@ class EventUtils {
         actionStr = l.event_dynamic_pull_request_review_comment(
           _translateAction(l, event.payload?.action),
           event.repo!.name!,
+        );
+        break;
+      case "PullRequestReviewThreadEvent":
+        // GitHub 官方补录事件：PR 里 review 讨论串被标记 resolved/unresolved。
+        // action 值：resolved / unresolved（都走通用词典兜底 → 目前显示原文）
+        actionStr = l.event_dynamic_pull_request_review_thread(
+          _translateAction(l, event.payload?.action),
+          event.repo!.name!,
+        );
+        break;
+      case "DiscussionEvent":
+        // GitHub Discussions（issue/PR 之外的第三种讨论区）。webhook 已长期
+        // 存在，但直到 2026 仍未收录到 Events API 官方 event-types 文档，属于
+        // "文档滞后于实现"。真实 payload 里 action 常见值：created / edited /
+        // deleted / pinned / unpinned / locked / unlocked / transferred /
+        // category_changed / answered / unanswered / labeled / unlabeled
+        actionStr = l.event_dynamic_discussion(
+          _translateAction(l, event.payload?.action),
+          event.repo!.name!,
+        );
+        break;
+      case "DiscussionCommentEvent":
+        // Discussion 里的评论，action 值：created / edited / deleted
+        actionStr = l.event_dynamic_discussion_comment(
+          _translateAction(l, event.payload?.action),
+          event.repo!.name!,
+        );
+        break;
+      case "SponsorshipEvent":
+        // GitHub Sponsors 订阅生命周期，action 值：created / edited /
+        // cancelled / tier_changed / pending_cancellation /
+        // pending_tier_change。绝大多数已在通用词典覆盖，未命中的走英文兜底
+        actionStr = l.event_dynamic_sponsorship(
+          _translateAction(l, event.payload?.action),
         );
         break;
       case "PushEvent":

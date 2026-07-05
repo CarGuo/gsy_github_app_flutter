@@ -1000,6 +1000,26 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String event_dynamic_discussion(String action, String repo) {
+    return '在 $repo $action 讨论';
+  }
+
+  @override
+  String event_dynamic_discussion_comment(String action, String repo) {
+    return '在 $repo $action 讨论评论';
+  }
+
+  @override
+  String event_dynamic_pull_request_review_thread(String action, String repo) {
+    return '在 $repo $action PR 评审讨论串';
+  }
+
+  @override
+  String event_dynamic_sponsorship(String action) {
+    return '$action 一个赞助';
+  }
+
+  @override
   String event_dynamic_watch(String action, String repo) {
     return '$action $repo';
   }
@@ -1142,6 +1162,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get event_action_demilestoned => '移除里程碑';
+
+  @override
+  String get event_action_answered => '标记回答';
+
+  @override
+  String get event_action_unanswered => '取消回答标记';
+
+  @override
+  String get event_action_category_changed => '变更分类';
+
+  @override
+  String get event_action_resolved => '标记已解决';
+
+  @override
+  String get event_action_unresolved => '撤销已解决';
 
   @override
   String get option_pr_files => '变更文件';

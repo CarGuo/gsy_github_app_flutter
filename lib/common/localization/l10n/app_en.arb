@@ -580,6 +580,33 @@
       "repo": {"type": "String"}
     }
   },
+  "event_dynamic_discussion": "{action} a discussion at {repo}",
+  "@event_dynamic_discussion": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_discussion_comment": "{action} a discussion comment at {repo}",
+  "@event_dynamic_discussion_comment": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_pull_request_review_thread": "{action} a PR review thread at {repo}",
+  "@event_dynamic_pull_request_review_thread": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "repo": {"type": "String"}
+    }
+  },
+  "event_dynamic_sponsorship": "{action} a sponsorship",
+  "@event_dynamic_sponsorship": {
+    "placeholders": {
+      "action": {"type": "String"}
+    }
+  },
   "event_dynamic_watch": "{action} {repo}",
   "@event_dynamic_watch": {
     "placeholders": {
@@ -640,6 +667,11 @@
   "event_action_transferred": "transferred",
   "event_action_milestoned": "milestoned",
   "event_action_demilestoned": "demilestoned",
+  "event_action_answered": "marked as answered",
+  "event_action_unanswered": "removed answer mark",
+  "event_action_category_changed": "changed category",
+  "event_action_resolved": "resolved",
+  "event_action_unresolved": "unresolved",
   "option_pr_files": "Files changed",
   "pr_files_title": "PR #{number} files changed",
   "@pr_files_title": {
