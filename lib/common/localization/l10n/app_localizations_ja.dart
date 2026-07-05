@@ -562,6 +562,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get search_language => '言語';
 
   @override
+  String get search_filter_type_best_match => '最適一致';
+
+  @override
+  String get search_filter_type_stars => 'スター数';
+
+  @override
+  String get search_filter_type_forks => 'フォーク数';
+
+  @override
+  String get search_filter_type_updated => '最近更新';
+
+  @override
+  String get search_sort_desc => '降順';
+
+  @override
+  String get search_sort_asc => '昇順';
+
+  @override
   String get feed_back_tip => 'あなたのフィードバックは公開IssueとしてGitHubに送信されます';
 
   @override

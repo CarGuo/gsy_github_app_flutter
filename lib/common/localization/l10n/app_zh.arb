@@ -189,6 +189,12 @@
   "search_type": "类型",
   "search_sort": "排序",
   "search_language": "语言",
+  "search_filter_type_best_match": "最佳匹配",
+  "search_filter_type_stars": "星标数",
+  "search_filter_type_forks": "Fork 数",
+  "search_filter_type_updated": "最近更新",
+  "search_sort_desc": "从高到低",
+  "search_sort_asc": "从低到高",
   "feed_back_tip": "您的反馈会作为公共Issue提交到Github，您确定要继续吗？",
 
   "issue_badge_bot": "机器人",

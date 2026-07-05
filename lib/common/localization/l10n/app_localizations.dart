@@ -1200,6 +1200,42 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get search_language;
 
+  /// No description provided for @search_filter_type_best_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Best match'**
+  String get search_filter_type_best_match;
+
+  /// No description provided for @search_filter_type_stars.
+  ///
+  /// In en, this message translates to:
+  /// **'Stars'**
+  String get search_filter_type_stars;
+
+  /// No description provided for @search_filter_type_forks.
+  ///
+  /// In en, this message translates to:
+  /// **'Forks'**
+  String get search_filter_type_forks;
+
+  /// No description provided for @search_filter_type_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently updated'**
+  String get search_filter_type_updated;
+
+  /// No description provided for @search_sort_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get search_sort_desc;
+
+  /// No description provided for @search_sort_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get search_sort_asc;
+
   /// No description provided for @feed_back_tip.
   ///
   /// In en, this message translates to:

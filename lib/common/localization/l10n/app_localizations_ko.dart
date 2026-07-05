@@ -561,6 +561,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get search_language => '언어';
 
   @override
+  String get search_filter_type_best_match => '최적 일치';
+
+  @override
+  String get search_filter_type_stars => '스타 수';
+
+  @override
+  String get search_filter_type_forks => '포크 수';
+
+  @override
+  String get search_filter_type_updated => '최근 업데이트';
+
+  @override
+  String get search_sort_desc => '내림차순';
+
+  @override
+  String get search_sort_asc => '오름차순';
+
+  @override
   String get feed_back_tip => '귀하의 피드백은 Github에 공개 이슈로 제출됩니다';
 
   @override

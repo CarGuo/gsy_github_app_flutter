@@ -189,6 +189,12 @@
   "search_type": "Type",
   "search_sort": "Sort",
   "search_language": "Language",
+  "search_filter_type_best_match": "Best match",
+  "search_filter_type_stars": "Stars",
+  "search_filter_type_forks": "Forks",
+  "search_filter_type_updated": "Recently updated",
+  "search_sort_desc": "Descending",
+  "search_sort_asc": "Ascending",
   "feed_back_tip": "Your feedback will be sent to Github as a public issue",
 
   "issue_badge_bot": "bot",

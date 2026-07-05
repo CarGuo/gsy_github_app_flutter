@@ -561,6 +561,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get search_language => '语言';
 
   @override
+  String get search_filter_type_best_match => '最佳匹配';
+
+  @override
+  String get search_filter_type_stars => '星标数';
+
+  @override
+  String get search_filter_type_forks => 'Fork 数';
+
+  @override
+  String get search_filter_type_updated => '最近更新';
+
+  @override
+  String get search_sort_desc => '从高到低';
+
+  @override
+  String get search_sort_asc => '从低到高';
+
+  @override
   String get feed_back_tip => '您的反馈会作为公共Issue提交到Github，您确定要继续吗？';
 
   @override

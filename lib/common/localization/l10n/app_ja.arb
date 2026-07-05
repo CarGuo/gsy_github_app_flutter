@@ -189,6 +189,12 @@
   "search_type": "タイプ",
   "search_sort": "並び替え",
   "search_language": "言語",
+  "search_filter_type_best_match": "最適一致",
+  "search_filter_type_stars": "スター数",
+  "search_filter_type_forks": "フォーク数",
+  "search_filter_type_updated": "最近更新",
+  "search_sort_desc": "降順",
+  "search_sort_asc": "昇順",
   "feed_back_tip": "あなたのフィードバックは公開IssueとしてGitHubに送信されます",
 
   "issue_badge_bot": "ボット",

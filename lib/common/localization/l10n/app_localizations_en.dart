@@ -567,6 +567,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_language => 'Language';
 
   @override
+  String get search_filter_type_best_match => 'Best match';
+
+  @override
+  String get search_filter_type_stars => 'Stars';
+
+  @override
+  String get search_filter_type_forks => 'Forks';
+
+  @override
+  String get search_filter_type_updated => 'Recently updated';
+
+  @override
+  String get search_sort_desc => 'Descending';
+
+  @override
+  String get search_sort_asc => 'Ascending';
+
+  @override
   String get feed_back_tip =>
       'Your feedback will be sent to Github as a public issue';
 
