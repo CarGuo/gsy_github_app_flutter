@@ -178,6 +178,7 @@
   "search_title": "検索",
   "search_tab_repos": "リポジトリ",
   "search_tab_user": "ユーザー",
+  "search_tab_issue": "Issue",
   "release_tab_release": "リリース",
   "release_tab_tag": "タグ",
   "user_profile_name": "名前",

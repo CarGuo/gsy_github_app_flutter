@@ -528,6 +528,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get search_tab_user => '用户';
 
   @override
+  String get search_tab_issue => 'Issue';
+
+  @override
   String get release_tab_release => '版本';
 
   @override

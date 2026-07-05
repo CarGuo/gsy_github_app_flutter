@@ -27,13 +27,33 @@ class SearchBLoC {
 
   final TextEditingController textEditingController  = TextEditingController();
 
+  /// tab 索引到 GitHub search API 的 type 参数
+  ///
+  /// 0 = repositories（type=null）
+  /// 1 = users（type='user'）
+  /// 2 = issues + pull requests（type='issue'）
+  String? get _apiType {
+    switch (selectIndex) {
+      case 1:
+        return 'user';
+      case 2:
+        return 'issue';
+      default:
+        return null;
+    }
+  }
+
   ///获取搜索数据
   ///
   /// 搜索成功后异步写入搜索历史；写入失败不影响主流程。
   getDataLogic(int page) async {
     final query = searchText;
-    final res = await ReposRepository.searchRepositoryRequest(query, language, type, sort,
-        selectIndex == 0 ? null : 'user', page, Config.PAGE_SIZE);
+    // language 过滤器只对 repositories 搜索有效。GitHub 的 /search/users
+    // 与 /search/issues 支持 language 修饰符但语义不同，这里为了避免歧义，
+    // 只有 repo 搜索时才拼接 language。
+    final effectiveLanguage = selectIndex == 0 ? language : null;
+    final res = await ReposRepository.searchRepositoryRequest(
+        query, effectiveLanguage, type, sort, _apiType, page, Config.PAGE_SIZE);
     if (page == 1 && res != null && res.result == true) {
       unawaited(SearchHistoryRepository.add(query ?? ''));
     }

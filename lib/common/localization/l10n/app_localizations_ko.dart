@@ -528,6 +528,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get search_tab_user => '사용자';
 
   @override
+  String get search_tab_issue => 'Issue';
+
+  @override
   String get release_tab_release => '릴리스';
 
   @override

@@ -534,6 +534,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_tab_user => 'User';
 
   @override
+  String get search_tab_issue => 'Issue';
+
+  @override
   String get release_tab_release => 'Release';
 
   @override

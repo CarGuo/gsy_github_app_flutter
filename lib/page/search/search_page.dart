@@ -4,7 +4,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/search_history_repository.dart';
+import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/model/issue.dart';
+import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/page/search/search_bloc.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
@@ -57,6 +60,22 @@ class _SearchPageState extends State<SearchPage>
         NavigatorUtils.goPerson(
             context, UserItemViewModel.fromMap(data).userName);
       });
+    } else if (searchBLoC.selectIndex == 2) {
+      // Issue 搜索跨仓库，无法像仓库详情页那样传固定的 owner/repo，
+      // 需要从每条 issue 的 repository_url 里 split 出 owner/repo。
+      final issue = data as Issue;
+      final vm = IssueItemViewModel.fromMap(issue);
+      final fullName = CommonUtils.getFullName(issue.repoUrl);
+      return IssueItem(
+        vm,
+        onPressed: () {
+          if (fullName.isEmpty) return;
+          final parts = fullName.split('/');
+          if (parts.length != 2) return;
+          NavigatorUtils.goIssueDetail(
+              context, parts[0], parts[1], vm.number);
+        },
+      );
     }
   }
 
@@ -235,6 +254,13 @@ class _SearchPageState extends State<SearchPage>
                     _search();
                   },
                   selectItemChanged: (selectIndex) {
+                    // 无论有没有搜索词、正不正在加载，tab 切换本身必须先落到
+                    // searchBLoC.selectIndex，否则用户"先切 tab 再输入"的自然
+                    // 顺序会造成 UI 高亮和实际请求类型不一致（Issue tab 亮着
+                    // 但实际发的是 repo 请求）。
+                    searchBLoC.selectIndex = selectIndex;
+                    // 只有已经有搜索词、且当前没在拉数据时才立刻刷新。
+                    // 没搜索词的话不需要发请求，等用户输入完再搜。
                     if (searchBLoC.searchText == null ||
                         searchBLoC.searchText?.trim().isEmpty == true) {
                       return;
@@ -242,7 +268,6 @@ class _SearchPageState extends State<SearchPage>
                     if (isLoading) {
                       return;
                     }
-                    searchBLoC.selectIndex = selectIndex;
                     _resolveSelectIndex();
                   })),
           body: Stack(
@@ -306,6 +331,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
           [
             context.l10n.search_tab_repos,
             context.l10n.search_tab_user,
+            context.l10n.search_tab_issue,
           ],
           selectItemChanged,
           elevation: 0.0,

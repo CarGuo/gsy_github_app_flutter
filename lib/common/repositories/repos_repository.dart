@@ -27,6 +27,7 @@ import 'package:gsy_github_app_flutter/model/branch.dart';
 import 'package:gsy_github_app_flutter/model/commits_comparison.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
+import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/push_commit.dart';
 import 'package:gsy_github_app_flutter/model/release.dart';
 import 'package:gsy_github_app_flutter/model/repo_commit.dart';
@@ -595,35 +596,32 @@ class ReposRepository {
     }
     String url = Address.search(q, sort, order, type, page, pageSize);
     var res = await httpManager.netFetch(url, null, null, null);
+    if (res == null || !res.result || res.data == null) {
+      return DataResult(null, false);
+    }
+    final items = res.data["items"];
+    if (items == null || items is! List || items.isEmpty) {
+      return DataResult(null, false);
+    }
+    // 根据 type 反序列化到不同模型。Repository 是默认（type=null），
+    // 'user' 走 User，'issue' 走 Issue，未来加 'code' 时在这里补分支。
     if (type == null) {
-      if (res != null && res.result && res.data["items"] != null) {
-        List<Repository> list = [];
-        var dataList = res.data["items"];
-        if (dataList == null || dataList.length == 0) {
-          return DataResult(null, false);
-        }
-        for (int i = 0; i < dataList.length; i++) {
-          var data = dataList[i];
-          list.add(Repository.fromJson(data));
-        }
-        return DataResult(list, true);
-      } else {
-        return DataResult(null, false);
-      }
+      final list = <Repository>[
+        for (final data in items) Repository.fromJson(data),
+      ];
+      return DataResult(list, true);
+    } else if (type == 'issue') {
+      final list = <Issue>[
+        for (final data in items)
+          Issue.fromJson(Map<String, dynamic>.from(data)),
+      ];
+      return DataResult(list, true);
     } else {
-      if (res != null && res.result && res.data["items"] != null) {
-        List<User> list = [];
-        var data = res.data["items"];
-        if (data == null || data.length == 0) {
-          return DataResult(null, false);
-        }
-        for (int i = 0; i < data.length; i++) {
-          list.add(User.fromJson(data[i]));
-        }
-        return DataResult(list, true);
-      } else {
-        return DataResult(null, false);
-      }
+      // type == 'user'
+      final list = <User>[
+        for (final data in items) User.fromJson(data),
+      ];
+      return DataResult(list, true);
     }
   }
 

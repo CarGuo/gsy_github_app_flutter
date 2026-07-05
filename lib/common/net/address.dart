@@ -18,6 +18,12 @@ class Address {
     if (type == 'user') {
       return "${host}search/users?q=$q&page=$page&per_page=$pageSize";
     }
+    if (type == 'issue') {
+      // GitHub 的 issue 搜索也会包含 PR。sort 支持 comments/reactions/created/updated；
+      // 传入的 sort 目前和 repo 复用（stars/forks），对 issue 无意义，
+      // 让 GitHub 走默认 best match，稳字为先。
+      return "${host}search/issues?q=$q&order=${order ?? 'desc'}&page=$page&per_page=$pageSize";
+    }
     sort ??= "best%20match";
     order ??= "desc";
     page ??= 1;

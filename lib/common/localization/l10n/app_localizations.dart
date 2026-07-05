@@ -1134,6 +1134,12 @@ abstract class AppLocalizations {
   /// **'User'**
   String get search_tab_user;
 
+  /// No description provided for @search_tab_issue.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue'**
+  String get search_tab_issue;
+
   /// No description provided for @release_tab_release.
   ///
   /// In en, this message translates to:
