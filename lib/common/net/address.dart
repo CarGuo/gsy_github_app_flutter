@@ -24,6 +24,12 @@ class Address {
       // 让 GitHub 走默认 best match，稳字为先。
       return "${host}search/issues?q=$q&order=${order ?? 'desc'}&page=$page&per_page=$pageSize";
     }
+    if (type == 'code') {
+      // GitHub 的 /search/code 强制要 token 且只支持 relevance 排序,
+      // 没有 sort/order 参数。要求 token 有 repo scope,
+      // 未认证或权限不够时会 403,让上层 UI 感知空结果。
+      return "${host}search/code?q=$q&page=$page&per_page=$pageSize";
+    }
     sort ??= "best%20match";
     order ??= "desc";
     page ??= 1;

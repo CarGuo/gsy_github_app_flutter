@@ -1140,6 +1140,12 @@ abstract class AppLocalizations {
   /// **'Issue'**
   String get search_tab_issue;
 
+  /// No description provided for @search_tab_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get search_tab_code;
+
   /// No description provided for @release_tab_release.
   ///
   /// In en, this message translates to:

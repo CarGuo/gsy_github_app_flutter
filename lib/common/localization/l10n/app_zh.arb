@@ -179,6 +179,7 @@
   "search_tab_repos": "仓库",
   "search_tab_user": "用户",
   "search_tab_issue": "Issue",
+  "search_tab_code": "代码",
   "release_tab_release": "版本",
   "release_tab_tag": "标记",
   "user_profile_name": "名字",

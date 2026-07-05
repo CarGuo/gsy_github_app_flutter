@@ -6,9 +6,11 @@ import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/search_history_repository.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/model/code_search_item.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/page/search/search_bloc.dart';
+import 'package:gsy_github_app_flutter/page/search/widget/code_search_item_widget.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_drawer.dart';
@@ -74,6 +76,17 @@ class _SearchPageState extends State<SearchPage>
           if (parts.length != 2) return;
           NavigatorUtils.goIssueDetail(
               context, parts[0], parts[1], vm.number);
+        },
+      );
+    } else if (searchBLoC.selectIndex == 3) {
+      // Code 搜索：GSY 定位是只读客户端，代码文件用内嵌 WebView 打开
+      // html_url 展示，符合官方 GitHub App 的做法。
+      final code = data as CodeSearchItem;
+      return CodeSearchItemWidget(
+        code,
+        onPressed: () {
+          if (code.htmlUrl.isEmpty) return;
+          CommonUtils.launchWebView(context, code.name, code.htmlUrl);
         },
       );
     }
@@ -332,6 +345,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
             context.l10n.search_tab_repos,
             context.l10n.search_tab_user,
             context.l10n.search_tab_issue,
+            context.l10n.search_tab_code,
           ],
           selectItemChanged,
           elevation: 0.0,

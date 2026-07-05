@@ -179,6 +179,7 @@
   "search_tab_repos": "저장소",
   "search_tab_user": "사용자",
   "search_tab_issue": "Issue",
+  "search_tab_code": "코드",
   "release_tab_release": "릴리스",
   "release_tab_tag": "태그",
   "user_profile_name": "이름",

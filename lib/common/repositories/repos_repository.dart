@@ -24,6 +24,7 @@ import 'package:gsy_github_app_flutter/db/provider/user/user_stared_db_provider.
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/branch.dart';
+import 'package:gsy_github_app_flutter/model/code_search_item.dart';
 import 'package:gsy_github_app_flutter/model/commits_comparison.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
@@ -604,7 +605,7 @@ class ReposRepository {
       return DataResult(null, false);
     }
     // 根据 type 反序列化到不同模型。Repository 是默认（type=null），
-    // 'user' 走 User，'issue' 走 Issue，未来加 'code' 时在这里补分支。
+    // 'user' 走 User，'issue' 走 Issue，'code' 走 CodeSearchItem。
     if (type == null) {
       final list = <Repository>[
         for (final data in items) Repository.fromJson(data),
@@ -614,6 +615,12 @@ class ReposRepository {
       final list = <Issue>[
         for (final data in items)
           Issue.fromJson(Map<String, dynamic>.from(data)),
+      ];
+      return DataResult(list, true);
+    } else if (type == 'code') {
+      final list = <CodeSearchItem>[
+        for (final data in items)
+          CodeSearchItem.fromJson(Map<String, dynamic>.from(data)),
       ];
       return DataResult(list, true);
     } else {

@@ -179,6 +179,7 @@
   "search_tab_repos": "Repository",
   "search_tab_user": "User",
   "search_tab_issue": "Issue",
+  "search_tab_code": "Code",
   "release_tab_release": "Release",
   "release_tab_tag": "Tag",
   "user_profile_name": "Name",

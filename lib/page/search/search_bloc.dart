@@ -32,12 +32,15 @@ class SearchBLoC {
   /// 0 = repositories（type=null）
   /// 1 = users（type='user'）
   /// 2 = issues + pull requests（type='issue'）
+  /// 3 = code（type='code'，要求 token 有 repo scope）
   String? get _apiType {
     switch (selectIndex) {
       case 1:
         return 'user';
       case 2:
         return 'issue';
+      case 3:
+        return 'code';
       default:
         return null;
     }
