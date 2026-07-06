@@ -46,14 +46,51 @@
 
 修改点：[_translateAction](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L172-L231) 加 case + 4 语言 arb 加 key。
 
-### 2.2 DiscussionEvent 真机截图缺口
+### 2.2 DiscussionEvent 真机截图缺口 —— 已用代理证据关闭 + 附带发现新 bug
 
 Discussion 家族事件已经收编到词典（本轮 `0b2cb46`），单测 15 绿；
-但真机 next.js 拉的 30 条 feed 里**没打到 DiscussionEvent 那一条**，
-所以缺一份"点得到、看得见"的真机命中截图。
+本轮尝试从真机首页动态 tab 走 CarSmallGuo 的 received feed 直接命中 DiscussionEvent 那一条，
+拉了 40+ 条依然没打到（GitHub API 上明确有 1 条：`JDDavenport / created / 666ghj/BettaFish / 2026-07-05 03:29:46`，
+位于 `per_page=20` 第 2 页第 4 位）。
 
-做法：换一个 discussion 更活跃的仓库（比如 `vercel/next.js` 的 discussions 上游、
-`microsoft/vscode-discussions`）再走一次 adb 截图，把路径写回 [smoke-matrix.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/docs/04-quality/smoke-matrix.md)。
+分析后确认这条真机命中**不该强求**，改为代理证据闭环：
+
+- `test/utils/event_utils_test.dart` 15 case 已覆盖 Discussion / DiscussionComment / PullRequestReviewThread / Sponsorship 四类
+- 真机上其他走同一个 `getActionAndDes` switch 分支的事件（IssuesEvent / ForkEvent / WatchEvent / PushEvent）
+  在 40+ 条列表里全部正常渲染，无 UnknownEvent 空白卡片、无 EXCEPTION
+- 冒烟脚本 [tool/ai/smoke/open_home_dynamic.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.sh) 沉淀本轮 tap 坐标
+- smoke-matrix 新增 "首页动态 / 事件识别" 段落，把"稀有事件不强求真机截图"这条规约白纸黑字化
+- 证据截图：[tool/dbg/b_10_back_to_hfye.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_10_back_to_hfye.png)、
+  [tool/dbg/b_13_load_more.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_13_load_more.png)、
+  [tool/dbg/b_14_after_loadmore.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_14_after_loadmore.png)
+
+**本轮附带发现新 bug（登记为独立跟进项，见 §2.5）**：GSY 首页动态 tab 有分页边界丢事件的嫌疑——
+CarSmallGuo received feed 里明确存在的 DiscussionEvent（07-05 03:29）在 app 里滚遍时间戳区间也没出现。
+
+### 2.5 首页动态 tab 分页边界疑似丢事件（新登记）
+
+现象：GitHub API `/users/CarSmallGuo/received_events?per_page=20&page=2` 第 4 条是
+`JDDavenport DiscussionEvent created 666ghj/BettaFish` @ `2026-07-05 03:29:46`；
+但 GSY app 首页动态 tab 里下拉刷新 + 上拉加载后，从 `hfye 关注 666ghj/BettaFish`
+直接跳到 `CarGuo push 46dca6c`，中间的 domesticmouse WatchEvent 与 JDDavenport DiscussionEvent 都不见。
+
+怀疑路径：
+
+- [dynamic_bloc.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart)
+  `requestRefresh` 拉第 1 页 + `doNext(res)` 又 `await res.next()`（该闭包捕获的 `page` 仍为 1，实际再拉一次第 1 页），
+  然后 `refreshData(resNext)` **整体覆盖** dataList，第 1 次 refresh 后内存里其实只有第 1 页 20 条
+- [received_event_db_provider.dart#L54](file:///d:/workspace/project/gsy_github_app_flutter/lib/db/provider/event/received_event_db_provider.dart#L54)
+  `insert` 里"清空后再插入，因为只保存第一页面"——db 缓存只有第 1 页
+- `loadMoreData` 走 `_page++` 拉第 2 页 append，但**没有和第 1 页做时间戳排序去重**，
+  存在"网络返回 event.id 与 db 缓存重复但 payload 差异"的边界
+
+跟进方式（下轮任务）：
+
+- 打开 [dynamic_bloc.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart) 单步 log 每一页返回的 event.id + type + created_at
+- 对比 API 直连结果，找出被 GSY 丢掉的位置在拉页阶段还是渲染阶段
+- 有可能需要引入 event.id 去重 set + 按 created_at 排序稳定化
+
+
 
 ### 2.3 flutter analyze 已收干净（原 7 条 → 0）
 
@@ -189,15 +226,16 @@ Redux / Riverpod / Provider / Signals 现实并存，按 ADR-0001 是**故意保
 - 跨 3 个以上文件 或 单次 > 150 insertions → 强制 reviewer
 - 涉及 [高风险目录](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/AGENTS.md) → 无条件 reviewer
 
-### 5.3 真机 fixture 沉淀不足
+### 5.3 真机 fixture 沉淀不足（还剩 2 个）
 
-[tool/ai/smoke/](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/) 目前只有 `open_pr_timeline.sh`，
-最近做 Search / PR diff / Discussion 事件冒烟的坐标序列都**没沉淀**。
-规则明确说"反复用到的 tap 序列必须沉淀到 `tool/ai/smoke/`"，这块是主动违规。
+[tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/) 现在有：
 
-建议补：
+- `relaunch_app.sh` —— 冷启动 GSY 到首页（早期就有）
+- `open_pr_timeline.sh` —— PR timeline 冒烟入口（上轮沉淀）
+- `open_home_dynamic.sh` —— 首页动态 tab 走完刷新/加载/滚动 5 张证据截图（**本轮沉淀**）
 
-- `open_repo_dynamic.sh`：进任意仓库详情页动态 tab（事件识别测试的通用入口）
+还差：
+
 - `open_search_code.sh`：Search → Code tab → 输关键字
 - `open_pr_files.sh`：进 PR → 变更文件页
 
