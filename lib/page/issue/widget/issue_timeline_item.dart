@@ -223,24 +223,42 @@ class IssueTimelineItem extends StatelessWidget {
     // 按 reviewState 上色，让 approved/changes_requested/dismissed/commented
     // 视觉上立刻可分。左侧 3px 色带 + 同色半透边框，色相直接复用 [_iconColor]，
     // 避免颜色语义在图标与卡片之间不一致（例如图标绿、卡片灰）。
+    //
+    // 注意：Flutter BoxDecoration 约束"borderRadius 只能配 uniform 颜色/宽度的
+    // Border"。之前把色带作为 Border.left 加宽 + 加深，触发 non-uniform 断言。
+    // 现改为：外层 uniform 半透 border + 圆角，内层用 Stack 叠一条 3px 色带；
+    // 不用 IntrinsicHeight 是因为 GSYMarkdownWidget 内部走 shrink-wrap
+    // viewport，参与 intrinsic 计算会报 RenderShrinkWrappingViewport does not
+    // support returning intrinsic dimensions。
     final Color accent = _iconColor;
+    final BorderRadius radius = BorderRadius.circular(6);
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(color: accent, width: 3),
-          top: BorderSide(color: accent.withValues(alpha: 0.4), width: 0.5),
-          right: BorderSide(color: accent.withValues(alpha: 0.4), width: 0.5),
-          bottom: BorderSide(color: accent.withValues(alpha: 0.4), width: 0.5),
-        ),
-        borderRadius: BorderRadius.circular(6),
+        border:
+            Border.all(color: accent.withValues(alpha: 0.4), width: 0.5),
+        borderRadius: radius,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(6),
-        child: GSYMarkdownWidget(
-          markdownData: event.body!.trim(),
-          baseUrl: "",
-          shrinkWrap: true,
-          scroll: false,
+        borderRadius: radius,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 3),
+              child: GSYMarkdownWidget(
+                markdownData: event.body!.trim(),
+                baseUrl: "",
+                shrinkWrap: true,
+                scroll: false,
+              ),
+            ),
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 3,
+              child: ColoredBox(color: accent),
+            ),
+          ],
         ),
       ),
     );

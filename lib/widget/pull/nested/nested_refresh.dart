@@ -523,7 +523,8 @@ class NestedScrollViewRefreshIndicatorState
             left: 0.0,
             right: 0.0,
             child: SizeTransition(
-              axisAlignment: _isIndicatorAtTop! ? 1.0 : -1.0,
+              alignment:
+                  _isIndicatorAtTop! ? Alignment.bottomCenter : Alignment.topCenter,
               sizeFactor: _positionFactor, // this is what brings it down
               child: Container(
                 padding: _isIndicatorAtTop!
