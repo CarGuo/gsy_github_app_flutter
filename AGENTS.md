@@ -138,9 +138,9 @@
 - OAuth 登录相关流程依赖本地 `ignoreConfig.dart`
 - **GSY 是 GitHub 的只读 + 评论客户端**，不承担写 PR / 提交 review / 建仓库这类"作者行为"。冒烟或回归时**禁止通过 gh cli 或 GitHub API 新建仓库、造 PR 或提交 review**去伪造证据，一律用既有仓库里的真实数据
 
-### 允许 / 禁止的写操作清单（draft，待用户拍板）
+### 允许 / 禁止的写操作清单
 
-> 状态：`docs/00-overview/roadmap.md §4.1` 起草，等作者确认后视为正式约束。
+> 状态：作者已于 2026-07-06 拍板转正，正式约束。修改需在 PR 描述里显式提出并同步 `docs/00-overview/roadmap.md §4.1`。
 
 **允许（已在做且不打算收回）**：
 
@@ -148,6 +148,8 @@
 - Issue / PR / Discussion 下发评论
 - Notify 标记已读 / 标记 done / unsubscribe
 - 关注 / 取消关注仓库（star / watch 切换）
+- **PR review thread mark as resolved / unresolved（2026-07-06 新加）**：仅操作层，不做"未 resolved thread 计数"这类仪表盘
+- **编辑自己发的 issue body / comment 内容（2026-07-06 新加）**：服务端会按作者身份校验，不会误伤他人；范围**限编辑**，不含删除
 
 **明确禁止（越界的作者行为）**：
 
@@ -157,18 +159,15 @@
 - 合并 PR / close issue / lock conversation
 - 修改仓库设置 / 分支保护 / webhook / secret
 - 通过 gh cli 或 GitHub API 制造冒烟数据
-
-**争议地带（默认按禁止处理，需单独讨论才能升级为允许）**：
-
-- GitHub Actions workflow rerun / cancel（属于仓库运维行为）
-- Projects V2 卡片移动（相当于协作作者视角编辑）
-- PR review thread mark as resolved / unresolved（视觉层可看 [event_action_resolved](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/localization/l10n/app_zh.arb#L362-L363)，操作层暂不做）
-- 编辑自己发的 issue body / comment 内容（写操作但只对自己发的内容，边界模糊）
+- **GitHub Actions workflow rerun / cancel（2026-07-06 拍板归入禁止）**：属于仓库运维行为，GSY 不介入；用户如需 rerun 请去 GitHub 官网或官方 app
+- **Projects V2 卡片移动 / 状态字段编辑（2026-07-06 拍板归入禁止）**：等同协作作者视角编辑，与只读 + 评论定位冲突；连 Projects V2 阅读也一并搁置
+- **删除自己发的 issue / comment**：即使 API 支持，也不做——避免"误删无法恢复"的用户投诉面
 
 **判断口径**：
 
 - 判断依据是"是否让 GSY 用户在 GitHub 上产生新数据 / 修改他人内容 / 触发仓库运维"，不是"API 是不是 write endpoint"
-- 争议地带若要新增功能，需要在 PR 描述里显式提出，并同步更新本清单
+- 若未来需要新增一条允许项，需要在 PR 描述里显式提出，并同步更新本清单与 roadmap §4.1
+
 
 ## 真机验证专用 fixture（写死，不允许随手换）
 

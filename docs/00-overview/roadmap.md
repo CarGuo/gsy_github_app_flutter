@@ -220,9 +220,9 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
   目前是扁平列表 + reason 筛选。官方 app 是按 repo / subject 折叠。
   修改点：通知模块加分组 header，不改数据源。
 
-- **PR review thread resolved 徽标**
+- **PR review thread resolved 徽标 + 操作**
   本轮 arb 已经有 `event_action_resolved / unresolved`，但 PR 详情页里 review thread 的状态**没渲染**。
-  修改点：pr detail 页 review comment 分组渲染时加一个色条 / 图标。
+  修改点：pr detail 页 review comment 分组渲染时加色条 / 图标；**2026-07-06 边界拍板允许把操作层也做进来**（长按 / 侧滑触发 resolveReviewThread / unresolveReviewThread mutation），仅操作层，**不做"未 resolved thread 计数"这类仪表盘**。
 
 ### 3.2 中优先
 
@@ -237,7 +237,7 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 
 - **Gist 阅读**：完全没做。
 - **GitHub Actions runs 状态**：作者行为重叠多，看 3.4 那个边界定了再决定。
-- **Projects V2 阅读**：完全没做。
+- **Projects V2 阅读**：~~完全没做~~ **2026-07-06 拍板归入禁止清单**（阅读也搁置），不再列入待做，见 [AGENTS.md §允许 / 禁止的写操作清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L169)。
 - **Copilot Chat 上下文**：GSY 定位不做 AI，一般跳过。
 
 ---
@@ -248,21 +248,25 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 
 ### 4.1 "只读 + 评论"到底允许多少写态？
 
-**状态更新（2026-07-06）**：已在 [AGENTS.md 允许 / 禁止的写操作清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L171) 起草一版 draft，等作者拍板后转正。roadmap 这段保留原有分类，供讨论时对照使用。
+**状态更新（2026-07-06）**：已在 [AGENTS.md 允许 / 禁止的写操作清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L169) 拍板转正。roadmap 这段保留分类原文供理解演进用，**以 AGENTS.md 为准**。
 
 - 已经在做的**写操作**：
   - Issue / Comment 加 reaction
   - Comment 发评论
   - Notify 标记已读 / done / unsubscribe
-- 争议地带：
-  - GitHub Actions rerun / cancel
-  - Projects V2 卡片移动
-  - PR dismiss review
+- 原争议地带 **2026-07-06 拍板结果**：
+  - GitHub Actions rerun / cancel → **禁止**（仓库运维行为）
+  - Projects V2 卡片移动 → **禁止**（同时连阅读也搁置，见 §3.3）
+  - PR review thread resolved / unresolved → **允许（仅操作，不做仪表盘）**，见 §3.1
+  - 编辑自己发的 issue body / comment 内容 → **允许（仅编辑，不含删除）**，独立任务待排期
+  - PR dismiss review → **禁止**（作者行为，未在本轮拍板中升级）
 
-**如果边界收紧**：3.1 的 resolved 徽标只做视觉、不做操作；Notify 那三个侧滑动作要重新讨论。
-**如果边界放宽**：3.2 / 3.3 里"低优先"那批可以升级。
+**拍板产生的下游影响**：
 
-建议在 [AGENTS.md](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md) 里补一条"允许 / 禁止的写操作清单"（本轮已起草，见上）。
+- **收紧**：§3.3 Projects V2 阅读整段划掉；Notify 三个侧滑动作维持现状（仍在允许范围内，不受影响）。
+- **放宽**：§3.1 resolved 徽标可以扩展到操作层（长按触发 resolveReviewThread mutation），已同步改写 §3.1；新开"编辑自己的 comment / issue body"独立任务待排期。
+
+清单以 [AGENTS.md](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L169) 为准，任何新增写操作需要在 PR 描述里显式提出并同步更新该清单。
 
 ### 4.2 event_utils 单文件已 400+ 行
 
