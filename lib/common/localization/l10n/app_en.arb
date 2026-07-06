@@ -659,6 +659,8 @@
   "event_action_blocked": "blocked",
   "event_action_unblocked": "unblocked",
   "event_action_merged": "merged",
+  "event_action_auto_merge_enabled": "enabled auto-merge",
+  "event_action_auto_merge_disabled": "disabled auto-merge",
   "event_action_converted_to_draft": "converted to draft",
   "event_action_locked": "locked",
   "event_action_unlocked": "unlocked",

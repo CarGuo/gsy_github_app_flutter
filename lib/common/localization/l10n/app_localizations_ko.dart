@@ -1140,6 +1140,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get event_action_merged => '병합';
 
   @override
+  String get event_action_auto_merge_enabled => '자동 병합 활성화';
+
+  @override
+  String get event_action_auto_merge_disabled => '자동 병합 비활성화';
+
+  @override
   String get event_action_converted_to_draft => '초안으로 변환';
 
   @override

@@ -334,6 +334,8 @@
   "event_action_blocked": "차단",
   "event_action_unblocked": "차단 해제",
   "event_action_merged": "병합",
+  "event_action_auto_merge_enabled": "자동 병합 활성화",
+  "event_action_auto_merge_disabled": "자동 병합 비활성화",
   "event_action_converted_to_draft": "초안으로 변환",
   "event_action_locked": "잠금",
   "event_action_unlocked": "잠금 해제",

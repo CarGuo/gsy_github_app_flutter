@@ -39,7 +39,7 @@
 
 `_translateAction` 里还没收编的 action（走 default 分支透传英文 + 遥测）：
 
-- `auto_merge_enabled` / `auto_merge_disabled`（PR 自动合并，越来越常见）
+- ~~`auto_merge_enabled` / `auto_merge_disabled`（PR 自动合并，越来越常见）~~ ✅ 本轮已收（4 语言 arb + 2 单测）
 - `marked_as_duplicate` / `unmarked_as_duplicate`（issue 去重）
 - `dequeued` / `enqueued`（merge queue，GitHub 2025 后主推）
 - `deployed` / `deployment_status`
@@ -245,6 +245,6 @@ Redux / Riverpod / Provider / Signals 现实并存，按 ADR-0001 是**故意保
 
 按不同偏好给三条路，任选：
 
-1. **最低阻力**：补 2.1 里 `auto_merge_enabled/disabled` 两个 action。10 分钟一个 commit。
+1. **最低阻力**：补 2.1 里 `marked_as_duplicate/unmarked_as_duplicate` 或 `dequeued/enqueued` 两组 action。10 分钟一个 commit（`auto_merge_*` 已在 2026-07-06 收）。
 2. **有分量功能**：3.1 的 Discussions 阅读页。复用 issue timeline 骨架，让 discussion 事件从"看得到 → 点得进 → 读得完"闭环。
 3. **先划边界**：先决 4.1，把"允许的写操作清单"写进 AGENTS.md；边界清楚后 3.2 / 3.3 才有下决心的依据。

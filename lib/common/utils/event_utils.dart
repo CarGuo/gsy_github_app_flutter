@@ -199,6 +199,10 @@ class EventUtils {
         return l.event_action_unblocked;
       case 'merged':
         return l.event_action_merged;
+      case 'auto_merge_enabled':
+        return l.event_action_auto_merge_enabled;
+      case 'auto_merge_disabled':
+        return l.event_action_auto_merge_disabled;
       case 'converted_to_draft':
         return l.event_action_converted_to_draft;
       case 'locked':

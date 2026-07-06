@@ -334,6 +334,8 @@
   "event_action_blocked": "ブロック",
   "event_action_unblocked": "ブロック解除",
   "event_action_merged": "マージ",
+  "event_action_auto_merge_enabled": "自動マージを有効化",
+  "event_action_auto_merge_disabled": "自動マージを無効化",
   "event_action_converted_to_draft": "ドラフトに変換",
   "event_action_locked": "ロック",
   "event_action_unlocked": "ロック解除",

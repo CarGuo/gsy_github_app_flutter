@@ -1149,6 +1149,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get event_action_merged => 'merged';
 
   @override
+  String get event_action_auto_merge_enabled => 'enabled auto-merge';
+
+  @override
+  String get event_action_auto_merge_disabled => 'disabled auto-merge';
+
+  @override
   String get event_action_converted_to_draft => 'converted to draft';
 
   @override

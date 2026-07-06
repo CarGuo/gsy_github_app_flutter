@@ -2046,6 +2046,18 @@ abstract class AppLocalizations {
   /// **'merged'**
   String get event_action_merged;
 
+  /// No description provided for @event_action_auto_merge_enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'enabled auto-merge'**
+  String get event_action_auto_merge_enabled;
+
+  /// No description provided for @event_action_auto_merge_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'disabled auto-merge'**
+  String get event_action_auto_merge_disabled;
+
   /// No description provided for @event_action_converted_to_draft.
   ///
   /// In en, this message translates to:

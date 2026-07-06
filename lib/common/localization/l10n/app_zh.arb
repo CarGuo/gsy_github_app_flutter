@@ -334,6 +334,8 @@
   "event_action_blocked": "封禁",
   "event_action_unblocked": "解封",
   "event_action_merged": "合并",
+  "event_action_auto_merge_enabled": "启用自动合并",
+  "event_action_auto_merge_disabled": "关闭自动合并",
   "event_action_converted_to_draft": "转为草稿",
   "event_action_locked": "锁定",
   "event_action_unlocked": "解锁",

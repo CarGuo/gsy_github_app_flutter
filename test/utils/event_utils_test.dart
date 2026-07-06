@@ -365,6 +365,58 @@ void main() {
     expect(got.actionStr, isNot(contains('synchronize')));
   });
 
+  testWidgets('PullRequestEvent + auto_merge_enabled → 词典化"启用自动合并"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PullRequestEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'auto_merge_enabled',
+        'number': 42,
+        'pull_request': {'title': 'chore: bump deps'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('启用自动合并'));
+    expect(got.actionStr, isNot(contains('auto_merge_enabled')),
+        reason: 'auto_merge_enabled 必须走 event_action_auto_merge_enabled 词典');
+  });
+
+  testWidgets('PullRequestEvent + auto_merge_disabled → 词典化"关闭自动合并"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PullRequestEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'auto_merge_disabled',
+        'number': 42,
+        'pull_request': {'title': 'chore: bump deps'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('关闭自动合并'));
+    expect(got.actionStr, isNot(contains('auto_merge_disabled')),
+        reason: 'auto_merge_disabled 必须走 event_action_auto_merge_disabled 词典');
+  });
+
   testWidgets('未知 action → 原样返回英文 + 遥测独立表登记', (tester) async {
     final ee = Event.fromJson(_m({
       'id': 'x',

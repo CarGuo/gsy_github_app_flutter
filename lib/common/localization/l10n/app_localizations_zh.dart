@@ -1140,6 +1140,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get event_action_merged => '合并';
 
   @override
+  String get event_action_auto_merge_enabled => '启用自动合并';
+
+  @override
+  String get event_action_auto_merge_disabled => '关闭自动合并';
+
+  @override
   String get event_action_converted_to_draft => '转为草稿';
 
   @override

@@ -1141,6 +1141,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get event_action_merged => 'マージ';
 
   @override
+  String get event_action_auto_merge_enabled => '自動マージを有効化';
+
+  @override
+  String get event_action_auto_merge_disabled => '自動マージを無効化';
+
+  @override
   String get event_action_converted_to_draft => 'ドラフトに変換';
 
   @override
