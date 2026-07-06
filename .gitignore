@@ -60,3 +60,9 @@ app.*.map.json
 # FVM Version Cache
 .fvm/
 env.local
+
+# 一次性 debug 截图/证据（脚本本身仍要进仓库，只忽略产物）
+tool/dbg/*.png
+tool/dbg/*.jpg
+tool/dbg/*.txt
+tool/dbg/*.log
