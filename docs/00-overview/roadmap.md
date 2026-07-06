@@ -261,9 +261,120 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 ### 3.3 低优先 / 边界待定
 
 - **Gist 阅读**：完全没做。
-- **GitHub Actions runs 状态**：作者行为重叠多，看 3.4 那个边界定了再决定。
+- **GitHub Actions runs 状态**：作者行为重叠多，看第 4 节那个边界定了再决定。
 - **Projects V2 阅读**：~~完全没做~~ **2026-07-06 拍板归入禁止清单**（阅读也搁置），不再列入待做，见 [AGENTS.md §允许 / 禁止的写操作清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L169)。
 - **Copilot Chat 上下文**：GSY 定位不做 AI，一般跳过。
+
+### 3.5 API 差集 × Fixture 契约表（2026-07-06 落地）
+
+**这一小节的存在意义**：前面 §3.1-3.3 罗列了功能待办，但**没有把"用哪个仓库验证"钉死**。
+Discussions 阶段就吃过这个亏——事件识别做完才发现 GSY 关注账号里根本没 discussion 事件，
+真机路径覆盖不了，只能补单测。这一节把每个待办功能**预先绑定测试 fixture**，
+挑活前一眼看清是否能上真机；`⚠️`标记的项目要在正式开工前**先跑 API 探针**确认。
+
+**Fixture 优先级规则**（与 [AGENTS.md 允许 / 禁止的写操作清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md) 一致：**禁止造数据**，全部用真实数据）：
+
+1. 主仓 [CarGuo/gsy_github_app_flutter](https://github.com/CarGuo/gsy_github_app_flutter)（首选）
+2. CarGuo 名下其他仓库：`GSYVideoPlayer / GSYGithubAppKotlin / GSYGithubAppCompose / GSYGithubAPP / gsy_flutter_book`
+3. 当前 adb 登录账号 `CarSmallGuo` 的通知 / 关注数据（首选，因为不用切账号）
+4. 外部真实仓库（`flutter/flutter` / `dart-lang` / `defunkt` 等）—— 仅在前三档无数据时启用，**必须显式标注为"外部妥协项"**
+
+---
+
+**探针结果快照**（2026-07-06 用 CarSmallGuo 的 gho\_ token 实测，`GET /rate_limit` 显示 core 4997/5000，探针零压力）：
+
+| 探针 | 结论 |
+|---|---|
+| `GET /repos/CarGuo/gsy_github_app_flutter/milestones?state=all` | count=0 → 主仓无 milestone，需外部 fixture |
+| `GET /repos/CarGuo/gsy_github_app_flutter/issues?state=all&per_page=10` | #938 有 `assignees=[CarGuo,Copilot]`；其他 9 条都是 `(none)` → assignee 挂件用 #938 即可 |
+| `GET /repos/CarGuo/gsy_github_app_flutter/pulls/938/comments` | 2 条 line-level review comment（Copilot 对 `android/app/build.gradle` L41 / L84），完美 review thread fixture |
+| `GET /users/CarGuo/gists` | count=0 → CarGuo 无公开 gists，fallback 到 `defunkt`（已实测 3 条非空） |
+| `GET /notifications?all=true&per_page=30` | 30 条通知 reason 分布 `subscribed x 28 / manual x 2` → reason chip filter 需要更丰富 reason，实际验证时可去用 `mention` / `review_requested` 相关的仓库 |
+| `POST /graphql user.pinnedItems(first:6)` | CarGuo pinned 6 个仓库：`GSYVideoPlayer ★21458 / gsy_github_app_flutter ★15461 / GSYGithubAppCompose ★125 / GSYGithubAPP ★2485 / GSYGithubAppKotlin ★1586 / gsy_flutter_book ★4618` → 完美 pinned fixture |
+
+---
+
+#### 模块 1：动态 / 事件
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | 公共事件流 `/events` | 无需 fixture | 全站流，任何账号登录后即有数据 |
+| 2 | 组织事件 `/orgs/:org/events` | `flutter` / `dart-lang` 组织（外部妥协项） | CarGuo 是个人账号，无组织 fixture |
+| 3 | Repo 网络事件流 `/networks/:o/:r/events` | ✅ 主仓（fork 数够） | [Address.getReposEvent](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/address.dart#L86-L88) URL 已在但无 UI 消费 |
+| 4 | 事件类型 filter | ✅ 主仓首页混合事件流（本轮真机截图 [smoke_ci344_01_home.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_ci344_01_home.png) 已证 6 张卡多种事件混排） | 纯本地过滤 |
+
+#### 模块 2：仓库详情
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | Release 详情页 + reactions | ✅ 主仓 releases（`8.0.0` 已在真机日志出现） | [release_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/release/release_page.dart) 是列表未做详情 |
+| 2 | Topics chip | ⚠️ 需先跑 `GET /repos/CarGuo/gsy_github_app_flutter/topics` 确认非空 | 若空，退到 `flutter/flutter`（topics 稠密） |
+| 3 | Labels chip | ✅ 主仓 [Address.getReposLabels](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/address.dart#L138-L140) URL 已在 | 主仓 labels 页非空 |
+| 4 | Milestone | **主仓无 milestone**（探针实测 count=0） → 用 `flutter/flutter`（外部妥协项） | 已实测确认 |
+| 5 | Branches 切换 | ✅ 主仓多分支 | [Address.getbranches](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/address.dart#L337-L339) URL 已在 |
+| 6 | Contributors / Stargazers / Watchers 列表页 | ✅ 主仓 fixture ★15461（探针实测） | UI 只有数字未做列表 |
+| 7 | Compare 视图 | ✅ 主仓 `423c762...bf557aa`（本轮实际存在的两个 commit） | [Address.getReposCompare](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/address.dart#L116-L118) URL 已在 |
+| 8 | Language 分布条 | ✅ 主仓多语言（Dart + Java + ObjC + Kotlin） | `GET /repos/:o/:r/languages` |
+| 9 | Community Health | ✅ 主仓 `GET /repos/CarGuo/gsy_github_app_flutter/community/profile` | 主仓有 LICENSE / README 完整 |
+
+#### 模块 3：Issue / PR
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | Assignee / Milestone / Label 挂件 | ✅ Assignee 用主仓 [#938](https://github.com/CarGuo/gsy_github_app_flutter/pull/938)（实测 assignees=`CarGuo,Copilot`）；Milestone 用 `flutter/flutter`；Label 用主仓 | 单一 issue detail 页混合 fixture |
+| 2 | PR 状态 badge (draft / mergeable / conflicts) | ✅ 主仓 #938 | AGENTS.md 已固化 |
+| 3 | PR reviews 完整列表 | ✅ 主仓 #938 | AGENTS.md 已固化 |
+| 4 | PR commits | ✅ 主仓 #938 | AGENTS.md 已固化 |
+| 5 | PR review thread 阶段 A/2 | ✅ **主仓 #938**（实测 2 条 line-level comment：Copilot 对 `android/app/build.gradle` L41 / L84）| 完美 review thread fixture |
+| 6 | Issue comment reactions | ✅ 主仓 [issue #643](https://github.com/CarGuo/gsy_github_app_flutter/issues/643)（README 里"登录失败"高流量 issue） | [Address.getIssueCommentReactions](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/address.dart#L243-L245) URL 已在 |
+| 7 | Timeline 分页 | ✅ 主仓 [issue #13](https://github.com/CarGuo/gsy_github_app_flutter/issues/13)（README 明示"所有运行问题请点这里"，历史巨长 issue） | 完美长 timeline fixture |
+
+#### 模块 4：搜索
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | Commits 搜索 | ✅ 搜 `repo:CarGuo/gsy_github_app_flutter Copilot` 命中 | 主仓自搜 |
+| 2 | Topics 搜索 | ✅ 搜 `flutter` / `github-client` | 全站，主仓也在结果集 |
+| 3 | Labels 搜索 | ✅ `GET /search/labels?repository_id=142308181&q=bug`（142308181 是主仓 id，本轮真机日志 `repo:{id:142308181}` 已确认） | 主仓 id 已固定 |
+| 4 | 搜索历史 UI 增强 | 无需 fixture | 本地 [search_history_repository](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/repositories/search_history_repository.dart) 数据 |
+| 5 | 高级筛选 chip | 无需 fixture | 纯 UI |
+
+#### 模块 5：用户 / 我的
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | 用户公共 Gists | **CarGuo 无 gists**（实测 count=0）→ 用 `defunkt`（外部妥协项，探针实测 3 条非空） | 已实测确认 |
+| 2 | 贡献日历 GraphQL 版 | ✅ CarGuo（活跃开发者，calendar 稠密） | 主用户已够 |
+| 3 | Pinned Repositories | ✅ **CarGuo 6 个 pinned**：GSYVideoPlayer / gsy_github_app_flutter / GSYGithubAppCompose / GSYGithubAPP / GSYGithubAppKotlin / gsy_flutter_book（探针实测） | 完美 fixture |
+| 4 | Following/Followers 交集 | ✅ CarGuo × CarSmallGuo（后者是 adb 当前登录账号，天然双账号） | 双账号 fixture |
+| 5 | 组织详情页 | `flutter` / `dart-lang`（外部妥协项） | CarGuo 不是组织 |
+
+#### 模块 6：通知
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | 仓库级通知筛选 | 依赖 CarSmallGuo 订阅——**已实测 30 条通知都是主仓 subscribed** → 主仓即可 | 单仓测试足够 |
+| 2 | reason chip filter | **CarSmallGuo 当前 reason 单一**（subscribed x 28 / manual x 2）→ 实际验证时通过手动 mention 其他账号或订阅 `flutter/flutter` 扩容 reason 分布 | 已实测确认 |
+| 3 | since / before 窗口 | 无需 fixture | 参数扩展 |
+| 4 | 未读 badge | 无需 fixture | 现有数据算 |
+
+#### 跨模块补充
+
+| # | 待办功能 | fixture 锚点 | 备注 |
+|---|---|---|---|
+| 1 | Reactions 铺满（release / commit comment 等） | ✅ 主仓 issue #643 + release `8.0.0` | 主仓够用 |
+| 2 | Markdown / Emoji 渲染 | 无需 fixture | POST 任意 md |
+| 3 | License 列表 | 无需 fixture | 全站 API |
+| 4 | Rate Limit 诊断入口 | 无需 fixture（当前 token 自查，本轮探针实测 core 4997/5000） | 天然自证 |
+| 5 | Stars 增长曲线 | ✅ 主仓（README 已用 star-history 外链 badge，数据密度够画） | 主仓够用 |
+
+---
+
+#### 挑活契约（本节的强约束）
+
+- 从本节挑一个功能开工前，**先看该行 fixture 锚点**：`⚠️` 项必须先跑一次 API 探针把它转成 `✅` 或"外部妥协项"，再动代码
+- 挑外部妥协项的功能时，**必须在 PR 描述里注明"本功能验证使用外部仓库 X，原因 Y"**，不能默认使用
+- 新增待办条目时必须补上 fixture 锚点栏；无 fixture 锚点的条目不合并入本表
 
 ---
 

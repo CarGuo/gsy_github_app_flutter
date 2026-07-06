@@ -181,4 +181,40 @@
     - 期望截图证据：`/tmp/gsy_smoke_07_issue_detail_scrolled.png` 与随后一屏能同时看到"Copilot 提交了评审意见"这一行**和其下方灰底 body 卡片**
   - 后续若需要 approved/changes_requested body 场景，请在 `CarGuo` 名下的其它 PR 里挑选并把 PR 号写回本段落，不要造 PR
 
+### 按功能分类的 fixture 表（2026-07-06 扩展）
+
+上面 fixture PR 只覆盖 PR timeline 一个场景。为了让**开新功能前先看有没有可用测试数据**（避免走到装机验证才发现 fixture 空——Discussions 就吃过这个亏），把 GSY 各功能域可用的真实数据源固化如下。变更本表需附带该行 API 探针的实测结果。
+
+**探针复核方式**：所有 `✅` 项都用 CarSmallGuo 的 gho\_ token 在 `2026-07-06` 实测过；每半年可用 [docs/00-overview/roadmap.md §3.5 探针结果快照](file:///d:/workspace/project/gsy_github_app_flutter/docs/00-overview/roadmap.md) 那批命令重跑一次防止过时。
+
+**Fixture 优先级**：主仓 [CarGuo/gsy_github_app_flutter](https://github.com/CarGuo/gsy_github_app_flutter) > CarGuo 其他仓库 > CarSmallGuo 数据 > 外部真实仓库（`flutter/flutter` / `defunkt` 等，**必须标注为"外部妥协项"**）。**禁止造数据**同 §允许 / 禁止的写操作清单。
+
+| 功能域 | 首选 fixture | 备注 |
+|---|---|---|
+| PR timeline 词典化事件 | 主仓 `#938` | 见上文，已固化 |
+| PR review thread（line-level comment） | 主仓 `#938`（2 条：`android/app/build.gradle` L41 / L84 by Copilot） | 探针实测 |
+| Issue assignee 挂件 | 主仓 `#938`（assignees=`CarGuo,Copilot`） | 主仓 issue 只有 #938 有 assignee，其余是 (none) |
+| Issue 长 timeline / 分页 | 主仓 [`#13`](https://github.com/CarGuo/gsy_github_app_flutter/issues/13) | README 明示"所有运行问题请点这里" |
+| Issue comment reactions | 主仓 [`#643`](https://github.com/CarGuo/gsy_github_app_flutter/issues/643) | README 里的"登录失败"高流量 issue |
+| Release 详情 / reactions | 主仓 `releases`（`8.0.0` 已在真机日志出现） | 本轮真机 `versionName 8.0.0` |
+| Compare 视图 | 主仓 `423c762...bf557aa`（本轮实际 commit） | |
+| Contributors / Stargazers / Watchers | 主仓（★15461） | |
+| Repo Language 分布 / Community Health | 主仓（Dart+Java+ObjC+Kotlin，含 LICENSE / README） | |
+| Repo Branches 切换 | 主仓多分支 | |
+| Repo Fork 网络事件流 | 主仓 `/networks/CarGuo/gsy_github_app_flutter/events` | |
+| Repo Milestones | ⚠️ **主仓无**（探针 count=0）→ 外部妥协项 `flutter/flutter` | |
+| Repo Topics chip | ⚠️ 需重跑探针 → 若空退到 `flutter/flutter` | |
+| User Pinned Repositories | CarGuo（GSYVideoPlayer / gsy\_github\_app\_flutter / GSYGithubAppCompose / GSYGithubAPP / GSYGithubAppKotlin / gsy\_flutter\_book） | 探针实测 6 个 pinned |
+| User 贡献日历 | CarGuo（活跃开发者 calendar 稠密） | |
+| User Following/Followers 交集 | CarGuo × CarSmallGuo | 天然双账号 |
+| User 公共 Gists | ⚠️ **CarGuo 无**（探针 count=0）→ 外部妥协项 `defunkt`（3 条非空） | |
+| Org 详情页 / Org 事件流 | 外部妥协项 `flutter` / `dart-lang`（CarGuo 是个人账号，非组织） | |
+| Notifications 仓库级筛选 | 主仓（CarSmallGuo 30 条 subscribed 都指向主仓） | |
+| Notifications reason chip | ⚠️ CarSmallGuo 当前 reason 单一（`subscribed x 28 / manual x 2`）→ 需 mention / review\_requested 场景时另找 | |
+| Search Labels | 主仓 `repository_id=142308181`（本轮真机日志已确认） | |
+| Search Commits / Topics | 全站搜索无需锁 fixture | 主仓也在结果集 |
+| Rate Limit 诊断 | 当前 token 自查（无需 fixture） | 本轮实测 core 4997/5000 |
+
+
+
 
