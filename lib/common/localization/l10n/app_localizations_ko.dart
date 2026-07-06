@@ -1015,6 +1015,30 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get discussion_load_failed => 'Discussion 을 불러오지 못했습니다';
+
+  @override
+  String get discussion_not_found => 'Discussion 을 찾을 수 없습니다';
+
+  @override
+  String get discussion_retry => '다시 시도';
+
+  @override
+  String get discussion_answered_badge => '답변 완료';
+
+  @override
+  String get discussion_empty_body => '이 Discussion 에는 본문이 없습니다';
+
+  @override
+  String get discussion_skeleton_notice =>
+      '댓글 / 투표 / 답변 표시 등의 상호작용은 후속 서브태스크에서 추가됩니다 (roadmap §3.1).';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '댓글 $count 개';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '스폰서십을 $action 했습니다';
   }

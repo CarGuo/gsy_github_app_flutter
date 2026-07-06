@@ -1022,6 +1022,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get discussion_load_failed => 'Failed to load discussion';
+
+  @override
+  String get discussion_not_found => 'Discussion not found';
+
+  @override
+  String get discussion_retry => 'Retry';
+
+  @override
+  String get discussion_answered_badge => 'Answered';
+
+  @override
+  String get discussion_empty_body => 'This discussion has no body';
+
+  @override
+  String get discussion_skeleton_notice =>
+      'Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '$count comments';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action a sponsorship';
   }

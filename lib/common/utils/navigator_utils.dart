@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
 import 'package:gsy_github_app_flutter/page/debug/debug_data_page.dart';
+import 'package:gsy_github_app_flutter/page/discussion/discussion_detail_page.dart';
 import 'package:gsy_github_app_flutter/page/gsy_webview.dart';
 import 'package:gsy_github_app_flutter/page/home/home_page.dart';
 import 'package:gsy_github_app_flutter/page/honor_list_page.dart';
@@ -169,6 +170,27 @@ class NavigatorUtils {
           num,
           needHomeIcon: needRightLocalIcon,
         ));
+  }
+
+  /// GitHub Discussion 详情（roadmap §3.1 骨架阶段）
+  ///
+  /// 与 [goIssueDetail] 平行的入口：Discussion 走 GraphQL，不复用 issue REST。
+  static Future goDiscussionDetail(
+    BuildContext context,
+    String owner,
+    String reposName,
+    int number, {
+    bool needRightLocalIcon = false,
+  }) {
+    return NavigatorRouter(
+      context,
+      DiscussionDetailPage(
+        owner,
+        reposName,
+        number,
+        needHomeIcon: needRightLocalIcon,
+      ),
+    );
   }
 
   ///通用列表

@@ -138,6 +138,23 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
   Discussion 事件已经识别，动态流里能看到"在 xxx 创建 讨论"，但**点进去没页面**。
   可行路径：复用 issue detail 那套 timeline 骨架，接 `/repos/{o}/{r}/discussions/{n}` GraphQL。
 
+  **进度跟踪**（分阶段推进，避免一口气吞完）：
+
+  - ✅ **骨架阶段（本轮）**：GraphQL 单接口 + 空壳页 + 4 语言 fallback 文案
+    - [lib/common/net/graphql/discussions.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/discussions.dart)：raw string `readDiscussion` 查询，含 category / author / bodyHTML / answer / upvoteCount / comments(first:30) + replies(first:10)
+    - [lib/common/net/graphql/client.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/client.dart)：`getDiscussion(owner, name, number)` Future 封装
+    - [lib/page/discussion/discussion_detail_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_detail_page.dart)：三态（loading / error+retry / content），title + author + category + answered chip + upvote + commentCount，bodyHTML 目前只用 `Text` 直出（下一子任务替换为 Markdown/HTML widget）
+    - [lib/common/utils/navigator_utils.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart)：`goDiscussionDetail(context, owner, name, number)` 入口
+    - 4 语言 arb + gen-l10n 产物：`discussion_load_failed / discussion_not_found / discussion_retry / discussion_answered_badge / discussion_empty_body / discussion_skeleton_notice / discussion_comments_count`
+    - **本轮不承诺**：event 卡片直接跳详情页（[EventPayload](file:///d:/workspace/project/gsy_github_app_flutter/lib/model/event_payload.dart) 无 `discussion` 字段，需下一子任务扩模型 + 跑 build_runner 才能接入 `ActionUtils` 路由）
+
+  - ⏳ **交互阶段（下一子任务）**：
+    - EventPayload 扩 `discussion` 字段 + build_runner → 在 `ActionUtils` switch 里给 DiscussionEvent 加分支调 `goDiscussionDetail`
+    - bodyHTML 用 [gsy_markdown_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart) 完整渲染
+    - comments/replies 展开、分页
+    - answer 徽标细化、reactions bar
+    - 真机冒烟固化到 [tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke)
+
 - **Notifications 分组视图**
   目前是扁平列表 + reason 筛选。官方 app 是按 repo / subject 折叠。
   修改点：通知模块加分组 header，不改数据源。

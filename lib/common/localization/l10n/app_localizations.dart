@@ -1812,6 +1812,48 @@ abstract class AppLocalizations {
   /// **'{action} a PR review thread at {repo}'**
   String event_dynamic_pull_request_review_thread(String action, String repo);
 
+  /// No description provided for @discussion_load_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load discussion'**
+  String get discussion_load_failed;
+
+  /// No description provided for @discussion_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion not found'**
+  String get discussion_not_found;
+
+  /// No description provided for @discussion_retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get discussion_retry;
+
+  /// No description provided for @discussion_answered_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get discussion_answered_badge;
+
+  /// No description provided for @discussion_empty_body.
+  ///
+  /// In en, this message translates to:
+  /// **'This discussion has no body'**
+  String get discussion_empty_body;
+
+  /// No description provided for @discussion_skeleton_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).'**
+  String get discussion_skeleton_notice;
+
+  /// No description provided for @discussion_comments_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} comments'**
+  String discussion_comments_count(int count);
+
   /// No description provided for @event_dynamic_sponsorship.
   ///
   /// In en, this message translates to:

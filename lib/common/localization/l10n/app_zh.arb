@@ -295,6 +295,18 @@
   "event_dynamic_discussion": "在 {repo} {action} 讨论",
   "event_dynamic_discussion_comment": "在 {repo} {action} 讨论评论",
   "event_dynamic_pull_request_review_thread": "在 {repo} {action} PR 评审讨论串",
+  "discussion_load_failed": "加载 Discussion 失败",
+  "discussion_not_found": "找不到该 Discussion",
+  "discussion_retry": "重试",
+  "discussion_answered_badge": "已解答",
+  "discussion_empty_body": "该 Discussion 正文为空",
+  "discussion_skeleton_notice": "评论、投票、标记回答等交互能力将在后续子任务里补齐（roadmap §3.1）。",
+  "discussion_comments_count": "{count} 条评论",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "event_dynamic_sponsorship": "{action} 一个赞助",
   "event_dynamic_watch": "{action} {repo}",
   "event_dynamic_watch_started": "关注了 {repo}",

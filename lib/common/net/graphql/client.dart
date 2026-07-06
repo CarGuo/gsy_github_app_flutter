@@ -1,4 +1,5 @@
 import 'package:graphql/client.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/discussions.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/repositories.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/users.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -37,6 +38,23 @@ Future<QueryResult>? getRepository(String owner, String? name) async {
       variables: <String, dynamic>{
         'owner': owner,
         'name': name,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
+/// 读取单个 GitHub Discussion 的全文 + 评论前 30 条。
+///
+/// 这是 roadmap §3.1 "Discussions 阅读页"骨架阶段的唯一网络入口。
+/// 分页加载评论 / mutation（写评论、投票、标记回答）都不在本轮范围。
+Future<QueryResult>? getDiscussion(
+    String owner, String name, int number) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readDiscussion),
+      variables: <String, dynamic>{
+        'owner': owner,
+        'name': name,
+        'number': number,
       },
       fetchPolicy: FetchPolicy.noCache);
   return await _innerClient!.query(options);

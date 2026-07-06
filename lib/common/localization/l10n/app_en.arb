@@ -601,6 +601,18 @@
       "repo": {"type": "String"}
     }
   },
+  "discussion_load_failed": "Failed to load discussion",
+  "discussion_not_found": "Discussion not found",
+  "discussion_retry": "Retry",
+  "discussion_answered_badge": "Answered",
+  "discussion_empty_body": "This discussion has no body",
+  "discussion_skeleton_notice": "Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).",
+  "discussion_comments_count": "{count} comments",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "event_dynamic_sponsorship": "{action} a sponsorship",
   "@event_dynamic_sponsorship": {
     "placeholders": {

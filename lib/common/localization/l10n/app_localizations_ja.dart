@@ -1016,6 +1016,30 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get discussion_load_failed => 'Discussion の読み込みに失敗しました';
+
+  @override
+  String get discussion_not_found => 'Discussion が見つかりません';
+
+  @override
+  String get discussion_retry => '再試行';
+
+  @override
+  String get discussion_answered_badge => '回答済み';
+
+  @override
+  String get discussion_empty_body => 'この Discussion に本文はありません';
+
+  @override
+  String get discussion_skeleton_notice =>
+      'コメント / 投票 / 回答マークなどのインタラクションは後続のサブタスクで対応します（roadmap §3.1）。';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '$count 件のコメント';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return 'スポンサーシップを $action しました';
   }

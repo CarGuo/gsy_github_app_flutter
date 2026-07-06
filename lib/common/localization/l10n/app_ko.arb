@@ -295,6 +295,18 @@
   "event_dynamic_discussion": "{repo} 에서 토론을 {action} 했습니다",
   "event_dynamic_discussion_comment": "{repo} 에서 토론 댓글을 {action} 했습니다",
   "event_dynamic_pull_request_review_thread": "{repo} 에서 PR 리뷰 스레드를 {action} 했습니다",
+  "discussion_load_failed": "Discussion 을 불러오지 못했습니다",
+  "discussion_not_found": "Discussion 을 찾을 수 없습니다",
+  "discussion_retry": "다시 시도",
+  "discussion_answered_badge": "답변 완료",
+  "discussion_empty_body": "이 Discussion 에는 본문이 없습니다",
+  "discussion_skeleton_notice": "댓글 / 투표 / 답변 표시 등의 상호작용은 후속 서브태스크에서 추가됩니다 (roadmap §3.1).",
+  "discussion_comments_count": "댓글 {count} 개",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "event_dynamic_sponsorship": "스폰서십을 {action} 했습니다",
   "event_dynamic_watch": "{repo} 를 {action} 했습니다",
   "event_dynamic_watch_started": "{repo} 에 별표를 표시했습니다",

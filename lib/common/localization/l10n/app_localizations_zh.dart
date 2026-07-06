@@ -1015,6 +1015,30 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get discussion_load_failed => '加载 Discussion 失败';
+
+  @override
+  String get discussion_not_found => '找不到该 Discussion';
+
+  @override
+  String get discussion_retry => '重试';
+
+  @override
+  String get discussion_answered_badge => '已解答';
+
+  @override
+  String get discussion_empty_body => '该 Discussion 正文为空';
+
+  @override
+  String get discussion_skeleton_notice =>
+      '评论、投票、标记回答等交互能力将在后续子任务里补齐（roadmap §3.1）。';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '$count 条评论';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action 一个赞助';
   }

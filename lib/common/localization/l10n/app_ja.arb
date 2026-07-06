@@ -295,6 +295,18 @@
   "event_dynamic_discussion": "{repo} でディスカッションを {action} しました",
   "event_dynamic_discussion_comment": "{repo} でディスカッションコメントを {action} しました",
   "event_dynamic_pull_request_review_thread": "{repo} で PR レビュースレッドを {action} しました",
+  "discussion_load_failed": "Discussion の読み込みに失敗しました",
+  "discussion_not_found": "Discussion が見つかりません",
+  "discussion_retry": "再試行",
+  "discussion_answered_badge": "回答済み",
+  "discussion_empty_body": "この Discussion に本文はありません",
+  "discussion_skeleton_notice": "コメント / 投票 / 回答マークなどのインタラクションは後続のサブタスクで対応します（roadmap §3.1）。",
+  "discussion_comments_count": "{count} 件のコメント",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "event_dynamic_sponsorship": "スポンサーシップを {action} しました",
   "event_dynamic_watch": "{repo} を {action} しました",
   "event_dynamic_watch_started": "{repo} をスターしました",
