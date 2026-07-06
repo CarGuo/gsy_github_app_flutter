@@ -6,12 +6,13 @@
 ## 推荐阅读顺序
 
 1. `00-overview/project-map.md`
-2. `01-architecture/app-layering.md`
-3. `01-architecture/state-management-matrix.md`
-4. `03-runbooks/local-setup.md`
-5. `04-quality/test-strategy.md`
-6. `04-quality/smoke-matrix.md`
-7. `05-ai/agent-guide.md`
+2. `00-overview/roadmap.md`
+3. `01-architecture/app-layering.md`
+4. `01-architecture/state-management-matrix.md`
+5. `03-runbooks/local-setup.md`
+6. `04-quality/test-strategy.md`
+7. `04-quality/smoke-matrix.md`
+8. `05-ai/agent-guide.md`
 
 ## 目录说明
 
@@ -27,6 +28,7 @@
 
 - 架构边界：`01-architecture/app-layering.md`
 - 状态管理边界：`01-architecture/state-management-matrix.md`
+- 当前现状与待办清单：`00-overview/roadmap.md`
 - 手工回归入口：`04-quality/smoke-matrix.md`
 - 长期规则：`06-decisions/ADR-0001-状态管理收敛策略.md`
 - 任务模板入口：`05-ai/task-playbooks/`
