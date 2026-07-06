@@ -41,16 +41,16 @@ jobs:
         run: |
           echo 'class NetConfig { static const CLIENT_ID = "${{ secrets.CLIENT_ID }}"; static const CLIENT_SECRET = "${{ secrets.CLIENT_SECRET }}";}' > lib/common/config/ignoreConfig.dart
       - run: flutter pub get
-      # 白名单跑目前已绿的测试文件，避开 test/widget/issue_timeline_item_test.dart
-      # 里 reviewed body 卡片 4 个用例——它们踩了 DecoratedBox non-uniform border
-      # + borderRadius 的 Flutter 断言，属于 issue_timeline_item.dart 需要真机
-      # 复核的运行时 UI bug（roadmap §2.4 已知缺口）。修复合入后可去掉白名单。
+      # 白名单跑当前已稳定的测试文件。issue_timeline_item_test.dart 的 4 个
+      # reviewed body 用例（曾撞 non-uniform border + borderRadius 断言）已随
+      # _reviewBodyCard 改为 Stack + Positioned 色带方案而绿掉，纳入白名单。
       - name: Run unit / widget tests (whitelist)
         run: >-
           flutter test
           test/utils/event_utils_test.dart
           test/model/issue_timeline_event_test.dart
           test/widget/markdown_html_transformer_test.dart
+          test/widget/issue_timeline_item_test.dart
           test/page/issue/issue_timeline_merge_test.dart
       - run: flutter build apk --release --target-platform=android-arm64 --no-shrink
 
