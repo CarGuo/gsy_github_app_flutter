@@ -125,17 +125,60 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 [tool/dbg/smoke_08_issue_detail_scroll2.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_08_issue_detail_scroll2.png)
 （`Pull request overview` 卡片左侧紫色 3px 色带 + 圆角边框，无断言）。
 
-### 2.6 build_runner 环境级技术债（riverpod_generator）—— 新登记
+### 2.6 build_runner 环境级技术债（riverpod_generator 3.0.3）—— 已诊断到位
 
-`dart run build_runner build --delete-conflicting-outputs` 在本地环境跑时，`riverpod_generator` 阶段对以下三个 provider 报错，**并把 .g.dart 删掉却不重新生成**（本轮曾误触发）：
+`dart run build_runner build` 时，`riverpod_generator` 阶段对以下三个 async provider 稳定报错：
 
 - `Invalid argument(s): Cannot find import for AsyncValue in _CanonicalizedUri(package:riverpod/riverpod.dart), and could not automatically import it.`
-- 影响文件：[lib/page/trend/trend_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/trend/trend_provider.dart) / [lib/page/trend/trend_user_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/trend/trend_user_provider.dart) / [lib/page/user/base_person_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/user/base_person_provider.dart)
+- 影响文件（都是返回 `Future<T>` 或 `AsyncNotifier` 的 provider，g.dart 需要 emit `AsyncValue<T>`）：
+  - [lib/page/trend/trend_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/trend/trend_provider.dart)
+  - [lib/page/trend/trend_user_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/trend/trend_user_provider.dart)
+  - [lib/page/user/base_person_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/user/base_person_provider.dart)
+- 未报错的对照组（同样 `@riverpod` 注解但**同步** `build()`，g.dart 不 emit `AsyncValue`）：
+  - [lib/provider/app_state_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/provider/app_state_provider.dart)
+  - [lib/page/user/base_person_state.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/user/base_person_state.dart)（无 `part` 声明，不参与生成）
 
-现象：`json_serializable` 阶段先跑（成功输出 30 个），随后 `riverpod_generator` 报错整体失败，副作用是**已删的 3 个 riverpod .g.dart 不会重新生成**，需要 `git checkout HEAD -- <path>` 回滚。
+**真实版本组合**（`.dart_tool/package_config.json` 与 pubspec 交叉验证）：
 
-**临时对策**：改 EventPayload / 其它 json_serializable 模型时，跑完 build_runner 后立刻 `git status --short` 检查有没有 `D lib/page/trend/*.g.dart` 之类的 deletion，如果有直接 checkout 回来。
-**根因**：`riverpod` 6.3 vs `riverpod_generator` 3.x 版本组合，可能需要 `flutter pub deps` 排查 `AsyncValue` symbol export 路径。**修法先不着急**，因为既有 .g.dart 是有效的，只有跑 build_runner 时被误删才有影响。
+- `flutter_riverpod: 3.0.3`
+- `riverpod: 3.0.3`（传递依赖）
+- `riverpod_annotation: 3.0.3`
+- `riverpod_generator: 3.0.3`
+- `analyzer_buffer: 0.1.12`（`AnalyzerBuffer._upsertImport` 抛错所在包）
+
+四方严格对齐 3.0.3，不是版本 mismatch。
+
+**根因**（本轮实测走完排查后重写，替换掉前一轮"6.3 vs 3.x"的错误猜测）：
+
+`AnalyzerBuffer._upsertImport(_CanonicalizedUri('package:riverpod/riverpod.dart'), 'AsyncValue')` 在 [analyzer_buffer 0.1.12 lib/src/analyzer_buffer.dart#L538-L546](file:///D:/workspace/pub_cache/hosted/pub.flutter-io.cn/analyzer_buffer-0.1.12/lib/src/analyzer_buffer.dart#L538-L546) 里，会先调 `_namespace.findSymbol(uri, 'AsyncValue')` 遍历当前源文件的 `libraryImports2`，取每个 import 的 `definedNames2['AsyncValue']?.library2?.uri` 与期望 URI 精确比对。
+
+问题是 `AsyncValue` 实际定义在 [riverpod-3.0.3 lib/src/core/async_value.dart#L414](file:///D:/workspace/pub_cache/hosted/pub.flutter-io.cn/riverpod-3.0.3/lib/src/core/async_value.dart#L414)，通过 [riverpod-3.0.3 lib/src/internals.dart#L1-L26](file:///D:/workspace/pub_cache/hosted/pub.flutter-io.cn/riverpod-3.0.3/lib/src/internals.dart#L1-L26) 的 `export 'src/...'` 链层层 re-export 到 [riverpod-3.0.3 lib/riverpod.dart#L1-L24](file:///D:/workspace/pub_cache/hosted/pub.flutter-io.cn/riverpod-3.0.3/lib/riverpod.dart#L1-L24)。analyzer 侧的 `Element.library2.uri` 返回的是**定义 library** 的 URI（`package:riverpod/src/core/async_value.dart`），而不是 re-export 入口的 URI（`package:riverpod/riverpod.dart`）—— 两者永远匹配不上。
+
+由于 `_autoImport = false`（`_TargetNamespace` 构造函数默认关闭），最终抛 `Cannot find import for AsyncValue in ...`。
+
+**关键结论**：这是 `riverpod_generator 3.0.3` 对 re-exported 类型的 URI 假设错误，**用户侧无法通过修改源文件的 import 绕开**。本轮已实测：
+
+1. 给 3 个源文件顶部加 `import 'package:flutter_riverpod/flutter_riverpod.dart';` → **仍报同样错误**
+2. 追加 `import 'package:riverpod/riverpod.dart';` → **仍报同样错误**
+
+两次修改都已回退到原状。
+
+**副作用已自行消失**：build_runner 3.x 已移除 `--delete-conflicting-outputs` 参数（本轮实测输出 `W These options have been removed and were ignored`），即使 riverpod_generator 报错，也**不再联动删除 .g.dart**。本轮 2 次跑 build_runner 前后 3 个 .g.dart 字节数与时间戳完全一致（4197 / 4674 / 2889，`11:24:26 AM`）。前一轮 roadmap 记录的"删掉却不重生成"痛点由此关闭。
+
+**当前状态**：既有 3 个 .g.dart 是**有效生成产物**（`app_state_provider.g.dart` 早前生成时环境不同），运行时正常。只要不主动 `git rm` 或手动清理，就不受影响。
+
+**根治候选（不在本轮工作范围）**：
+
+- 升级到 `riverpod_generator 4.0.4`（2026-06 中旬发布，跨越 4.0.0 ~ 4.0.4 五个版本），配套升级 `flutter_riverpod` / `riverpod_annotation` 到 4.x。属于**跨大版本升级**，可能牵涉 `ProviderContainer` / `Ref` / `AsyncNotifier` 等运行时 API 破坏性变更，波及 [app_state_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/provider/app_state_provider.dart) 里的 `globalContainer = ProviderContainer()` 与 5 个 `@riverpod` 消费点。需**独立任务**拉一栏，含 pub deps → 迁移指南 → 全量回归。
+- 或降级 `riverpod_generator` 到 `2.6.5`（`AnalyzerBuffer` 尚未引入 `_upsertImport` 那套流程），但会失去 3.0.0 之后的 stateful hot-reload / new element model 收益。**不推荐**。
+
+**日常操作约束**（本轮沉淀，供后续人 / agent 参考）：
+
+- 改 EventPayload / 其它 json_serializable 模型跑 build_runner 时，**忽略** `E riverpod_generator on ...` 那三条错误（它们不会破坏已生成产物，也不会阻断 json_serializable 阶段的输出）。看的是 `wrote N outputs` 里 N 是不是符合预期，不看 exit code。
+- 如果确认没改 riverpod provider 源文件，**不需要**每次都跑 build_runner，只跑针对性 target 即可：
+  `dart run build_runner build --build-filter="lib/model/*.dart"`（本仓库当前不强制这么用，但作为环境优化路径记录）。
+- 只有真要动 `@riverpod` 源文件语义（改返回类型 / 加参数）时才需要单独任务处理这个环境问题，否则**默认容忍**。
+
 
 ---
 
@@ -205,6 +248,8 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 
 ### 4.1 "只读 + 评论"到底允许多少写态？
 
+**状态更新（2026-07-06）**：已在 [AGENTS.md 允许 / 禁止的写操作清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L171) 起草一版 draft，等作者拍板后转正。roadmap 这段保留原有分类，供讨论时对照使用。
+
 - 已经在做的**写操作**：
   - Issue / Comment 加 reaction
   - Comment 发评论
@@ -217,7 +262,7 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 **如果边界收紧**：3.1 的 resolved 徽标只做视觉、不做操作；Notify 那三个侧滑动作要重新讨论。
 **如果边界放宽**：3.2 / 3.3 里"低优先"那批可以升级。
 
-建议在 [AGENTS.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/AGENTS.md) 里补一条"允许 / 禁止的写操作清单"。
+建议在 [AGENTS.md](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md) 里补一条"允许 / 禁止的写操作清单"（本轮已起草，见上）。
 
 ### 4.2 event_utils 单文件已 400+ 行
 

@@ -138,6 +138,38 @@
 - OAuth 登录相关流程依赖本地 `ignoreConfig.dart`
 - **GSY 是 GitHub 的只读 + 评论客户端**，不承担写 PR / 提交 review / 建仓库这类"作者行为"。冒烟或回归时**禁止通过 gh cli 或 GitHub API 新建仓库、造 PR 或提交 review**去伪造证据，一律用既有仓库里的真实数据
 
+### 允许 / 禁止的写操作清单（draft，待用户拍板）
+
+> 状态：`docs/00-overview/roadmap.md §4.1` 起草，等作者确认后视为正式约束。
+
+**允许（已在做且不打算收回）**：
+
+- Issue / Comment 上加/取消 reaction
+- Issue / PR / Discussion 下发评论
+- Notify 标记已读 / 标记 done / unsubscribe
+- 关注 / 取消关注仓库（star / watch 切换）
+
+**明确禁止（越界的作者行为）**：
+
+- 新建仓库 / fork 仓库
+- 新建 issue / PR / discussion
+- 提交 / dismiss review
+- 合并 PR / close issue / lock conversation
+- 修改仓库设置 / 分支保护 / webhook / secret
+- 通过 gh cli 或 GitHub API 制造冒烟数据
+
+**争议地带（默认按禁止处理，需单独讨论才能升级为允许）**：
+
+- GitHub Actions workflow rerun / cancel（属于仓库运维行为）
+- Projects V2 卡片移动（相当于协作作者视角编辑）
+- PR review thread mark as resolved / unresolved（视觉层可看 [event_action_resolved](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/localization/l10n/app_zh.arb#L362-L363)，操作层暂不做）
+- 编辑自己发的 issue body / comment 内容（写操作但只对自己发的内容，边界模糊）
+
+**判断口径**：
+
+- 判断依据是"是否让 GSY 用户在 GitHub 上产生新数据 / 修改他人内容 / 触发仓库运维"，不是"API 是不是 write endpoint"
+- 争议地带若要新增功能，需要在 PR 描述里显式提出，并同步更新本清单
+
 ## 真机验证专用 fixture（写死，不允许随手换）
 
 以下 PR/仓库是真机冒烟脚本 `tool/ai/smoke/open_pr_timeline.sh` 默认命中的证据源。改动 timeline 相关代码时，优先复用它们；只有在明确覆盖不到时才另外找 PR。
