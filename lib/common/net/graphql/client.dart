@@ -1,5 +1,6 @@
 import 'package:graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/discussions.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/pull_request.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/repositories.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/users.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -51,6 +52,23 @@ Future<QueryResult>? getDiscussion(
     String owner, String name, int number) async {
   final QueryOptions options = QueryOptions(
       document: gql(readDiscussion),
+      variables: <String, dynamic>{
+        'owner': owner,
+        'name': name,
+        'number': number,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
+/// 读取指定 PR 下的 review threads（首层 50 条，每条内 comment 首层 100 条）。
+///
+/// 只承载 roadmap §4.1 中"mark as resolved / unresolved"允许项定位 thread 所需的
+/// 最小字段，不做未 resolved thread 计数、也不做 mutation。
+Future<QueryResult>? getPullRequestReviewThreads(
+    String owner, String name, int number) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readPullRequestReviewThreads),
       variables: <String, dynamic>{
         'owner': owner,
         'name': name,
