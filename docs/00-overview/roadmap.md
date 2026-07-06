@@ -125,6 +125,18 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 [tool/dbg/smoke_08_issue_detail_scroll2.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_08_issue_detail_scroll2.png)
 （`Pull request overview` 卡片左侧紫色 3px 色带 + 圆角边框，无断言）。
 
+### 2.6 build_runner 环境级技术债（riverpod_generator）—— 新登记
+
+`dart run build_runner build --delete-conflicting-outputs` 在本地环境跑时，`riverpod_generator` 阶段对以下三个 provider 报错，**并把 .g.dart 删掉却不重新生成**（本轮曾误触发）：
+
+- `Invalid argument(s): Cannot find import for AsyncValue in _CanonicalizedUri(package:riverpod/riverpod.dart), and could not automatically import it.`
+- 影响文件：[lib/page/trend/trend_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/trend/trend_provider.dart) / [lib/page/trend/trend_user_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/trend/trend_user_provider.dart) / [lib/page/user/base_person_provider.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/user/base_person_provider.dart)
+
+现象：`json_serializable` 阶段先跑（成功输出 30 个），随后 `riverpod_generator` 报错整体失败，副作用是**已删的 3 个 riverpod .g.dart 不会重新生成**，需要 `git checkout HEAD -- <path>` 回滚。
+
+**临时对策**：改 EventPayload / 其它 json_serializable 模型时，跑完 build_runner 后立刻 `git status --short` 检查有没有 `D lib/page/trend/*.g.dart` 之类的 deletion，如果有直接 checkout 回来。
+**根因**：`riverpod` 6.3 vs `riverpod_generator` 3.x 版本组合，可能需要 `flutter pub deps` 排查 `AsyncValue` symbol export 路径。**修法先不着急**，因为既有 .g.dart 是有效的，只有跑 build_runner 时被误删才有影响。
+
 ---
 
 ## 三、功能对齐官方 GitHub App / API 还差什么
@@ -140,20 +152,26 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 
   **进度跟踪**（分阶段推进，避免一口气吞完）：
 
-  - ✅ **骨架阶段（本轮）**：GraphQL 单接口 + 空壳页 + 4 语言 fallback 文案
+  - ✅ **骨架阶段（上轮）**：GraphQL 单接口 + 空壳页 + 4 语言 fallback 文案
     - [lib/common/net/graphql/discussions.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/discussions.dart)：raw string `readDiscussion` 查询，含 category / author / bodyHTML / answer / upvoteCount / comments(first:30) + replies(first:10)
     - [lib/common/net/graphql/client.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/client.dart)：`getDiscussion(owner, name, number)` Future 封装
     - [lib/page/discussion/discussion_detail_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_detail_page.dart)：三态（loading / error+retry / content），title + author + category + answered chip + upvote + commentCount，bodyHTML 目前只用 `Text` 直出（下一子任务替换为 Markdown/HTML widget）
     - [lib/common/utils/navigator_utils.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart)：`goDiscussionDetail(context, owner, name, number)` 入口
     - 4 语言 arb + gen-l10n 产物：`discussion_load_failed / discussion_not_found / discussion_retry / discussion_answered_badge / discussion_empty_body / discussion_skeleton_notice / discussion_comments_count`
-    - **本轮不承诺**：event 卡片直接跳详情页（[EventPayload](file:///d:/workspace/project/gsy_github_app_flutter/lib/model/event_payload.dart) 无 `discussion` 字段，需下一子任务扩模型 + 跑 build_runner 才能接入 `ActionUtils` 路由）
 
-  - ⏳ **交互阶段（下一子任务）**：
-    - EventPayload 扩 `discussion` 字段 + build_runner → 在 `ActionUtils` switch 里给 DiscussionEvent 加分支调 `goDiscussionDetail`
+  - ✅ **event 路由接入（本轮）**：动态流卡片直连详情
+    - [lib/model/event_payload.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/model/event_payload.dart) 新增嵌套模型 `EventDiscussionRef`（只留 `number` 字段），`EventPayload.discussion` 走 json_serializable 自动解析
+    - [lib/common/utils/event_utils.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L633-L652) `ActionUtils` switch 追加 `DiscussionEvent` / `DiscussionCommentEvent` case：`payload.discussion?.number` 拿到就走 `goDiscussionDetail`，缺失时回退 `goReposDetail`（不假装成功）
+    - [test/utils/event_utils_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/utils/event_utils_test.dart#L454-L491) 加 2 个序列化用例：有 `discussion.number` 时反解为 int，缺失时保持 null；总测试数 119 → 121 全绿
+    - 真机验证：release apk 重装 + 首页动态流滚多屏 + logcat 拉 → 无 Dart 层 Exception，Push/Fork/Watch 路径未回归。**DiscussionEvent 真机路径未覆盖**（GSY 关注账号最近的 events 里没有 discussion 事件，AGENTS.md 禁止造数据），已用单测补齐稀有分支覆盖率
+    - 冒烟截图：[tool/dbg/smoke_disc_01_launch.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_disc_01_launch.png) / [tool/dbg/smoke_disc_02_scroll.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_disc_02_scroll.png)
+
+  - ⏳ **内容渲染阶段（下一子任务）**：
     - bodyHTML 用 [gsy_markdown_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart) 完整渲染
     - comments/replies 展开、分页
     - answer 徽标细化、reactions bar
-    - 真机冒烟固化到 [tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke)
+    - 真机 DiscussionEvent 直连截图（需要等 GSY 关注的某账号产生 discussion 事件，或在仓库详情加 Discussions tab 后从 tab 入口反向验证）
+    - 冒烟脚本沉淀到 [tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke)
 
 - **Notifications 分组视图**
   目前是扁平列表 + reason 筛选。官方 app 是按 repo / subject 折叠。

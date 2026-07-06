@@ -630,6 +630,26 @@ class EventUtils {
           needRightLocalIcon: true,
         );
         break;
+      case 'DiscussionEvent':
+      case 'DiscussionCommentEvent':
+        // roadmap §3.1 交互阶段：payload.discussion.number 拿得到就直接跳详情，
+        // 否则回退到仓库详情，避免用户点空。
+        final int? discussionNumber = event.payload?.discussion?.number;
+        if (discussionNumber != null) {
+          NavigatorUtils.goDiscussionDetail(
+            context,
+            owner,
+            repositoryName,
+            discussionNumber,
+            needRightLocalIcon: true,
+          );
+        } else {
+          if (fullName.toLowerCase() == currentRepository.toLowerCase()) {
+            return;
+          }
+          NavigatorUtils.goReposDetail(context, owner, repositoryName);
+        }
+        break;
       default:
         if (fullName.toLowerCase() == currentRepository.toLowerCase()) {
           return;

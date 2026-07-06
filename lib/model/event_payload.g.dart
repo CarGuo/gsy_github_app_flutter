@@ -29,7 +29,10 @@ EventPayload _$EventPayloadFromJson(Map<String, dynamic> json) => EventPayload()
       : Issue.fromJson(json['issue'] as Map<String, dynamic>)
   ..comment = json['comment'] == null
       ? null
-      : IssueEvent.fromJson(json['comment'] as Map<String, dynamic>);
+      : IssueEvent.fromJson(json['comment'] as Map<String, dynamic>)
+  ..discussion = json['discussion'] == null
+      ? null
+      : EventDiscussionRef.fromJson(json['discussion'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$EventPayloadToJson(EventPayload instance) =>
     <String, dynamic>{
@@ -48,4 +51,11 @@ Map<String, dynamic> _$EventPayloadToJson(EventPayload instance) =>
       'release': instance.release,
       'issue': instance.issue,
       'comment': instance.comment,
+      'discussion': instance.discussion,
     };
+
+EventDiscussionRef _$EventDiscussionRefFromJson(Map<String, dynamic> json) =>
+    EventDiscussionRef()..number = (json['number'] as num?)?.toInt();
+
+Map<String, dynamic> _$EventDiscussionRefToJson(EventDiscussionRef instance) =>
+    <String, dynamic>{'number': instance.number};

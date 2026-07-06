@@ -450,4 +450,43 @@ void main() {
       isFalse,
     );
   });
+
+  // roadmap §3.1 交互阶段：EventPayload.discussion 序列化契约。
+  //
+  // ActionUtils switch 在 DiscussionEvent / DiscussionCommentEvent 分支里
+  // 读 event.payload?.discussion?.number 决定是走 goDiscussionDetail 还是回退
+  // goReposDetail。这两个用例只锁 raw JSON → 模型的解析结果，
+  // 跳转本身依赖 BuildContext + NavigatorUtils，无既有 mock 模式，暂不覆盖。
+  test('EventPayload.discussion.number 从 raw json 正常解析出 int', () {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DiscussionEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'created',
+        'discussion': {'number': 42, 'title': '不该被 EventPayload 读到'}
+      }
+    }));
+
+    expect(ee.payload?.discussion?.number, 42);
+  });
+
+  test('EventPayload.discussion 缺失时保持 null，回退分支可用', () {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DiscussionEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {'action': 'created'}
+    }));
+
+    expect(ee.payload?.discussion, isNull);
+  });
 }
