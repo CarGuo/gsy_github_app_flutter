@@ -180,6 +180,31 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 - 只有真要动 `@riverpod` 源文件语义（改返回类型 / 加参数）时才需要单独任务处理这个环境问题，否则**默认容忍**。
 
 
+### 2.7 CI Flutter 版本升级 3.41.6 → 3.44.1（本轮修复 GitHub Actions 红）
+
+**背景**：CI 一直在 build 阶段挂，日志显示
+`lib/widget/pull/nested/nested_refresh.dart:526:15: Error: No named parameter with the name 'alignment'`。
+原因是本轮 §2.3 早期已把 [nested_refresh.dart#L526](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/pull/nested/nested_refresh.dart#L526)
+的 `axisAlignment: 1.0/-1.0`（deprecated after Flutter v3.41.0-1.0.pre）迁到了新 API
+`alignment: Alignment.bottomCenter/topCenter`；这个新参数在 Flutter 3.41.6 stable 里**还没引入**，
+而 CI workflow 里 `subosito/flutter-action@v1` 恰恰锁在 `flutter-version: '3.41.6'`。
+本地长期跑 3.44.x，CI 一直落后 → 出现"本地绿 / CI 红"的经典 SDK 漂移。
+
+**修复方式（用户拍板：升 CI 而非降代码 API）**：
+
+- [.fvmrc](file:///d:/workspace/project/gsy_github_app_flutter/.fvmrc)：`3.38.4` → `3.44.1`（用 FVM 作为唯一版本契约源）
+- [.github/workflows/ci.yml](file:///d:/workspace/project/gsy_github_app_flutter/.github/workflows/ci.yml) 两处 job（`build` 与 `apk`）：
+  - `subosito/flutter-action@v1` → `@v2`（v2 起支持 `flutter-version-file`）
+  - `flutter-version: '3.41.6'` → `flutter-version-file: .fvmrc`（读同一份 FVM 契约，杜绝双写漂移）
+  - 顺带打开 `channel: stable` + `cache: true`
+- [README.md](file:///d:/workspace/project/gsy_github_app_flutter/README.md) / [README_EN.md](file:///d:/workspace/project/gsy_github_app_flutter/README_EN.md)：编译运行流程处 "Flutter SDK 3.38" → **3.44.1**，附 FVM 用法
+- [docs/03-runbooks/local-setup.md](file:///d:/workspace/project/gsy_github_app_flutter/docs/03-runbooks/local-setup.md)：基线要求段写死 3.44.1 + `.fvmrc` + FVM
+
+**遗留**：Flutter 3.44 有 Material/Cupertino 拆包 deprecation warning（`package:flutter/material.dart` 仍可用，只出 warning）；
+当前 CI 不带 `--fatal-warnings`，不阻塞，等后续再迁移。**riverpod_generator 3.0.3 URI mismatch（§2.6）
+是完全独立的问题**，不随本次 CI 升级解决，仍需按 §2.6 建议独立跨版本升级任务处理。
+
+
 ---
 
 ## 三、功能对齐官方 GitHub App / API 还差什么

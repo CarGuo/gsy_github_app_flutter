@@ -75,7 +75,7 @@
 
 ## Compilation and Running Process
 
-1. Set up the Flutter development environment (current Flutter SDK version **3.38**), see [Setting up the environment](https://flutterchina.club).
+1. Set up the Flutter development environment (current Flutter SDK version **3.44.1**, the repo pins this version via `.fvmrc`, [FVM](https://fvm.app/) is recommended: `fvm install 3.44.1 && fvm use 3.44.1`), see [Setting up the environment](https://flutterchina.club).
 
 2. Clone the code, run `Packages get` to install third-party packages. (Due to certain reasons beyond control, you may need to set up a proxy in China: [Proxy environment variables](https://flutterchina.club/setup-windows/))
 
@@ -99,7 +99,7 @@
 
 ### 5. Please note before running
 
->### 1. Local Flutter SDK version 3.38; 2. Have you executed `flutter pub get`; 3. For network and other issues, refer to: [If login fails or requests fail](https://github.com/CarGuo/gsy_github_app_flutter/issues/643)
+>### 1. Local Flutter SDK version 3.44.1 (pinned in `.fvmrc`, use `fvm use` to switch); 2. Have you executed `flutter pub get`; 3. For network and other issues, refer to: [If login fails or requests fail](https://github.com/CarGuo/gsy_github_app_flutter/issues/643)
 
 
 ### Download
