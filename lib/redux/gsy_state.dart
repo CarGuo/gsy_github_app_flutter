@@ -29,7 +29,7 @@ class GSYState {
 }
 
 ///创建 Reducer
-///源码中 Reducer 是一个方法 typedef State Reducer<State>(State state, dynamic action);
+///源码中 Reducer 是一个方法 `typedef State Reducer<State>(State state, dynamic action);`
 ///我们自定义了 appReducer 用于创建 store
 GSYState appReducer(GSYState state, action) {
   return GSYState(

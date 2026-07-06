@@ -133,7 +133,7 @@ class GSYMarkdownWidget extends StatelessWidget {
 
   /// 处理 Markdown 字符串，转换 img/image 标签为 Markdown 图片格式，并处理 URL。
   ///
-  /// 1. 将 <img src="..."> 或 <image src="..."> 替换为 ![alt](src) 格式。
+  /// 1. 将 `<img src="...">` 或 `<image src="...">` 替换为 ![alt](src) 格式。
   /// 2. 为非 http/https 开头的 src 添加 baseUrl。
   /// 3. 为最终的 URL 添加 ?raw=true 或 &raw=true (如果尚未存在)。
   ///
@@ -355,7 +355,7 @@ Widget _handleDataSchemeUri(
 /// [urlString]: 要检查的 URL 字符串。
 /// [timeout]: 整个检查过程的超时设置 (连接和接收)。
 ///
-/// 返回 Future<bool>，如果资源被认为是 SVG，则为 true，否则为 false。
+/// 返回 `Future<bool>`，如果资源被认为是 SVG，则为 true，否则为 false。
 Future<bool> _isUrlPointingToSvgDio(String urlString,
     {Duration timeout = const Duration(seconds: 15)}) async {
   Uri uri;

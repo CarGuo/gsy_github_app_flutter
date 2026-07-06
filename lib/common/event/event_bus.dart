@@ -34,7 +34,7 @@ class EventBus {
 
   /// Listens for events of Type [T] and its subtypes.
   ///
-  /// The method is called like this: myEventBus.on<MyType>();
+  /// The method is called like this: `myEventBus.on<MyType>()`.
   ///
   /// If the method is called without a type parameter, the [Stream] contains every
   /// event of this [EventBus].

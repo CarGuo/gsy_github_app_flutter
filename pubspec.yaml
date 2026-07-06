@@ -1,5 +1,6 @@
 name: gsy_github_app_flutter
 description: Github Application
+publish_to: none
 version: 1.7.0+32
 
 environment:
