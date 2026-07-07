@@ -1,5 +1,6 @@
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/repositories/event_repository.dart';
+import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 
 /// Created by guoshuyu
@@ -77,9 +78,36 @@ class DynamicBloc {
   }
 
   ///加载更多数据
+  ///
+  /// GitHub `/users/{user}/received_events` 是流式列表，两次分页请求之间
+  /// 新事件会持续涌入，导致第 N 页尾部与第 N+1 页头部出现 `event.id` 交集。
+  /// 这里对新一页做 id 去重：已存在于当前 dataList 的事件跳过 append，
+  /// 保留 existing（旧数据）位置不动，避免用户上拉后同一张卡片重复出现。
   loadMoreData(res) {
-    if (res != null) {
-      pullLoadWidgetControl.addList(res.data);
+    if (res == null || res.data == null) {
+      return;
+    }
+    final List<dynamic> current = pullLoadWidgetControl.dataList ?? const [];
+    final Set<String> seen = <String>{};
+    for (final item in current) {
+      if (item is Event && item.id != null) {
+        seen.add(item.id!);
+      }
+    }
+    final List<Event> incoming = [];
+    for (final item in res.data) {
+      if (item is Event) {
+        final String? id = item.id;
+        if (id == null || !seen.contains(id)) {
+          if (id != null) {
+            seen.add(id);
+          }
+          incoming.add(item);
+        }
+      }
+    }
+    if (incoming.isNotEmpty) {
+      pullLoadWidgetControl.addList(incoming);
     }
   }
 

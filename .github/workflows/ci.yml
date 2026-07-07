@@ -54,6 +54,7 @@ jobs:
           test/widget/markdown_html_transformer_test.dart
           test/widget/issue_timeline_item_test.dart
           test/page/issue/issue_timeline_merge_test.dart
+          test/page/dynamic/dynamic_bloc_test.dart
       - run: flutter build apk --release --target-platform=android-arm64 --no-shrink
 
   apk:
