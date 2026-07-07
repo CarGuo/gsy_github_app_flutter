@@ -1229,4 +1229,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get pr_files_review_outdated => 'このコメントは古くなっています';
+
+  @override
+  String get pr_files_review_thread_resolved => '解決済み';
+
+  @override
+  String get pr_files_review_thread_unresolved => '未解決';
 }

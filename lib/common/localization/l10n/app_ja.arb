@@ -386,5 +386,7 @@
       }
     }
   },
-  "pr_files_review_outdated": "このコメントは古くなっています"
+  "pr_files_review_outdated": "このコメントは古くなっています",
+  "pr_files_review_thread_resolved": "解決済み",
+  "pr_files_review_thread_unresolved": "未解決"
 }

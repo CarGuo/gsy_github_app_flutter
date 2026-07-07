@@ -8,10 +8,12 @@ import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
 import 'package:gsy_github_app_flutter/model/issue_timeline_event.dart';
 import 'package:gsy_github_app_flutter/model/pull_request.dart';
+import 'package:gsy_github_app_flutter/model/pull_request_review_thread.dart';
 import 'package:gsy_github_app_flutter/model/pull_review_comment.dart';
 import 'package:gsy_github_app_flutter/model/commitFile.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
+import 'package:gsy_github_app_flutter/common/net/graphql/client.dart' as gql;
 
 /// Issue相关
 /// Created by guoshuyu
@@ -179,6 +181,87 @@ class IssueRepository {
     }
     return DataResult(all, true);
   }
+
+  /// 拉取 PR 下的 review threads（GraphQL）
+  ///
+  /// - 通过 GraphQL 拿到每个 review thread 的 [PullRequestReviewThread.isResolved]
+  ///   与该 thread 内所有 comment 的 REST numeric id（`databaseId`）
+  /// - 上层可用返回的 [PullRequestReviewThread.commentDatabaseIds] 与 REST
+  ///   [PullReviewComment.id] join，得到"每条 comment 是否属于已 resolved
+  ///   thread"的映射，用于 UI 侧色带 / badge 展示
+  /// - 这里只做只读拉取；resolve / unresolve mutation 走单独 request 方法
+  /// - 骨架已在 [readPullRequestReviewThreads] 中把首层 threads 上限设为 50、
+  ///   每 thread 内 comments 上限 100，覆盖 99% 的 PR；再多的 outlier 目前不做分页
+  static Future<DataResult> getPullRequestReviewThreadsRequest(
+      String owner, String name, int number) async {
+    try {
+      final res = await gql.getPullRequestReviewThreads(owner, name, number);
+      if (res == null || res.hasException || res.data == null) {
+        return DataResult(null, false);
+      }
+      final Map? repo = res.data!["repository"] as Map?;
+      final Map? pr = repo?["pullRequest"] as Map?;
+      final Map? reviewThreads = pr?["reviewThreads"] as Map?;
+      final List? nodes = reviewThreads?["nodes"] as List?;
+      if (nodes == null) {
+        return DataResult(<PullRequestReviewThread>[], true);
+      }
+      final List<PullRequestReviewThread> list = [];
+      for (var node in nodes) {
+        if (node is Map) {
+          final t = PullRequestReviewThread.fromGraphql(node);
+          if (t != null) list.add(t);
+        }
+      }
+      return DataResult(list, true);
+    } catch (_) {
+      return DataResult(null, false);
+    }
+  }
+
+  /// 把一条 review thread 标记为 resolved（GraphQL mutation）
+  ///
+  /// - [threadId] = [PullRequestReviewThread.id]（GraphQL node id）
+  /// - 成功时 [DataResult.data] 返回 GitHub 侧最新的 `isResolved` 布尔值，
+  ///   UI 侧就地 patch `_resolvedMap` 而不必重拉整条 threads
+  /// - 失败（网络 / 权限 / 已被别处 resolved 又 unresolved 竞态）返回 result=false
+  ///   由上层弹 toast 兜底
+  static Future<DataResult> resolveReviewThreadRequest(String threadId) async {
+    try {
+      final res = await gql.resolveReviewThread(threadId);
+      if (res == null || res.hasException || res.data == null) {
+        return DataResult(null, false);
+      }
+      final Map? payload = res.data!["resolveReviewThread"] as Map?;
+      final Map? thread = payload?["thread"] as Map?;
+      final bool? isResolved = thread?["isResolved"] as bool?;
+      if (isResolved == null) return DataResult(null, false);
+      return DataResult(isResolved, true);
+    } catch (_) {
+      return DataResult(null, false);
+    }
+  }
+
+  /// 把一条已 resolved 的 review thread 撤回到 unresolved
+  ///
+  /// 参数与返回结构与 [resolveReviewThreadRequest] 对称。
+  static Future<DataResult> unresolveReviewThreadRequest(
+      String threadId) async {
+    try {
+      final res = await gql.unresolveReviewThread(threadId);
+      if (res == null || res.hasException || res.data == null) {
+        return DataResult(null, false);
+      }
+      final Map? payload = res.data!["unresolveReviewThread"] as Map?;
+      final Map? thread = payload?["thread"] as Map?;
+      final bool? isResolved = thread?["isResolved"] as bool?;
+      if (isResolved == null) return DataResult(null, false);
+      return DataResult(isResolved, true);
+    } catch (_) {
+      return DataResult(null, false);
+    }
+  }
+
 
   /// 搜索仓库issue
   /// @param q 搜索关键字

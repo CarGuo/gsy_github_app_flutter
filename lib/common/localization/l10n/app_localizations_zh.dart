@@ -1228,4 +1228,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get pr_files_review_outdated => '该评论已过时';
+
+  @override
+  String get pr_files_review_thread_resolved => '已解决';
+
+  @override
+  String get pr_files_review_thread_unresolved => '未解决';
 }

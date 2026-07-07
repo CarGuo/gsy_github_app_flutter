@@ -78,6 +78,32 @@ Future<QueryResult>? getPullRequestReviewThreads(
   return await _innerClient!.query(options);
 }
 
+/// 将一条 review thread 标记为 resolved
+///
+/// - `threadId` 必须是 GraphQL node id（形如 `PRRT_kw...`），不是 REST numeric id
+/// - GraphQL cache 走 noCache：不希望旧的 [readPullRequestReviewThreads]
+///   查询结果被写脏；UI 侧成功后就地 patch 本地状态即可
+Future<QueryResult>? resolveReviewThread(String threadId) async {
+  final MutationOptions options = MutationOptions(
+      document: gql(mutationResolveReviewThread),
+      variables: <String, dynamic>{
+        'threadId': threadId,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.mutate(options);
+}
+
+/// 将一条已 resolved 的 review thread 撤回到 unresolved
+Future<QueryResult>? unresolveReviewThread(String threadId) async {
+  final MutationOptions options = MutationOptions(
+      document: gql(mutationUnresolveReviewThread),
+      variables: <String, dynamic>{
+        'threadId': threadId,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.mutate(options);
+}
+
 Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{

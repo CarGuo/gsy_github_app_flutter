@@ -2207,6 +2207,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This comment is outdated'**
   String get pr_files_review_outdated;
+
+  /// No description provided for @pr_files_review_thread_resolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get pr_files_review_thread_resolved;
+
+  /// No description provided for @pr_files_review_thread_unresolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Unresolved'**
+  String get pr_files_review_thread_unresolved;
 }
 
 class _AppLocalizationsDelegate

@@ -386,5 +386,7 @@
       }
     }
   },
-  "pr_files_review_outdated": "该评论已过时"
+  "pr_files_review_outdated": "该评论已过时",
+  "pr_files_review_thread_resolved": "已解决",
+  "pr_files_review_thread_unresolved": "未解决"
 }

@@ -1228,4 +1228,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get pr_files_review_outdated => '이 코멘트는 오래되었습니다';
+
+  @override
+  String get pr_files_review_thread_resolved => '해결됨';
+
+  @override
+  String get pr_files_review_thread_unresolved => '미해결';
 }

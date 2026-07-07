@@ -1237,4 +1237,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pr_files_review_outdated => 'This comment is outdated';
+
+  @override
+  String get pr_files_review_thread_resolved => 'Resolved';
+
+  @override
+  String get pr_files_review_thread_unresolved => 'Unresolved';
 }

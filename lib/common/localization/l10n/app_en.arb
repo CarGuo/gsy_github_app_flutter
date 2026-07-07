@@ -711,5 +711,7 @@
       }
     }
   },
-  "pr_files_review_outdated": "This comment is outdated"
+  "pr_files_review_outdated": "This comment is outdated",
+  "pr_files_review_thread_resolved": "Resolved",
+  "pr_files_review_thread_unresolved": "Unresolved"
 }

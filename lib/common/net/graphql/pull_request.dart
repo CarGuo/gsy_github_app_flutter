@@ -33,3 +33,35 @@ query getPullRequestReviewThreads($owner: String!, $name: String!, $number: Int!
   }
 }
 ''';
+
+/// 把一条 review thread 标记为 resolved（GitHub GraphQL mutation）
+///
+/// - 输入 `threadId` = [PullRequestReviewThread.id]（形如 `PRRT_kw...`），
+///   不是 REST 的 numeric id
+/// - 返回体只取回 `thread.id` + `thread.isResolved`，供 UI 侧就地 patch
+///   [_resolvedMap] 而无需重新拉全量 threads
+/// - 权限要求：token 需要 `repo` scope（GSY 现有登录已具备）
+const String mutationResolveReviewThread = r'''
+mutation resolveReviewThread($threadId: ID!) {
+  resolveReviewThread(input: {threadId: $threadId}) {
+    thread {
+      id
+      isResolved
+    }
+  }
+}
+''';
+
+/// 把一条已 resolved 的 review thread 撤回到 unresolved
+///
+/// 参数与返回结构与 [mutationResolveReviewThread] 完全对称。
+const String mutationUnresolveReviewThread = r'''
+mutation unresolveReviewThread($threadId: ID!) {
+  unresolveReviewThread(input: {threadId: $threadId}) {
+    thread {
+      id
+      isResolved
+    }
+  }
+}
+''';
