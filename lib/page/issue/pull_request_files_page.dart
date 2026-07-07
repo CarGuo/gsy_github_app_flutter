@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/common/utils/comment_markdown.dart';
 import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/commitFile.dart';
@@ -177,16 +178,17 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
     );
   }
 
-  /// A/3：把当前文件的 review comment 折叠成 {addLine: html片段}。
+  /// A/3 + A/4：把当前文件的 review comment 折叠成 {addLine: html片段}。
   ///
   /// 关键点：
   /// - key 采用 [PullReviewComment.line]（**新版本 blob 行号**，非
   ///   [PullReviewComment.displayLine]）。原因见下方 outdated 规则
   /// - 同一行可能有多条评论（review 多轮 / 多人），value 里拼接**多个**
   ///   `<div class="gsy-review-comment">` 兄弟节点
-  /// - body 走**极简 escape**：`< > & " '` 五字符 + `\n→<br>`。
-  ///   不接 markdown 解析（会引入前端 md 库或本地 markdown 依赖，成本大）；
-  ///   对 fixture #938 的短英文段落足够
+  /// - **A/4**：body 走 [renderCommentBodyToInlineHtml]（复用
+  ///   `package:markdown`），支持 fenced-code / inline-code / autolinks；
+  ///   fixture PR #938 的 ```suggestion 块能正确渲染。默认 escape 未白名单的
+  ///   裸 HTML（XSS 底线）。author 一律走 [_htmlEscape]（纯文本 escape）
   /// - **outdated / removed-side 评论**（`line == null` 但 `originalLine != null`）
   ///   **不进 webview 内联**：那种评论指向已被后续 push 冲掉的旧 blob 行号，
   ///   若拿 `originalLine` 与 `curAddNumber`（新 blob 行号）比较会**位置错乱**
@@ -203,8 +205,9 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
       if (line == null) continue;
       final buf = buckets.putIfAbsent(line, () => StringBuffer());
       final String author = _htmlEscape(c.user?.login ?? '');
-      final String body = _htmlEscape((c.body ?? '').trim())
-          .replaceAll('\n', '<br>');
+      // A/4：body 走真正的 markdown 渲染（fenced-code / inline-code /
+      // autolinks），fixture PR #938 的 ```suggestion 块能正确显示
+      final String body = renderCommentBodyToInlineHtml(c.body);
       // 内联样式而非全靠 class，防某些 webview 平台丢失 <style>（保险起见）
       buf.write('<div class="gsy-review-comment" '
           'style="background:#fff8e1;color:#222;border-left:3px solid #d97706;'

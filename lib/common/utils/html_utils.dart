@@ -88,13 +88,73 @@ class HtmlUtils {
   }
 
   /// style for mdHTml
+  ///
+  /// A/4 修复"配色割裂 + 移动端不适配"：
+  /// - **主题联动**：以 [backgroundColor] 判定深/浅主题。深色（dracula
+  ///   `#282a36`）挂 highlight.js `atom-one-dark` 主题、正文文字 `#e5e7eb`；
+  ///   浅色挂 `github` 主题、正文文字 `#24292f`。之前**固定挂浅色 `default`
+  ///   主题**却把 body 设成深色 dracula，导致 hljs 输出的深色 token 在深底
+  ///   上几乎不可见——这是"配色割裂"的直接根因
+  /// - **移动端排版**：加 `-webkit-text-size-adjust:100%`、`padding:12px`、
+  ///   `line-height:1.55`、`font-family: ui-monospace / SFMono-Regular /
+  ///   Menlo / Consolas / monospace`、`font-size:14px`；`pre { overflow-x:
+  ///   auto; -webkit-overflow-scrolling: touch; }`，长行可横向滑动而不撑破
+  ///   viewport
+  /// - **A/3 内联评论卡片**：`.gsy-review-comment` 保留浅底黄+橙色左边框，
+  ///   在深底 diff 上刻意"贴纸感"以便凸显评论，与主题解耦——这是有意的
   static generateCodeHtml(mdHTML, wrap,
       {backgroundColor = GSYColors.white,
       String actionColor = GSYColors.actionBlueString,
       userBR = true}) {
-    // ignore: prefer_interpolation_to_compose_strings
-    return "${"${"<html>\n" + "<head>\n" + "<meta charset=\"utf-8\" />\n" + "<title></title>\n" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\"/>" + "<meta name=\“app-mobile-web-app-capable\”  content=\“yes\" /> " + "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css\">\n" + "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js\"></script>" + "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js\"></script>" + "<script>hljs.configure({'useBR': ${userBR.toString()}"
-        "});hljs.initHighlightingOnLoad();</script> " + "<style>" + "body{background: $backgroundColor"};}a {color:$actionColor !important;}.highlight pre, pre { word-wrap: ${wrap ? "break-word" : "normal"};  white-space: ${wrap ? "pre-wrap" : "pre"}; }thead, tr {background:${GSYColors.miWhiteString};}td, th {padding: 5px 10px;font-size: 12px;direction:hor}.highlight {overflow: scroll; background: ${GSYColors.miWhiteString}}tr:nth-child(even) {background:${GSYColors.primaryLightValueString};color:${GSYColors.miWhiteString};}tr:nth-child(odd) {background: ${GSYColors.miWhiteString};color:${GSYColors.primaryLightValueString};}th {font-size: 14px;color:${GSYColors.miWhiteString};background:${GSYColors.primaryLightValueString};}</style></head>\n<body>\n" + mdHTML}</body>\n</html>";
+    final bool isDark =
+        backgroundColor == GSYColors.webDraculaBackgroundColorString;
+    final String hljsTheme = isDark ? 'atom-one-dark' : 'github';
+    final String textColor = isDark ? '#e5e7eb' : '#24292f';
+    final String wrapCss = wrap
+        ? 'word-wrap: break-word; white-space: pre-wrap;'
+        : 'word-wrap: normal; white-space: pre;';
+    return '''<html>
+<head>
+<meta charset="utf-8" />
+<title></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/$hljsTheme.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+<script>hljs.configure({'useBR': ${userBR.toString()}});hljs.initHighlightingOnLoad();</script>
+<style>
+html, body { margin:0; padding:0; -webkit-text-size-adjust:100%; }
+body {
+  background: $backgroundColor;
+  color: $textColor;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.55;
+}
+a { color: $actionColor !important; word-break: break-all; }
+.highlight pre, pre {
+  $wrapCss
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: transparent;
+}
+code { font-family: inherit; }
+.highlight { overflow: auto; background: transparent; }
+table { border-collapse: collapse; width: 100%; }
+thead, tr { background: ${GSYColors.miWhiteString}; }
+td, th { padding: 5px 10px; font-size: 12px; }
+tr:nth-child(even) { background: ${GSYColors.primaryLightValueString}; color: ${GSYColors.miWhiteString}; }
+tr:nth-child(odd)  { background: ${GSYColors.miWhiteString}; color: ${GSYColors.primaryLightValueString}; }
+th { font-size: 14px; color: ${GSYColors.miWhiteString}; background: ${GSYColors.primaryLightValueString}; }
+.gsy-review-comment { max-width: 100%; box-sizing: border-box; }
+</style>
+</head>
+<body>
+$mdHTML
+</body>
+</html>''';
   }
 
   /// 解析 GitHub PR / commit diff 的 `patch` 字符串为高亮 HTML。
