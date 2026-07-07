@@ -97,7 +97,24 @@ class HtmlUtils {
         "});hljs.initHighlightingOnLoad();</script> " + "<style>" + "body{background: $backgroundColor"};}a {color:$actionColor !important;}.highlight pre, pre { word-wrap: ${wrap ? "break-word" : "normal"};  white-space: ${wrap ? "pre-wrap" : "pre"}; }thead, tr {background:${GSYColors.miWhiteString};}td, th {padding: 5px 10px;font-size: 12px;direction:hor}.highlight {overflow: scroll; background: ${GSYColors.miWhiteString}}tr:nth-child(even) {background:${GSYColors.primaryLightValueString};color:${GSYColors.miWhiteString};}tr:nth-child(odd) {background: ${GSYColors.miWhiteString};color:${GSYColors.primaryLightValueString};}th {font-size: 14px;color:${GSYColors.miWhiteString};background:${GSYColors.primaryLightValueString};}</style></head>\n<body>\n" + mdHTML}</body>\n</html>";
   }
 
-  static parseDiffSource(String? diffSource, bool wrap) {
+  /// 解析 GitHub PR / commit diff 的 `patch` 字符串为高亮 HTML。
+  ///
+  /// [addLineExtras]：**A/3 内联评审评论**用。
+  /// - key = diff **head 分支侧的行号**（即函数内 `curAddNumber`；
+  ///   命中的行类型包括 `+` addition 行**和** ` ` context 行——命名里的
+  ///   "add" 指"追加内联片段"这个动作，**不**限于 `+` 语法行。请勿望文生义
+  /// - value = 已经预生成好的 HTML 片段（多条 comment 由调用方拼好）
+  /// - 命中时会在**该行的 `<div>` 之后**追加一个兄弟节点，实现"评论跟在
+  ///   源码行下方"的视觉
+  ///
+  /// 为什么不把 [PullReviewComment] 直接下推到本 util：
+  /// - 本 util 不应依赖上层 model；保持 utils 分层干净
+  /// - body 是 markdown，渲染需 [GSYMarkdownWidget] 或外部 markdown 转 HTML；
+  ///   谁调用谁决定渲染方式，util 只做字符串拼接
+  ///
+  /// 兼容：不传 [addLineExtras] 时输出与 A/2 完全一致。
+  static parseDiffSource(String? diffSource, bool wrap,
+      {Map<int, String>? addLineExtras}) {
     if (diffSource == null) {
       return "";
     }
@@ -140,6 +157,15 @@ class HtmlUtils {
           curAddNumber == -1 ? "" : ("$curAddNumber"));
       source =
           "$source<div $classStr>${wrap ? "" : lineNumberStr! + getBlank(1)}$line</div>";
+      // A/3：若本行命中 review comment（按 head 分支行号 curAddNumber 匹配），
+      // 追加内联评论片段。只匹配 +/context 行；removed 行 (-) 走 originalLine
+      // 侧、GitHub 官方 UI 也少见针对已删除行的 comment，先不覆盖。
+      if (addLineExtras != null && curAddNumber != -1) {
+        final String? extra = addLineExtras[curAddNumber];
+        if (extra != null && extra.isNotEmpty) {
+          source = "$source$extra";
+        }
+      }
     }
     return source;
   }

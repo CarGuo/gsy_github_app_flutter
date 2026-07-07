@@ -25,16 +25,19 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 /// 点击后走 `HtmlUtils.parseDiffSource` + `NavigatorUtils.gotoCodeDetailPlatform`
 /// 打开 web view 高亮 diff。
 ///
-/// **行级 review comment 挂载**：
+/// **行级 review comment 挂载（双通路）**：
 /// initState 时并发拉 `/pulls/:n/comments`（一次拉全，按 [PullReviewComment.path]
-/// 聚合到 [_commentsByPath]）。文件卡片下方追加"N 条评审评论"折叠区，展开后
-/// 显示每条评论：作者头像 + 行号 + markdown body，点击整条跳 GitHub html_url。
+/// 聚合到 [_commentsByPath]）。
 ///
-/// 为什么不 inline 到 diff webview 行下：
-/// 1. patch 走 webview 生成 HTML，注入 comment DOM 与 [HtmlUtils.generateCode2HTml]
-///    的生成逻辑深度耦合，改动大且易错
-/// 2. 90% 的 review 场景只需要"知道哪一行有评论，评论是什么"，卡片下方展开
-///    已足够表达。真要跳到具体行，每条 comment 还带 GitHub html_url 兜底
+/// - **A/2 折叠区**（App 层）：文件卡片下方追加"N 条评审评论"折叠区，
+///   展开后显示每条评论：作者头像 + 行号 + markdown body，
+///   长按走 resolveReviewThread mutation。用于**扫读 + 交互**。
+/// - **A/3 webview 内联**（webview 层）：点击文件卡片打开 diff webview 时，
+///   评论按行号内联到对应 diff 行下方，实现"评论跟在源码行下方"的沉浸阅读。
+///   见 [_buildAddLineExtras] 与 [HtmlUtils.parseDiffSource] 的 `addLineExtras` 参数。
+///
+/// 两条路径**并存不互斥**：折叠区管交互，webview 管沉浸；outdated 评论
+/// （line=null）只在 A/2 折叠区里以"该评论已过时"呈现，不进 webview 内联
 class PullRequestFilesPage extends StatefulWidget {
   final String userName;
   final String reposName;
@@ -149,8 +152,13 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         PushCodeItem(vm, () {
+          // A/3：把 review comment 按 head 分支行号分组，喂给 parseDiffSource
+          // 让 webview 里 diff 行下方直接内联 comment。App 层折叠区（A/2）
+          // 保留不动，形成"扫读用折叠区 + 沉浸阅读用 webview 内联"双通路
+          final extras = _buildAddLineExtras(comments);
           final html = HtmlUtils.generateCode2HTml(
-              HtmlUtils.parseDiffSource(vm.patch, false),
+              HtmlUtils.parseDiffSource(vm.patch, false,
+                  addLineExtras: extras),
               backgroundColor: GSYColors.webDraculaBackgroundColorString,
               lang: '',
               userBR: false);
@@ -167,6 +175,62 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
         if (comments.isNotEmpty) _buildCommentSection(context, file, comments),
       ],
     );
+  }
+
+  /// A/3：把当前文件的 review comment 折叠成 {addLine: html片段}。
+  ///
+  /// 关键点：
+  /// - key 采用 [PullReviewComment.line]（**新版本 blob 行号**，非
+  ///   [PullReviewComment.displayLine]）。原因见下方 outdated 规则
+  /// - 同一行可能有多条评论（review 多轮 / 多人），value 里拼接**多个**
+  ///   `<div class="gsy-review-comment">` 兄弟节点
+  /// - body 走**极简 escape**：`< > & " '` 五字符 + `\n→<br>`。
+  ///   不接 markdown 解析（会引入前端 md 库或本地 markdown 依赖，成本大）；
+  ///   对 fixture #938 的短英文段落足够
+  /// - **outdated / removed-side 评论**（`line == null` 但 `originalLine != null`）
+  ///   **不进 webview 内联**：那种评论指向已被后续 push 冲掉的旧 blob 行号，
+  ///   若拿 `originalLine` 与 `curAddNumber`（新 blob 行号）比较会**位置错乱**
+  ///   （旧号可能在新 diff 里没同号或误命中不相关行）。这类 comment 完全
+  ///   降级到 A/2 折叠区（已用"该评论已过时"文案兜底）
+  static Map<int, String>? _buildAddLineExtras(List<PullReviewComment> comments) {
+    if (comments.isEmpty) return null;
+    final Map<int, StringBuffer> buckets = {};
+    for (final c in comments) {
+      // 严格要求 line 非 null：只对 head 侧有明确锚点的 comment 做内联。
+      // 这与 [_buildCommentTile] 用 displayLine 展示"已过时"是刻意分工的：
+      // 折叠区能容忍 outdated（展示文案即可），webview 内联不能容忍（会错位）
+      final int? line = c.line;
+      if (line == null) continue;
+      final buf = buckets.putIfAbsent(line, () => StringBuffer());
+      final String author = _htmlEscape(c.user?.login ?? '');
+      final String body = _htmlEscape((c.body ?? '').trim())
+          .replaceAll('\n', '<br>');
+      // 内联样式而非全靠 class，防某些 webview 平台丢失 <style>（保险起见）
+      buf.write('<div class="gsy-review-comment" '
+          'style="background:#fff8e1;color:#222;border-left:3px solid #d97706;'
+          'padding:6px 10px;margin:2px 0;font-family:sans-serif;'
+          'font-size:12px;white-space:normal;">');
+      buf.write('<div style="font-weight:bold;color:#0366d6;'
+          'margin-bottom:4px;">@$author</div>');
+      buf.write('<div>$body</div>');
+      buf.write('</div>');
+    }
+    if (buckets.isEmpty) return null;
+    return buckets.map((k, v) => MapEntry(k, v.toString()));
+  }
+
+  /// 极简 HTML escape。覆盖 5 个 HTML 特殊字符（`& < > " '`）。
+  /// - 覆盖 `'` 是为了将来该函数被复用到属性上下文（如 `title='...'`）时
+  ///   也不留 XSS 缺口；当前 A/3 只把结果放在 text node 里，`'` 不必转义，
+  ///   但工具函数应默认按最保守语义处理
+  /// - 不引入 dart:convert / html 包，保持零依赖单一函数
+  static String _htmlEscape(String input) {
+    return input
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
   }
 
   Widget _buildCommentSection(BuildContext context, CommitFile file,
