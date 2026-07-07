@@ -417,6 +417,137 @@ void main() {
         reason: 'auto_merge_disabled 必须走 event_action_auto_merge_disabled 词典');
   });
 
+  // B/2: 补齐 5 个之前透传英文的冷 action 词条，覆盖 IssuesEvent 去重、
+  // PullRequestEvent merge queue、DeploymentEvent 部署三类事件源。
+  testWidgets('IssuesEvent + marked_as_duplicate → 词典化"标记为重复"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'IssuesEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'marked_as_duplicate',
+        'issue': {'number': 42, 'title': 'dup issue'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('标记为重复'));
+    expect(got.actionStr, isNot(contains('marked_as_duplicate')),
+        reason: 'marked_as_duplicate 必须走 event_action_marked_as_duplicate 词典');
+  });
+
+  testWidgets('IssuesEvent + unmarked_as_duplicate → 词典化"取消重复标记"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'IssuesEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'unmarked_as_duplicate',
+        'issue': {'number': 42, 'title': 'undup issue'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('取消重复标记'));
+    expect(got.actionStr, isNot(contains('unmarked_as_duplicate')),
+        reason: 'unmarked_as_duplicate 必须走 event_action_unmarked_as_duplicate 词典');
+  });
+
+  testWidgets('PullRequestEvent + enqueued → 词典化"加入合并队列"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PullRequestEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'enqueued',
+        'number': 42,
+        'pull_request': {'title': 'chore: bump deps'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('加入合并队列'));
+    expect(got.actionStr, isNot(contains('enqueued')),
+        reason: 'enqueued 必须走 event_action_enqueued 词典');
+  });
+
+  testWidgets('PullRequestEvent + dequeued → 词典化"移出合并队列"', (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'PullRequestEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'dequeued',
+        'number': 42,
+        'pull_request': {'title': 'chore: bump deps'}
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr, contains('移出合并队列'));
+    expect(got.actionStr, isNot(contains('dequeued')),
+        reason: 'dequeued 必须走 event_action_dequeued 词典');
+  });
+
+  testWidgets('DeploymentEvent + deployed → 词典化"已部署"', (tester) async {
+    // DeploymentEvent 目前走 UnknownEvent 通用兜底，但 payload.action 已被
+    // _translateAction 词典化。这里只断言词条命中，不依赖事件类型 UI 分支。
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DeploymentEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'deployed',
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // action 词典化：deployed 不透传到 actionStr / des 里
+    final combined = '${got.actionStr ?? ''}|${got.des ?? ''}';
+    expect(combined, isNot(contains('deployed')),
+        reason: 'deployed 必须走 event_action_deployed 词典');
+  });
+
   testWidgets('未知 action → 原样返回英文 + 遥测独立表登记', (tester) async {
     final ee = Event.fromJson(_m({
       'id': 'x',

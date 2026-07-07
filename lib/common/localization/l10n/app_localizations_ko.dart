@@ -1209,6 +1209,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get event_action_unresolved => '해결됨 취소';
 
   @override
+  String get event_action_marked_as_duplicate => '중복으로 표시';
+
+  @override
+  String get event_action_unmarked_as_duplicate => '중복 표시 해제';
+
+  @override
+  String get event_action_enqueued => '병합 큐에 추가';
+
+  @override
+  String get event_action_dequeued => '병합 큐에서 제거';
+
+  @override
+  String get event_action_deployed => '배포됨';
+
+  @override
   String get option_pr_files => '변경 파일';
 
   @override

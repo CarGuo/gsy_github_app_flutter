@@ -361,6 +361,11 @@
   "event_action_category_changed": "变更分类",
   "event_action_resolved": "标记已解决",
   "event_action_unresolved": "撤销已解决",
+  "event_action_marked_as_duplicate": "标记为重复",
+  "event_action_unmarked_as_duplicate": "取消重复标记",
+  "event_action_enqueued": "加入合并队列",
+  "event_action_dequeued": "移出合并队列",
+  "event_action_deployed": "已部署",
   "option_pr_files": "变更文件",
   "pr_files_title": "PR #{number} 变更文件",
   "@pr_files_title": {

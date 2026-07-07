@@ -1210,6 +1210,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get event_action_unresolved => '解決済みを取り消し';
 
   @override
+  String get event_action_marked_as_duplicate => '重複としてマーク';
+
+  @override
+  String get event_action_unmarked_as_duplicate => '重複マークを取り消し';
+
+  @override
+  String get event_action_enqueued => 'マージキューに追加';
+
+  @override
+  String get event_action_dequeued => 'マージキューから削除';
+
+  @override
+  String get event_action_deployed => 'デプロイ済み';
+
+  @override
   String get option_pr_files => '変更ファイル';
 
   @override

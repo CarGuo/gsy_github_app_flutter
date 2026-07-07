@@ -2178,6 +2178,36 @@ abstract class AppLocalizations {
   /// **'unresolved'**
   String get event_action_unresolved;
 
+  /// No description provided for @event_action_marked_as_duplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'marked as duplicate'**
+  String get event_action_marked_as_duplicate;
+
+  /// No description provided for @event_action_unmarked_as_duplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'unmarked as duplicate'**
+  String get event_action_unmarked_as_duplicate;
+
+  /// No description provided for @event_action_enqueued.
+  ///
+  /// In en, this message translates to:
+  /// **'queued for merge'**
+  String get event_action_enqueued;
+
+  /// No description provided for @event_action_dequeued.
+  ///
+  /// In en, this message translates to:
+  /// **'dequeued from merge'**
+  String get event_action_dequeued;
+
+  /// No description provided for @event_action_deployed.
+  ///
+  /// In en, this message translates to:
+  /// **'deployed'**
+  String get event_action_deployed;
+
   /// No description provided for @option_pr_files.
   ///
   /// In en, this message translates to:

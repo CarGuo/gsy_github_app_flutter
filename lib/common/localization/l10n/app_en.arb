@@ -686,6 +686,11 @@
   "event_action_category_changed": "changed category",
   "event_action_resolved": "resolved",
   "event_action_unresolved": "unresolved",
+  "event_action_marked_as_duplicate": "marked as duplicate",
+  "event_action_unmarked_as_duplicate": "unmarked as duplicate",
+  "event_action_enqueued": "queued for merge",
+  "event_action_dequeued": "dequeued from merge",
+  "event_action_deployed": "deployed",
   "option_pr_files": "Files changed",
   "pr_files_title": "PR #{number} files changed",
   "@pr_files_title": {

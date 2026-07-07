@@ -1218,6 +1218,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get event_action_unresolved => 'unresolved';
 
   @override
+  String get event_action_marked_as_duplicate => 'marked as duplicate';
+
+  @override
+  String get event_action_unmarked_as_duplicate => 'unmarked as duplicate';
+
+  @override
+  String get event_action_enqueued => 'queued for merge';
+
+  @override
+  String get event_action_dequeued => 'dequeued from merge';
+
+  @override
+  String get event_action_deployed => 'deployed';
+
+  @override
   String get option_pr_files => 'Files changed';
 
   @override

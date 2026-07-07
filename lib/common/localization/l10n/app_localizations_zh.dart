@@ -1209,6 +1209,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get event_action_unresolved => '撤销已解决';
 
   @override
+  String get event_action_marked_as_duplicate => '标记为重复';
+
+  @override
+  String get event_action_unmarked_as_duplicate => '取消重复标记';
+
+  @override
+  String get event_action_enqueued => '加入合并队列';
+
+  @override
+  String get event_action_dequeued => '移出合并队列';
+
+  @override
+  String get event_action_deployed => '已部署';
+
+  @override
   String get option_pr_files => '变更文件';
 
   @override

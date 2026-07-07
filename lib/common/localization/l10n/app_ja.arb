@@ -361,6 +361,11 @@
   "event_action_category_changed": "カテゴリ変更",
   "event_action_resolved": "解決済みにマーク",
   "event_action_unresolved": "解決済みを取り消し",
+  "event_action_marked_as_duplicate": "重複としてマーク",
+  "event_action_unmarked_as_duplicate": "重複マークを取り消し",
+  "event_action_enqueued": "マージキューに追加",
+  "event_action_dequeued": "マージキューから削除",
+  "event_action_deployed": "デプロイ済み",
   "option_pr_files": "変更ファイル",
   "pr_files_title": "PR #{number} の変更ファイル",
   "@pr_files_title": {

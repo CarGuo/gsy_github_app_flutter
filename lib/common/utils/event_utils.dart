@@ -229,6 +229,16 @@ class EventUtils {
         return l.event_action_resolved;
       case 'unresolved':
         return l.event_action_unresolved;
+      case 'marked_as_duplicate':
+        return l.event_action_marked_as_duplicate;
+      case 'unmarked_as_duplicate':
+        return l.event_action_unmarked_as_duplicate;
+      case 'enqueued':
+        return l.event_action_enqueued;
+      case 'dequeued':
+        return l.event_action_dequeued;
+      case 'deployed':
+        return l.event_action_deployed;
       default:
         _logUnknownActionOnce(rawAction);
         return rawAction;
