@@ -66,3 +66,7 @@ tool/dbg/*.png
 tool/dbg/*.jpg
 tool/dbg/*.txt
 tool/dbg/*.log
+
+# 冒烟证据：脚本每次跑都会往 tool/ai/smoke/evidence/<yyyymmdd_hhmm>/ 落 5 张
+# 截图 + logcat，属于产物类不进仓库；脚本本身照常提交
+tool/ai/smoke/evidence/
