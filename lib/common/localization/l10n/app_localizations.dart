@@ -2208,6 +2208,70 @@ abstract class AppLocalizations {
   /// **'deployed'**
   String get event_action_deployed;
 
+  /// No description provided for @event_action_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'updated'**
+  String get event_action_updated;
+
+  /// No description provided for @event_action_withdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'withdrew'**
+  String get event_action_withdrawn;
+
+  /// No description provided for @event_action_performed.
+  ///
+  /// In en, this message translates to:
+  /// **'performed'**
+  String get event_action_performed;
+
+  /// No description provided for @event_advisory_severity_critical.
+  ///
+  /// In en, this message translates to:
+  /// **'critical'**
+  String get event_advisory_severity_critical;
+
+  /// No description provided for @event_advisory_severity_high.
+  ///
+  /// In en, this message translates to:
+  /// **'high'**
+  String get event_advisory_severity_high;
+
+  /// No description provided for @event_advisory_severity_moderate.
+  ///
+  /// In en, this message translates to:
+  /// **'moderate'**
+  String get event_advisory_severity_moderate;
+
+  /// No description provided for @event_advisory_severity_low.
+  ///
+  /// In en, this message translates to:
+  /// **'low'**
+  String get event_advisory_severity_low;
+
+  /// No description provided for @event_advisory_severity_unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'unknown severity'**
+  String get event_advisory_severity_unknown;
+
+  /// No description provided for @event_dynamic_security_advisory.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} security advisory {ghsaId} ({severity})'**
+  String event_dynamic_security_advisory(
+    String action,
+    String ghsaId,
+    String severity,
+  );
+
+  /// No description provided for @event_dynamic_security_advisory_no_id.
+  ///
+  /// In en, this message translates to:
+  /// **'{action} a security advisory ({severity})'**
+  String event_dynamic_security_advisory_no_id(String action, String severity);
+
   /// No description provided for @option_pr_files.
   ///
   /// In en, this message translates to:

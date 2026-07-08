@@ -1233,6 +1233,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get event_action_deployed => 'deployed';
 
   @override
+  String get event_action_updated => 'updated';
+
+  @override
+  String get event_action_withdrawn => 'withdrew';
+
+  @override
+  String get event_action_performed => 'performed';
+
+  @override
+  String get event_advisory_severity_critical => 'critical';
+
+  @override
+  String get event_advisory_severity_high => 'high';
+
+  @override
+  String get event_advisory_severity_moderate => 'moderate';
+
+  @override
+  String get event_advisory_severity_low => 'low';
+
+  @override
+  String get event_advisory_severity_unknown => 'unknown severity';
+
+  @override
+  String event_dynamic_security_advisory(
+    String action,
+    String ghsaId,
+    String severity,
+  ) {
+    return '$action security advisory $ghsaId ($severity)';
+  }
+
+  @override
+  String event_dynamic_security_advisory_no_id(String action, String severity) {
+    return '$action a security advisory ($severity)';
+  }
+
+  @override
   String get option_pr_files => 'Files changed';
 
   @override

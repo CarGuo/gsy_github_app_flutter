@@ -239,9 +239,35 @@ class EventUtils {
         return l.event_action_dequeued;
       case 'deployed':
         return l.event_action_deployed;
+      case 'updated':
+        return l.event_action_updated;
+      case 'withdrawn':
+        return l.event_action_withdrawn;
+      case 'performed':
+        return l.event_action_performed;
       default:
         _logUnknownActionOnce(rawAction);
         return rawAction;
+    }
+  }
+
+  /// 把 GitHub SecurityAdvisoryEvent 里 `severity` 字段本地化。
+  ///
+  /// 官方枚举：`critical` / `high` / `moderate` / `low`。null / 空串 / 未知
+  /// 全部回落到 [AppLocalizations.event_advisory_severity_unknown]，避免
+  /// UI 出现空括号 `()`。
+  static String _translateSeverity(AppLocalizations l, String? rawSeverity) {
+    switch (rawSeverity?.toLowerCase()) {
+      case 'critical':
+        return l.event_advisory_severity_critical;
+      case 'high':
+        return l.event_advisory_severity_high;
+      case 'moderate':
+        return l.event_advisory_severity_moderate;
+      case 'low':
+        return l.event_advisory_severity_low;
+      default:
+        return l.event_advisory_severity_unknown;
     }
   }
 
@@ -392,6 +418,35 @@ class EventUtils {
         actionStr = l.event_dynamic_sponsorship(
           _translateAction(l, event.payload?.action),
         );
+        break;
+      case "SecurityAdvisoryEvent":
+        // GitHub 全站级安全公告事件。action 常见值：published / updated /
+        // performed / withdrawn。payload.security_advisory 承载 ghsa_id /
+        // severity / summary，repo 通常为 null（这是官方设计，本事件不绑仓库）。
+        final advisory = event.payload?.securityAdvisory;
+        final String? rawAction = event.payload?.action;
+        final String actionTr = _translateAction(l, rawAction);
+        final String severityTr = _translateSeverity(l, advisory?.severity);
+        final String? ghsaId = advisory?.ghsaId;
+        if (ghsaId != null && ghsaId.isNotEmpty) {
+          actionStr = l.event_dynamic_security_advisory(
+            actionTr,
+            ghsaId,
+            severityTr,
+          );
+        } else {
+          // 极少数 payload 缺 ghsa_id（GitHub 历史 event 或 org 私有公告），
+          // 走无 id 变体，避免 UI 出现 "advisory  (severity)" 两连空
+          actionStr = l.event_dynamic_security_advisory_no_id(
+            actionTr,
+            severityTr,
+          );
+        }
+        // summary 单行也许太长，只在有值时进入 des；调用方 UI 会自行裁行数
+        final String? summary = advisory?.summary;
+        if (summary != null && summary.trim().isNotEmpty) {
+          des = summary.trim();
+        }
         break;
       case "PushEvent":
         if (event.payload != null && event.payload?.ref != null) {

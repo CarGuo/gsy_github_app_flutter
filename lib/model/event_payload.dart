@@ -44,6 +44,14 @@ class EventPayload {
   /// GraphQL 单独拉，避免 events 列表阶段把 payload 塞得过大。
   EventDiscussionRef? discussion;
 
+  /// SecurityAdvisoryEvent 的 payload.security_advisory。
+  ///
+  /// GitHub 全站级安全公告事件（repo 常为 null）。只承载首页动态里
+  /// 展示需要的核心字段：GHSA id、CVE id、severity、summary。完整
+  /// vulnerabilities / references 走详情页 GraphQL 或 REST 单拉。
+  @JsonKey(name: "security_advisory")
+  EventSecurityAdvisoryRef? securityAdvisory;
+
   EventPayload();
 
   factory EventPayload.fromJson(Map<String, dynamic> json) => _$EventPayloadFromJson(json);
@@ -64,4 +72,25 @@ class EventDiscussionRef {
       _$EventDiscussionRefFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventDiscussionRefToJson(this);
+}
+
+/// 事件 payload 里嵌套的 security advisory 引用。
+///
+/// 参考 GitHub Events API `SecurityAdvisoryEvent.payload.security_advisory`。
+/// severity 官方枚举：`low` / `moderate` / `high` / `critical`。
+@JsonSerializable()
+class EventSecurityAdvisoryRef {
+  @JsonKey(name: "ghsa_id")
+  String? ghsaId;
+  @JsonKey(name: "cve_id")
+  String? cveId;
+  String? severity;
+  String? summary;
+
+  EventSecurityAdvisoryRef();
+
+  factory EventSecurityAdvisoryRef.fromJson(Map<String, dynamic> json) =>
+      _$EventSecurityAdvisoryRefFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EventSecurityAdvisoryRefToJson(this);
 }

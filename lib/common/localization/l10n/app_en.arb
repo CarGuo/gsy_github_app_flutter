@@ -691,6 +691,29 @@
   "event_action_enqueued": "queued for merge",
   "event_action_dequeued": "dequeued from merge",
   "event_action_deployed": "deployed",
+  "event_action_updated": "updated",
+  "event_action_withdrawn": "withdrew",
+  "event_action_performed": "performed",
+  "event_advisory_severity_critical": "critical",
+  "event_advisory_severity_high": "high",
+  "event_advisory_severity_moderate": "moderate",
+  "event_advisory_severity_low": "low",
+  "event_advisory_severity_unknown": "unknown severity",
+  "event_dynamic_security_advisory": "{action} security advisory {ghsaId} ({severity})",
+  "@event_dynamic_security_advisory": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "ghsaId": {"type": "String"},
+      "severity": {"type": "String"}
+    }
+  },
+  "event_dynamic_security_advisory_no_id": "{action} a security advisory ({severity})",
+  "@event_dynamic_security_advisory_no_id": {
+    "placeholders": {
+      "action": {"type": "String"},
+      "severity": {"type": "String"}
+    }
+  },
   "option_pr_files": "Files changed",
   "pr_files_title": "PR #{number} files changed",
   "@pr_files_title": {

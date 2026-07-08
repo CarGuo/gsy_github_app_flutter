@@ -126,11 +126,12 @@ void main() {
 
   testWidgets('未知事件 → actionStr 为空 + 登记到 loggedUnknownEventTypes',
       (tester) async {
-    // SecurityAdvisoryEvent: webhook 里有，Events API 不 emit，属"文档滞后 + 尚未收编"
-    // 一旦 GitHub 把它加进 events feed 且我们扩了 case，这个样本可以再换
+    // MetaEvent: webhook 里有（App 卸载 / ping 元事件），Events API 不 emit，
+    // 属"文档滞后 + 尚未收编"典型样本。原样本 SecurityAdvisoryEvent 已被
+    // B/3 收编到 event_utils.dart SecurityAdvisoryEvent case，故换到 MetaEvent
     final ee = Event.fromJson(_m({
       'id': 'x',
-      'type': 'SecurityAdvisoryEvent',
+      'type': 'MetaEvent',
       'actor': {'login': 'alice'},
       'repo': {'name': 'CarGuo/gsy'},
       'org': null,
@@ -146,7 +147,7 @@ void main() {
 
     expect(got.actionStr, '');
     expect(
-      EventUtils.loggedUnknownEventTypes.contains('SecurityAdvisoryEvent'),
+      EventUtils.loggedUnknownEventTypes.contains('MetaEvent'),
       isTrue,
       reason: 'default 分支必须把未知事件类型登记到 debug-only 集合',
     );
@@ -546,6 +547,209 @@ void main() {
     final combined = '${got.actionStr ?? ''}|${got.des ?? ''}';
     expect(combined, isNot(contains('deployed')),
         reason: 'deployed 必须走 event_action_deployed 词典');
+  });
+
+  // B/3: SecurityAdvisoryEvent 收编（含 4 个 action 词条 + severity 四档 +
+  // 无 ghsa_id 兜底 + repo=null 不崩）。原来这个事件走 default 兜底，
+  // 会在 loggedUnknownEventTypes 里登记，本次改到走独立整句。
+  testWidgets(
+      'SecurityAdvisoryEvent + published + severity=critical → 词典化整句 + GHSA + severity',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SecurityAdvisoryEvent',
+      'actor': {'login': 'github'},
+      // GitHub 官方设计：SecurityAdvisoryEvent 的 repo 常为 null（全站级公告）
+      'repo': null,
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'published',
+        'security_advisory': {
+          'ghsa_id': 'GHSA-1234-5678-abcd',
+          'cve_id': 'CVE-2026-99999',
+          'severity': 'critical',
+          'summary': 'Arbitrary code execution in libfoo',
+        }
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // repo=null 不崩、action 词典化"发布"、severity 词典化"严重"、GHSA 出现
+    expect(got.actionStr, isNotNull);
+    expect(got.actionStr!, contains('GHSA-1234-5678-abcd'));
+    expect(got.actionStr!, contains('严重'));
+    expect(got.actionStr!, contains('发布'),
+        reason: 'published 已在 _translateAction 词典里，走 zh 词条');
+    // summary 落到 des，供 UI 展示副标题
+    expect(got.des, 'Arbitrary code execution in libfoo');
+    // 事件类型不再进入未知遥测
+    expect(
+      EventUtils.loggedUnknownEventTypes.contains('SecurityAdvisoryEvent'),
+      isFalse,
+      reason: 'SecurityAdvisoryEvent 已收编，不该再进 unknown 遥测集合',
+    );
+  });
+
+  testWidgets(
+      'SecurityAdvisoryEvent + updated + severity=low → 词典化"更新" + "低危"',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SecurityAdvisoryEvent',
+      'actor': {'login': 'github'},
+      'repo': null,
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'updated',
+        'security_advisory': {
+          'ghsa_id': 'GHSA-aaaa-bbbb-cccc',
+          'severity': 'low',
+        }
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr!, contains('更新'));
+    expect(got.actionStr!, contains('低危'));
+    expect(got.actionStr!, isNot(contains('updated')),
+        reason: 'updated 必须走 event_action_updated 词典');
+    expect(got.actionStr!, isNot(contains('low')),
+        reason: 'severity=low 必须走 event_advisory_severity_low 词典');
+    // 无 summary → des 保持空
+    expect(got.des, '');
+  });
+
+  testWidgets(
+      'SecurityAdvisoryEvent + withdrawn → 词典化"撤回" + 缺 severity 走 unknown 兜底',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SecurityAdvisoryEvent',
+      'actor': {'login': 'github'},
+      'repo': null,
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'withdrawn',
+        'security_advisory': {
+          'ghsa_id': 'GHSA-xxxx-yyyy-zzzz',
+          // severity 缺失
+        }
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr!, contains('撤回'));
+    expect(got.actionStr!, contains('未知级别'),
+        reason: 'severity=null 走 event_advisory_severity_unknown 兜底，不留空括号');
+  });
+
+  testWidgets(
+      'SecurityAdvisoryEvent + performed → 词典化"执行"',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SecurityAdvisoryEvent',
+      'actor': {'login': 'github'},
+      'repo': null,
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'performed',
+        'security_advisory': {
+          'ghsa_id': 'GHSA-per-form-1234',
+          'severity': 'moderate',
+        }
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    expect(got.actionStr!, contains('执行'));
+    expect(got.actionStr!, contains('中危'));
+    expect(got.actionStr!, isNot(contains('performed')),
+        reason: 'performed 必须走 event_action_performed 词典');
+  });
+
+  testWidgets(
+      'SecurityAdvisoryEvent 缺 ghsa_id → 走 no_id 整句变体，不出现空 id',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SecurityAdvisoryEvent',
+      'actor': {'login': 'github'},
+      'repo': null,
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'published',
+        'security_advisory': {
+          'severity': 'high',
+          // 无 ghsa_id
+        }
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // no_id 变体：不含 GHSA- 前缀，但保留 severity 与 action
+    expect(got.actionStr!, isNot(contains('GHSA-')),
+        reason: '缺 ghsa_id 时应走 event_dynamic_security_advisory_no_id 整句');
+    expect(got.actionStr!, contains('高危'));
+    expect(got.actionStr!, contains('发布'));
+  });
+
+  testWidgets(
+      'SecurityAdvisoryEvent payload.security_advisory 整体为 null → 兜底不崩',
+      (tester) async {
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'SecurityAdvisoryEvent',
+      'actor': {'login': 'github'},
+      'repo': null,
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'published',
+        // 完全没有 security_advisory 字段
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    // 走 no_id 变体，severity 走 unknown 兜底，UI 不空白也不崩
+    expect(got.actionStr, isNotNull);
+    expect(got.actionStr!, isNot(contains('GHSA-')));
+    expect(got.actionStr!, contains('未知级别'));
   });
 
   testWidgets('未知 action → 原样返回英文 + 遥测独立表登记', (tester) async {

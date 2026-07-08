@@ -1224,6 +1224,44 @@ class AppLocalizationsZh extends AppLocalizations {
   String get event_action_deployed => '已部署';
 
   @override
+  String get event_action_updated => '更新';
+
+  @override
+  String get event_action_withdrawn => '撤回';
+
+  @override
+  String get event_action_performed => '执行';
+
+  @override
+  String get event_advisory_severity_critical => '严重';
+
+  @override
+  String get event_advisory_severity_high => '高危';
+
+  @override
+  String get event_advisory_severity_moderate => '中危';
+
+  @override
+  String get event_advisory_severity_low => '低危';
+
+  @override
+  String get event_advisory_severity_unknown => '未知级别';
+
+  @override
+  String event_dynamic_security_advisory(
+    String action,
+    String ghsaId,
+    String severity,
+  ) {
+    return '$action了安全公告 $ghsaId（$severity）';
+  }
+
+  @override
+  String event_dynamic_security_advisory_no_id(String action, String severity) {
+    return '$action了一条安全公告（$severity）';
+  }
+
+  @override
   String get option_pr_files => '变更文件';
 
   @override

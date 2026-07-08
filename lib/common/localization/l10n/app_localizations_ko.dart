@@ -1224,6 +1224,44 @@ class AppLocalizationsKo extends AppLocalizations {
   String get event_action_deployed => '배포됨';
 
   @override
+  String get event_action_updated => '업데이트';
+
+  @override
+  String get event_action_withdrawn => '철회';
+
+  @override
+  String get event_action_performed => '수행';
+
+  @override
+  String get event_advisory_severity_critical => '심각';
+
+  @override
+  String get event_advisory_severity_high => '높음';
+
+  @override
+  String get event_advisory_severity_moderate => '중간';
+
+  @override
+  String get event_advisory_severity_low => '낮음';
+
+  @override
+  String get event_advisory_severity_unknown => '알 수 없음';
+
+  @override
+  String event_dynamic_security_advisory(
+    String action,
+    String ghsaId,
+    String severity,
+  ) {
+    return '보안 권고 $ghsaId($severity) $action';
+  }
+
+  @override
+  String event_dynamic_security_advisory_no_id(String action, String severity) {
+    return '보안 권고($severity) $action';
+  }
+
+  @override
   String get option_pr_files => '변경 파일';
 
   @override

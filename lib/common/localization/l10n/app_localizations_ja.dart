@@ -1225,6 +1225,44 @@ class AppLocalizationsJa extends AppLocalizations {
   String get event_action_deployed => 'デプロイ済み';
 
   @override
+  String get event_action_updated => '更新';
+
+  @override
+  String get event_action_withdrawn => '撤回';
+
+  @override
+  String get event_action_performed => '実行';
+
+  @override
+  String get event_advisory_severity_critical => '重大';
+
+  @override
+  String get event_advisory_severity_high => '高';
+
+  @override
+  String get event_advisory_severity_moderate => '中';
+
+  @override
+  String get event_advisory_severity_low => '低';
+
+  @override
+  String get event_advisory_severity_unknown => '不明';
+
+  @override
+  String event_dynamic_security_advisory(
+    String action,
+    String ghsaId,
+    String severity,
+  ) {
+    return 'セキュリティ勧告 $ghsaId（$severity）を$action';
+  }
+
+  @override
+  String event_dynamic_security_advisory_no_id(String action, String severity) {
+    return 'セキュリティ勧告（$severity）を$action';
+  }
+
+  @override
   String get option_pr_files => '変更ファイル';
 
   @override

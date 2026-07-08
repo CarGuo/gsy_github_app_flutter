@@ -32,7 +32,12 @@ EventPayload _$EventPayloadFromJson(Map<String, dynamic> json) => EventPayload()
       : IssueEvent.fromJson(json['comment'] as Map<String, dynamic>)
   ..discussion = json['discussion'] == null
       ? null
-      : EventDiscussionRef.fromJson(json['discussion'] as Map<String, dynamic>);
+      : EventDiscussionRef.fromJson(json['discussion'] as Map<String, dynamic>)
+  ..securityAdvisory = json['security_advisory'] == null
+      ? null
+      : EventSecurityAdvisoryRef.fromJson(
+          json['security_advisory'] as Map<String, dynamic>,
+        );
 
 Map<String, dynamic> _$EventPayloadToJson(EventPayload instance) =>
     <String, dynamic>{
@@ -52,6 +57,7 @@ Map<String, dynamic> _$EventPayloadToJson(EventPayload instance) =>
       'issue': instance.issue,
       'comment': instance.comment,
       'discussion': instance.discussion,
+      'security_advisory': instance.securityAdvisory,
     };
 
 EventDiscussionRef _$EventDiscussionRefFromJson(Map<String, dynamic> json) =>
@@ -59,3 +65,20 @@ EventDiscussionRef _$EventDiscussionRefFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$EventDiscussionRefToJson(EventDiscussionRef instance) =>
     <String, dynamic>{'number': instance.number};
+
+EventSecurityAdvisoryRef _$EventSecurityAdvisoryRefFromJson(
+  Map<String, dynamic> json,
+) => EventSecurityAdvisoryRef()
+  ..ghsaId = json['ghsa_id'] as String?
+  ..cveId = json['cve_id'] as String?
+  ..severity = json['severity'] as String?
+  ..summary = json['summary'] as String?;
+
+Map<String, dynamic> _$EventSecurityAdvisoryRefToJson(
+  EventSecurityAdvisoryRef instance,
+) => <String, dynamic>{
+  'ghsa_id': instance.ghsaId,
+  'cve_id': instance.cveId,
+  'severity': instance.severity,
+  'summary': instance.summary,
+};
