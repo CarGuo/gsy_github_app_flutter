@@ -109,7 +109,15 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       Color? notifyColor,
       String beStaredCount,
       refreshCallBack) {
-    double headerSize = 210;
+    /// [UserHeaderItem] 里 Column 竖向内容包含：头像/名字/组织/位置 (80) +
+    /// blog 行 + 组织行 + bio (maxLines: 3) + 创建于行。sindresorhus 这类
+    /// 有 3 行 bio 的账号在 210 高度里会触发 "BOTTOM OVERFLOWED BY 33 PIXELS"，
+    /// 抬到 245 才装得下 bio 满 3 行 + 稍许余量。
+    /// 之所以固定值而不是 LayoutBuilder 动态测量：bio 已在 [UserHeaderItem]
+    /// 里 `maxLines: 3` + `TextOverflow.ellipsis` 封顶，header 内容存在明确
+    /// 上界；固定值免去 TextPainter 预测量与 delegate rebuild 抖动。
+    /// 若未来往 header 里再加行或放开 bio 行数，同步再往上抬这个数字。
+    double headerSize = 245;
     double bottomSize = 70;
     double chartSize =
         (userInfo.login != null && userInfo.type == "Organization") ? 70 : 215;
