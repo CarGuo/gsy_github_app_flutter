@@ -247,6 +247,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get user_orgs_title => '所在组织';
 
   @override
+  String get user_pinned_title => '置顶仓库';
+
+  @override
   String get repos_tab_readme => '详情';
 
   @override

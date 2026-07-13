@@ -78,6 +78,7 @@
   "user_focus_no_support": "지원되지 않음",
   "user_create_at": "생성일: ",
   "user_orgs_title": "조직",
+  "user_pinned_title": "고정된 저장소",
   "repos_tab_readme": "README",
   "repos_tab_info": "정보",
   "repos_tab_file": "파일",

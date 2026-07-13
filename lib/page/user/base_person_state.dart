@@ -18,6 +18,7 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_header.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
+import 'package:gsy_github_app_flutter/page/user/widget/user_pinned.dart';
 
 /// Created by guoshuyu
 /// Date: 2018-08-30
@@ -189,6 +190,17 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               );
             }),
       ),
+
+      ///Pinned Repositories（贡献图之后、事件流之前）
+      ///
+      /// 用 [SliverToBoxAdapter] 而不是 [SliverPersistentHeader]：
+      /// - pinned 数据空时 [UserPinnedSection] 会返回 [SizedBox.shrink]，Adapter
+      ///   随之不占高度，官方就是"没 pinned 就没这块"的行为
+      /// - 用户名有可能为 null（拉取失败时）→ 只在 login 就位时挂载 provider
+      if (userInfo.login != null && userInfo.login!.isNotEmpty)
+        SliverToBoxAdapter(
+          child: UserPinnedSection(userName: userInfo.login!),
+        ),
     ];
   }
 

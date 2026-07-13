@@ -247,6 +247,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get user_orgs_title => '조직';
 
   @override
+  String get user_pinned_title => '고정된 저장소';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

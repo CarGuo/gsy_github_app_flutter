@@ -104,6 +104,21 @@ Future<QueryResult>? unresolveReviewThread(String threadId) async {
   return await _innerClient!.mutate(options);
 }
 
+/// 读取指定用户 / 组织的 Pinned Repositories（最多 6 个，仅仓库类型）
+///
+/// - 用于 profile 页新增 pinned 卡片区域
+/// - 走 [FetchPolicy.noCache]：与 [getRepository] 等其他查询保持一致，避免用户
+///   在 GitHub 上更新 pinned 后本地长期缓存旧数据
+Future<QueryResult>? getUserPinnedItems(String login) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readUserPinnedItems),
+      variables: <String, dynamic>{
+        'login': login,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
 Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{

@@ -489,6 +489,39 @@ class UserRepository {
     return await next();
   }
 
+  /// 获取 user / organization 的 Pinned Repositories 原始 node 列表（最多 6 条）
+  ///
+  /// 这里刻意只返回 `List<Map>`：
+  /// - pinned 只在 [PersonPage] 展示，模型 [UserPinnedItemViewModel] 也就近放在
+  ///   [lib/page/user/widget/user_pinned.dart] 里；repository 不引入 widget 层类
+  /// - GraphQL 层已在 [readUserPinnedItems] 里用 `types: REPOSITORY` 过滤，此处
+  ///   遇到 null 或空节点直接返回空列表，让 UI 侧决定隐藏 or 展示占位
+  ///
+  /// 注意：GSY 定位是"只读+评论"（见 AGENTS.md 允许/禁止清单），这里只做读取，
+  /// 不做置顶顺序编辑或 pinnedItems mutation。
+  static getUserPinnedItemsRequest(String userName) async {
+    var result = await getUserPinnedItems(userName);
+    if (result == null || result.data == null) {
+      return DataResult(<Map<String, dynamic>>[], false);
+    }
+    var user = result.data!["user"];
+    if (user == null) {
+      return DataResult(<Map<String, dynamic>>[], false);
+    }
+    var pinnedItems = user["pinnedItems"];
+    if (pinnedItems == null || pinnedItems["nodes"] == null) {
+      return DataResult(<Map<String, dynamic>>[], true);
+    }
+    List nodes = pinnedItems["nodes"] as List;
+    // pinnedItems 允许 Gist，但 query 已限定 REPOSITORY；保险起见过滤掉空 map。
+    List<Map<String, dynamic>> list = nodes
+        .whereType<Map>()
+        .where((e) => e.isNotEmpty)
+        .map((e) => Map<String, dynamic>.from(e))
+        .toList();
+    return DataResult(list, true);
+  }
+
   static searchTrendUserRequest(String location, {String? cursor}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {

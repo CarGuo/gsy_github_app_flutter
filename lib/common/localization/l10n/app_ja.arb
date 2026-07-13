@@ -78,6 +78,7 @@
   "user_focus_no_support": "サポートされていません。",
   "user_create_at": "作成日：",
   "user_orgs_title": "組織",
+  "user_pinned_title": "ピン留めリポジトリ",
   "repos_tab_readme": "README",
   "repos_tab_info": "情報",
   "repos_tab_file": "ファイル",

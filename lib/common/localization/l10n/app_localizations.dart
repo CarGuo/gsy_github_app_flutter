@@ -576,6 +576,12 @@ abstract class AppLocalizations {
   /// **'Organization'**
   String get user_orgs_title;
 
+  /// No description provided for @user_pinned_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get user_pinned_title;
+
   /// No description provided for @repos_tab_readme.
   ///
   /// In en, this message translates to:

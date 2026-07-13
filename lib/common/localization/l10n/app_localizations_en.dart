@@ -249,6 +249,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get user_orgs_title => 'Organization';
 
   @override
+  String get user_pinned_title => 'Pinned';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

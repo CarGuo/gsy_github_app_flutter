@@ -64,3 +64,39 @@ query getTrendUser($location: String!,  $after: String!){
   }
 }
 ''';
+
+/// 读取一个 user / organization 的 Pinned Repositories（最多 6 个）
+///
+/// 官方 profile 页顶部一等公民能力，REST 无对等端点，只能走 GraphQL。
+/// 只取渲染 pinned 卡片所需的最小字段，不复用 [readRepository] 里的重字段集
+/// （issues/topics/watchers/languages 全 fragment），避免为 pinned 场景把请求撑大。
+///
+/// 只查 `... on Repository`：pinnedItems 也可能是 Gist，这里 GSY 现阶段只展示仓库。
+const String readUserPinnedItems = r'''
+query getUserPinnedItems($login: String!) {
+  user(login: $login) {
+    pinnedItems(first: 6, types: REPOSITORY) {
+      nodes {
+        ... on Repository {
+          name
+          nameWithOwner
+          description
+          url
+          isFork
+          isPrivate
+          stargazerCount
+          forkCount
+          primaryLanguage {
+            name
+            color
+          }
+          owner {
+            login
+            avatarUrl
+          }
+        }
+      }
+    }
+  }
+}
+''';

@@ -78,6 +78,7 @@
   "user_focus_no_support": "不支持关注",
   "user_create_at": "创建于：",
   "user_orgs_title": "所在组织",
+  "user_pinned_title": "置顶仓库",
   "repos_tab_readme": "详情",
   "repos_tab_info": "动态",
   "repos_tab_file": "文件",

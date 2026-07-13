@@ -248,6 +248,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get user_orgs_title => '組織';
 
   @override
+  String get user_pinned_title => 'ピン留めリポジトリ';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

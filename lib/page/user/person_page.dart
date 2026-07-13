@@ -12,6 +12,8 @@ import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
+import 'package:gsy_github_app_flutter/page/user/user_pinned_provider.dart';
+import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
@@ -92,7 +94,20 @@ class PersonState extends BasePersonState<PersonPage> {
 
     ///获取用户仓库前100个star统计数据
     getHonor();
+
+    ///刷新 Pinned Repositories：pinned provider 是 autoDispose family，
+    ///这里主动 invalidate 让下一次 UserPinnedSection.build 重新拉取，
+    ///和 [getHonor] 通过 globalContainer.refresh 的思路一致。
+    _refreshPinned();
     return;
+  }
+
+  void _refreshPinned() {
+    final login = userInfo?.login;
+    if (login == null || login.isEmpty) {
+      return;
+    }
+    globalContainer.invalidate(fetchUserPinnedItemsProvider(login));
   }
 
   ///获取当前用户的关注状态
