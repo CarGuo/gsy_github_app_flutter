@@ -91,6 +91,38 @@ query getUserStatus($login: String!) {
 }
 ''';
 
+/// 读取一个 user / organization 的 Sponsors（最多 5 位）
+///
+/// GitHub Sponsors 一等公民能力：官方 profile 页 pinned 附近展示"支持者"栏。
+/// REST 无对等端点，只能走 GraphQL v4 的 `user(login).sponsors`。
+///
+/// 字段选取原则：
+/// - 只取 `totalCount` + 前 5 位 sponsor 的 login/avatarUrl，够渲染头像圆图 + 总数小字
+/// - `sponsors.nodes` 类型是 `Sponsor`（union of User | Organization），必须写
+///   `... on User` + `... on Organization` 双分支才能拿到 login/avatarUrl
+/// - `user(login: ...)` 可命中 User 也可命中 Organization：GraphQL v4 层面 User 和
+///   Organization 都支持 `sponsors` 字段（Sponsors 面向 org 也开放），无需
+///   `... on User` 兜底，unset sponsor 用户会得到 `nodes: []` 且 `totalCount: 0`
+const String readUserSponsors = r'''
+query getUserSponsors($login: String!) {
+  user(login: $login) {
+    sponsors(first: 5) {
+      totalCount
+      nodes {
+        ... on User {
+          login
+          avatarUrl
+        }
+        ... on Organization {
+          login
+          avatarUrl
+        }
+      }
+    }
+  }
+}
+''';
+
 /// 读取一个 user / organization 的 Pinned Repositories（最多 6 个）
 ///
 /// 官方 profile 页顶部一等公民能力，REST 无对等端点，只能走 GraphQL。

@@ -254,6 +254,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get user_status_busy_label => '取り込み中';
 
   @override
+  String get user_sponsors_title => 'スポンサー';
+
+  @override
+  String user_sponsors_count(int count) {
+    return '$count 人';
+  }
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

@@ -14,9 +14,10 @@ part of 'user_status_provider.dart';
 ///   不加 `dependencies: []` scoped，因为 status 只在 [PersonPage] 消费一次
 /// - 失败或空 status 都返回 `null`；UI 侧统一按"隐藏整块"处理，避免为组织类型
 ///   或未设置 status 的用户显示空白 chip
-/// - **不加 organization 短路**：调用侧 [BasePersonState] 已按 `userInfo.login`
-///   非空条件挂载，若真是 organization 请求返回 null 会由本 provider 兜底成
-///   `null`，UI 隐藏，无副作用
+/// - **不加 organization 短路**：调用侧 [BasePersonState] 已按
+///   `login != null && login.isNotEmpty && type != "Organization"` 三段条件
+///   挂载，若短路失效或未来被拿掉，organization login 走到这里 GraphQL 会
+///   返回 `user: null`，本 provider 兜底成 `null`，UI 隐藏，无副作用
 
 @ProviderFor(fetchUserStatus)
 final fetchUserStatusProvider = FetchUserStatusFamily._();
@@ -27,9 +28,10 @@ final fetchUserStatusProvider = FetchUserStatusFamily._();
 ///   不加 `dependencies: []` scoped，因为 status 只在 [PersonPage] 消费一次
 /// - 失败或空 status 都返回 `null`；UI 侧统一按"隐藏整块"处理，避免为组织类型
 ///   或未设置 status 的用户显示空白 chip
-/// - **不加 organization 短路**：调用侧 [BasePersonState] 已按 `userInfo.login`
-///   非空条件挂载，若真是 organization 请求返回 null 会由本 provider 兜底成
-///   `null`，UI 隐藏，无副作用
+/// - **不加 organization 短路**：调用侧 [BasePersonState] 已按
+///   `login != null && login.isNotEmpty && type != "Organization"` 三段条件
+///   挂载，若短路失效或未来被拿掉，organization login 走到这里 GraphQL 会
+///   返回 `user: null`，本 provider 兜底成 `null`，UI 隐藏，无副作用
 
 final class FetchUserStatusProvider
     extends
@@ -47,9 +49,10 @@ final class FetchUserStatusProvider
   ///   不加 `dependencies: []` scoped，因为 status 只在 [PersonPage] 消费一次
   /// - 失败或空 status 都返回 `null`；UI 侧统一按"隐藏整块"处理，避免为组织类型
   ///   或未设置 status 的用户显示空白 chip
-  /// - **不加 organization 短路**：调用侧 [BasePersonState] 已按 `userInfo.login`
-  ///   非空条件挂载，若真是 organization 请求返回 null 会由本 provider 兜底成
-  ///   `null`，UI 隐藏，无副作用
+  /// - **不加 organization 短路**：调用侧 [BasePersonState] 已按
+  ///   `login != null && login.isNotEmpty && type != "Organization"` 三段条件
+  ///   挂载，若短路失效或未来被拿掉，organization login 走到这里 GraphQL 会
+  ///   返回 `user: null`，本 provider 兜底成 `null`，UI 隐藏，无副作用
   FetchUserStatusProvider._({
     required FetchUserStatusFamily super.from,
     required String super.argument,
@@ -102,9 +105,10 @@ String _$fetchUserStatusHash() => r'e3559be6ade8a735a5c46ce086ba2878f25bf476';
 ///   不加 `dependencies: []` scoped，因为 status 只在 [PersonPage] 消费一次
 /// - 失败或空 status 都返回 `null`；UI 侧统一按"隐藏整块"处理，避免为组织类型
 ///   或未设置 status 的用户显示空白 chip
-/// - **不加 organization 短路**：调用侧 [BasePersonState] 已按 `userInfo.login`
-///   非空条件挂载，若真是 organization 请求返回 null 会由本 provider 兜底成
-///   `null`，UI 隐藏，无副作用
+/// - **不加 organization 短路**：调用侧 [BasePersonState] 已按
+///   `login != null && login.isNotEmpty && type != "Organization"` 三段条件
+///   挂载，若短路失效或未来被拿掉，organization login 走到这里 GraphQL 会
+///   返回 `user: null`，本 provider 兜底成 `null`，UI 隐藏，无副作用
 
 final class FetchUserStatusFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<UserStatusViewModel?>, String> {
@@ -123,9 +127,10 @@ final class FetchUserStatusFamily extends $Family
   ///   不加 `dependencies: []` scoped，因为 status 只在 [PersonPage] 消费一次
   /// - 失败或空 status 都返回 `null`；UI 侧统一按"隐藏整块"处理，避免为组织类型
   ///   或未设置 status 的用户显示空白 chip
-  /// - **不加 organization 短路**：调用侧 [BasePersonState] 已按 `userInfo.login`
-  ///   非空条件挂载，若真是 organization 请求返回 null 会由本 provider 兜底成
-  ///   `null`，UI 隐藏，无副作用
+  /// - **不加 organization 短路**：调用侧 [BasePersonState] 已按
+  ///   `login != null && login.isNotEmpty && type != "Organization"` 三段条件
+  ///   挂载，若短路失效或未来被拿掉，organization login 走到这里 GraphQL 会
+  ///   返回 `user: null`，本 provider 兜底成 `null`，UI 隐藏，无副作用
 
   FetchUserStatusProvider call(String userName) =>
       FetchUserStatusProvider._(argument: userName, from: this);

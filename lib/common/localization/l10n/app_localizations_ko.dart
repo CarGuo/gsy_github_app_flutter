@@ -253,6 +253,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get user_status_busy_label => '바쁨';
 
   @override
+  String get user_sponsors_title => '스폰서';
+
+  @override
+  String user_sponsors_count(int count) {
+    return '$count명';
+  }
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

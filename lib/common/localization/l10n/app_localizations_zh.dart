@@ -253,6 +253,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get user_status_busy_label => '忙碌中';
 
   @override
+  String get user_sponsors_title => '赞助者';
+
+  @override
+  String user_sponsors_count(int count) {
+    return '共 $count 位';
+  }
+
+  @override
   String get repos_tab_readme => '详情';
 
   @override

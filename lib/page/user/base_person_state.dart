@@ -19,6 +19,7 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_header.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_pinned.dart';
+import 'package:gsy_github_app_flutter/page/user/widget/user_sponsors.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_status.dart';
 
 /// Created by guoshuyu
@@ -214,6 +215,18 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       if (userInfo.login != null && userInfo.login!.isNotEmpty)
         SliverToBoxAdapter(
           child: UserPinnedSection(userName: userInfo.login!),
+        ),
+
+      ///Sponsors（Pinned 之后、事件流之前）
+      ///
+      /// GitHub Sponsors 一等公民能力，官方 profile 页 pinned 附近展示"Supporters"栏。
+      /// 与 Pinned/Status 一致用 [SliverToBoxAdapter]：未启用 sponsors 或
+      /// totalCount==0 时 [UserSponsorsSection] 返回 [SizedBox.shrink]，Adapter
+      /// 不占高度。User 与 Organization 都可能是 sponsor 目标账号（GitHub Sponsors
+      /// 对 Org 开放），所以此处不加 `type != Organization` 短路。
+      if (userInfo.login != null && userInfo.login!.isNotEmpty)
+        SliverToBoxAdapter(
+          child: UserSponsorsSection(userName: userInfo.login!),
         ),
     ];
   }

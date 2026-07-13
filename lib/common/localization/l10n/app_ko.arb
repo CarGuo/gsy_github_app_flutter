@@ -80,6 +80,15 @@
   "user_orgs_title": "조직",
   "user_pinned_title": "고정된 저장소",
   "user_status_busy_label": "바쁨",
+  "user_sponsors_title": "스폰서",
+  "user_sponsors_count": "{count}명",
+  "@user_sponsors_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "repos_tab_readme": "README",
   "repos_tab_info": "정보",
   "repos_tab_file": "파일",

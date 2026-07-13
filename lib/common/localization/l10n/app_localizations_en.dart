@@ -255,6 +255,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get user_status_busy_label => 'Busy';
 
   @override
+  String get user_sponsors_title => 'Sponsors';
+
+  @override
+  String user_sponsors_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sponsors',
+      one: '$count sponsor',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

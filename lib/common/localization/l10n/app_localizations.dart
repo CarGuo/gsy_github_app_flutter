@@ -588,6 +588,18 @@ abstract class AppLocalizations {
   /// **'Busy'**
   String get user_status_busy_label;
 
+  /// No description provided for @user_sponsors_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sponsors'**
+  String get user_sponsors_title;
+
+  /// No description provided for @user_sponsors_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{count} sponsor} other{{count} sponsors}}'**
+  String user_sponsors_count(int count);
+
   /// No description provided for @repos_tab_readme.
   ///
   /// In en, this message translates to:

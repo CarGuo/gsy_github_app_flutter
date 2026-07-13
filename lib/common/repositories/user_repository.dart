@@ -548,6 +548,47 @@ class UserRepository {
     return DataResult(Map<String, dynamic>.from(status as Map), true);
   }
 
+  /// 获取指定用户 / 组织的前 5 位 sponsors + 总数
+  ///
+  /// 返回 `DataResult` 的 `data` 是一个 map：`{totalCount: int, nodes: List<Map>}`
+  /// - 请求失败: `data=null` + result=false
+  /// - 请求成功但 `user==null`（login 不存在 / 权限不足）：返回空态
+  ///   `{totalCount:0, nodes:[]}` + result=true
+  /// - 请求成功但用户未启用 Sponsors（GraphQL 侧表现为 `sponsors!=null`
+  ///   且 `totalCount=0, nodes=[]`）：直接映射为同形状空态
+  /// - 有 sponsors：`nodes` 里是过滤后的非空 Map（login/avatarUrl）
+  ///
+  /// UI 侧对 empty / error / totalCount=0 统一按 [SizedBox.shrink] 处理。
+  /// GraphQL 层 `sponsors.nodes` 是 union of User | Organization，本方法只
+  /// 剥掉 `... on X` 分支合并后的 map，不做类型识别；上层视图模型不区分。
+  static getUserSponsorsRequest(String userName) async {
+    var result = await getUserSponsors(userName);
+    if (result == null || result.data == null) {
+      return DataResult(null, false);
+    }
+    var user = result.data!["user"];
+    if (user == null) {
+      return DataResult(
+          <String, dynamic>{"totalCount": 0, "nodes": <Map>[]}, true);
+    }
+    var sponsors = user["sponsors"];
+    if (sponsors == null) {
+      return DataResult(
+          <String, dynamic>{"totalCount": 0, "nodes": <Map>[]}, true);
+    }
+    final int totalCount = (sponsors["totalCount"] as int?) ?? 0;
+    final rawNodes = sponsors["nodes"];
+    final List<Map<String, dynamic>> nodes = (rawNodes is List)
+        ? rawNodes
+            .whereType<Map>()
+            .where((e) => e.isNotEmpty)
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList()
+        : <Map<String, dynamic>>[];
+    return DataResult(
+        <String, dynamic>{"totalCount": totalCount, "nodes": nodes}, true);
+  }
+
   static searchTrendUserRequest(String location, {String? cursor}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {

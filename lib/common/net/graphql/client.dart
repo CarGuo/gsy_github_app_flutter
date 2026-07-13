@@ -134,6 +134,21 @@ Future<QueryResult>? getUserStatus(String login) async {
   return await _innerClient!.query(options);
 }
 
+/// 读取指定用户 / 组织的前 5 位 sponsors + 总数
+///
+/// - 用于 profile 页 Pinned 下方"Sponsors"横向头像区
+/// - 与 [getUserPinnedItems] / [getUserStatus] 一致走 [FetchPolicy.noCache]：
+///   避免跨用户切换时 sponsor 列表相互串扰
+Future<QueryResult>? getUserSponsors(String login) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readUserSponsors),
+      variables: <String, dynamic>{
+        'login': login,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
 Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{

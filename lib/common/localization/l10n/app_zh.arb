@@ -80,6 +80,15 @@
   "user_orgs_title": "所在组织",
   "user_pinned_title": "置顶仓库",
   "user_status_busy_label": "忙碌中",
+  "user_sponsors_title": "赞助者",
+  "user_sponsors_count": "共 {count} 位",
+  "@user_sponsors_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "repos_tab_readme": "详情",
   "repos_tab_info": "动态",
   "repos_tab_file": "文件",

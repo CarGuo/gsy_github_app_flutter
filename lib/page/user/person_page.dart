@@ -13,6 +13,7 @@ import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/user_pinned_provider.dart';
+import 'package:gsy_github_app_flutter/page/user/user_sponsors_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/user_status_provider.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
@@ -103,6 +104,9 @@ class PersonState extends BasePersonState<PersonPage> {
 
     ///刷新 Status chip：与 pinned 同思路，autoDispose family 上手动 invalidate。
     _refreshStatus();
+
+    ///刷新 Sponsors：与 pinned/status 同思路，autoDispose family 上手动 invalidate。
+    _refreshSponsors();
     return;
   }
 
@@ -124,6 +128,15 @@ class PersonState extends BasePersonState<PersonPage> {
       return;
     }
     globalContainer.invalidate(fetchUserStatusProvider(login));
+  }
+
+  void _refreshSponsors() {
+    final login = userInfo?.login;
+    if (login == null || login.isEmpty) {
+      return;
+    }
+    // Sponsors 对 User 与 Organization 都可能有值，不做 type 短路
+    globalContainer.invalidate(fetchUserSponsorsProvider(login));
   }
 
   ///获取当前用户的关注状态
