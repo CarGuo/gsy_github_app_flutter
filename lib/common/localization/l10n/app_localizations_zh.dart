@@ -250,6 +250,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get user_pinned_title => '置顶仓库';
 
   @override
+  String get user_status_busy_label => '忙碌中';
+
+  @override
   String get repos_tab_readme => '详情';
 
   @override

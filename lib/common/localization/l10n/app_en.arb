@@ -79,6 +79,7 @@
   "user_create_at": "Create at: ",
   "user_orgs_title": "Organization",
   "user_pinned_title": "Pinned",
+  "user_status_busy_label": "Busy",
   "repos_tab_readme": "README",
   "repos_tab_info": "Info",
   "repos_tab_file": "Files",

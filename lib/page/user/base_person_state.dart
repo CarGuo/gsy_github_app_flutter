@@ -19,6 +19,7 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_header.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_pinned.dart';
+import 'package:gsy_github_app_flutter/page/user/widget/user_status.dart';
 
 /// Created by guoshuyu
 /// Date: 2018-08-30
@@ -190,6 +191,19 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
               );
             }),
       ),
+
+      ///Status chip（贡献图之后、Pinned 之前）
+      ///
+      /// - 只在 login 就位 + 非 Organization 时挂载：组织没有 status 字段，
+      ///   provider 层虽然也会兜底 null，但这里前置短路可以直接省一次 GraphQL 请求
+      /// - 与 Pinned 一致用 [SliverToBoxAdapter]，未设置 status 时 [UserStatusSection]
+      ///   返回 [SizedBox.shrink]，官方"没状态就没这块"的行为
+      if (userInfo.login != null &&
+          userInfo.login!.isNotEmpty &&
+          userInfo.type != "Organization")
+        SliverToBoxAdapter(
+          child: UserStatusSection(userName: userInfo.login!),
+        ),
 
       ///Pinned Repositories（贡献图之后、事件流之前）
       ///

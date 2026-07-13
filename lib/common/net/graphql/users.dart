@@ -65,6 +65,32 @@ query getTrendUser($location: String!,  $after: String!){
 }
 ''';
 
+/// 读取一个 user 的 status（emoji / message / 是否忙碌）
+///
+/// GitHub 官方 profile 右侧头像下方的一行"状态胶囊"，是用户表达"正在做什么/
+/// 忙碌中"的一等公民能力。REST v3 无对等端点，只能走 GraphQL v4 的
+/// `user(login).status`。
+///
+/// 字段选取原则：
+/// - 只取渲染 chip 需要的最小 3 项（emoji / message / indicatesLimitedAvailability），
+///   不取 `expiresAt` 以避免多语言相对时间描述带来的额外文案与时区抖动
+/// - `... on Organization` 无 status 字段，query 名义限定 `User`：真正的
+///   `type=Organization` 短路发生在页面层（[BasePersonState] 挂载条件、
+///   [PersonPage] 的 `_refreshStatus`），repository 层只做 `user==null` /
+///   `status==null` 兜底；如果未来调用侧短路被拿掉，organization login
+///   仍会走到这里请求 GraphQL 得到 `user: null`，被兜底为返回 null 而不会崩
+const String readUserStatus = r'''
+query getUserStatus($login: String!) {
+  user(login: $login) {
+    status {
+      emoji
+      message
+      indicatesLimitedAvailability
+    }
+  }
+}
+''';
+
 /// 读取一个 user / organization 的 Pinned Repositories（最多 6 个）
 ///
 /// 官方 profile 页顶部一等公民能力，REST 无对等端点，只能走 GraphQL。

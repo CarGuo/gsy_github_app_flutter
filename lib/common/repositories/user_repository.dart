@@ -522,6 +522,32 @@ class UserRepository {
     return DataResult(list, true);
   }
 
+  /// 获取指定用户的 status（emoji / message / busy 三元组）
+  ///
+  /// 返回 `Map<String, dynamic>?`：
+  /// - 成功且用户设置了 status: 返回类似 `{emoji, message, indicatesLimitedAvailability}`
+  /// - 用户未设置 status（GraphQL 返回 null）: 返回 `null` + result=true
+  /// - 请求失败: 返回 `null` + result=false
+  ///
+  /// UI 侧对 empty / error 统一按 [SizedBox.shrink] 处理，无需区分两种失败语义。
+  /// 组织账号无 status 字段，本方法不做 type 过滤，由上层 provider 视用户类型
+  /// 决定是否发起请求（GitHub 对 organization 也可能 200 返回 `user: null`）。
+  static getUserStatusRequest(String userName) async {
+    var result = await getUserStatus(userName);
+    if (result == null || result.data == null) {
+      return DataResult(null, false);
+    }
+    var user = result.data!["user"];
+    if (user == null) {
+      return DataResult(null, true);
+    }
+    var status = user["status"];
+    if (status == null) {
+      return DataResult(null, true);
+    }
+    return DataResult(Map<String, dynamic>.from(status as Map), true);
+  }
+
   static searchTrendUserRequest(String location, {String? cursor}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {

@@ -250,6 +250,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get user_pinned_title => '고정된 저장소';
 
   @override
+  String get user_status_busy_label => '바쁨';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

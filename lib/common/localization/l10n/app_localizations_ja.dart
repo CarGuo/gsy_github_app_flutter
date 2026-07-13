@@ -251,6 +251,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get user_pinned_title => 'ピン留めリポジトリ';
 
   @override
+  String get user_status_busy_label => '取り込み中';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

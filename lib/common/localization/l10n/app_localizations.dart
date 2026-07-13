@@ -582,6 +582,12 @@ abstract class AppLocalizations {
   /// **'Pinned'**
   String get user_pinned_title;
 
+  /// No description provided for @user_status_busy_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy'**
+  String get user_status_busy_label;
+
   /// No description provided for @repos_tab_readme.
   ///
   /// In en, this message translates to:

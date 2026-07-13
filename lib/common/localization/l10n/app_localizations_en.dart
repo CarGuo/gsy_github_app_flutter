@@ -252,6 +252,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get user_pinned_title => 'Pinned';
 
   @override
+  String get user_status_busy_label => 'Busy';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

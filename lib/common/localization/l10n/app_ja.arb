@@ -79,6 +79,7 @@
   "user_create_at": "作成日：",
   "user_orgs_title": "組織",
   "user_pinned_title": "ピン留めリポジトリ",
+  "user_status_busy_label": "取り込み中",
   "repos_tab_readme": "README",
   "repos_tab_info": "情報",
   "repos_tab_file": "ファイル",

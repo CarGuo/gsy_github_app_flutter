@@ -13,6 +13,7 @@ import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/user_pinned_provider.dart';
+import 'package:gsy_github_app_flutter/page/user/user_status_provider.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_state.dart';
@@ -99,6 +100,9 @@ class PersonState extends BasePersonState<PersonPage> {
     ///这里主动 invalidate 让下一次 UserPinnedSection.build 重新拉取，
     ///和 [getHonor] 通过 globalContainer.refresh 的思路一致。
     _refreshPinned();
+
+    ///刷新 Status chip：与 pinned 同思路，autoDispose family 上手动 invalidate。
+    _refreshStatus();
     return;
   }
 
@@ -108,6 +112,18 @@ class PersonState extends BasePersonState<PersonPage> {
       return;
     }
     globalContainer.invalidate(fetchUserPinnedItemsProvider(login));
+  }
+
+  void _refreshStatus() {
+    final login = userInfo?.login;
+    if (login == null || login.isEmpty) {
+      return;
+    }
+    // organization 侧不挂载 UserStatusSection，也不必 invalidate
+    if (userInfo?.type == "Organization") {
+      return;
+    }
+    globalContainer.invalidate(fetchUserStatusProvider(login));
   }
 
   ///获取当前用户的关注状态

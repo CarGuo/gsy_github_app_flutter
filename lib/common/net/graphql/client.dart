@@ -119,6 +119,21 @@ Future<QueryResult>? getUserPinnedItems(String login) async {
   return await _innerClient!.query(options);
 }
 
+/// 读取指定用户的 status（emoji / message / busy）
+///
+/// - 用于 profile 头部下方一行"状态 chip"
+/// - 与 [getUserPinnedItems] 一致走 [FetchPolicy.noCache]：status 常变，且不希望
+///   出现"上一次别的用户 profile 的 status 串到当前用户"
+Future<QueryResult>? getUserStatus(String login) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readUserStatus),
+      variables: <String, dynamic>{
+        'login': login,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
 Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{
