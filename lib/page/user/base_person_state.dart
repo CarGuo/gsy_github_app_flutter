@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
@@ -234,13 +233,21 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
   @override
   Widget build(BuildContext context) {
     super.build(context);// See AutomaticKeepAliveClientMixin.
-    ///局部 scoped 的 riverpod provider 方案
-    ///配合 @Riverpod(dependencies: [])
-    return ProviderScope(
-      /// 必要时还可以覆盖
-      //overrides: [],
-      child: buildContainer(context),
-    );
+    /// 不在这里再套 [ProviderScope]：根级 [app.dart] 已经通过
+    /// [UncontrolledProviderScope(container: globalContainer)] 挂了整棵树。
+    /// 如果这里再包一层 `ProviderScope()`，Riverpod 会给 PersonPage 子树生
+    /// 一个独立的 [ProviderContainer]，导致 [UserPinnedSection] /
+    /// [UserStatusSection] / [UserSponsorsSection] 里 `ref.watch(...)` 命中的
+    /// provider 实例，与 [PersonState._refreshPinned] / [_refreshStatus] /
+    /// [_refreshSponsors] 里 `globalContainer.invalidate(...)` 目标不是同一
+    /// 实例——下拉刷新时表面没报错，但 UI 侧其实没被通知重取。
+    ///
+    /// 若未来需要局部 override（例如测试或某个 scope 特化），改回
+    /// `ProviderScope(overrides: [...], child: buildContainer(context))`
+    /// 即可；届时同步把 [_refreshXxx] 改为通过
+    /// `ProviderScope.containerOf(context, listen: false).invalidate(...)`
+    /// 命中当前子树 container。
+    return buildContainer(context);
   }
 
   ///获取用户仓库前100个star统计数据
