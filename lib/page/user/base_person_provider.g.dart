@@ -11,7 +11,7 @@ part of 'base_person_provider.dart';
 ///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
 
 @ProviderFor(fetchHonorData)
-const fetchHonorDataProvider = FetchHonorDataFamily._();
+final fetchHonorDataProvider = FetchHonorDataFamily._();
 
 ///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
 
@@ -24,7 +24,7 @@ final class FetchHonorDataProvider
         >
     with $FutureModifier<HonorModel?>, $FutureProvider<HonorModel?> {
   ///指定作用域，让该 provider as scoped ，[]表示不依赖其他，让其每次使用都在上下文独立
-  const FetchHonorDataProvider._({
+  FetchHonorDataProvider._({
     required FetchHonorDataFamily super.from,
     required String super.argument,
   }) : super(
@@ -74,12 +74,12 @@ String _$fetchHonorDataHash() => r'7f84f6895bdda593859d93add87021d7c91dce4d';
 
 final class FetchHonorDataFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<HonorModel?>, String> {
-  const FetchHonorDataFamily._()
+  FetchHonorDataFamily._()
     : super(
         retry: null,
         name: r'fetchHonorDataProvider',
-        dependencies: const <ProviderOrFamily>[],
-        $allTransitiveDependencies: const <ProviderOrFamily>[],
+        dependencies: <ProviderOrFamily>[],
+        $allTransitiveDependencies: <ProviderOrFamily>[],
         isAutoDispose: true,
       );
 

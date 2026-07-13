@@ -8,16 +8,16 @@ part of 'trend_user_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-///无需释放，这样内存里就会保存着列表，��次进来不会空数据
+///无需释放，这样内存里就会保存着列表，下次进来不会空数据
 
 @ProviderFor(TrendCNUserList)
-const trendCNUserListProvider = TrendCNUserListProvider._();
+final trendCNUserListProvider = TrendCNUserListProvider._();
 
-///无需释放，这样内存里就会保存着列表，��次进来不会空数据
+///无需释放，这样内存里就会保存着列表，下次进来不会空数据
 final class TrendCNUserListProvider
     extends $NotifierProvider<TrendCNUserList, List<SearchUserQL>> {
-  ///无需释放，这样内存里就会保存着列表，��次进来不会空数据
-  const TrendCNUserListProvider._()
+  ///无需释放，这样内存里就会保存着列表，下次进来不会空数据
+  TrendCNUserListProvider._()
     : super(
         from: null,
         argument: null,
@@ -44,16 +44,15 @@ final class TrendCNUserListProvider
   }
 }
 
-String _$trendCNUserListHash() => r'aea06336b92d3cc570f969d63fda016132cdf064';
+String _$trendCNUserListHash() => r'f3f61ac76d1af77a78ec640f430d3666c416021d';
 
-///无需释放，这样内存里就会保存着列表，��次进来不会空数据
+///无需释放，这样内存里就会保存着列表，下次进来不会空数据
 
 abstract class _$TrendCNUserList extends $Notifier<List<SearchUserQL>> {
   List<SearchUserQL> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<List<SearchUserQL>, List<SearchUserQL>>;
     final element =
         ref.element
@@ -63,12 +62,12 @@ abstract class _$TrendCNUserList extends $Notifier<List<SearchUserQL>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(searchTrendUserRequest)
-const searchTrendUserRequestProvider = SearchTrendUserRequestFamily._();
+final searchTrendUserRequestProvider = SearchTrendUserRequestFamily._();
 
 final class SearchTrendUserRequestProvider
     extends
@@ -80,7 +79,7 @@ final class SearchTrendUserRequestProvider
     with
         $FutureModifier<(List<SearchUserQL>, String)?>,
         $FutureProvider<(List<SearchUserQL>, String)?> {
-  const SearchTrendUserRequestProvider._({
+  SearchTrendUserRequestProvider._({
     required SearchTrendUserRequestFamily super.from,
     required (String, bool, {String? cursor}) super.argument,
   }) : super(
@@ -131,7 +130,7 @@ final class SearchTrendUserRequestProvider
 }
 
 String _$searchTrendUserRequestHash() =>
-    r'ac778f5a6b971be10cac54dba88243725747e346';
+    r'c2d75a6b62f4a7111b7da60d4ba239da7fbe5406';
 
 final class SearchTrendUserRequestFamily extends $Family
     with
@@ -139,7 +138,7 @@ final class SearchTrendUserRequestFamily extends $Family
           FutureOr<(List<SearchUserQL>, String)?>,
           (String, bool, {String? cursor})
         > {
-  const SearchTrendUserRequestFamily._()
+  SearchTrendUserRequestFamily._()
     : super(
         retry: null,
         name: r'searchTrendUserRequestProvider',

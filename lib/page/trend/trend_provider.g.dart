@@ -10,7 +10,7 @@ part of 'trend_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(trendFirst)
-const trendFirstProvider = TrendFirstFamily._();
+final trendFirstProvider = TrendFirstFamily._();
 
 final class TrendFirstProvider
     extends
@@ -20,7 +20,7 @@ final class TrendFirstProvider
           FutureOr<DataResult?>
         >
     with $FutureModifier<DataResult?>, $FutureProvider<DataResult?> {
-  const TrendFirstProvider._({
+  TrendFirstProvider._({
     required TrendFirstFamily super.from,
     required (String?, String?) super.argument,
   }) : super(
@@ -68,7 +68,7 @@ String _$trendFirstHash() => r'3e6901281c2b4209f6a6af2bd8d224bed08ec011';
 
 final class TrendFirstFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<DataResult?>, (String?, String?)> {
-  const TrendFirstFamily._()
+  TrendFirstFamily._()
     : super(
         retry: null,
         name: r'trendFirstProvider',
@@ -85,7 +85,7 @@ final class TrendFirstFamily extends $Family
 }
 
 @ProviderFor(trendSecond)
-const trendSecondProvider = TrendSecondFamily._();
+final trendSecondProvider = TrendSecondFamily._();
 
 final class TrendSecondProvider
     extends
@@ -95,7 +95,7 @@ final class TrendSecondProvider
           FutureOr<DataResult?>
         >
     with $FutureModifier<DataResult?>, $FutureProvider<DataResult?> {
-  const TrendSecondProvider._({
+  TrendSecondProvider._({
     required TrendSecondFamily super.from,
     required (String?, String?) super.argument,
   }) : super(
@@ -143,7 +143,7 @@ String _$trendSecondHash() => r'99470661772032da2b765be93e555eb936aa5383';
 
 final class TrendSecondFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<DataResult?>, (String?, String?)> {
-  const TrendSecondFamily._()
+  TrendSecondFamily._()
     : super(
         retry: null,
         name: r'trendSecondProvider',

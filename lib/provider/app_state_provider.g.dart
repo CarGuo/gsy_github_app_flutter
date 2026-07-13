@@ -10,11 +10,11 @@ part of 'app_state_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(AppVibrationState)
-const appVibrationStateProvider = AppVibrationStateProvider._();
+final appVibrationStateProvider = AppVibrationStateProvider._();
 
 final class AppVibrationStateProvider
     extends $NotifierProvider<AppVibrationState, bool> {
-  const AppVibrationStateProvider._()
+  AppVibrationStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -41,14 +41,13 @@ final class AppVibrationStateProvider
   }
 }
 
-String _$appVibrationStateHash() => r'85e7e422a4e3b34dfe1e67f7aa562cf40340fa69';
+String _$appVibrationStateHash() => r'6f7aef6fcacc6947610cf9a8f50d0c3a3449c7e2';
 
 abstract class _$AppVibrationState extends $Notifier<bool> {
   bool build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -58,19 +57,19 @@ abstract class _$AppVibrationState extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 /// 控制 App 灰度效果
 
 @ProviderFor(AppGrepState)
-const appGrepStateProvider = AppGrepStateProvider._();
+final appGrepStateProvider = AppGrepStateProvider._();
 
 /// 控制 App 灰度效果
 final class AppGrepStateProvider extends $NotifierProvider<AppGrepState, bool> {
   /// 控制 App 灰度效果
-  const AppGrepStateProvider._()
+  AppGrepStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -105,8 +104,7 @@ abstract class _$AppGrepState extends $Notifier<bool> {
   bool build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -116,20 +114,20 @@ abstract class _$AppGrepState extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 /// 控制 App 语言
 
 @ProviderFor(AppLocalState)
-const appLocalStateProvider = AppLocalStateProvider._();
+final appLocalStateProvider = AppLocalStateProvider._();
 
 /// 控制 App 语言
 final class AppLocalStateProvider
     extends $NotifierProvider<AppLocalState, Locale> {
   /// 控制 App 语言
-  const AppLocalStateProvider._()
+  AppLocalStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -164,8 +162,7 @@ abstract class _$AppLocalState extends $Notifier<Locale> {
   Locale build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<Locale, Locale>;
     final element =
         ref.element
@@ -175,20 +172,20 @@ abstract class _$AppLocalState extends $Notifier<Locale> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 /// 控制 App 主题
 
 @ProviderFor(AppThemeState)
-const appThemeStateProvider = AppThemeStateProvider._();
+final appThemeStateProvider = AppThemeStateProvider._();
 
 /// 控制 App 主题
 final class AppThemeStateProvider
     extends $NotifierProvider<AppThemeState, ThemeData> {
   /// 控制 App 主题
-  const AppThemeStateProvider._()
+  AppThemeStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -223,8 +220,7 @@ abstract class _$AppThemeState extends $Notifier<ThemeData> {
   ThemeData build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<ThemeData, ThemeData>;
     final element =
         ref.element
@@ -234,6 +230,6 @@ abstract class _$AppThemeState extends $Notifier<ThemeData> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

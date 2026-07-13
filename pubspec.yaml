@@ -71,7 +71,7 @@ dependencies:
   #flutter_cache_manager: 3.0.0-nullsafety.0
   provider: 6.1.5+1
   permission_handler: 11.3.1
-  json_annotation: 4.9.0
+  json_annotation: 4.12.0
   package_info_plus: 8.0.2
   connectivity_plus: 6.0.5
   # flutter_markdown 已停止维护，使用 flutter_markdown_plus 替代
@@ -102,17 +102,17 @@ dependencies:
   webview_flutter_wkwebview: any
   string_scanner: any
   meta: any
-  flutter_riverpod: 3.0.3
-  riverpod_annotation: 3.0.3
+  flutter_riverpod: 3.3.2
+  riverpod_annotation: 4.0.3
   # error handle
   talker_flutter: 5.1.9
   talker_dio_logger: 5.1.9
 
 dev_dependencies:
-  riverpod_generator: 3.0.3
-  built_value_generator: 8.12.0
+  riverpod_generator: 4.0.4
+  built_value_generator: 8.12.5
   build_runner: ^2.4.14
-  json_serializable: 6.11.1
+  json_serializable: 6.14.0
   flutter_lints: 5.0.0
   patrol: ^4.6.1
   flutter_test:
