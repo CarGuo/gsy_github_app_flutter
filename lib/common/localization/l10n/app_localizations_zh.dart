@@ -261,6 +261,14 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String user_contributions_count(int count) {
+    return '共 $count 次贡献';
+  }
+
+  @override
+  String get user_contributions_none => '无贡献';
+
+  @override
   String get repos_tab_readme => '详情';
 
   @override

@@ -149,6 +149,23 @@ Future<QueryResult>? getUserSponsors(String login) async {
   return await _innerClient!.query(options);
 }
 
+/// 读取指定用户的 Contribution Calendar
+///
+/// - 用于替换第三方 ghchart.rshah.org 的静态 SVG：GraphQL 返回结构化
+///   `weeks[].contributionDays[]`（date + count + color），前端可自绘
+///   heatmap + 给 cell 挂点击回调（Tooltip 显示当日 contribution 数）
+/// - 走 [FetchPolicy.noCache] 与 [getUserPinnedItems] / [getUserSponsors] 一致：
+///   避免跨用户切换时上一份日历串到当前 profile
+Future<QueryResult>? getUserContributionCalendar(String login) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readUserContributionCalendar),
+      variables: <String, dynamic>{
+        'login': login,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
 Future<QueryResult>? getTrendUser(String location, {String? cursor}) async {
   var variables = cursor == null
       ? <String, dynamic>{

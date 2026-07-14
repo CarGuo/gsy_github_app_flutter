@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
@@ -10,6 +9,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
+import 'package:gsy_github_app_flutter/page/user/widget/user_contribution_calendar.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
@@ -412,40 +412,14 @@ class UserHeaderChart extends StatelessWidget {
 
   _renderChart(BuildContext context) {
     double height = 140.0;
-    double width = 3 * MediaQuery.sizeOf(context).width / 2;
     if (userInfo.login != null && userInfo.type == "Organization") {
       return Container();
     }
+    /// 由第三方 ghchart.rshah.org 的整块 SVG 切换到 GraphQL contributionsCollection
+    /// 自绘 heatmap：好处是每个 cell 可挂点击事件，Tooltip 弹泡显示"日期 + 次数"。
+    /// Organization 保持短路 (与旧行为一致，官方 GraphQL user field 也不返回组织贡献)。
     return (userInfo.login != null)
-        ? Card(
-            margin: const EdgeInsets.only(
-                top: 0.0, left: 10.0, right: 10.0, bottom: 0.0),
-            color: GSYColors.white,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                width: width,
-                height: height,
-
-                ///svg chart
-                child: SvgPicture.network(
-                  CommonUtils.getUserChartAddress(userInfo.login!),
-                  width: width,
-                  height: height - 10,
-                  allowDrawingOutsideViewBox: true,
-                  placeholderBuilder: (BuildContext context) => SizedBox(
-                    height: height,
-                    width: width,
-                    child: Center(
-                      child:
-                          SpinKitRipple(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
+        ? UserContributionCalendarSection(userName: userInfo.login!)
         : SizedBox(
             height: height,
             child: Center(

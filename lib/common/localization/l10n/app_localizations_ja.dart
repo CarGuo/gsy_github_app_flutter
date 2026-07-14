@@ -262,6 +262,14 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String user_contributions_count(int count) {
+    return '$count 件のコントリビューション';
+  }
+
+  @override
+  String get user_contributions_none => 'コントリビューションなし';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

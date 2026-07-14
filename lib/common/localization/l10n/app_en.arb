@@ -89,6 +89,15 @@
       }
     }
   },
+  "user_contributions_count": "{count, plural, =1{{count} contribution} other{{count} contributions}}",
+  "@user_contributions_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_contributions_none": "No contributions",
   "repos_tab_readme": "README",
   "repos_tab_info": "Info",
   "repos_tab_file": "Files",

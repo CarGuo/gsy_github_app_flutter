@@ -158,3 +158,37 @@ query getUserPinnedItems($login: String!) {
   }
 }
 ''';
+
+/// 读取一个 user 的 Contribution Calendar（近 12 个月贡献日历）
+///
+/// GitHub 官方 profile 页顶部的贡献热力图，能力对齐说明：
+/// - 官方 SVG 只能拿到"整块图片"，无法给具体 cell 挂点击回调；这份 GraphQL
+///   query 直接返回结构化 `weeks[].contributionDays[]`（date + contributionCount
+///   + color），前端自绘 heatmap 后 cell 可挂 GestureDetector + Tooltip
+/// - 只取渲染 heatmap 所需的最小字段：不取 issueContributions /
+///   commitContributions / pullRequestReviewContributions 明细，那些属于
+///   "点击 cell 后展开当日事件"的进阶需求，本次不做
+/// - `totalContributions` 保留：GSY UI 会显示"共 N 次贡献"小字，与 Sponsors
+///   "共 N 位"标题风格一致
+/// - `... on Organization` 无 contributionsCollection 字段，query 名义限定
+///   `User`：Organization 短路由页面层（[BasePersonState] 挂载条件、
+///   [PersonPage] 的 `_refreshContributionCalendar`）处理，repository 层只做
+///   `user==null` / `contributionsCollection==null` 兜底
+const String readUserContributionCalendar = r'''
+query getUserContributionCalendar($login: String!) {
+  user(login: $login) {
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            date
+            contributionCount
+            color
+          }
+        }
+      }
+    }
+  }
+}
+''';

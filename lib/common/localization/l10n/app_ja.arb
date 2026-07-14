@@ -89,6 +89,15 @@
       }
     }
   },
+  "user_contributions_count": "{count} 件のコントリビューション",
+  "@user_contributions_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_contributions_none": "コントリビューションなし",
   "repos_tab_readme": "README",
   "repos_tab_info": "情報",
   "repos_tab_file": "ファイル",

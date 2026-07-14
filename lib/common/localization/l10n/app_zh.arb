@@ -89,6 +89,15 @@
       }
     }
   },
+  "user_contributions_count": "共 {count} 次贡献",
+  "@user_contributions_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_contributions_none": "无贡献",
   "repos_tab_readme": "详情",
   "repos_tab_info": "动态",
   "repos_tab_file": "文件",

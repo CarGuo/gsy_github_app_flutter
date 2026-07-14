@@ -269,6 +269,20 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String user_contributions_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count contributions',
+      one: '$count contribution',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get user_contributions_none => 'No contributions';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

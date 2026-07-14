@@ -12,6 +12,7 @@ import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
+import 'package:gsy_github_app_flutter/page/user/user_contribution_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/user_pinned_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/user_sponsors_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/user_status_provider.dart';
@@ -107,6 +108,10 @@ class PersonState extends BasePersonState<PersonPage> {
 
     ///刷新 Sponsors：与 pinned/status 同思路，autoDispose family 上手动 invalidate。
     _refreshSponsors();
+
+    ///刷新 Contribution Calendar：与 pinned/status/sponsors 同思路，
+    ///autoDispose family 上手动 invalidate，下次 build 重拉近 12 个月热力图。
+    _refreshContributionCalendar();
     return;
   }
 
@@ -137,6 +142,18 @@ class PersonState extends BasePersonState<PersonPage> {
     }
     // Sponsors 对 User 与 Organization 都可能有值，不做 type 短路
     globalContainer.invalidate(fetchUserSponsorsProvider(login));
+  }
+
+  void _refreshContributionCalendar() {
+    final login = userInfo?.login;
+    if (login == null || login.isEmpty) {
+      return;
+    }
+    // organization 不挂载贡献日历，短路避免多一次无效 GraphQL
+    if (userInfo?.type == "Organization") {
+      return;
+    }
+    globalContainer.invalidate(fetchUserContributionCalendarProvider(login));
   }
 
   ///获取当前用户的关注状态

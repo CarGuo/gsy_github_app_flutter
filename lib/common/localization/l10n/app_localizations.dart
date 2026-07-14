@@ -600,6 +600,18 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{{count} sponsor} other{{count} sponsors}}'**
   String user_sponsors_count(int count);
 
+  /// No description provided for @user_contributions_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{count} contribution} other{{count} contributions}}'**
+  String user_contributions_count(int count);
+
+  /// No description provided for @user_contributions_none.
+  ///
+  /// In en, this message translates to:
+  /// **'No contributions'**
+  String get user_contributions_none;
+
   /// No description provided for @repos_tab_readme.
   ///
   /// In en, this message translates to:

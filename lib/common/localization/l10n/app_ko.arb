@@ -89,6 +89,15 @@
       }
     }
   },
+  "user_contributions_count": "{count}회 기여",
+  "@user_contributions_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_contributions_none": "기여 없음",
   "repos_tab_readme": "README",
   "repos_tab_info": "정보",
   "repos_tab_file": "파일",

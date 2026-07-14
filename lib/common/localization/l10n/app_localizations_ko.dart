@@ -261,6 +261,14 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String user_contributions_count(int count) {
+    return '$count회 기여';
+  }
+
+  @override
+  String get user_contributions_none => '기여 없음';
+
+  @override
   String get repos_tab_readme => 'README';
 
   @override

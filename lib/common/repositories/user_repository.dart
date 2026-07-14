@@ -589,6 +589,57 @@ class UserRepository {
         <String, dynamic>{"totalCount": totalCount, "nodes": nodes}, true);
   }
 
+  /// 获取指定用户的贡献日历（近 12 个月）
+  ///
+  /// 返回 `DataResult` 的 `data` 是一个 map：
+  /// `{totalContributions: int, weeks: List<Map>}`
+  /// 其中 `weeks[i]` 形如 `{contributionDays: List<Map>}`，
+  /// `contributionDays[j]` 形如 `{date: 'YYYY-MM-DD', contributionCount: int, color: '#hex'}`
+  ///
+  /// - 请求失败: `data=null` + result=false
+  /// - 请求成功但 `user==null`（login 不存在 / Organization / 权限不足）：
+  ///   返回空态 `{totalContributions:0, weeks:[]}` + result=true
+  /// - 请求成功但 `contributionsCollection==null` / `contributionCalendar==null`：
+  ///   同上空态处理
+  ///
+  /// UI 侧对 empty / error 统一按占位处理；结构透传给 provider 视图模型解析
+  /// （避免 repository 层引入 domain model 类型，与 [getUserSponsorsRequest]
+  /// 的做法保持一致：repo 层出 Map，provider 层出 view model）。
+  static getUserContributionCalendarRequest(String userName) async {
+    var result = await getUserContributionCalendar(userName);
+    if (result == null || result.data == null) {
+      return DataResult(null, false);
+    }
+    var user = result.data!["user"];
+    if (user == null) {
+      return DataResult(
+          <String, dynamic>{"totalContributions": 0, "weeks": <Map>[]}, true);
+    }
+    var collection = user["contributionsCollection"];
+    if (collection == null) {
+      return DataResult(
+          <String, dynamic>{"totalContributions": 0, "weeks": <Map>[]}, true);
+    }
+    var calendar = collection["contributionCalendar"];
+    if (calendar == null) {
+      return DataResult(
+          <String, dynamic>{"totalContributions": 0, "weeks": <Map>[]}, true);
+    }
+    final int totalContributions =
+        (calendar["totalContributions"] as int?) ?? 0;
+    final rawWeeks = calendar["weeks"];
+    final List<Map<String, dynamic>> weeks = (rawWeeks is List)
+        ? rawWeeks
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList()
+        : <Map<String, dynamic>>[];
+    return DataResult(<String, dynamic>{
+      "totalContributions": totalContributions,
+      "weeks": weeks,
+    }, true);
+  }
+
   static searchTrendUserRequest(String location, {String? cursor}) async {
     var result = await getTrendUser(location, cursor: cursor);
     if (result != null && result.data != null) {

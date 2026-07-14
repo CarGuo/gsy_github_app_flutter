@@ -49,10 +49,6 @@ class CommonUtils {
     return date.toString().substring(0, 10);
   }
 
-  static String getUserChartAddress(String userName) {
-    return "${Address.graphicHost}${GSYColors.primaryValueString.replaceAll("#", "")}/$userName";
-  }
-
   ///日期格式转换
   static String getNewsTimeStr(DateTime date) {
     int subTimes =
