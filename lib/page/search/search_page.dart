@@ -8,6 +8,8 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/code_search_item.dart';
 import 'package:gsy_github_app_flutter/model/issue.dart';
+import 'package:gsy_github_app_flutter/model/repository.dart';
+import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/page/search/search_bloc.dart';
 import 'package:gsy_github_app_flutter/page/search/widget/code_search_item_widget.dart';
@@ -49,15 +51,23 @@ class _SearchPageState extends State<SearchPage>
   List<String> _history = const [];
 
   ///绘制item
+  ///
+  /// issue #942 双保险：即便 selectItemChanged 已经在切 tab 时
+  /// clearData 抹掉旧类型残留，仍有一种"网络请求 late 回填"的场景可能
+  /// 让 dataList 里混入非当前 tab 类型（例如 User tab 请求慢，回填时
+  /// selectIndex 已经切到 Code）。这里对每个分支加 `is` 类型守卫，
+  /// 遇到不匹配的元素直接渲染成空占位，绝不再走 `as` 强 cast。
   _renderItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
     if (searchBLoC.selectIndex == 0) {
+      if (data is! Repository) return const SizedBox.shrink();
       ReposViewModel reposViewModel = ReposViewModel.fromMap(data);
       return ReposItem(reposViewModel, onPressed: () {
         NavigatorUtils.goReposDetail(
             context, reposViewModel.ownerName, reposViewModel.repositoryName);
       });
     } else if (searchBLoC.selectIndex == 1) {
+      if (data is! User) return const SizedBox.shrink();
       return UserItem(UserItemViewModel.fromMap(data), onPressed: () {
         NavigatorUtils.goPerson(
             context, UserItemViewModel.fromMap(data).userName);
@@ -65,7 +75,8 @@ class _SearchPageState extends State<SearchPage>
     } else if (searchBLoC.selectIndex == 2) {
       // Issue 搜索跨仓库，无法像仓库详情页那样传固定的 owner/repo，
       // 需要从每条 issue 的 repository_url 里 split 出 owner/repo。
-      final issue = data as Issue;
+      if (data is! Issue) return const SizedBox.shrink();
+      final issue = data;
       final vm = IssueItemViewModel.fromMap(issue);
       final fullName = CommonUtils.getFullName(issue.repoUrl);
       return IssueItem(
@@ -81,7 +92,8 @@ class _SearchPageState extends State<SearchPage>
     } else if (searchBLoC.selectIndex == 3) {
       // Code 搜索：GSY 定位是只读客户端，代码文件用内嵌 WebView 打开
       // html_url 展示，符合官方 GitHub App 的做法。
-      final code = data as CodeSearchItem;
+      if (data is! CodeSearchItem) return const SizedBox.shrink();
+      final code = data;
       return CodeSearchItemWidget(
         code,
         onPressed: () {
@@ -272,15 +284,27 @@ class _SearchPageState extends State<SearchPage>
                     // searchBLoC.selectIndex，否则用户"先切 tab 再输入"的自然
                     // 顺序会造成 UI 高亮和实际请求类型不一致（Issue tab 亮着
                     // 但实际发的是 repo 请求）。
+                    final changed = searchBLoC.selectIndex != selectIndex;
                     searchBLoC.selectIndex = selectIndex;
                     // 抽屉是按 selectIndex 动态显示分段（隐藏 Code sort、隐藏
                     // User language），tab 一变必须触发 rebuild，否则抽屉里
                     // 拿到的还是旧 selectIndex，隐藏逻辑就错位了。
                     if (mounted) setState(() {});
-                    // 只有已经有搜索词、且当前没在拉数据时才立刻刷新。
                     // 没搜索词的话不需要发请求，等用户输入完再搜。
                     if (searchBLoC.searchText == null ||
                         searchBLoC.searchText?.trim().isEmpty == true) {
+                      return;
+                    }
+                    // issue #942：快速切换 tab 会导致
+                    // "type 'User' is not a subtype of type 'CodeSearchItem'"。
+                    // 根因是原来这里 `if (isLoading) return;` 短路——上一次请求
+                    // 还没结束时，selectIndex 已经变为新 tab（如 Code），但
+                    // dataList 里还留着上一次 tab 的旧类型数据（如 User），
+                    // _renderItem 就会用新 selectIndex 强 cast 旧类型崩溃。
+                    // 修法：只要 tab 实际发生变化，就无条件 clearData +
+                    // showRefreshLoading，把 dataList 立刻抹掉，避免混合类型。
+                    if (changed) {
+                      _resolveSelectIndex();
                       return;
                     }
                     if (isLoading) {
