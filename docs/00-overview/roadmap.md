@@ -270,12 +270,42 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
     - 真机验证：release apk 重装 + 首页动态流滚多屏 + logcat 拉 → 无 Dart 层 Exception，Push/Fork/Watch 路径未回归。**DiscussionEvent 真机路径未覆盖**（GSY 关注账号最近的 events 里没有 discussion 事件，AGENTS.md 禁止造数据），已用单测补齐稀有分支覆盖率
     - 冒烟截图：[tool/dbg/smoke_disc_01_launch.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_disc_01_launch.png) / [tool/dbg/smoke_disc_02_scroll.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_disc_02_scroll.png)
 
-  - ⏳ **内容渲染阶段（下一子任务）**：
-    - bodyHTML 用 [gsy_markdown_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart) 完整渲染
-    - comments/replies 展开、分页
-    - answer 徽标细化、reactions bar
-    - 真机 DiscussionEvent 直连截图（需要等 GSY 关注的某账号产生 discussion 事件，或在仓库详情加 Discussions tab 后从 tab 入口反向验证）
+  - ⏳ **内容渲染阶段 + 仓库详情 tab（下一子任务，2026-07-20 拓宽范围）**：
+    - **本轮范围拓宽拍板**：只做详情页内容渲染不够——GSY 生态里没有 discussion 事件源（见下方 fixture 探针结论），必须在仓库详情页新增 Discussions tab 反向入口，才能真机走通"列表 → 详情"完整路径。
+    - 详情页：bodyHTML 用 [gsy_markdown_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart) 完整渲染
+    - 详情页：comments/replies 展开、分页（复用 GraphQL `pageInfo.endCursor`）
+    - 详情页：answer 徽标细化、reactions bar（`👍/🎉/❤️/🚀/👀/😄/😕/👎` 8 类）
+    - 详情页：release-linked footer / `[deleted]` 边界 / bot 评论徽标
+    - **仓库详情页新增 Discussions tab**（列表页）：入口条件 `repository.has_discussions=true`，无则**不显示 tab**（不显示空态，避免误导用户去点）
     - 冒烟脚本沉淀到 [tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke)
+
+  - **Fixture 契约（2026-07-20 API 探针实测）**：
+
+    **CarGuo 生态全军覆没**：主仓 + 5 个 CarGuo 名下仓库 `has_discussions=false`（未认证 REST 实测）。
+    Discussion fixture **必须走外部妥协项**。
+
+    **首选外部妥协项**：`666ghj/BettaFish`（41k stars, User owner_type, 与 §2.5 DiscussionEvent 来源一致，见 [event_utils.dart#L396-L412](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L396-L412)）
+
+    | Discussion # | Category | Answered | Comments | 覆盖场景 |
+    |---|---|---|---|---|
+    | [#511](https://github.com/666ghj/BettaFish/discussions/511) | 📣 Announcements | - | 2 | Maintainer 徽标 + reactions (👍30🎉11) + upvote=8 + release-linked footer + image embed |
+    | [#417](https://github.com/666ghj/BettaFish/discussions/417) | 🙏 Q&A | ✅ | 1 (+1 reply) | Answered 徽标 + bot 评论 + author self-answer + code block + 嵌套 reply + 完整 markdown |
+    | [#309](https://github.com/666ghj/BettaFish/discussions/309) | 🙏 Q&A | ✅ | 3 | Answered + 长评论链 |
+    | [#418](https://github.com/666ghj/BettaFish/discussions/418) | 🙏 Q&A | ❌ | 9 | Unanswered + 长评论链（最多） |
+    | [#680](https://github.com/666ghj/BettaFish/discussions/680) | 💬 General | - | 1 | 短标题 + 短 body（GraphQL 边界） |
+    | [#121](https://github.com/666ghj/BettaFish/discussions/121) | 💬 General | - | 1 | 孟加拉语标题 `হাই`（多语言渲染） |
+    | [#134](https://github.com/666ghj/BettaFish/discussions/134) | 💬 General | - | 0 | 0 comment 空状态 |
+    | [#697](https://github.com/666ghj/BettaFish/discussions/697) | (deleted) | - | - | 已删除 404 边界（真机进入应显示 `discussion_not_found`） |
+
+    **对照组**（同时探过、`has_discussions=true` 但 GSY 生态无关联，仅作 fallback）：
+    `vercel/next.js` (141k★) / `vuejs/core` (54k★) / `expo/expo` (51k★) / `supabase/supabase` (107k★) / `shadcn-ui/ui` (119k★)
+
+    **明确不选**：`flutter/flutter` / `microsoft/TypeScript` 都 **`has_discussions=false`**，别再往这两个仓库塞探针了。
+
+    **写操作边界**（对齐 [AGENTS.md 允许/禁止清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L169)）：
+    - ✅ 允许：Discussion comment 加 reaction、Discussion comment 加评论
+    - ❌ 禁止：新建 Discussion / 删除 Discussion / 转移分类 / mark as answer（作者行为，属禁止清单里"提交 / dismiss review"同族）
+    - ⚠️ 待定：upvote discussion 本体 —— GraphQL 有 `addUpvote` mutation，边界暧昧（不改讨论内容但影响排序），**本轮不实现**，留在 PR 描述里显式提出后再拍板
 
 - **Notifications 分组视图**
   目前是扁平列表 + reason 筛选。官方 app 是按 repo / subject 折叠。
