@@ -90,6 +90,42 @@ CarSmallGuo received feed 里明确存在的 DiscussionEvent（07-05 03:29）在
 - 对比 API 直连结果，找出被 GSY 丢掉的位置在拉页阶段还是渲染阶段
 - 有可能需要引入 event.id 去重 set + 按 created_at 排序稳定化
 
+#### 2.5.1 本轮尝试 & 失败复盘（2026-07-13）
+
+**尝试的方向**：把 [refreshData](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart#L83-L114) 从"整体覆盖 dataList"改成"以 incoming 打头 + 保留旧 dataList 里不在 incoming id 集合的尾部元素"，试图让下拉刷新不清空 loadMore 累加的 page=2/3。
+
+**为什么失败（reviewer F1 拍板）**：与 [EventRepository.getEventReceived](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/repositories/event_repository.dart#L11-L50) 的 db→net 双阶段模型冲突：
+
+1. [requestRefresh](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart#L14-L24) 会**连续调两次 refreshData**：先 `refreshData(res)`（db 阶段），再 `await doNext(res)` → `refreshData(resNext)`（net 阶段）。
+2. 合并语义下每次都把 incoming 塞到 old 前面 → dataList **单调膨胀**，用户反复下拉 → 长度会累积到实际关注账号一段时间内的**所有** received event。
+3. 尾部老 event 污染 [loadMoreData](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart#L122-L148) 的 seen 集合 → 用户上拉 page=2/3 时，与老尾部时间段重叠的新事件会被判为重复丢弃 → **"分页边界丢事件"症状从 page1↔page2 平移到 page2↔page3+**，并没有真正消失。
+4. `bug25_fixed/` 里的截图看似"深段数据保留"，实际证明的是 dataList 膨胀，不是 §2.5 描述的 JDDavenport DiscussionEvent 真的回到了 UI。
+
+修改已 `git checkout` 撤回，本地状态回到 §2.5 未修状态。
+
+#### 2.5.2 下一轮真正的调研路径（reviewer F6 + roadmap 三条怀疑合并）
+
+按可能性从高到低排：
+
+- **[高] `doNext` 里 `res.next()` 闭包捕获的 `page` 恒为 1**：[event_repository.dart#L18-L38](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/repositories/event_repository.dart#L18-L38) `next()` 是在 `getEventReceived(page: 1)` 时创建的闭包，闭包捕获的 `page` = 1。[dynamic_bloc.dart#L48-L56](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart#L48-L56) 里 `await res.next()` 相当于**再拉一次 page=1**，而非"翻到下一页"。这条要么修 `next()` 让它带 `page+1`，要么直接删掉 doNext 分支（db 阶段就是 page=1，doNext 只是刷新一下"真实的 page=1"就够了，不应把结果当第 2 页用）。
+- **[中] `loadMoreData` 依赖 `dataList` 做 id 去重，但没做 created_at 兜底稳定排序**：GitHub `received_events` 是持续变化的流；两次请求间新事件涌入，会导致 page=N 尾部 event.id 在 page=N+1 头部再次出现（重复），也会导致 page=N+1 里含**已在 page=N 边界外**但时间比 page=N 尾还老的事件被裹进来。当前 loadMoreData id 去重能挡住第一种；第二种目前没保护但**观察到的丢失现象**（JDDavenport DiscussionEvent 从 UI 消失）不是这条能解释的——它本来就在 page=2 第 4 条位置。
+- **[待验证] loadMoreData 处理层实际把 page=2 的数据全部塞进 dataList，但 UI 渲染层因某种原因跳过了 JDDavenport DiscussionEvent**：可能是 EventItem/EventViewModel 对 DiscussionEvent 的处理缺失或抛异常被 catch 吞掉。这条**需要真机 log** 确认。
+
+**首要动作（下一轮先做这个）**：
+
+1. 在 [dynamic_bloc.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/dynamic/dynamic_bloc.dart) 里加**只在 debug build 生效**的 debugPrint，输出：
+   - `requestRefresh` 完成后 dataList 的所有 `id / type / created_at`
+   - `requestLoadMore` 完成后 dataList 新增段的 `id / type / created_at`
+2. 真机跑 debug build，在 CarSmallGuo 账号下做 refresh + loadMore(page=2)，对比 `curl /users/CarSmallGuo/received_events?per_page=20&page=2`。
+3. 判断丢事件发生在**拉页阶段**（bloc 层 dataList 就没有）还是**渲染阶段**（bloc 层有但 UI 没显示）。
+4. 拿到结论后再决定改哪层，禁止在没证据的前提下再动 refreshData。
+
+**禁止**：
+
+- ❌ 在没有 debug log 证据前，再动 `refreshData` / `loadMoreData` 语义
+- ❌ 用真机截图"看数据在不在"当验证——`hfye 关注 666ghj/BettaFish` 与 `JDDavenport DiscussionEvent` 时间戳相近，肉眼滚很难判断是否真的丢
+- ❌ 复用本轮 `bug25_fixed/` 目录的证据（改动已撤回，证据无效）
+
 
 
 ### 2.3 flutter analyze 已收干净（原 7 条 → 0）
