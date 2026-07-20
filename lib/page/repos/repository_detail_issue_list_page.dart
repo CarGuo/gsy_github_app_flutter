@@ -214,13 +214,23 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
             builder: (BuildContext context, double shrinkOffset,
                 bool overlapsContent) {
               ///根据数值计算偏差
+              // 顶部左右外 padding 从 10 收缩到 0，让整个 bar 顶满宽度
               var lr = 10 - shrinkOffset / height * 10;
+              // 圆角半径与选择器同步：max 4 → min 0，避免"卡片圆角/filter 圆形"割裂
               var radius = Radius.circular(4 - shrinkOffset / height * 4);
+              // 选择器和 filter 中间的间隙也随动，防止收缩到底时留出突兀空隙
+              var gap = 8 - shrinkOffset / height * 8;
+              final sharedShape = RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(radius),
+              );
               return SizedBox.expand(
                 child: Padding(
                   padding:
                       EdgeInsets.only(top: lr, bottom: 10, left: lr, right: lr),
+                  // 父级 SizedBox.expand 已给出有界高度，直接靠 stretch 让 filter
+                  // 与选择器共享同一 Row 高度即可，无需再套 IntrinsicHeight。
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Expanded(
                         child: GSYSelectItemWidget(
@@ -234,13 +244,11 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                             _resolveSelectIndex();
                           },
                           margin: const EdgeInsets.all(0.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(radius),
-                          ),
+                          shape: sharedShape,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      _buildFilterButton(context),
+                      SizedBox(width: gap),
+                      _buildFilterButton(context, sharedShape),
                     ],
                   ),
                 ),
@@ -250,41 +258,51 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     ];
   }
 
-  ///筛选按钮（漏斗图标），当有活跃筛选时叠加小红点
-  Widget _buildFilterButton(BuildContext context) {
+  ///筛选按钮
+  ///
+  /// 与左侧 [GSYSelectItemWidget] 共用同一份 [shape]、同颜色（primaryColor）、
+  /// 同 elevation(5.0)、同高度（依靠外层 Row 拉伸），滑动时圆角同步从 4 → 0，
+  /// 让"选择器 + filter"看起来是**一个整体 bar 的两段**，而不是"扁卡片 + 悬浮圆钮"。
+  /// 有活跃筛选时右上叠一颗小红点作为轻量指示。
+  Widget _buildFilterButton(
+      BuildContext context, RoundedRectangleBorder shape) {
     final hasActiveFilter = _sort != 'created' ||
         _direction != 'desc' ||
         _selectedLabels.isNotEmpty;
     return Material(
       color: Theme.of(context).primaryColor,
-      shape: const CircleBorder(),
-      elevation: 4,
+      shape: shape,
+      elevation: 5.0,
       child: Tooltip(
         message: context.l10n.repos_issue_filter,
         child: InkWell(
-          customBorder: const CircleBorder(),
+          customBorder: shape,
           onTap: _openFilterSheet,
           child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(Icons.filter_list,
-                    color: GSYColors.white, size: 22),
-                if (hasActiveFilter)
-                  Positioned(
-                    right: -2,
-                    top: -2,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        color: Colors.redAccent,
-                        shape: BoxShape.circle,
+            // 只留水平 padding，垂直方向由外层 Row(stretch) 拉伸对齐
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Align(
+              alignment: Alignment.center,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  const Icon(Icons.filter_list,
+                      color: GSYColors.white, size: 22),
+                  if (hasActiveFilter)
+                    Positioned(
+                      right: -2,
+                      top: -2,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.redAccent,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
