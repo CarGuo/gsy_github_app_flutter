@@ -15,6 +15,58 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/markdown_html_transformer.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart';
 
+const String _kGithubUserAgent =
+    'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) gsy_github_app_flutter/1.0';
+
+const Map<String, String> _kGithubImageHeaders = {
+  'User-Agent': _kGithubUserAgent,
+  'Accept': 'image/*,*/*;q=0.8',
+};
+
+bool _isGithubPrivateUserImage(Uri uri) {
+  final host = uri.host.toLowerCase();
+  return host == 'private-user-images.githubusercontent.com' ||
+      host.endsWith('.githubusercontent.com');
+}
+
+Widget _networkImageErrorFallback(Uri uri, double? width, double? height) {
+  return Builder(
+    builder: (context) {
+      final theme = Theme.of(context);
+      final label = uri.pathSegments.isNotEmpty
+          ? uri.pathSegments.last
+          : uri.toString();
+      return Container(
+        width: width,
+        height: height,
+        constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
+          border: Border.all(color: GSYColors.subTextColor, width: 0.5),
+          borderRadius: BorderRadius.circular(4),
+          color: theme.cardColor,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.broken_image_outlined,
+                size: 18, color: theme.iconTheme.color?.withValues(alpha: 0.6)),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GSYConstant.smallSubText,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 /// 代码详情
 /// Created by guoshuyu
 /// Date: 2018-07-24
@@ -210,19 +262,27 @@ class GSYMarkdownWidget extends StatelessWidget {
       }
 
       // --- 3. 处理 raw=true ---
+      // 说明：`raw=true` 只对 `github.com/<owner>/<repo>/blob/...` 一类源站 URL 有意义
+      // （把 blob 视图转成 raw 视图）。对已经落到 `*.githubusercontent.com` 的直传 CDN
+      // 来说：user-images / raw / camo 都不认这个参数，而 `private-user-images` 的 JWT
+      // 校验会把任何附加 query 视为签名不匹配直接 403，因此这里对 githubusercontent 系
+      // 域名一律跳过 raw=true 追加。
       Uri finalUri;
       try {
         finalUri = Uri.parse(processedUrl);
-        Map<String, dynamic> queryParameters =
-            Map.from(finalUri.queryParametersAll); // 使用 All 支持同名参数，虽然这里不一定需要
+        final skipRawParam = _isGithubPrivateUserImage(finalUri);
+        if (!skipRawParam) {
+          Map<String, dynamic> queryParameters =
+              Map.from(finalUri.queryParametersAll); // 使用 All 支持同名参数，虽然这里不一定需要
 
-        // 检查 'raw' 参数是否已经是 'true'
-        if (queryParameters['raw']?.contains('true') != true) {
-          queryParameters['raw'] = 'true'; // 添加或覆盖 raw 参数
-          finalUri = finalUri.replace(queryParameters: queryParameters);
-          processedUrl = finalUri.toString();
+          // 检查 'raw' 参数是否已经是 'true'
+          if (queryParameters['raw']?.contains('true') != true) {
+            queryParameters['raw'] = 'true'; // 添加或覆盖 raw 参数
+            finalUri = finalUri.replace(queryParameters: queryParameters);
+            processedUrl = finalUri.toString();
+          }
+          // 注意: Uri.replace 会自动处理 ? 和 & 的添加
         }
-        // 注意: Uri.replace 会自动处理 ? 和 & 的添加
       } catch (e) {
         printLog(
             'Warning: Could not parse final URL "$processedUrl" for adding raw=true. Skipping. Error: $e');
@@ -290,6 +350,10 @@ Widget kDefaultImageBuilder(
     return const SizedBox();
   }
   if (uri.scheme == 'http' || uri.scheme == 'https') {
+    // 对 GitHub 系直传 CDN（含 private-user-images JWT 场景）显式带 User-Agent，
+    // 部分 CDN 会拒绝 Dart 默认 UA；对其它站点保留空 headers 走默认行为，
+    // 避免误伤原本无需 UA 的第三方图床。
+    final headers = _isGithubPrivateUserImage(uri) ? _kGithubImageHeaders : null;
     return FutureBuilder<bool>(
       future: _isUrlPointingToSvgDio(uri.toString()),
       builder: (c, snapshot) {
@@ -297,6 +361,7 @@ Widget kDefaultImageBuilder(
           if (snapshot.data == true) {
             return SvgPicture.network(
               uri.toString(),
+              headers: headers,
               // Add fallback dimensions
               width: width ?? 24.0,
               height: height ?? 24.0,
@@ -308,7 +373,16 @@ Widget kDefaultImageBuilder(
               ),
             );
           } else {
-            return Image.network(uri.toString(), width: width, height: height);
+            return Image.network(
+              uri.toString(),
+              width: width,
+              height: height,
+              headers: headers,
+              errorBuilder: (context, error, stackTrace) {
+                printLog('Image.network failed for $uri: $error');
+                return _networkImageErrorFallback(uri, width, height);
+              },
+            );
           }
         } else {
           return const SizedBox();
@@ -324,7 +398,18 @@ Widget kDefaultImageBuilder(
         ? Uri.parse(imageDirectory + uri.toString())
         : uri;
     if (fileUri.scheme == 'http' || fileUri.scheme == 'https') {
-      return Image.network(fileUri.toString(), width: width, height: height);
+      final headers =
+          _isGithubPrivateUserImage(fileUri) ? _kGithubImageHeaders : null;
+      return Image.network(
+        fileUri.toString(),
+        width: width,
+        height: height,
+        headers: headers,
+        errorBuilder: (context, error, stackTrace) {
+          printLog('Image.network failed for $fileUri: $error');
+          return _networkImageErrorFallback(fileUri, width, height);
+        },
+      );
     } else {
       return Image.file(File.fromUri(fileUri), width: width, height: height);
     }
@@ -375,6 +460,9 @@ Future<bool> _isUrlPointingToSvgDio(String urlString,
   final dio = Dio(BaseOptions(
     connectTimeout: timeout, // 连接超时
     receiveTimeout: timeout, // 接收数据超时
+    // 对 GitHub 系 CDN（含 private-user-images JWT）显式带 UA，
+    // 避免默认 Dart UA 被 CDN 拒（表现为 sniffing 阶段就 403）。
+    headers: _isGithubPrivateUserImage(uri) ? _kGithubImageHeaders : null,
     // 不自动跟随重定向，如果需要检查原始响应头的话。
     // 但通常我们关心最终资源，所以让它跟随重定向（默认行为）
     // followRedirects: false,
