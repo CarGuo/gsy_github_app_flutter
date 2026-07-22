@@ -22,6 +22,9 @@
   "oauth_text": "OAuth",
   "login_out": "로그아웃",
   "login_deprecated": "비밀번호 인증 API는 2020년 11월 13일에 Github에서 제거됩니다",
+  "token_login_text": "Token 로그인",
+  "token_login_hint": "Personal Access Token 붙여넣기",
+  "token_login_empty": "먼저 Personal Access Token을 입력하세요",
   "home_reply": "피드백",
   "home_change_language": "언어",
   "home_vibration": "진동 피드백",
@@ -107,6 +110,23 @@
   "repos_tab_issue_all": "전체",
   "repos_tab_issue_open": "열림",
   "repos_tab_issue_closed": "닫힘",
+  "repos_tab_discussion": "토론",
+  "discussion_list_disabled": "이 저장소에서는 토론이 활성화되어 있지 않습니다.",
+  "discussion_answered_badge": "답변됨",
+  "discussion_author_ghost": "탈퇴한 사용자",
+  "discussion_load_failed": "토론을 불러오지 못했습니다",
+  "discussion_not_found": "토론을 찾을 수 없습니다",
+  "discussion_retry": "다시 시도",
+  "discussion_empty_body": "설명이 제공되지 않았습니다.",
+  "discussion_skeleton_notice": "본문 리치 렌더링은 이후 릴리스에서 개선됩니다. 툴바 링크를 눌러 GitHub에서 확인하세요.",
+  "discussion_comments_count": "{count, plural, =0{댓글 없음} =1{댓글 {count}개} other{댓글 {count}개}}",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "repos_issue_filter": "필터",
   "repos_issue_filter_title": "필터 및 정렬",
   "repos_issue_filter_sort": "정렬 기준",

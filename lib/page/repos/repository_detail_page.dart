@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/repository_ql.dart';
+import 'package:gsy_github_app_flutter/page/discussion/discussion_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_issue_list_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_readme_page.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_file_list_page.dart';
@@ -58,11 +59,15 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   late ReposDetailProvider reposDetailProvider;
 
   ///渲染 Tab 的 Item
-  _renderTabItem() {
+  ///
+  /// [showDiscussion] 为 true 时在 issue tab 之后插入 discussion tab。
+  /// 与 [_buildTabViews] 保持完全一致的顺序，避免"文案/内容错位"。
+  _renderTabItem({required bool showDiscussion}) {
     var itemList = [
       context.l10n.repos_tab_info,
       context.l10n.repos_tab_readme,
       context.l10n.repos_tab_issue,
+      if (showDiscussion) context.l10n.repos_tab_discussion,
       context.l10n.repos_tab_file,
     ];
     renderItem(String item, int i) {
@@ -80,6 +85,20 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       list.add(renderItem(itemList[i], i));
     }
     return list;
+  }
+
+  ///渲染 Tab 对应的视图。
+  ///
+  /// 顺序：Info → Readme → Issue → (Discussion 条件) → File
+  /// 必须与 [_renderTabItem] 的顺序完全一致，否则会出现"点 issue tab 却看到 file"
+  List<Widget> _buildTabViews({required bool showDiscussion}) {
+    return [
+      ReposDetailInfoPage(key: infoListKey),
+      RepositoryDetailReadmePage(key: readmeKey),
+      RepositoryDetailIssuePage(key: issueListKey),
+      if (showDiscussion) const DiscussionListPage(),
+      RepositoryDetailFileListPage(key: fileListKey),
+    ];
   }
 
   ///title 显示更多弹出item
@@ -218,19 +237,28 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             : Container();
 
         ///绘制顶部 tab 控件
+        //
+        // Discussions tab 仅在 provider 加载到 hasDiscussionsEnabled == true 时才显示。
+        // 首次进入 → provider.repository 为 null → showDiscussion=false → tab 数与旧版一致；
+        // provider 加载完毕后触发 Consumer 重建，若目标仓库开启了 discussions 会自动多出该 tab。
+        // 参见 fixture 契约（roadmap §3.1）：CarGuo 全部仓库 false，666ghj/BettaFish true。
+        final showDiscussion = provider.repository?.hasDiscussionsEnabled == true;
         return GSYTabBarWidget(
+          // ValueKey(showDiscussion)：`GSYTabBarWidget` 内部 `_tabController`
+          // 只在 `initState` 根据 `tabItems.length` 创建，没有 `didUpdateWidget`
+          // 覆写。首次进入时 `provider.repository==null` → 4 tabs，加载完毕后
+          // Consumer 触发 rebuild → 若目标仓库启用 discussions 则变为 5 tabs，
+          // 此时 `TabController.length(4) != tabs(5)` 会命中 Flutter 断言。
+          // 加 key 让 4→5 切换整个 widget 重建 → 新的 `_GSYTabBarState` +
+          // 新的 controller，规避跨模块改 [gsy_tabbar_widget.dart]。
+          // 副作用：切换瞬间其它 tab 的 State 会被丢弃，但这只在 repository
+          // 首次到货那一次发生（此前 tab 内容也才刚渲染），代价可接受。
+          key: ValueKey<bool>(showDiscussion),
           type: TabType.top,
-          tabItems: _renderTabItem(),
+          tabItems: _renderTabItem(showDiscussion: showDiscussion),
           resizeToAvoidBottomPadding: false,
           //footerButtons: model.footerButtons,
-          tabViews: [
-            ReposDetailInfoPage(key: infoListKey),
-            RepositoryDetailReadmePage(key: readmeKey),
-            RepositoryDetailIssuePage(
-              key: issueListKey,
-            ),
-            RepositoryDetailFileListPage(key: fileListKey),
-          ],
+          tabViews: _buildTabViews(showDiscussion: showDiscussion),
           backgroundColor: GSYColors.primarySwatch,
           indicatorColor: GSYColors.white,
           title: GSYTitleBar(

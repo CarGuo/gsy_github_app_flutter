@@ -34,6 +34,7 @@ fragment comparisonFields on Repository {
       totalCount
     }
     hasIssuesEnabled,
+    hasDiscussionsEnabled,
     viewerHasStarred,
     viewerSubscription,
     hasIssuesEnabled,

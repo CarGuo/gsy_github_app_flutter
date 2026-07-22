@@ -78,6 +78,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get login_deprecated => '비밀번호 인증 API는 2020년 11월 13일에 Github에서 제거됩니다';
 
   @override
+  String get token_login_text => 'Token 로그인';
+
+  @override
+  String get token_login_hint => 'Personal Access Token 붙여넣기';
+
+  @override
+  String get token_login_empty => '먼저 Personal Access Token을 입력하세요';
+
+  @override
   String get home_reply => '피드백';
 
   @override
@@ -294,6 +303,39 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get repos_tab_issue_closed => '닫힘';
+
+  @override
+  String get repos_tab_discussion => '토론';
+
+  @override
+  String get discussion_list_disabled => '이 저장소에서는 토론이 활성화되어 있지 않습니다.';
+
+  @override
+  String get discussion_answered_badge => '답변 완료';
+
+  @override
+  String get discussion_author_ghost => '탈퇴한 사용자';
+
+  @override
+  String get discussion_load_failed => 'Discussion 을 불러오지 못했습니다';
+
+  @override
+  String get discussion_not_found => 'Discussion 을 찾을 수 없습니다';
+
+  @override
+  String get discussion_retry => '다시 시도';
+
+  @override
+  String get discussion_empty_body => '이 Discussion 에는 본문이 없습니다';
+
+  @override
+  String get discussion_skeleton_notice =>
+      '댓글 / 투표 / 답변 표시 등의 상호작용은 후속 서브태스크에서 추가됩니다 (roadmap §3.1).';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '댓글 $count 개';
+  }
 
   @override
   String get repos_issue_filter => '필터';
@@ -1034,30 +1076,6 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String event_dynamic_pull_request_review_thread(String action, String repo) {
     return '$repo 에서 PR 리뷰 스레드를 $action 했습니다';
-  }
-
-  @override
-  String get discussion_load_failed => 'Discussion 을 불러오지 못했습니다';
-
-  @override
-  String get discussion_not_found => 'Discussion 을 찾을 수 없습니다';
-
-  @override
-  String get discussion_retry => '다시 시도';
-
-  @override
-  String get discussion_answered_badge => '답변 완료';
-
-  @override
-  String get discussion_empty_body => '이 Discussion 에는 본문이 없습니다';
-
-  @override
-  String get discussion_skeleton_notice =>
-      '댓글 / 투표 / 답변 표시 등의 상호작용은 후속 서브태스크에서 추가됩니다 (roadmap §3.1).';
-
-  @override
-  String discussion_comments_count(int count) {
-    return '댓글 $count 개';
   }
 
   @override

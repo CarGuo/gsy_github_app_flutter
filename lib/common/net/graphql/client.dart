@@ -61,6 +61,29 @@ Future<QueryResult>? getDiscussion(
   return await _innerClient!.query(options);
 }
 
+/// 读取指定仓库的 Discussions 列表（按 UPDATED_AT DESC 排序）。
+///
+/// - roadmap §3.1 "内容渲染阶段 + 仓库详情 tab" 第一步，为新增的
+///   [DiscussionListPage] 提供数据源
+/// - `after` 为 null 时拉第一页，非空时拉下一页（配合 pageInfo.endCursor）
+/// - `first` 默认 20：与既有 issue 列表 pageSize 保持一致，方便真机对照
+/// - 走 [FetchPolicy.noCache]：Discussions 列表变化快（评论、upvote），不希望
+///   用户下拉刷新还看到过期缓存
+Future<QueryResult>? getRepositoryDiscussions(
+    String owner, String name,
+    {String? after, int first = 20}) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readDiscussionList),
+      variables: <String, dynamic>{
+        'owner': owner,
+        'name': name,
+        'first': first,
+        'after': after,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
 /// 读取指定 PR 下的 review threads（首层 50 条，每条内 comment 首层 100 条）。
 ///
 /// 只承载 roadmap §4.1 中"mark as resolved / unresolved"允许项定位 thread 所需的

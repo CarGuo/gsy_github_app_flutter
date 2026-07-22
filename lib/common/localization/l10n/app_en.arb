@@ -22,6 +22,9 @@
   "oauth_text": "OAuth",
   "login_out": "Logout",
   "login_deprecated": "The API via password authentication will remove on November 13, 2020 by Github",
+  "token_login_text": "Token Login",
+  "token_login_hint": "Paste your Personal Access Token",
+  "token_login_empty": "Please enter your Personal Access Token first",
   "home_reply": "Feedback",
   "home_change_language": "Language",
   "home_vibration": "Vibration",
@@ -107,6 +110,23 @@
   "repos_tab_issue_all": "All",
   "repos_tab_issue_open": "Open",
   "repos_tab_issue_closed": "Closed",
+  "repos_tab_discussion": "Discussion",
+  "discussion_list_disabled": "Discussions are not enabled for this repository.",
+  "discussion_answered_badge": "Answered",
+  "discussion_author_ghost": "ghost",
+  "discussion_load_failed": "Failed to load discussion",
+  "discussion_not_found": "Discussion not found",
+  "discussion_retry": "Retry",
+  "discussion_empty_body": "No description provided.",
+  "discussion_skeleton_notice": "Rich body rendering will be enhanced in a follow-up. Tap the toolbar link to view on GitHub.",
+  "discussion_comments_count": "{count, plural, =0{No comments} =1{{count} comment} other{{count} comments}}",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "repos_issue_filter": "Filter",
   "repos_issue_filter_title": "Filter & Sort",
   "repos_issue_filter_sort": "Sort by",

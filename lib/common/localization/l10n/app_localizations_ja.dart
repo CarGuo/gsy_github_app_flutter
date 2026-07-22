@@ -78,6 +78,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get login_deprecated => 'パスワード認証APIは2020年11月13日にGithubによって削除されます';
 
   @override
+  String get token_login_text => 'Token ログイン';
+
+  @override
+  String get token_login_hint => 'Personal Access Token を貼り付け';
+
+  @override
+  String get token_login_empty => '先に Personal Access Token を入力してください';
+
+  @override
   String get home_reply => 'フィードバック';
 
   @override
@@ -295,6 +304,39 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get repos_tab_issue_closed => 'クローズ';
+
+  @override
+  String get repos_tab_discussion => 'ディスカッション';
+
+  @override
+  String get discussion_list_disabled => 'このリポジトリではディスカッションが有効になっていません。';
+
+  @override
+  String get discussion_answered_badge => '回答済み';
+
+  @override
+  String get discussion_author_ghost => 'ゴースト';
+
+  @override
+  String get discussion_load_failed => 'Discussion の読み込みに失敗しました';
+
+  @override
+  String get discussion_not_found => 'Discussion が見つかりません';
+
+  @override
+  String get discussion_retry => '再試行';
+
+  @override
+  String get discussion_empty_body => 'この Discussion に本文はありません';
+
+  @override
+  String get discussion_skeleton_notice =>
+      'コメント / 投票 / 回答マークなどのインタラクションは後続のサブタスクで対応します（roadmap §3.1）。';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '$count 件のコメント';
+  }
 
   @override
   String get repos_issue_filter => '絞り込み';
@@ -1035,30 +1077,6 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String event_dynamic_pull_request_review_thread(String action, String repo) {
     return '$repo で PR レビュースレッドを $action しました';
-  }
-
-  @override
-  String get discussion_load_failed => 'Discussion の読み込みに失敗しました';
-
-  @override
-  String get discussion_not_found => 'Discussion が見つかりません';
-
-  @override
-  String get discussion_retry => '再試行';
-
-  @override
-  String get discussion_answered_badge => '回答済み';
-
-  @override
-  String get discussion_empty_body => 'この Discussion に本文はありません';
-
-  @override
-  String get discussion_skeleton_notice =>
-      'コメント / 投票 / 回答マークなどのインタラクションは後続のサブタスクで対応します（roadmap §3.1）。';
-
-  @override
-  String discussion_comments_count(int count) {
-    return '$count 件のコメント';
   }
 
   @override

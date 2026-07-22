@@ -98,6 +98,10 @@
 ### 强制流程
 
 1. `flutter run` 或已装机的 build 起到已连接设备。
+   **重要：装机一律用 `adb install -r <apk路径>`，禁止使用 `flutter install`。**
+   原因见下方"禁止行为"条目——`flutter install` 内部会先执行 `adb uninstall`，
+   把应用数据（含 SharedPreferences 里的 `TOKEN_KEY`）一并清空，等同强制登出，
+   会直接毁掉真机 fixture 状态。
 2. 按上表挑工具组合抓证据；`mcp_dart` 不可用时直接切 `adb`，不视为破例。
 3. 走一遍改动**直接覆盖**的路径（例：改了 PR timeline 事件行 → 真的进 PR 详情页把
    timeline 滚一遍，抓到目标文案的截图或 `get_text` 输出）。
@@ -129,6 +133,15 @@
 - ❌ 让用户手动操作 UI 代替 author 自测（除非物理上无法自动化，且已说明原因）
 - ❌ 拿"日志里没 Exception"当作行为正确的证据
 - ❌ 只把截图放在自己上下文里而不写路径，导致 reviewer 拿不到证据
+- ❌ **使用 `flutter install` 装机**：该命令内部走 `adb uninstall <package>` +
+  `adb install`，会把 `/data/data/<pkg>/` 下所有数据（含 SharedPreferences 里的
+  `TOKEN_KEY`）一起抹掉，等同把用户从 fixture 账号强制登出。
+  正确姿势：`flutter build apk --release --target-platform=android-arm64 --no-shrink`
+  后走 `adb install -r <apk 路径>`（`-r` 表示 reinstall，保留 app 数据）。
+  历史教训：2026 装 discussions 冒烟版本时用了 `flutter install`，导致
+  CarSmallGuo 的 gho\_ token 从设备上被清空，reviewer 侧无法直接复核，属于
+  **author 责任事故**。此后但凡装机脚本 / 命令里出现 `flutter install`，
+  reviewer 一律直接打回。
 
 ## 当前已知约束
 

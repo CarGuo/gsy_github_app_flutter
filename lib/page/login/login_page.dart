@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gsy_github_app_flutter/common/config/config.dart';
-import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
@@ -19,6 +17,13 @@ import 'package:gsy_github_app_flutter/widget/particle/particle_widget.dart';
 /// 登录页
 /// Created by guoshuyu
 /// Date: 2018-07-16
+///
+/// 2026 更新：GitHub 已于 2020-11-13 关停 basic-auth 密码 API，原账号/密码
+/// 登录（[LoginBLoC.loginIn]）保留在 [LoginAction] 语义中但已不可用。
+/// 主入口改为：
+///   1. Token 登录（Personal Access Token 手输）
+///   2. OAuth 登录（webview 授权拿 code 换 access_token）
+/// 两条路径最终在 [UserRepository] 层汇聚到同一个 token 落地流程。
 class LoginPage extends StatefulWidget {
   static const String sName = "login";
 
@@ -71,23 +76,17 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                 width: 90.0,
                                 height: 90.0),
                             const Padding(padding: EdgeInsets.all(10.0)),
+                            // Token 输入框：既支持"Personal Access Token"原文
+                            // 粘贴，也兼容用户手抖带上的 "token xxx" / "Bearer xxx"
+                            // 前缀（在 UserRepository.loginWithToken 内做清洗）。
                             GSYInputWidget(
-                              hintText: context.l10n.login_username_hint_text,
-                              iconData: GSYICons.LOGIN_USER,
-                              onChanged: (String value) {
-                                _userName = value;
-                              },
-                              controller: userController,
-                            ),
-                            const Padding(padding: EdgeInsets.all(10.0)),
-                            GSYInputWidget(
-                              hintText: context.l10n.login_password_hint_text,
+                              hintText: context.l10n.token_login_hint,
                               iconData: GSYICons.LOGIN_PW,
                               obscureText: true,
                               onChanged: (String value) {
-                                _password = value;
+                                _token = value;
                               },
-                              controller: pwController,
+                              controller: tokenController,
                             ),
                             const Padding(padding: EdgeInsets.all(10.0)),
                             SizedBox(
@@ -96,11 +95,11 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                 children: <Widget>[
                                   Expanded(
                                     child: GSYFlexButton(
-                                      text: context.l10n.login_text,
+                                      text: context.l10n.token_login_text,
                                       color: Theme.of(context).primaryColor,
                                       textColor: GSYColors.textWhite,
                                       fontSize: 16,
-                                      onPress: loginIn,
+                                      onPress: tokenLogin,
                                     ),
                                   ),
                                   const SizedBox(
@@ -146,55 +145,36 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
 }
 
 mixin LoginBLoC on State<LoginPage> {
-  final TextEditingController userController = TextEditingController();
+  final TextEditingController tokenController = TextEditingController();
 
-  final TextEditingController pwController = TextEditingController();
-
-  String? _userName = "";
-
-  String? _password = "";
+  String _token = "";
 
   @override
   void initState() {
     super.initState();
-    initParams();
   }
 
   @override
   void dispose() {
+    tokenController.dispose();
     super.dispose();
-    userController.removeListener(_usernameChange);
-    pwController.removeListener(_passwordChange);
   }
 
-  _usernameChange() {
-    _userName = userController.text;
-  }
-
-  _passwordChange() {
-    _password = pwController.text;
-  }
-
-  initParams() async {
-    _userName = await LocalStorage.get(Config.USER_NAME_KEY);
-    _password = await LocalStorage.get(Config.PW_KEY);
-    userController.value = TextEditingValue(text: _userName ?? "");
-    pwController.value = TextEditingValue(text: _password ?? "");
-  }
-
-  loginIn() async {
-    showToast(context.l10n.login_deprecated);
-    return;
-    // if (_userName == null || _userName.isEmpty) {
-    //   return;
-    // }
-    // if (_password == null || _password.isEmpty) {
-    //   return;
-    // }
-    //
-    // ///通过 redux 去执行登陆流程
-    // StoreProvider.of<GSYState>(context)
-    //     .dispatch(LoginAction(context, _userName, _password));
+  /// PAT 登录：把用户手输 token 派发到 [TokenLoginAction]。
+  ///
+  /// 校验逻辑：
+  /// - 前置：输入非空（这里挡一层，避免走一趟 loading dialog 才提示为空）
+  /// - 落地：由 [UserRepository.loginWithToken] 做前缀清洗 + `/user` 探活
+  /// - 失败：epic 会 dispatch [LoginSuccessAction(false)]，同时 repository
+  ///   已回滚不合法的 token，避免留在 LocalStorage 里污染下一次冷启动
+  tokenLogin() async {
+    final trimmed = _token.trim();
+    if (trimmed.isEmpty) {
+      showToast(context.l10n.token_login_empty);
+      return;
+    }
+    StoreProvider.of<GSYState>(context)
+        .dispatch(TokenLoginAction(context, trimmed));
   }
 
   oauthLogin() async {

@@ -43,6 +43,7 @@ final List<Middleware<GSYState>> middleware = [
   EpicMiddleware<GSYState>(loginEpic),
   EpicMiddleware<GSYState>(userInfoEpic),
   EpicMiddleware<GSYState>(oauthEpic),
+  EpicMiddleware<GSYState>(tokenLoginEpic),
   UserInfoMiddleware(),
   LoginMiddleware(),
 ];

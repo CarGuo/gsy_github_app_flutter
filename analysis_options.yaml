@@ -3,6 +3,14 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
     mixin_inherits_from_not_object: ignore
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
   plugins:
     - custom_lint
 

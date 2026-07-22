@@ -65,6 +65,19 @@ class OAuthAction {
   OAuthAction(this.context, this.code);
 }
 
+/// PAT/token 直接登录 action。
+///
+/// 与 [OAuthAction] 语义同族：拿到一个"可以直接当 Authorization 头用"的 token，
+/// 差别只是 token 来源不同（OAuth webview 拿 code 交换 vs. 用户手输 PAT）。
+/// 走独立 epic 只是为了区分 [UserRepository.loginWithToken] 的调用点与失败语义，
+/// 让 UI 侧的 loading dialog / toast 都能沿用同一套 [LoginSuccessAction] 分支。
+class TokenLoginAction {
+  final BuildContext context;
+  final String token;
+
+  TokenLoginAction(this.context, this.token);
+}
+
 ///中间过程处理
 class LoginMiddleware implements MiddlewareClass<GSYState> {
   @override
@@ -108,4 +121,23 @@ Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
   return actions
       .whereType<OAuthAction>()
       .switchMap((action) => loginIn(action, store));
+}
+
+/// PAT/token 登录 epic。
+///
+/// 与 [oauthEpic] 结构一致：显示 loading → 走 repository → 关 loading →
+/// 派发 [LoginSuccessAction]。区别只是数据源是用户手输的 token，
+/// 而失败时 [UserRepository.loginWithToken] 会自动把不合法的 token 回滚清掉。
+Stream<dynamic> tokenLoginEpic(
+    Stream<dynamic> actions, EpicStore<GSYState> store) {
+  Stream<dynamic> doLogin(
+      TokenLoginAction action, EpicStore<GSYState> store) async* {
+    CommonUtils.showLoadingDialog(action.context);
+    var res = await UserRepository.loginWithToken(action.token, store);
+    Navigator.pop(action.context);
+    yield LoginSuccessAction(action.context, (res != null && res.result));
+  }
+  return actions
+      .whereType<TokenLoginAction>()
+      .switchMap((action) => doLogin(action, store));
 }

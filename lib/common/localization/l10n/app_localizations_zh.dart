@@ -78,6 +78,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get login_deprecated => '密码登陆API将在2020年11月13日被Github移除';
 
   @override
+  String get token_login_text => 'Token 登录';
+
+  @override
+  String get token_login_hint => '粘贴 Personal Access Token';
+
+  @override
+  String get token_login_empty => '请先输入 Personal Access Token';
+
+  @override
   String get home_reply => '问题反馈';
 
   @override
@@ -294,6 +303,39 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get repos_tab_issue_closed => '关闭';
+
+  @override
+  String get repos_tab_discussion => '讨论';
+
+  @override
+  String get discussion_list_disabled => '该仓库未启用讨论功能';
+
+  @override
+  String get discussion_answered_badge => '已解答';
+
+  @override
+  String get discussion_author_ghost => '已注销';
+
+  @override
+  String get discussion_load_failed => '加载 Discussion 失败';
+
+  @override
+  String get discussion_not_found => '找不到该 Discussion';
+
+  @override
+  String get discussion_retry => '重试';
+
+  @override
+  String get discussion_empty_body => '该 Discussion 正文为空';
+
+  @override
+  String get discussion_skeleton_notice =>
+      '评论、投票、标记回答等交互能力将在后续子任务里补齐（roadmap §3.1）。';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '$count 条评论';
+  }
 
   @override
   String get repos_issue_filter => '筛选';
@@ -1034,30 +1076,6 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String event_dynamic_pull_request_review_thread(String action, String repo) {
     return '在 $repo $action PR 评审讨论串';
-  }
-
-  @override
-  String get discussion_load_failed => '加载 Discussion 失败';
-
-  @override
-  String get discussion_not_found => '找不到该 Discussion';
-
-  @override
-  String get discussion_retry => '重试';
-
-  @override
-  String get discussion_answered_badge => '已解答';
-
-  @override
-  String get discussion_empty_body => '该 Discussion 正文为空';
-
-  @override
-  String get discussion_skeleton_notice =>
-      '评论、投票、标记回答等交互能力将在后续子任务里补齐（roadmap §3.1）。';
-
-  @override
-  String discussion_comments_count(int count) {
-    return '$count 条评论';
   }
 
   @override

@@ -13,6 +13,7 @@ class RepositoryQL {
   final bool? isFork;
   final bool? isStared;
   final bool? hasIssuesEnabled;
+  final bool? hasDiscussionsEnabled;
   final String? defaultBranch;
   final String? isSubscription;
   final String? language;
@@ -40,6 +41,7 @@ class RepositoryQL {
     this.isFork,
     this.isStared,
     this.hasIssuesEnabled,
+    this.hasDiscussionsEnabled,
     this.defaultBranch,
     this.isSubscription,
     this.language,
@@ -72,6 +74,7 @@ class RepositoryQL {
       defaultBranch: map["defaultBranchRef"] != null ? map["defaultBranchRef"]["name"] : null,
       reposName: map["name"],
       hasIssuesEnabled: map["hasIssuesEnabled"],
+      hasDiscussionsEnabled: map["hasDiscussionsEnabled"],
       reposFullName: map["nameWithOwner"],
       ownerName: map["owner"]["login"],
       ownerAvatarUrl: map["owner"]["avatarUrl"],
@@ -125,6 +128,7 @@ class RepositoryQL {
       },
       "name": repositoryQL.reposName,
       "hasIssuesEnabled": repositoryQL.hasIssuesEnabled,
+      "hasDiscussionsEnabled": repositoryQL.hasDiscussionsEnabled,
       "nameWithOwner": repositoryQL.reposFullName,
       "owner": {
         "login": repositoryQL.ownerName,

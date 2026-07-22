@@ -22,6 +22,9 @@
   "oauth_text": "OAuth",
   "login_out": "ログアウト",
   "login_deprecated": "パスワード認証APIは2020年11月13日にGithubによって削除されます",
+  "token_login_text": "Token ログイン",
+  "token_login_hint": "Personal Access Token を貼り付け",
+  "token_login_empty": "先に Personal Access Token を入力してください",
   "home_reply": "フィードバック",
   "home_change_language": "言語",
   "home_vibration": "振動フィードバック",
@@ -107,6 +110,23 @@
   "repos_tab_issue_all": "すべて",
   "repos_tab_issue_open": "オープン",
   "repos_tab_issue_closed": "クローズ",
+  "repos_tab_discussion": "ディスカッション",
+  "discussion_list_disabled": "このリポジトリではディスカッションが有効になっていません。",
+  "discussion_answered_badge": "回答済み",
+  "discussion_author_ghost": "ゴースト",
+  "discussion_load_failed": "ディスカッションの読み込みに失敗しました",
+  "discussion_not_found": "ディスカッションが見つかりません",
+  "discussion_retry": "再試行",
+  "discussion_empty_body": "説明はありません。",
+  "discussion_skeleton_notice": "リッチ本文レンダリングは今後のリリースで強化されます。ツールバーのリンクから GitHub で表示してください。",
+  "discussion_comments_count": "{count, plural, =0{コメントなし} =1{{count} 件のコメント} other{{count} 件のコメント}}",
+  "@discussion_comments_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "repos_issue_filter": "絞り込み",
   "repos_issue_filter_title": "絞り込みと並び順",
   "repos_issue_filter_sort": "並び順",

@@ -83,6 +83,25 @@ const Map<String, String> emojiShortcodeMap = {
   ':white_check_mark:': '\u2705',
   ':x:': '\u274C',
 
+  // ==== GitHub Discussions 默认 category emoji（2026-07-21 真机 fixture 补齐） ====
+  // 来源：https://docs.github.com/en/discussions 默认分类
+  //   #️⃣ General          → :hash:            （现行默认，GitHub 近版本改的）
+  //   💬 General (legacy) → :speech_balloon: （见"状态高频"档；早期版本 & 用户自建仍会出现）
+  //   📣 Announcements    → :mega:
+  //   💡 Ideas            → :bulb:
+  //   🙏 Q&A              → :pray:            （见"情绪 / 反馈"档）
+  //   🗳️ Polls            → :ballot_box:
+  //   🙌 Show and tell    → :raised_hands:
+  // 真机 fixture 666ghj/BettaFish 讨论列表 2026-07-21 实测覆盖了 :bulb: / :mega:；
+  // :hash: / :speech_balloon: / :ballot_box: / :raised_hands: / :pray: 未在真机
+  // fixture 中出现，仅按 GitHub 官方分类清单补齐，未真机验证。
+  // 未补齐前 chip 会显示 ":bulb: Ideas" 原样 shortcode，视觉丑陋。
+  ':hash:': '#\uFE0F\u20E3',
+  ':mega:': '\u{1F4E3}',
+  ':bulb:': '\u{1F4A1}',
+  ':ballot_box:': '\u{1F5F3}\uFE0F',
+  ':raised_hands:': '\u{1F64C}',
+
   // ==== 常见旅行 / 生活 ====
   ':pizza:': '\u{1F355}',
   ':hamburger:': '\u{1F354}',

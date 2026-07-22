@@ -240,6 +240,24 @@ abstract class AppLocalizations {
   /// **'The API via password authentication will remove on November 13, 2020 by Github'**
   String get login_deprecated;
 
+  /// No description provided for @token_login_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Token Login'**
+  String get token_login_text;
+
+  /// No description provided for @token_login_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste your Personal Access Token'**
+  String get token_login_hint;
+
+  /// No description provided for @token_login_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your Personal Access Token first'**
+  String get token_login_empty;
+
   /// No description provided for @home_reply.
   ///
   /// In en, this message translates to:
@@ -665,6 +683,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Closed'**
   String get repos_tab_issue_closed;
+
+  /// No description provided for @repos_tab_discussion.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion'**
+  String get repos_tab_discussion;
+
+  /// No description provided for @discussion_list_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussions are not enabled for this repository.'**
+  String get discussion_list_disabled;
+
+  /// No description provided for @discussion_answered_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get discussion_answered_badge;
+
+  /// No description provided for @discussion_author_ghost.
+  ///
+  /// In en, this message translates to:
+  /// **'ghost'**
+  String get discussion_author_ghost;
+
+  /// No description provided for @discussion_load_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load discussion'**
+  String get discussion_load_failed;
+
+  /// No description provided for @discussion_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion not found'**
+  String get discussion_not_found;
+
+  /// No description provided for @discussion_retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get discussion_retry;
+
+  /// No description provided for @discussion_empty_body.
+  ///
+  /// In en, this message translates to:
+  /// **'This discussion has no body'**
+  String get discussion_empty_body;
+
+  /// No description provided for @discussion_skeleton_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).'**
+  String get discussion_skeleton_notice;
+
+  /// No description provided for @discussion_comments_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} comments'**
+  String discussion_comments_count(int count);
 
   /// No description provided for @repos_issue_filter.
   ///
@@ -1847,48 +1925,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{action} a PR review thread at {repo}'**
   String event_dynamic_pull_request_review_thread(String action, String repo);
-
-  /// No description provided for @discussion_load_failed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to load discussion'**
-  String get discussion_load_failed;
-
-  /// No description provided for @discussion_not_found.
-  ///
-  /// In en, this message translates to:
-  /// **'Discussion not found'**
-  String get discussion_not_found;
-
-  /// No description provided for @discussion_retry.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get discussion_retry;
-
-  /// No description provided for @discussion_answered_badge.
-  ///
-  /// In en, this message translates to:
-  /// **'Answered'**
-  String get discussion_answered_badge;
-
-  /// No description provided for @discussion_empty_body.
-  ///
-  /// In en, this message translates to:
-  /// **'This discussion has no body'**
-  String get discussion_empty_body;
-
-  /// No description provided for @discussion_skeleton_notice.
-  ///
-  /// In en, this message translates to:
-  /// **'Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).'**
-  String get discussion_skeleton_notice;
-
-  /// No description provided for @discussion_comments_count.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} comments'**
-  String discussion_comments_count(int count);
 
   /// No description provided for @event_dynamic_sponsorship.
   ///

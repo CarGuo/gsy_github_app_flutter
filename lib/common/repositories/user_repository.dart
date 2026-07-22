@@ -57,6 +57,61 @@ class UserRepository {
     return DataResult(resultData, res!.result);
   }
 
+  /// 使用用户提供的 Personal Access Token（PAT）直接登录。
+  ///
+  /// 背景：
+  /// - GitHub 已于 2020-11-13 关停 basic-auth 密码 API，[login] 已 deprecated
+  /// - OAuth 走 webview 拿 `code` → `access_token`，但对无浏览器 / 无 CLIENT_SECRET
+  ///   的场景（例如新装机首次登录、需要绕过 webview 的调试路径）不方便
+  /// - 官方推荐 PAT（fine-grained 或 classic）作为 API 认证凭据，可直接以
+  ///   `Authorization: token <PAT>` 携带
+  ///
+  /// 与 [oauth] 保持完全一致的 **token 落地流程**：
+  ///   1. 清 httpManager 已缓存的旧 token（避免旧 401 残留）
+  ///   2. 写入 [Config.TOKEN_KEY]（拦截器 [TokenInterceptor] 读的就是它）
+  ///   3. `getUserInfo(null)` 拉一次自己的 profile，作为 token 有效性校验
+  ///   4. 成功 → dispatch [UpdateUserAction]；失败 → 回滚 token，让 UI 提示
+  ///
+  /// 返回 [DataResult]，`result=true` 当且仅当 `/user` 拉到了合法用户。
+  /// 上层（[TokenLoginAction] 的 epic）根据 result 决定 [LoginSuccessAction]。
+  static loginWithToken(String rawToken, store) async {
+    final trimmed = rawToken.trim();
+    if (trimmed.isEmpty) {
+      return DataResult(null, false);
+    }
+
+    // 兼容用户粘贴时带上 "token " / "Bearer " / 前后空白等噪音
+    String bareToken = trimmed;
+    final lower = bareToken.toLowerCase();
+    if (lower.startsWith('token ')) {
+      bareToken = bareToken.substring(6).trim();
+    } else if (lower.startsWith('bearer ')) {
+      bareToken = bareToken.substring(7).trim();
+    }
+    if (bareToken.isEmpty) {
+      return DataResult(null, false);
+    }
+
+    httpManager.clearAuthorization();
+    final headerValue = 'token $bareToken';
+    await LocalStorage.save(Config.TOKEN_KEY, headerValue);
+
+    final resultData = await getUserInfo(null);
+    if (Config.DEBUG!) {
+      printLog("token login user result ${resultData.result}");
+    }
+    if (resultData != null && resultData.result == true) {
+      store.dispatch(UpdateUserAction(resultData.data));
+      return DataResult(resultData.data, true);
+    }
+
+    // token 不合法（401 / 403 / 网络异常）：立刻回滚，避免下次冷启动
+    // [initUserInfo] 读到一个不能用的 token 又静默"看起来已登录"，把用户困在错状态。
+    await LocalStorage.remove(Config.TOKEN_KEY);
+    httpManager.clearAuthorization();
+    return DataResult(null, false);
+  }
+
   static login(String userName, String password, store) async {
     String type = "$userName:$password";
     var bytes = utf8.encode(type);

@@ -79,6 +79,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'The API via password authentication will remove on November 13, 2020 by Github';
 
   @override
+  String get token_login_text => 'Token Login';
+
+  @override
+  String get token_login_hint => 'Paste your Personal Access Token';
+
+  @override
+  String get token_login_empty =>
+      'Please enter your Personal Access Token first';
+
+  @override
   String get home_reply => 'Feedback';
 
   @override
@@ -308,6 +318,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get repos_tab_issue_closed => 'Closed';
+
+  @override
+  String get repos_tab_discussion => 'Discussion';
+
+  @override
+  String get discussion_list_disabled =>
+      'Discussions are not enabled for this repository.';
+
+  @override
+  String get discussion_answered_badge => 'Answered';
+
+  @override
+  String get discussion_author_ghost => 'ghost';
+
+  @override
+  String get discussion_load_failed => 'Failed to load discussion';
+
+  @override
+  String get discussion_not_found => 'Discussion not found';
+
+  @override
+  String get discussion_retry => 'Retry';
+
+  @override
+  String get discussion_empty_body => 'This discussion has no body';
+
+  @override
+  String get discussion_skeleton_notice =>
+      'Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).';
+
+  @override
+  String discussion_comments_count(int count) {
+    return '$count comments';
+  }
 
   @override
   String get repos_issue_filter => 'Filter';
@@ -1053,30 +1097,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String event_dynamic_pull_request_review_thread(String action, String repo) {
     return '$action a PR review thread at $repo';
-  }
-
-  @override
-  String get discussion_load_failed => 'Failed to load discussion';
-
-  @override
-  String get discussion_not_found => 'Discussion not found';
-
-  @override
-  String get discussion_retry => 'Retry';
-
-  @override
-  String get discussion_answered_badge => 'Answered';
-
-  @override
-  String get discussion_empty_body => 'This discussion has no body';
-
-  @override
-  String get discussion_skeleton_notice =>
-      'Comments, voting and mark-as-answer will be added in follow-up subtasks (roadmap §3.1).';
-
-  @override
-  String discussion_comments_count(int count) {
-    return '$count comments';
   }
 
   @override

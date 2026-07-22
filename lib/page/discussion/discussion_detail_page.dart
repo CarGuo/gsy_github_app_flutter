@@ -3,7 +3,14 @@ import 'package:graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart' as gql;
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/utils/emoji_shortcode_map.dart';
+import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
+import 'package:gsy_github_app_flutter/widget/markdown/gsy_markdown_widget.dart';
+import 'package:gsy_github_app_flutter/widget/markdown/markdown_html_transformer.dart';
 
 /// GitHub Discussions 阅读页（骨架）
 ///
@@ -142,61 +149,252 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
     final Map<String, dynamic>? author =
         disc['author'] as Map<String, dynamic>?;
     final String? authorLogin = author?['login'] as String?;
+    final String? authorAvatar = author?['avatarUrl'] as String?;
     final Map<String, dynamic>? category =
         disc['category'] as Map<String, dynamic>?;
     final String? categoryName = category?['name'] as String?;
-    final String? categoryEmoji = category?['emoji'] as String?;
+    final String? categoryEmojiRaw = category?['emoji'] as String?;
+    final String? categoryEmoji =
+        (categoryEmojiRaw == null || categoryEmojiRaw.isEmpty)
+            ? null
+            : resolveEmojiShortcode(categoryEmojiRaw);
     final int upvote = (disc['upvoteCount'] as int?) ?? 0;
     final bool answered = disc['answerChosenAt'] != null;
+    final bool locked = (disc['locked'] as bool?) ?? false;
     final int commentCount =
         ((disc['comments'] as Map<String, dynamic>?)?['totalCount'] as int?) ??
             0;
     final String? bodyHTML = disc['bodyHTML'] as String?;
+    final String? url = disc['url'] as String?;
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('#${widget.number}  $title', style: GSYConstant.largeTextBold),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 4,
-            children: [
-              if (authorLogin != null)
-                Chip(label: Text('@$authorLogin')),
-              if (categoryName != null)
-                Chip(label: Text('${categoryEmoji ?? ''} $categoryName')),
-              if (answered)
-                Chip(
-                  label: Text(context.l10n.discussion_answered_badge),
-                  backgroundColor: Colors.green.shade100,
-                ),
-              Chip(label: Text('▲ $upvote')),
-              Chip(
-                label: Text(
-                  context.l10n.discussion_comments_count(commentCount),
-                ),
-              ),
-            ],
+          _buildHeaderCard(
+            context,
+            title: title,
+            authorLogin: authorLogin,
+            authorAvatar: authorAvatar,
+            categoryName: categoryName,
+            categoryEmoji: categoryEmoji,
+            upvote: upvote,
+            commentCount: commentCount,
+            answered: answered,
+            locked: locked,
+            url: url,
           ),
-          const Divider(height: 32),
-          if (bodyHTML == null || bodyHTML.isEmpty)
-            Text(
-              context.l10n.discussion_empty_body,
-              style: GSYConstant.smallText,
-            )
-          else
-            Text(
-              bodyHTML,
-              style: GSYConstant.middleText,
+          _buildBodyCard(context, bodyHTML: bodyHTML),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+            child: Text(
+              context.l10n.discussion_skeleton_notice,
+              style: GSYConstant.smallSubLightText,
+              textAlign: TextAlign.center,
             ),
-          const SizedBox(height: 24),
-          Text(
-            context.l10n.discussion_skeleton_notice,
-            style: GSYConstant.smallSubText,
           ),
         ],
+      ),
+    );
+  }
+
+  /// 顶部信息卡：primaryColor 深色底 + 白字（对齐 IssueHeaderItem）
+  Widget _buildHeaderCard(
+    BuildContext context, {
+    required String title,
+    required String? authorLogin,
+    required String? authorAvatar,
+    required String? categoryName,
+    required String? categoryEmoji,
+    required int upvote,
+    required int commentCount,
+    required bool answered,
+    required bool locked,
+    required String? url,
+  }) {
+    final safeAuthor = authorLogin ?? context.l10n.discussion_author_ghost;
+    return GSYCardItem(
+      color: Theme.of(context).primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 12, 12, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GSYUserIconWidget(
+                  width: 40,
+                  height: 40,
+                  image: authorAvatar,
+                  onPressed: (authorLogin == null || authorLogin.isEmpty)
+                      ? null
+                      : () {
+                          NavigatorUtils.goPerson(context, authorLogin);
+                        },
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        safeAuthor,
+                        style: GSYConstant.normalTextWhite,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 6),
+                      // 标题（大号白粗体）
+                      Text(
+                        title,
+                        style: GSYConstant.largeTextWhiteBold,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            // meta chips 行：category / answered / locked
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                if (categoryName != null && categoryName.isNotEmpty)
+                  _headerChip(
+                    icon: null,
+                    emoji: categoryEmoji,
+                    label: categoryName,
+                    color: Colors.white.withValues(alpha: 0.18),
+                    textColor: Colors.white,
+                  ),
+                if (answered)
+                  _headerChip(
+                    icon: Icons.check_circle,
+                    emoji: null,
+                    label: context.l10n.discussion_answered_badge,
+                    color: Colors.greenAccent.shade400.withValues(alpha: 0.28),
+                    textColor: Colors.white,
+                  ),
+                if (locked)
+                  _headerChip(
+                    icon: Icons.lock_outline,
+                    emoji: null,
+                    label: null,
+                    color: Colors.white.withValues(alpha: 0.14),
+                    textColor: Colors.white,
+                  ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            // 底栏：upvote / comments / 打开原链接
+            Row(
+              children: [
+                GSYIConText(
+                  Icons.arrow_upward,
+                  '$upvote',
+                  GSYConstant.smallSubLightText.copyWith(color: Colors.white),
+                  Colors.white70,
+                  16,
+                  padding: 2.0,
+                ),
+                const SizedBox(width: 14),
+                GSYIConText(
+                  GSYICons.ISSUE_ITEM_COMMENT,
+                  context.l10n.discussion_comments_count(commentCount),
+                  GSYConstant.smallSubLightText.copyWith(color: Colors.white),
+                  Colors.white70,
+                  16,
+                  padding: 2.0,
+                ),
+                const Spacer(),
+                Text(
+                  '#${widget.number}',
+                  style: GSYConstant.smallSubLightText.copyWith(
+                    color: Colors.white70,
+                  ),
+                ),
+                if (url != null && url.isNotEmpty) ...[
+                  const SizedBox(width: 10),
+                  InkWell(
+                    onTap: () {
+                      NavigatorUtils.goGSYWebView(context, url, title);
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Icon(Icons.open_in_new,
+                          size: 16, color: Colors.white70),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 白色 chip（含 icon 或 emoji + 可选文字）
+  Widget _headerChip({
+    required IconData? icon,
+    required String? emoji,
+    required String? label,
+    required Color color,
+    required Color textColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 12, color: textColor),
+            if (label != null) const SizedBox(width: 4),
+          ],
+          if (emoji != null && emoji.isNotEmpty) ...[
+            Text(emoji, style: const TextStyle(fontSize: 12)),
+            if (label != null) const SizedBox(width: 4),
+          ],
+          if (label != null)
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: GSYConstant.smallTextSize,
+                color: textColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// 正文卡：走既有 markdown pipeline（inline HTML → markdown → 渲染）
+  Widget _buildBodyCard(BuildContext context, {String? bodyHTML}) {
+    final hasBody = bodyHTML != null && bodyHTML.isNotEmpty;
+    final markdownData =
+        hasBody ? transformInlineHtmlToMarkdown(bodyHTML) : '';
+    return GSYCardItem(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: hasBody
+            ? GSYMarkdownWidget(
+                markdownData: markdownData,
+                baseUrl: '',
+                shrinkWrap: true,
+                scroll: false,
+              )
+            : Text(
+                context.l10n.discussion_empty_body,
+                style: GSYConstant.smallSubText
+                    .copyWith(fontStyle: FontStyle.italic),
+              ),
       ),
     );
   }
