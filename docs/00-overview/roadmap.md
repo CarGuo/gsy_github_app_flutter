@@ -270,14 +270,35 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
     - 真机验证：release apk 重装 + 首页动态流滚多屏 + logcat 拉 → 无 Dart 层 Exception，Push/Fork/Watch 路径未回归。**DiscussionEvent 真机路径未覆盖**（GSY 关注账号最近的 events 里没有 discussion 事件，AGENTS.md 禁止造数据），已用单测补齐稀有分支覆盖率
     - 冒烟截图：[tool/dbg/smoke_disc_01_launch.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_disc_01_launch.png) / [tool/dbg/smoke_disc_02_scroll.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_disc_02_scroll.png)
 
-  - ⏳ **内容渲染阶段 + 仓库详情 tab（下一子任务，2026-07-20 拓宽范围）**：
+  - ✅ **内容渲染阶段 + 仓库详情 tab（2026-07-20 拓宽 → 2026-07-27 主体完成）**：
     - **本轮范围拓宽拍板**：只做详情页内容渲染不够——GSY 生态里没有 discussion 事件源（见下方 fixture 探针结论），必须在仓库详情页新增 Discussions tab 反向入口，才能真机走通"列表 → 详情"完整路径。
-    - 详情页：bodyHTML 用 [gsy_markdown_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart) 完整渲染
-    - 详情页：comments/replies 展开、分页（复用 GraphQL `pageInfo.endCursor`）
-    - 详情页：answer 徽标细化、reactions bar（`👍/🎉/❤️/🚀/👀/😄/😕/👎` 8 类）
-    - 详情页：release-linked footer / `[deleted]` 边界 / bot 评论徽标
-    - **仓库详情页新增 Discussions tab**（列表页）：入口条件 `repository.has_discussions=true`，无则**不显示 tab**（不显示空态，避免误导用户去点）
-    - 冒烟脚本沉淀到 [tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke)
+    - ✅ 详情页 bodyHTML 用 [gsy_markdown_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart) 完整渲染（骨架阶段代码里就是 Markdown widget，roadmap 旧文案"Text 直出"过时，此处更正）
+    - ✅ **详情页 comments/replies 列表 + 分页**（2026-07-27 `bb96480`）：
+      * [discussion_detail_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_detail_page.dart)：header + body 下方新增 `_buildCommentsSection` / `_buildCommentCard` / `_buildReplyRow` / `_buildLoadMoreFooter`，一级 comment 走 `GSYMarkdownWidget` 渲染 bodyHTML，replies 平铺前 3 条 + "还有 N 条回复"尾巴
+      * [discussion_comments_paging.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_comments_paging.dart)：`DiscussionCommentsPage` 容器 + `pickCommentsPage`（防御式提取：空 endCursor 归 null / Map<dynamic,dynamic> 规范化）+ `mergeCommentsPage`（尾部追加、pageInfo/totalCount 用新页）
+      * [graphql/discussions.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/discussions.dart)：新增 `readDiscussionCommentsPage(first, after)` 变体，字段与 `readDiscussion.comments` 完全对齐
+      * [graphql/client.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/client.dart)：`getDiscussionCommentsPage`（fetchPolicy=noCache 走真实分页）
+      * `hasNextPage=true` 展示"加载更多"按钮，点击 `_loadMore` 追加；`hasNextPage=false` 展示"没有更多评论了"；失败展示重试
+      * i18n 补 `discussion_comments_empty / discussion_comments_load_more / discussion_comments_load_more_failed / discussion_comments_no_more / discussion_comments_reply_more_hint` 5 key ×4 语言
+      * [test/page/discussion/discussion_comments_paging_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/page/discussion/discussion_comments_paging_test.dart) 9/9 绿：`pickCommentsPage` 7 case（空/缺字段/类型错/正常/pageInfo 缺/空 endCursor/规范化）+ `mergeCommentsPage` 2 case
+      * 真机验证：`BettaFish #522`（1 评论）+ `#511`（3 评论含 @mention + 代码块）在 Android 33 zh 8.1.0 上单卡/多卡/footer 空态命中，无 Dart 侧 Exception，证据落 `tool/dbg/discussion_comments_smoke/16_discussion_522.png` / `17_discussion_522_scroll.png` / `19_discussion_511.png` / `22_discussion_511_s5.png`
+    - ✅ **仓库详情页新增 Discussions tab**（`b0e4042`）：入口条件 `repository.has_discussions=true`，无则**不显示 tab**（不显示空态，避免误导用户去点）
+    - ✅ 冒烟脚本沉淀 [tool/ai/smoke/open_repo_discussions_tab.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_repo_discussions_tab.sh)（首页 → 搜索 → 仓库 → 讨论 tab → 详情，链路可复现）
+    - ✅ private-user-images JWT CDN 图片渲染硬化（`6c697cc`）—— 详情页 markdown 图片链路已改 `errorBuilder` + 保留 JWT 签名，**但真机验收还没走**（#511 body 段截图上仍以链接文本呈现，见下方 §3.1 剩余分支 pt.3）
+    - ⚠️ **本轮已知运行时缺口**（不糊，全部沉淀成 §3.1 剩余分支）：
+      * loadMore 分支：BettaFish 讨论 comments ≤30 一页返回完，`hasNextPage=true` 真机上没自然触发
+      * replies 非空嵌套：本轮 fixture 命中的 comments totalReplies=0，`_buildReplyRow` 未在真机截图上显式命中
+      * private-user-images 图片仍以链接文本呈现（#511 body），修复未做真机验收
+
+  - ⏳ **§3.1 剩余分支（下一子任务）**：
+    1. **reactions bar**（`👍/🎉/❤️/🚀/👀/😄/😕/👎` 8 类）：Discussion 本体 + 每条 comment 都要挂
+       - GraphQL [readDiscussion](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/net/graphql/discussions.dart) **目前未查 `reactions { totalCount viewerHasReacted reactionGroups }` 字段**，需先补 query 再做 UI
+       - 写操作对齐 [AGENTS.md 允许清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L141-L169)：加 / 取消 reaction 允许，长按弹 8 类 chip 触发 `addReaction` / `removeReaction` mutation
+    2. **answer 徽标细化 + author self-answer + bot 评论徽标 + `[deleted]` 边界 + release-linked footer**
+       - fixture 已就绪：`#417`（answered + bot + self-answer + 嵌套 reply）/ `#697`（deleted 404）/ `#511`（release footer）
+    3. **loadMore 真机验收**：BettaFish 讨论区当前 comments ≤30，`hasNextPage=true` 需换 fixture 到 `vercel/next.js` 或 `expo/expo` 里挑一条 >30 comments 的 discussion（对照组 fallback，需要在 PR 描述里显式提出后再落到 fixture 表）
+    4. **private-user-images 图片真机验收**：上一轮 `6c697cc` 代码修复未做真机验收，需登 CarSmallGuo 走 fixture #511 body 段抓真实 JWT 图，验证是否落图或仍降级链接
+    5. **replies 非空嵌套真机验收**：换到 `#417`（1 comment + 1 reply）或 `#309`（3 comments + 长链）复核 `_buildReplyRow`
 
   - **Fixture 契约（2026-07-20 API 探针实测）**：
 
