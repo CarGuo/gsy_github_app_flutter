@@ -67,6 +67,37 @@ Widget _networkImageErrorFallback(Uri uri, double? width, double? height) {
   );
 }
 
+/// 把被换行拆散的"图片链接"markdown 语法折回单行。
+///
+/// 背景：GitHub Discussions 生成的 body markdown 里，`[![alt](imgUrl)]` 与
+/// 外层链接 `(hrefUrl)` 之间常常夹着一个换行符（GitHub 网页版 CommonMark 解析器
+/// 容错，但 flutter_markdown_plus 严格按 CommonMark 规范，会因 `]` 与 `(` 之间
+/// 的换行判定为"未闭合 link" → 整段降级为纯文本，`imageBuilder` 永远进不去，
+/// 真机上看到的是蓝色链接文本而不是图或占位。
+///
+/// 参见 roadmap §3.1 pt.4（private-user-images 图片真机验收）的根因段落。
+///
+/// 保守正则策略（**不贪婪**、避免吃掉后续段落）：
+///   - alt：`[^\]\n]*`（不含 `]` 和换行；`]` 是 md link 天然分隔符，换行是段落边界）
+///   - imgUrl / hrefUrl：`[^)\s]+`（URL 不含空格 / 右括号，防止误吞下一行的 `)`）
+///   - 中间空白：`[ \t]*\n?[ \t]*`（最多允许 1 个换行 + 前后水平空白）
+///
+/// 幂等性：已是单行的 `[![a](x)](y)` 也会命中此正则，替换后仍是原字符串，
+/// 不产生副作用；与 [transformInlineHtmlToMarkdown] 里 `<a><img></a>` 直通
+/// 分支互不冲突（那条分支输出就是单行形态，本函数对它 no-op）。
+///
+/// 顶层可见性：设为**包内可见**（无下划线前缀）是为了让单测
+/// [test/widget/markdown_linebroken_image_link_test.dart] 能直接调用；
+/// 生产侧只有 [GSYMarkdownWidget._processMarkdownImages] 一处使用。
+String mergeLinebrokenImageLinks(String md) {
+  final pattern = RegExp(
+    r'\[!\[([^\]\n]*)\]\(([^)\s]+)\)\][ \t]*\n?[ \t]*\(([^)\s]+)\)',
+  );
+  return md.replaceAllMapped(pattern, (m) {
+    return '[![${m.group(1)}](${m.group(2)})](${m.group(3)})';
+  });
+}
+
 /// 代码详情
 /// Created by guoshuyu
 /// Date: 2018-07-24
@@ -193,6 +224,10 @@ class GSYMarkdownWidget extends StatelessWidget {
   /// @param baseUrl 用于拼接相对路径的基础 URL。
   /// @return 处理后的 Markdown 字符串。
   String _processMarkdownImages(String markdownInput, String baseUrl) {
+    // 先把 GitHub bodyText 里"换行断开的图片链接"折回单行，
+    // 否则下一步 img 正则与 flutter_markdown_plus 都识别不出这段图片链接。
+    markdownInput = mergeLinebrokenImageLinks(markdownInput);
+
     // 确保 baseUrl 以 / 结尾，方便路径拼接
     if (!baseUrl.endsWith('/')) {
       baseUrl += '/';
