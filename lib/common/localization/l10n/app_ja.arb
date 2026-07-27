@@ -347,6 +347,18 @@
       "count": {"type": "int"}
     }
   },
+  "discussion_comments_empty": "コメントはまだありません",
+  "discussion_comments_load_more": "さらにコメントを読み込む",
+  "discussion_comments_loading_more": "さらにコメントを読み込み中...",
+  "discussion_comments_no_more": "これ以上コメントはありません",
+  "discussion_comments_load_more_failed": "コメントの読み込みに失敗しました。タップで再試行",
+  "discussion_comment_answer_badge": "回答",
+  "discussion_comment_replies_count": "{count} 件の返信",
+  "@discussion_comment_replies_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "event_dynamic_sponsorship": "スポンサーシップを {action} しました",
   "event_dynamic_watch": "{repo} を {action} しました",
   "event_dynamic_watch_started": "{repo} をスターしました",

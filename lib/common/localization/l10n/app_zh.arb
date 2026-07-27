@@ -347,6 +347,18 @@
       "count": { "type": "int" }
     }
   },
+  "discussion_comments_empty": "暂无评论",
+  "discussion_comments_load_more": "加载更多评论",
+  "discussion_comments_loading_more": "正在加载更多评论...",
+  "discussion_comments_no_more": "没有更多评论了",
+  "discussion_comments_load_more_failed": "加载更多评论失败，点击重试",
+  "discussion_comment_answer_badge": "回答",
+  "discussion_comment_replies_count": "{count} 条回复",
+  "@discussion_comment_replies_count": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "event_dynamic_sponsorship": "{action} 一个赞助",
   "event_dynamic_watch": "{action} {repo}",
   "event_dynamic_watch_started": "关注了 {repo}",

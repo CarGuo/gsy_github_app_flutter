@@ -61,6 +61,30 @@ Future<QueryResult>? getDiscussion(
   return await _innerClient!.query(options);
 }
 
+/// 读取 Discussion 评论的下一页（`loadMore` 专用）。
+///
+/// - roadmap §3.1 "Discussions 详情页 comments 分页" 网络入口
+/// - 参数与 [readDiscussionCommentsPage] 完全对齐：`after` 为 null 时不走这个方法
+///   （首屏走 [getDiscussion] 已带 first:30），只在需要下一页时才调用
+/// - `first` 默认 30：与首屏保持一致，避免"首屏一页 30 条，加载更多每页 10 条"这种
+///   视觉抖动
+/// - 走 [FetchPolicy.noCache] 与其他 Discussions 查询保持一致
+Future<QueryResult>? getDiscussionCommentsPage(
+    String owner, String name, int number,
+    {String? after, int first = 30}) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readDiscussionCommentsPage),
+      variables: <String, dynamic>{
+        'owner': owner,
+        'name': name,
+        'number': number,
+        'first': first,
+        'after': after,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
 /// 读取指定仓库的 Discussions 列表（按 UPDATED_AT DESC 排序）。
 ///
 /// - roadmap §3.1 "内容渲染阶段 + 仓库详情 tab" 第一步，为新增的

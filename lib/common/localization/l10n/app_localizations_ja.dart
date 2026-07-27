@@ -1080,6 +1080,29 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get discussion_comments_empty => 'コメントはまだありません';
+
+  @override
+  String get discussion_comments_load_more => 'さらにコメントを読み込む';
+
+  @override
+  String get discussion_comments_loading_more => 'さらにコメントを読み込み中...';
+
+  @override
+  String get discussion_comments_no_more => 'これ以上コメントはありません';
+
+  @override
+  String get discussion_comments_load_more_failed => 'コメントの読み込みに失敗しました。タップで再試行';
+
+  @override
+  String get discussion_comment_answer_badge => '回答';
+
+  @override
+  String discussion_comment_replies_count(int count) {
+    return '$count 件の返信';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return 'スポンサーシップを $action しました';
   }

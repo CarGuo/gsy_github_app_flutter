@@ -653,6 +653,18 @@
       "count": {"type": "int"}
     }
   },
+  "discussion_comments_empty": "No comments yet",
+  "discussion_comments_load_more": "Load more comments",
+  "discussion_comments_loading_more": "Loading more comments...",
+  "discussion_comments_no_more": "No more comments",
+  "discussion_comments_load_more_failed": "Failed to load more comments, tap to retry",
+  "discussion_comment_answer_badge": "Answer",
+  "discussion_comment_replies_count": "{count} replies",
+  "@discussion_comment_replies_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "event_dynamic_sponsorship": "{action} a sponsorship",
   "@event_dynamic_sponsorship": {
     "placeholders": {

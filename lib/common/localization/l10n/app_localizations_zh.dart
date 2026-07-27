@@ -1079,6 +1079,29 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get discussion_comments_empty => '暂无评论';
+
+  @override
+  String get discussion_comments_load_more => '加载更多评论';
+
+  @override
+  String get discussion_comments_loading_more => '正在加载更多评论...';
+
+  @override
+  String get discussion_comments_no_more => '没有更多评论了';
+
+  @override
+  String get discussion_comments_load_more_failed => '加载更多评论失败，点击重试';
+
+  @override
+  String get discussion_comment_answer_badge => '回答';
+
+  @override
+  String discussion_comment_replies_count(int count) {
+    return '$count 条回复';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action 一个赞助';
   }

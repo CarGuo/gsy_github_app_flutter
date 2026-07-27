@@ -347,6 +347,18 @@
       "count": {"type": "int"}
     }
   },
+  "discussion_comments_empty": "아직 댓글이 없습니다",
+  "discussion_comments_load_more": "댓글 더 불러오기",
+  "discussion_comments_loading_more": "댓글을 더 불러오는 중...",
+  "discussion_comments_no_more": "더 이상 댓글이 없습니다",
+  "discussion_comments_load_more_failed": "댓글 불러오기에 실패했습니다. 탭하여 다시 시도",
+  "discussion_comment_answer_badge": "답변",
+  "discussion_comment_replies_count": "답글 {count} 개",
+  "@discussion_comment_replies_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "event_dynamic_sponsorship": "스폰서십을 {action} 했습니다",
   "event_dynamic_watch": "{repo} 를 {action} 했습니다",
   "event_dynamic_watch_started": "{repo} 에 별표를 표시했습니다",

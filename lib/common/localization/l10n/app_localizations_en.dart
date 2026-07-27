@@ -1100,6 +1100,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get discussion_comments_empty => 'No comments yet';
+
+  @override
+  String get discussion_comments_load_more => 'Load more comments';
+
+  @override
+  String get discussion_comments_loading_more => 'Loading more comments...';
+
+  @override
+  String get discussion_comments_no_more => 'No more comments';
+
+  @override
+  String get discussion_comments_load_more_failed =>
+      'Failed to load more comments, tap to retry';
+
+  @override
+  String get discussion_comment_answer_badge => 'Answer';
+
+  @override
+  String discussion_comment_replies_count(int count) {
+    return '$count replies';
+  }
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action a sponsorship';
   }

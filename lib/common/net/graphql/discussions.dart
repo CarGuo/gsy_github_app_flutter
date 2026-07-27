@@ -132,3 +132,48 @@ query getRepositoryDiscussions($owner: String!, $name: String!, $first: Int!, $a
   }
 }
 ''';
+
+/// Discussion 评论分页查询（loadMore 专用）。
+///
+/// - 只回读 `repository.discussion.comments` 段，避免每次翻页都重复拉 header/body
+/// - 与 [readDiscussion] 里 `comments(first:30)` 结构 **完全对齐**（node 字段一致，
+///   仍带 replies(first:10)），前端可以直接把新一批 nodes 追加到已渲染列表尾部
+/// - `after` 走 GraphQL 的 endCursor，`first` 默认 30 与首屏一致
+const String readDiscussionCommentsPage = r'''
+query getDiscussionCommentsPage($owner: String!, $name: String!, $number: Int!, $first: Int!, $after: String) {
+  repository(owner: $owner, name: $name) {
+    discussion(number: $number) {
+      comments(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          id
+          bodyHTML
+          createdAt
+          isAnswer
+          upvoteCount
+          author {
+            login
+            avatarUrl
+          }
+          replies(first: 10) {
+            totalCount
+            nodes {
+              id
+              bodyHTML
+              createdAt
+              author {
+                login
+                avatarUrl
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+''';

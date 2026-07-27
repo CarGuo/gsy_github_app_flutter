@@ -1926,6 +1926,48 @@ abstract class AppLocalizations {
   /// **'{action} a PR review thread at {repo}'**
   String event_dynamic_pull_request_review_thread(String action, String repo);
 
+  /// No description provided for @discussion_comments_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet'**
+  String get discussion_comments_empty;
+
+  /// No description provided for @discussion_comments_load_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more comments'**
+  String get discussion_comments_load_more;
+
+  /// No description provided for @discussion_comments_loading_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading more comments...'**
+  String get discussion_comments_loading_more;
+
+  /// No description provided for @discussion_comments_no_more.
+  ///
+  /// In en, this message translates to:
+  /// **'No more comments'**
+  String get discussion_comments_no_more;
+
+  /// No description provided for @discussion_comments_load_more_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load more comments, tap to retry'**
+  String get discussion_comments_load_more_failed;
+
+  /// No description provided for @discussion_comment_answer_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get discussion_comment_answer_badge;
+
+  /// No description provided for @discussion_comment_replies_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} replies'**
+  String discussion_comment_replies_count(int count);
+
   /// No description provided for @event_dynamic_sponsorship.
   ///
   /// In en, this message translates to:
