@@ -175,6 +175,30 @@ void _dispatch(dom.Element node, StringBuffer buffer, _RenderCtx ctx) {
   switch (tag) {
     case 'a':
       final href = node.attributes['href'];
+      // GitHub 官方"图片链接"的标准形态是 <a href="X"><img src="Y" alt="Z"></a>。
+      // 如果按 <a> 的通用路径走，_childrenToInlineString 会先把 <img> 转成
+      // Markdown 图片文本 "![Z](Y)"，紧接着 _escapeMdLinkText 又把里面的
+      // `!` / `[` / `]` 全部反斜杠转义，最终产物 `[\!\[Z\](Y)](X)`
+      // 是 CommonMark 完全无法识别的字面文本——真机上就表现为一整段
+      // 蓝色链接文本、img 永远进不到 imageBuilder（真机 fixture：
+      // BettaFish #511 private-user-images JWT 图片）。
+      //
+      // 修复思路：如果 <a> 唯一的有效子节点是 <img>（允许穿插纯空白 text
+      // 节点），直接吐 CommonMark 合法的图片链接 `[![alt](src)](href)`，
+      // 跳过 label 转义。其他 <a>（普通文本链接、链接里嵌其它内联标签）
+      // 保持原有行为，防止误伤。
+      if (href != null && href.isNotEmpty) {
+        final imgOnly = _extractSoleImgChild(node);
+        if (imgOnly != null) {
+          final src = imgOnly.attributes['src'] ?? '';
+          final alt = imgOnly.attributes['alt'] ?? '';
+          if (src.isNotEmpty) {
+            buffer.write(
+                '[![${_escapeMdLinkText(alt)}](${_escapeMdUrl(src)})](${_escapeMdUrl(href)})');
+            return;
+          }
+        }
+      }
       final text = _childrenToInlineString(node, ctx);
       if (href == null || href.isEmpty) {
         buffer.write(text);
@@ -412,6 +436,32 @@ String _childrenToInlineString(dom.Element el, _RenderCtx ctx) {
     _writeNode(child, buf, ctx);
   }
   return buf.toString().replaceAll('\n', ' ').trim();
+}
+
+/// 如果 [el] 的直接子节点里恰好只有一个非空 `<img>`（允许穿插空白 text
+/// 节点），返回那个 img 元素；否则返回 null。用于把 GitHub 图片链接
+/// `<a href="X"><img src="Y" alt="Z"></a>` 识别为 Markdown 图片链接直通场景。
+///
+/// 判断口径故意收窄：
+/// - 只看 direct children，不递归；避免误把 `<a><span><img></span></a>`
+///   之类需要额外样式的复合形态也走直通，稳妥起见让它继续走通用 `<a>` 路径。
+/// - text 节点必须全空白；一旦出现文字，说明是"图片 + 说明文字"的混合链接，
+///   通用路径的 label 转义反而更安全。
+/// - 命中的 img 必须自己有 src；无 src 的 img 通用路径也会丢弃。
+dom.Element? _extractSoleImgChild(dom.Element el) {
+  dom.Element? candidate;
+  for (final child in el.nodes) {
+    if (child is dom.Text) {
+      if (child.text.trim().isNotEmpty) return null;
+      continue;
+    }
+    if (child is dom.Element) {
+      if (child.localName?.toLowerCase() != 'img') return null;
+      if (candidate != null) return null;
+      candidate = child;
+    }
+  }
+  return candidate;
 }
 
 void _writeListChildren(

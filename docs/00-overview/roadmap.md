@@ -284,11 +284,11 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
       * 真机验证：`BettaFish #522`（1 评论）+ `#511`（3 评论含 @mention + 代码块）在 Android 33 zh 8.1.0 上单卡/多卡/footer 空态命中，无 Dart 侧 Exception，证据落 `tool/dbg/discussion_comments_smoke/16_discussion_522.png` / `17_discussion_522_scroll.png` / `19_discussion_511.png` / `22_discussion_511_s5.png`
     - ✅ **仓库详情页新增 Discussions tab**（`b0e4042`）：入口条件 `repository.has_discussions=true`，无则**不显示 tab**（不显示空态，避免误导用户去点）
     - ✅ 冒烟脚本沉淀 [tool/ai/smoke/open_repo_discussions_tab.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_repo_discussions_tab.sh)（首页 → 搜索 → 仓库 → 讨论 tab → 详情，链路可复现）
-    - ✅ private-user-images JWT CDN 图片渲染硬化（`6c697cc`）—— 详情页 markdown 图片链路已改 `errorBuilder` + 保留 JWT 签名，**但真机验收还没走**（#511 body 段截图上仍以链接文本呈现，见下方 §3.1 剩余分支 pt.3）
+    - ⚠️ private-user-images JWT CDN 图片渲染硬化（`6c697cc`）—— 详情页 markdown 图片链路已改 `errorBuilder` + 保留 JWT 签名，**2026-07-27 真机验收：8.1.0 #511 body 段图片仍以蓝链文本呈现，`imageBuilder` 未被触发**，根因是 GitHub 生成的 `[![alt](img)]\n(href)` 里 `]` 与 `(` 之间的换行让 CommonMark 直接把整段判为纯文本，需下一轮补 markdown 预处理（详见 §3.1 剩余分支 pt.4）
     - ⚠️ **本轮已知运行时缺口**（不糊，全部沉淀成 §3.1 剩余分支）：
       * loadMore 分支：BettaFish 讨论 comments ≤30 一页返回完，`hasNextPage=true` 真机上没自然触发
       * replies 非空嵌套：本轮 fixture 命中的 comments totalReplies=0，`_buildReplyRow` 未在真机截图上显式命中
-      * private-user-images 图片仍以链接文本呈现（#511 body），修复未做真机验收
+      * private-user-images 图片：已在 8.1.0 上真机验完，未修复，根因与下一轮修复方向见 §3.1 剩余分支 pt.4
 
   - ⏳ **§3.1 剩余分支（下一子任务）**：
     1. **reactions bar**（`👍/🎉/❤️/🚀/👀/😄/😕/👎` 8 类）：Discussion 本体 + 每条 comment 都要挂
@@ -297,7 +297,16 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
     2. **answer 徽标细化 + author self-answer + bot 评论徽标 + `[deleted]` 边界 + release-linked footer**
        - fixture 已就绪：`#417`（answered + bot + self-answer + 嵌套 reply）/ `#697`（deleted 404）/ `#511`（release footer）
     3. **loadMore 真机验收**：BettaFish 讨论区当前 comments ≤30，`hasNextPage=true` 需换 fixture 到 `vercel/next.js` 或 `expo/expo` 里挑一条 >30 comments 的 discussion（对照组 fallback，需要在 PR 描述里显式提出后再落到 fixture 表）
-    4. **private-user-images 图片真机验收**：上一轮 `6c697cc` 代码修复未做真机验收，需登 CarSmallGuo 走 fixture #511 body 段抓真实 JWT 图，验证是否落图或仍降级链接
+    4. **private-user-images 图片真机验收（2026-07-27 已验：仍未修复，需追加一轮 markdown 预处理）**：
+       - 已在 8.1.0 apk（含 `6c697cc`）上跑通 #511 body 段截图（[37_disc_511_top.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/37_disc_511_top.png) / [38_disc_511_scroll1.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/38_disc_511_scroll1.png) / [39_disc_511_scroll2.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/39_disc_511_scroll2.png)），logcat 无 `Image.network failed` 记录（[40_logcat_pid.txt](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/40_logcat_pid.txt) 只 69 字节的 gralloc 噪声）
+       - **根因（不是 6c697cc 修复的场景）**：GitHub 生成的 discussion body 里 `[![alt](imgUrl)]` 与外层链接 `(hrefUrl)` 之间**夹了一个换行符**，flutter_markdown_plus 走 CommonMark 严格解析时会因此把整段 `[![alt](imgUrl)]\n(hrefUrl)` 判为"未闭合 link"→ 全段降级为纯文本，`imageBuilder` 从未被触发，UA/errorBuilder 分支自然不生效。
+       - **下一轮修复方向**（Dart 侧预处理）：在 [_processMarkdownImages](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart#L195-L297) 或 [transformInlineHtmlToMarkdown](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/markdown_html_transformer.dart) 里加一条正则，把 `\[!\[(alt)\]\((imgUrl)\)\]\s*\n\s*\((hrefUrl)\)` 折成单行 `[![alt](imgUrl)](hrefUrl)`，让 markdown 引擎能识别为图片链接；折完再走原有 img 分支。
+       - 验证方式：先加纯 Dart 单测覆盖"换行断开的 image-link"→"合并后的 image-link"，再重跑本轮 #511 冒烟看 body 段图能否真正落图或至少落到占位（走 `_networkImageErrorFallback` 而不是保持蓝链文本）。
+       - **2026-07-27 增量：`<a><img></a>` HTML 结构直通修复（另一条独立 bug 路径，非本 pt.4 根因）**
+         - 现象：`bodyHTML` 里 GitHub 生成的 `<a href="X"><img src="Y" alt="Z"></a>` 走 [_dispatch](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/markdown_html_transformer.dart) `<a>` 分支时，`label = "![Z](Y)"` 被 `_escapeMdLinkText` 转义成 `\!\[Z\](Y)`，最终产物 `[\!\[Z\](Y)](X)` 是 CommonMark 无法识别的字面文本，`imageBuilder` 永远进不去。
+         - 修复：在 [_dispatch](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/markdown_html_transformer.dart) `<a>` 分支新增 [_extractSoleImgChild](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/markdown_html_transformer.dart) 辅助——当 `<a>` 的唯一有效子节点是 `<img>` 时（允许前后空白 text 节点），直接吐出 `[![alt](src)](href)`，`alt` 单独走 `_escapeMdLinkText`，`src` / `href` 走 `_escapeMdUrl`（防空格 / 右括号伪造）。混合子节点（多张图、img+文字）仍回落通用 label 转义分支，安全优先。
+         - 覆盖：[test/widget/markdown_html_transformer_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/widget/markdown_html_transformer_test.dart) 新增 6 case（直通形态 / private-user-images JWT 长 URL / 混合子节点回落 / 两张 img 回落 / 空白 text 节点容忍 / alt 含 `]` 转义），52/52 全绿；`flutter analyze lib/widget/markdown test/widget/markdown_html_transformer_test.dart` `No issues found!`。
+         - **本轮已知缺口**：**未在真机上复核 #511** —— 装机（`adb install -r build/app/outputs/flutter-apk/app-debug.apk`）通过，但当前 fixture 设备 `jfxgpjeul7lrpjkz` 的 GSY 主 Activity 以 landscape 内容渲染（`adb exec-out screencap -p` 输出 2400x1080，与竖屏 `wm size 1080x2400` / `mRotation=ROTATION_0` 不一致），`adb input tap` 用竖屏物理坐标全部落偏，导航到 BettaFish `#511` 详情页失败。按 [AGENTS.md 分级要求](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md) "稀有分支覆盖率无法靠真机保证时，优先加模型层单测 + 真实 fixture" 补齐单测（含 private-user-images JWT URL 真实 fixture 形态）后停在此层。**下一轮**必须在 fixture 设备旋转问题排查后重跑真机（关键证据要求：#511 body 段 img 位置**不再出现蓝色链接文本**，落到真图或 `_networkImageErrorFallback` 占位；配套 `logcat -d -s flutter` 无 `Image.network failed` 或 label 转义相关 warning）。
     5. **replies 非空嵌套真机验收**：换到 `#417`（1 comment + 1 reply）或 `#309`（3 comments + 长链）复核 `_buildReplyRow`
 
   - **Fixture 契约（2026-07-20 API 探针实测）**：

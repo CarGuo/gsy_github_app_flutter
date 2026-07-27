@@ -348,4 +348,78 @@ void main() {
       expect(r, contains('[`fn()`](/x)'));
     });
   });
+
+  group('transformInlineHtmlToMarkdown - 图片链接直通（BettaFish #511 回归）', () {
+    // 背景：GitHub Discussions bodyHTML 里的图片链接标准形态是
+    //   <a href="X"><img src="Y" alt="Z"></a>
+    // 之前 <a> 分支走通用 label 转义时，label = "![Z](Y)" 被
+    // _escapeMdLinkText 转成 "\!\[Z\](Y)"，最终产物 "[\!\[Z\](Y)](X)"
+    // 是 CommonMark 无法识别的字面文本，真机上 img 永远进不到 imageBuilder。
+    // 修复：<a> 唯一有效子节点是 <img> 时直接吐 [![alt](src)](href)，
+    // 让 flutter_markdown_plus 认出图片链接。
+    test('<a><img></a> 直通输出图片链接语法（不再反斜杠转义 ! [ ]）', () {
+      const html =
+          '<a href="https://example.com/href"><img src="https://cdn.example.com/y.png" alt="banner"></a>';
+      final r = transformInlineHtmlToMarkdown(html);
+      expect(r,
+          contains('[![banner](https://cdn.example.com/y.png)](https://example.com/href)'));
+      // 关键断言：绝不能再出现 `\!` 反斜杠转义（那是旧 bug 的特征）
+      expect(r.contains(r'\!'), isFalse);
+      expect(r.contains(r'\['), isFalse);
+      expect(r.contains(r'\]'), isFalse);
+    });
+
+    test('private-user-images JWT 长 URL 保持原样（BettaFish #511 fixture 形态）', () {
+      // 真机 fixture #511 body 里的一段典型 image-link，URL 尾部带 ?jwt=eyJ...
+      // 之前会被 label 转义搞坏；修复后必须原样透传。
+      const jwt =
+          'https://private-user-images.githubusercontent.com/110395318/529475983-fba934e7-3d8e-4cf3-b81b-c4538acd3e56.jpeg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIn0.abc';
+      final html =
+          '<a href="$jwt"><img src="$jwt" alt="banner"></a>';
+      final r = transformInlineHtmlToMarkdown(html);
+      expect(r, contains('[![banner]($jwt)]($jwt)'));
+      expect(r.contains(r'\!'), isFalse);
+    });
+
+    test('<a> 内混合 <img> + 文字：回落通用路径（label 转义生效，安全优先）', () {
+      // 如果链接里既有图又有说明文字，说明作者有明确的 label 意图，
+      // 不能盲目直通，仍走通用 label 转义分支。
+      const html =
+          '<a href="/href"><img src="/y.png" alt="banner">说明文字</a>';
+      final r = transformInlineHtmlToMarkdown(html);
+      // 通用路径：整段作为 label，[  ...  ](/href) 且 label 内 [] 被转义
+      expect(r, contains('](/href)'));
+      // 直通路径不会命中，因此不会产生未转义的 `[![banner]`
+      expect(r.contains('[![banner]'), isFalse);
+    });
+
+    test('<a> 内两张 <img>：回落通用路径（不满足"唯一 img"约束）', () {
+      const html =
+          '<a href="/href"><img src="/a.png" alt="a"><img src="/b.png" alt="b"></a>';
+      final r = transformInlineHtmlToMarkdown(html);
+      // 不应命中直通：不产生 [![a](/a.png)](/href) 也不产生 [![b](/b.png)](/href)
+      expect(r.contains('[![a](/a.png)](/href)'), isFalse);
+      expect(r.contains('[![b](/b.png)](/href)'), isFalse);
+      // 通用路径下 href 仍被保留
+      expect(r, contains('(/href)'));
+    });
+
+    test('<a><img></a> 允许 img 前后的空白 text 节点（不破坏直通）', () {
+      // GitHub 常常在 <a> 和 <img> 之间加换行/空格
+      const html =
+          '<a href="/href">\n  <img src="/y.png" alt="banner">\n</a>';
+      final r = transformInlineHtmlToMarkdown(html);
+      expect(r, contains('[![banner](/y.png)](/href)'));
+    });
+
+    test('img alt 含 ] 时 alt 部分仍被转义（防语法逃逸），href/src 保留原样', () {
+      const html =
+          '<a href="/href"><img src="/y.png" alt="a]b"></a>';
+      final r = transformInlineHtmlToMarkdown(html);
+      // alt 里 ] 必须被反斜杠转义
+      expect(r, contains(r'![a\]b](/y.png)'));
+      // href/src 本身没有需要 <> 承载的字符，因此不加尖括号
+      expect(r, contains('](/href)'));
+    });
+  });
 }
