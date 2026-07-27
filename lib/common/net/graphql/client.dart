@@ -151,6 +151,46 @@ Future<QueryResult>? unresolveReviewThread(String threadId) async {
   return await _innerClient!.mutate(options);
 }
 
+/// 给一个 Reactable（Discussion / DiscussionComment 等）加一类 reaction。
+///
+/// - 写操作严格对齐 [AGENTS.md 允许清单](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md)
+///   "Issue / Comment 上加/取消 reaction"（Discussion 属于同族 Reactable）；
+///   与 [removeReactionFromSubject] 配对使用
+/// - `subjectId` 是 GraphQL node id（形如 `D_kw...` / `DC_kw...`），由上层从
+///   [getDiscussion] / [getDiscussionCommentsPage] 返回结构中直接透传
+/// - `content` 是 `ReactionContent` 枚举字面量（形如 `THUMBS_UP` / `HEART`），
+///   服务端对非法值直接 400；映射由 `reaction_groups.dart` 侧统一提供
+/// - 走 [FetchPolicy.noCache] 与 [resolveReviewThread] / [unresolveReviewThread]
+///   保持一致：mutation 结果不应污染 [readDiscussion] 的 query 缓存，
+///   UI 侧成功后就地 patch 本地状态即可
+Future<QueryResult>? addReactionToSubject(
+    String subjectId, String content) async {
+  final MutationOptions options = MutationOptions(
+      document: gql(mutationAddReaction),
+      variables: <String, dynamic>{
+        'subjectId': subjectId,
+        'content': content,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.mutate(options);
+}
+
+/// 取消 [addReactionToSubject] 加过的一类 reaction。
+///
+/// 返回结构与 [addReactionToSubject] 完全对齐，方便上层用同一段代码处理
+/// 本地状态更新。
+Future<QueryResult>? removeReactionFromSubject(
+    String subjectId, String content) async {
+  final MutationOptions options = MutationOptions(
+      document: gql(mutationRemoveReaction),
+      variables: <String, dynamic>{
+        'subjectId': subjectId,
+        'content': content,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.mutate(options);
+}
+
 /// 读取指定用户 / 组织的 Pinned Repositories（最多 6 个，仅仓库类型）
 ///
 /// - 用于 profile 页新增 pinned 卡片区域
