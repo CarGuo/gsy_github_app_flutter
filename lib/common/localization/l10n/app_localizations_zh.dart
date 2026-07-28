@@ -1102,6 +1102,46 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get discussion_reaction_add => '添加反应';
+
+  @override
+  String get discussion_reaction_login_required => '请先登录 GitHub 账号后再对讨论发起反应';
+
+  @override
+  String discussion_reaction_failed(String error) {
+    return '反应操作失败，已回滚：$error';
+  }
+
+  @override
+  String discussion_reaction_a11y(String emoji, int count) {
+    return '$emoji 反应，共 $count 人';
+  }
+
+  @override
+  String get reaction_thumbs_up => '赞';
+
+  @override
+  String get reaction_thumbs_down => '踩';
+
+  @override
+  String get reaction_laugh => '笑';
+
+  @override
+  String get reaction_hooray => '庆祝';
+
+  @override
+  String get reaction_confused => '困惑';
+
+  @override
+  String get reaction_heart => '喜欢';
+
+  @override
+  String get reaction_rocket => '火箭';
+
+  @override
+  String get reaction_eyes => '关注';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action 一个赞助';
   }

@@ -359,6 +359,29 @@
       "count": {"type": "int"}
     }
   },
+  "discussion_reaction_add": "반응 추가",
+  "discussion_reaction_login_required": "반응을 남기려면 먼저 GitHub 계정으로 로그인하세요",
+  "discussion_reaction_failed": "반응 처리에 실패하여 롤백되었습니다: {error}",
+  "@discussion_reaction_failed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "discussion_reaction_a11y": "{emoji} 반응, 총 {count} 명",
+  "@discussion_reaction_a11y": {
+    "placeholders": {
+      "emoji": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+  "reaction_thumbs_up": "좋아요",
+  "reaction_thumbs_down": "싫어요",
+  "reaction_laugh": "웃음",
+  "reaction_hooray": "축하",
+  "reaction_confused": "혼란",
+  "reaction_heart": "하트",
+  "reaction_rocket": "로켓",
+  "reaction_eyes": "주목",
   "event_dynamic_sponsorship": "스폰서십을 {action} 했습니다",
   "event_dynamic_watch": "{repo} 를 {action} 했습니다",
   "event_dynamic_watch_started": "{repo} 에 별표를 표시했습니다",

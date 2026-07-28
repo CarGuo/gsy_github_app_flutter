@@ -359,6 +359,29 @@
       "count": { "type": "int" }
     }
   },
+  "discussion_reaction_add": "添加反应",
+  "discussion_reaction_login_required": "请先登录 GitHub 账号后再对讨论发起反应",
+  "discussion_reaction_failed": "反应操作失败，已回滚：{error}",
+  "@discussion_reaction_failed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "discussion_reaction_a11y": "{emoji} 反应，共 {count} 人",
+  "@discussion_reaction_a11y": {
+    "placeholders": {
+      "emoji": { "type": "String" },
+      "count": { "type": "int" }
+    }
+  },
+  "reaction_thumbs_up": "赞",
+  "reaction_thumbs_down": "踩",
+  "reaction_laugh": "笑",
+  "reaction_hooray": "庆祝",
+  "reaction_confused": "困惑",
+  "reaction_heart": "喜欢",
+  "reaction_rocket": "火箭",
+  "reaction_eyes": "关注",
   "event_dynamic_sponsorship": "{action} 一个赞助",
   "event_dynamic_watch": "{action} {repo}",
   "event_dynamic_watch_started": "关注了 {repo}",

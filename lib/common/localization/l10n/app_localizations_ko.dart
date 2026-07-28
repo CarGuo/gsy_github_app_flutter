@@ -1103,6 +1103,47 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get discussion_reaction_add => '반응 추가';
+
+  @override
+  String get discussion_reaction_login_required =>
+      '반응을 남기려면 먼저 GitHub 계정으로 로그인하세요';
+
+  @override
+  String discussion_reaction_failed(String error) {
+    return '반응 처리에 실패하여 롤백되었습니다: $error';
+  }
+
+  @override
+  String discussion_reaction_a11y(String emoji, int count) {
+    return '$emoji 반응, 총 $count 명';
+  }
+
+  @override
+  String get reaction_thumbs_up => '좋아요';
+
+  @override
+  String get reaction_thumbs_down => '싫어요';
+
+  @override
+  String get reaction_laugh => '웃음';
+
+  @override
+  String get reaction_hooray => '축하';
+
+  @override
+  String get reaction_confused => '혼란';
+
+  @override
+  String get reaction_heart => '하트';
+
+  @override
+  String get reaction_rocket => '로켓';
+
+  @override
+  String get reaction_eyes => '주목';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '스폰서십을 $action 했습니다';
   }

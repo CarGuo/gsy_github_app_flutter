@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/emoji_shortcode_map.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/discussion/discussion_comments_paging.dart';
+import 'package:gsy_github_app_flutter/page/discussion/reaction_groups.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
@@ -62,6 +63,28 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
   /// 上一次 loadMore 的错误文案（用户可点击按钮重试）；成功后清空
   String? _loadMoreError;
 
+  /// Discussion body 主体的 reactions 快照（规范化后，按 [kReactionContents]
+  /// 固定顺序；未 react 且 count=0 的分组会被 [pickReactionGroups] 直接省略）。
+  ///
+  /// 与 [_discussion] 是"派生 vs 原始"的关系：每次首屏 [_load] 完成或
+  /// mutation 返回后重算；点击 chip 时先经 [applyLocalReactionToggle]
+  /// 乐观推进，再由 mutation 结果覆盖。
+  List<ReactionSummary> _bodyReactions = const <ReactionSummary>[];
+
+  /// 各 comment 的 reactions 快照，key = GraphQL node id（`DiscussionComment.id`，
+  /// 就是 mutation 需要的 `subjectId`）。
+  ///
+  /// 分页 [_loadMore] 追加评论时会 merge 增量；已有 key 若被服务端再度返回
+  /// 会被后一次覆盖（分页去重逻辑上 [_commentsPage] 已保证 id 唯一，这里也
+  /// 依赖同一约束）。
+  final Map<String, List<ReactionSummary>> _commentReactions =
+      <String, List<ReactionSummary>>{};
+
+  /// 正在处理中的 reaction subject id，用于避免同一个 subject 在网络返回
+  /// 前被连点多次；同时也让 chip 显示 loading 视觉（本轮先不加 spinner，
+  /// 只做 guard）。
+  final Set<String> _reactionInflight = <String>{};
+
   @override
   void initState() {
     super.initState();
@@ -94,6 +117,10 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
         _discussion = disc;
         _commentsPage = pickCommentsPage(disc);
         _loadMoreError = null;
+        _bodyReactions = pickReactionGroups(disc?['reactionGroups']);
+        _commentReactions
+          ..clear()
+          ..addAll(_extractCommentReactions(_commentsPage.nodes));
       });
     } catch (e) {
       if (!mounted) return;
@@ -136,6 +163,7 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
       setState(() {
         _loadingMore = false;
         _commentsPage = mergeCommentsPage(_commentsPage, nextPage);
+        _commentReactions.addAll(_extractCommentReactions(nextPage.nodes));
       });
     } catch (e) {
       if (!mounted) return;
@@ -428,21 +456,33 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
     final hasBody = bodyHTML != null && bodyHTML.isNotEmpty;
     final markdownData =
         hasBody ? transformInlineHtmlToMarkdown(bodyHTML) : '';
+    final String? subjectId = _discussion?['id'] as String?;
     return GSYCardItem(
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: hasBody
-            ? GSYMarkdownWidget(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (hasBody)
+              GSYMarkdownWidget(
                 markdownData: markdownData,
                 baseUrl: '',
                 shrinkWrap: true,
                 scroll: false,
               )
-            : Text(
+            else
+              Text(
                 context.l10n.discussion_empty_body,
                 style: GSYConstant.smallSubText
                     .copyWith(fontStyle: FontStyle.italic),
               ),
+            if (subjectId != null && subjectId.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              _buildReactionsBar(context, subjectId, _bodyReactions,
+                  isBody: true),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -586,6 +626,17 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
                 padding: 2.0,
               ),
             ],
+            if (comment['id'] is String && (comment['id'] as String).isNotEmpty)
+              ...[
+              const SizedBox(height: 6),
+              _buildReactionsBar(
+                context,
+                comment['id'] as String,
+                _commentReactions[comment['id'] as String] ??
+                    const <ReactionSummary>[],
+                isBody: false,
+              ),
+            ],
             if (repliesList.isNotEmpty) ...[
               const SizedBox(height: 8),
               const Divider(height: 1),
@@ -725,6 +776,363 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
     final dt = DateTime.tryParse(raw);
     if (dt == null) return '';
     return CommonUtils.getNewsTimeStr(dt.toLocal());
+  }
+
+  /// 从服务端返回的 comment nodes 中抽出 `id → reactionGroups` 映射。
+  ///
+  /// 单独抽成方法：首屏 [_load] 与分页 [_loadMore] 均调用，避免两处各写一遍
+  /// forEach。id 为空的 node 跳过（理论上 GraphQL 一定返回 id，但守一手）。
+  Map<String, List<ReactionSummary>> _extractCommentReactions(
+      List<Map<String, dynamic>> nodes) {
+    final Map<String, List<ReactionSummary>> map =
+        <String, List<ReactionSummary>>{};
+    for (final c in nodes) {
+      final id = c['id'];
+      if (id is! String || id.isEmpty) continue;
+      map[id] = pickReactionGroups(c['reactionGroups']);
+    }
+    return map;
+  }
+
+  /// 读取指定 subject 当前的 reactions 快照（body 优先）。
+  ///
+  /// 用于 [_toggleReaction] 里既做 body 也做 comment 时的分支写；也用于
+  /// 长按弹窗展示当前选中态。
+  List<ReactionSummary> _reactionsForSubject(String subjectId,
+      {required bool isBody}) {
+    if (isBody) return _bodyReactions;
+    return _commentReactions[subjectId] ?? const <ReactionSummary>[];
+  }
+
+  /// 写回指定 subject 的 reactions（乐观更新 / 服务端 payload 覆盖时共用）。
+  void _writeReactionsForSubject(
+      String subjectId, List<ReactionSummary> next,
+      {required bool isBody}) {
+    if (isBody) {
+      _bodyReactions = next;
+    } else {
+      _commentReactions[subjectId] = next;
+    }
+  }
+
+  /// 处理一次 reaction 点击：
+  ///
+  /// 1. 若同一 subjectId 已有 inflight 请求，直接忽略（防连点）。
+  /// 2. 依据 [add] 用 [applyLocalReactionToggle] 计算乐观快照，setState 先渲染。
+  /// 3. 走 mutation；成功用返回的 `reactionGroups` 覆盖本地（吸收服务端合并 /
+  ///    并发写入的差异），失败则回滚到调用前快照并给出 SnackBar 提示。
+  /// 4. 401 / 403 之类"未登录 / 无权限"错误统一走 [_showSnack]。
+  Future<void> _toggleReaction(
+    String subjectId,
+    String content, {
+    required bool add,
+    required bool isBody,
+  }) async {
+    if (_reactionInflight.contains(subjectId)) return;
+    final l = context.l10n;
+    final List<ReactionSummary> before =
+        _reactionsForSubject(subjectId, isBody: isBody);
+    final List<ReactionSummary> optimistic =
+        applyLocalReactionToggle(before, content, add: add);
+    if (identical(before, optimistic)) return;
+
+    setState(() {
+      _reactionInflight.add(subjectId);
+      _writeReactionsForSubject(subjectId, optimistic, isBody: isBody);
+    });
+
+    try {
+      final QueryResult? res = add
+          ? await gql.addReactionToSubject(subjectId, content)
+          : await gql.removeReactionFromSubject(subjectId, content);
+      if (!mounted) return;
+      if (res == null || res.hasException) {
+        setState(() {
+          _writeReactionsForSubject(subjectId, before, isBody: isBody);
+          _reactionInflight.remove(subjectId);
+        });
+        _showSnack(l.discussion_reaction_failed(
+            res?.exception?.toString() ?? 'null result'));
+        return;
+      }
+      final Map<String, dynamic>? mutationRoot = res.data?[
+          add ? 'addReaction' : 'removeReaction'] as Map<String, dynamic>?;
+      final Map<String, dynamic>? subject =
+          mutationRoot?['subject'] as Map<String, dynamic>?;
+      final serverGroups = pickReactionGroups(subject?['reactionGroups']);
+      setState(() {
+        _writeReactionsForSubject(
+            subjectId,
+            serverGroups.isEmpty && optimistic.isNotEmpty
+                ? optimistic
+                : serverGroups,
+            isBody: isBody);
+        _reactionInflight.remove(subjectId);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _writeReactionsForSubject(subjectId, before, isBody: isBody);
+        _reactionInflight.remove(subjectId);
+      });
+      _showSnack(l.discussion_reaction_failed(e.toString()));
+    }
+  }
+
+  void _showSnack(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 3),
+    ));
+  }
+
+  /// GraphQL `ReactionContent` → 对应 l10n a11y label（tooltip / semantic）
+  String _reactionA11yLabel(BuildContext context, String content) {
+    final l = context.l10n;
+    switch (content) {
+      case 'THUMBS_UP':
+        return l.reaction_thumbs_up;
+      case 'THUMBS_DOWN':
+        return l.reaction_thumbs_down;
+      case 'LAUGH':
+        return l.reaction_laugh;
+      case 'HOORAY':
+        return l.reaction_hooray;
+      case 'CONFUSED':
+        return l.reaction_confused;
+      case 'HEART':
+        return l.reaction_heart;
+      case 'ROCKET':
+        return l.reaction_rocket;
+      case 'EYES':
+        return l.reaction_eyes;
+    }
+    return content;
+  }
+
+  /// 底部 reactions bar：
+  ///
+  /// - 只渲染 `count>0` 的分组；数量为 0 的分组一律折进"添加反应" 弹窗
+  /// - `viewerHasReacted=true` 的 chip 用 primaryColor 描边 + 淡背景高亮
+  /// - 尾部固定一个 "+" 按钮，点击 / 长按 bar 都触发 [_openReactionPicker]
+  /// - 若整条 bar 无任何有 count 的分组，退化为一个 hint chip："添加反应"
+  Widget _buildReactionsBar(
+    BuildContext context,
+    String subjectId,
+    List<ReactionSummary> groups, {
+    required bool isBody,
+  }) {
+    final theme = Theme.of(context);
+    final l = context.l10n;
+    final List<ReactionSummary> visible =
+        groups.where((r) => r.count > 0).toList(growable: false);
+    final Widget addBtn = _buildAddReactionButton(context, subjectId,
+        isBody: isBody, groups: groups);
+
+    if (visible.isEmpty) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: InkWell(
+          onTap: () => _openReactionPicker(subjectId, groups, isBody: isBody),
+          onLongPress: () =>
+              _openReactionPicker(subjectId, groups, isBody: isBody),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.add_reaction_outlined,
+                    size: 16, color: theme.hintColor),
+                const SizedBox(width: 4),
+                Text(l.discussion_reaction_add,
+                    style: GSYConstant.smallSubLightText),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onLongPress: () =>
+          _openReactionPicker(subjectId, groups, isBody: isBody),
+      child: Wrap(
+        spacing: 6,
+        runSpacing: 4,
+        children: [
+          for (final r in visible)
+            _buildReactionChip(context, subjectId, r, isBody: isBody),
+          addBtn,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddReactionButton(BuildContext context, String subjectId,
+      {required bool isBody, required List<ReactionSummary> groups}) {
+    final theme = Theme.of(context);
+    final l = context.l10n;
+    return Tooltip(
+      message: l.discussion_reaction_add,
+      child: InkWell(
+        onTap: () => _openReactionPicker(subjectId, groups, isBody: isBody),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+                color: theme.dividerColor.withValues(alpha: 0.6), width: 0.5),
+          ),
+          child: Icon(Icons.add_reaction_outlined,
+              size: 16, color: theme.hintColor),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildReactionChip(
+    BuildContext context,
+    String subjectId,
+    ReactionSummary r, {
+    required bool isBody,
+  }) {
+    final theme = Theme.of(context);
+    final l = context.l10n;
+    final bool selected = r.viewerHasReacted;
+    final Color borderColor = selected
+        ? theme.primaryColor
+        : theme.dividerColor.withValues(alpha: 0.6);
+    final Color background = selected
+        ? theme.primaryColor.withValues(alpha: 0.08)
+        : Colors.transparent;
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: l.discussion_reaction_a11y(_reactionA11yLabel(context, r.content),
+          r.count),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => _toggleReaction(subjectId, r.content,
+            add: !selected, isBody: isBody),
+        onLongPress: () => _openReactionPicker(
+            subjectId, _reactionsForSubject(subjectId, isBody: isBody),
+            isBody: isBody),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: background,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: borderColor, width: 0.5),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(r.emoji, style: const TextStyle(fontSize: 14)),
+              const SizedBox(width: 4),
+              Text('${r.count}',
+                  style: GSYConstant.smallSubLightText.copyWith(
+                    color: selected
+                        ? theme.primaryColor
+                        : theme.textTheme.bodySmall?.color,
+                    fontWeight:
+                        selected ? FontWeight.w600 : FontWeight.normal,
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 长按 / 点 "+" 弹出：底部 sheet 里展示 8 类 chip，用户点选一次即 toggle 并关闭
+  void _openReactionPicker(
+    String subjectId,
+    List<ReactionSummary> current, {
+    required bool isBody,
+  }) {
+    final Map<String, ReactionSummary> byContent = <String, ReactionSummary>{
+      for (final r in current) r.content: r,
+    };
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) {
+        final theme = Theme.of(ctx);
+        final l = ctx.l10n;
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(l.discussion_reaction_add,
+                    style: GSYConstant.middleTextBold),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 8,
+                  children: [
+                    for (final c in kReactionContents)
+                      _buildPickerCell(
+                        ctx,
+                        content: c,
+                        emoji: kReactionEmoji[c]!,
+                        selected: byContent[c]?.viewerHasReacted ?? false,
+                        onTap: () {
+                          Navigator.of(ctx).pop();
+                          final bool selected =
+                              byContent[c]?.viewerHasReacted ?? false;
+                          _toggleReaction(subjectId, c,
+                              add: !selected, isBody: isBody);
+                        },
+                        theme: theme,
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPickerCell(
+    BuildContext context, {
+    required String content,
+    required String emoji,
+    required bool selected,
+    required VoidCallback onTap,
+    required ThemeData theme,
+  }) {
+    final Color borderColor = selected
+        ? theme.primaryColor
+        : theme.dividerColor.withValues(alpha: 0.6);
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: _reactionA11yLabel(context, content),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: borderColor, width: 0.8),
+            color: selected
+                ? theme.primaryColor.withValues(alpha: 0.08)
+                : Colors.transparent,
+          ),
+          child: Text(emoji, style: const TextStyle(fontSize: 22)),
+        ),
+      ),
+    );
   }
 
   @override

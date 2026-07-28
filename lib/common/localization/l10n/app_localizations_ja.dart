@@ -1103,6 +1103,47 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get discussion_reaction_add => 'リアクションを追加';
+
+  @override
+  String get discussion_reaction_login_required =>
+      'リアクションを送るには GitHub にログインしてください';
+
+  @override
+  String discussion_reaction_failed(String error) {
+    return 'リアクションに失敗し、ロールバックしました：$error';
+  }
+
+  @override
+  String discussion_reaction_a11y(String emoji, int count) {
+    return '$emoji リアクション、合計 $count 件';
+  }
+
+  @override
+  String get reaction_thumbs_up => 'いいね';
+
+  @override
+  String get reaction_thumbs_down => '低評価';
+
+  @override
+  String get reaction_laugh => '笑い';
+
+  @override
+  String get reaction_hooray => '祝う';
+
+  @override
+  String get reaction_confused => '困惑';
+
+  @override
+  String get reaction_heart => 'ハート';
+
+  @override
+  String get reaction_rocket => 'ロケット';
+
+  @override
+  String get reaction_eyes => '注目';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return 'スポンサーシップを $action しました';
   }

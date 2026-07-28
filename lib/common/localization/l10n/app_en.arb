@@ -665,6 +665,29 @@
       "count": {"type": "int"}
     }
   },
+  "discussion_reaction_add": "Add reaction",
+  "discussion_reaction_login_required": "Please sign in to GitHub before reacting to a discussion",
+  "discussion_reaction_failed": "Reaction failed and was rolled back: {error}",
+  "@discussion_reaction_failed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "discussion_reaction_a11y": "{emoji} reaction, {count} in total",
+  "@discussion_reaction_a11y": {
+    "placeholders": {
+      "emoji": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+  "reaction_thumbs_up": "Thumbs up",
+  "reaction_thumbs_down": "Thumbs down",
+  "reaction_laugh": "Laugh",
+  "reaction_hooray": "Hooray",
+  "reaction_confused": "Confused",
+  "reaction_heart": "Heart",
+  "reaction_rocket": "Rocket",
+  "reaction_eyes": "Eyes",
   "event_dynamic_sponsorship": "{action} a sponsorship",
   "@event_dynamic_sponsorship": {
     "placeholders": {

@@ -1124,6 +1124,47 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get discussion_reaction_add => 'Add reaction';
+
+  @override
+  String get discussion_reaction_login_required =>
+      'Please sign in to GitHub before reacting to a discussion';
+
+  @override
+  String discussion_reaction_failed(String error) {
+    return 'Reaction failed and was rolled back: $error';
+  }
+
+  @override
+  String discussion_reaction_a11y(String emoji, int count) {
+    return '$emoji reaction, $count in total';
+  }
+
+  @override
+  String get reaction_thumbs_up => 'Thumbs up';
+
+  @override
+  String get reaction_thumbs_down => 'Thumbs down';
+
+  @override
+  String get reaction_laugh => 'Laugh';
+
+  @override
+  String get reaction_hooray => 'Hooray';
+
+  @override
+  String get reaction_confused => 'Confused';
+
+  @override
+  String get reaction_heart => 'Heart';
+
+  @override
+  String get reaction_rocket => 'Rocket';
+
+  @override
+  String get reaction_eyes => 'Eyes';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action a sponsorship';
   }

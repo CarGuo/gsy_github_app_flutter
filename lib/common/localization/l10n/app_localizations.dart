@@ -1968,6 +1968,78 @@ abstract class AppLocalizations {
   /// **'{count} replies'**
   String discussion_comment_replies_count(int count);
 
+  /// No description provided for @discussion_reaction_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add reaction'**
+  String get discussion_reaction_add;
+
+  /// No description provided for @discussion_reaction_login_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in to GitHub before reacting to a discussion'**
+  String get discussion_reaction_login_required;
+
+  /// No description provided for @discussion_reaction_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reaction failed and was rolled back: {error}'**
+  String discussion_reaction_failed(String error);
+
+  /// No description provided for @discussion_reaction_a11y.
+  ///
+  /// In en, this message translates to:
+  /// **'{emoji} reaction, {count} in total'**
+  String discussion_reaction_a11y(String emoji, int count);
+
+  /// No description provided for @reaction_thumbs_up.
+  ///
+  /// In en, this message translates to:
+  /// **'Thumbs up'**
+  String get reaction_thumbs_up;
+
+  /// No description provided for @reaction_thumbs_down.
+  ///
+  /// In en, this message translates to:
+  /// **'Thumbs down'**
+  String get reaction_thumbs_down;
+
+  /// No description provided for @reaction_laugh.
+  ///
+  /// In en, this message translates to:
+  /// **'Laugh'**
+  String get reaction_laugh;
+
+  /// No description provided for @reaction_hooray.
+  ///
+  /// In en, this message translates to:
+  /// **'Hooray'**
+  String get reaction_hooray;
+
+  /// No description provided for @reaction_confused.
+  ///
+  /// In en, this message translates to:
+  /// **'Confused'**
+  String get reaction_confused;
+
+  /// No description provided for @reaction_heart.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart'**
+  String get reaction_heart;
+
+  /// No description provided for @reaction_rocket.
+  ///
+  /// In en, this message translates to:
+  /// **'Rocket'**
+  String get reaction_rocket;
+
+  /// No description provided for @reaction_eyes.
+  ///
+  /// In en, this message translates to:
+  /// **'Eyes'**
+  String get reaction_eyes;
+
   /// No description provided for @event_dynamic_sponsorship.
   ///
   /// In en, this message translates to:
