@@ -326,6 +326,11 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
          - 静态：`flutter analyze` 全仓 `No issues found!`；`flutter test test/page/discussion` 50/50 全绿（35 原有 + 15 新增）
          - 真机验收仍挪到与 pt.1/2/4 共同前置的下一轮 milestone，`#511` 就是这条 UI 分支的天然 fixture
     3. **loadMore 真机验收**：BettaFish 讨论区当前 comments ≤30，`hasNextPage=true` 需换 fixture 到 `vercel/next.js` 或 `expo/expo` 里挑一条 >30 comments 的 discussion（对照组 fallback，需要在 PR 描述里显式提出后再落到 fixture 表）
+       - ✅ **2026-07-28 fixture 探针完成**（gh cli discussion search 已不再支持 `type:discussion`，改用 `Invoke-WebRequest` 拉 `vercel/next.js/discussions?discussions_q=sort:top` HTML → [build/smoke/nextjs_discussions_top.html](file:///d:/workspace/project/gsy_github_app_flutter/build/smoke/nextjs_discussions_top.html) 585KB，正则 `aria-label="(\d+) comments?:[^"]*"[^>]*href="/vercel/next\.js/discussions/(\d+)"` 一次抽出 25 条候选，评论数从 2616 到 25 均匀分布）
+       - **首选外部妥协项 → `vercel/next.js#37136`**「RFC: Layouts」(RFC/Announcement category, Closed, 480 comments)，理由：480/30≈16 页足够压测 loadMore 循环但不过分，比 `#41745`（2616）体感更贴近生产 discussion；详情页 HTML ([build/smoke/nextjs_37136.html](file:///d:/workspace/project/gsy_github_app_flutter/build/smoke/nextjs_37136.html) 2.1MB) 里 `<button>Load more…</button>` 与 `data-timeline-item-src="/vercel/next.js/discussions/37136/timeline_anchor?after=...&before=..."` 并存，服务端明确 `hasNextPage=true`（HTML 第一屏 render "**135 hidden items**" 提示 + Load more 按钮），完美匹配 GSY 移动端 `first:30` + `hasNextPage=true` loadMore 触发路径
+       - **备用（压力测）**：`vercel/next.js#41745`（2616 comments，>87 页），仅在验证 `endCursor` 边界或"极长 dataList 滚动性能"时启用
+       - **真机验收步骤（下一 milestone 兑现，前置依赖 pt.4 设备旋转 override 已解决）**：登录 CarSmallGuo → 搜 `vercel/next.js` → discussions tab → 打开 `#37136` → 滚到 comments 段尾部 → 点"加载更多评论" 按钮 → 抓改动前 dataList.length / 改动后 dataList.length / 底部"没有更多评论了"或再次 Load more 的截图，logcat 无 GraphQL 401 或 rate_limit 报错；截图路径按 AGENTS.md 三段式写入完成汇报
+       - **写回 fixture 契约表**：见下方 §3.1 Fixture 契约表末尾新增"外部妥协项 · Discussion loadMore"表格
     4. **private-user-images 图片真机验收（2026-07-27 已验：两条 bug 路径均已代码层修复，真机验收挪到 fixture 设备旋转排查后的下一轮 milestone）**：
        - 已在 8.1.0 apk（含 `6c697cc`）上跑通 #511 body 段截图（[37_disc_511_top.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/37_disc_511_top.png) / [38_disc_511_scroll1.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/38_disc_511_scroll1.png) / [39_disc_511_scroll2.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/39_disc_511_scroll2.png)），logcat 无 `Image.network failed` 记录（[40_logcat_pid.txt](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/40_logcat_pid.txt) 只 69 字节的 gralloc 噪声）
        - **根因（不是 6c697cc 修复的场景）**：GitHub 生成的 discussion body 里 `[![alt](imgUrl)]` 与外层链接 `(hrefUrl)` 之间**夹了一个换行符**，flutter_markdown_plus 走 CommonMark 严格解析时会因此把整段 `[![alt](imgUrl)]\n(hrefUrl)` 判为"未闭合 link"→ 全段降级为纯文本，`imageBuilder` 从未被触发，UA/errorBuilder 分支自然不生效。
@@ -371,6 +376,18 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 
     **对照组**（同时探过、`has_discussions=true` 但 GSY 生态无关联，仅作 fallback）：
     `vercel/next.js` (141k★) / `vuejs/core` (54k★) / `expo/expo` (51k★) / `supabase/supabase` (107k★) / `shadcn-ui/ui` (119k★)
+
+    **外部妥协项 · Discussion loadMore fixture**（2026-07-28 探针实测，BettaFish 讨论区 comments 全部 ≤30，`hasNextPage=true` 靠 BettaFish 天然覆盖不到，必须走对照组）：
+
+    | Discussion # | Category | State | Comments | 覆盖场景 | 探针依据 |
+    |---|---|---|---|---|---|
+    | [vercel/next.js#37136](https://github.com/vercel/next.js/discussions/37136) | RFC / Announcement | Closed | 480 | **首选** loadMore 首次触发 + 多轮翻页（480/30≈16 页） | HTML 明确 render "135 hidden items" + `<button>Load more…</button>` + `timeline_anchor?after=...&before=...` |
+    | [vercel/next.js#41745](https://github.com/vercel/next.js/discussions/41745) | (待现场核实) | (待现场核实) | 2616 | 备用压力测（endCursor 边界 / 极长 dataList 滚动性能） | 同批列表页正则命中最大值，评论量约 87 页 |
+
+    **fixture 使用约束**：
+    - 仅用于 GSY 阅读侧真机验收，禁止在这两条 discussion 下发评论 / reaction / mark as answer 制造证据
+    - 探针 HTML 落地在 `build/smoke/` 且 `.gitignore` 忽略，reviewer 需要复核时按上表 URL 用 `Invoke-WebRequest` 重新抓取即可
+    - 半年重跑：若 `#37136` 后续 `hasNextPage` 落到 `false`（服务端一次性 render 完 480 条不太可能，但存在 GitHub 侧策略调整可能），换到 `#41745`；`vercel/next.js` 若关闭 discussions，从对照组 `expo/expo` / `supabase/supabase` 里挑一条 >30 comments 的顶置 discussion 顶替
 
     **明确不选**：`flutter/flutter` / `microsoft/TypeScript` 都 **`has_discussions=false`**，别再往这两个仓库塞探针了。
 
