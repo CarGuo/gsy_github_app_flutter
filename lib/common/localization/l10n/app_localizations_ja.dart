@@ -1144,6 +1144,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reaction_eyes => '注目';
 
   @override
+  String get discussion_answered_by_author_badge => '作成者が回答';
+
+  @override
+  String get discussion_comment_bot_badge => 'Bot';
+
+  @override
+  String get discussion_comment_deleted_body => 'このコメントは削除されました';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return 'スポンサーシップを $action しました';
   }

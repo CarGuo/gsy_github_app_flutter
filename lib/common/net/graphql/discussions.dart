@@ -35,6 +35,7 @@ query getDiscussionDetail($owner: String!, $name: String!, $number: Int!) {
         login
         avatarUrl
         url
+        __typename
       }
       category {
         id
@@ -48,6 +49,7 @@ query getDiscussionDetail($owner: String!, $name: String!, $number: Int!) {
         author {
           login
           avatarUrl
+          __typename
         }
         createdAt
       }
@@ -79,6 +81,7 @@ query getDiscussionDetail($owner: String!, $name: String!, $number: Int!) {
           author {
             login
             avatarUrl
+            __typename
           }
           reactionGroups {
             content
@@ -96,6 +99,7 @@ query getDiscussionDetail($owner: String!, $name: String!, $number: Int!) {
               author {
                 login
                 avatarUrl
+                __typename
               }
               reactionGroups {
                 content
@@ -189,6 +193,7 @@ query getDiscussionCommentsPage($owner: String!, $name: String!, $number: Int!, 
           author {
             login
             avatarUrl
+            __typename
           }
           reactionGroups {
             content
@@ -206,6 +211,7 @@ query getDiscussionCommentsPage($owner: String!, $name: String!, $number: Int!, 
               author {
                 login
                 avatarUrl
+                __typename
               }
               reactionGroups {
                 content

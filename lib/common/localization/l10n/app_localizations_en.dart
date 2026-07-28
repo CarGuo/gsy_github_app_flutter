@@ -1165,6 +1165,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reaction_eyes => 'Eyes';
 
   @override
+  String get discussion_answered_by_author_badge => 'Answered by author';
+
+  @override
+  String get discussion_comment_bot_badge => 'Bot';
+
+  @override
+  String get discussion_comment_deleted_body => 'This comment has been deleted';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action a sponsorship';
   }

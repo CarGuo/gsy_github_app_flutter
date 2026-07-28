@@ -243,6 +243,17 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
             : resolveEmojiShortcode(categoryEmojiRaw);
     final int upvote = (disc['upvoteCount'] as int?) ?? 0;
     final bool answered = disc['answerChosenAt'] != null;
+    final Map<String, dynamic>? answerNode =
+        disc['answer'] as Map<String, dynamic>?;
+    final Map<String, dynamic>? answerAuthor =
+        answerNode?['author'] as Map<String, dynamic>?;
+    final String? answerAuthorLogin = answerAuthor?['login'] as String?;
+    // "作者自答"：answered=true 且 discussion.author.login == answer.author.login。
+    // 任一 login 为 null（已注销）就不算 self-answer，避免 ghost 误命中。
+    final bool selfAnswered = answered &&
+        authorLogin != null &&
+        answerAuthorLogin != null &&
+        authorLogin == answerAuthorLogin;
     final bool locked = (disc['locked'] as bool?) ?? false;
     final int commentCount =
         ((disc['comments'] as Map<String, dynamic>?)?['totalCount'] as int?) ??
@@ -265,6 +276,7 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
             upvote: upvote,
             commentCount: commentCount,
             answered: answered,
+            selfAnswered: selfAnswered,
             locked: locked,
             url: url,
           ),
@@ -286,6 +298,7 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
     required int upvote,
     required int commentCount,
     required bool answered,
+    required bool selfAnswered,
     required bool locked,
     required String? url,
   }) {
@@ -349,7 +362,9 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
                   _headerChip(
                     icon: Icons.check_circle,
                     emoji: null,
-                    label: context.l10n.discussion_answered_badge,
+                    label: selfAnswered
+                        ? context.l10n.discussion_answered_by_author_badge
+                        : context.l10n.discussion_answered_badge,
                     color: Colors.greenAccent.shade400.withValues(alpha: 0.28),
                     textColor: Colors.white,
                   ),
@@ -522,6 +537,8 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
         comment['author'] as Map<String, dynamic>?;
     final String? authorLogin = author?['login'] as String?;
     final String? authorAvatar = author?['avatarUrl'] as String?;
+    final bool authorDeleted = author == null;
+    final bool authorIsBot = _isBotAuthor(author);
     final String safeAuthor = authorLogin ?? l.discussion_author_ghost;
     final String? bodyHTML = comment['bodyHTML'] as String?;
     final bool hasBody = bodyHTML != null && bodyHTML.isNotEmpty;
@@ -568,6 +585,10 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (authorIsBot) ...[
+                  const SizedBox(width: 6),
+                  _buildBotBadge(context),
+                ],
                 if (isAnswer)
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -611,7 +632,9 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
               )
             else
               Text(
-                l.discussion_empty_body,
+                authorDeleted
+                    ? l.discussion_comment_deleted_body
+                    : l.discussion_empty_body,
                 style: GSYConstant.smallSubText
                     .copyWith(fontStyle: FontStyle.italic),
               ),
@@ -662,6 +685,8 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
         reply['author'] as Map<String, dynamic>?;
     final String? authorLogin = author?['login'] as String?;
     final String? authorAvatar = author?['avatarUrl'] as String?;
+    final bool authorDeleted = author == null;
+    final bool authorIsBot = _isBotAuthor(author);
     final String safeAuthor = authorLogin ?? l.discussion_author_ghost;
     final String? bodyHTML = reply['bodyHTML'] as String?;
     final bool hasBody = bodyHTML != null && bodyHTML.isNotEmpty;
@@ -694,6 +719,10 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+              if (authorIsBot) ...[
+                const SizedBox(width: 4),
+                _buildBotBadge(context),
+              ],
               if (createdAtText.isNotEmpty)
                 Text(createdAtText, style: GSYConstant.smallSubLightText),
             ],
@@ -708,7 +737,9 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
             )
           else
             Text(
-              l.discussion_empty_body,
+              authorDeleted
+                  ? l.discussion_comment_deleted_body
+                  : l.discussion_empty_body,
               style: GSYConstant.smallSubText
                   .copyWith(fontStyle: FontStyle.italic),
             ),
@@ -776,6 +807,40 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
     final dt = DateTime.tryParse(raw);
     if (dt == null) return '';
     return CommonUtils.getNewsTimeStr(dt.toLocal());
+  }
+
+  /// 判定 author 是否是 GitHub Bot（`__typename == 'Bot'`）。
+  ///
+  /// - 兼容大小写与去除首尾空格；GitHub GraphQL 目前一定返回 `Bot` / `User` /
+  ///   `Organization` / `Mannequin`，但保守处理不给自己下套
+  /// - author 为 null（已注销）直接返回 false，让 [_buildCommentCard] 走 deleted 分支
+  static bool _isBotAuthor(Map<String, dynamic>? author) {
+    if (author == null) return false;
+    final t = author['__typename'];
+    if (t is! String) return false;
+    return t.trim().toLowerCase() == 'bot';
+  }
+
+  /// Bot 徽标 chip（小号，用户名旁挂）：橙色描边 + 橙色文字，与 answer 徽标
+  /// 视觉区隔开（answer 是绿色）。i18n 走 `discussion_comment_bot_badge`。
+  Widget _buildBotBadge(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+      decoration: BoxDecoration(
+        color: Colors.orange.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(4),
+        border:
+            Border.all(color: Colors.orange.withValues(alpha: 0.5), width: 0.5),
+      ),
+      child: Text(
+        context.l10n.discussion_comment_bot_badge,
+        style: const TextStyle(
+          fontSize: 10,
+          color: Colors.orange,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
   }
 
   /// 从服务端返回的 comment nodes 中抽出 `id → reactionGroups` 映射。

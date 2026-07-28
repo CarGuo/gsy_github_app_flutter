@@ -688,6 +688,9 @@
   "reaction_heart": "Heart",
   "reaction_rocket": "Rocket",
   "reaction_eyes": "Eyes",
+  "discussion_answered_by_author_badge": "Answered by author",
+  "discussion_comment_bot_badge": "Bot",
+  "discussion_comment_deleted_body": "This comment has been deleted",
   "event_dynamic_sponsorship": "{action} a sponsorship",
   "@event_dynamic_sponsorship": {
     "placeholders": {

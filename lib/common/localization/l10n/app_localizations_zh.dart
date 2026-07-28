@@ -1142,6 +1142,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reaction_eyes => '关注';
 
   @override
+  String get discussion_answered_by_author_badge => '作者自答';
+
+  @override
+  String get discussion_comment_bot_badge => 'Bot';
+
+  @override
+  String get discussion_comment_deleted_body => '该评论已被删除';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action 一个赞助';
   }

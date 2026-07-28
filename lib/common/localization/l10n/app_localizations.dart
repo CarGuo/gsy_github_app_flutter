@@ -2040,6 +2040,24 @@ abstract class AppLocalizations {
   /// **'Eyes'**
   String get reaction_eyes;
 
+  /// No description provided for @discussion_answered_by_author_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered by author'**
+  String get discussion_answered_by_author_badge;
+
+  /// No description provided for @discussion_comment_bot_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Bot'**
+  String get discussion_comment_bot_badge;
+
+  /// No description provided for @discussion_comment_deleted_body.
+  ///
+  /// In en, this message translates to:
+  /// **'This comment has been deleted'**
+  String get discussion_comment_deleted_body;
+
   /// No description provided for @event_dynamic_sponsorship.
   ///
   /// In en, this message translates to:
