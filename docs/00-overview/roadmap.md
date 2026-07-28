@@ -341,6 +341,13 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
          2. 若仍不生效，试 `adb shell wm user-rotation lock 0`（部分厂商 ROM 才支持）；
          3. 最兜底：重启设备（`adb reboot`）后立即抓 `wm size` / `dumpsys display | grep -Ei 'rotation|orientation'` 观察 boot 之后 rotation 是否恢复；
          4. 若依旧偏，改用 flutter_driver / integration_test 走"按 semantics label 找目标"的路径，不再依赖屏幕物理坐标（这条依赖引入新依赖，需在 PR 描述里显式提出）。
+       - ✅ **2026-07-28 排查工具沉淀** ([tool/ai/smoke/probe_device_rotation.ps1](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/probe_device_rotation.ps1))：把上面 4 条排查思路翻译成 4 步中立诊断脚本（step1 baseline / step2 settings probe / step3 wm user-rotation probe / step4 summary），默认只读，`-Apply` 才写 override。真机 (device `jfxgpjeul7lrpjkz`, 1080x2400) baseline 已抓（evidence 落 [tool/ai/smoke/evidence/20260728_1518/rotation_probe_report.txt](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/evidence/20260728_1518/rotation_probe_report.txt)，`.gitignore` 忽略不入库）：
+         * `wm size 1080x2400` 与冒烟脚本坐标假设一致 ✓
+         * `mCurrentOrientation=0` / `rotation 0` / `installOrientation ROTATION_0` 设备当前就是竖屏
+         * `settings get system user_rotation: 0`（override 已存在）
+         * `settings get system accelerometer_rotation: 1` ← **就是这条**：自动旋转开着，冒烟中途手机翻身即会打乱绝对坐标 tap，正是 pt.1/2/4/5 真机验收 tap 落错的根因
+         * `wm user-rotation` `free`（未 lock）；ROM 支持该 subcommand，`-Apply` 时会走 `wm user-rotation lock 0` 加固
+         * **下一轮真机 milestone 上手直接跑**：`pwsh -NoProfile -File tool\ai\smoke\probe_device_rotation.ps1 -Apply -Device jfxgpjeul7lrpjkz`，把 `accelerometer_rotation` 写成 0，即解锁 pt.1/2/4/5 的真机验收前置
        - **真机关键证据要求（挪到下一个 milestone 兑现）**：#511 body 段 img 位置**不再出现蓝色链接文本**，落到真图或 [_networkImageErrorFallback](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/markdown/gsy_markdown_widget.dart#L32-L67) 占位；配套 `logcat -d -s flutter` 无 `Image.network failed` 或 label 转义相关 warning；截图路径按 [AGENTS.md 运行时冒烟规范](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md) 写入完成汇报三段式。
     5. **replies 非空嵌套真机验收**：换到 `#417`（1 comment + 1 reply）或 `#309`（3 comments + 长链）复核 `_buildReplyRow`
 

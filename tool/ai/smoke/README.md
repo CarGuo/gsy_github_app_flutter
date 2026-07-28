@@ -61,6 +61,44 @@ adb install -r <apk>
 | [`relaunch_app.sh`](./relaunch_app.sh) | 强制回到 GSY 首页（清 back stack） | `/tmp/gsy_smoke_home.png` |
 | [`open_home_dynamic.sh`](./open_home_dynamic.sh) | 首页动态 tab 冷启 → 下拉刷新 → 上滑分页 → 中段慢滚 → load more → 抓 logcat 分类计数（bash / macOS / Linux / WSL） | `/tmp/gsy_home_*.png` + logcat 计数摘要 |
 | [`open_home_dynamic.ps1`](./open_home_dynamic.ps1) | 同 `open_home_dynamic.sh`，PowerShell 7 版本（Windows 首选） | `evidence/<yyyymmdd_hhmm>/*.png` + `logcat_full.txt` |
+| [`probe_device_rotation.ps1`](./probe_device_rotation.ps1) | Discussions §3.1 pt.4 前置：中立诊断真机旋转 override（`settings get/put accelerometer_rotation` + `user_rotation` + `wm user-rotation` + `dumpsys display` 摘要）；默认只读，`-Apply` 才写 | `evidence/<yyyymmdd_hhmm>/rotation_probe_report.txt` + `rotation_probe_raw.json` + `dumpsys_display.txt` |
+
+### probe_device_rotation.ps1（真机坐标 tap 前置）
+
+背景：真机验收 pt.1/2/4/5 都被"tap 落错"卡住，根因是自动旋转 / 旋转 override
+经常不在 `user_rotation=0` 的干净状态。roadmap [§3.1 pt.4](../../../docs/00-overview/roadmap.md)
+列出的 4 条排查思路一直没沉淀成脚本，每次接手都要现拼命令。
+
+这个脚本把 pt.4 4 条思路翻译成 4 步中立诊断：
+
+| 脚本 step | 对应 pt.4 排查思路 | 行为 |
+|---|---|---|
+| step1 baseline | 补充上下文（wm size / density / dumpsys display / hwrotation prop） | 只读 |
+| step2 settings probe | 思路 1：`settings get/put accelerometer_rotation + user_rotation` | 只读；`-Apply` 才写 0 |
+| step3 wm user-rotation probe | 思路 2：`wm user-rotation lock 0`（部分厂商 ROM 才支持） | 只读探测；`-Apply` 才 lock |
+| step4 summary | 思路 3：`adb reboot` 兜底 → `-OfferReboot` 只提示，不代跑；思路 4：flutter_driver 依赖需 PR 描述里显式提出 | 生成 verdict 建议 |
+
+用法（Windows 首选）：
+
+```pwsh
+# 只读诊断（推荐先跑一次，把 baseline 落到 evidence）
+pwsh -NoProfile -File tool\ai\smoke\probe_device_rotation.ps1 -Device jfxgpjeul7lrpjkz
+
+# 排查完确认要修才 -Apply（会写 accelerometer_rotation=0 + user_rotation=0；
+# ROM 支持时再 wm user-rotation lock 0）
+pwsh -NoProfile -File tool\ai\smoke\probe_device_rotation.ps1 -Apply -Screenshot -Device jfxgpjeul7lrpjkz
+```
+
+产物落 `evidence/<yyyymmdd_hhmm>/`，`.gitignore` 已忽略：
+
+- `rotation_probe_report.txt`：人类可读逐步报告 + verdict
+- `rotation_probe_raw.json`：结构化字段（reviewer / 后续脚本可复用）
+- `dumpsys_display.txt` / `settings_dump.txt` / `wm_size.txt` / `wm_density.txt`：原始快照
+- `screencap_before.png` / `screencap_after.png`（`-Screenshot` 才生成）
+
+**与 AGENTS.md 允许清单的关系**：本脚本不做 GitHub 意义上的 mutation。
+`settings put` / `wm user-rotation lock` 属于**设备侧诊断修改**，只在显式 `-Apply`
+时下发；author 在完成汇报里需要注明是否 `-Apply` 过。
 
 ### Windows 优先用 `.ps1`
 
