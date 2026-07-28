@@ -1153,6 +1153,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get discussion_comment_deleted_body => 'このコメントは削除されました';
 
   @override
+  String get discussion_release_footer_title => '紐付いた Release';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return 'スポンサーシップを $action しました';
   }

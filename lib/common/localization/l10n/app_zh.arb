@@ -385,6 +385,7 @@
   "discussion_answered_by_author_badge": "作者自答",
   "discussion_comment_bot_badge": "Bot",
   "discussion_comment_deleted_body": "该评论已被删除",
+  "discussion_release_footer_title": "关联的 Release",
   "event_dynamic_sponsorship": "{action} 一个赞助",
   "event_dynamic_watch": "{action} {repo}",
   "event_dynamic_watch_started": "关注了 {repo}",

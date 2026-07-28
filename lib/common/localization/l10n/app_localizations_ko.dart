@@ -1153,6 +1153,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get discussion_comment_deleted_body => '이 댓글은 삭제되었습니다';
 
   @override
+  String get discussion_release_footer_title => '연결된 Release';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '스폰서십을 $action 했습니다';
   }

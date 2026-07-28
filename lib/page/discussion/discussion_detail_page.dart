@@ -8,6 +8,7 @@ import 'package:gsy_github_app_flutter/common/utils/emoji_shortcode_map.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/discussion/discussion_comments_paging.dart';
 import 'package:gsy_github_app_flutter/page/discussion/reaction_groups.dart';
+import 'package:gsy_github_app_flutter/page/discussion/release_footer.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
@@ -466,37 +467,119 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
     );
   }
 
-  /// 正文卡：走既有 markdown pipeline（inline HTML → markdown → 渲染）
+  /// 正文卡：走既有 markdown pipeline（inline HTML → markdown → 渲染）。
+  ///
+  /// 若 [bodyHTML] 尾部有 GitHub 自动生成的 "linked to a release" footer
+  /// （`<hr><em>This discussion was created from the release <a href=".../releases/tag/{tag}">...</a>.</em>`），
+  /// 走 [extractReleaseFooter] 把这段剥离，剩余 body 交给 markdown，footer
+  /// 单独渲染成独立卡片（见 [_buildReleaseFooterCard]），语义比原地渲染成
+  /// "分割线 + 斜体链接" 更强，也便于用户一眼看到关联的 release。
   Widget _buildBodyCard(BuildContext context, {String? bodyHTML}) {
-    final hasBody = bodyHTML != null && bodyHTML.isNotEmpty;
+    final rawHasBody = bodyHTML != null && bodyHTML.isNotEmpty;
+    final extracted = rawHasBody
+        ? extractReleaseFooter(bodyHTML)
+        : (strippedBody: '', info: null);
+    final String strippedBody = extracted.strippedBody;
+    final ReleaseFooterInfo? footerInfo = extracted.info;
+    final bool hasBody = strippedBody.isNotEmpty;
     final markdownData =
-        hasBody ? transformInlineHtmlToMarkdown(bodyHTML) : '';
+        hasBody ? transformInlineHtmlToMarkdown(strippedBody) : '';
     final String? subjectId = _discussion?['id'] as String?;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        GSYCardItem(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (hasBody)
+                  GSYMarkdownWidget(
+                    markdownData: markdownData,
+                    baseUrl: '',
+                    shrinkWrap: true,
+                    scroll: false,
+                  )
+                else
+                  Text(
+                    context.l10n.discussion_empty_body,
+                    style: GSYConstant.smallSubText
+                        .copyWith(fontStyle: FontStyle.italic),
+                  ),
+                if (subjectId != null && subjectId.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  _buildReactionsBar(context, subjectId, _bodyReactions,
+                      isBody: true),
+                ],
+              ],
+            ),
+          ),
+        ),
+        if (footerInfo != null) _buildReleaseFooterCard(context, footerInfo),
+      ],
+    );
+  }
+
+  /// "linked to a release" 独立卡片：tag chip + 提示文案 + release 标题，
+  /// 整卡点击走 [NavigatorUtils.goGSYWebView] 打开 release 网页（复用 header
+  /// "查看 GitHub" 一致的入口，不引入新导航栈）。
+  Widget _buildReleaseFooterCard(
+      BuildContext context, ReleaseFooterInfo info) {
+    final theme = Theme.of(context);
+    final l = context.l10n;
     return GSYCardItem(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (hasBody)
-              GSYMarkdownWidget(
-                markdownData: markdownData,
-                baseUrl: '',
-                shrinkWrap: true,
-                scroll: false,
-              )
-            else
-              Text(
-                context.l10n.discussion_empty_body,
-                style: GSYConstant.smallSubText
-                    .copyWith(fontStyle: FontStyle.italic),
+      color: theme.cardColor,
+      child: InkWell(
+        onTap: () => NavigatorUtils.goGSYWebView(
+            context, info.releaseUrl, info.title),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.local_offer_outlined,
+                  size: 20, color: theme.primaryColor),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.discussion_release_footer_title,
+                      style: GSYConstant.smallSubLightText,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      info.title,
+                      style: GSYConstant.middleTextBold,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: theme.primaryColor.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        info.tag,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: theme.primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            if (subjectId != null && subjectId.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              _buildReactionsBar(context, subjectId, _bodyReactions,
-                  isBody: true),
+              const SizedBox(width: 6),
+              Icon(Icons.chevron_right, color: theme.hintColor),
             ],
-          ],
+          ),
         ),
       ),
     );

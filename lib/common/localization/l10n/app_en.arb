@@ -691,6 +691,7 @@
   "discussion_answered_by_author_badge": "Answered by author",
   "discussion_comment_bot_badge": "Bot",
   "discussion_comment_deleted_body": "This comment has been deleted",
+  "discussion_release_footer_title": "Linked release",
   "event_dynamic_sponsorship": "{action} a sponsorship",
   "@event_dynamic_sponsorship": {
     "placeholders": {

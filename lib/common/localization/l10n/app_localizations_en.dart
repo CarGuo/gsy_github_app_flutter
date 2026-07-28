@@ -1174,6 +1174,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discussion_comment_deleted_body => 'This comment has been deleted';
 
   @override
+  String get discussion_release_footer_title => 'Linked release';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action a sponsorship';
   }

@@ -1151,6 +1151,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get discussion_comment_deleted_body => '该评论已被删除';
 
   @override
+  String get discussion_release_footer_title => '关联的 Release';
+
+  @override
   String event_dynamic_sponsorship(String action) {
     return '$action 一个赞助';
   }

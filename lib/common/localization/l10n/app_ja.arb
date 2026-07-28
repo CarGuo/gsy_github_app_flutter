@@ -385,6 +385,7 @@
   "discussion_answered_by_author_badge": "作成者が回答",
   "discussion_comment_bot_badge": "Bot",
   "discussion_comment_deleted_body": "このコメントは削除されました",
+  "discussion_release_footer_title": "紐付いた Release",
   "event_dynamic_sponsorship": "スポンサーシップを {action} しました",
   "event_dynamic_watch": "{repo} を {action} しました",
   "event_dynamic_watch_started": "{repo} をスターしました",

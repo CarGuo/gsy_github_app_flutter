@@ -2058,6 +2058,12 @@ abstract class AppLocalizations {
   /// **'This comment has been deleted'**
   String get discussion_comment_deleted_body;
 
+  /// No description provided for @discussion_release_footer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked release'**
+  String get discussion_release_footer_title;
+
   /// No description provided for @event_dynamic_sponsorship.
   ///
   /// In en, this message translates to:

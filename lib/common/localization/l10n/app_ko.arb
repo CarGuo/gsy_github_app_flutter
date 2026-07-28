@@ -385,6 +385,7 @@
   "discussion_answered_by_author_badge": "작성자 답변",
   "discussion_comment_bot_badge": "Bot",
   "discussion_comment_deleted_body": "이 댓글은 삭제되었습니다",
+  "discussion_release_footer_title": "연결된 Release",
   "event_dynamic_sponsorship": "스폰서십을 {action} 했습니다",
   "event_dynamic_watch": "{repo} 를 {action} 했습니다",
   "event_dynamic_watch_started": "{repo} 에 별표를 표시했습니다",
