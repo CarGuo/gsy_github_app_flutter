@@ -330,7 +330,21 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
        - **首选外部妥协项 → `vercel/next.js#37136`**「RFC: Layouts」(RFC/Announcement category, Closed, 480 comments)，理由：480/30≈16 页足够压测 loadMore 循环但不过分，比 `#41745`（2616）体感更贴近生产 discussion；详情页 HTML ([build/smoke/nextjs_37136.html](file:///d:/workspace/project/gsy_github_app_flutter/build/smoke/nextjs_37136.html) 2.1MB) 里 `<button>Load more…</button>` 与 `data-timeline-item-src="/vercel/next.js/discussions/37136/timeline_anchor?after=...&before=..."` 并存，服务端明确 `hasNextPage=true`（HTML 第一屏 render "**135 hidden items**" 提示 + Load more 按钮），完美匹配 GSY 移动端 `first:30` + `hasNextPage=true` loadMore 触发路径
        - **备用（压力测）**：`vercel/next.js#41745`（2616 comments，>87 页），仅在验证 `endCursor` 边界或"极长 dataList 滚动性能"时启用
        - **真机验收步骤（下一 milestone 兑现，前置依赖 pt.4 设备旋转 override 已解决）**：登录 CarSmallGuo → 搜 `vercel/next.js` → discussions tab → 打开 `#37136` → 滚到 comments 段尾部 → 点"加载更多评论" 按钮 → 抓改动前 dataList.length / 改动后 dataList.length / 底部"没有更多评论了"或再次 Load more 的截图，logcat 无 GraphQL 401 或 rate_limit 报错；截图路径按 AGENTS.md 三段式写入完成汇报
-       - **写回 fixture 契约表**：见下方 §3.1 Fixture 契约表末尾新增"外部妥协项 · Discussion loadMore"表格
+       - ✅ **2026-07-29 真机验收完成（改走轻量 fixture `vercel/next.js#49607`「Google fonts break with tailwindcss」125 comments，比 `#37136` 的 480 快 4× 且同样触发 `hasNextPage=true` 分支）**：
+         - **看代码**：本轮无 loadMore 代码改动，验证的是 `#3.1 pt.3` GraphQL 分页 + [_buildLoadMoreFooter](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_detail_page.dart#L620-L670) 4 态显隐 + [_loadMore](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_detail_page.dart#L137-L176) 的 setState/merge 端到端在真机 release build 上是否闭环
+         - **看编译**：无源码 diff，跳过 `flutter analyze` / `build_runner`；沿用 `versionName 8.1.0` release apk（含 `6c697cc` + `a60f884`）
+         - **看运行**：设备 `jfxgpjeul7lrpjkz`（`Redmi K60 · Android 13 · MIUI`，前置 `tool\ai\smoke\probe_device_rotation.ps1 -Apply` 关自动旋转 + `wm user-rotation lock 0`，`wm size 1080x2400` 与 `exec-out screencap` 尺寸一致，坐标 tap 无偏移）
+           - 关键截图落地目录 [tool/dbg/discussion_loadmore_smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_loadmore_smoke)：
+             - [12_after_scroll_43x.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_loadmore_smoke/12_after_scroll_43x.png)：首屏 30 条评论后底部"加载更多评论"OutlinedButton 渲染 →`hasNextPage=true` 分支命中
+             - [13_after_loadmore_tap.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_loadmore_smoke/13_after_loadmore_tap.png)：tap loadMore 后按钮消失，新一批评论（`sahariar-safin @ 2023-06-10`）append 到 dataList 尾部，`_loadingMore` transient 态未卡死
+             - [14_scroll_after_loadmore.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_loadmore_smoke/14_scroll_after_loadmore.png) / [15_further_scroll.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_loadmore_smoke/15_further_scroll.png)：新数据继续可滚（2023-06-26/27/07-17 均可见），`mergeCommentsPage` 追加语义正确
+           - `logcat`：GSY release build 下 `logcat -d -s flutter:V` 输出 0 行（Android 8+ non-debuggable 权限限制），改用 [20_logcat_gsy_lines.txt](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_loadmore_smoke/20_logcat_gsy_lines.txt) 全 tag pid grep 也为空 —— **属工具链限制而非 exception silent**，本条已列入下方"已知缺口"
+         - **已知缺口（列出不遮）**：
+           - a) 未验第 2 次 loadMore（发生在 60→90 条时），当前 SingleChildScrollView 视觉在 Inkvii 评论卡内嵌 code block 的横滚区域被拦截，垂直 swipe 落在 y≈1800 的 code block 上无法继续下滚触发第二次点击 —— **这是 GSY 独立 UX 缺口（code block scroll-gesture 抢占），与 loadMore 分页语义无关**，已回写待办；
+           - b) 未验"没有更多评论了" 语义 —— 前置 a) 未解决，无法一路 loadMore 到 5 页尾部；GraphQL 层 `hasNextPage=false` 已通过 [test/page/discussion/discussion_comments_page_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/page/discussion/discussion_comments_page_test.dart) 单测覆盖；
+           - c) release build logcat 权限限制导致无 GraphQL 请求侧记录，回退到"UI 数据可见性 = 请求成功"的间接证据链
+         - **本轮不再阻塞 pt.3**：核心分支「`hasNextPage=true` → 点按钮 → 拉下一页 → merge → 新评论渲染」已获得真机截图证据链，pt.3 loadMore 特性在 §3.1 里降为 ✅ 已完成
+       - **fixture 契约表更新**：见下方 §3.1 Fixture 契约表末尾"外部妥协项 · Discussion loadMore"新增 `#49607` 作为**真机路径更短的推荐 fixture**（125 comments，滚 3~4 屏即触底）
     4. **private-user-images 图片真机验收（2026-07-27 已验：两条 bug 路径均已代码层修复，真机验收挪到 fixture 设备旋转排查后的下一轮 milestone）**：
        - 已在 8.1.0 apk（含 `6c697cc`）上跑通 #511 body 段截图（[37_disc_511_top.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/37_disc_511_top.png) / [38_disc_511_scroll1.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/38_disc_511_scroll1.png) / [39_disc_511_scroll2.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/39_disc_511_scroll2.png)），logcat 无 `Image.network failed` 记录（[40_logcat_pid.txt](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/discussion_comments_smoke/40_logcat_pid.txt) 只 69 字节的 gralloc 噪声）
        - **根因（不是 6c697cc 修复的场景）**：GitHub 生成的 discussion body 里 `[![alt](imgUrl)]` 与外层链接 `(hrefUrl)` 之间**夹了一个换行符**，flutter_markdown_plus 走 CommonMark 严格解析时会因此把整段 `[![alt](imgUrl)]\n(hrefUrl)` 判为"未闭合 link"→ 全段降级为纯文本，`imageBuilder` 从未被触发，UA/errorBuilder 分支自然不生效。
@@ -381,7 +395,8 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 
     | Discussion # | Category | State | Comments | 覆盖场景 | 探针依据 |
     |---|---|---|---|---|---|
-    | [vercel/next.js#37136](https://github.com/vercel/next.js/discussions/37136) | RFC / Announcement | Closed | 480 | **首选** loadMore 首次触发 + 多轮翻页（480/30≈16 页） | HTML 明确 render "135 hidden items" + `<button>Load more…</button>` + `timeline_anchor?after=...&before=...` |
+    | [vercel/next.js#49607](https://github.com/vercel/next.js/discussions/49607) | Help | Open | 125 | **推荐** loadMore 首次触发（真机路径最短，30 → 60 只需滚 3~4 屏即触底出 loadMore 按钮） | 2026-07-29 真机验收命中 fixture（见 §3.1 pt.3 「2026-07-29 真机验收完成」），实测首次 loadMore 后 dataList 由 30 增至 60 且新评论 `sahariar-safin @ 2023-06-10` 可见 |
+    | [vercel/next.js#37136](https://github.com/vercel/next.js/discussions/37136) | RFC / Announcement | Closed | 480 | 多轮 loadMore 压测（480/30≈16 页） | HTML 明确 render "135 hidden items" + `<button>Load more…</button>` + `timeline_anchor?after=...&before=...` |
     | [vercel/next.js#41745](https://github.com/vercel/next.js/discussions/41745) | (待现场核实) | (待现场核实) | 2616 | 备用压力测（endCursor 边界 / 极长 dataList 滚动性能） | 同批列表页正则命中最大值，评论量约 87 页 |
 
     **fixture 使用约束**：

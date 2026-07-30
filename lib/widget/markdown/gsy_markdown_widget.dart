@@ -13,6 +13,7 @@ import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/markdown_html_transformer.dart';
+import 'package:gsy_github_app_flutter/widget/markdown/safe_pre_builder.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart';
 
 const String _kGithubUserAgent =
@@ -333,16 +334,24 @@ class GSYMarkdownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final styleSheet = _getStyle(context);
+    final syntaxHighlighter = GSYHighlighter();
     return Container(
       color: _getBackgroundColor(context),
       padding: const EdgeInsets.all(5.0),
       child: Markdown(
-        styleSheet: _getStyle(context),
-        syntaxHighlighter: GSYHighlighter(),
+        styleSheet: styleSheet,
+        syntaxHighlighter: syntaxHighlighter,
         shrinkWrap: shrinkWrap,
         physics: scroll ? null : const NeverScrollableScrollPhysics(),
         data: _processMarkdownImages(
             transformInlineHtmlToMarkdown(markdownData!), baseUrl),
+        builders: <String, MarkdownElementBuilder>{
+          'pre': SafePreBuilder(
+            styleSheet: styleSheet,
+            syntaxHighlighter: syntaxHighlighter,
+          ),
+        },
         imageBuilder: (Uri? uri, String? title, String? alt) {
           if (uri == null || uri.toString().isEmpty) return const SizedBox();
           final StringList parts = uri.toString().split('#');
