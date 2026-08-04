@@ -8,6 +8,26 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 
+/// 执行认证仓库请求，并保证任何非成功终态都清除旧的敏感列表。
+///
+/// 2026-08-04 / #943：失败 [DataResult] 与直接抛出的网络/解析异常必须走同一个
+/// 清理出口，不能让安全边界依赖下层“永不抛异常”。异常仍继续上抛，由既有列表
+/// 状态层记录和结束 loading。
+@visibleForTesting
+Future<dynamic> runAuthenticatedRepositoryRequest(
+    Future<dynamic> Function() request, VoidCallback clearSensitiveData) async {
+  try {
+    final result = await request();
+    if (result == null || !result.result) {
+      clearSensitiveData();
+    }
+    return result;
+  } catch (_) {
+    clearSensitiveData();
+    rethrow;
+  }
+}
+
 /// 通用list
 /// Created by guoshuyu
 /// on 2018/7/22.
@@ -72,7 +92,14 @@ class _CommonListPageState extends State<CommonListPage>
   }
 
   _getDataLogic() async {
-    return switch (widget.dataType) {
+    if (widget.dataType == CommonListDataType.authenticatedUserRepos) {
+      return runAuthenticatedRepositoryRequest(
+        () => ReposRepository.getAuthenticatedUserRepositoryRequest(page, null),
+        clearData,
+      );
+    }
+
+    final result = await switch (widget.dataType) {
       CommonListDataType.follower => await UserRepository.getFollowerListRequest(
           widget.userName!, page,
           needDb: page <= 1),
@@ -101,6 +128,7 @@ class _CommonListPageState extends State<CommonListPage>
         await UserRepository.getUserOrgsRequest(widget.userName!, page, needDb: page <= 1),
       _ => null,
     };
+    return result;
   }
 
   @override

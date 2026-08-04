@@ -76,6 +76,16 @@ class Address {
     return "${host}users/$userName/repos?sort=$sort";
   }
 
+  /// 当前登录用户自己拥有的仓库（包含 OAuth token 可访问的私有仓库）。
+  ///
+  /// 2026-08-04 / #943：`/users/{username}/repos` 按 GitHub API 契约只返回
+  /// 公开仓库；当前用户必须走 `/user/repos`。显式限定 `affiliation=owner`
+  /// 保持个人页原有“该用户拥有的仓库”语义，不混入协作或组织成员仓库。
+  static authenticatedUserRepos(sort) {
+    sort ??= 'pushed';
+    return "${host}user/repos?visibility=all&affiliation=owner&sort=$sort";
+  }
+
   ///仓库详情 get
   static getReposDetail(reposOwner, reposName) {
     return "${host}repos/$reposOwner/$reposName";

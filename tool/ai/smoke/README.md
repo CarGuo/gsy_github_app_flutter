@@ -61,6 +61,7 @@ adb install -r <apk>
 | [`relaunch_app.sh`](./relaunch_app.sh) | 强制回到 GSY 首页（清 back stack） | `/tmp/gsy_smoke_home.png` |
 | [`open_home_dynamic.sh`](./open_home_dynamic.sh) | 首页动态 tab 冷启 → 下拉刷新 → 上滑分页 → 中段慢滚 → load more → 抓 logcat 分类计数（bash / macOS / Linux / WSL） | `/tmp/gsy_home_*.png` + logcat 计数摘要 |
 | [`open_home_dynamic.ps1`](./open_home_dynamic.ps1) | 同 `open_home_dynamic.sh`，PowerShell 7 版本（Windows 首选） | `evidence/<yyyymmdd_hhmm>/*.png` + `logcat_full.txt` |
+| [`open_my_repositories.ps1`](./open_my_repositories.ps1) | 从首页进入“我的”及认证 owner 仓库列表；可用 `-ExpectedFirstRepository <name>` 继续验证私库动态/详情/ISSUE/文件（issue #943） | `evidence/<yyyymmdd_hhmm>_issue_943/*.png` + UI XML + app PID logcat |
 | [`probe_device_rotation.ps1`](./probe_device_rotation.ps1) | Discussions §3.1 pt.4 前置：中立诊断真机旋转 override（`settings get/put accelerometer_rotation` + `user_rotation` + `wm user-rotation` + `dumpsys display` 摘要）；默认只读，`-Apply` 才写 | `evidence/<yyyymmdd_hhmm>/rotation_probe_report.txt` + `rotation_probe_raw.json` + `dumpsys_display.txt` |
 
 ### probe_device_rotation.ps1（真机坐标 tap 前置）

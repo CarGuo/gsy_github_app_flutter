@@ -265,8 +265,36 @@ class UserHeaderItem extends StatelessWidget {
 class UserHeaderBottom extends StatelessWidget {
   final User userInfo;
   final Radius radius;
+  final User? authenticatedUser;
 
-  const UserHeaderBottom(this.userInfo, this.radius, {super.key});
+  const UserHeaderBottom(this.userInfo, this.radius,
+      {super.key, this.authenticatedUser});
+
+  static bool isAuthenticatedUserProfile(
+      User profileUser, User? authenticatedUser) {
+    final profileLogin = profileUser.login;
+    final authenticatedLogin = authenticatedUser?.login;
+    return profileLogin != null &&
+        authenticatedLogin != null &&
+        profileLogin.toLowerCase() == authenticatedLogin.toLowerCase();
+  }
+
+  /// 与仓库列表的数据源保持同一口径。
+  ///
+  /// 2026-08-04 / #943：authenticated owner endpoint 只列自有仓库，因此
+  /// 私有计数使用 owned_private_repos，而不是包含协作仓库的 total_private_repos。
+  static int? repositoryCount(User profileUser, User? authenticatedUser) {
+    if (!isAuthenticatedUserProfile(profileUser, authenticatedUser)) {
+      return profileUser.public_repos;
+    }
+    final publicCount =
+        authenticatedUser!.public_repos ?? profileUser.public_repos;
+    final privateCount = authenticatedUser.owned_private_repos;
+    if (publicCount == null && privateCount == null) {
+      return null;
+    }
+    return (publicCount ?? 0) + (privateCount ?? 0);
+  }
 
   ///底部状态栏
   _getBottomItem(String? title, var value, onPressed) {
@@ -299,6 +327,9 @@ class UserHeaderBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final includePrivateRepositories =
+        isAuthenticatedUserProfile(userInfo, authenticatedUser);
+
     ///用户底部状态
     return GSYCardItem(
       color: Theme.of(context).primaryColor,
@@ -313,10 +344,13 @@ class UserHeaderBottom extends StatelessWidget {
           children: <Widget>[
             _getBottomItem(
               context.l10n.user_tab_repos,
-              userInfo.public_repos,
+              repositoryCount(userInfo, authenticatedUser),
               () {
                 NavigatorUtils.gotoCommonList(context, userInfo.login,
-                    "repository", CommonListDataType.userRepos,
+                    "repository",
+                    includePrivateRepositories
+                        ? CommonListDataType.authenticatedUserRepos
+                        : CommonListDataType.userRepos,
                     userName: userInfo.login);
               },
             ),
