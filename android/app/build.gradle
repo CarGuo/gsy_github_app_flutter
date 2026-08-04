@@ -33,8 +33,9 @@ android {
         applicationId "com.shuyu.gsygithub.gsygithubappflutter"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 35
-        versionCode 71
-        versionName "8.1.0"
+        // 2026-08-04 / #943：发布私有仓库访问修复，tag 8.1.1。
+        versionCode 72
+        versionName "8.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'arm64-v8a'
