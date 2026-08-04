@@ -458,32 +458,49 @@ class ReposRepository {
   /// 用户的仓库
   static getUserRepositoryRequest(String userName, page, sort,
       {needDb = false}) async {
+    String url =
+        Address.userRepos(userName, sort) + Address.getPageParams("&", page);
+    return _getUserRepositoryListRequest(url, userName, needDb: needDb);
+  }
+
+  /// 当前登录用户自己拥有的仓库，包含 token 可访问的私有仓库。
+  ///
+  /// 2026-08-04 / #943：认证结果可能包含私有仓库元数据，不写入长期 SQLite
+  /// 缓存，避免退出登录或 token 权限收窄后仍由旧缓存暴露仓库名称与描述。
+  static getAuthenticatedUserRepositoryRequest(page, sort) async {
+    String url = Address.authenticatedUserRepos(sort) +
+        Address.getPageParams("&", page);
+    return _getUserRepositoryListRequest(url, null);
+  }
+
+  @visibleForTesting
+  static DataResult parseUserRepositoryResponse(
+      bool requestSucceeded, dynamic data) {
+    if (!requestSucceeded || data is! List) {
+      return DataResult(null, false);
+    }
+    List<Repository> list = [];
+    for (var item in data) {
+      list.add(Repository.fromJson(item));
+    }
+    return DataResult(list, true);
+  }
+
+  static _getUserRepositoryListRequest(String url, String? cacheKey,
+      {needDb = false}) async {
     UserReposDbProvider provider = UserReposDbProvider();
     next() async {
-      String url =
-          Address.userRepos(userName, sort) + Address.getPageParams("&", page);
       var res = await httpManager.netFetch(url, null, null, null);
-      if (res != null && res.result && res.data.length > 0) {
-        List<Repository> list = [];
-        var dataList = res.data;
-        if (dataList == null || dataList.length == 0) {
-          return DataResult(null, false);
-        }
-        for (int i = 0; i < dataList.length; i++) {
-          var data = dataList[i];
-          list.add(Repository.fromJson(data));
-        }
-        if (needDb) {
-          provider.insert(userName, json.encode(dataList));
-        }
-        return DataResult(list, true);
-      } else {
-        return DataResult(null, false);
+      var result = parseUserRepositoryResponse(
+          res != null && res.result, res?.data);
+      if (result.result && needDb) {
+        await provider.insert(cacheKey!, json.encode(res!.data));
       }
+      return result;
     }
 
     if (needDb) {
-      List<Repository>? list = await provider.geData(userName);
+      List<Repository>? list = await provider.geData(cacheKey);
       if (list == null) {
         return await next();
       }

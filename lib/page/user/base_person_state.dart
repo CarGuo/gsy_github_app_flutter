@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
@@ -10,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/user/base_person_provider.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
+import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/only_share_widget.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
@@ -171,7 +173,9 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
                   padding: const EdgeInsets.only(bottom: 10, left: 0, right: 0),
                   child: OnlyShareInstanceWidget(
                     value: headerProvider,
-                    child: UserHeaderBottom(userInfo, radius),
+                    child: UserHeaderBottom(userInfo, radius,
+                        authenticatedUser:
+                            StoreProvider.of<GSYState>(context).state.userInfo),
                   ),
                 ),
               );

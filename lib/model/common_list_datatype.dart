@@ -2,6 +2,7 @@ enum CommonListDataType {
   follower("follower"),
   followed("followed"),
   userRepos('user_repos'),
+  authenticatedUserRepos('authenticated_user_repos'),
   repoStar("repo_star"),
   userStar("user_star"),
   repoWatcher("repo_watcher"),
