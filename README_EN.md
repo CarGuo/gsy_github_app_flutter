@@ -349,7 +349,7 @@ Provider page state management:
 
 ## Star History Chart
 
-[![Star History Chart](https://api.star-history.com/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)](https://star-history.com/#CarGuo/gsy_github_app_flutter&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)](https://star-history.dera.page/#CarGuo/gsy_github_app_flutter&Date)
 
 
 
