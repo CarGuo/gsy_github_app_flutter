@@ -357,7 +357,8 @@ provider 页面内状态管理：
 
 ## Star History Chart
 
-[![Star History Chart](https://api.star-history.com/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)](https://star-history.com/#CarGuo/gsy_github_app_flutter&Date)
+
+![Star History Chart](https://star-history-eight.vercel.app/api/svg?repos=CarGuo/gsy_github_app_flutter&type=Date)
 
 
 ![](http://img.cdn.guoshuyu.cn/thanks.jpg)
