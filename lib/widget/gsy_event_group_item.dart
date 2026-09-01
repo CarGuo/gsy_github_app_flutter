@@ -106,6 +106,10 @@ Map<int, EventGroupSpan> buildEventGroupSpans(List<dynamic> dataList) {
 /// 判断某个原始 index 是不是被 group 的 startIndex 覆盖掉了（应渲染为空占位）。
 /// 用 [buildEventGroupSpans] 的结果反查：
 /// 只要存在 span 使 startIndex < index <= endIndex，就返回 true。
+///
+/// 注意：这是 O(spans.length) 线性扫。itemBuilder 会对每一个 index 都调一次，
+/// 长列表下等于 O(N × spans) 每帧。渲染路径请优先用 [EventGroupIndex]，
+/// 那份是 O(1) hash-set 查询 + 单次 dataList 引用级缓存。
 bool isConsumedGroupIndex(int index, Map<int, EventGroupSpan> spans) {
   for (final span in spans.values) {
     if (index > span.startIndex && index <= span.endIndex) {
@@ -113,6 +117,90 @@ bool isConsumedGroupIndex(int index, Map<int, EventGroupSpan> spans) {
     }
   }
   return false;
+}
+
+/// 分组扫描结果的缓存视图。
+///
+/// 存在的意义：
+/// - [buildEventGroupSpans] 是 O(N) 全表扫。
+/// - [isConsumedGroupIndex] 是 O(spans) 线性扫。
+/// - `ListView.builder` 会**为每个可见 index 都调一次 itemBuilder**，
+///   如果直接在 itemBuilder 里 `buildEventGroupSpans(dataList)` 再
+///   `isConsumedGroupIndex(...)`，长列表 (N > 200) 会退化到 O(N²)，
+///   真机上表现为滚动掉帧。
+///
+/// 用法（父组件）：
+/// ```dart
+/// final index = EventGroupIndex.of(dataList);
+/// // 在 itemBuilder 里
+/// final span = index.headSpanAt(i);      // O(1)
+/// if (span != null) return GSYEventGroupItem(span, ...);
+/// if (index.isConsumed(i)) return const SizedBox.shrink();
+/// return normalItem(i);
+/// ```
+///
+/// 缓存策略：以 dataList 引用为键（[Expando]）+ length 作副键。
+/// - loadMore 走 [List.addAll]，引用同一 List 但 length 变 → miss，会重扫。
+/// - 未改数据的普通 rebuild：引用一致且 length 相同 → hit，0 次扫描。
+/// - refresh 换新 List 引用：Expando 找不到条目 → miss，重扫；
+///   旧 List 无强引用时 Expando 里的条目会随之被 GC 回收，无泄漏。
+///
+/// 多 tab 共存友好：动态 tab 和仓库详情 Activity tab 各自的 dataList 是
+/// 不同 List 引用，Expando 里天然各占一个槽，互不覆盖。
+class EventGroupIndex {
+  final Map<int, EventGroupSpan> _headSpans;
+  final Set<int> _consumedIndices;
+
+  EventGroupIndex._(this._headSpans, this._consumedIndices);
+
+  /// group head 落在此 index 时返回对应 span；否则 null。O(1)。
+  EventGroupSpan? headSpanAt(int index) => _headSpans[index];
+
+  /// 该 index 是否被上游 group 的 startIndex 吞掉（应渲染 shrink）。O(1)。
+  bool isConsumed(int index) => _consumedIndices.contains(index);
+
+  /// 供调试 / 单测用。
+  int get groupCount => _headSpans.length;
+
+  /// 取给定 dataList 的分组索引。命中缓存则直接返回，否则重扫并缓存。
+  static EventGroupIndex of(List<dynamic> dataList) {
+    final cached = _cache[dataList];
+    if (cached != null && cached.sourceLength == dataList.length) {
+      return cached.index;
+    }
+    final Map<int, EventGroupSpan> headSpans = buildEventGroupSpans(dataList);
+    final Set<int> consumed = <int>{};
+    for (final span in headSpans.values) {
+      for (int i = span.startIndex + 1; i <= span.endIndex; i++) {
+        consumed.add(i);
+      }
+    }
+    final built = EventGroupIndex._(headSpans, consumed);
+    _cache[dataList] = _EventGroupIndexCacheEntry(
+      sourceLength: dataList.length,
+      index: built,
+    );
+    return built;
+  }
+
+  /// 手动清缓存。业务无需调用；仅测试 / 内存压力场景使用。
+  ///
+  /// 注意：`Expando` 无法整体清空，需要提供想清的 dataList。
+  static void debugClearCacheFor(List<dynamic> dataList) {
+    _cache[dataList] = null;
+  }
+
+  static final Expando<_EventGroupIndexCacheEntry> _cache =
+      Expando<_EventGroupIndexCacheEntry>('EventGroupIndex');
+}
+
+class _EventGroupIndexCacheEntry {
+  final int sourceLength;
+  final EventGroupIndex index;
+  _EventGroupIndexCacheEntry({
+    required this.sourceLength,
+    required this.index,
+  });
 }
 
 /// 连续同用户事件折叠卡片。

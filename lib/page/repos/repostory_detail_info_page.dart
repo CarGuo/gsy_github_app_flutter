@@ -85,19 +85,21 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     } else if (selectIndex == 0 && item is Event) {
       /// 仓库 Activity tab 里同一个协作者往往会连续推很多事件（例如同一次
       /// push 引出的多条 PushEvent / IssueCommentEvent 等）。走
-      /// [buildEventGroupSpans] 判断当前 index 是不是某个 span 的 head，
+      /// [EventGroupIndex.of] 判断当前 index 是不是某个 span 的 head，
       /// 是的话就渲染 [GSYEventGroupItem]；被 head 吞掉的后续 index 返回
       /// [SizedBox.shrink]。这样 [_getListCount] 语义不变，加载更多兼容。
+      /// [EventGroupIndex.of] 内部走 [Expando] 缓存，同一 dataList 引用 +
+      /// 同一 length 时不重复扫描，避免长列表下的 O(N²) 退化。
       final List data = pullLoadWidgetControl.dataList;
-      final spans = buildEventGroupSpans(data);
-      if (spans.containsKey(index)) {
-        final span = spans[index]!;
+      final groupIndex = EventGroupIndex.of(data);
+      final span = groupIndex.headSpanAt(index);
+      if (span != null) {
         return GSYEventGroupItem(
           span,
           key: ValueKey<String>('repo_group_${span.stableKey}'),
         );
       }
-      if (isConsumedGroupIndex(index, spans)) {
+      if (groupIndex.isConsumed(index)) {
         return const SizedBox.shrink();
       }
       return GSYEventItem(

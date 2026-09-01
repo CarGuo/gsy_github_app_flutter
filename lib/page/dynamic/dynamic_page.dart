@@ -91,20 +91,22 @@ class DynamicPageState extends State<DynamicPage>
   }
 
   /// 按连续同一 actor 折叠事件后的列表渲染。
-  /// - 每次 build 都基于当前 dataList 重新计算 spans；ChangeNotifier 触发 rebuild
+  /// - 每次 build 都基于当前 dataList 取分组索引；ChangeNotifier 触发 rebuild
   ///   时（下拉刷新 / load more）会自然对齐分组结果。
   /// - group.length >= 2 时 headIndex 渲染 [GSYEventGroupItem]，被吞掉的后续 index
   ///   返回 [SizedBox.shrink]，避免动 [_getListCount] 的语义。
+  /// - 走 [EventGroupIndex.of] 而不是每次 itemBuilder 都调 [buildEventGroupSpans]，
+  ///   避免长列表下的 O(N²) 退化，见 [EventGroupIndex] 类注释。
   Widget _renderItemWithGroup(
-      int index, Map<int, EventGroupSpan> spans, List<dynamic> dataList) {
-    if (spans.containsKey(index)) {
-      final span = spans[index]!;
+      int index, EventGroupIndex groupIndex, List<dynamic> dataList) {
+    final span = groupIndex.headSpanAt(index);
+    if (span != null) {
       return GSYEventGroupItem(
         span,
         key: ValueKey<String>('group_${span.stableKey}'),
       );
     }
-    if (isConsumedGroupIndex(index, spans)) {
+    if (groupIndex.isConsumed(index)) {
       return const SizedBox.shrink();
     }
     return _renderEventItem(dataList[index] as Event);
@@ -167,16 +169,16 @@ class DynamicPageState extends State<DynamicPage>
     var content = GSYPullLoadWidget(
       dynamicBloc.pullLoadWidgetControl,
       (BuildContext context, int index) {
-        /// 每次 itemBuilder 调用重新扫描一次 spans。分页大小 30，
-        /// 扫描是 O(n)，反查 [isConsumedGroupIndex] 最坏 O(spans)，
-        /// 单次列表滚动整体仍是 O(n)，可接受。
-        /// 这里没有把 spans 提到父级 build，是为了不额外挂
-        /// [GSYPullLoadWidgetControl] 的 listener——加载更多 / 刷新已经
-        /// 会让 [GSYPullLoadWidget] 内部 rebuild，itemBuilder 会重跑，
+        /// itemBuilder 会对每个可见 index 各调一次。
+        /// 走 [EventGroupIndex.of]：同一 dataList 引用 + 同一 length 时命中
+        /// [Expando] 缓存，一帧只扫一次；loadMore 后 length 变、cache miss，
+        /// 重扫代价仍是 O(N)。这里没有把 groupIndex 提到父级 build，是为了
+        /// 不额外挂 [GSYPullLoadWidgetControl] 的 listener——加载更多 /
+        /// 刷新已经会让 [GSYPullLoadWidget] 内部 rebuild，itemBuilder 会重跑，
         /// 从而拿到最新的 dataList。
         final List data = dynamicBloc.dataList;
-        final spans = buildEventGroupSpans(data);
-        return _renderItemWithGroup(index, spans, data);
+        final groupIndex = EventGroupIndex.of(data);
+        return _renderItemWithGroup(index, groupIndex, data);
       },
       requestRefresh,
       requestLoadMore,
