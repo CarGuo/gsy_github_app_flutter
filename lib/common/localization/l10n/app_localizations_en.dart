@@ -90,6 +90,21 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please enter your Personal Access Token first';
 
   @override
+  String get login_failed =>
+      'Login failed. Please check your network or token.';
+
+  @override
+  String get login_failed_auth =>
+      'Token is invalid or expired. Please generate a new one.';
+
+  @override
+  String get login_failed_network =>
+      'Network error. Please check your connection and try again.';
+
+  @override
+  String get login_failed_unknown => 'Login failed. Please try again later.';
+
+  @override
   String get home_reply => 'Feedback';
 
   @override

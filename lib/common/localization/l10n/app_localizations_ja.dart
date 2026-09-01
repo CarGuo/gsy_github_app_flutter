@@ -88,6 +88,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get token_login_empty => '先に Personal Access Token を入力してください';
 
   @override
+  String get login_failed => 'ログインに失敗しました。ネットワークまたは Token を確認してください。';
+
+  @override
+  String get login_failed_auth => 'Token が無効または失効しています。新しく発行してください。';
+
+  @override
+  String get login_failed_network => 'ネットワーク接続に問題があります。接続を確認してから再度お試しください。';
+
+  @override
+  String get login_failed_unknown => 'ログインに失敗しました。しばらくしてからもう一度お試しください。';
+
+  @override
   String get home_reply => 'フィードバック';
 
   @override

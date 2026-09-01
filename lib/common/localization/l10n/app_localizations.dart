@@ -258,6 +258,30 @@ abstract class AppLocalizations {
   /// **'Please enter your Personal Access Token first'**
   String get token_login_empty;
 
+  /// No description provided for @login_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Please check your network or token.'**
+  String get login_failed;
+
+  /// No description provided for @login_failed_auth.
+  ///
+  /// In en, this message translates to:
+  /// **'Token is invalid or expired. Please generate a new one.'**
+  String get login_failed_auth;
+
+  /// No description provided for @login_failed_network.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get login_failed_network;
+
+  /// No description provided for @login_failed_unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Please try again later.'**
+  String get login_failed_unknown;
+
   /// No description provided for @home_reply.
   ///
   /// In en, this message translates to:

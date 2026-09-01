@@ -35,6 +35,7 @@ class UserRepository {
       null,
       null,
       Options(method: "POST"),
+      noTip: true,
     );
     dynamic resultData;
     if (res != null && res.result) {
@@ -43,7 +44,9 @@ class UserRepository {
       var token0 = 'token $token';
       await LocalStorage.save(Config.TOKEN_KEY, token0);
 
-      resultData = await getUserInfo(null);
+      // 与 [loginWithToken] 保持一致：登录路径拿 profile 时抑制全局 toast，
+      // reducer 侧统一按 [DataResult.code] 决定失败文案。
+      resultData = await getUserInfo(null, noTip: true);
       if (Config.DEBUG!) {
         printLog("user result ${resultData.result}");
         printLog(resultData.data);
@@ -51,10 +54,14 @@ class UserRepository {
       }
       if (resultData.result == true) {
         store.dispatch(UpdateUserAction(resultData.data));
+        return DataResult(resultData.data, true, code: resultData.code);
       }
+      // profile 拿失败：让上层区分 401（token 拿到了但不能用）还是网络错。
+      return DataResult(null, false, code: resultData?.code);
     }
 
-    return DataResult(resultData, res!.result);
+    // 换 access_token 这一步就挂了：透传底层 code（可能是 -1 网络 / 5xx 之类）。
+    return DataResult(null, false, code: res?.code);
   }
 
   /// 使用用户提供的 Personal Access Token（PAT）直接登录。
@@ -96,20 +103,28 @@ class UserRepository {
     final headerValue = 'token $bareToken';
     await LocalStorage.save(Config.TOKEN_KEY, headerValue);
 
-    final resultData = await getUserInfo(null);
+    // noTip: true —— 登录路径不要走全局 [HttpErrorEvent] toast，
+    // 401 会被全局翻译成 "未授权或授权登录失败"，跟 reducer 里的登录失败提示重叠，
+    // 用户会看到两个都像 "网络问题" 的 toast，反而误导。
+    final resultData = await getUserInfo(null, noTip: true);
     if (Config.DEBUG!) {
-      printLog("token login user result ${resultData.result}");
+      printLog(
+          "token login user result ${resultData.result} code=${resultData.code}");
     }
     if (resultData != null && resultData.result == true) {
       store.dispatch(UpdateUserAction(resultData.data));
-      return DataResult(resultData.data, true);
+      return DataResult(resultData.data, true, code: resultData.code);
     }
 
     // token 不合法（401 / 403 / 网络异常）：立刻回滚，避免下次冷启动
     // [initUserInfo] 读到一个不能用的 token 又静默"看起来已登录"，把用户困在错状态。
     await LocalStorage.remove(Config.TOKEN_KEY);
     httpManager.clearAuthorization();
-    return DataResult(null, false);
+    // 关键：把 statusCode 透传给上层，让登录 epic / reducer 能区分：
+    // - 401 / 403 → token 无效（用户看到 "Token 无效"）
+    // - -1 / -2 / -4 → 网络异常（用户看到 "网络错误"）
+    // 之前只返回 `DataResult(null, false)`，上层永远只能给含糊提示。
+    return DataResult(null, false, code: resultData?.code);
   }
 
   static login(String userName, String password, store) async {
@@ -190,7 +205,14 @@ class UserRepository {
   }
 
   ///获取用户详细信息
-  static getUserInfo(String? userName, {needDb = false}) async {
+  ///
+  /// 2026-09 修：
+  /// - 新增 `noTip`：登录路径（[loginWithToken] / [oauth]）传 true，抑制全局
+  ///   [HttpErrorEvent] 广播，避免 401 时全局先弹一次 "未授权或授权登录失败"、
+  ///   reducer 再弹一次 "登录失败"，用户看到两个含糊 toast。
+  /// - 失败分支要把 HTTP 状态码 (`res?.code`) 透传给 [DataResult]，让上层
+  ///   （尤其是登录 reducer）能区分 401/403（token 无效）与 -1/-2/-4（网络）。
+  static getUserInfo(String? userName, {needDb = false, bool noTip = false}) async {
     UserInfoDbProvider provider = UserInfoDbProvider();
     next() async {
       dynamic res;
@@ -200,6 +222,7 @@ class UserRepository {
           null,
           null,
           null,
+          noTip: noTip,
         );
       } else {
         res = await httpManager.netFetch(
@@ -207,6 +230,7 @@ class UserRepository {
           null,
           null,
           null,
+          noTip: noTip,
         );
       }
       if (res != null && res.result) {
@@ -226,9 +250,9 @@ class UserRepository {
             provider.insert(userName, json.encode(user.toJson()));
           }
         }
-        return DataResult(user, true);
+        return DataResult(user, true, code: res.code);
       } else {
-        return DataResult(res.data, false);
+        return DataResult(res?.data, false, code: res?.code);
       }
     }
 

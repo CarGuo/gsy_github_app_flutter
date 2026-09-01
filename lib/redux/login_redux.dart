@@ -1,6 +1,10 @@
 // ignore_for_file: implicit_call_tearoffs, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/db/sql_manager.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
@@ -24,11 +28,42 @@ final LoginReducer = combineReducers<bool?>([
 /// 如果有 LoginSuccessAction 发起一个请求时
 /// 就会调用到 _loginResult
 /// _loginResult 这里接返回结果的同时进行跳转
+///
+/// 2026-09 修：登录失败必须给 UI 反馈，且要按 statusCode 分类。
+/// 之前版本要么静默不弹、要么统一弹 "登录失败，请检查网络或 Token"，
+/// 401（Token 不对）也说成 "网络问题"，用户被误导去查网络。
+/// 现在按 [LoginSuccessAction.errorCode] 分三档：
+///   - 401/403 → 认证失败（Token 无效）
+///   - -1/-2/-4 或超时 → 真的网络问题
+///   - 其它 → 未知错误兜底
 bool? _loginResult(bool? result, LoginSuccessAction action) {
   if (action.success == true) {
     NavigatorUtils.goHome(action.context);
+  } else if (action.context.mounted) {
+    showToast(_loginFailureMessage(action.context, action.errorCode));
   }
   return action.success;
+}
+
+/// 根据网络层带上来的 code 决定具体的错误文案。
+///
+/// code 语义映射（详见 [Code]）：
+/// - 401 / 403：token 无效或权限不够 —— GitHub 判定 Bad credentials
+/// - 404：路径/资源不存在（登录场景基本不会遇到，但兜底）
+/// - -1 / -2 / -3 / -4：dio 抛出的网络类错误（DNS 挂了、超时、连接被拒、JSON 解析失败）
+/// - 其它 / null：说不清就走 unknown
+String _loginFailureMessage(BuildContext context, int? code) {
+  final l10n = context.l10n;
+  if (code == 401 || code == 403) {
+    return l10n.login_failed_auth;
+  }
+  if (code == Code.NETWORK_ERROR ||
+      code == Code.NETWORK_TIMEOUT ||
+      code == Code.NETWORK_JSON_EXCEPTION ||
+      code == Code.GITHUB_API_REFUSED) {
+    return l10n.login_failed_network;
+  }
+  return l10n.login_failed_unknown;
 }
 
 bool? _logoutResult(bool? result, LogoutAction action) {
@@ -37,11 +72,15 @@ bool? _logoutResult(bool? result, LogoutAction action) {
 
 ///定一个 LoginSuccessAction ，用于发起 登陆成功后 的改变
 ///类名随你喜欢定义，只要通过上面TypedReducer 绑定就好
+///
+/// 2026-09 新增 [errorCode]：登录失败时把网络层拿到的 statusCode 带上来，
+/// 让 reducer 区分"认证失败"和"网络错误"，避免 401 也弹成网络问题误导用户。
 class LoginSuccessAction {
   final BuildContext context;
   final bool success;
+  final int? errorCode;
 
-  LoginSuccessAction(this.context, this.success);
+  LoginSuccessAction(this.context, this.success, {this.errorCode});
 }
 
 class LogoutAction {
@@ -94,33 +133,63 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
 }
 
 ///中间过程处理
-Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
-  Stream<dynamic> loginIn(
-      LoginAction action, EpicStore<GSYState> store) async* {
-    CommonUtils.showLoadingDialog(action.context);
-    var nv = Navigator.of(action.context);
-    var res = await UserRepository.login(
-        action.username!.trim(), action.password!.trim(), store);
-    nv.pop(action);
-    yield LoginSuccessAction(action.context, (res != null && res.result));
+///
+/// 2026-09 修：三个登录 epic（[loginEpic] / [oauthEpic] / [tokenLoginEpic]）
+/// 之前都是 `showLoading → await repo → Navigator.pop → yield` 的裸流程。
+/// 一旦 repository 或 dio 底层抛非 [DioException] 异常（例如 connectivity
+/// 插件抛错、Fluttertoast 平台通道异常、SocketException 未捕获等），await
+/// 会直接抛，`Navigator.pop` 永不执行，用户就看到 Loading 死转。
+///
+/// 收敛为通用 helper：`_runLogin(context, work)`
+///   - 弹 loading
+///   - try/catch：任何异常都吞掉并打 log，不让它穿透
+///   - finally：**无条件**关闭 loading，保证 UI 一定不会卡住
+///   - 无论成功/失败/异常，都 yield 一个 [LoginSuccessAction]，由 reducer
+///     决定后续 UI（跳首页 / 弹失败 toast）
+Stream<dynamic> _runLogin(
+  BuildContext context,
+  Future<dynamic> Function() work,
+) async* {
+  CommonUtils.showLoadingDialog(context);
+  final nv = Navigator.of(context);
+  bool success = false;
+  int? errorCode;
+  try {
+    final res = await work();
+    success = (res != null && res.result == true);
+    // 失败时把网络层带上来的 statusCode 提出来，让 reducer 分类弹 toast：
+    // - 401/403 → 认证失败
+    // - -1/-2/-4 → 网络错误
+    // - 其它 → 未知
+    if (!success) {
+      errorCode = res?.code as int?;
+    }
+  } catch (e, s) {
+    printLog('login epic caught error: $e\n$s');
+    success = false;
+    errorCode = null;
+  } finally {
+    if (nv.canPop()) {
+      nv.pop();
+    }
   }
-  return actions
-      .whereType<LoginAction>()
-      .switchMap((action) => loginIn(action, store));
+  yield LoginSuccessAction(context, success, errorCode: errorCode);
+}
+
+Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
+  return actions.whereType<LoginAction>().switchMap((action) => _runLogin(
+        action.context,
+        () => UserRepository.login(
+            action.username!.trim(), action.password!.trim(), store),
+      ));
 }
 
 ///中间过程处理
 Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
-  Stream<dynamic> loginIn(
-      OAuthAction action, EpicStore<GSYState> store) async* {
-    CommonUtils.showLoadingDialog(action.context);
-    var res = await UserRepository.oauth(action.code, store);
-    Navigator.pop(action.context);
-    yield LoginSuccessAction(action.context, (res != null && res.result));
-  }
-  return actions
-      .whereType<OAuthAction>()
-      .switchMap((action) => loginIn(action, store));
+  return actions.whereType<OAuthAction>().switchMap((action) => _runLogin(
+        action.context,
+        () => UserRepository.oauth(action.code, store),
+      ));
 }
 
 /// PAT/token 登录 epic。
@@ -130,14 +199,10 @@ Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
 /// 而失败时 [UserRepository.loginWithToken] 会自动把不合法的 token 回滚清掉。
 Stream<dynamic> tokenLoginEpic(
     Stream<dynamic> actions, EpicStore<GSYState> store) {
-  Stream<dynamic> doLogin(
-      TokenLoginAction action, EpicStore<GSYState> store) async* {
-    CommonUtils.showLoadingDialog(action.context);
-    var res = await UserRepository.loginWithToken(action.token, store);
-    Navigator.pop(action.context);
-    yield LoginSuccessAction(action.context, (res != null && res.result));
-  }
   return actions
       .whereType<TokenLoginAction>()
-      .switchMap((action) => doLogin(action, store));
+      .switchMap((action) => _runLogin(
+            action.context,
+            () => UserRepository.loginWithToken(action.token, store),
+          ));
 }

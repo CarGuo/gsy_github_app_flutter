@@ -88,6 +88,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get token_login_empty => '请先输入 Personal Access Token';
 
   @override
+  String get login_failed => '登录失败，请检查网络或 Token 是否有效';
+
+  @override
+  String get login_failed_auth => 'Token 无效或已失效，请重新生成';
+
+  @override
+  String get login_failed_network => '网络异常，请检查网络后重试';
+
+  @override
+  String get login_failed_unknown => '登录失败，请稍后重试';
+
+  @override
   String get home_reply => '问题反馈';
 
   @override

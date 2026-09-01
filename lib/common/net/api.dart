@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 import 'dart:collection';
@@ -79,6 +80,23 @@ class HttpManager {
       response = await _dio.request(url, data: params, options: option);
     } on DioException catch (e) {
       return resultError(e);
+    } catch (e, s) {
+      // 2026-09 修：netFetch 之前只 catch DioException，
+      // 但底层可能抛：
+      //   - Interceptor 里的插件异常（connectivity_plus 在 iOS 模拟器上
+      //     偶发失败、Fluttertoast 平台通道抛 MissingPluginException）
+      //   - SocketException / HandshakeException / TlsException（部分场景
+      //     dio 不会重新包装为 DioException）
+      //   - JSON 解析或 TypeError 等运行时错误
+      // 这些异常穿透到调用方（typically 一个 await）后，UI 层的 Loading
+      // dialog 就永远关不掉、Redux 的 LoginSuccessAction 也不会 yield。
+      // 这里统一兜底为 ResultData(false)，把"网络异常"和"请求失败"归为同一类
+      // 对上层的语义，保证调用点永远拿得到一个 ResultData，走正常失败分支。
+      printLog('netFetch caught non-Dio error on $url: $e\n$s');
+      return ResultData(
+          Code.errorHandleFunction(Code.NETWORK_ERROR, e.toString(), noTip),
+          false,
+          Code.NETWORK_ERROR);
     }
     if (response.data is DioException) {
       return resultError(response.data);

@@ -33,6 +33,17 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
   String text = "";
   double fontSize = 76;
 
+  late final rive.FileLoader _riveFileLoader = rive.FileLoader.fromAsset(
+    'static/file/launch.riv',
+    riveFactory: rive.Factory.flutter,
+  );
+
+  @override
+  void dispose() {
+    _riveFileLoader.dispose();
+    super.dispose();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -99,16 +110,16 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
                   child: SizedBox(
                     width: size,
                     height: size,
-                    child: rive.RiveAnimation.asset(
-                      'static/file/launch.riv',
-                      animations: const ["lookUp"],
-                      onInit: (arb) {
-                        var controller =
-                            rive.StateMachineController.fromArtboard(
-                                arb, "birb");
-                        var smi = controller?.findInput<bool>("dance");
-                        arb.addController(controller!);
-                        smi?.value == true;
+                    child: rive.RiveWidgetBuilder(
+                      fileLoader: _riveFileLoader,
+                      stateMachineSelector:
+                          const rive.StateMachineNamed("birb"),
+                      builder: (context, state) => switch (state) {
+                        rive.RiveLoading() => const SizedBox.shrink(),
+                        rive.RiveFailed() => const SizedBox.shrink(),
+                        rive.RiveLoaded() => rive.RiveWidget(
+                            controller: state.controller,
+                          ),
                       },
                     ),
                   ),

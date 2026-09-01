@@ -7,11 +7,14 @@ import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/env/config_wrapper.dart';
 import 'package:gsy_github_app_flutter/env/env_config.dart';
 import 'package:gsy_github_app_flutter/page/error_page.dart';
+import 'package:rive/rive.dart' as rive;
 
 import 'env/dev.dart';
 
 void main() {
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await rive.RiveNative.init();
     ErrorWidget.builder = (FlutterErrorDetails details) {
       Zone.current.handleUncaughtError(details.exception, details.stack!);
       ///此处仅为展示，正规的实现方式参考 _defaultErrorWidgetBuilder 通过自定义 RenderErrorBox 实现

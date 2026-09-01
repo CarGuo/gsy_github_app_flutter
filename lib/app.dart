@@ -209,7 +209,9 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
         showToast(context.l10n.github_refused);
         break;
       default:
-        showToast("${context.l10n.network_error_unknown} $message");
+        showToast(message == null
+            ? context.l10n.network_error_unknown
+            : "${context.l10n.network_error_unknown} $message");
         break;
     }
   }
