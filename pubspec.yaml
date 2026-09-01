@@ -135,6 +135,13 @@ patrol:
 
 # The following section is specific to Flutter.
 flutter:
+  # Swift Package Manager 项目级开关（Flutter 官方推荐位置）。
+  # 官方从 3.44 起默认启用；显式写入是为了保证所有 contributor 一致，
+  # 也避免哪天全局开关被 --no-enable-swift-package-manager 关掉后本项目跟着掉。
+  # CocoaPods registry 将于 2026-12-02 变只读，本项目必须走 SPM 主路径。
+  config:
+    enable-swift-package-manager: true
+
   # 针对多语言 l10n
   generate: true
 

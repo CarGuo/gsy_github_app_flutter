@@ -10,7 +10,43 @@
 - 不确定该不该做的功能，放"待定义边界"一节，别直接塞进 TODO
 - 只写"当前还差什么"，不写完整历史；历史看 git log 和 ADR
 
-最后一次盘点：2026-07-06（下午）。
+最后一次盘点：2026-09-01（下午，本轮工具链升级 + iOS SPM 主路径落地）。
+
+---
+
+## 〇、版本基底与工具链（2026-09-01 更新）
+
+这一节回答 "本仓库现在跑在什么组合上"。改动量大 / 硬约束多的升级都必须先在这里落一笔，
+否则后来的人不知道 "这个组合是刻意选的" 还是 "祖传遗留"。
+
+| 层 | 当前版本 | 约束来源 |
+|---|---|---|
+| Flutter SDK | **3.47.2 stable** | 仓库根 [`.fvmrc`](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/.fvmrc) |
+| Dart SDK 下限 | **3.13.0** | [pubspec.yaml](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/pubspec.yaml#L6-L7) `environment.sdk` |
+| iOS 最低部署 | **15.0** | Flutter 3.47 硬要求；Podfile / AppFrameworkInfo / project.pbxproj 已同步 |
+| iOS 依赖主路径 | **Swift Package Manager**（`enable-swift-package-manager: true`，pubspec 项目级） | Flutter 3.44+ 默认；CocoaPods registry 2026-12-02 变只读 |
+| iOS 生命周期 | **UIScene**（`Info.plist` 有 `UIApplicationSceneManifest` + [SceneDelegate.swift](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/ios/Runner/SceneDelegate.swift)） | Apple 硬要求 |
+| Android Gradle Plugin | **9.0.1** | Google 官方，Flutter 3.47 兼容 |
+| Gradle | **9.1.0** | AGP 9.0.1 硬下限 |
+| Kotlin | **2.2.20** | Flutter 3.47 硬下限 |
+| Android `compileSdk` | **35** | AGP 9 最低 34；`fluttertoast:9.1.0` 已修好 |
+
+**已知历史妥协项**（需要长期跟进消除）：
+
+- [android/gradle.properties](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/android/gradle.properties)
+  当前 `android.newDsl=false` + `android.builtInKotlin=false`——这是 Flutter Gradle
+  plugin 对 AGP 9 新 DSL 的官方 workaround，未来 Flutter tool 支持 new DSL 后可以撤回
+- iOS 端 5 个 Pod-only 插件（`connectivity_plus / device_info_plus / package_info_plus /
+  rive_common / sqflite`）等上游发 SPM 版本；deadline 2026-12-02，参见
+  [docs/03-runbooks/swiftpm-migration.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/docs/03-runbooks/swiftpm-migration.md)
+- Dart 3.13 SDK 下限已抬升，但仓库代码尚未主动使用 3.13 才有的新语法/API；
+  这是 "打地基" 型改动，具体收益需要在后续 refactor 里显性化
+
+**本轮相关 commit**（master）：
+
+- `092c226 → 24cbbfc`：Flutter 3.47.2 / AGP 9.0.1 / iOS SPM+UIScene 静态迁移
+- `24cbbfc → 7b8c65c`：Dart SDK 下限 3.13.0 + 4 处 `var`/`final` 参数硬修
+- `7b8c65c → ?`：SPM 项目级开关显式化 + 文档同步（本 commit）
 
 ---
 

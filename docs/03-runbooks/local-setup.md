@@ -2,14 +2,17 @@
 
 ## 基线要求
 
-- Flutter SDK：**3.44.1 stable**（仓库根 [`.fvmrc`](file:///d:/workspace/project/gsy_github_app_flutter/.fvmrc) 已锁定；CI 的 `subosito/flutter-action@v2` 通过 `flutter-version-file: .fvmrc` 读同一份契约，避免本地 / CI 版本漂移）
-- 推荐使用 [FVM](https://fvm.app/) 管理版本：`fvm install 3.44.1 && fvm use 3.44.1`
-- Java：Android 构建需要
-- Android 工具链：生成 APK 需要
+- Flutter SDK：**3.47.2 stable**（仓库根 [`.fvmrc`](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/.fvmrc) 已锁定；CI 的 `subosito/flutter-action@v2` 通过 `flutter-version-file: .fvmrc` 读同一份契约，避免本地 / CI 版本漂移）
+- Dart SDK 下限：**3.13.0**（pubspec.yaml `environment.sdk: '>=3.13.0 <4.0.0'`）
+- 推荐使用 [FVM](https://fvm.app/) 管理版本：`fvm install 3.47.2 && fvm use 3.47.2`
+- iOS 部署目标下限：**iOS 15.0**（Flutter 3.47 官方硬要求）
+- Android 工具链：AGP **9.0.1** + Gradle **9.1.0** + Kotlin **2.2.20**
+- Java：Android 构建需要 JDK 17+（Gradle 9 要求）
+- Android SDK：`compileSdk=35`（AGP 9 最低 34）
 
 ## 首次启动
 
-1. 安装 Flutter（或 `fvm install 3.44.1`），并确认 `flutter doctor`
+1. 安装 Flutter（或 `fvm install 3.47.2`），并确认 `flutter doctor`
 2. 运行 `flutter pub get`
 3. 创建 `lib/common/config/ignoreConfig.dart`
 4. 填入 GitHub OAuth 所需的 `CLIENT_ID` 和 `CLIENT_SECRET`
@@ -40,7 +43,7 @@ flutter build apk --release --target-platform=android-arm64 --no-shrink
 ## 常见失败原因
 
 - 缺少 `ignoreConfig.dart`
-- Flutter 版本不匹配（本地未按 [`.fvmrc`](file:///d:/workspace/project/gsy_github_app_flutter/.fvmrc) 切到 3.44.1，可能撞到 `SizeTransition.alignment` 之类 3.41 之后引入的新 API）
+- Flutter 版本不匹配（本地未按 [`.fvmrc`](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/.fvmrc) 切到 3.47.2，可能撞到 iOS 15.0 部署目标 / AGP 9 兼容性等新硬约束）
 - 拉包时网络或代理异常
 - 手改生成文件但没同步源文件
 
