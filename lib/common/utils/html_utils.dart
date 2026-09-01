@@ -266,7 +266,7 @@ $mdHTML
     return builder;
   }
 
-  static resolveHtmlFile(var res, String defaultLang) {
+  static resolveHtmlFile(res, String defaultLang) {
     if (res != null && res.result) {
       String startTag = "class=\"instapaper_body ";
       int startLang = res.data.indexOf(startTag);

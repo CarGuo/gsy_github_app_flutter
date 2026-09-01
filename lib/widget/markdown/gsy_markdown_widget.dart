@@ -461,7 +461,7 @@ Widget kDefaultImageBuilder(
 }
 
 Widget _handleDataSchemeUri(
-    Uri uri, final double? width, final double? height) {
+    Uri uri, double? width, double? height) {
   final String mimeType = uri.data!.mimeType;
   if (mimeType.startsWith('image/')) {
     return Image.memory(

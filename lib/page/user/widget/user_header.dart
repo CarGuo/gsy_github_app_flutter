@@ -297,7 +297,7 @@ class UserHeaderBottom extends StatelessWidget {
   }
 
   ///底部状态栏
-  _getBottomItem(String? title, var value, onPressed) {
+  _getBottomItem(String? title, value, onPressed) {
     String data = value == null ? "" : value.toString();
     TextStyle valueStyle = (value != null && value.toString().length > 6)
         ? GSYConstant.minText
