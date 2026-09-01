@@ -1,0 +1,53 @@
+# Deslop 配置：只对手写 Dart 代码做重复度体检，屏蔽 GSY 已知的 3 类噪声：
+#   1. iOS / Android 平台代码（不是 Dart，Deslop 也不主要支持 Swift）
+#   2. Flutter gen-l10n 生成的多语言输出（en/ja/ko/zh 之间必然结构一致）
+#   3. build_runner 生成的 *.g.dart（Deslop 已内置 report_hide，此处只再补充说明）
+#
+# 使用 report_hide 而不是 exclude 的场景：我们仍希望"手写代码抄袭生成物"
+# 这类跨侧重复能被识别 —— report_hide 只在 cluster 的所有成员都 hidden 时
+# 才丢弃整簇，这符合 GSY 的诉求。
+#
+# 生效方式：仓库根跑 `deslop .` 自动加载本文件；
+#   `deslop . --output tool/dbg/deslop_report/gsy` 会输出到既定报告目录。
+# 参考：https://deslop.live/docs/configuration/
+
+[defaults]
+
+# —— 完全跳过 —— 这些文件不需要参与分析
+exclude = [
+  # iOS / Android 平台层代码。Deslop 支持 Dart / JS / TS / Rust / C# / Python / PHP / F#，
+  # Swift 未在支持列表；Kotlin 支持但 GSY 的 android/ 目录仅承载 Flutter 壳工程，
+  # 不参与 GSY 应用逻辑重构，本次不纳入体检范围。
+  "ios/**",
+  "android/**",
+
+  # tool/ 下的调试脚本与体检产物本身 —— 不应统计到项目重复度里
+  "tool/**",
+
+  # Flutter 生成/缓存目录（大多已在 Deslop built-in exclude，但显式列出更直观）
+  ".dart_tool/**",
+  "build/**",
+]
+
+# —— 分析但不上榜 —— 这些文件的"自我重复"不算债务，但如果手写代码抄袭它们的形状会被识别
+report_hide = [
+  # gen-l10n 生成的多语言 Dart 文件（app_localizations_en.dart / _zh.dart 等）。
+  # 上一轮体检里这类文件占 33.6% cluster、10616 duplicated_loc —— 全部是
+  # 生成器语法糖，refactor 无意义。
+  "lib/common/localization/l10n/**",
+
+  # json_serializable 生成的 *.g.dart 已被 Deslop built-in 兜底。这里冗余列出
+  # 只作为文档说明，方便新人一眼看到"这类文件不上榜"的项目共识。
+  "**/*.g.dart",
+]
+
+[defaults.boilerplate]
+# Dart import 段的伪重复走轻提示而不是完全静默 —— 万一有人真的把一大坨
+# 无用 import 到处 copy，仍希望能被注意到。
+imports = "report"
+
+# 不主动设置 [threshold]：GSY 目前重复率约 17.79%，先不打开 CI 硬门槛，
+# 等 P0 Hot #1（DB Provider 基类抽取）真正落地后再来定基线。
+
+[report]
+split_by_language = true

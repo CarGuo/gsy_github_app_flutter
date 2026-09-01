@@ -11,6 +11,14 @@ import 'package:gsy_github_app_flutter/model/repository_ql.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 
+const List<Shadow> _kGreyTextShadow = <Shadow>[
+  BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5)),
+];
+
+const List<Shadow> _kBlackTextShadow = <Shadow>[
+  BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5)),
+];
+
 /// 仓库详情信息头控件
 /// Created by guoshuyu
 /// Date: 2018-07-18
@@ -46,9 +54,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
               child: GSYIConText(
                 icon,
                 text,
-                GSYConstant.smallSubLightText.copyWith(shadows: [
-                  const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
-                ]),
+                GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow),
                 GSYColors.subLightTextColor,
                 15.0,
                 padding: 3.0,
@@ -80,9 +86,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
           ),
           child: Text(
             item,
-            style: GSYConstant.smallSubLightText.copyWith(shadows: [
-              const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
-            ]),
+            style: GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow),
           ),
         ));
   }
@@ -137,23 +141,17 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                 context, widget.reposHeaderViewModel.ownerName);
           },
           child: Text(widget.reposHeaderViewModel.ownerName!,
-              style: GSYConstant.normalTextActionWhiteBold.copyWith(shadows: [
-                const BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
-              ])),
+              style: GSYConstant.normalTextActionWhiteBold.copyWith(shadows: _kBlackTextShadow)),
         ),
         Text(" / ",
-            style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
-              const BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
-            ])),
+            style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: _kBlackTextShadow)),
 
         ///仓库名,
         Expanded(
             child: Text(widget.reposHeaderViewModel.repositoryName!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: [
-                  const BoxShadow(color: Colors.black, offset: Offset(0.5, 0.5))
-                ])))
+                style: GSYConstant.normalTextMitWhiteBold.copyWith(shadows: _kBlackTextShadow)))
       ],
     );
   }
@@ -164,16 +162,12 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
       children: <Widget>[
         ///仓库语言
         Text(widget.reposHeaderViewModel.repositoryType ?? "--",
-            style: GSYConstant.smallSubLightText.copyWith(shadows: [
-              const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
-            ])),
+            style: GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow)),
         const SizedBox(width: 5.3, height: 1.0),
 
         ///仓库大小
         Text(widget.reposHeaderViewModel.repositorySize,
-            style: GSYConstant.smallSubLightText.copyWith(shadows: [
-              const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
-            ])),
+            style: GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow)),
         const SizedBox(width: 5.3, height: 1.0),
 
         ///仓库协议
@@ -181,9 +175,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             child: Text(widget.reposHeaderViewModel.license ?? "--",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GSYConstant.smallSubLightText.copyWith(shadows: [
-                  const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
-                ]))),
+                style: GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow))),
       ],
     );
   }
@@ -197,9 +189,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
           CommonUtils.removeTextTag(
                   widget.reposHeaderViewModel.repositoryDes) ??
               "---",
-          style: GSYConstant.smallSubLightText.copyWith(shadows: [
-            const BoxShadow(color: Colors.grey, offset: Offset(0.5, 0.5))
-          ]),
+          style: GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ));
@@ -224,14 +214,8 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
         constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
         child: Text(_getInfoText(context),
             style: widget.reposHeaderViewModel.repositoryIsFork!
-                ? GSYConstant.smallActionLightText.copyWith(shadows: [
-                    const BoxShadow(
-                        color: Colors.grey, offset: Offset(0.5, 0.5))
-                  ])
-                : GSYConstant.smallSubLightText.copyWith(shadows: [
-                    const BoxShadow(
-                        color: Colors.grey, offset: Offset(0.5, 0.5))
-                  ])),
+                ? GSYConstant.smallActionLightText.copyWith(shadows: _kGreyTextShadow)
+                : GSYConstant.smallSubLightText.copyWith(shadows: _kGreyTextShadow)),
       ),
     );
   }
