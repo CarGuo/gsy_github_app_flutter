@@ -12,7 +12,11 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-apply from: "exported.gradle"
+// apply from: "exported.gradle"
+// exported.gradle 是老示例：给 Android 12 之前的 manifest 补 android:exported。
+// 当前 manifest 中该属性已显式声明，且脚本使用了 AGP 9 已默认关闭的 legacy variant API
+// (applicationVariants) 与 Gradle 9 已移除的默认 XmlParser 导入，因此暂时禁用。
+// 后续若确认无教学用途，可直接删除 android/app/exported.gradle。
 
 android {
 
