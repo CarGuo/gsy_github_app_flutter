@@ -130,11 +130,20 @@ class GSYEventGroupItem extends StatefulWidget {
   State<GSYEventGroupItem> createState() => _GSYEventGroupItemState();
 }
 
-class _GSYEventGroupItemState extends State<GSYEventGroupItem> {
+class _GSYEventGroupItemState extends State<GSYEventGroupItem>
+    with AutomaticKeepAliveClientMixin<GSYEventGroupItem> {
   bool _expanded = false;
+
+  /// 只在用户主动点开"展开剩余 N 条"之后才保活。
+  /// 这样默认折叠的 group 依然遵循 ListView 的 off-screen dispose，
+  /// 只有用户明确展开过的组会跨越视口保持展开态，把内存代价压到最小。
+  /// 手动 [updateKeepAlive] 会在切换 _expanded 时同步给上层的 KeepAlive element。
+  @override
+  bool get wantKeepAlive => _expanded;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final events = widget.span.events;
     final int total = events.length;
     final int visibleCount =
@@ -159,6 +168,7 @@ class _GSYEventGroupItemState extends State<GSYEventGroupItem> {
           setState(() {
             _expanded = true;
           });
+          updateKeepAlive();
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
@@ -182,6 +192,7 @@ class _GSYEventGroupItemState extends State<GSYEventGroupItem> {
           setState(() {
             _expanded = false;
           });
+          updateKeepAlive();
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
