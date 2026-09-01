@@ -76,6 +76,23 @@
   "user_tab_honor": "栄誉",
   "user_dynamic_group": "メンバー",
   "user_dynamic_title": "アクティビティ",
+  "event_group_count": "{count, plural, other{{count} 件のアクティビティ}}",
+  "@event_group_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_expand_more": "{count, plural, other{残り {count} 件を表示}}",
+  "@event_group_expand_more": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_collapse": "折りたたむ",
   "user_focus": "フォロー中",
   "user_un_focus": "フォローする",
   "user_focus_no_support": "サポートされていません。",

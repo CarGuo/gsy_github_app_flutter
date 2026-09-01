@@ -241,6 +241,29 @@ class AppLocalizationsZh extends AppLocalizations {
   String get user_dynamic_title => '个人动态';
 
   @override
+  String event_group_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count 条动态',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String event_group_expand_more(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '展开剩余 $count 条',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get event_group_collapse => '收起';
+
+  @override
   String get user_focus => '已关注';
 
   @override

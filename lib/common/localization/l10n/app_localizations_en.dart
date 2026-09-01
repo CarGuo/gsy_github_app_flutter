@@ -244,6 +244,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get user_dynamic_title => 'Dynamic';
 
   @override
+  String event_group_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count activities',
+      one: '$count activity',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String event_group_expand_more(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Show $count more',
+      one: 'Show $count more',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get event_group_collapse => 'Collapse';
+
+  @override
   String get user_focus => 'Focused';
 
   @override

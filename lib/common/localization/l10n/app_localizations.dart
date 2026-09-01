@@ -564,6 +564,24 @@ abstract class AppLocalizations {
   /// **'Dynamic'**
   String get user_dynamic_title;
 
+  /// No description provided for @event_group_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{count} activity} other{{count} activities}}'**
+  String event_group_count(int count);
+
+  /// No description provided for @event_group_expand_more.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Show {count} more} other{Show {count} more}}'**
+  String event_group_expand_more(int count);
+
+  /// No description provided for @event_group_collapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get event_group_collapse;
+
   /// No description provided for @user_focus.
   ///
   /// In en, this message translates to:

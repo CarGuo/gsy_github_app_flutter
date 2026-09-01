@@ -241,6 +241,29 @@ class AppLocalizationsKo extends AppLocalizations {
   String get user_dynamic_title => '동적';
 
   @override
+  String event_group_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '활동 $count건',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String event_group_expand_more(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개 더 보기',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get event_group_collapse => '접기';
+
+  @override
   String get user_focus => '팔로잉 중';
 
   @override

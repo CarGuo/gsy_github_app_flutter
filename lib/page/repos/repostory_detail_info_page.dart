@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/repo_commit.dart';
 import 'package:gsy_github_app_flutter/model/repository_ql.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_event_group_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_widget.dart';
@@ -82,6 +83,23 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         needImage: false,
       );
     } else if (selectIndex == 0 && item is Event) {
+      /// 仓库 Activity tab 里同一个协作者往往会连续推很多事件（例如同一次
+      /// push 引出的多条 PushEvent / IssueCommentEvent 等）。走
+      /// [buildEventGroupSpans] 判断当前 index 是不是某个 span 的 head，
+      /// 是的话就渲染 [GSYEventGroupItem]；被 head 吞掉的后续 index 返回
+      /// [SizedBox.shrink]。这样 [_getListCount] 语义不变，加载更多兼容。
+      final List data = pullLoadWidgetControl.dataList;
+      final spans = buildEventGroupSpans(data);
+      if (spans.containsKey(index)) {
+        final span = spans[index]!;
+        return GSYEventGroupItem(
+          span,
+          key: ValueKey<String>('repo_group_${span.stableKey}'),
+        );
+      }
+      if (isConsumedGroupIndex(index, spans)) {
+        return const SizedBox.shrink();
+      }
       return GSYEventItem(
         EventViewModel.fromEventMap(context, pullLoadWidgetControl.dataList[index]),
         onPressed: () {

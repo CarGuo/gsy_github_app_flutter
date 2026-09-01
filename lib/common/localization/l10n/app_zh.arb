@@ -76,6 +76,23 @@
   "user_tab_honor": "荣耀",
   "user_dynamic_group": "组织成员",
   "user_dynamic_title": "个人动态",
+  "event_group_count": "{count, plural, other{{count} 条动态}}",
+  "@event_group_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_expand_more": "{count, plural, other{展开剩余 {count} 条}}",
+  "@event_group_expand_more": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_collapse": "收起",
   "user_focus": "已关注",
   "user_un_focus": "关注",
   "user_focus_no_support": "不支持关注",

@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
+import 'package:gsy_github_app_flutter/widget/gsy_event_group_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
 import 'package:redux/redux.dart';
@@ -89,6 +90,26 @@ class DynamicPageState extends State<DynamicPage>
     );
   }
 
+  /// 按连续同一 actor 折叠事件后的列表渲染。
+  /// - 每次 build 都基于当前 dataList 重新计算 spans；ChangeNotifier 触发 rebuild
+  ///   时（下拉刷新 / load more）会自然对齐分组结果。
+  /// - group.length >= 2 时 headIndex 渲染 [GSYEventGroupItem]，被吞掉的后续 index
+  ///   返回 [SizedBox.shrink]，避免动 [_getListCount] 的语义。
+  Widget _renderItemWithGroup(
+      int index, Map<int, EventGroupSpan> spans, List<dynamic> dataList) {
+    if (spans.containsKey(index)) {
+      final span = spans[index]!;
+      return GSYEventGroupItem(
+        span,
+        key: ValueKey<String>('group_${span.stableKey}'),
+      );
+    }
+    if (isConsumedGroupIndex(index, spans)) {
+      return const SizedBox.shrink();
+    }
+    return _renderEventItem(dataList[index] as Event);
+  }
+
   Store<GSYState> _getStore() {
     return StoreProvider.of(context);
   }
@@ -145,8 +166,18 @@ class DynamicPageState extends State<DynamicPage>
     super.build(context); // See AutomaticKeepAliveClientMixin.
     var content = GSYPullLoadWidget(
       dynamicBloc.pullLoadWidgetControl,
-      (BuildContext context, int index) =>
-          _renderEventItem(dynamicBloc.dataList[index]),
+      (BuildContext context, int index) {
+        /// 每次 itemBuilder 调用重新扫描一次 spans。分页大小 30，
+        /// 扫描是 O(n)，反查 [isConsumedGroupIndex] 最坏 O(spans)，
+        /// 单次列表滚动整体仍是 O(n)，可接受。
+        /// 这里没有把 spans 提到父级 build，是为了不额外挂
+        /// [GSYPullLoadWidgetControl] 的 listener——加载更多 / 刷新已经
+        /// 会让 [GSYPullLoadWidget] 内部 rebuild，itemBuilder 会重跑，
+        /// 从而拿到最新的 dataList。
+        final List data = dynamicBloc.dataList;
+        final spans = buildEventGroupSpans(data);
+        return _renderItemWithGroup(index, spans, data);
+      },
       requestRefresh,
       requestLoadMore,
       refreshKey: refreshIndicatorKey,

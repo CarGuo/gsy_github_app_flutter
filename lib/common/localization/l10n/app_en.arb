@@ -76,6 +76,23 @@
   "user_tab_honor": "Honor",
   "user_dynamic_group": "Members",
   "user_dynamic_title": "Dynamic",
+  "event_group_count": "{count, plural, =1{{count} activity} other{{count} activities}}",
+  "@event_group_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_expand_more": "{count, plural, =1{Show {count} more} other{Show {count} more}}",
+  "@event_group_expand_more": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_collapse": "Collapse",
   "user_focus": "Focused",
   "user_un_focus": "Focus",
   "user_focus_no_support": "Not Support.",

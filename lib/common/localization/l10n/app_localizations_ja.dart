@@ -242,6 +242,29 @@ class AppLocalizationsJa extends AppLocalizations {
   String get user_dynamic_title => 'アクティビティ';
 
   @override
+  String event_group_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count 件のアクティビティ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String event_group_expand_more(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '残り $count 件を表示',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get event_group_collapse => '折りたたむ';
+
+  @override
   String get user_focus => 'フォロー中';
 
   @override

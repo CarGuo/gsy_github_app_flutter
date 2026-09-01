@@ -76,6 +76,23 @@
   "user_tab_honor": "명예",
   "user_dynamic_group": "멤버",
   "user_dynamic_title": "동적",
+  "event_group_count": "{count, plural, other{활동 {count}건}}",
+  "@event_group_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_expand_more": "{count, plural, other{{count}개 더 보기}}",
+  "@event_group_expand_more": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "event_group_collapse": "접기",
   "user_focus": "팔로잉 중",
   "user_un_focus": "팔로우",
   "user_focus_no_support": "지원되지 않음",
