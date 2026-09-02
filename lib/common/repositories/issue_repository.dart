@@ -13,7 +13,9 @@ import 'package:gsy_github_app_flutter/model/pull_review_comment.dart';
 import 'package:gsy_github_app_flutter/model/commitFile.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/net/api.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart' as gql;
+import 'package:gsy_github_app_flutter/common/logger.dart';
 
 /// Issue相关
 /// Created by guoshuyu
@@ -214,8 +216,10 @@ class IssueRepository {
         }
       }
       return DataResult(list, true);
-    } catch (_) {
-      return DataResult(null, false);
+    } catch (e, s) {
+      printLog('getPullRequestReviewThreadsRequest failed: $e');
+      printLog(s);
+      return DataResult(null, false, code: Code.NETWORK_ERROR);
     }
   }
 
@@ -237,8 +241,10 @@ class IssueRepository {
       final bool? isResolved = thread?["isResolved"] as bool?;
       if (isResolved == null) return DataResult(null, false);
       return DataResult(isResolved, true);
-    } catch (_) {
-      return DataResult(null, false);
+    } catch (e, s) {
+      printLog('resolveReviewThreadRequest failed: $e');
+      printLog(s);
+      return DataResult(null, false, code: Code.NETWORK_ERROR);
     }
   }
 
@@ -257,8 +263,10 @@ class IssueRepository {
       final bool? isResolved = thread?["isResolved"] as bool?;
       if (isResolved == null) return DataResult(null, false);
       return DataResult(isResolved, true);
-    } catch (_) {
-      return DataResult(null, false);
+    } catch (e, s) {
+      printLog('unresolveReviewThreadRequest failed: $e');
+      printLog(s);
+      return DataResult(null, false, code: Code.NETWORK_ERROR);
     }
   }
 
