@@ -289,17 +289,27 @@ Future<T?> _smokePostFrame<T>(
   }
   final phase = SchedulerBinding.instance.schedulerPhase;
   if (phase == SchedulerPhase.idle) {
+    Future<T?> future;
     try {
-      return action(context);
+      future = action(context);
     } catch (e, s) {
       FlutterError.reportError(FlutterErrorDetails(
         exception: e,
         stack: s,
         library: 'gsy smoke',
-        context: ErrorDescription('while running $tag (idle path)'),
+        context: ErrorDescription('while running $tag (idle path, sync throw)'),
       ));
       return Future<T?>.error(e, s);
     }
+    return future.catchError((Object e, StackTrace s) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+        library: 'gsy smoke',
+        context: ErrorDescription('while running $tag (idle path, async reject)'),
+      ));
+      throw e;
+    });
   }
   final completer = Completer<T?>();
   SchedulerBinding.instance.addPostFrameCallback((_) {

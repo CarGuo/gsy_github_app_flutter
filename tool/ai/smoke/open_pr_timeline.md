@@ -73,9 +73,12 @@ mcp_dart vm_service evaluate
    )
    ```
 
-   如果 eval 的作用域拿不到 `NavigatorUtils`（未 import），改用 `evaluateInFrame` +
-   `Isolate.rootLibrary` 拿到 `package:gsy_github_app_flutter/common/utils/navigator_utils.dart`
-   的 `libraryId`，再 evaluate。
+   如果 eval 的作用域拿不到 `NavigatorUtils`（未 import），改用 `evaluateInFrame`，
+   并从 `Isolate.libraries[]` 里查
+   `uri == "package:gsy_github_app_flutter/common/utils/navigator_utils.dart"`
+   那条拿 `libraryId`，再 evaluate（**不要**用 `Isolate.rootLibrary` —— 那个字段
+   指向 isolate 入口 `main.dart`，从它拿不到 `navigator_utils.dart` 的
+   `libraryId`；术语辨析同上文 `<library id>` 段）。
 
 3. eval 返回 `Future<dynamic>`，可再 eval 一次 `widget_inspector` 拿新 widget tree
    验证已到 `IssueDetailPage`。
