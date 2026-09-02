@@ -38,8 +38,9 @@ class PullReviewComment({
         (v is String && v.isNotEmpty) ? DateTime.tryParse(v) : null;
 
     User? user;
-    if (json['user'] is Map<String, dynamic>) {
-      user = User.fromJson(json['user'] as Map<String, dynamic>);
+    if (json['user'] is Map) {
+      user = User.fromJson(
+          Map<String, dynamic>.from(json['user'] as Map));
     }
 
     return PullReviewComment(

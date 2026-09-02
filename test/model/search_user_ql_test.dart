@@ -34,8 +34,20 @@ void main() {
     test('fromMap 返回值静态类型必须是 SearchUserQL（防止倒退回 dynamic）', () {
       final SearchUserQL u = SearchUserQL.fromMap({'login': 'CarGuo'});
       expect(u.login, 'CarGuo');
-      final SearchUserQL Function(Map) f = SearchUserQL.fromMap;
+      final SearchUserQL Function(Map?) f = SearchUserQL.fromMap;
       expect(f, isNotNull);
+    });
+  });
+
+  group('SearchUserQL.fromMap - null 入参兜底（防止 item["user"] 缺失时 UI 崩）', () {
+    test('fromMap(null) 返回全 null 的默认实例，不抛异常', () {
+      final u = SearchUserQL.fromMap(null);
+      expect(u.followers, isNull);
+      expect(u.name, isNull);
+      expect(u.avatarUrl, isNull);
+      expect(u.bio, isNull);
+      expect(u.login, isNull);
+      expect(u.lang, isNull);
     });
   });
 
@@ -133,6 +145,8 @@ void main() {
       expect(() => SearchUserQL.fromMap({'name': 123}),
           throwsA(isA<TypeError>()));
       expect(() => SearchUserQL.fromMap({'avatarUrl': 123}),
+          throwsA(isA<TypeError>()));
+      expect(() => SearchUserQL.fromMap({'bio': 123}),
           throwsA(isA<TypeError>()));
       expect(() => SearchUserQL.fromMap({'login': true}),
           throwsA(isA<TypeError>()));

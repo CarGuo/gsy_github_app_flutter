@@ -6,7 +6,10 @@ class SearchUserQL({
   final String? login,
   final String? lang,
 }) {
-  static SearchUserQL fromMap(Map map) {
+  static SearchUserQL fromMap(Map? map) {
+    if (map == null) {
+      return SearchUserQL();
+    }
     String? lang;
     final langNode = map['lang'];
     if (langNode is Map) {

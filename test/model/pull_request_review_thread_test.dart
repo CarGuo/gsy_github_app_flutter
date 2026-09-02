@@ -42,7 +42,7 @@ void main() {
       expect(t!.commentDatabaseIds, isEmpty);
     });
 
-    test('nodes 中含 int 之外的 databaseId 应被过滤掉', () {
+    test('nodes 中含 num 之外的 databaseId 应被过滤掉', () {
       final t = PullRequestReviewThread.fromGraphql({
         'id': 'x',
         'comments': {
@@ -55,6 +55,20 @@ void main() {
         },
       });
       expect(t!.commentDatabaseIds, [101, 102]);
+    });
+
+    test('databaseId 为 double 时容忝并 toInt（防止 GraphQL 序列化把整数变浮点）', () {
+      final t = PullRequestReviewThread.fromGraphql({
+        'id': 'x',
+        'comments': {
+          'nodes': [
+            {'databaseId': 101.0},
+            {'databaseId': 102.7},
+          ],
+        },
+      });
+      expect(t!.commentDatabaseIds, [101, 102],
+          reason: 'databaseId 是 num 就接收，double 用 toInt 截断');
     });
 
     test('nodes 不是 List 时保持空列表', () {

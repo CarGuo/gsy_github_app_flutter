@@ -66,6 +66,18 @@ void main() {
       expect(c.user, isNull);
     });
 
+    test('user 是 Map<dynamic, dynamic>（GraphQL/hive 常见）时也能解析出 User', () {
+      final Map<dynamic, dynamic> rawUser = <dynamic, dynamic>{
+        'login': 'Copilot',
+      };
+      final c = PullReviewComment.fromJson(<String, dynamic>{
+        'user': rawUser,
+      });
+      expect(c.user, isNotNull,
+          reason: '只判 is Map 才不会把 Map<dynamic,dynamic> 误当成非法');
+      expect(c.user?.login, 'Copilot');
+    });
+
     test('num 字段容忍 double 类型', () {
       final c = PullReviewComment.fromJson({
         'id': 12.0,
