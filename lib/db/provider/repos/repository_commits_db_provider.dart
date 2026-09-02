@@ -22,7 +22,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
   String? data;
   String? branch;
 
-  RepositoryCommitsDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, String? branch, String data) {
     Map<String, dynamic> map = {
@@ -36,7 +36,7 @@ class RepositoryCommitsDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryCommitsDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     branch = map[columnBranch];

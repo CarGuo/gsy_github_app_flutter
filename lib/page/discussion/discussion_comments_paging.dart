@@ -27,7 +27,7 @@ class DiscussionCommentsPage {
   /// 服务端汇报的评论总数（含未拉取的）。用于头部 "N comments" 校对
   final int totalCount;
 
-  const DiscussionCommentsPage({
+  const new({
     required this.nodes,
     required this.hasNextPage,
     required this.endCursor,

@@ -14,7 +14,7 @@ class ReleaseItem extends StatelessWidget {
   final GestureTapCallback? onPressed;
   final GestureLongPressCallback? onLongPress;
 
-  const ReleaseItem(this.releaseItemViewModel, {super.key, this.onPressed, this.onLongPress});
+  const new(this.releaseItemViewModel, {super.key, this.onPressed, this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +44,9 @@ class ReleaseItemViewModel {
   String? actionTargetHtml;
   String? body;
 
-  ReleaseItemViewModel();
+  new();
 
-  ReleaseItemViewModel.fromMap(Release map) {
+  new fromMap(Release map) {
     if (map.publishedAt != null) {
       actionTime = CommonUtils.getNewsTimeStr(map.publishedAt!);
     }

@@ -30,7 +30,7 @@ library;
 ///   已按 HTML entity 解码常见几个（`&amp;` / `&lt;` / `&gt;` / `&quot;` / `&#39;`）
 /// - [releaseUrl]：完整的 release 网页地址，`<a href="...">` 原值
 class ReleaseFooterInfo {
-  const ReleaseFooterInfo({
+  const new({
     required this.tag,
     required this.title,
     required this.releaseUrl,

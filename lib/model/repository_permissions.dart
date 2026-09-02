@@ -13,12 +13,12 @@ class RepositoryPermissions {
   bool? push;
   bool? pull;
 
-  RepositoryPermissions(
+  new(
     this.admin,
     this.push,
     this.pull,
   );
 
-  factory RepositoryPermissions.fromJson(Map<String, dynamic> json) => _$RepositoryPermissionsFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$RepositoryPermissionsFromJson(json);
   Map<String, dynamic> toJson() => _$RepositoryPermissionsToJson(this);
 }

@@ -43,7 +43,7 @@ class CommonListPage extends StatefulWidget {
 
   final String? title;
 
-  const CommonListPage(this.title, this.showType, this.dataType,
+  const new(this.title, this.showType, this.dataType,
       {super.key, this.userName, this.reposName});
 
   @override
@@ -54,7 +54,7 @@ class _CommonListPageState extends State<CommonListPage>
     with
         AutomaticKeepAliveClientMixin<CommonListPage>,
         GSYListState<CommonListPage> {
-  _CommonListPageState();
+  new();
 
   _renderItem(index) {
     if (pullLoadWidgetControl.dataList.isEmpty) {

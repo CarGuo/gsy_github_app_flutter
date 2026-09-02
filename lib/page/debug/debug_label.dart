@@ -70,7 +70,7 @@ class GlobalLabel extends StatefulWidget {
   final String? platform;
   final String? language;
 
-  const GlobalLabel({super.key, this.version, this.deviceInfo, this.platform, this.language});
+  const new({super.key, this.version, this.deviceInfo, this.platform, this.language});
 
   @override
   _GlobalLabelState createState() => _GlobalLabelState();

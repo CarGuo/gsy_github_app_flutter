@@ -18,7 +18,7 @@ class HonorModel {
   int? beStaredCount;
   List? honorList;
 
-  HonorModel.fromJson(Map<String, dynamic> map) {
+  new fromJson(Map<String, dynamic> map) {
     beStaredCount = map["stared"];
     honorList = map["list"];
   }

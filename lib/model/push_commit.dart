@@ -31,7 +31,7 @@ class PushCommit {
   User? committer;
   List<RepoCommit>? parents;
 
-  PushCommit(
+  new(
     this.files,
     this.stats,
     this.sha,
@@ -44,7 +44,7 @@ class PushCommit {
     this.parents,
   );
 
-  factory PushCommit.fromJson(Map<String, dynamic> json) => _$PushCommitFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$PushCommitFromJson(json);
 
   Map<String, dynamic> toJson() => _$PushCommitToJson(this);
 }

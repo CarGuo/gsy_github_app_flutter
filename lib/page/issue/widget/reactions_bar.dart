@@ -26,7 +26,7 @@ class ReactionsBar extends StatelessWidget {
   /// - [isAdd]  true=添加，false=删除（点已存在 chip 走 false，"+"入口选一个走 true）
   final void Function(String content, bool isAdd)? onToggle;
 
-  const ReactionsBar({
+  const new({
     super.key,
     required this.reactions,
     this.showAddEntry = true,
@@ -71,7 +71,7 @@ class _ReactionChip extends StatelessWidget {
   final int count;
   final VoidCallback? onTap;
 
-  const _ReactionChip({
+  const new({
     required this.emoji,
     required this.count,
     this.onTap,
@@ -107,7 +107,7 @@ class _ReactionChip extends StatelessWidget {
 
 class _AddReactionButton extends StatelessWidget {
   final ValueChanged<String> onSelected;
-  const _AddReactionButton({required this.onSelected});
+  const new({required this.onSelected});
 
   static const _all = <MapEntry<String, String>>[
     MapEntry('+1', '👍'),

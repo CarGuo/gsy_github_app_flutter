@@ -6,7 +6,7 @@ class DiffScaleText extends StatefulWidget {
   final String? text;
   final TextStyle? textStyle;
 
-  const DiffScaleText({super.key, required this.text, this.textStyle})
+  const new({super.key, required this.text, this.textStyle})
       : assert(text != null);
 
   @override
@@ -75,7 +75,7 @@ class _DiffText extends CustomPainter {
   List<_TextLayoutInfo> _textLayoutInfo = [];
   List<_TextLayoutInfo> _oldTextLayoutInfo = [];
 
-  _DiffText({required this.text, required this.textStyle, this.progress = 1})
+  new({required this.text, required this.textStyle, this.progress = 1})
       : assert(text != null),
         assert(textStyle != null);
 

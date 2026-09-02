@@ -27,7 +27,7 @@ import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 class SearchPage extends StatefulWidget {
   final Offset centerPosition;
 
-  const SearchPage(this.centerPosition, {super.key});
+  const new(this.centerPosition, {super.key});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -355,7 +355,7 @@ class SearchBottom extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onSubmitPressed;
   final TextEditingController? textEditingController;
 
-  const SearchBottom(
+  const new(
       {super.key, this.onSubmitted,
       this.onSubmitPressed,
       this.selectItemChanged,
@@ -401,7 +401,7 @@ class CRAnimation extends StatelessWidget {
 
   final Animation<double>? animation;
 
-  const CRAnimation({super.key, 
+  const new({super.key, 
     required this.child,
     required this.animation,
     this.offset,
@@ -437,7 +437,7 @@ class AnimationClipper extends CustomClipper<Path> {
 
   final Offset? offset;
 
-  AnimationClipper({
+  new({
     this.value,
     this.offset,
     this.minR,
@@ -483,7 +483,7 @@ class _SearchHistoryPanel extends StatelessWidget {
   final ValueChanged<String> onTap;
   final VoidCallback onClear;
 
-  const _SearchHistoryPanel({
+  const new({
     required this.history,
     required this.onTap,
     required this.onClear,

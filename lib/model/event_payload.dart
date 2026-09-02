@@ -52,9 +52,9 @@ class EventPayload {
   @JsonKey(name: "security_advisory")
   EventSecurityAdvisoryRef? securityAdvisory;
 
-  EventPayload();
+  new();
 
-  factory EventPayload.fromJson(Map<String, dynamic> json) => _$EventPayloadFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$EventPayloadFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventPayloadToJson(this);
 }
@@ -66,9 +66,9 @@ class EventPayload {
 class EventDiscussionRef {
   int? number;
 
-  EventDiscussionRef();
+  new();
 
-  factory EventDiscussionRef.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       _$EventDiscussionRefFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventDiscussionRefToJson(this);
@@ -87,9 +87,9 @@ class EventSecurityAdvisoryRef {
   String? severity;
   String? summary;
 
-  EventSecurityAdvisoryRef();
+  new();
 
-  factory EventSecurityAdvisoryRef.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       _$EventSecurityAdvisoryRefFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventSecurityAdvisoryRefToJson(this);

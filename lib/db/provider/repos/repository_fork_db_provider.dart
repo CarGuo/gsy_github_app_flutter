@@ -21,7 +21,7 @@ class RepositoryForkDbProvider extends BaseDbProvider {
   String? fullName;
   String? data;
 
-  RepositoryForkDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, String data) {
     Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
@@ -31,7 +31,7 @@ class RepositoryForkDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryForkDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     data = map[columnData];

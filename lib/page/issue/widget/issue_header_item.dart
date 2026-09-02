@@ -28,7 +28,7 @@ class IssueHeaderItem extends StatelessWidget {
   /// (content, isAdd) 分别是 8 种官方 reaction 之一与增/减语义
   final void Function(String content, bool isAdd)? onReactionToggle;
 
-  const IssueHeaderItem(
+  const new(
     this.issueHeaderViewModel, {
     super.key,
     this.onPressed,
@@ -483,9 +483,9 @@ class IssueHeaderViewModel {
   /// issue payload 上的轻量 pull_request 指针（用于第一时间识别 PR）
   PullRequestRef? pullRequestRef;
 
-  IssueHeaderViewModel();
+  new();
 
-  IssueHeaderViewModel.fromMap(Issue issueMap) {
+  new fromMap(Issue issueMap) {
     actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt!);
     actionUser = issueMap.user!.login;
     actionUserPic = issueMap.user!.avatar_url;

@@ -82,7 +82,7 @@ class IssueTimelineEvent {
   /// 原始 JSON，用于兜底展示
   final Map<String, dynamic> raw;
 
-  IssueTimelineEvent({
+  new({
     this.id,
     this.event,
     this.actor,
@@ -114,7 +114,7 @@ class IssueTimelineEvent {
   /// 两处必须共享同一阈值，避免推断成 committed 却拿不到短哈希的错位。
   static const int _kMinShaLen = 7;
 
-  factory IssueTimelineEvent.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     // committed 事件 GitHub 顶层不总带 event 字段（历史兼容），但一定带 sha
     final rawEvent = json['event'] as String?;
     final rawSha = json['sha'] as String?;

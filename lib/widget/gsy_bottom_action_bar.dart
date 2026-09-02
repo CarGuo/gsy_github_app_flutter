@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GSYBottomAppBar extends StatelessWidget {
-  const GSYBottomAppBar({super.key, 
+  const new({super.key, 
     this.color,
     this.fabLocation,
     this.shape,

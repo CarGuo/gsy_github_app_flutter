@@ -17,7 +17,7 @@ class DiscussionItem extends StatelessWidget {
   final DiscussionItemViewModel viewModel;
   final GestureTapCallback? onPressed;
 
-  const DiscussionItem({
+  const new({
     super.key,
     required this.viewModel,
     this.onPressed,
@@ -223,7 +223,7 @@ class DiscussionItemViewModel {
   final String? url;
   final bool locked;
 
-  const DiscussionItemViewModel({
+  const new({
     required this.number,
     required this.title,
     this.authorLogin,

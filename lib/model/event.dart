@@ -24,7 +24,7 @@ class Event {
   @JsonKey(name: "created_at")
   DateTime? createdAt;
 
-  Event(
+  new(
     this.id,
     this.type,
     this.actor,
@@ -35,7 +35,7 @@ class Event {
     this.createdAt,
   );
 
-  factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventToJson(this);
 

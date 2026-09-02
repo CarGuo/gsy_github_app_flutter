@@ -23,7 +23,7 @@ class TrendingRepoModel {
 
   String? reposName;
 
-  TrendingRepoModel(
+  new(
     this.fullName,
     this.url,
     this.description,
@@ -37,9 +37,9 @@ class TrendingRepoModel {
     this.forkCount,
   );
 
-  TrendingRepoModel.empty();
+  new empty();
 
-  factory TrendingRepoModel.fromJson(Map<String, dynamic> json) => _$TrendingRepoModelFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$TrendingRepoModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TrendingRepoModelToJson(this);
 }

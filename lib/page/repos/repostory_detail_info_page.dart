@@ -26,7 +26,7 @@ import 'package:provider/provider.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-18
 class ReposDetailInfoPage extends StatefulWidget {
-  const ReposDetailInfoPage({super.key});
+  const new({super.key});
 
   @override
   ReposDetailInfoPageState createState() => ReposDetailInfoPageState();

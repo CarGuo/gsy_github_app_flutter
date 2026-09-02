@@ -25,7 +25,7 @@ class CommitsComparison{
   List<RepoCommit>? commits;
   List<CommitFile>? files;
 
-  CommitsComparison(
+  new(
     this.url,
     this.htmlUrl,
     this.baseCommit,
@@ -36,7 +36,7 @@ class CommitsComparison{
     this.files,
   );
 
-  factory CommitsComparison.fromJson(Map<String, dynamic> json) => _$CommitsComparisonFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CommitsComparisonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CommitsComparisonToJson(this);
 }

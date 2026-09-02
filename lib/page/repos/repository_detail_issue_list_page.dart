@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-19
 class RepositoryDetailIssuePage extends StatefulWidget {
-  const RepositoryDetailIssuePage({super.key});
+  const new({super.key});
 
   @override
   RepositoryDetailIssuePageState createState() =>

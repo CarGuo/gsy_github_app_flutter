@@ -113,7 +113,7 @@ class TypedEpic<State, Action> extends EpicClass<State> {
     EpicStore<State> store,
   ) epic;
 
-  TypedEpic(this.epic);
+  new(this.epic);
 
   @override
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<State> store) {

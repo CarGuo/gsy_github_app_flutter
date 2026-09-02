@@ -103,7 +103,7 @@ class NestedScrollViewRefreshIndicator extends StatefulWidget {
   /// If it is null, it will be defaulted to [MaterialLocalizations.refreshIndicatorSemanticLabel].
   /// An empty string may be passed to avoid having anything read by screen reading software.
   /// The [semanticsValue] may be used to specify progress on the widget.
-  const NestedScrollViewRefreshIndicator({
+  const new({
     super.key,
     required this.child,
     this.displacement = 40.0,

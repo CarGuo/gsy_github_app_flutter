@@ -22,7 +22,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
   final String columnSince = "since";
   final String columnData = "data";
 
-  TrendRepositoryDbProvider();
+  new();
 
   Map<String, dynamic> toMap(
       String language, String? since, String dataMapString) {
@@ -37,7 +37,7 @@ class TrendRepositoryDbProvider extends BaseDbProvider {
     return map;
   }
 
-  TrendRepositoryDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     languageType = map[columnLanguageType];
     since = map[columnSince];

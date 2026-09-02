@@ -18,7 +18,7 @@ class ReceivedEventDbProvider extends BaseDbProvider {
   int? id;
   String? data;
 
-  ReceivedEventDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String eventMapString) {
     Map<String, dynamic> map = {columnData: eventMapString};
@@ -28,7 +28,7 @@ class ReceivedEventDbProvider extends BaseDbProvider {
     return map;
   }
 
-  ReceivedEventDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     data = map[columnData];
   }

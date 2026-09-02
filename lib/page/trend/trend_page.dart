@@ -24,7 +24,7 @@ import 'package:lottie/lottie.dart';
 /// Created by guoshuyu
 /// Date: 2018-07-16
 class TrendPage extends ConsumerStatefulWidget {
-  const TrendPage({super.key});
+  const new({super.key});
 
   @override
   TrendPageState createState() => TrendPageState();
@@ -370,7 +370,7 @@ class TrendTypeModel {
   final String name;
   final String? value;
 
-  TrendTypeModel(this.name, this.value);
+  new(this.name, this.value);
 }
 
 ///趋势数据时间过滤

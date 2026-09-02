@@ -21,7 +21,7 @@ import 'package:rive/rive.dart' as rive;
 class WelcomePage extends ConsumerStatefulWidget {
   static const String sName = "/";
 
-  const WelcomePage({super.key});
+  const new({super.key});
 
   @override
   _WelcomePageState createState() => _WelcomePageState();

@@ -12,7 +12,7 @@ class ImageAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Color textColor;
   final Widget? title;
 
-  const ImageAppbar(
+  const new(
       {super.key, this.leading,
       this.actions,
       this.needLeading = true,

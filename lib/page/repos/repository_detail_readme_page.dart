@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 /// Date: 2018-07-18
 
 class RepositoryDetailReadmePage extends StatefulWidget {
-  const RepositoryDetailReadmePage({super.key});
+  const new({super.key});
 
   @override
   RepositoryDetailReadmePageState createState() =>
@@ -21,7 +21,7 @@ class RepositoryDetailReadmePage extends StatefulWidget {
 
 class RepositoryDetailReadmePageState extends State<RepositoryDetailReadmePage>
     with AutomaticKeepAliveClientMixin {
-  RepositoryDetailReadmePageState();
+  new();
 
   Future? request;
 

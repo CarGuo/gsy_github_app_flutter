@@ -26,7 +26,7 @@ class EventGroupSpan {
   final int endIndex;
   final List<Event> events;
 
-  const EventGroupSpan({
+  const new({
     required this.startIndex,
     required this.endIndex,
     required this.events,
@@ -151,7 +151,7 @@ class EventGroupIndex {
   final Map<int, EventGroupSpan> _headSpans;
   final Set<int> _consumedIndices;
 
-  EventGroupIndex._(this._headSpans, this._consumedIndices);
+  new _(this._headSpans, this._consumedIndices);
 
   /// group head 落在此 index 时返回对应 span；否则 null。O(1)。
   EventGroupSpan? headSpanAt(int index) => _headSpans[index];
@@ -197,7 +197,7 @@ class EventGroupIndex {
 class _EventGroupIndexCacheEntry {
   final int sourceLength;
   final EventGroupIndex index;
-  _EventGroupIndexCacheEntry({
+  new({
     required this.sourceLength,
     required this.index,
   });
@@ -212,7 +212,7 @@ class _EventGroupIndexCacheEntry {
 class GSYEventGroupItem extends StatefulWidget {
   final EventGroupSpan span;
 
-  const GSYEventGroupItem(this.span, {super.key});
+  const new(this.span, {super.key});
 
   @override
   State<GSYEventGroupItem> createState() => _GSYEventGroupItemState();

@@ -29,7 +29,7 @@ class UserOrg {
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
 
-  UserOrg(
+  new(
     this.login,
     this.id,
     this.url,
@@ -44,11 +44,11 @@ class UserOrg {
     this.avatarUrl,
   );
 
-  factory UserOrg.fromJson(Map<String, dynamic> json) => _$UserOrgFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$UserOrgFromJson(json);
 
 
   Map<String, dynamic> toJson() => _$UserOrgToJson(this);
 
   // 命名构造函数
-  UserOrg.empty();
+  new empty();
 }

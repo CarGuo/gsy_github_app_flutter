@@ -59,7 +59,7 @@ class ReactionSummary {
   final int count;
   final bool viewerHasReacted;
 
-  const ReactionSummary({
+  const new({
     required this.content,
     required this.emoji,
     required this.count,

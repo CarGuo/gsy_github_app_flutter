@@ -15,7 +15,7 @@ class CodeSearchItem({
   required final String repositoryFullName,
   final String? repositoryOwnerAvatar,
 }) {
-  factory CodeSearchItem.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     final repo = (json['repository'] as Map?)?.cast<String, dynamic>() ?? {};
     final owner = (repo['owner'] as Map?)?.cast<String, dynamic>() ?? {};
     return CodeSearchItem(

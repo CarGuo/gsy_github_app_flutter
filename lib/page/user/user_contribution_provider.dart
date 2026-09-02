@@ -16,13 +16,13 @@ class ContributionDay {
   final int contributionCount;
   final String color;
 
-  const ContributionDay({
+  const new({
     required this.date,
     required this.contributionCount,
     required this.color,
   });
 
-  factory ContributionDay.fromMap(Map<String, dynamic> map) {
+  factory fromMap(Map<String, dynamic> map) {
     return ContributionDay(
       date: (map["date"] as String?) ?? "",
       contributionCount: (map["contributionCount"] as int?) ?? 0,
@@ -39,9 +39,9 @@ class ContributionDay {
 class ContributionWeek {
   final List<ContributionDay> contributionDays;
 
-  const ContributionWeek({this.contributionDays = const []});
+  const new({this.contributionDays = const []});
 
-  factory ContributionWeek.fromMap(Map<String, dynamic> map) {
+  factory fromMap(Map<String, dynamic> map) {
     final rawDays = map["contributionDays"];
     final List<ContributionDay> days = (rawDays is List)
         ? rawDays
@@ -64,7 +64,7 @@ class UserContributionCalendarViewModel {
   final int totalContributions;
   final List<ContributionWeek> weeks;
 
-  const UserContributionCalendarViewModel({
+  const new({
     this.totalContributions = 0,
     this.weeks = const [],
   });

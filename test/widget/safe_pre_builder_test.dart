@@ -7,7 +7,7 @@ import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart'
 import 'package:markdown/markdown.dart' as md;
 
 class _TestHighlighter extends SyntaxHighlighter {
-  _TestHighlighter();
+  new();
 
   @override
   TextSpan format(String source) {

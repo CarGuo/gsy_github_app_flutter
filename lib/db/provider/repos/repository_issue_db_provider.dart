@@ -35,7 +35,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
   final String columnDirection = "direction";
   final String columnLabels = "labels";
 
-  RepositoryIssueDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, String state, String sort,
       String direction, String labels, String data) {
@@ -53,7 +53,7 @@ class RepositoryIssueDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryIssueDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     state = map[columnState];

@@ -27,7 +27,7 @@ import 'package:gsy_github_app_flutter/page/user/user_pinned_provider.dart';
 class UserPinnedSection extends ConsumerWidget {
   final String userName;
 
-  const UserPinnedSection({super.key, required this.userName});
+  const new({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,7 +86,7 @@ class UserPinnedSection extends ConsumerWidget {
 class _PinnedCard extends StatelessWidget {
   final UserPinnedItemViewModel item;
 
-  const _PinnedCard({required this.item});
+  const new({required this.item});
 
   Color? _parseColor(String? hex) {
     if (hex == null || hex.isEmpty) return null;

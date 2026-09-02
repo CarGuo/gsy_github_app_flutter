@@ -16,7 +16,7 @@ class PushEventCommit {
   bool? distinct;
   String? url;
 
-  PushEventCommit(
+  new(
     this.sha,
     this.author,
     this.message,
@@ -24,7 +24,7 @@ class PushEventCommit {
     this.url,
   );
 
-  factory PushEventCommit.fromJson(Map<String, dynamic> json) => _$PushEventCommitFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$PushEventCommitFromJson(json);
 
   Map<String, dynamic> toJson() => _$PushEventCommitToJson(this);
 }

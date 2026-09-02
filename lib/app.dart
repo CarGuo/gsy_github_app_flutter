@@ -22,7 +22,7 @@ import 'package:redux/redux.dart';
 import 'common/utils/navigator_utils.dart';
 
 class FlutterReduxApp extends StatefulWidget {
-  const FlutterReduxApp({super.key});
+  const new({super.key});
 
   @override
   _FlutterReduxAppState createState() => _FlutterReduxAppState();

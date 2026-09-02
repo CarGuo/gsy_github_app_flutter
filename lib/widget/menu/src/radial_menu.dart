@@ -38,7 +38,7 @@ class RadialMenu<T> extends StatefulWidget {
   /// The [radius], [menuAnimationDuration], and [progressAnimationDuration]
   /// arguments must not be null (they all have defaults, so do not need to be
   /// specified).
-  const RadialMenu({
+  const new({
     super.key,
     required this.items,
     required this.onSelected,
@@ -221,7 +221,7 @@ class _RadialMenuLayout extends MultiChildLayoutDelegate {
 
   final Animation<double> _progress;
 
-  _RadialMenuLayout({
+  new({
     required this.itemCount,
     required this.radius,
     required this.calculateItemAngle,

@@ -19,7 +19,7 @@ import 'package:lottie/lottie.dart';
 class HomePage extends StatefulWidget {
   static const String sName = "home";
 
-  const HomePage({super.key});
+  const new({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();

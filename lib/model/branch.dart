@@ -21,6 +21,6 @@ abstract class Branch implements Built<Branch, BranchBuilder> {
   String? get zipballUrl;
 
 
-  Branch._();
-  factory Branch([void Function(BranchBuilder)? updates]) = _$Branch;
+  new _();
+  factory([void Function(BranchBuilder)? updates]) = _$Branch;
 }

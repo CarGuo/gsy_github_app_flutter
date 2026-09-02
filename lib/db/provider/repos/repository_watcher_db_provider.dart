@@ -20,7 +20,7 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
   String? fullName;
   String? data;
 
-  RepositoryWatcherDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, String data) {
     Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
@@ -30,7 +30,7 @@ class RepositoryWatcherDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryWatcherDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     data = map[columnData];

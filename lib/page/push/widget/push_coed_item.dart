@@ -11,7 +11,7 @@ class PushCodeItem extends StatelessWidget {
   final PushCodeItemViewModel pushCodeItemViewModel;
   final VoidCallback onPressed;
 
-  const PushCodeItem(this.pushCodeItemViewModel, this.onPressed, {super.key});
+  const new(this.pushCodeItemViewModel, this.onPressed, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,9 @@ class PushCodeItemViewModel {
 
   String? blob_url;
 
-  PushCodeItemViewModel();
+  new();
 
-  PushCodeItemViewModel.fromMap(CommitFile map) {
+  new fromMap(CommitFile map) {
     String filename = map.fileName!;
     List<String> nameSplit = filename.split("/");
     name = nameSplit[nameSplit.length - 1];

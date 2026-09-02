@@ -26,7 +26,7 @@ class UserPinnedItemViewModel {
   final bool isFork;
   final bool isPrivate;
 
-  UserPinnedItemViewModel({
+  new({
     this.name,
     this.nameWithOwner,
     this.ownerLogin,
@@ -39,7 +39,7 @@ class UserPinnedItemViewModel {
     this.isPrivate = false,
   });
 
-  factory UserPinnedItemViewModel.fromMap(Map<String, dynamic> map) {
+  factory fromMap(Map<String, dynamic> map) {
     final owner = map["owner"];
     final language = map["primaryLanguage"];
     return UserPinnedItemViewModel(

@@ -24,7 +24,7 @@ class OrgMemberDbProvider extends BaseDbProvider {
     return map;
   }
 
-  OrgMemberDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     org = map[columnOrg];
     data = map[columnData];

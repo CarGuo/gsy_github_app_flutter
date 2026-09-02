@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 
 class _CupertinoSliverRefresh extends SingleChildRenderObjectWidget {
-  const _CupertinoSliverRefresh({
+  const new({
     this.refreshIndicatorLayoutExtent = 0.0,
     this.hasLayoutExtent = false,
     super.child,
@@ -54,7 +54,7 @@ class _CupertinoSliverRefresh extends SingleChildRenderObjectWidget {
 // prevent scroll position jumps as the [layoutExtent] is set and unset.
 class _RenderCupertinoSliverRefresh extends RenderSliver
     with RenderObjectWithChildMixin<RenderBox> {
-  _RenderCupertinoSliverRefresh({
+  new({
     required double refreshIndicatorExtent,
     required this._hasLayoutExtent,
     RenderBox? child,
@@ -282,7 +282,7 @@ class CupertinoSliverRefreshControl extends StatefulWidget {
   ///
   /// The [onRefresh] argument will be called when pulled far enough to trigger
   /// a refresh.
-  const CupertinoSliverRefreshControl({
+  const new({
     super.key,
     this.refreshTriggerPullDistance = _defaultRefreshTriggerPullDistance,
     this.refreshIndicatorExtent = _defaultRefreshIndicatorExtent,

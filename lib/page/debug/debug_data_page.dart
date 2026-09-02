@@ -10,7 +10,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 ///请求数据调
 class DebugDataPage extends StatefulWidget {
-  const DebugDataPage({super.key});
+  const new({super.key});
 
   @override
   _DebugDataPageState createState() => _DebugDataPageState();
@@ -72,7 +72,7 @@ class DebugDataList extends StatefulWidget {
 
   final List<String?> titles;
 
-  const DebugDataList(this.titles, this.dataList, {super.key});
+  const new(this.titles, this.dataList, {super.key});
 
   @override
   _DebugDataListState createState() => _DebugDataListState();

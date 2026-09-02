@@ -15,9 +15,9 @@ class License {
 
   String? name;
 
-  License(this.name);
+  new(this.name);
 
-  factory License.fromJson(Map<String, dynamic> json) => _$LicenseFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$LicenseFromJson(json);
 
   Map<String, dynamic> toJson() => _$LicenseToJson(this);
 }

@@ -4,7 +4,7 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  User(
+  new(
       this.login,
       this.id,
       this.node_id,
@@ -82,12 +82,12 @@ class User {
   bool? two_factor_authentication;
 
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   // 命名构造函数
-  User.empty();
+  new empty();
 
 }

@@ -34,7 +34,7 @@ class GSYUserIconWidget extends StatelessWidget {
   /// - 稠密位（timeline / 内嵌评论）：显式 `minTapTargetSize: null`，视觉==命中区==布局占位
   final double? minTapTargetSize;
 
-  const GSYUserIconWidget(
+  const new(
       {super.key, this.image,
       this.onPressed,
       this.width = 30.0,

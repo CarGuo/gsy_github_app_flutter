@@ -47,7 +47,7 @@ class IssueTimelineItem extends StatelessWidget {
 
   final IssueTimelineEvent event;
 
-  const IssueTimelineItem(this.event, {super.key});
+  const new(this.event, {super.key});
 
   IconData get _icon {
     switch (event.event) {

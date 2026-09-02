@@ -22,7 +22,7 @@ class RepositoryBranchDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryBranchDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     data = map[columnData];

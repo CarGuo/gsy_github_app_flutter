@@ -14,7 +14,7 @@ class GSYInputWidget extends StatefulWidget {
 
   final TextEditingController? controller;
 
-  const GSYInputWidget(
+  const new(
       {super.key,
       this.hintText,
       this.iconData,

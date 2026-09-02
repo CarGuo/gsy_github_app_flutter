@@ -33,7 +33,7 @@ class GSYTabBarWidget extends StatefulWidget {
   final ValueChanged<int>? onDoublePress;
   final ValueChanged<int>? onSinglePress;
 
-  const GSYTabBarWidget({
+  const new({
     super.key,
     this.type = TabType.top,
     this.tabItems,

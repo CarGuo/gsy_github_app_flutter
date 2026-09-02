@@ -7,5 +7,5 @@ class ResultData {
   int? code;
   dynamic headers;
 
-  ResultData(this.data, this.result, this.code, {this.headers});
+  new(this.data, this.result, this.code, {this.headers});
 }

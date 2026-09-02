@@ -78,7 +78,7 @@ class Issue {
   PullRequestRef? pullRequest;
 
 
-  Issue(
+  new(
     this.id,
     this.number,
     this.title,
@@ -102,7 +102,7 @@ class Issue {
     this.pullRequest,
   });
 
-  factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
 
   Map<String, dynamic> toJson() => _$IssueToJson(this);
 }

@@ -11,7 +11,7 @@ import 'package:gsy_github_app_flutter/model/label.dart';
 /// 前景根据背景亮度自适应黑白，贴近 GitHub 网页效果。
 class LabelChip extends StatelessWidget {
   final Label label;
-  const LabelChip({super.key, required this.label});
+  const new({super.key, required this.label});
 
   static Color _parseHex(String? hex) {
     if (hex == null || hex.isEmpty) return const Color(0xFFCCCCCC);
@@ -57,7 +57,7 @@ class LabelChip extends StatelessWidget {
 /// 一组 label 的横向自适应容器
 class LabelChipList extends StatelessWidget {
   final List<Label>? labels;
-  const LabelChipList({super.key, this.labels});
+  const new({super.key, this.labels});
 
   @override
   Widget build(BuildContext context) {

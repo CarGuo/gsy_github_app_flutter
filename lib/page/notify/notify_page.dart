@@ -23,7 +23,7 @@ import 'package:signals/signals_flutter.dart';
 /// Date: 2018-07-24
 
 class NotifyPage extends StatefulWidget {
-  const NotifyPage({super.key});
+  const new({super.key});
 
   @override
   _NotifyPageState createState() => _NotifyPageState();

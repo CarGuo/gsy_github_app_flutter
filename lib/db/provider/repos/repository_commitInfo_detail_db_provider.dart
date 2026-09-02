@@ -28,7 +28,7 @@ class RepositoryCommitInfoDetailDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryCommitInfoDetailDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     sha = map[columnSha];

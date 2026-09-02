@@ -5,7 +5,7 @@ import 'package:simple_animations/simple_animations.dart';
 class ParticlePainter extends CustomPainter {
   List<ParticleModel> particles;
 
-  ParticlePainter(this.particles);
+  new(this.particles);
 
   @override
   void paint(Canvas canvas, Size size) {

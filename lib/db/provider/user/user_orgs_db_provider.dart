@@ -21,7 +21,7 @@ class UserOrgsDbProvider extends BaseDbProvider {
   String? userName;
   String? data;
 
-  UserOrgsDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? userName, String data) {
     Map<String, dynamic> map = {columnUserName: userName, columnData: data};
@@ -31,7 +31,7 @@ class UserOrgsDbProvider extends BaseDbProvider {
     return map;
   }
 
-  UserOrgsDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     userName = map[columnUserName];
     data = map[columnData];

@@ -44,7 +44,7 @@ class PullRequestFilesPage extends StatefulWidget {
   final String reposName;
   final int number;
 
-  const PullRequestFilesPage(this.userName, this.reposName, this.number,
+  const new(this.userName, this.reposName, this.number,
       {super.key});
 
   @override

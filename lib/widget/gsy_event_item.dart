@@ -20,7 +20,7 @@ class GSYEventItem extends StatelessWidget {
 
   final bool needImage;
 
-  const GSYEventItem(this.eventViewModel,
+  const new(this.eventViewModel,
       {super.key, this.onPressed, this.needImage = true});
 
   @override
@@ -86,7 +86,7 @@ class EventViewModel {
   late String actionTime;
   String? actionTarget;
 
-  EventViewModel.fromEventMap(BuildContext context, Event event) {
+  new fromEventMap(BuildContext context, Event event) {
     actionTime = CommonUtils.getNewsTimeStr(event.createdAt!);
     actionUser = event.actor!.login;
     actionUserPic = event.actor!.avatar_url;
@@ -95,14 +95,14 @@ class EventViewModel {
     actionTarget = as.actionStr;
   }
 
-  EventViewModel.fromCommitMap(RepoCommit eventMap) {
+  new fromCommitMap(RepoCommit eventMap) {
     actionTime = CommonUtils.getNewsTimeStr(eventMap.commit!.committer!.date!);
     actionUser = eventMap.commit!.committer!.name;
     actionDes = "sha:${eventMap.sha!}";
     actionTarget = eventMap.commit!.message;
   }
 
-  EventViewModel.fromNotify(BuildContext context, Model.Notification eventMap) {
+  new fromNotify(BuildContext context, Model.Notification eventMap) {
     actionTime = CommonUtils.getNewsTimeStr(eventMap.updateAt!);
     actionUser = eventMap.repository!.fullName;
     String? type = eventMap.subject!.type;

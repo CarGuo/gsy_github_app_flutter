@@ -8,7 +8,7 @@ import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
 class Mole extends StatefulWidget {
-  const Mole({super.key});
+  const new({super.key});
 
   @override
   _MoleState createState() => _MoleState();
@@ -108,7 +108,7 @@ class MoleParticle {
   late Duration startTime;
   final duration = 600.milliseconds;
 
-  MoleParticle() {
+  new() {
     final random = Random();
     double x = (100 + 200) * random.nextDouble() * (random.nextBool() ? 1 : -1);
     double y = (100 + 200) * random.nextDouble() * (random.nextBool() ? 1 : -1);

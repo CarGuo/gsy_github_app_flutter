@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 
 ///动态头部处理
 class GSYSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
-  GSYSliverHeaderDelegate(
+  new(
       {required this.minHeight,
       required this.maxHeight,
       required this.snapConfig,

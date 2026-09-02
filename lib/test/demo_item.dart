@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DemoItem extends StatelessWidget {
-  const DemoItem({super.key});
+  const new({super.key});
 
   ///返回一个居中带图标和文本的Item
   _getBottomItem(IconData icon, String text) {

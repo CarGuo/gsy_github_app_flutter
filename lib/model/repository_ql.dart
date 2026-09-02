@@ -26,7 +26,7 @@ class RepositoryQL {
   final List<String?>? topics;
   final RepositoryQL? parent;
 
-  RepositoryQL({
+  new({
     this.issuesClosed,
     this.issuesOpen,
     this.issuesTotal,

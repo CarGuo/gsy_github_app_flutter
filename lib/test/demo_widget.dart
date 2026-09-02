@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class DEMOWidget extends StatelessWidget {
   final String? text;
 
-  const DEMOWidget(this.text, {super.key});
+  const new(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class DemoStateWidget extends StatefulWidget  {
 
   final String text;
 
-  const DemoStateWidget(this.text, {super.key});
+  const new(this.text, {super.key});
 
   @override
   _DemoStateWidgetState createState() => _DemoStateWidgetState(text);
@@ -34,7 +34,7 @@ class _DemoStateWidgetState extends State<DemoStateWidget> with AutomaticKeepAli
 
   String? text;
 
-  _DemoStateWidgetState(this.text);
+  new(this.text);
 
   @override
   void initState() {

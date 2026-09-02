@@ -20,7 +20,7 @@ import 'package:gsy_github_app_flutter/page/user/user_status_provider.dart';
 class UserStatusSection extends ConsumerWidget {
   final String userName;
 
-  const UserStatusSection({super.key, required this.userName});
+  const new({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,7 +42,7 @@ class UserStatusSection extends ConsumerWidget {
 class _StatusChip extends StatelessWidget {
   final UserStatusViewModel vm;
 
-  const _StatusChip({required this.vm});
+  const new({required this.vm});
 
   @override
   Widget build(BuildContext context) {

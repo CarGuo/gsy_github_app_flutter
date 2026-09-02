@@ -17,7 +17,7 @@ class CommitGitInfo  {
   CommitGitUser? author;
   CommitGitUser? committer;
 
-  CommitGitInfo(
+  new(
     this.message,
     this.url,
     this.commentCount,
@@ -25,7 +25,7 @@ class CommitGitInfo  {
     this.committer,
   );
 
-  factory CommitGitInfo.fromJson(Map<String, dynamic> json) => _$CommitGitInfoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CommitGitInfoFromJson(json);
 
 
   Map<String, dynamic> toJson() => _$CommitGitInfoToJson(this);

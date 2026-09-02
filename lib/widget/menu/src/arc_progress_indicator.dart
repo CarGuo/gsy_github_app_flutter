@@ -25,7 +25,7 @@ class ArcProgressIndicator extends StatelessWidget {
   // private
   final Animation<double> _progress;
 
-  ArcProgressIndicator({super.key, 
+  new({super.key, 
     required this.controller,
     required this.radius,
     this.startAngle = 0.0,
@@ -83,7 +83,7 @@ class _ArcProgressPainter extends CustomPainter {
   final double startAngle;
   final TextPainter? icon;
 
-  _ArcProgressPainter({
+  new({
     required this.controller,
     required this.color,
     required this.radius,

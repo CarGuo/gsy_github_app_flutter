@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 ///   [GSYListState.handleRefresh] 里的 `res.next` 我们不复用（不做"顺带拉第二页"），
 ///   避免与 §2.5 已经踩过的"闭包捕获 page=1 导致重复拉第一页"同款坑
 class DiscussionListPage extends StatefulWidget {
-  const DiscussionListPage({super.key});
+  const new({super.key});
 
   @override
   DiscussionListPageState createState() => DiscussionListPageState();

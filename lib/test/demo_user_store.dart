@@ -8,7 +8,7 @@ import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 
 class DemoUseStorePage extends StatelessWidget {
-  const DemoUseStorePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

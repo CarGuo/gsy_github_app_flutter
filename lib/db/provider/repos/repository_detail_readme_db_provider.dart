@@ -19,7 +19,7 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
   final String columnBranch = "branch";
   final String columnData = "data";
 
-  RepositoryDetailReadmeDbProvider();
+  new();
 
   Map<String, dynamic> toMap(
       String? fullName, String? branch, String? dataMapString) {
@@ -34,7 +34,7 @@ class RepositoryDetailReadmeDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryDetailReadmeDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     branch = map[columnBranch];

@@ -38,7 +38,7 @@ class DiscussionDetailPage extends StatefulWidget {
   final int number;
   final bool needHomeIcon;
 
-  const DiscussionDetailPage(
+  const new(
     this.owner,
     this.reposName,
     this.number, {

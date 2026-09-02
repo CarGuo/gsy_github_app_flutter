@@ -18,7 +18,7 @@ import 'package:signals/signals_flutter.dart';
 /// on 2018/7/20.
 
 class RepositoryDetailFileListPage extends StatefulWidget {
-  const RepositoryDetailFileListPage({super.key});
+  const new({super.key});
 
   @override
   RepositoryDetailFileListPageState createState() =>
@@ -236,9 +236,9 @@ class FileItemViewModel {
   String? name;
   String? htmlUrl;
 
-  FileItemViewModel();
+  new();
 
-  FileItemViewModel.fromMap(FileModel map) {
+  new fromMap(FileModel map) {
     name = map.name;
     type = map.type;
     htmlUrl = map.htmlUrl;

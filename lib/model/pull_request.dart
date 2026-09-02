@@ -56,7 +56,7 @@ class PullRequest {
   @JsonKey(name: "html_url")
   String? htmlUrl;
 
-  PullRequest({
+  new({
     this.id,
     this.number,
     this.state,
@@ -77,7 +77,7 @@ class PullRequest {
     this.htmlUrl,
   });
 
-  factory PullRequest.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       _$PullRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$PullRequestToJson(this);
@@ -90,9 +90,9 @@ class PullRequestBranchRef {
   String? ref;
   String? sha;
 
-  PullRequestBranchRef({this.label, this.ref, this.sha});
+  new({this.label, this.ref, this.sha});
 
-  factory PullRequestBranchRef.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       _$PullRequestBranchRefFromJson(json);
 
   Map<String, dynamic> toJson() => _$PullRequestBranchRefToJson(this);
@@ -108,7 +108,7 @@ class PullRequestRef {
   final String? patchUrl;
   final DateTime? mergedAt;
 
-  PullRequestRef({
+  new({
     this.url,
     this.htmlUrl,
     this.diffUrl,
@@ -116,7 +116,7 @@ class PullRequestRef {
     this.mergedAt,
   });
 
-  factory PullRequestRef.fromJson(Map<String, dynamic> json) => PullRequestRef(
+  factory fromJson(Map<String, dynamic> json) => PullRequestRef(
         url: json['url'] as String?,
         htmlUrl: json['html_url'] as String?,
         diffUrl: json['diff_url'] as String?,

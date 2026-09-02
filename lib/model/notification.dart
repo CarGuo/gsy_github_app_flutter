@@ -22,9 +22,9 @@ class Notification {
   Repository? repository;
   NotificationSubject? subject;
 
-  Notification(this.id, this.unread, this.reason, this.updateAt, this.lastReadAt, this.repository, this.subject);
+  new(this.id, this.unread, this.reason, this.updateAt, this.lastReadAt, this.repository, this.subject);
 
-  factory Notification.fromJson(Map<String, dynamic> json) => _$NotificationFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$NotificationFromJson(json);
 
   Map<String, dynamic> toJson() => _$NotificationToJson(this);
 }

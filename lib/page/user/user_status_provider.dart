@@ -20,7 +20,7 @@ class UserStatusViewModel {
   /// GitHub 官方 "Busy" 开关。为 true 时头像旁边会附加"忙碌中"角标
   final bool isBusy;
 
-  UserStatusViewModel({
+  new({
     this.emojiShortcode,
     this.message,
     this.isBusy = false,
@@ -32,7 +32,7 @@ class UserStatusViewModel {
       (message == null || message!.isEmpty) &&
       !isBusy;
 
-  factory UserStatusViewModel.fromMap(Map<String, dynamic> map) {
+  factory fromMap(Map<String, dynamic> map) {
     return UserStatusViewModel(
       emojiShortcode: map["emoji"] as String?,
       message: map["message"] as String?,

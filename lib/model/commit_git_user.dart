@@ -13,9 +13,9 @@ class CommitGitUser{
   String? email;
   DateTime? date;
 
-  CommitGitUser(this.name, this.email, this.date);
+  new(this.name, this.email, this.date);
 
-  factory CommitGitUser.fromJson(Map<String, dynamic> json) => _$CommitGitUserFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CommitGitUserFromJson(json);
 
 
   Map<String, dynamic> toJson() => _$CommitGitUserToJson(this);

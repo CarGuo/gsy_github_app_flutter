@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class CustomBouncingScrollPhysics extends ScrollPhysics {
   final double refreshHeight;
 
-  const CustomBouncingScrollPhysics(
+  const new(
       {super.parent, this.refreshHeight = 140});
 
   @override

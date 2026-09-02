@@ -36,7 +36,7 @@ class Release {
   User? author;
   List<ReleaseAsset>? assets;
 
-  Release(
+  new(
     this.id,
     this.tagName,
     this.targetCommitish,
@@ -53,7 +53,7 @@ class Release {
     this.assets,
   );
 
-  factory Release.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       _$ReleaseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ReleaseToJson(this);

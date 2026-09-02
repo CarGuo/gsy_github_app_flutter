@@ -8,10 +8,10 @@ class EnvConfig {
   final String? env;
   final bool? debug;
 
-  EnvConfig({
+  new({
     this.env,
     this.debug,
   });
 
-  factory EnvConfig.fromJson(Map<String, dynamic> json) => _$EnvConfigFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$EnvConfigFromJson(json);
 }

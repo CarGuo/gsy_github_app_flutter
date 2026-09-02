@@ -23,7 +23,7 @@ import 'package:gsy_github_app_flutter/page/user/user_contribution_provider.dart
 class UserContributionCalendarSection extends ConsumerWidget {
   final String userName;
 
-  const UserContributionCalendarSection({super.key, required this.userName});
+  const new({super.key, required this.userName});
 
   /// heatmap cell 边长（dp），配合 [_cellGap] 决定整块宽度
   static const double _cellSize = 12.0;
@@ -119,7 +119,7 @@ class UserContributionCalendarSection extends ConsumerWidget {
 class _ContributionGrid extends StatelessWidget {
   final List<ContributionWeek> weeks;
 
-  const _ContributionGrid({required this.weeks});
+  const new({required this.weeks});
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,7 @@ class _ContributionGrid extends StatelessWidget {
 class _WeekColumn extends StatelessWidget {
   final ContributionWeek week;
 
-  const _WeekColumn({required this.week});
+  const new({required this.week});
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +174,7 @@ class _WeekColumn extends StatelessWidget {
 class _ContributionCell extends StatelessWidget {
   final ContributionDay day;
 
-  const _ContributionCell({required this.day});
+  const new({required this.day});
 
   Color _parseHexColor(String hex) {
     // GitHub 返回 `#RRGGBB`；兜底空串或非法值给 GitHub 默认最浅灰

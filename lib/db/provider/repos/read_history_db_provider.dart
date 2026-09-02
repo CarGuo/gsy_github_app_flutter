@@ -23,7 +23,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
   int? readDate;
   String? data;
 
-  ReadHistoryDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, DateTime readDate, String data) {
     Map<String, dynamic> map = {
@@ -37,7 +37,7 @@ class ReadHistoryDbProvider extends BaseDbProvider {
     return map;
   }
 
-  ReadHistoryDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     readDate = map[columnReadDate];

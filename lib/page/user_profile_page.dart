@@ -20,7 +20,7 @@ const String user_profile_info = "简介";
 /// Created by guoshuyu
 /// Date: 2018-08-08
 class UserProfileInfo extends StatefulWidget {
-  const UserProfileInfo({super.key});
+  const new({super.key});
 
   @override
   _UserProfileState createState() => _UserProfileState();

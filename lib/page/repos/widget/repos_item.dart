@@ -16,7 +16,7 @@ class ReposItem extends StatelessWidget {
 
   final VoidCallback? onPressed;
 
-  const ReposItem(this.reposViewModel, {super.key, this.onPressed});
+  const new(this.reposViewModel, {super.key, this.onPressed});
 
   ///仓库item的底部状态，比如star数量等
   _getBottomItem(BuildContext context, IconData icon, String? text,
@@ -142,9 +142,9 @@ class ReposViewModel {
   String? repositoryType = "";
   String? repositoryDes;
 
-  ReposViewModel();
+  new();
 
-  ReposViewModel.fromMap(Repository data) {
+  new fromMap(Repository data) {
     ownerName = data.owner!.login;
     ownerPic = data.owner!.avatar_url;
     repositoryName = data.name;
@@ -155,7 +155,7 @@ class ReposViewModel {
     repositoryDes = data.description ?? '---';
   }
 
-  ReposViewModel.fromQL(RepositoryQL data) {
+  new fromQL(RepositoryQL data) {
     ownerName = data.ownerName;
     ownerPic = data.ownerAvatarUrl;
     repositoryName = data.reposName;
@@ -167,7 +167,7 @@ class ReposViewModel {
         CommonUtils.removeTextTag(data.shortDescriptionHTML) ?? '---';
   }
 
-  ReposViewModel.fromTrendMap(model) {
+  new fromTrendMap(model) {
     ownerName = model.name;
     if (model.contributors.length > 0) {
       ownerPic = model.contributors[0];

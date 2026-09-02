@@ -33,8 +33,6 @@ linter:
     # use_declaring_parameters 是 primary constructor 引入的 declaring parameter 提示，
     # 只对 primary constructor 里的形参生效，不会误伤老代码。
     use_declaring_parameters: true
-    # 不启用 unnecessary_type_name_in_constructor：
-    #   flutter analyze 一次会命中 354 处（全仓 named constructor 都写着类名），
-    #   跟 primary constructor 迁移无关，属于独立的 concise constructor 规范；
-    #   逐个改动 354 处不属于本轮任务范围，避免噪音污染 CI/PR。
-    #   等未来专门开一个 concise constructor 迁移任务时再启用。
+    # 2026-09-02 补齐官方 6 个 primary constructor 配套 lint 的最后一个。
+    # 之前跳过是为了 phase 1 收敛噪音，现在用户明确要求把 6 个 lint 都开出来看 hit。
+    unnecessary_type_name_in_constructor: true

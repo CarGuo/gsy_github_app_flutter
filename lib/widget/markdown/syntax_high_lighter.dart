@@ -3,7 +3,7 @@ import 'package:string_scanner/string_scanner.dart';
 import 'package:flutter/material.dart';
 
 class SyntaxHighlighterStyle {
-  SyntaxHighlighterStyle(
+  new(
       {this.baseStyle,
       this.numberStyle,
       this.commentStyle,
@@ -44,7 +44,7 @@ abstract class SyntaxCostomHighlighter {
 }
 
 class DartSyntaxHighlighter extends SyntaxCostomHighlighter {
-  DartSyntaxHighlighter([this._style]) {
+  new([this._style]) {
     _spans = <_HighlightSpan>[];
 
     _style ??= SyntaxHighlighterStyle.defaultStyle();
@@ -384,7 +384,7 @@ enum _HighlightType {
 }
 
 class _HighlightSpan {
-  _HighlightSpan(this.type, this.start, this.end);
+  new(this.type, this.start, this.end);
 
   final _HighlightType type;
   final int start;

@@ -33,7 +33,7 @@ class UserHeaderItem extends StatelessWidget {
 
   final List<UserOrg>? orgList;
 
-  const UserHeaderItem(this.userInfo, this.beStaredCount, this.themeColor,
+  const new(this.userInfo, this.beStaredCount, this.themeColor,
       {super.key, this.notifyColor, this.refreshCallBack, this.orgList});
 
   ///通知Icon
@@ -268,7 +268,7 @@ class UserHeaderBottom extends StatelessWidget {
   final Radius radius;
   final User? authenticatedUser;
 
-  const UserHeaderBottom(this.userInfo, this.radius,
+  const new(this.userInfo, this.radius,
       {super.key, this.authenticatedUser});
 
   static bool isAuthenticatedUserProfile(
@@ -443,7 +443,7 @@ class UserHeaderBottom extends StatelessWidget {
 class UserHeaderChart extends StatelessWidget {
   final User userInfo;
 
-  const UserHeaderChart(this.userInfo, {super.key});
+  const new(this.userInfo, {super.key});
 
   _renderChart(BuildContext context) {
     double height = 140.0;

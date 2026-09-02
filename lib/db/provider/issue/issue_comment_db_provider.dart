@@ -24,7 +24,7 @@ class IssueCommentDbProvider extends BaseDbProvider {
   String? number;
   String? data;
 
-  IssueCommentDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, String number, String data) {
     Map<String, dynamic> map = {
@@ -38,7 +38,7 @@ class IssueCommentDbProvider extends BaseDbProvider {
     return map;
   }
 
-  IssueCommentDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     number = map[columnNumber];
     fullName = map[columnFullName];

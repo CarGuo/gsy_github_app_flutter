@@ -13,7 +13,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 class PushHeader extends StatelessWidget {
   final PushHeaderViewModel pushHeaderViewModel;
 
-  const PushHeader(this.pushHeaderViewModel, {super.key});
+  const new(this.pushHeaderViewModel, {super.key});
 
   /// 头部变化数量图标
   _getIconItem(IconData icon, String text) {
@@ -119,9 +119,9 @@ class PushHeaderViewModel {
   String deleteCount = "---";
   String? htmlUrl = GSYConstant.app_default_share_url;
 
-  PushHeaderViewModel();
+  new();
 
-  PushHeaderViewModel.forMap(PushCommit pushMap) {
+  new forMap(PushCommit pushMap) {
     String? name = "---";
     String? pic;
     if (pushMap.committer != null) {

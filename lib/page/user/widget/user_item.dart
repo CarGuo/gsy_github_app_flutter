@@ -17,7 +17,7 @@ class UserItem extends StatelessWidget {
 
   final bool needImage;
 
-  const UserItem(this.userItemViewModel,
+  const new(this.userItemViewModel,
       {super.key, this.onPressed, this.needImage = true});
 
   @override
@@ -122,13 +122,13 @@ class UserItemViewModel {
   String? lang;
   String? index;
 
-  UserItemViewModel.fromMap(User user) {
+  new fromMap(User user) {
     userName = user.login;
     userPic = user.avatar_url;
     followers = user.followers;
   }
 
-  UserItemViewModel.fromQL(SearchUserQL user, int? index) {
+  new fromQL(SearchUserQL user, int? index) {
     userName = user.name;
     userPic = user.avatarUrl;
     followers = user.followers;
@@ -138,7 +138,7 @@ class UserItemViewModel {
     this.index = index.toString();
   }
 
-  UserItemViewModel.fromOrgMap(UserOrg org) {
+  new fromOrgMap(UserOrg org) {
     userName = org.login;
     userPic = org.avatarUrl;
   }

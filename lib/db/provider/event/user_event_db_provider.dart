@@ -21,7 +21,7 @@ class UserEventDbProvider extends BaseDbProvider {
   String? userName;
   String? data;
 
-  UserEventDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? userName, String eventMapString) {
     Map<String, dynamic> map = {
@@ -34,7 +34,7 @@ class UserEventDbProvider extends BaseDbProvider {
     return map;
   }
 
-  UserEventDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     userName = map[columnUserName];
     data = map[columnData];

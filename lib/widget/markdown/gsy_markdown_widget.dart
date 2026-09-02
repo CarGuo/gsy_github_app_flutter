@@ -117,7 +117,7 @@ class GSYMarkdownWidget extends StatelessWidget {
   final bool shrinkWrap;
   final bool scroll;
 
-  const GSYMarkdownWidget(
+  const new(
       {super.key,
       this.markdownData = "",
       required this.baseUrl,

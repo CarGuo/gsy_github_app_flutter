@@ -34,7 +34,7 @@ User? _updateLoaded(User? user, action) {
 class UpdateUserAction {
   final User? userInfo;
 
-  UpdateUserAction(this.userInfo);
+  new(this.userInfo);
 }
 
 class FetchUserAction;

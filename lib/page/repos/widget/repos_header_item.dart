@@ -28,7 +28,7 @@ class ReposHeaderItem extends StatefulWidget {
 
   final ValueChanged<Size>? layoutListener;
 
-  const ReposHeaderItem(this.reposHeaderViewModel,
+  const new(this.reposHeaderViewModel,
       {super.key, this.layoutListener});
 
   @override
@@ -443,9 +443,9 @@ class ReposHeaderViewModel {
   bool repositoryWatched = false;
   bool? repositoryIsFork = false;
 
-  ReposHeaderViewModel();
+  new();
 
-  ReposHeaderViewModel.fromHttpMap(
+  new fromHttpMap(
       this.ownerName, reposName, RepositoryQL? map) {
     if (map == null || map.ownerName == null) {
       return;

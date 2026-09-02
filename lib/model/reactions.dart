@@ -12,7 +12,7 @@ class Reactions {
   final int rocket;
   final int eyes;
 
-  const Reactions({
+  const new({
     this.totalCount = 0,
     this.plusOne = 0,
     this.minusOne = 0,
@@ -24,9 +24,9 @@ class Reactions {
     this.eyes = 0,
   });
 
-  factory Reactions.empty() => const Reactions();
+  factory empty() => const Reactions();
 
-  factory Reactions.fromJson(Map<String, dynamic>? json) {
+  factory fromJson(Map<String, dynamic>? json) {
     if (json == null) return const Reactions();
     int pick(String key) => (json[key] as num?)?.toInt() ?? 0;
     return Reactions(
@@ -106,5 +106,5 @@ class ReactionEntry {
   final String content;
   final String emoji;
   final int count;
-  const ReactionEntry(this.content, this.emoji, this.count);
+  const new(this.content, this.emoji, this.count);
 }

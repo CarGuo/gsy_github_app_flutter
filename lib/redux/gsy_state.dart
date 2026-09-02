@@ -23,7 +23,7 @@ class GSYState {
   bool? login;
 
   ///构造方法
-  GSYState(
+  new(
       {this.userInfo,
       this.login,});
 }

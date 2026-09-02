@@ -32,7 +32,7 @@ class IssueItem extends StatelessWidget {
   /// 点击 reaction chip 时的回调（仅评论卡片使用）
   final void Function(String content, bool isAdd)? onReactionToggle;
 
-  const IssueItem(this.issueItemViewModel,
+  const new(this.issueItemViewModel,
       {super.key,
       this.onPressed,
       this.onLongPress,
@@ -270,9 +270,9 @@ class IssueItemViewModel {
   bool minimized = false;
   Reactions? reactions;
 
-  IssueItemViewModel();
+  new();
 
-  IssueItemViewModel.fromMap(Issue issueMap, {needTitle = true}) {
+  new fromMap(Issue issueMap, {needTitle = true}) {
     String fullName = CommonUtils.getFullName(issueMap.repoUrl);
     actionTime = CommonUtils.getNewsTimeStr(issueMap.createdAt!);
     actionUser = issueMap.user!.login;

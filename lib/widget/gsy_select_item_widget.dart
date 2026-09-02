@@ -22,7 +22,7 @@ class GSYSelectItemWidget extends StatefulWidget
 
   final EdgeInsets margin;
 
-  const GSYSelectItemWidget(
+  const new(
     this.itemNames,
     this.selectItemChanged, {super.key, 
     this.elevation = 5.0,
@@ -45,7 +45,7 @@ class _GSYSelectItemWidgetState extends State<GSYSelectItemWidget> {
   int preSelIndex = 0;
   List keys = [false,false];
 
-  _GSYSelectItemWidgetState();
+  new();
 
 
   @override

@@ -13,7 +13,7 @@ class ParticleModel {
   late Duration startTime;
   Random random;
 
-  ParticleModel(this.random) {
+  new(this.random) {
     restart();
     shuffle();
   }

@@ -23,7 +23,7 @@ class FileModel {
   @JsonKey(name: "type")
   String? type;
 
-  FileModel(
+  new(
     this.name,
     this.path,
     this.sha,
@@ -35,7 +35,7 @@ class FileModel {
     this.type,
   );
 
-  factory FileModel.fromJson(Map<String, dynamic> json) => _$FileModelFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$FileModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$FileModelToJson(this);
 }

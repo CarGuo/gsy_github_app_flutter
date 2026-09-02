@@ -5,7 +5,7 @@ import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const new({super.key});
 
   @override
   State createState() => _LoginPageState();

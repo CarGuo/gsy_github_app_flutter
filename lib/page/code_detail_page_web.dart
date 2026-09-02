@@ -30,7 +30,7 @@ class CodeDetailPageWeb extends StatefulWidget {
 
   final String? lang;
 
-  const CodeDetailPageWeb(
+  const new(
       {super.key,
       this.title,
       this.userName,

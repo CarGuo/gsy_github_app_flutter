@@ -18,7 +18,7 @@ class CodeSearchItemWidget extends StatelessWidget {
   final CodeSearchItem item;
   final GestureTapCallback? onPressed;
 
-  const CodeSearchItemWidget(this.item, {super.key, this.onPressed});
+  const new(this.item, {super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {

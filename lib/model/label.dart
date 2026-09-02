@@ -5,9 +5,9 @@ class Label {
   final String? color;
   final String? description;
 
-  Label({this.name, this.color, this.description});
+  new({this.name, this.color, this.description});
 
-  factory Label.fromJson(Map<String, dynamic> json) => Label(
+  factory fromJson(Map<String, dynamic> json) => Label(
         name: json['name'] as String?,
         color: json['color'] as String?,
         description: json['description'] as String?,

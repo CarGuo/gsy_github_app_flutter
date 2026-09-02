@@ -98,7 +98,7 @@ class Repository {
   ///issue总数，不参加序列化
   int? allIssueCount;
 
-  Repository(
+  new(
     this.id,
     this.size,
     this.name,
@@ -136,9 +136,9 @@ class Repository {
   /// A necessary factory constructor for creating a new User instance
   /// from a map. We pass the map to the generated _$UserFromJson constructor.
   /// The constructor is named after the source class, in this case User.
-  factory Repository.fromJson(Map<String, dynamic> json) => _$RepositoryFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$RepositoryFromJson(json);
 
   Map<String, dynamic> toJson() => _$RepositoryToJson(this);
 
-  Repository.empty();
+  new empty();
 }

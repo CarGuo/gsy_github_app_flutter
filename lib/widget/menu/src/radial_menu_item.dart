@@ -10,7 +10,7 @@ class RadialMenuItem<T> extends StatelessWidget {
   /// Creates a circular action button for an item in a [RadialMenu].
   ///
   /// The [child] argument is required.
-  const RadialMenuItem({
+  const new({
     super.key,
     required this.child,
     this.value,

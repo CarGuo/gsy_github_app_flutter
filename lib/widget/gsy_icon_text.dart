@@ -24,7 +24,7 @@ class GSYIConText extends StatelessWidget {
 
   final double textWidth;
 
-  const GSYIConText(
+  const new(
     this.iconData,
     this.iconText,
     this.textStyle,

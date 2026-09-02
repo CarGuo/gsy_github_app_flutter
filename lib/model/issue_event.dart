@@ -26,7 +26,7 @@ class IssueEvent{
   @JsonKey(name: "html_url")
   String? htmlUrl;
 
-  IssueEvent(
+  new(
     this.id,
     this.user,
     this.createdAt,
@@ -38,7 +38,7 @@ class IssueEvent{
     this.htmlUrl,
   );
 
-  factory IssueEvent.fromJson(Map<String, dynamic> json) => _$IssueEventFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$IssueEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$IssueEventToJson(this);
 }

@@ -6,9 +6,9 @@ class Milestone {
   final String? state;
   final String? description;
 
-  Milestone({this.number, this.title, this.state, this.description});
+  new({this.number, this.title, this.state, this.description});
 
-  factory Milestone.fromJson(Map<String, dynamic> json) => Milestone(
+  factory fromJson(Map<String, dynamic> json) => Milestone(
         number: (json['number'] as num?)?.toInt(),
         title: json['title'] as String?,
         state: json['state'] as String?,

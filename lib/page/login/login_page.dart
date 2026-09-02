@@ -27,7 +27,7 @@ import 'package:gsy_github_app_flutter/widget/particle/particle_widget.dart';
 class LoginPage extends StatefulWidget {
   static const String sName = "login";
 
-  const LoginPage({super.key});
+  const new({super.key});
 
   @override
   State createState() {

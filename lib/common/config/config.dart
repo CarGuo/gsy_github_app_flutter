@@ -1,6 +1,6 @@
 class Config {
   // Private constructor to prevent instantiation
-  Config._();
+  new _();
 
   static bool? DEBUG = true;
 

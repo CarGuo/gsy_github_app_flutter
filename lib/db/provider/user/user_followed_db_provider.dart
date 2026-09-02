@@ -19,7 +19,7 @@ class UserFollowedDbProvider extends BaseDbProvider {
   String? userName;
   String? data;
 
-  UserFollowedDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? userName, String data) {
     Map<String, dynamic> map = {columnUserName: userName, columnData: data};
@@ -29,7 +29,7 @@ class UserFollowedDbProvider extends BaseDbProvider {
     return map;
   }
 
-  UserFollowedDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     userName = map[columnUserName];
     data = map[columnData];

@@ -26,7 +26,7 @@ class PushDetailPage extends StatefulWidget {
 
   final bool needHomeIcon;
 
-  const PushDetailPage(this.sha, this.userName, this.reposName,
+  const new(this.sha, this.userName, this.reposName,
       {super.key, this.needHomeIcon = false});
 
   @override

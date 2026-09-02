@@ -80,13 +80,13 @@ class LoginSuccessAction {
   final bool success;
   final int? errorCode;
 
-  LoginSuccessAction(this.context, this.success, {this.errorCode});
+  new(this.context, this.success, {this.errorCode});
 }
 
 class LogoutAction {
   final BuildContext context;
 
-  LogoutAction(this.context);
+  new(this.context);
 }
 
 class LoginAction {
@@ -94,14 +94,14 @@ class LoginAction {
   final String? username;
   final String? password;
 
-  LoginAction(this.context, this.username, this.password);
+  new(this.context, this.username, this.password);
 }
 
 class OAuthAction {
   final BuildContext context;
   final String code;
 
-  OAuthAction(this.context, this.code);
+  new(this.context, this.code);
 }
 
 /// PAT/token 直接登录 action。
@@ -114,7 +114,7 @@ class TokenLoginAction {
   final BuildContext context;
   final String token;
 
-  TokenLoginAction(this.context, this.token);
+  new(this.context, this.token);
 }
 
 ///中间过程处理

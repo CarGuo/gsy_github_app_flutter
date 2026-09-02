@@ -21,7 +21,7 @@ class GSYSearchDrawer extends StatefulWidget {
   /// 也避免在 User tab 上勾语言（BLoC 已经把 language 关掉了）。
   final int selectIndex;
 
-  const GSYSearchDrawer(
+  const new(
     this.typeCallback,
     this.sortCallback,
     this.languageCallback, {
@@ -178,7 +178,7 @@ class FilterModel {
   final String? value;
   bool? select;
 
-  FilterModel({
+  new({
     required this.labelBuilder,
     required this.value,
     this.select,

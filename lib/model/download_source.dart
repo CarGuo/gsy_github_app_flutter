@@ -14,14 +14,14 @@ class DownloadSource {
   String? name;
   int? size;
 
-  DownloadSource(
+  new(
     this.url,
     this.isSourceCode,
     this.name,
     this.size,
   );
 
-  factory DownloadSource.fromJson(Map<String, dynamic> json) => _$DownloadSourceFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$DownloadSourceFromJson(json);
 
   Map<String, dynamic> toJson() => _$DownloadSourceToJson(this);
 }

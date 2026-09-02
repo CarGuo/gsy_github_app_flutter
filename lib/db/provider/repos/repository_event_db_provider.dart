@@ -21,7 +21,7 @@ class RepositoryEventDbProvider extends BaseDbProvider {
   String? fullName;
   String? data;
 
-  RepositoryEventDbProvider();
+  new();
 
   Map<String, dynamic> toMap(String? fullName, String data) {
     Map<String, dynamic> map = {columnFullName: fullName, columnData: data};
@@ -31,7 +31,7 @@ class RepositoryEventDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryEventDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     data = map[columnData];

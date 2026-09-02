@@ -17,5 +17,5 @@ enum CommonListDataType {
 
   final String value;
 
-  CommonListDataType(this.value);
+  new(this.value);
 }

@@ -21,7 +21,7 @@ class HttpManager {
   late final Dio _dio;
   late final TokenInterceptors _tokenInterceptors;
 
-  HttpManager._internal() {
+  new _internal() {
     _dio = Dio(); // 使用默认配置
     _tokenInterceptors = TokenInterceptors();
 

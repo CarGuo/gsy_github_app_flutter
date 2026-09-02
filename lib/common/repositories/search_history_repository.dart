@@ -12,7 +12,7 @@ import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 ///
 /// 所有 IO 都跑在 SharedPreferences 内部线程，UI 侧只需 await。
 class SearchHistoryRepository {
-  SearchHistoryRepository._();
+  new _();
 
   static Future<List<String>> load() async {
     final raw = await LocalStorage.get(Config.SEARCH_HISTORY_KEY);

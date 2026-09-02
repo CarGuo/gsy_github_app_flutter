@@ -22,7 +22,7 @@ class RepositoryPulseDbProvider extends BaseDbProvider {
     return map;
   }
 
-  RepositoryPulseDbProvider.fromMap(Map map) {
+  new fromMap(Map map) {
     id = map[columnId];
     fullName = map[columnFullName];
     data = map[columnData];

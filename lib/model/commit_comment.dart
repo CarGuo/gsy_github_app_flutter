@@ -26,7 +26,7 @@ class CommitComment{
   String? url;
   User? user;
 
-  CommitComment(
+  new(
     this.id,
     this.body,
     this.path,
@@ -40,7 +40,7 @@ class CommitComment{
     this.user,
   );
 
-  factory CommitComment.fromJson(Map<String, dynamic> json) => _$CommitCommentFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CommitCommentFromJson(json);
 
   Map<String, dynamic> toJson() => _$CommitCommentToJson(this);
 }

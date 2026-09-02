@@ -28,7 +28,7 @@ class EpicMiddleware<State> extends MiddlewareClass<State> {
   Epic<State> _epic;
   bool _isSubscribed = false;
 
-  EpicMiddleware(Epic<State> epic, {this.supportAsyncGenerators = true})
+  new(Epic<State> epic, {this.supportAsyncGenerators = true})
       : _epic = epic;
 
   @override

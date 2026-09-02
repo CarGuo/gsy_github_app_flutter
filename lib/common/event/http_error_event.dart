@@ -16,5 +16,5 @@ class HttpErrorEvent {
 
   final String? message;
 
-  HttpErrorEvent(this.code, this.message);
+  new(this.code, this.message);
 }

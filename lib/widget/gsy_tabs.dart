@@ -45,7 +45,7 @@ class Tab extends StatelessWidget {
   ///
   /// At least one of [text], [icon], and [child] must be non-null. The [text]
   /// and [child] arguments must not be used at the same time.
-  const Tab({
+  const new({
     super.key,
     this.text,
     this.icon,
@@ -118,7 +118,7 @@ class Tab extends StatelessWidget {
 }
 
 class _TabStyle extends AnimatedWidget {
-  const _TabStyle({
+  const new({
     required Animation<double> animation,
     this.selected,
     this.labelColor,
@@ -184,7 +184,7 @@ typedef _LayoutCallback = void Function(
     List<double> xOffsets, TextDirection? textDirection, double width);
 
 class _TabLabelBarRenderer extends RenderFlex {
-  _TabLabelBarRenderer({
+  new({
     required super.direction,
     required super.mainAxisSize,
     required super.mainAxisAlignment,
@@ -229,7 +229,7 @@ class _TabLabelBarRenderer extends RenderFlex {
 // upon layout. The tab widths are only used at paint time (see _IndicatorPainter)
 // or in response to input.
 class _TabLabelBar extends Flex {
-  const _TabLabelBar({
+  const new({
     super.children,
     this.onPerformLayout,
   }) : super(
@@ -280,7 +280,7 @@ double _indexChangeProgress(TabController controller) {
 }
 
 class _IndicatorPainter extends CustomPainter {
-  _IndicatorPainter({
+  new({
     required this.controller,
     required this.indicator,
     required this.indicatorSize,
@@ -425,7 +425,7 @@ class _IndicatorPainter extends CustomPainter {
 
 class _ChangeAnimation extends Animation<double>
     with AnimationWithParentMixin<double> {
-  _ChangeAnimation(this.controller);
+  new(this.controller);
 
   final TabController? controller;
 
@@ -440,7 +440,7 @@ class _ChangeAnimation extends Animation<double>
 
 class _DragAnimation extends Animation<double>
     with AnimationWithParentMixin<double> {
-  _DragAnimation(this.controller, this.index);
+  new(this.controller, this.index);
 
   final TabController? controller;
   final int index;
@@ -464,7 +464,7 @@ class _DragAnimation extends Animation<double>
 // only compute the scroll position's initial scroll offset (the "correct"
 // pixels value) after the TabBar viewport width and scroll limits are known.
 class _TabBarScrollPosition extends ScrollPositionWithSingleContext {
-  _TabBarScrollPosition({
+  new({
     required super.physics,
     required super.context,
     super.oldPosition,
@@ -501,7 +501,7 @@ class _TabBarScrollPosition extends ScrollPositionWithSingleContext {
 // This class, and TabBarScrollPosition, only exist to handle the case
 // where a scrollable TabBar has a non-zero initialIndex.
 class _TabBarScrollController extends ScrollController {
-  _TabBarScrollController(this.tabBar);
+  new(this.tabBar);
 
   final _TabBarState tabBar;
 
@@ -551,7 +551,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
   ///
   /// If [indicator] is not null, then [indicatorWeight], [indicatorPadding], and
   /// [indicatorColor] are ignored.
-  const TabBar({
+  const new({
     super.key,
     required this.tabs,
     this.controller,
@@ -1114,7 +1114,7 @@ class TabBarView extends StatefulWidget {
   /// Creates a page view with one child per tab.
   ///
   /// The length of [children] must be the same as the [controller]'s length.
-  const TabBarView({
+  const new({
     super.key,
     required this.children,
     this.controller,
@@ -1328,7 +1328,7 @@ class TabPageSelectorIndicator extends StatelessWidget {
   /// Creates an indicator used by [TabPageSelector].
   ///
   /// The [backgroundColor], [borderColor], and [size] parameters must not be null.
-  const TabPageSelectorIndicator({
+  const new({
     super.key,
     required this.backgroundColor,
     required this.borderColor,
@@ -1368,7 +1368,7 @@ class TabPageSelectorIndicator extends StatelessWidget {
 /// [DefaultTabController] ancestor.
 class TabPageSelector extends StatelessWidget {
   /// Creates a compact widget that indicates which tab has been selected.
-  const TabPageSelector({
+  const new({
     super.key,
     this.controller,
     this.indicatorSize = 12.0,

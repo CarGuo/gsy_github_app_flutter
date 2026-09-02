@@ -22,7 +22,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 class UserSponsorsSection extends ConsumerWidget {
   final String userName;
 
-  const UserSponsorsSection({super.key, required this.userName});
+  const new({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -85,7 +85,7 @@ class UserSponsorsSection extends ConsumerWidget {
 class _SponsorAvatar extends StatelessWidget {
   final UserSponsorViewModel sponsor;
 
-  const _SponsorAvatar({required this.sponsor});
+  const new({required this.sponsor});
 
   @override
   Widget build(BuildContext context) {

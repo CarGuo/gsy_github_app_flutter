@@ -23,7 +23,7 @@ class IssueEditDialog extends StatefulWidget {
   final bool needTitle;
   final String? hintText;
 
-  const IssueEditDialog(
+  const new(
     this.dialogTitle,
     this.onTitleChanged,
     this.onContentChanged,
@@ -40,7 +40,7 @@ class IssueEditDialog extends StatefulWidget {
 }
 
 class _IssueEditDialogState extends State<IssueEditDialog> {
-  _IssueEditDialogState();
+  new();
 
   ///标题输入框
   renderTitleInput() {
@@ -230,5 +230,5 @@ class FastInputIconModel {
   final IconData iconData;
   final String content;
 
-  FastInputIconModel(this.iconData, this.content);
+  new(this.iconData, this.content);
 }

@@ -13,9 +13,9 @@ class CommitStats  {
   int? additions;
   int? deletions;
 
-  CommitStats(this.total, this.additions, this.deletions);
+  new(this.total, this.additions, this.deletions);
 
-  factory CommitStats.fromJson(Map<String, dynamic> json) => _$CommitStatsFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CommitStatsFromJson(json);
 
   Map<String, dynamic> toJson() => _$CommitStatsToJson(this);
 }

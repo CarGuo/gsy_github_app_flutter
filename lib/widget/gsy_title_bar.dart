@@ -16,7 +16,7 @@ class GSYTitleBar extends StatelessWidget {
 
   final GlobalKey rightKey = GlobalKey();
 
-  GSYTitleBar(this.title,
+  new(this.title,
       {super.key, this.iconData,
       this.onRightIconPressed,
       this.needRightLocalIcon = false,

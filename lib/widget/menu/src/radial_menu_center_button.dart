@@ -50,7 +50,7 @@ class RadialMenuCenterButton extends StatelessWidget {
   /// [activateAnimationController] progresses.
   final Animation<double> _scale;
 
-  RadialMenuCenterButton({super.key, 
+  new({super.key, 
     required this.openCloseAnimationController,
     required this.activateAnimationController,
     required this.onPressed,

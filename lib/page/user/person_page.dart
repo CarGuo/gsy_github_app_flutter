@@ -30,7 +30,7 @@ class PersonPage extends StatefulWidget {
 
   final String? userName;
 
-  const PersonPage(this.userName, {super.key});
+  const new(this.userName, {super.key});
 
   @override
   PersonState createState() => PersonState();
@@ -48,7 +48,7 @@ class PersonState extends BasePersonState<PersonPage> {
   // ignore: overridden_fields
   final List<UserOrg> orgList = [];
 
-  PersonState();
+  new();
 
   ///处理用户信息显示
   _resolveUserInfo(res) {

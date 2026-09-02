@@ -13,9 +13,9 @@ class UserSponsorViewModel {
   final String? login;
   final String? avatarUrl;
 
-  UserSponsorViewModel({this.login, this.avatarUrl});
+  new({this.login, this.avatarUrl});
 
-  factory UserSponsorViewModel.fromMap(Map<String, dynamic> map) {
+  factory fromMap(Map<String, dynamic> map) {
     return UserSponsorViewModel(
       login: map["login"] as String?,
       avatarUrl: map["avatarUrl"] as String?,
@@ -32,7 +32,7 @@ class UserSponsorsViewModel {
   final int totalCount;
   final List<UserSponsorViewModel> sponsors;
 
-  UserSponsorsViewModel({
+  new({
     this.totalCount = 0,
     this.sponsors = const [],
   });

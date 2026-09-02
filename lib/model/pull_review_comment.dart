@@ -33,7 +33,7 @@ class PullReviewComment({
   final DateTime? createdAt,
   final DateTime? updatedAt,
 }) {
-  factory PullReviewComment.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     DateTime? parseDate(dynamic v) =>
         (v is String && v.isNotEmpty) ? DateTime.tryParse(v) : null;
 

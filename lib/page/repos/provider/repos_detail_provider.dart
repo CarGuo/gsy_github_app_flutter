@@ -14,7 +14,7 @@ class ReposDetailProvider with ChangeNotifier {
   final String userName;
   final String reposName;
 
-  ReposDetailProvider({required this.userName, required this.reposName});
+  new({required this.userName, required this.reposName});
 
   int _currentIndex = 0;
 

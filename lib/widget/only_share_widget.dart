@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ///往下共享环境配置
 class OnlyShareInstanceWidget<T> extends StatelessWidget {
-  const OnlyShareInstanceWidget({super.key, this.value, this.child});
+  const new({super.key, this.value, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class OnlyShareInstanceWidget<T> extends StatelessWidget {
 }
 
 class _OnlyShareInstanceModel<T> extends InheritedWidget {
-  const _OnlyShareInstanceModel({required this.value, required super.child});
+  const new({required this.value, required super.child});
 
   final T? value;
 

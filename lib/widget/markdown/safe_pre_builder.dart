@@ -28,7 +28,7 @@ import 'package:markdown/markdown.dart' as md;
 ///   → `DartSyntaxHighlighter`，输出与原分支一致的 [TextSpan] 结构；
 /// - `codeblockPadding` 从 [MarkdownStyleSheet] 上取，与原分支一致。
 class SafePreBuilder extends MarkdownElementBuilder {
-  SafePreBuilder({
+  new({
     required this.styleSheet,
     required this.syntaxHighlighter,
   });

@@ -26,7 +26,7 @@ class ReleaseAsset {
   @JsonKey(name: "browser_download_url")
   String? downloadUrl;
 
-  ReleaseAsset(
+  new(
     this.id,
     this.name,
     this.label,
@@ -40,6 +40,6 @@ class ReleaseAsset {
     this.downloadUrl,
   );
 
-  factory ReleaseAsset.fromJson(Map<String, dynamic> json) => _$ReleaseAssetFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ReleaseAssetFromJson(json);
   Map<String, dynamic> toJson() => _$ReleaseAssetToJson(this);
 }

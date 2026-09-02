@@ -13,7 +13,7 @@ class LoginWebView extends StatefulWidget {
   final String url;
   final String title;
 
-  const LoginWebView(this.url, this.title, {super.key});
+  const new(this.url, this.title, {super.key});
 
   @override
   _LoginWebViewState createState() => _LoginWebViewState();

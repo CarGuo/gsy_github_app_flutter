@@ -8,7 +8,7 @@ import 'package:gsy_github_app_flutter/page/trend/trend_user_provider.dart';
 import 'package:gsy_github_app_flutter/page/user/widget/user_item.dart';
 
 class TrendUserPage extends ConsumerStatefulWidget {
-  const TrendUserPage({super.key});
+  const new({super.key});
 
   @override
   _TrendUserPageState createState() => _TrendUserPageState();
