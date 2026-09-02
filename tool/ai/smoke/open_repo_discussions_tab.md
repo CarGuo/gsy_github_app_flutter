@@ -34,17 +34,19 @@ Discussions tab 冒烟路径描述。**这是一个 Flutter 项目**，点击 / 
 ```
 // 走仓库详情页
 mcp_dart vm_service evaluate
-  targetId: <root library id of package:gsy_github_app_flutter/app.dart>
+  targetId: <library id of package:gsy_github_app_flutter/app.dart>
   expression: 'gsySmokeGoReposDetail("666ghj", "BettaFish")'
 
 // 直达 discussion 详情
 mcp_dart vm_service evaluate
-  targetId: <root library id of package:gsy_github_app_flutter/app.dart>
+  targetId: <library id of package:gsy_github_app_flutter/app.dart>
   expression: 'gsySmokeGoDiscussionDetail("666ghj", "BettaFish", 680)'
 ```
 
-`<root library id>` 通过 `mcp_dart` `vm_service` 拉 `Isolate` → `libraries[]`
-找 `uri == "package:gsy_github_app_flutter/app.dart"` 那条拿 `id`。
+`<library id>` 通过 `mcp_dart` `vm_service` 拉 `Isolate` → `libraries[]`
+找 `uri == "package:gsy_github_app_flutter/app.dart"` 那条拿 `id`
+（注意：Dart 里"root library"专指 isolate 入口 library，本项目入口是
+`main.dart`；这里要的是 `app.dart` 的 library id，两个概念不同）。
 
 ### 切换到 Discussions tab
 

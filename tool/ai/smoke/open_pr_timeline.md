@@ -30,12 +30,14 @@ PR timeline 冒烟路径描述。**这是一个 Flutter 项目**，点击 / 触�
 
 ```
 mcp_dart vm_service evaluate
-  targetId: <root library id of package:gsy_github_app_flutter/app.dart>
+  targetId: <library id of package:gsy_github_app_flutter/app.dart>
   expression: 'gsySmokeGoIssueDetail("CarGuo", "gsy_github_app_flutter", "938")'
 ```
 
-`<root library id>` 通过 `mcp_dart` `vm_service` 拉 `Isolate` → `libraries[]`
-里找 `uri == "package:gsy_github_app_flutter/app.dart"` 那条拿 `id` 即可。
+`<library id>` 通过 `mcp_dart` `vm_service` 拉 `Isolate` → `libraries[]`
+里找 `uri == "package:gsy_github_app_flutter/app.dart"` 那条拿 `id` 即可
+（注意：Dart 里"root library"术语专指 isolate 入口 library，本项目入口是
+`main.dart`；这里我们需要的是 `app.dart` 的 library id，两个概念不同）。
 拿到之后，任何 `gsySmokeGoXxx` 都是"一次 evaluate、一行 expression"的事儿。
 
 现有顶层入口清单（都在 [lib/app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart) 底部）：
@@ -90,7 +92,7 @@ CarGuo/gsy_github_app_flutter → ISSUE tab → #938 → 向下滚 timeline"。
 2. `mcp_dart` `dtd listDtdUris` → `dtd connect <uri>`。
 3. `mcp_dart` `get_runtime_errors` 拿"改动前"基线，应为 `No runtime errors found.`。
 4. **触发路由（主路径）**：`mcp_dart` `vm_service evaluate`，`targetId` 用
-   `package:gsy_github_app_flutter/app.dart` 的 root library id，`expression` 写
+   `package:gsy_github_app_flutter/app.dart` 的 library id，`expression` 写
    `gsySmokeGoIssueDetail("CarGuo", "gsy_github_app_flutter", "938")`。
    如果主路径走不通，走降级 A 或 B（并汇报原因）。
 5. `mcp_dart` `widget_inspector` `get_widget_tree summaryOnly=true` 拿完整

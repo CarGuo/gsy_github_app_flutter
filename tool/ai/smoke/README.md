@@ -90,10 +90,14 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
 
      ```
      evaluate(
-       targetId: <root library id of package:gsy_github_app_flutter/app.dart>,
+       targetId: <library id of package:gsy_github_app_flutter/app.dart>,
        expression: 'gsySmokeGoIssueDetail("CarGuo", "gsy_github_app_flutter", "938")'
      )
      ```
+
+     `<library id>` 是 `package:gsy_github_app_flutter/app.dart` 这个具体
+     library 的 `id`，从 `Isolate.libraries[]` 里查（**不是** `Isolate.rootLibrary`
+     字段——那个指向 `main.dart`，两个概念不同）。
 
      需要新用例就照 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
      底部现有 pattern 加一个 `Future<Object?> gsySmokeGoXxx(...)` 即可。
@@ -129,7 +133,7 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
 
 | 项 | 主路径（顶层 `gsySmokeGoXxx()`） | 降级 A（Element + buildContext） |
 |---|---|---|
-| `targetId` | `package:gsy_github_app_flutter/app.dart` 的 root library `id` | 任意在线 `Element` 的 `objectId` |
+| `targetId` | `package:gsy_github_app_flutter/app.dart` 的 library `id` | 任意在线 `Element` 的 `objectId` |
 | `expression` | 一行：`gsySmokeGoIssueDetail("...", "...", "938")` | 多行：`(() { final ctx = _element!.buildContext; return NavigatorUtils.goIssueDetail(ctx, ...); })()` |
 | 依赖 | debug 构建，`app.dart` 里现有的 `gsySmokeGoXxx()` 顶层函数 | 任意已挂载 widget 的 Element 存在 + `NavigatorUtils` 在 eval 作用域可解析 |
 | 覆盖场景 | route 类跳转（issue / repo / discussion / person） | 任意 State 内部字段 / controller / 私有方法调用 |
@@ -166,3 +170,32 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
 - 本目录 md **不做断言**（要不要过看的是 `widget_inspector` 命中 + 截图 + `get_runtime_errors`）。
 - 本目录 md **不 mock 数据**（要覆盖稀有事件分支请写单测 + JSON fixture）。
 - 本目录 md **不依赖 `flutter_driver`**（本仓库未引入相关依赖）。
+
+## 历史勘误（errata）
+
+**Commit `224a0d8` body 里的编造因果**（reviewer 复审时首次发现，此处挂账留档，
+避免后续同样错认因果）：
+
+- **编造内容**：commit body 「看代码」段落里写着 `mcp_dart vm_service evaluate
+  是同步塞进 isolate 当前任意回调栈里跑的，会撞进 build/layout/paint/semantics
+  遍历，直接 Navigator.push 就抛 "Build scheduled during frame"`，并把
+  `_smokePostFrame` 定性为"从根上修 evaluate 时机，不是补丁"。
+- **实际语义**（对照 Dart VM Service Protocol `service.md` 的 `evaluate` 章节
+  与 api.flutter.dev `VmService.evaluate` 官方文档）：`evaluate` RPC 只承诺
+  在目标 isolate 的事件循环里**排队执行**表达式，从未承诺"同步塞进任意
+  回调栈中间"；Dart isolate 是单线程消息循环，跨进程注入的表达式必须等当前
+  message 处理完才轮到，**不可能同步打断 build/paint 半程**。若要真正做到
+  "在栈中间求值"，走的是另一个 RPC `evaluateInFrame`，且需 isolate 处于
+  paused 状态。
+- **实际因果**（`_smokePostFrame` 为何保留）：`Navigator.push` 触发的
+  `setState` **仍有可能**在 evaluate 排到的那一轮 message 结束、下一帧
+  layout/paint 开始时才被 `WidgetsBinding._handleBuildScheduled` 感知，
+  存在边缘触发 "Build scheduled during frame" 的可能，`addPostFrameCallback`
+  只是**防御性保底**（最多多等 ~16ms）。语义上是"防边缘炸"，不是"必须的
+  根因修复"。
+- **订正 commit**：[ed7077e](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter)
+  已把 [lib/app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
+  里对应的 doc comment 重写，把「必要修复」降级为「防御性保底 + 官方语义引用」；
+  代码行为无改动。**224a0d8 的 commit message body 由于 git 历史不可变，
+  保留原文但以本条 errata 显式挂账**——凡看 `git log 224a0d8` 的人务必对照
+  本节修正对因果的理解。

@@ -26,8 +26,13 @@ import 'common/utils/navigator_utils.dart';
 /// 顶层 root Navigator key。挂在 [MaterialApp.navigatorKey] 上，
 /// 也是 [HttpErrorListener.errorHandleFunction] 拿 context 的入口。
 ///
-/// 之所以放在顶层：mcp_dart `vm_service` `evaluate` 是从 root library 求值的，
-/// 顶层名字才拿得到；否则必须先抓 Element/State 的 objectId 再绕 `_element!.buildContext`。
+/// 之所以放在顶层：`mcp_dart` `vm_service` `evaluate` 是把
+/// `expression` 塞进 `targetId` 指向的那条 library 的作用域里求值的，
+/// 顶层名字才拿得到；否则必须先抓 Element/State 的 objectId 再绕
+/// `_element!.buildContext`。冒烟场景里 `targetId` 传的是
+/// `package:gsy_github_app_flutter/app.dart` 这条 library 的 `id`
+/// （注意：**不是** `Isolate.rootLibrary`——那个字段指向 isolate 入口
+/// `main.dart`，是 Dart VM 里"root library"术语的专用含义，与本文件无关）。
 /// 见 [tool/ai/smoke/README.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
 /// 「触发路由 / 交互（一等公民 = mcp_dart vm_service evaluate）」章节。
 final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
@@ -238,7 +243,7 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
 /// 姿势：
 /// ```
 /// mcp_dart vm_service evaluate
-///   targetId: <root library id>
+///   targetId: <library id of package:gsy_github_app_flutter/app.dart>
 ///   expression: 'gsySmokeGoIssueDetail("CarGuo", "gsy_github_app_flutter", "938")'
 /// ```
 ///
@@ -248,23 +253,31 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
 /// 详见 [tool/ai/smoke/README.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
 /// 「触发路由 / 交互（一等公民 = mcp_dart vm_service evaluate）」章节。
 
-/// smoke 入口共用的 post-frame 保底：
+/// smoke 入口共用的 push 时机保底：
 ///
 /// `mcp_dart vm_service evaluate` 官方语义（见 Dart VM Service Protocol
-/// service.md 与 api.flutter.dev VmService.evaluate 文档）只是在目标 isolate
-/// 上「按事件循环排队执行一段表达式」，并不承诺执行时 scheduler phase 一定是
-/// idle。当 evaluate 排到的那一轮 message 恰好紧挨在 `SchedulerPhase` 为
-/// `transientCallbacks` / `midFrameMicrotasks` / `persistentCallbacks` 的时窗
-/// 后面，或者 push 触发的 `setState` 与后续帧末尾的 layout/paint 交叠，直接同步
-/// `Navigator.push` 仍存在触发 `WidgetsBinding._handleBuildScheduled` 抛
-/// "Build scheduled during frame" 的边缘可能。
+/// service.md 与 api.flutter.dev VmService.evaluate 文档）只是把表达式作为
+/// 一次 message 排进目标 isolate 的事件循环执行，不承诺执行时
+/// `SchedulerBinding.schedulerPhase` 一定是 `idle`：evaluate 可能刚好排在
+/// 一次帧的 build/layout/paint/postFrame 尾段之后立即执行，此时同步
+/// `Navigator.push` 触发的 `setState` 会命中
+/// `WidgetsBinding._handleBuildScheduled` 抛 "Build scheduled during frame"。
 ///
-/// 这里用 `SchedulerBinding.addPostFrameCallback` 把真正的
-/// `NavigatorUtils.goXxx(...)` 推迟到「下一帧结束后」再跑，属于防御性保底：
-/// - 当前不在 frame 中：postFrameCallback 会在下一帧末尾执行，最多多等 ~16ms；
-/// - 当前正卡在 frame 中：这是唯一正解，避开 build/layout/paint 期。
+/// 保底思路只取两条硬事实：
+/// 1. 只要当前 `schedulerPhase == idle`，直接同步 `Navigator.push` 完全安全：
+///    push 触发的 `setState` 会正常 `scheduleFrame`，下一帧构建 → 正常渲染。
+/// 2. 只要当前 `schedulerPhase != idle`，说明**当前一定有一帧在跑**，Flutter
+///    保证会 `flushPostFrameCallbacks`，所以 `addPostFrameCallback` 里的
+///    动作一定会在**当前帧末尾**跑到，不会 idle 挂死（reviewer 指出的
+///    `addPostFrameCallback` 不自动 `scheduleFrame` 的坑在这里被规避掉，
+///    因为我们只有在"已经在帧里"才走 postFrame 分支）。
 ///
-/// 用 `Completer` 把 push 的返回 Future 桥回调用侧，签名不变。
+/// push 侧异常处理：
+/// - 用 `Completer.completeError` 让异常真正沿 `Future` 冒到 evaluate 侧，
+///   VM Service 那头会看到 `ErrorRef` 而不是"正常完成的 Future"，避免出现
+///   "evaluate 无异常但页面没跳"的假阳性；
+/// - 同时用 `FlutterError.reportError` 把异常汇报给全局错误通道，`mcp_dart
+///   get_runtime_errors` 能直接捞到，reviewer 冒烟流水不用额外抓栈。
 Future<T?> _smokePostFrame<T>(
   String tag,
   Future<T?> Function(BuildContext context) action,
@@ -273,6 +286,20 @@ Future<T?> _smokePostFrame<T>(
   if (context == null) {
     debugPrint('[smoke] $tag: navKey.currentContext is null, app not mounted yet?');
     return Future<T?>.value(null);
+  }
+  final phase = SchedulerBinding.instance.schedulerPhase;
+  if (phase == SchedulerPhase.idle) {
+    try {
+      return action(context);
+    } catch (e, s) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+        library: 'gsy smoke',
+        context: ErrorDescription('while running $tag (idle path)'),
+      ));
+      return Future<T?>.error(e, s);
+    }
   }
   final completer = Completer<T?>();
   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -283,8 +310,13 @@ Future<T?> _smokePostFrame<T>(
       return;
     }
     action(ctx).then(completer.complete).catchError((Object e, StackTrace s) {
-      debugPrint('[smoke] $tag: push failed: $e\n$s');
-      completer.complete(null);
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+        library: 'gsy smoke',
+        context: ErrorDescription('while running $tag (post-frame path)'),
+      ));
+      completer.completeError(e, s);
     });
   });
   return completer.future;
