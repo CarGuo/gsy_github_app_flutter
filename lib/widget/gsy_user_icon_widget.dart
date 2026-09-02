@@ -28,24 +28,39 @@ class GSYUserIconWidget extends StatelessWidget {
     // 加 ValueKey(url) 后 URL 变化就换新 State：立刻抛弃旧 stream，从 placeholder
     // 开始重新走 fade-in。URL 未变则 key 未变，widget identity 保留、不闪。
     final url = image ?? GSYICons.DEFAULT_REMOTE_PIC;
-    return RawMaterialButton(
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding:
-            padding ?? const EdgeInsets.only(top: 4.0, right: 5.0, left: 5.0),
-        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        onPressed: onPressed,
-        child: ClipOval(
-          child: FadeInImage(
-            key: ValueKey<String>(url),
-            placeholder: const AssetImage(
-              GSYICons.DEFAULT_USER_ICON,
+    // 用 SizedBox 把 RawMaterialButton 外壳 tight 约束到 width x height：
+    // RawMaterialButton 在 unconstrained parent（比如 Row 里裸放）下并不会自动
+    // 缩到内部 FadeInImage 的尺寸——materialTapTargetSize.shrinkWrap +
+    // minWidth/minHeight:0 只解决"最小"边界，没解决"最大"边界，Row 分配剩余空间时
+    // button 会撑到整行宽度，把兄弟 Expanded 挤到 0 宽（RenderFlex overflow 根因）。
+    // 外层 Padding 承担"和相邻兄弟之间留白"的语义，比原来传给
+    // RawMaterialButton.padding 更精确——原写法会同时撑大 button 自身尺寸，
+    // 让 tap 区域比头像多一圈。现在 tap 区域 = 头像 = width x height，语义清晰。
+    return Padding(
+      padding: padding ?? const EdgeInsets.only(top: 4.0, right: 5.0, left: 5.0),
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: RawMaterialButton(
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+          onPressed: onPressed,
+          child: ClipOval(
+            child: FadeInImage(
+              key: ValueKey<String>(url),
+              placeholder: const AssetImage(
+                GSYICons.DEFAULT_USER_ICON,
+              ),
+              image: NetworkImage(url),
+              //预览图
+              fit: BoxFit.fitWidth,
+              width: width,
+              height: height,
             ),
-            image: NetworkImage(url),
-            //预览图
-            fit: BoxFit.fitWidth,
-            width: width,
-            height: height,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
