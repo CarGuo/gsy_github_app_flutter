@@ -39,7 +39,7 @@ class PullReviewComment({
 
     User? user;
     if (json['user'] is Map<String, dynamic>) {
-      user = User.fromJson(Map<String, dynamic>.from(json['user'] as Map));
+      user = User.fromJson(json['user'] as Map<String, dynamic>);
     }
 
     return PullReviewComment(
