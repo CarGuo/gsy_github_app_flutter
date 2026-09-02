@@ -248,15 +248,23 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
 /// 详见 [tool/ai/smoke/README.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
 /// 「触发路由 / 交互（一等公民 = mcp_dart vm_service evaluate）」章节。
 
-/// smoke 入口共用的 post-frame 逃逸手法：
+/// smoke 入口共用的 post-frame 保底：
 ///
-/// `mcp_dart vm_service evaluate` 会把表达式同步塞进 Dart isolate 当前任意回调栈中
-/// 执行——包括 build / layout / paint / semantics 遍历中间。这些阶段里直接
-/// `Navigator.push` 会触发 `setState` → 抛 "Build scheduled during frame"。
+/// `mcp_dart vm_service evaluate` 官方语义（见 Dart VM Service Protocol
+/// service.md 与 api.flutter.dev VmService.evaluate 文档）只是在目标 isolate
+/// 上「按事件循环排队执行一段表达式」，并不承诺执行时 scheduler phase 一定是
+/// idle。当 evaluate 排到的那一轮 message 恰好紧挨在 `SchedulerPhase` 为
+/// `transientCallbacks` / `midFrameMicrotasks` / `persistentCallbacks` 的时窗
+/// 后面，或者 push 触发的 `setState` 与后续帧末尾的 layout/paint 交叠，直接同步
+/// `Navigator.push` 仍存在触发 `WidgetsBinding._handleBuildScheduled` 抛
+/// "Build scheduled during frame" 的边缘可能。
 ///
-/// 修复思路：把真正的 `NavigatorUtils.goXxx(...)` 挪到 `addPostFrameCallback`
-/// 里再执行，让当前帧走完再 push。用 `Completer` 把 push 的返回 Future 桥回来，
-/// 调用侧签名不变。
+/// 这里用 `SchedulerBinding.addPostFrameCallback` 把真正的
+/// `NavigatorUtils.goXxx(...)` 推迟到「下一帧结束后」再跑，属于防御性保底：
+/// - 当前不在 frame 中：postFrameCallback 会在下一帧末尾执行，最多多等 ~16ms；
+/// - 当前正卡在 frame 中：这是唯一正解，避开 build/layout/paint 期。
+///
+/// 用 `Completer` 把 push 的返回 Future 桥回调用侧，签名不变。
 Future<T?> _smokePostFrame<T>(
   String tag,
   Future<T?> Function(BuildContext context) action,
