@@ -92,7 +92,7 @@ class HttpManager {
       // dialog 就永远关不掉、Redux 的 LoginSuccessAction 也不会 yield。
       // 这里统一兜底为 ResultData(false)，把"网络异常"和"请求失败"归为同一类
       // 对上层的语义，保证调用点永远拿得到一个 ResultData，走正常失败分支。
-      printLog('netFetch caught non-Dio error on $url: $e', s);
+      printError('netFetch 非 Dio 层异常 on $url', e, s);
       return ResultData(
           Code.errorHandleFunction(Code.NETWORK_ERROR, e.toString(), noTip),
           false,

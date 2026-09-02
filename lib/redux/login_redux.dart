@@ -165,7 +165,7 @@ Stream<dynamic> _runLogin(
       errorCode = res?.code as int?;
     }
   } catch (e, s) {
-    printLog('login epic caught error: $e', s);
+    printError('login epic 抛出异常', e, s);
     success = false;
     errorCode = null;
   } finally {
