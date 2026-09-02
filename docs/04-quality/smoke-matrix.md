@@ -197,6 +197,7 @@
     截图见 [tool/dbg/b_10_back_to_hfye.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_10_back_to_hfye.png)
     与 [tool/dbg/b_13_load_more.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_13_load_more.png)
 
-复用脚本：[tool/ai/smoke/open_home_dynamic.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.sh)
-（重启 app → 停在首页动态 tab → 下拉刷新 → 上拉加载 → 慢速下滑抓 5 张证据截图）。
+复用路径描述：[tool/ai/smoke/open_home_dynamic.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.md)
+（2026-09-02 起 adb 坐标 `.sh` 全部废弃，改为 `mcp_dart widget_inspector` +
+`get_runtime_errors` + 平台原生截图工具）。
 

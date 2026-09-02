@@ -94,7 +94,7 @@ Discussion 家族事件已经收编到词典（本轮 `0b2cb46`），单测 15 �
 - `test/utils/event_utils_test.dart` 15 case 已覆盖 Discussion / DiscussionComment / PullRequestReviewThread / Sponsorship 四类
 - 真机上其他走同一个 `getActionAndDes` switch 分支的事件（IssuesEvent / ForkEvent / WatchEvent / PushEvent）
   在 40+ 条列表里全部正常渲染，无 UnknownEvent 空白卡片、无 EXCEPTION
-- 冒烟脚本 [tool/ai/smoke/open_home_dynamic.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.sh) 沉淀本轮 tap 坐标
+- 冒烟脚本 [tool/ai/smoke/open_home_dynamic.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.sh) 沉淀本轮 tap 坐标（**已作废**：2026-09-02 全面回归 `mcp_dart`，路径改为 [tool/ai/smoke/open_home_dynamic.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.md)）
 - smoke-matrix 新增 "首页动态 / 事件识别" 段落，把"稀有事件不强求真机截图"这条规约白纸黑字化
 - 证据截图：[tool/dbg/b_10_back_to_hfye.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_10_back_to_hfye.png)、
   [tool/dbg/b_13_load_more.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/b_13_load_more.png)、
@@ -319,7 +319,7 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
       * [test/page/discussion/discussion_comments_paging_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/page/discussion/discussion_comments_paging_test.dart) 9/9 绿：`pickCommentsPage` 7 case（空/缺字段/类型错/正常/pageInfo 缺/空 endCursor/规范化）+ `mergeCommentsPage` 2 case
       * 真机验证：`BettaFish #522`（1 评论）+ `#511`（3 评论含 @mention + 代码块）在 Android 33 zh 8.1.0 上单卡/多卡/footer 空态命中，无 Dart 侧 Exception，证据落 `tool/dbg/discussion_comments_smoke/16_discussion_522.png` / `17_discussion_522_scroll.png` / `19_discussion_511.png` / `22_discussion_511_s5.png`
     - ✅ **仓库详情页新增 Discussions tab**（`b0e4042`）：入口条件 `repository.has_discussions=true`，无则**不显示 tab**（不显示空态，避免误导用户去点）
-    - ✅ 冒烟脚本沉淀 [tool/ai/smoke/open_repo_discussions_tab.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_repo_discussions_tab.sh)（首页 → 搜索 → 仓库 → 讨论 tab → 详情，链路可复现）
+    - ✅ 冒烟脚本沉淀 [tool/ai/smoke/open_repo_discussions_tab.sh](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/open_repo_discussions_tab.sh)（首页 → 搜索 → 仓库 → 讨论 tab → 详情，链路可复现；**已作废**：2026-09-02 改为 [tool/ai/smoke/open_repo_discussions_tab.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_repo_discussions_tab.md) 的 `mcp_dart` 版）
     - ⚠️ private-user-images JWT CDN 图片渲染硬化（`6c697cc` → `b762edf` → `a60f884`）—— 详情页 markdown 图片链路已改 `errorBuilder` + 保留 JWT 签名；2026-07-27 真机验收发现 8.1.0 apk #511 body 段图片以蓝链文本呈现（`imageBuilder` 未被触发），排查确认两条独立 bug 路径：`<a><img></a>` HTML 结构被 label 转义（`b762edf` 已修）+ `[![alt](img)]\n(href)` 换行断开导致 CommonMark 判为未闭合 link（`a60f884` 已修）。**代码层两条路径均已修复且单测覆盖**，真机验收挪到下一轮（需先解决 fixture 设备旋转 override 问题，详见 §3.1 剩余分支 pt.4）
     - ⚠️ **本轮已知运行时缺口**（不糊，全部沉淀成 §3.1 剩余分支）：
       * loadMore 分支：BettaFish 讨论 comments ≤30 一页返回完，`hasNextPage=true` 真机上没自然触发
@@ -670,16 +670,16 @@ Redux / Riverpod / Provider / Signals 现实并存，按 ADR-0001 是**故意保
 
 ### 5.3 真机 fixture 沉淀不足（还剩 2 个）
 
-[tool/ai/smoke/](file:///d:/workspace/project/gsy_github_app_flutter/tool/ai/smoke/) 现在有：
+[tool/ai/smoke/](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/) 现在有（2026-09-02 全面回归 `mcp_dart`，adb 坐标脚本已删）：
 
-- `relaunch_app.sh` —— 冷启动 GSY 到首页（早期就有）
-- `open_pr_timeline.sh` —— PR timeline 冒烟入口（上轮沉淀）
-- `open_home_dynamic.sh` —— 首页动态 tab 走完刷新/加载/滚动 5 张证据截图（**本轮沉淀**）
+- [open_pr_timeline.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_pr_timeline.md) —— PR timeline 冒烟入口
+- [open_home_dynamic.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_home_dynamic.md) —— 首页动态 tab 走完刷新/加载/滚动
+- [open_repo_discussions_tab.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_repo_discussions_tab.md) —— 仓库详情 → 讨论 tab
 
 还差：
 
-- `open_search_code.sh`：Search → Code tab → 输关键字
-- `open_pr_files.sh`：进 PR → 变更文件页
+- `open_search_code.md`：Search → Code tab → 输关键字
+- `open_pr_files.md`：进 PR → 变更文件页
 
 ---
 

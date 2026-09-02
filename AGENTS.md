@@ -74,55 +74,63 @@
 
 强制的是**证据本身**，不是具体工具。工具链按可用性挑：
 
-### 工具选型（按可用性挑一条主路径 + 一条 fallback）
+### 工具选型（`mcp_dart` 是唯一主路径，adb / xcrun simctl 只作为截图 fallback）
 
-1. **主路径 — `mcp_dart`（debug 构建、DTD 在线时首选）**
-   - `dtd` → `listDtdUris` / `connect` 建立 DTD 连接
-   - `widget_inspector` → `get_widget_tree` / `get_selected_widget` 抓真实渲染出的 widget 树
-   - `get_runtime_errors` 拉 Dart 层异常（改动前后各拉一次）
+**2026-09-02 拍板**：本仓库统一走 `mcp_dart` 冒烟。历史上 `adb` 被写成"一等公民 fallback"是路径依赖的锅——`adb` 只是 Android 平台工具，天然把 iOS 排除在外，也不会随 Flutter / Dart 升级而同步演进。`mcp_dart` 直接连 DTD/VM Service，跨平台、随 Flutter 版本演进、能拉真 widget tree 和 runtime errors，是真正的一等公民。
+
+1. **一等公民 — `mcp_dart`（永远优先）**
+   - `dtd` → `listDtdUris` / `connect` 建立 DTD 连接（`flutter run` 起来后 stdout 会打印 DTD/VM Service URI）
+   - `widget_inspector` → `get_widget_tree` / `get_selected_widget` 抓**真实渲染出的 widget 树**，包含 `textPreview` 字段，可直接验证文案 / 是否渲染 / 挂载数量
+   - `get_runtime_errors` 拉 Dart 层异常（改动前后各拉一次；跑完关键路径后再拉一次）
+   - `vm_service` 走 isolate、eval、library 反射等更深的运行时诊断
+   - `hot_reload` / `hot_restart` 快速让改动生效验证
    - `flutter_driver_command` 只在工程已引入 `flutter_driver` / `integration_test`
      并且 `main.dart` 里显式调用 `enableFlutterDriverExtension()` 时才可用。
      本仓库目前**未引入这套依赖**，因此该子工具默认不可用，不得作为唯一验证手段。
 
-2. **Fallback — `adb`（release 构建、DTD 掉线、driver 未启用时的一等公民）**
-   - `adb devices` 确认设备可见
-   - `adb shell input tap/swipe/text/keyevent` 驱动 UI
-   - `adb exec-out screencap -p > /tmp/xxx.png` 抓真实渲染截图
-   - `adb logcat -d -s flutter` 抓 Dart 侧输出
-   - **截图文件路径必须写进完成汇报**，reviewer 需要能拿到该路径复核。
-   - 反复用到的 tap 序列必须沉淀到 [`tool/ai/smoke/`](tool/ai/smoke/)，
-     不允许把已经跑通的坐标序列扔在一次对话里就丢掉。
+2. **截图 fallback（只做截图，不做操作）**
+   - **iOS Simulator**：`xcrun simctl io <UDID> screenshot <path>`
+   - **Android 设备/模拟器**：`adb exec-out screencap -p > <path>`
+   - **禁止用截图 fallback 承担业务验证职责**。业务验证一律走 `mcp_dart` 拿 widget tree 与 runtime errors。截图只是给 reviewer 复核"人眼层面"用的补充证据。
+   - 截图**绝对路径必须写进完成汇报**，reviewer 需要能拿到该路径复核。
 
-3. **Web / DevTools 类改动**：用 `integrated_browser` 走同样"操作 → 截图 → 抓日志"流程。
+3. **UI 操作驱动**
+   - **优先方式**：`mcp_dart` `hot_restart` 后由 `main.dart` 走既定路由；或者通过 `vm_service` `eval` 触发 `Navigator.push`。
+   - **降级方式**：仅当无法通过 `mcp_dart` 触发时才允许人肉在模拟器上点，且必须在完成汇报里说明"这一步为什么无法自动化"。
+   - **禁止**：新增 `adb shell input tap/swipe` 类的坐标序列脚本——这类脚本硬编码分辨率、随 UI 微调即坏、且天然锁死 Android，是本次拍板要清理的历史包袱。
+
+4. **日志（辅助）**
+   - `mcp_dart` `get_runtime_errors` 是主渠道。
+   - `flutter run` 前台窗口本身就是 Dart 日志渠道，改动前后各留一份 stdout。
+   - **不再**推荐 `adb logcat -d -s flutter` 作为常规日志渠道（仅在 mcp_dart 掉线且需要跨 Flutter 生命周期的 native 侧日志时使用）。
+
+5. **Web / DevTools 类改动**：用 `integrated_browser` 走同样"操作 → 截图 → 抓日志"流程。
 
 ### 强制流程
 
 1. `flutter run` 或已装机的 build 起到已连接设备。
-   **重要：装机一律用 `adb install -r <apk路径>`，禁止使用 `flutter install`。**
-   原因见下方"禁止行为"条目——`flutter install` 内部会先执行 `adb uninstall`，
-   把应用数据（含 SharedPreferences 里的 `TOKEN_KEY`）一并清空，等同强制登出，
-   会直接毁掉真机 fixture 状态。
-2. 按上表挑工具组合抓证据；`mcp_dart` 不可用时直接切 `adb`，不视为破例。
-3. 走一遍改动**直接覆盖**的路径（例：改了 PR timeline 事件行 → 真的进 PR 详情页把
-   timeline 滚一遍，抓到目标文案的截图或 `get_text` 输出）。
-4. 覆盖不到的分支（例：`base_ref_force_pushed` 真机上罕见）必须在完成汇报里
-   **显式列为已知缺口**，不能糊成"通过"。稀有分支覆盖率无法靠真机保证时，
-   优先考虑加模型层单测 + 真实 JSON fixture 补齐。
+   - **debug 构建**：直接 `flutter run -d <deviceId>`，DTD/VM Service URI 会打印在 stdout。
+   - **iOS release 装机**：`flutter build ios --release` 后走 `xcrun simctl install <UDID> <app>` 或走 Xcode 装机。
+   - **Android release 装机**：`flutter build apk --release --target-platform=android-arm64 --no-shrink` 后走 `adb install -r <apk>`（`-r` 表示 reinstall，保留 app 数据）。
+   - **禁止用 `flutter install`**：该命令内部走 `adb uninstall <package>` + `adb install`，会把 `/data/data/<pkg>/` 下所有数据（含 SharedPreferences 里的 `TOKEN_KEY`）一起抹掉，等同把用户从 fixture 账号强制登出。详细教训见"禁止行为"章节。
+2. 用 `mcp_dart` `dtd listDtdUris` + `connect` 拿到 app 连接；跑 `get_runtime_errors` 拿到"改动前"基线。
+3. 走一遍改动**直接覆盖**的路径（例：改了 PR timeline 事件行 → 进 PR 详情页把 timeline 滚一遍，抓 `widget_inspector get_widget_tree` 找到目标事件行的 `textPreview`），并用 `xcrun simctl io screenshot` 或 `adb exec-out screencap -p` 抓截图作为人眼层面补充证据。
+4. 关键路径跑完后再次 `get_runtime_errors`，确认无新增异常。
+5. 覆盖不到的分支（例：`base_ref_force_pushed` 真机上罕见）必须在完成汇报里**显式列为已知缺口**，不能糊成"通过"。稀有分支覆盖率无法靠真机保证时，优先考虑加模型层单测 + 真实 JSON fixture 补齐。
 
 ### 分级要求（避免形式主义）
 
 | 改动类型 | 最低证据要求 |
 |---|---|
 | 纯模型 / 纯工具函数 | `flutter analyze` + 单测（若 test 目录已存在）；无需截图 |
-| UI 渲染 / 文案 / 事件行 | 至少 1 张真机截图 + `get_runtime_errors` 或 `logcat` 空异常 |
-| 关键路径（登录 / 网络栈 / 根装配 / 状态边界） | 主路径截图 + 至少 1 个失败/边界分支的证据 |
+| UI 渲染 / 文案 / 事件行 | 至少 1 张真机截图 + `mcp_dart` `widget_inspector get_widget_tree` 命中目标 widget 或 `textPreview` + `get_runtime_errors` 无异常 |
+| 关键路径（登录 / 网络栈 / 根装配 / 状态边界） | 主路径截图 + widget tree 命中 + `get_runtime_errors` 无异常 + 至少 1 个失败/边界分支的证据 |
 
 ### 完成汇报三段式（必填）
 
 **看代码**：改了哪些文件、哪些函数、为什么这么改。
 **看编译**：`flutter analyze` / `build_runner` / `gen-l10n` 的产物结论。
-**看运行**：设备 id、所用工具组合（mcp_dart 或 adb）、**截图文件绝对路径**、
-`get_runtime_errors` 或 `logcat` 结果、无法覆盖的分支列表。
+**看运行**：设备 id + 平台（iOS Simulator UDID 或 Android device serial）、`mcp_dart` DTD/VM Service URI、`get_runtime_errors` 结果、`widget_inspector` 命中的关键 widget/textPreview、**截图文件绝对路径**、无法覆盖的分支列表。
 
 三段任一缺失 = 任务未完成。
 
@@ -131,13 +139,16 @@
 - ❌ 只跑 `flutter analyze` 就报"测试通过"
 - ❌ 把"app 启动到首页"当成本次功能验证
 - ❌ 让用户手动操作 UI 代替 author 自测（除非物理上无法自动化，且已说明原因）
-- ❌ 拿"日志里没 Exception"当作行为正确的证据
+- ❌ 拿"日志里没 Exception"当作行为正确的证据——必须配 `mcp_dart` `widget_inspector` 命中或截图佐证
 - ❌ 只把截图放在自己上下文里而不写路径，导致 reviewer 拿不到证据
+- ❌ **只用 `adb` / `xcrun simctl` 而不连 `mcp_dart`**：截图工具不能承担业务验证职责（2026-09-02 拍板），至少要连一次 DTD 拿一次 `get_runtime_errors`，否则视为汇报不完整
+- ❌ **新增 `adb shell input tap/swipe` 坐标脚本**（2026-09-02 拍板）：这类脚本硬编码分辨率、锁死 Android、随 UI 微调即坏。旧脚本会被逐步替换成 `mcp_dart` 方案，新脚本一律不允许
 - ❌ **使用 `flutter install` 装机**：该命令内部走 `adb uninstall <package>` +
   `adb install`，会把 `/data/data/<pkg>/` 下所有数据（含 SharedPreferences 里的
   `TOKEN_KEY`）一起抹掉，等同把用户从 fixture 账号强制登出。
   正确姿势：`flutter build apk --release --target-platform=android-arm64 --no-shrink`
-  后走 `adb install -r <apk 路径>`（`-r` 表示 reinstall，保留 app 数据）。
+  后走 `adb install -r <apk 路径>`（`-r` 表示 reinstall，保留 app 数据）；iOS 走
+  `xcrun simctl install` 或 Xcode 装机。
   历史教训：2026 装 discussions 冒烟版本时用了 `flutter install`，导致
   CarSmallGuo 的 gho\_ token 从设备上被清空，reviewer 侧无法直接复核，属于
   **author 责任事故**。此后但凡装机脚本 / 命令里出现 `flutter install`，
@@ -184,14 +195,14 @@
 
 ## 真机验证专用 fixture（写死，不允许随手换）
 
-以下 PR/仓库是真机冒烟脚本 `tool/ai/smoke/open_pr_timeline.sh` 默认命中的证据源。改动 timeline 相关代码时，优先复用它们；只有在明确覆盖不到时才另外找 PR。
+以下 PR/仓库是真机冒烟脚本 [tool/ai/smoke/](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke) 默认命中的证据源。改动 timeline 相关代码时，优先复用它们；只有在明确覆盖不到时才另外找 PR。
 
-- **fixture 账号**：`CarSmallGuo`（当前 adb 设备与 gh cli 登录的账号，token 有 `repo` 权限但**只做读**）
+- **fixture 账号**：`CarSmallGuo`（当前 iOS 模拟器 / Android 设备与 gh cli 登录的账号，token 有 `repo` 权限但**只做读**）
 - **fixture 仓库**：`CarGuo/gsy_github_app_flutter`（GSY 主仓库自身）
 - **fixture PR**：
   - `#938`：Copilot 提交的 `reviewed / state=commented`，body 788 字符，同时覆盖 `ready_for_review` / `review_requested` / `assigned` / `merged` / `closed` / 未知事件兜底等新事件类型
-    - 打开方式：`bash tool/ai/smoke/open_pr_timeline.sh`（默认参数即可）
-    - 期望截图证据：`/tmp/gsy_smoke_07_issue_detail_scrolled.png` 与随后一屏能同时看到"Copilot 提交了评审意见"这一行**和其下方灰底 body 卡片**
+    - 打开方式：`flutter run` 起 app 后走 `mcp_dart` `dtd connect` + `widget_inspector` 观测；参考 [tool/ai/smoke/open_pr_timeline.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_pr_timeline.md) 的路径描述（人肉操作 UI 或用 `vm_service eval` 触发路由）
+    - 期望证据：`widget_inspector get_widget_tree` 命中包含 `textPreview: Copilot 提交了评审意见` 的事件行 + 其下方灰底 body 卡片（`Card` widget），并附一张 `xcrun simctl io screenshot` 截图
   - 后续若需要 approved/changes_requested body 场景，请在 `CarGuo` 名下的其它 PR 里挑选并把 PR 号写回本段落，不要造 PR
 
 ### 按功能分类的 fixture 表（2026-07-06 扩展）
