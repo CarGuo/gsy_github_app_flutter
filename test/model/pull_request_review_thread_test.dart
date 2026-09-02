@@ -89,6 +89,25 @@ void main() {
           reason: 'NaN/Infinity.toInt() 会抛 UnsupportedError，必须先 isFinite 兜底');
     });
 
+    test('databaseId 边界值：0 / 负数 / int64 上界 都原样保留', () {
+      // reviewer F5 关注点：契约收紧程度到 isFinite 为止——finite 但不合理的值
+      // （比如负数、极大整数）交给上游 GitHub 保证，客户端只做"能不能 toInt"的
+      // 兜底。这条测试把当前契约锁死，防止后来人误加"必须为正整数"过滤把
+      // 合法但少见的 0 也当垃圾丢掉。
+      final t = PullRequestReviewThread.fromGraphql({
+        'id': 'x',
+        'comments': {
+          'nodes': [
+            {'databaseId': 0},
+            {'databaseId': -1},
+            {'databaseId': 9007199254740992},
+          ],
+        },
+      });
+      expect(t!.commentDatabaseIds, [0, -1, 9007199254740992],
+          reason: '0 / 负数 / 大整数都是 finite num，按当前契约保留原值');
+    });
+
     test('nodes 不是 List 时保持空列表', () {
       final t = PullRequestReviewThread.fromGraphql({
         'id': 'x',
