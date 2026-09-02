@@ -11,8 +11,11 @@ class PullRequestReviewThread({
     final Map? comments = map["comments"];
     if (comments != null && comments["nodes"] is List) {
       for (var item in (comments["nodes"] as List)) {
-        if (item is Map && item["databaseId"] is num) {
-          ids.add((item["databaseId"] as num).toInt());
+        if (item is Map) {
+          final raw = item["databaseId"];
+          if (raw is num && raw.isFinite) {
+            ids.add(raw.toInt());
+          }
         }
       }
     }

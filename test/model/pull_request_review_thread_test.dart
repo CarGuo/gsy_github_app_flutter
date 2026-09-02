@@ -71,6 +71,24 @@ void main() {
           reason: 'databaseId 是 num 就接收，double 用 toInt 截断');
     });
 
+    test('databaseId 为 NaN/Infinity 时应被过滤（isFinite 守约，避免 toInt 抛 UnsupportedError）',
+        () {
+      final t = PullRequestReviewThread.fromGraphql({
+        'id': 'x',
+        'comments': {
+          'nodes': [
+            {'databaseId': 101},
+            {'databaseId': double.nan},
+            {'databaseId': double.infinity},
+            {'databaseId': double.negativeInfinity},
+            {'databaseId': 102},
+          ],
+        },
+      });
+      expect(t!.commentDatabaseIds, [101, 102],
+          reason: 'NaN/Infinity.toInt() 会抛 UnsupportedError，必须先 isFinite 兜底');
+    });
+
     test('nodes 不是 List 时保持空列表', () {
       final t = PullRequestReviewThread.fromGraphql({
         'id': 'x',
