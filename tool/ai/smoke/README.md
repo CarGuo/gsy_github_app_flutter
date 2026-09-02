@@ -77,25 +77,35 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
 2. **连 DTD**：`mcp_dart` `dtd listDtdUris` → `dtd connect <uri>`。
 3. **基线**：`mcp_dart` `get_runtime_errors`（应为 `No runtime errors found.`）。
 4. **触发路由 / 交互（一等公民 = `mcp_dart` `vm_service` `evaluate`）**：
-   - GSY 已经在 [app.dart#L99-L163](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L99-L163)
-     挂了全局 `GlobalKey<NavigatorState> navKey`，跳转全部走
-     [navigator_utils.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart)
-     里的 `NavigatorUtils.goXxx(context, ...)`。用 `widget_inspector` 拿任意
-     `Element` 的 `objectId` 作为 `targetId`，然后 `evaluate`：
+   - GSY 已经在 [app.dart#L25-L32](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L25-L32)
+     把 `GlobalKey<NavigatorState> navKey` 声明为**顶层 final 变量**，
+     挂在 `MaterialApp(navigatorKey: navKey)` 上；同时
+     [app.dart#L229-L341](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L229-L341)
+     提供了一批 `kDebugMode` 保护的**顶层 smoke 入口**：`gsySmokeGoIssueDetail`
+     / `gsySmokeGoReposDetail` / `gsySmokeGoDiscussionDetail` / `gsySmokeGoPerson`。
+     release 构建下这批函数早退并只打 log，不承担业务逻辑。
+   - **主路径（首选）**：拉一次 `Isolate` → `libraries[]` 找
+     `uri == "package:gsy_github_app_flutter/app.dart"` 那条拿 `id` 作为 `targetId`，
+     然后 `evaluate` 一行：
 
      ```
      evaluate(
-       targetId: <element_object_id>,
-       expression: 'NavigatorUtils.goIssueDetail(_element!.buildContext, "CarGuo", "gsy_github_app_flutter", "938")'
+       targetId: <root library id of package:gsy_github_app_flutter/app.dart>,
+       expression: 'gsySmokeGoIssueDetail("CarGuo", "gsy_github_app_flutter", "938")'
      )
      ```
 
-   - 页面内交互（下拉刷新 / 上拉分页 / tab 切换）：拿到对应 `State` 的 `objectId`，
-     eval `_pullLoadWidgetControl.onRefresh?.call()` / `_tabController.animateTo(3)` 之类。
-   - **失败时**才降级。降级选项：
-     - **降级 A**：给 `app.dart` 加一个 debug-only 顶层函数（`kDebugMode`），
-       在 eval 里一行调用。**需作者拍板一次**再落地；落地后所有 md 共享。
-     - **降级 B（最后的最后）**：人肉在 Simulator 上点。**必须在完成汇报里说明"这一步为什么无法自动化"**。
+     需要新用例就照 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
+     底部现有 pattern 加一个 `Future<Object?> gsySmokeGoXxx(...)` 即可。
+   - **页面内交互（下拉刷新 / 上拉分页 / tab 切换）**：这类**不是路由**，
+     smoke 顶层入口默认不覆盖。仍走"抓对应 `State` 的 `objectId`、eval
+     `_pullLoadWidgetControl.onRefresh?.call()` / `_tabController.animateTo(3)`"这种姿势。
+     如果反复冒烟同一场景，再考虑给 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
+     加对应的 `gsySmokeRefreshHome()` 之类顶层入口，让它内部走 eventBus 广播。
+   - **降级 A（旧姿势）**：如果 debug 构建**因某种原因**没有相应的 `gsySmokeGoXxx` 顶层入口，
+     退回到"抓任意 Element `objectId` + `_element!.buildContext` + `NavigatorUtils.goXxx`"的老姿势。
+     必要时再用 `evaluateInFrame` + library `id` 让 `NavigatorUtils` 进入作用域。
+   - **降级 B（最后的最后）**：人肉在 Simulator 上点。**必须在完成汇报里说明"这一步为什么无法自动化"**。
 5. **拉 tree**：`mcp_dart` `widget_inspector get_widget_tree summaryOnly=true`，
    在返回 JSON 里 grep 该场景 md 指定的 `textPreview` 或 widget 类型。
 6. **截图（仅人眼补充证据，不承担业务验证职责）**：iOS `xcrun simctl io <UDID> screenshot <path>`，
@@ -112,6 +122,24 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
   `NavigatorUtils.goXxx` / `TabController.animateTo` / 任意 controller 方法。
   **随 Flutter 版本演进、跨 iOS/Android、随 UI 微调不变**，天生就是 Flutter 项目该有的操控姿势。
 - `adb` / `xcrun simctl` 因此在本仓库里降级为**只截图**的工具，不再承担业务操作职责。
+
+## 顶层 `gsySmokeGoXxx()` 入口 vs 老姿势"Element + buildContext"，两种 eval 姿势适用边界
+
+两种姿势都走 `mcp_dart` `vm_service evaluate`，区别在**从哪儿求值**：
+
+| 项 | 主路径（顶层 `gsySmokeGoXxx()`） | 降级 A（Element + buildContext） |
+|---|---|---|
+| `targetId` | `package:gsy_github_app_flutter/app.dart` 的 root library `id` | 任意在线 `Element` 的 `objectId` |
+| `expression` | 一行：`gsySmokeGoIssueDetail("...", "...", "938")` | 多行：`(() { final ctx = _element!.buildContext; return NavigatorUtils.goIssueDetail(ctx, ...); })()` |
+| 依赖 | debug 构建，`app.dart` 里现有的 `gsySmokeGoXxx()` 顶层函数 | 任意已挂载 widget 的 Element 存在 + `NavigatorUtils` 在 eval 作用域可解析 |
+| 覆盖场景 | route 类跳转（issue / repo / discussion / person） | 任意 State 内部字段 / controller / 私有方法调用 |
+| 推荐度 | ⭐ 首选（一行、可读、reviewer 直接看得懂） | 只在 debug 构建**没有**对应 `gsySmokeGoXxx` 顶层入口时用 |
+| release 副作用 | 无（`kDebugMode` 早退 + `debugPrint`） | 无（release 版跑 eval 本来就不成立） |
+
+**结论**：能加顶层入口就加顶层入口。目前 [app.dart#L229-L341](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L229-L341)
+里 4 个 route 入口够本轮 fixture PR / 仓库 / discussion / 用户页 4 大场景。
+之后要覆盖新 route 时**照现有 pattern 追加一个 `Future<Object?> gsySmokeGoXxx(...)` 就行**——
+不改其它任何文件，reviewer 也一眼看得懂"这就是一个 debug-only 顶层函数"。
 
 ## evidence/ 目录约定
 

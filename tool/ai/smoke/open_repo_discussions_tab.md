@@ -24,45 +24,33 @@ Discussions tab 冒烟路径描述。**这是一个 Flutter 项目**，点击 / 
 
 ## Flutter 项目触发路由的一等公民：`mcp_dart` `vm_service` `evaluate`
 
-关键前置：GSY 在 [app.dart#L99-L163](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L99-L163)
-挂了全局 `GlobalKey<NavigatorState> navKey`，并且
-[navigator_utils.dart#L89-L116](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart#L89-L116)
-里 `NavigatorUtils.goReposDetail(context, userName, reposName)` 是仓库详情的正式入口。
-Discussion 详情则走
-[navigator_utils.dart#L177+](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart#L177)
-的 `NavigatorUtils.goDiscussionDetail(context, owner, repo, number)`。
+关键前置：GSY 在 [app.dart#L25-L32](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L25-L32)
+把 `GlobalKey<NavigatorState> navKey` 声明为**顶层 final 变量**，同时
+[app.dart#L229-L341](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L229-L341)
+提供了一批 `kDebugMode` 保护的**顶层 smoke 入口**：`gsySmokeGoReposDetail` / `gsySmokeGoDiscussionDetail` 都是现成的。
 
-具体命令（`mcp_dart` `vm_service` `evaluate`）：
+### 主路径（首选）：一行调用顶层 smoke 入口
 
 ```
 // 走仓库详情页
-evaluate(
-  targetId: <material_app_element_object_id>,
-  expression: '''
-    NavigatorUtils.goReposDetail(
-      _element!.buildContext,
-      "666ghj", "BettaFish",
-    )
-  '''
-)
+mcp_dart vm_service evaluate
+  targetId: <root library id of package:gsy_github_app_flutter/app.dart>
+  expression: 'gsySmokeGoReposDetail("666ghj", "BettaFish")'
 
 // 直达 discussion 详情
-evaluate(
-  targetId: <material_app_element_object_id>,
-  expression: '''
-    NavigatorUtils.goDiscussionDetail(
-      _element!.buildContext,
-      "666ghj", "BettaFish", 680,
-    )
-  '''
-)
+mcp_dart vm_service evaluate
+  targetId: <root library id of package:gsy_github_app_flutter/app.dart>
+  expression: 'gsySmokeGoDiscussionDetail("666ghj", "BettaFish", 680)'
 ```
 
-`targetId` 取法见 [open_pr_timeline.md §Isolate eval 具体做法](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_pr_timeline.md)。
+`<root library id>` 通过 `mcp_dart` `vm_service` 拉 `Isolate` → `libraries[]`
+找 `uri == "package:gsy_github_app_flutter/app.dart"` 那条拿 `id`。
 
 ### 切换到 Discussions tab
 
-仓库详情页里 tab 切换靠 `TabController.animateTo(index)`。做法：
+仓库详情页里 tab 切换目前**没有**顶层 smoke 入口（`gsySmokeGoReposDetail` 只跳到默认第 0 个 tab），
+所以要么直接用 `gsySmokeGoDiscussionDetail` 跳过 tab 直接去详情页，
+要么在仓库详情页面上做一次 tab eval：
 
 1. `widget_inspector` 定位 `RepositoryDetailPage` 的 `State`。
 2. `evaluate` 触发切换：
@@ -74,28 +62,62 @@ evaluate(
    )
    ```
 
-   （`index` 具体值以 [repository_detail_page.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/repos/repository_detail_page.dart)
-   里 tab 顺序为准，Discussions 通常是最后一位。）
+   `index` 具体值以 [repository_detail_page.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/repos/repository_detail_page.dart)
+   里 tab 顺序为准，Discussions 通常是最后一位。
 
-### 降级（仅当 eval 因作用域不通失败时用）
+如需一步到位跳到"仓库详情 + Discussions tab"，未来可以扩展 [gsySmokeGoReposDetail](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L281-L296)
+签名加上 `{int initialTab = 0}` 参数，并在 `RepositoryDetailPage` 里读取；
+**默认不预先加**，冒烟频率上来了再动。
 
-- **降级 A（推荐）**：给 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
-  加 debug-only 顶层函数 `gsySmokeGoRepoDetail(owner, repo, {initialTab})`。**需作者拍板一次**。
-- **降级 B**：人肉在模拟器上点，走"搜索 → 仓库 → 讨论 tab"。仅当 eval 与降级 A 都不可用时使用；
-  必须在完成汇报里说明"这一步为什么无法自动化"。
+### 降级 A（旧姿势）：抓 Element `objectId` + `_element!.buildContext`
+
+如果 debug 构建**因某种原因没有相应的 `gsySmokeGoXxx` 顶层入口**才走这条：
+
+```
+// 走仓库详情页（旧姿势）
+evaluate(
+  targetId: <material_app_element_object_id>,
+  expression: '''
+    NavigatorUtils.goReposDetail(
+      _element!.buildContext,
+      "666ghj", "BettaFish",
+    )
+  '''
+)
+
+// 直达 discussion 详情（旧姿势）
+evaluate(
+  targetId: <material_app_element_object_id>,
+  expression: '''
+    NavigatorUtils.goDiscussionDetail(
+      _element!.buildContext,
+      "666ghj", "BettaFish", 680,
+    )
+  '''
+)
+```
+
+`targetId` 取法见 [open_pr_timeline.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/open_pr_timeline.md) §降级 A。
+
+### 降级 B（最后的最后）：人肉点
+
+人肉在模拟器上点，走"搜索 → 仓库 → 讨论 tab"。仅当主路径 + 降级 A 都不可用时使用；
+**必须在完成汇报里说明"这一步为什么无法自动化"**。
 
 ## 步骤
 
 1. `flutter run -d <deviceId>` 起 debug 构建。
 2. `mcp_dart` `dtd listDtdUris` → `dtd connect <uri>`。
 3. `mcp_dart` `get_runtime_errors` 基线。
-4. **触发路由到 discussions tab**：按§Flutter 项目触发路由 eval 一次
-   `goReposDetail` + eval 一次 `TabController.animateTo`（或一次
-   `goDiscussionDetail` 直达 #680）。走不通再降级。
+4. **触发路由到 discussions tab（主路径）**：eval 一次
+   `gsySmokeGoReposDetail("666ghj", "BettaFish")` + eval 一次
+   `TabController.animateTo(<discussions_index>)`（或一次
+   `gsySmokeGoDiscussionDetail("666ghj", "BettaFish", 680)` 直达 #680）。
+   走不通再降级。
 5. `mcp_dart` `widget_inspector` `get_widget_tree summaryOnly=true`，命中：
    - Discussion 列表 tab 下 `DiscussionItem` 实例数 >= 3
    - 至少 1 条 `textPreview` 含 category emoji Unicode（例：`💬`、`🙏`）
-6. 打开 discussion `#680` 详情（同上 eval `goDiscussionDetail`），再拉一次 tree，命中：
+6. 打开 discussion `#680` 详情（同上 eval `gsySmokeGoDiscussionDetail`），再拉一次 tree，命中：
    - 详情页存在 `DiscussionDetailPage` widget
    - Markdown body 里含中文 `textPreview`
 7. 截图（人眼补充证据）：iOS `xcrun simctl io <UDID> screenshot`，Android

@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/event/http_error_event.dart';
@@ -20,6 +22,15 @@ import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:redux/redux.dart';
 
 import 'common/utils/navigator_utils.dart';
+
+/// 顶层 root Navigator key。挂在 [MaterialApp.navigatorKey] 上，
+/// 也是 [HttpErrorListener.errorHandleFunction] 拿 context 的入口。
+///
+/// 之所以放在顶层：mcp_dart `vm_service` `evaluate` 是从 root library 求值的，
+/// 顶层名字才拿得到；否则必须先抓 Element/State 的 objectId 再绕 `_element!.buildContext`。
+/// 见 [tool/ai/smoke/README.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
+/// 「触发路由 / 交互（一等公民 = mcp_dart vm_service evaluate）」章节。
+final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 class FlutterReduxApp extends StatefulWidget {
   const new({super.key});
@@ -160,8 +171,6 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
 mixin HttpErrorListener on State<FlutterReduxApp> {
   StreamSubscription? stream;
 
-  GlobalKey<NavigatorState> navKey = GlobalKey();
-
   @override
   void initState() {
     super.initState();
@@ -216,4 +225,135 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
     }
   }
 
+}
+
+/// ------------------------------------------------------------------
+/// Debug-only smoke 入口
+/// ------------------------------------------------------------------
+///
+/// 这批顶层函数**只在 `kDebugMode` 下工作**，release 构建里立刻早退（打个 log
+/// 就走），因此不承担业务逻辑、不改 UI、不入 tree-shake 白名单——它们**只是给
+/// `mcp_dart` `vm_service evaluate` 用的操控入口**。
+///
+/// 姿势：
+/// ```
+/// mcp_dart vm_service evaluate
+///   targetId: <root library id>
+///   expression: 'gsySmokeGoIssueDetail("CarGuo", "gsy_github_app_flutter", "938")'
+/// ```
+///
+/// 相比"抓 Element objectId + 绕 `_element!.buildContext` + 拼 NavigatorUtils
+/// 完整包名"的老姿势，这里一行搞定，reviewer 复核也直观。
+///
+/// 详见 [tool/ai/smoke/README.md](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
+/// 「触发路由 / 交互（一等公民 = mcp_dart vm_service evaluate）」章节。
+
+/// smoke 入口共用的 post-frame 逃逸手法：
+///
+/// `mcp_dart vm_service evaluate` 会把表达式同步塞进 Dart isolate 当前任意回调栈中
+/// 执行——包括 build / layout / paint / semantics 遍历中间。这些阶段里直接
+/// `Navigator.push` 会触发 `setState` → 抛 "Build scheduled during frame"。
+///
+/// 修复思路：把真正的 `NavigatorUtils.goXxx(...)` 挪到 `addPostFrameCallback`
+/// 里再执行，让当前帧走完再 push。用 `Completer` 把 push 的返回 Future 桥回来，
+/// 调用侧签名不变。
+Future<T?> _smokePostFrame<T>(
+  String tag,
+  Future<T?> Function(BuildContext context) action,
+) {
+  final context = navKey.currentContext;
+  if (context == null) {
+    debugPrint('[smoke] $tag: navKey.currentContext is null, app not mounted yet?');
+    return Future<T?>.value(null);
+  }
+  final completer = Completer<T?>();
+  SchedulerBinding.instance.addPostFrameCallback((_) {
+    final ctx = navKey.currentContext;
+    if (ctx == null) {
+      debugPrint('[smoke] $tag: navKey.currentContext became null in post-frame');
+      completer.complete(null);
+      return;
+    }
+    action(ctx).then(completer.complete).catchError((Object e, StackTrace s) {
+      debugPrint('[smoke] $tag: push failed: $e\n$s');
+      completer.complete(null);
+    });
+  });
+  return completer.future;
+}
+
+/// smoke 入口：跳 Issue / PR 详情页（GSY 里 issue 和 pull 复用同一个 detail page）。
+///
+/// - [owner] / [repo]：GitHub 仓库定位。
+/// - [issueNumber]：issue / PR 编号。
+/// - 返回值统一 `Future<Object?>`，release 下直接给 `null`。
+///
+/// 只在 debug 构建生效，release 早退并打日志。
+Future<Object?> gsySmokeGoIssueDetail(
+  String owner,
+  String repo,
+  String issueNumber,
+) {
+  if (!kDebugMode) {
+    debugPrint(
+      '[smoke] gsySmokeGoIssueDetail ignored in release build ($owner/$repo#$issueNumber)',
+    );
+    return Future.value(null);
+  }
+  return _smokePostFrame<Object?>(
+    'gsySmokeGoIssueDetail',
+    (ctx) => NavigatorUtils.goIssueDetail(ctx, owner, repo, issueNumber),
+  );
+}
+
+/// smoke 入口：跳仓库详情页。
+///
+/// 只在 debug 构建生效，release 早退并打日志。
+Future<Object?> gsySmokeGoReposDetail(String owner, String repo) {
+  if (!kDebugMode) {
+    debugPrint(
+      '[smoke] gsySmokeGoReposDetail ignored in release build ($owner/$repo)',
+    );
+    return Future.value(null);
+  }
+  return _smokePostFrame<Object?>(
+    'gsySmokeGoReposDetail',
+    (ctx) => NavigatorUtils.goReposDetail(ctx, owner, repo),
+  );
+}
+
+/// smoke 入口：跳 Discussion 详情页。
+///
+/// 与 [gsySmokeGoIssueDetail] 并列，走的是 GraphQL 通道。
+/// 只在 debug 构建生效，release 早退并打日志。
+Future<Object?> gsySmokeGoDiscussionDetail(
+  String owner,
+  String repo,
+  int number,
+) {
+  if (!kDebugMode) {
+    debugPrint(
+      '[smoke] gsySmokeGoDiscussionDetail ignored in release build ($owner/$repo#$number)',
+    );
+    return Future.value(null);
+  }
+  return _smokePostFrame<Object?>(
+    'gsySmokeGoDiscussionDetail',
+    (ctx) => NavigatorUtils.goDiscussionDetail(ctx, owner, repo, number),
+  );
+}
+
+/// smoke 入口：跳个人页。
+///
+/// 只在 debug 构建生效，release 早退并打日志。
+void gsySmokeGoPerson(String userName) {
+  if (!kDebugMode) {
+    debugPrint(
+      '[smoke] gsySmokeGoPerson ignored in release build ($userName)',
+    );
+    return;
+  }
+  _smokePostFrame<void>('gsySmokeGoPerson', (ctx) async {
+    NavigatorUtils.goPerson(ctx, userName);
+  });
 }

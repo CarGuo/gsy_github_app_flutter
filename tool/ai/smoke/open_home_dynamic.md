@@ -27,10 +27,12 @@
 
 ## Flutter 项目触发操作的一等公民：`mcp_dart`
 
-首页 Dynamic tab 是 app 冷启后的默认起点，**天然不需要跳转**，路径触发本身省心。
-但下拉刷新 / 上拉加载是核心验证目标，必须走 mcp_dart，而**不是** `adb shell input swipe`。
+首页 Dynamic tab 是 app 冷启后的默认起点，**天然不需要跳转**（路由入口的降级 A 顶层
+`gsySmokeGoXxx`——见 [app.dart#L229-L341](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L229-L341)
+——在这里派不上用场，属于 route 层面的入口）。下拉刷新 / 上拉加载是核心验证目标，
+必须走 mcp_dart 拉动 `State` 私有字段上的 controller，而**不是** `adb shell input swipe`。
 
-### 下拉刷新：`vm_service evaluate` 直接调用 refresh controller
+### 下拉刷新（主路径）：`vm_service evaluate` 直接调用 refresh controller
 
 `dynamic_page.dart` 里的下拉刷新走 [gsy_pull_load_widget](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/pull/gsy_pull_load_widget.dart)
 的 `GSYPullLoadWidgetControl`。做法：
@@ -53,7 +55,7 @@
 3. eval 后 `mcp_dart` `hot_reload` 或 `widget_inspector` 3~4 秒后再拉一次 tree，
    确认顶部 `GSYEventItem` 列表被刷新（顶部 `textPreview` 变化）。
 
-### 上拉分页：同上，触发 loadMore
+### 上拉分页（主路径）：同上，触发 loadMore
 
 ```
 evaluate(
@@ -62,13 +64,23 @@ evaluate(
 )
 ```
 
-### 降级（仅当 eval 因作用域不通失败时用）
+### 未来可选下沉：给 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart) 加 `gsySmokeRefreshHome`
 
-- **降级 A（推荐）**：给 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
-  加 debug-only 顶层函数 `gsySmokeRefreshHome()` / `gsySmokeLoadMoreHome()`，
-  用 `eventBus.fire(...)` 发通知，`DynamicPage` 里 listen 后执行 refresh。**需作者拍板一次**再落地。
-- **降级 B**：人肉在模拟器上下拉 / 上拉。仅当 eval 与降级 A 都不可用时使用；
-  必须在完成汇报里说明"这一步为什么无法自动化"。
+如果反复冒烟 Dynamic tab 很频繁，值得给 [app.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart)
+再加两个 `kDebugMode` 保护的顶层入口（照现有 `gsySmokeGoXxx` pattern）：
+
+```dart
+void gsySmokeRefreshHome() { ... }   // 内部通过 eventBus.fire(RefreshHomeEvent()) 广播，DynamicPage 里 listen
+void gsySmokeLoadMoreHome() { ... }
+```
+
+这样冒烟命令就变成一行 `gsySmokeRefreshHome()`，跟路由入口的姿势对齐。
+**默认不预先加**——只有真需要频繁跑时才加，避免 debug-only 顶层函数无节制膨胀。
+
+### 降级（最后的最后）：人肉下拉 / 上拉
+
+人肉在模拟器上下拉 / 上拉。仅当上面两条都不可用时使用；
+**必须在完成汇报里说明"这一步为什么无法自动化"**。
 
 ## 步骤
 
