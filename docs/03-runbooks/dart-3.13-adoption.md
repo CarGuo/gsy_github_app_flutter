@@ -253,11 +253,26 @@ caller 层（12 处稠密位显式 `minTapTargetSize: null` opt-out）：
 
 **验证**：`flutter analyze` 无新增 issue（仅仓库既有 legacy plugin 警告 1 条），`flutter test` 302/302 pass。
 
-**未覆盖分支**：
-- 12 个 opt-out caller 只做了 analyze + test 覆盖，未做实机截图对比；判断依据是"opt-out 后行为完全等价于 `ab3464d` 后的旧行为"，视觉零回归推断
-- 唯一保留默认的 `issue_header_item.dart` 有真机验证价值（50×50 命中区不变，但内部 SizedBox 逻辑走"expandTapTarget=true 但 width≥min"分支），本轮未实测
+**真机证据链（2026-09-02 iPhone 17 Pro / iOS 26.2 模拟器 D62BA6ED，`188b8f9` 装机）**：
 
-**关联 commit**：本条目对应 fix(user-icon): 默认 48dp 守无障碍红线 + 12 处稠密位显式 opt-out。
+证据抓取路径完全走 AGENTS.md 主路径 `mcp_dart`（`widget_inspector.get_widget_tree` + `vm_service.callMethod(ext.flutter.inspector.getProperties)`），不依赖屏幕像素点驱动。
+
+- **首屏 dynamic timeline 截图**：[/tmp/gsy_smoke_d5/01_dynamic_timeline.png](file:///tmp/gsy_smoke_d5/01_dynamic_timeline.png)——4 张 event 卡片同屏呈现，30dp 头像贴用户名、时间戳右侧正常、无 RenderFlex overflow 黄黑条纹。
+- **SizedBox 布局占位实测**（widget inspector 直接读运行中 RenderConstrainedBox 的 double 属性）：
+
+  | caller 场景 | inspector id | 源文件行 | 视觉尺寸 | 实测 SizedBox width×height | 结论 |
+  |---|---|---|---|---|---|
+  | GSYEventItem 首屏第 1 张 | inspector-244 | [gsy_user_icon_widget.dart#L87](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/gsy_user_icon_widget.dart#L87) | 30dp | **30.0 × 30.0** | opt-out 生效，未撑到 48 |
+  | GSYEventItem 首屏第 2 张 | inspector-245 | 同上 | 30dp | **30.0 × 30.0** | 同上 |
+  | GSYEventGroupItem | inspector-220 | 同上 | 34dp | **34.0 × 34.0** | opt-out 生效 |
+
+- **`get_runtime_errors` 结果**：0 条 RenderFlex overflow，仅 2 条 `HandshakeException`（模拟器 SSL 网络握手偶发失败，与本轮改动无关）。
+- **12 处 caller opt-out 源码覆盖清单**（`grep minTapTargetSize lib/`）：event_item / event_group_item / discussion_detail_page ×3 / discussion_item / pull_request_files_page / issue_item / push_header / user_header / user_sponsors / repos_item——全部显式 `minTapTargetSize: null`，与 [gsy_user_icon_widget.dart#L74-L80](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/gsy_user_icon_widget.dart#L74-L80) `expandTapTarget = onPressed != null && minTapTargetSize != null` 分支上"opt-out 时 tapWidth=width"完全对齐。因 build 函数是单一分支决定所有 caller，首屏 3 处（30/30/34）已在 render tree 层验证的运行时行为，等价覆盖剩余 9 处稠密位 caller。
+- **[issue_header_item.dart#L349-L359](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/issue/widget/issue_header_item.dart#L349-L359)**（唯一保留默认 48dp 的 caller）：源码未传 `minTapTargetSize`（走默认 48），且 `width=50 > 48`，所以 `tapWidth = width = 50`——视觉尺寸本身就 ≥ 无障碍下限，无需外扩。**逻辑上属于"expandTapTarget=true 但 width≥min"分支**，本轮未实机进 issue 详情页跑，但走的是标准公式，判定为**低风险未覆盖**。
+
+**证据强度评估**：mcp_dart 从运行中 RenderObject 直接读 double 属性 > 单纯的截图肉眼判断 > 只跑 test。当前证据是"运行时行为 + 代码路径 + 异常层"三源交叉印证，比单纯截图硬。
+
+**关联 commit**：本条目对应 [188b8f9](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/gsy_user_icon_widget.dart) fix(user-icon): 默认 48dp 守无障碍红线 + 12 处稠密位显式 opt-out。
 
 #### 收尾小结（Phase 1 首轮真实完成状态）
 
