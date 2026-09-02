@@ -12,18 +12,23 @@ class GSYUserIconWidget extends StatelessWidget {
   final double height;
   final EdgeInsetsGeometry? padding;
 
-  /// 命中区（tap target）最小边长。视觉尺寸仍受 [width]/[height] 控制，
-  /// 命中区仅在**存在 [onPressed]** 且 [width]/[height] 小于此值时才会外扩。
+  /// 命中区（tap target）最小边长。**默认 null 表示视觉尺寸与命中区一致**——
+  /// 沿用 GSY 从 2018 年就在用的隐式契约：`SizedBox(width, height)` 同时决定
+  /// 视觉呈现和布局占位，caller 传多大就占多大。
   ///
-  /// 默认 [kMinInteractiveDimension] (48dp) 对齐 Material / iOS HIG 的
-  /// 最小可点击尺寸红线。列表里的 20-36dp 小头像通过外扩命中区把 tap 面积
-  /// 撑到 48×48，视觉呈现依然是 caller 指定的小尺寸——**视觉尺寸与命中区解耦**。
+  /// 只有在 [onPressed] 非空且本字段显式非空时，命中区才会外扩到
+  /// `max(width/height, minTapTargetSize)`，用于**非 dense 列表**里的头像
+  /// （比如个人中心大头像、单页详情大头像）满足 Material / iOS HIG 的 48dp 红线。
   ///
-  /// 不外扩的两种情况：
-  /// - [onPressed] 为 null：纯装饰头像，天然无需 tap target
-  /// - [minTapTargetSize] 显式设为 null：命中区严格等于视觉尺寸，用于
-  ///   **空间极度紧张**的可点击位置。显式设 null 是明确 opt-out 无障碍下限，
-  ///   谨慎使用。
+  /// **不默认设 48**（[kMinInteractiveDimension]）的原因：
+  /// - 稠密列表（discussion / dynamic timeline）里的头像本就是 20-28 dp，
+  ///   默认外扩到 48 会挤压相邻 Expanded 文本，引发布局回归
+  /// - Material 官方对 dense list 的可访问性建议也是 40dp 而非 48dp
+  /// - 无障碍下限由 caller 按语境显式声明，而不是 widget 层一刀切
+  ///
+  /// 使用：
+  /// - 稠密列表 / timeline / 事件行：不传（默认 null），视觉==命中区
+  /// - 单人卡片 / 用户中心 / 设置页大头像：显式传 [kMinInteractiveDimension]
   final double? minTapTargetSize;
 
   const GSYUserIconWidget(
@@ -32,7 +37,7 @@ class GSYUserIconWidget extends StatelessWidget {
       this.width = 30.0,
       this.height = 30.0,
       this.padding,
-      this.minTapTargetSize = kMinInteractiveDimension});
+      this.minTapTargetSize});
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +64,10 @@ class GSYUserIconWidget extends StatelessWidget {
       ),
     );
 
-    // 命中区尺寸：仅在有 onPressed 且需要外扩时才扩，避免让纯装饰头像
-    // 白白撑大兄弟 Expanded 的挤压面。
-    // - onPressed=null：无 tap 语义，命中区 = 视觉尺寸
-    // - onPressed!=null 且 minTapTargetSize!=null：命中区 = max(visual, minTap)
-    //   目的是把"视觉呈现"和"命中区"两件事解耦——视觉可以是 20 dp 的小头像，
-    //   命中区却撑到 48×48 满足 Material / iOS HIG 的可点击红线，
-    //   避免上一轮 tight SizedBox 直接把命中区压到 20×20 造成无障碍回归。
-    // - onPressed!=null 且 minTapTargetSize=null：caller 明确 opt-out 无障碍下限
+    // 命中区尺寸：仅在有 onPressed 且 caller 显式声明 minTapTargetSize 时才外扩。
+    // 默认（minTapTargetSize=null）保留 GSY 2018 至今的隐式契约：视觉==命中区==布局占位，
+    // 稠密列表里 20 dp 头像的 Row 占位就是 20 dp，兄弟 Expanded 文本可用宽度不被挤压。
+    // 需要满足 48 dp 无障碍红线的大头像位由 caller 显式传入 kMinInteractiveDimension。
     final bool expandTapTarget =
         onPressed != null && minTapTargetSize != null;
     final double tapWidth = expandTapTarget
