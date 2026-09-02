@@ -29,7 +29,6 @@ void main() {
     GestureBinding.instance.resamplingEnabled = true;
   }, (Object obj, StackTrace stack) {
     talker.error('Catch Dart error:', obj, stack);
-    printLog(obj);
-    printLog(stack);
+    printLog(obj, stack);
   });
 }
