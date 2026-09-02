@@ -70,15 +70,48 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
 
 ## 通用步骤模板
 
+**这是一个 Flutter 项目。**点击 / 触发 / 验证一律走 `mcp_dart`（VM Service 一等公民），
+不基于 `adb` / 坐标 / 屏幕像素。`adb` / `xcrun simctl` 只承担"截图"这一件事。
+
 1. **起 app**：`flutter run -d <deviceId>`，等 stdout 打印 DTD/VM Service URI。
 2. **连 DTD**：`mcp_dart` `dtd listDtdUris` → `dtd connect <uri>`。
 3. **基线**：`mcp_dart` `get_runtime_errors`（应为 `No runtime errors found.`）。
-4. **走路径**：按场景 md 描述的路径操作（人肉点或 `vm_service eval`）。
+4. **触发路由 / 交互（一等公民 = `mcp_dart` `vm_service` `evaluate`）**：
+   - GSY 已经在 [app.dart#L99-L163](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L99-L163)
+     挂了全局 `GlobalKey<NavigatorState> navKey`，跳转全部走
+     [navigator_utils.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart)
+     里的 `NavigatorUtils.goXxx(context, ...)`。用 `widget_inspector` 拿任意
+     `Element` 的 `objectId` 作为 `targetId`，然后 `evaluate`：
+
+     ```
+     evaluate(
+       targetId: <element_object_id>,
+       expression: 'NavigatorUtils.goIssueDetail(_element!.buildContext, "CarGuo", "gsy_github_app_flutter", "938")'
+     )
+     ```
+
+   - 页面内交互（下拉刷新 / 上拉分页 / tab 切换）：拿到对应 `State` 的 `objectId`，
+     eval `_pullLoadWidgetControl.onRefresh?.call()` / `_tabController.animateTo(3)` 之类。
+   - **失败时**才降级。降级选项：
+     - **降级 A**：给 `app.dart` 加一个 debug-only 顶层函数（`kDebugMode`），
+       在 eval 里一行调用。**需作者拍板一次**再落地；落地后所有 md 共享。
+     - **降级 B（最后的最后）**：人肉在 Simulator 上点。**必须在完成汇报里说明"这一步为什么无法自动化"**。
 5. **拉 tree**：`mcp_dart` `widget_inspector get_widget_tree summaryOnly=true`，
    在返回 JSON 里 grep 该场景 md 指定的 `textPreview` 或 widget 类型。
-6. **截图**：iOS `xcrun simctl io <UDID> screenshot <path>`，Android
-   `adb exec-out screencap -p > <path>`。**只做截图，不做业务判断**。
+6. **截图（仅人眼补充证据，不承担业务验证职责）**：iOS `xcrun simctl io <UDID> screenshot <path>`，
+   Android `adb exec-out screencap -p > <path>`。
 7. **收尾**：`mcp_dart` `get_runtime_errors` 再拉一次，应仍空。
+
+## 为什么触发操作要走 `vm_service eval` 而不是 `adb shell input tap`
+
+- GSY 是 **Flutter 项目**，widget 是 Dart 世界里的对象。`adb shell input tap X Y`
+  只是在系统层伪造触摸事件，命中的是"屏幕像素点"，跟 Flutter 的 widget hit test
+  没有直接映射：分辨率变一变、系统条高度变一变、键盘弹起 / tab 数量变一变，全炸。
+  历史 fixture 已经反复吃过这个亏（旋转 override / 状态栏拦截 / IDE 缩略图坐标 vs 物理坐标）。
+- `vm_service` `evaluate` 直接在 Dart 层执行表达式，等同于让 Dart 自己调用
+  `NavigatorUtils.goXxx` / `TabController.animateTo` / 任意 controller 方法。
+  **随 Flutter 版本演进、跨 iOS/Android、随 UI 微调不变**，天生就是 Flutter 项目该有的操控姿势。
+- `adb` / `xcrun simctl` 因此在本仓库里降级为**只截图**的工具，不再承担业务操作职责。
 
 ## evidence/ 目录约定
 
@@ -91,10 +124,13 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
 ## 反例（禁止）
 
 - ❌ **新增 `adb shell input tap/swipe` 坐标脚本**：本次全面清理的历史包袱，
-  reviewer 见到直接打回。
+  reviewer 见到直接打回。**Flutter 项目触发操作走 `vm_service eval`，不基于像素点**。
+- ❌ **把"人肉在 Simulator 上点"当默认路径**：默认路径永远是 `mcp_dart` `vm_service eval`。
+  只有 eval 走不通 + 降级 A（debug-only 顶层函数）也走不通，才允许降级 B（人肉点），
+  且必须在完成汇报里说明"这一步为什么无法自动化"。
 - ❌ **只截图不连 DTD**：截图只是"人眼层面补充"，不是业务证据；必须配 `widget_inspector` 命中和 `get_runtime_errors` 结果。
 - ❌ **用 `flutter install` 装机**：见"装机命令"章节。
-- ❌ **让用户手动操作 UI 代替自己自测**（除非 `mcp_dart` 触发不可用且已在汇报里说明原因）。
+- ❌ **让用户手动操作 UI 代替自己自测**：author 必须自己走完路径。
 - ❌ **拿"日志里没 Exception"当行为正确的证据**：必须命中 `widget_inspector`。
 
 ## 不做什么
