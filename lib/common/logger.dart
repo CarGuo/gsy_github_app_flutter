@@ -17,13 +17,20 @@ final talker = TalkerFlutter.init(
   ),
 );
 
-printLog(Object msg) {
+printLog(Object msg, [StackTrace? stackTrace]) {
   if (msg is Error) {
-    talker.error("Catch Running Error：", msg);
+    talker.error("Catch Running Error：", msg, stackTrace ?? msg.stackTrace);
   } else if (msg is Exception) {
-    talker.error("Catch Running Exception：", msg);
+    talker.error("Catch Running Exception：", msg, stackTrace);
+  } else if (msg is StackTrace) {
+    talker.error("Catch Running Stack：", null, msg);
+  } else if (stackTrace != null) {
+    talker.error(msg, null, stackTrace);
   }
   if (kDebugMode) {
     print(msg);
+    if (stackTrace != null) {
+      print(stackTrace);
+    }
   }
 }

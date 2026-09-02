@@ -217,8 +217,7 @@ class IssueRepository {
       }
       return DataResult(list, true);
     } catch (e, s) {
-      printLog('getPullRequestReviewThreadsRequest failed: $e');
-      printLog(s);
+      printLog('getPullRequestReviewThreadsRequest failed: $e', s);
       return DataResult(null, false, code: Code.NETWORK_ERROR);
     }
   }
@@ -242,8 +241,7 @@ class IssueRepository {
       if (isResolved == null) return DataResult(null, false);
       return DataResult(isResolved, true);
     } catch (e, s) {
-      printLog('resolveReviewThreadRequest failed: $e');
-      printLog(s);
+      printLog('resolveReviewThreadRequest failed: $e', s);
       return DataResult(null, false, code: Code.NETWORK_ERROR);
     }
   }
@@ -264,8 +262,7 @@ class IssueRepository {
       if (isResolved == null) return DataResult(null, false);
       return DataResult(isResolved, true);
     } catch (e, s) {
-      printLog('unresolveReviewThreadRequest failed: $e');
-      printLog(s);
+      printLog('unresolveReviewThreadRequest failed: $e', s);
       return DataResult(null, false, code: Code.NETWORK_ERROR);
     }
   }
