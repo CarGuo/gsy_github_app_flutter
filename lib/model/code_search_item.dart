@@ -8,21 +8,13 @@
 /// - [name] / [path] / [htmlUrl]：直接来自顶层
 /// - [repositoryFullName]：`repository.full_name`
 /// - [repositoryOwnerAvatar]：`repository.owner.avatar_url`
-class CodeSearchItem {
-  final String name;
-  final String path;
-  final String htmlUrl;
-  final String repositoryFullName;
-  final String? repositoryOwnerAvatar;
-
-  CodeSearchItem({
-    required this.name,
-    required this.path,
-    required this.htmlUrl,
-    required this.repositoryFullName,
-    this.repositoryOwnerAvatar,
-  });
-
+class CodeSearchItem({
+  required final String name,
+  required final String path,
+  required final String htmlUrl,
+  required final String repositoryFullName,
+  final String? repositoryOwnerAvatar,
+}) {
   factory CodeSearchItem.fromJson(Map<String, dynamic> json) {
     final repo = (json['repository'] as Map?)?.cast<String, dynamic>() ?? {};
     final owner = (repo['owner'] as Map?)?.cast<String, dynamic>() ?? {};

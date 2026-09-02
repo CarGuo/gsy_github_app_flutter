@@ -1,7 +1,7 @@
-class DataResult {
-  Object? data;
-  bool result;
-  Function? next;
+class DataResult(
+  var Object? data,
+  var bool result, {
+  var Function? next,
 
   /// 2026-09 加：把网络层拿到的 HTTP 状态码/[Code] 常量向上传递。
   ///
@@ -12,7 +12,5 @@ class DataResult {
   ///
   /// 之前所有失败都塞成 `DataResult(null, false)`，上层拿不到语义，
   /// 只能给一个含糊的 "网络或 Token 有问题"，遇到 401 也误导用户去查网络。
-  int? code;
-
-  DataResult(this.data, this.result, {this.next, this.code});
-}
+  var int? code,
+});

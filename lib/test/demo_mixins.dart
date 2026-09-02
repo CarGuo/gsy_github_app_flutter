@@ -64,9 +64,7 @@ class B extends Base {
   }
 }
 
-class G extends B with A, A2 {
-
-}
+class G extends B with A, A2;
 
 
 testMixins() {

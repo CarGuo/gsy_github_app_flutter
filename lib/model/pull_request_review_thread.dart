@@ -1,14 +1,8 @@
-class PullRequestReviewThread {
-  final String? id;
-  final bool? isResolved;
-  final List<int> commentDatabaseIds;
-
-  PullRequestReviewThread({
-    this.id,
-    this.isResolved,
-    this.commentDatabaseIds = const [],
-  });
-
+class PullRequestReviewThread({
+  final String? id,
+  final bool? isResolved,
+  final List<int> commentDatabaseIds = const [],
+}) {
   static PullRequestReviewThread? fromGraphql(Map? map) {
     if (map == null) {
       return null;

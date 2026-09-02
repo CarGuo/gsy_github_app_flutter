@@ -72,36 +72,28 @@ class _$BranchSerializer implements StructuredSerializer<Branch> {
       final Object? value = iterator.current;
       switch (key) {
         case 'name':
-          result.name =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String?;
+          result.name = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String?;
           break;
         case 'protected':
-          result.protected =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool?;
+          result.protected = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool?;
           break;
         case 'tarball_url':
-          result.tarballUrl =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String?;
+          result.tarballUrl = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String?;
           break;
         case 'zipball_url':
-          result.zipballUrl =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String?;
+          result.zipballUrl = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String?;
           break;
       }
     }

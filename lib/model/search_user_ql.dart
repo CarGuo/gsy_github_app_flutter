@@ -1,21 +1,12 @@
-class SearchUserQL {
-  final int? followers;
-  final String? name;
-  final String? avatarUrl;
-  final String? bio;
-  final String? login;
-  final String? lang;
-
-  SearchUserQL({
-    this.followers,
-    this.name,
-    this.avatarUrl,
-    this.bio,
-    this.login,
-    this.lang,
-  });
-
-  static fromMap(Map map) {
+class SearchUserQL({
+  final int? followers,
+  final String? name,
+  final String? avatarUrl,
+  final String? bio,
+  final String? login,
+  final String? lang,
+}) {
+  static SearchUserQL fromMap(Map map) {
     String? lang;
     if (map["lang"] != null &&
         map["lang"]["nodes"] != null &&

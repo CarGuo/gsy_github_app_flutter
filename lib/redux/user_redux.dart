@@ -37,7 +37,7 @@ class UpdateUserAction {
   UpdateUserAction(this.userInfo);
 }
 
-class FetchUserAction {}
+class FetchUserAction;
 
 class UserInfoMiddleware implements MiddlewareClass<GSYState> {
   @override

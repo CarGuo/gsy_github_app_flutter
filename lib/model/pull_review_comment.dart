@@ -19,35 +19,20 @@ import 'package:gsy_github_app_flutter/model/user.dart';
 /// - [body]：评论正文（markdown）
 /// - [user]：评论作者
 /// - [htmlUrl]：跳转到 github.com 上锚点行的 URL
-class PullReviewComment {
-  final int? id;
-  final String? path;
-  final int? position;
-  final int? originalPosition;
-  final int? line;
-  final int? originalLine;
-  final String? diffHunk;
-  final String? body;
-  final User? user;
-  final String? htmlUrl;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  PullReviewComment({
-    this.id,
-    this.path,
-    this.position,
-    this.originalPosition,
-    this.line,
-    this.originalLine,
-    this.diffHunk,
-    this.body,
-    this.user,
-    this.htmlUrl,
-    this.createdAt,
-    this.updatedAt,
-  });
-
+class PullReviewComment({
+  final int? id,
+  final String? path,
+  final int? position,
+  final int? originalPosition,
+  final int? line,
+  final int? originalLine,
+  final String? diffHunk,
+  final String? body,
+  final User? user,
+  final String? htmlUrl,
+  final DateTime? createdAt,
+  final DateTime? updatedAt,
+}) {
   factory PullReviewComment.fromJson(Map<String, dynamic> json) {
     DateTime? parseDate(dynamic v) =>
         (v is String && v.isNotEmpty) ? DateTime.tryParse(v) : null;

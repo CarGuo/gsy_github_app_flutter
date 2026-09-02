@@ -17,5 +17,5 @@ enum CommonListDataType {
 
   final String value;
 
-  const CommonListDataType(this.value);
+  CommonListDataType(this.value);
 }

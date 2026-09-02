@@ -21,3 +21,20 @@ linter:
     constant_identifier_names: false
     library_private_types_in_public_api: false
     library_prefixes: false
+    # Dart 3.13 primary constructor 配套 lint。
+    # 之所以现在加：analyzer 已升到 13.3.0，primary constructor 语言级 stable，
+    # 这些 lint 会在**后续有人写 primary constructor 时**帮忙提示常见规范
+    # （比如空 body 用 `;`、别在 primary constructor 里初始化能挪到字段声明的值等），
+    # 而不是逐行推老代码去迁移——这符合 AGENTS.md 说的"改动尽量限制在当前功能域"。
+    empty_container_bodies: true
+    initialize_in_field_declaration: true
+    unnecessary_const_in_enum_constructor: true
+    unnecessary_primary_constructor_body: true
+    # use_declaring_parameters 是 primary constructor 引入的 declaring parameter 提示，
+    # 只对 primary constructor 里的形参生效，不会误伤老代码。
+    use_declaring_parameters: true
+    # 不启用 unnecessary_type_name_in_constructor：
+    #   flutter analyze 一次会命中 354 处（全仓 named constructor 都写着类名），
+    #   跟 primary constructor 迁移无关，属于独立的 concise constructor 规范；
+    #   逐个改动 354 处不属于本轮任务范围，避免噪音污染 CI/PR。
+    #   等未来专门开一个 concise constructor 迁移任务时再启用。
