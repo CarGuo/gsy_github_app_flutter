@@ -160,6 +160,16 @@ Phase 0 只涉及**pubspec 层升级 + 一个非 UI 层数据类语法迁移**�
 
 **commit**：`1999021`（perf(pr-review-comment): 去掉 fromJson user 反序列化里的 Map.from 浅复制）。
 
+##### 后续修订：`1999021` 的浅拷贝优化被 M3（第二轮 reviewer）事实回滚
+
+**事情经过**：`1999021` 依赖的前提是"外层 `json` 参数签名是 `Map<String, dynamic>`，所以 `json['user']` 也一定是 `Map<String, dynamic>`"——这个假设在**纯 Dart 侧生成的 payload** 里成立，但在**从 Hive 反序列化回来的旧缓存 / GraphQL 返回的嵌套 Map** 场景下不成立：这些渠道返回的常常是 `Map<dynamic, dynamic>`，`as Map<String, dynamic>` 会直接 TypeError，把 comment.user 拆成 null。
+
+**权衡结果**：第二轮独立 reviewer 的 M3 反馈里已经把该分支收回——`commit 9653396`（fix(models): M3/M4/M5 放宽契约边界 + 补齐四条边界单测）里 [pull_review_comment.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/model/pull_review_comment.dart) 恢复用 `Map<String, dynamic>.from(json['user'] as Map)`——**每条 comment 反序列化多付一次浅复制的代价，换来跨来源 Map 兼容**。
+
+**为什么保留原 commit 不 rebase**：`1999021` 已推送到 origin，rewrite 已发布历史属于破坏性操作（违反用户对 destructive Git 操作的谨慎准则）。做法是保留 `1999021` 作为"曾经做过的优化尝试"的历史痕迹，`9653396` 作为"契约边界压过性能优化"的最终决策；两个 commit 一起构成"发现 → 尝试 → 反悔"的完整链路，比 rebase 掉更能说明这个决定的成本。
+
+**结论**：**契约边界 > 性能微优化**——当浅拷贝优化和跨来源 Map 兼容冲突时，选后者。列表页每屏 20+ comment 多的这次浅复制，在 profile 里不会成为热点；类型防护漏一个 Map 变体，会把 review comment 的作者信息整块丢掉。
+
 #### 修复 3：`SearchUserQL.fromMap` 内部 dynamic 直塞（reviewer B2 类反馈）
 
 **根因**：即使 `SearchUserQL.fromMap` 返回类型收紧为 `SearchUserQL`，**内部**仍然是 dynamic 拼装：`followers: map["followers"]?["totalCount"]` 直接进 `int?` 槽位，GraphQL 一旦返回 `double`（GitHub API 历史上有过）就到 UI 侧才 TypeError；`name / avatarUrl / bio / login` 全 dynamic 直塞 `String?` 槽位；深嵌套 lang 提取 6 层用 `.length > 0` + `[...]` 走 dynamic，任一层 schema 漂移抛 NoSuchMethodError 而不是降级 null。**Model 层没有承担"契约防线"职责**。
@@ -203,7 +213,7 @@ Phase 0 只涉及**pubspec 层升级 + 一个非 UI 层数据类语法迁移**�
 | Phase 0 依赖升级 + `DataResult` POC | `46dbd6d` 前置基线 | 主线 | ✅ |
 | Phase 1 首轮 5 类迁 primary constructor + 单测 | `46dbd6d` | 主线 | ✅ |
 | A 类：`catch (_)` 打 stack + code | `4ae0a93` | review 反馈 | ✅ |
-| B1 类：`Map.from` 浅复制根除 | `1999021` | review 反馈 | ✅ |
+| B1 类：`Map.from` 浅复制根除 | `1999021` → `9653396` 事实回滚 | review 反馈 | ⚠️ 被 M3 反悔（跨来源 Map 兼容压过浅拷贝优化）|
 | B2 类：`SearchUserQL` dynamic 类型防护 | `d6a817d` | review 反馈 | ✅ |
 | D 类：`gsy_user_icon_widget` RenderFlex overflow | `ab3464d` | 冒烟意外发现 | ✅ |
 
