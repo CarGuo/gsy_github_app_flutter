@@ -201,6 +201,7 @@ class IssueItem extends StatelessWidget {
                 GSYUserIconWidget(
                     width: 30.0,
                     height: 30.0,
+                    minTapTargetSize: null,
                     image: issueItemViewModel.actionUserPic,
                     onPressed: () {
                       NavigatorUtils.goPerson(

@@ -47,6 +47,7 @@ class PushHeader extends StatelessWidget {
                           top: 0.0, right: 5.0, left: 0.0),
                       width: 40.0,
                       height: 40.0,
+                      minTapTargetSize: null,
                       image: pushHeaderViewModel.actionUserPic,
                       onPressed: () {
                         NavigatorUtils.goPerson(

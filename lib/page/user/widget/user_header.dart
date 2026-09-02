@@ -71,6 +71,7 @@ class UserHeaderItem extends StatelessWidget {
           padding: const EdgeInsets.only(right: 5.0, left: 5.0),
           width: 30.0,
           height: 30.0,
+          minTapTargetSize: null,
           image: orgs.avatarUrl ?? GSYICons.DEFAULT_REMOTE_PIC,
           onPressed: () {
             NavigatorUtils.goPerson(context, orgs.login);

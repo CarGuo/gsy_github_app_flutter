@@ -59,6 +59,7 @@ class ReposItem extends StatelessWidget {
                               top: 0.0, right: 5.0, left: 0.0),
                           width: 40.0,
                           height: 40.0,
+                          minTapTargetSize: null,
                           image: reposViewModel.ownerPic,
                           onPressed: () {
                             NavigatorUtils.goPerson(

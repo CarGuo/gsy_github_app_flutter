@@ -150,6 +150,7 @@ class DiscussionItem extends StatelessWidget {
               GSYUserIconWidget(
                 width: 36.0,
                 height: 36.0,
+                minTapTargetSize: null,
                 image: viewModel.authorAvatar,
                 onPressed: (viewModel.authorLogin == null ||
                         viewModel.authorLogin!.isEmpty)

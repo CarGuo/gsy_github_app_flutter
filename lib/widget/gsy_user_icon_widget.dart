@@ -12,23 +12,26 @@ class GSYUserIconWidget extends StatelessWidget {
   final double height;
   final EdgeInsetsGeometry? padding;
 
-  /// 命中区（tap target）最小边长。**默认 null 表示视觉尺寸与命中区一致**——
-  /// 沿用 GSY 从 2018 年就在用的隐式契约：`SizedBox(width, height)` 同时决定
-  /// 视觉呈现和布局占位，caller 传多大就占多大。
+  /// 命中区（tap target）最小边长。**默认 [kMinInteractiveDimension]（48dp）**——
+  /// 无障碍红线优先：Material / iOS HIG 均要求可点击控件命中区不低于 48dp，
+  /// 默认值 48dp 保证 widget 层"点得中"是**安全出厂设置**，不需要每个 caller 记着显式声明。
   ///
-  /// 只有在 [onPressed] 非空且本字段显式非空时，命中区才会外扩到
-  /// `max(width/height, minTapTargetSize)`，用于**非 dense 列表**里的头像
-  /// （比如个人中心大头像、单页详情大头像）满足 Material / iOS HIG 的 48dp 红线。
+  /// 当 [onPressed] 非空且本字段非空时，命中区会外扩到
+  /// `max(width/height, minTapTargetSize)`。视觉呈现仍严格按 [width]/[height]，
+  /// 只有布局占位 / RawMaterialButton 的响应区域会被撑到 48dp。
   ///
-  /// **不默认设 48**（[kMinInteractiveDimension]）的原因：
-  /// - 稠密列表（discussion / dynamic timeline）里的头像本就是 20-28 dp，
-  ///   默认外扩到 48 会挤压相邻 Expanded 文本，引发布局回归
-  /// - Material 官方对 dense list 的可访问性建议也是 40dp 而非 48dp
-  /// - 无障碍下限由 caller 按语境显式声明，而不是 widget 层一刀切
+  /// **稠密列表如何 opt-out**：
+  /// 稠密列表（dynamic timeline / discussion 内嵌评论 / PR files inline
+  /// comment），以及 Row 里**横排多头像**（用户主页组织横排 / 赞助者横排）
+  /// 都属于稠密位——头像本就 20-36 dp，紧挨 `Expanded(Text)` 或彼此挤在
+  /// 有限 Row 宽度里，默认外扩到 48 会挤压兄弟文本或让 Row 越界。
+  /// 这类 caller **必须显式传 `minTapTargetSize: null`**，声明"我明确接受
+  /// <48dp 的命中区以换布局稳定"。
+  /// 参见 `docs/03-runbooks/dart-3.13-adoption.md` 的 D5 决策记录与 opt-out 名单。
   ///
   /// 使用：
-  /// - 稠密列表 / timeline / 事件行：不传（默认 null），视觉==命中区
-  /// - 单人卡片 / 用户中心 / 设置页大头像：显式传 [kMinInteractiveDimension]
+  /// - 非稠密位（个人主页头像 / issue header / repos item 等）：**不传**，接受默认 48dp
+  /// - 稠密位（timeline / 内嵌评论）：显式 `minTapTargetSize: null`，视觉==命中区==布局占位
   final double? minTapTargetSize;
 
   const GSYUserIconWidget(
@@ -37,7 +40,7 @@ class GSYUserIconWidget extends StatelessWidget {
       this.width = 30.0,
       this.height = 30.0,
       this.padding,
-      this.minTapTargetSize});
+      this.minTapTargetSize = kMinInteractiveDimension});
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +67,9 @@ class GSYUserIconWidget extends StatelessWidget {
       ),
     );
 
-    // 命中区尺寸：仅在有 onPressed 且 caller 显式声明 minTapTargetSize 时才外扩。
-    // 默认（minTapTargetSize=null）保留 GSY 2018 至今的隐式契约：视觉==命中区==布局占位，
-    // 稠密列表里 20 dp 头像的 Row 占位就是 20 dp，兄弟 Expanded 文本可用宽度不被挤压。
-    // 需要满足 48 dp 无障碍红线的大头像位由 caller 显式传入 kMinInteractiveDimension。
+    // 命中区尺寸：默认 minTapTargetSize=48（无障碍红线），有 onPressed 时外扩到
+    // max(视觉尺寸, 48)。稠密列表 caller 需要显式传 minTapTargetSize:null 才 opt-out
+    // 到"视觉==命中区==布局占位"的稠密档次；否则会挤压相邻 Expanded 文本。
     final bool expandTapTarget =
         onPressed != null && minTapTargetSize != null;
     final double tapWidth = expandTapTarget

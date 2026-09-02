@@ -339,6 +339,7 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
                   image: c.user?.avatar_url,
                   width: 20,
                   height: 20,
+                  minTapTargetSize: null,
                 ),
                 const SizedBox(width: 6),
                 Expanded(

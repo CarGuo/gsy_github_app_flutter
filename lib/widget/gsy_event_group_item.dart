@@ -313,6 +313,7 @@ class _GSYEventGroupItemState extends State<GSYEventGroupItem>
                   padding: const EdgeInsets.only(right: 8.0),
                   width: 34.0,
                   height: 34.0,
+                  minTapTargetSize: null,
                   image: actorAvatar,
                   onPressed: () {
                     if (actorLogin.isNotEmpty) {

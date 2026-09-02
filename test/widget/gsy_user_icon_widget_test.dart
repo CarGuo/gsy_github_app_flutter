@@ -7,10 +7,13 @@ import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
 
 /// GSYUserIconWidget 的**视觉尺寸 vs 命中区尺寸 vs 布局占位**契约守约：
 ///
-/// GSY 从 2018 至今的隐式契约是：`SizedBox(width, height)` 同时决定视觉呈现和布局占位。
-/// 稠密列表（discussion/dynamic timeline）里 20-28 dp 的头像旁边紧挨着 `Expanded(Text)`，
-/// 如果 widget 单方面把布局占位撑到 48dp，Row 里的 Text 可用宽度会被挤压 20-28 dp，
-/// 引发文本截断 / RenderFlex overflow 回归。
+/// GSY 拍板方向（2026-09，见 `docs/03-runbooks/dart-3.13-adoption.md` D5）：
+/// - **widget 层默认 `minTapTargetSize = kMinInteractiveDimension`（48dp）**——
+///   无障碍红线是安全出厂设置：Material / iOS HIG 均要求可点击控件命中区 ≥ 48dp。
+/// - 稠密列表（dynamic timeline / discussion 内嵌评论 / PR files inline
+///   comment / 组织 & 赞助者头像并排）里头像本就 20-28 dp，紧挨 `Expanded(Text)`，
+///   默认外扩到 48 会挤压兄弟文本。这些 caller **必须显式传 `minTapTargetSize: null`
+///   opt-out**，声明"接受 <48dp 命中区以换布局稳定"。
 ///
 /// 测量口径：
 /// - 布局占位 = GSYUserIconWidget 自身 render size 减去外层 Padding
@@ -61,8 +64,8 @@ void main() {
     return Size(widgetSize.width - 10, widgetSize.height - 4);
   }
 
-  group('GSYUserIconWidget 布局占位守约（稠密列表回归防护）', () {
-    testWidgets('默认 caller + 有 onPressed：布局占位 = 视觉尺寸（20×20）',
+  group('GSYUserIconWidget 布局占位守约（无障碍默认 + 稠密位 opt-out）', () {
+    testWidgets('默认 caller + 有 onPressed：布局占位外扩到 48×48（无障碍红线）',
         (tester) async {
       await tester.pumpWidget(wrap(
         GSYUserIconWidget(
@@ -71,22 +74,37 @@ void main() {
           onPressed: () {},
         ),
       ));
-      expect(iconLayoutSize(tester), const Size(20, 20),
-          reason: '默认 minTapTargetSize=null 时布局占位必须等于视觉尺寸，'
-              '否则稠密列表里 Expanded 兄弟被挤压');
+      expect(iconLayoutSize(tester), const Size(48, 48),
+          reason: '默认 minTapTargetSize=48 是"安全出厂设置"，'
+              '视觉尺寸 <48 时命中区/布局占位外扩到 48，守住无障碍红线');
     });
 
-    testWidgets('onPressed=null + 显式设 48dp：布局占位仍 = 视觉尺寸（28×28）',
+    testWidgets('显式 opt-out minTapTargetSize=null：布局占位=视觉尺寸（20×20）',
+        (tester) async {
+      await tester.pumpWidget(wrap(
+        GSYUserIconWidget(
+          width: 20,
+          height: 20,
+          onPressed: () {},
+          minTapTargetSize: null,
+        ),
+      ));
+      expect(iconLayoutSize(tester), const Size(20, 20),
+          reason: '稠密列表（timeline/内嵌评论）显式 null，'
+              '接受 <48dp 命中区以换 Row 里 Expanded 文本不被挤压');
+    });
+
+    testWidgets('onPressed=null + 保持默认 48dp：布局占位仍 = 视觉尺寸（28×28）',
         (tester) async {
       await tester.pumpWidget(wrap(
         const GSYUserIconWidget(
           width: 28,
           height: 28,
-          minTapTargetSize: kMinInteractiveDimension,
         ),
       ));
       expect(iconLayoutSize(tester), const Size(28, 28),
-          reason: 'onPressed=null 表示不可点，即使显式声明 48dp 也不应外扩');
+          reason: 'onPressed=null 表示不可点，此时即使默认 minTapTargetSize=48 '
+              '也不应外扩——不可点的头像没必要保 48dp 命中区');
     });
 
     testWidgets('显式 opt-in minTapTargetSize=48：布局占位外扩到 48×48',

@@ -9,7 +9,7 @@
 > Phase 1 首轮"迁移主线 + review 反馈修复 + 冒烟意外发现修复"的所有 commit sha 见下方
 > [Phase 1 首轮 reviewer 反馈修复 & 顺带清账](#phase-1-首轮-reviewer-反馈修复--顺带清账) 章节尾部收尾表格。
 >
-> 最后更新：2026-09-02（Phase 1 首轮全部收尾，含 `ab3464d` RenderFlex overflow 修复）
+> 最后更新：2026-09-02（Phase 1 首轮全部收尾，含 `ab3464d` RenderFlex overflow 修复 + D5 命中区默认 48dp 收尾）
 
 ## 为什么写这个手册
 
@@ -206,6 +206,59 @@ Phase 0 只涉及**pubspec 层升级 + 一个非 UI 层数据类语法迁移**�
 
 **commit**：`ab3464d`（fix(user-icon): SizedBox tight 约束 button 外壳,根除 RenderFlex overflow）。
 
+#### D5：`ab3464d` 的隐形副作用——tap 命中区跌破 48dp 无障碍红线（第二/三轮 reviewer 抓到，用户拍板收尾）
+
+**背景**：`ab3464d` 用 `SizedBox(width, height)` tight 约束 button 外壳后，30dp 头像的命中区跟着缩到 30dp，20-28dp 的稠密位（timeline / 内嵌评论 / PR files inline comment）跌到 20-28dp——**低于 Material / iOS HIG 均要求的 48dp 可点击控件最小尺寸**。第 `ab3464d` 条目下面 197 行"副作用评估"里已经诚实标注了这一点，但当时选择先修 overflow、命中区问题挂账。
+
+**第二/三轮 reviewer follow-up 的两条路径**：
+- **路径 A**：widget 默认 `null`（保持 `ab3464d` 后行为），非稠密位 caller 显式传 48
+- **路径 B**：widget 默认 `48`（安全出厂设置），稠密位 caller 显式传 `null` opt-out
+
+**用户拍板（2026-09-02）走路径 B**：默认 48dp，改 13 个 caller 兜住布局。
+
+**理由（第一性原理）**：
+- **无障碍是红线，不该靠 caller 记住每次显式写才能守住**。widget 默认应是"安全出厂设置"——`null` 会让新加的 caller 天然违反 HIG，需要每个新 caller 靠代码 review 抓才守得住；`48` 会让新加的 caller 天然合规，只有稠密位需要显式声明"我知道我在做什么"。
+- **稠密位是少数派**（`lib/**` 里 `GSYUserIconWidget(` 共 14 处 = 1 处 constructor 定义 + 13 处 caller；13 个 caller 中 12 个稠密 / 1 个已 50dp 天然合规 / 0 个新写非稠密），少数派承担显式 opt-out 的心智成本，比多数派承担显式 opt-in 更合理。
+- Material 官方对 dense list 的可访问性建议是 40dp，本仓库稠密位是 20-36dp，硬提到 40 会让相邻文本被挤压——这不是"改需求过测试"，这是**同一屏内 tap 命中和布局稳定天然冲突**，必须由 caller 按语境显式选边。
+
+**落地清单**：
+
+widget 层（[gsy_user_icon_widget.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/gsy_user_icon_widget.dart)）：
+- `minTapTargetSize` 默认值从 `null` 改为 `kMinInteractiveDimension`（48）
+- 有 `onPressed` 且非 null 时，命中区/布局占位外扩到 `max(视觉尺寸, 48)`；`onPressed=null` 或 `minTapTargetSize=null` 时保持 `ab3464d` 后的"视觉==命中==布局"三者对齐
+
+caller 层（12 处稠密位显式 `minTapTargetSize: null` opt-out）：
+
+| 文件 | 视觉尺寸 | 语境 |
+|---|---|---|
+| [gsy_event_item.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/gsy_event_item.dart#L41-L50) | 30 | dynamic timeline 事件行，Row 里紧挨 Expanded 用户名 |
+| [gsy_event_group_item.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/widget/gsy_event_group_item.dart#L312-L323) | 34 | 分组事件头，Row 里 Expanded + 计数 Text |
+| [discussion_detail_page.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/discussion/discussion_detail_page.dart) | 40/28/20 | 3 处：主贴 / 评论 / 内嵌回复，均紧挨 Expanded 文本 |
+| [discussion_item.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/discussion/widget/discussion_item.dart#L150-L161) | 36 | discussion list item，Row 里 Expanded 标题+摘要 |
+| [pull_request_files_page.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/issue/pull_request_files_page.dart#L338-L343) | 20 | PR files inline comment，最典型稠密位 |
+| [push_header.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/push/widget/push_header.dart#L45-L55) | 40 | commit push 事件头，Row 里 Expanded 提交信息 |
+| [issue_item.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/issue/widget/issue_item.dart#L201-L209) | 30 | issue list item，Row 里 Expanded 标题+meta |
+| [repos_item.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/repos/widget/repos_item.dart#L57-L67) | 40 | repos list item，Row 里 Expanded 仓库名+语言 tag |
+| [user_header.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/user/widget/user_header.dart#L70-L79) | 30 | 用户主页组织横排头像，Row 里多头像 + more 按钮 |
+| [user_sponsors.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/user/widget/user_sponsors.dart#L93-L102) | 36 | 赞助者横排头像，Row 里多头像并列 |
+
+**唯一保留默认的 caller**：[issue_header_item.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/page/issue/widget/issue_header_item.dart#L349-L359) 视觉本就 50×50（≥48），已合规，无需 opt-out。
+
+**测试守约**（[gsy_user_icon_widget_test.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/test/widget/gsy_user_icon_widget_test.dart)）：翻转到路径 B 语义——
+- 默认 caller + 有 onPressed → 布局占位=48×48（守红线）
+- 显式 opt-out(null) → 布局占位=视觉尺寸（保稠密布局）
+- onPressed=null → 不外扩（不可点头像没必要保 48）
+- 显式 opt-in 48 与 opt-in <视觉 → 保持之前语义
+共 5 条，全绿。
+
+**验证**：`flutter analyze` 无新增 issue（仅仓库既有 legacy plugin 警告 1 条），`flutter test` 302/302 pass。
+
+**未覆盖分支**：
+- 12 个 opt-out caller 只做了 analyze + test 覆盖，未做实机截图对比；判断依据是"opt-out 后行为完全等价于 `ab3464d` 后的旧行为"，视觉零回归推断
+- 唯一保留默认的 `issue_header_item.dart` 有真机验证价值（50×50 命中区不变，但内部 SizedBox 逻辑走"expandTapTarget=true 但 width≥min"分支），本轮未实测
+
+**关联 commit**：本条目对应 fix(user-icon): 默认 48dp 守无障碍红线 + 12 处稠密位显式 opt-out。
+
 #### 收尾小结（Phase 1 首轮真实完成状态）
 
 | 议题 | commit | 类型 | 状态 |
@@ -216,6 +269,7 @@ Phase 0 只涉及**pubspec 层升级 + 一个非 UI 层数据类语法迁移**�
 | B1 类：`Map.from` 浅复制根除 | `1999021` → `9653396` 事实回滚 | review 反馈 | ⚠️ 被 M3 反悔（跨来源 Map 兼容压过浅拷贝优化）|
 | B2 类：`SearchUserQL` dynamic 类型防护 | `d6a817d` | review 反馈 | ✅ |
 | D 类：`gsy_user_icon_widget` RenderFlex overflow | `ab3464d` | 冒烟意外发现 | ✅ |
+| D5：`ab3464d` 副作用——命中区跌破 48dp（默认 48 + 12 处 opt-out） | 本轮 | 第二/三轮 reviewer + 用户拍板 | ✅ |
 
 **Phase 1 首轮到此正式收官**。后续 primary constructor 推进走"Phase 1 后续批次"节奏，见下一节。
 

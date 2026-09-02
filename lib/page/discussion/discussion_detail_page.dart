@@ -317,6 +317,7 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
                 GSYUserIconWidget(
                   width: 40,
                   height: 40,
+                  minTapTargetSize: null,
                   image: authorAvatar,
                   onPressed: (authorLogin == null || authorLogin.isEmpty)
                       ? null
@@ -654,6 +655,7 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
                 GSYUserIconWidget(
                   width: 28,
                   height: 28,
+                  minTapTargetSize: null,
                   image: authorAvatar,
                   onPressed: (authorLogin == null || authorLogin.isEmpty)
                       ? null
@@ -788,6 +790,7 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
               GSYUserIconWidget(
                 width: 20,
                 height: 20,
+                minTapTargetSize: null,
                 image: authorAvatar,
                 onPressed: (authorLogin == null || authorLogin.isEmpty)
                     ? null

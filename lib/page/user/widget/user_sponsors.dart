@@ -94,6 +94,7 @@ class _SponsorAvatar extends StatelessWidget {
       width: 36,
       height: 36,
       padding: const EdgeInsets.only(right: 8.0),
+      minTapTargetSize: null,
       image: sponsor.avatarUrl,
       onPressed: (login != null && login.isNotEmpty)
           ? () => NavigatorUtils.goPerson(context, login)

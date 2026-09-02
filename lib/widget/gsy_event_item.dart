@@ -42,6 +42,7 @@ class GSYEventItem extends StatelessWidget {
             padding: const EdgeInsets.only(top: 0.0, right: 5.0, left: 0.0),
             width: 30.0,
             height: 30.0,
+            minTapTargetSize: null,
             image: eventViewModel.actionUserPic,
             onPressed: () {
               NavigatorUtils.goPerson(context, eventViewModel.actionUser);
