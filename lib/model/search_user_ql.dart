@@ -8,20 +8,34 @@ class SearchUserQL({
 }) {
   static SearchUserQL fromMap(Map map) {
     String? lang;
-    if (map["lang"] != null &&
-        map["lang"]["nodes"] != null &&
-        map["lang"]["nodes"].length > 0 &&
-        map["lang"]["nodes"][0]["languages"] != null &&
-        map["lang"]["nodes"][0]["languages"]["nodes"] != null &&
-        map["lang"]["nodes"][0]["languages"]["nodes"].length > 0) {
-      lang = map["lang"]["nodes"][0]["languages"]["nodes"][0]["name"];
+    final langNode = map['lang'];
+    if (langNode is Map) {
+      final nodes = langNode['nodes'];
+      if (nodes is List && nodes.isNotEmpty && nodes.first is Map) {
+        final languages = (nodes.first as Map)['languages'];
+        if (languages is Map) {
+          final langNodes = languages['nodes'];
+          if (langNodes is List &&
+              langNodes.isNotEmpty &&
+              langNodes.first is Map) {
+            lang = (langNodes.first as Map)['name'] as String?;
+          }
+        }
+      }
     }
+
+    int? followers;
+    final followersNode = map['followers'];
+    if (followersNode is Map) {
+      followers = (followersNode['totalCount'] as num?)?.toInt();
+    }
+
     return SearchUserQL(
-      followers: map["followers"]?["totalCount"],
-      name: map["name"],
-      avatarUrl: map["avatarUrl"],
-      bio: map["bio"],
-      login: map["login"],
+      followers: followers,
+      name: map['name'] as String?,
+      avatarUrl: map['avatarUrl'] as String?,
+      bio: map['bio'] as String?,
+      login: map['login'] as String?,
       lang: lang,
     );
   }

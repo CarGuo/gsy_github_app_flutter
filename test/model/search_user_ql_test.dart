@@ -104,4 +104,59 @@ void main() {
       expect(u.lang, isNull);
     });
   });
+
+  group('SearchUserQL.fromMap - 类型防护（防止 GraphQL schema 漂移到 UI 才崩）', () {
+    test('followers 是 double 时正确 toInt', () {
+      final u = SearchUserQL.fromMap({
+        'followers': {'totalCount': 128.0},
+      });
+      expect(u.followers, 128);
+    });
+
+    test('followers 直接是 int 而不是 {totalCount} 包裹时降级为 null，不 crash', () {
+      final u = SearchUserQL.fromMap({'followers': 42});
+      expect(u.followers, isNull,
+          reason: 'GraphQL 契约要求 followers 是 {totalCount} 对象');
+    });
+
+    test('followers.totalCount 是 String 时按契约抛 TypeError', () {
+      expect(
+        () => SearchUserQL.fromMap({
+          'followers': {'totalCount': '42'},
+        }),
+        throwsA(isA<TypeError>()),
+        reason: 'GraphQL 契约保证 totalCount 是 num，收到 String 应该显式失败',
+      );
+    });
+
+    test('name / avatarUrl / bio / login 是非 String 类型时按契约抛 TypeError', () {
+      expect(() => SearchUserQL.fromMap({'name': 123}),
+          throwsA(isA<TypeError>()));
+      expect(() => SearchUserQL.fromMap({'avatarUrl': 123}),
+          throwsA(isA<TypeError>()));
+      expect(() => SearchUserQL.fromMap({'login': true}),
+          throwsA(isA<TypeError>()));
+    });
+
+    test('lang 顶层不是 Map 而是 List 时降级为 null，不 NoSuchMethodError', () {
+      final u = SearchUserQL.fromMap({'lang': []});
+      expect(u.lang, isNull);
+    });
+
+    test('lang.nodes 不是 List 而是 Map 时降级为 null，不 crash', () {
+      final u = SearchUserQL.fromMap({
+        'lang': {'nodes': {}},
+      });
+      expect(u.lang, isNull);
+    });
+
+    test('lang.nodes[0] 不是 Map 而是 String 时降级为 null，不 crash', () {
+      final u = SearchUserQL.fromMap({
+        'lang': {
+          'nodes': ['unexpected-string'],
+        },
+      });
+      expect(u.lang, isNull);
+    });
+  });
 }
