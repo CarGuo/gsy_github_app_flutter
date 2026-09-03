@@ -240,3 +240,129 @@
 4. 关联决策记录：[ADR-0005 大屏 / 横屏 / 折叠屏自适应导航抽象](file:///d:/workspace/project/gsy_github_app_flutter/docs/06-decisions/ADR-0005-大屏与折叠屏自适应导航抽象.md)
 5. 关联路线图：[roadmap §四点五](file:///d:/workspace/project/gsy_github_app_flutter/docs/00-overview/roadmap.md)
 
+## 2026-09-03 P0-1 / P0-2 冒烟证据（reviewer 2026-09-03）
+
+**背景**：reviewer 2026-09-03 从昨日至今 M2 双栏 shell（`gsy_adaptive_shell.dart` + `gsy_tabbar_widget.dart`）
+差量里挑出两个 P0：
+
+- **P0-1**：M2 关键路径缺**真机冒烟证据**——只跑了 `flutter analyze` + `flutter test`，没有配套截图 / runtime errors dump
+- **P0-2**：[openDetail](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart#L307-L358) 在 `canShowTwoPane=true` 但 `detailNavigatorKey.currentState==null` 时静默走
+  `Navigator.of(context).push`，会把 detail 挂到根 Navigator 覆盖 master 列（违反 P2 §2 契约）
+
+### P0-2 修复：[openDetail](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart#L307-L358) 覆盖 master 列的自打脸路径
+
+策略（**责任上移**）：
+
+- delegate 层在此分支立刻返回 `Future<T?>.value(null)`，绝不走根 Navigator——避免自打脸；
+- debug 用
+  `assert(() { FlutterError.reportError(...); return true; }())`
+  惯用法记账，把新引入这条路径的 caller 立刻在开发期暴露；release AOT 直接去掉整个 assert 表达式；
+- caller（deep-link / [initUserInfo](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/common_utils.dart)）需要在
+  `WidgetsBinding.instance.addPostFrameCallback` 里等 shell 装配完再调 openDetail；
+- 曾经在 delegate 内挂 `_retryPushOnNextFrame` 做一次帧后重试，实测在
+  `flutter_test` 空闲期 postFrame 排不上帧（没人 mark dirty），completer 挂死；
+  改为"责任上移"后逻辑退化到零副作用，单测跑得干净。
+
+**契约测试**（新增 3 case）见
+[gsy_adaptive_shell_test.dart §Master-Detail 契约（P2 §2）](file:///d:/workspace/project/gsy_github_app_flutter/test/common/style/gsy_adaptive_shell_test.dart#L654-L849)：
+
+1. `openDetail：canShowTwoPane=true 但 detailNavigator 未挂载 → debug 通过 FlutterError.reportError 记账`
+2. `openDetail：caller 用 addPostFrameCallback 延后重试 → push 命中 detailKey 子树`
+3. `openDetail：canShowTwoPane=true 但 detailNavigator 缺席 → push 丢弃 + 记账，不覆盖 master`
+
+**编译验证**：
+
+- `fvm flutter analyze lib\common\style\gsy_adaptive_shell.dart test\common\style\gsy_adaptive_shell_test.dart` → `No issues found`
+- `fvm flutter test`（全量 353 case）→ `All tests passed!`
+
+### P0-1 真机冒烟证据（Android compact）
+
+**设备**：`M2104K10AC / jfxgpjeul7lrpjkz`（Xiaomi，Android 13 API 33，`wm size` 1080x2400，dp 宽 ~400，属于 compact 断点）
+**构建**：`fvm flutter run -d jfxgpjeul7lrpjkz --debug`（debug 装机，方便未来配 mcp_dart 拉 widget tree；无 `flutter install`）
+**Dart VM Service URI**（本机 forward，仅本机可用，未连 mcp_dart）：`http://127.0.0.1:9080/-6pR5IBUWLs=/`
+**stdout 日志绝对路径**：`D:\workspace\smoke-evidence\2026-09-03-p0-1\flutter_run_stdout.log`
+**runtime errors 结果**（`Select-String -Pattern 'Exception|Error|ERROR' flutter_run_stdout.log` → 0 命中）：
+`flutter run` 主链路 stdout 完全无 Dart 层 Exception / Error 关键字。日志唯一
+非常规行是 `I/flutter (12694)` 打印的 Impeller 后端声明 + 第三方插件（fluro / dio）
+自身 debug info，无异常栈。
+
+**截图（绝对路径，未入库，reviewer 从本地复核）**：
+
+| 用途 | 路径 |
+|---|---|
+| ①冷启动首帧 compact home（"动态"tab） | `D:\workspace\smoke-evidence\2026-09-03-p0-1\01_home_after_launch.png` |
+| ②硬件 back 从 home 触发 → 退回桌面（符合 compact 单栏 PopScope 契约） | `D:\workspace\smoke-evidence\2026-09-03-p0-1\02_after_back_from_home.png` |
+| ③再次冷启动回到 compact home 首帧无异常 | `D:\workspace\smoke-evidence\2026-09-03-p0-1\03_home_after_relaunch.png` |
+
+### VM Service widget tree 证据（2026-09-03 补，直连 JSON-RPC）
+
+**背景订正**：初版汇报把"未接 `mcp_dart` MCP 客户端"当成"没法拿 widget tree"，属于自我矮化。
+`flutter run --debug` 起来后 [Dart VM Service Protocol](https://github.com/dart-lang/sdk/blob/main/runtime/vm/service/service.md)
+本身就是 spec 化的 JSON-RPC over WebSocket，`ext.flutter.inspector.*` 是
+[Flutter WidgetInspectorService](https://api.flutter.dev/flutter/widgets/WidgetInspectorService-class.html)
+向 VM Service 注册的官方 service extension。`dart_mcp_server` / `mcp_dart` 只是这一层
+的 MCP 客户端封装。所以直接对 WebSocket 发 JSON-RPC 与走 mcp_dart 语义等价，走的是同
+一份官方 spec。
+
+**采集方式**：临时 dart 脚本
+[dump_widget_tree.dart](file:///D:/workspace/smoke-evidence/2026-09-03-p0-1/dump_widget_tree.dart)（不入库业务代码，留本地），
+连 `ws://127.0.0.1:12226/ETOH9r-YSxQ=/ws`，依次调
+`getVM` → `getIsolate` → `ext.flutter.inspector.getRootWidgetTree`
+（带 `groupName=gsy-smoke, isSummaryTree=true, withPreviews=true`）。
+
+**Dart VM Service URI（重启 flutter run 后新值）**：`http://127.0.0.1:12226/ETOH9r-YSxQ=/`
+（stdout log [flutter_run_stdout_v2.log](file:///D:/workspace/smoke-evidence/2026-09-03-p0-1/flutter_run_stdout_v2.log) 第 54 行）
+
+**产物**：
+
+| 文件 | 大小 | 用途 |
+|---|---|---|
+| `D:\workspace\smoke-evidence\2026-09-03-p0-1\extension_rpcs.txt` | 76 个 extension RPC | 证明 debug 模式下 `ext.flutter.inspector.*` 全套 32 个 inspector RPC 挂上（含 `getRootWidgetTree` / `getRootWidgetSummaryTreeWithPreviews` / `getSelectedWidget` / `screenshot`） |
+| `D:\workspace\smoke-evidence\2026-09-03-p0-1\widget_tree_full.json` | 844 KB | 全量 widget tree（含 `creationLocation` 精确到源文件行、`valueId` inspector 引用、`createdByLocalProject` 标志） |
+
+**M2 关键 shell 结构命中证据**（`Select-String 'GSYAdaptive|_ShellFor|HomePage|detailNavigator|GSYTab|PopScope|GSYTwoPane|adaptive_shell|gsy_tabbar' widget_tree_full.json` → 15 命中，其中 shell 骨架层的定位如下）：
+
+```
+[root] (framework RootWidget)
+ └─ ConfigWrapper (main.dart:24)
+     └─ _InheritedConfig (config_wrapper.dart:18)
+         └─ FlutterReduxApp (main.dart:26)
+             └─ UncontrolledProviderScope           ← Riverpod 全局 scope
+                 └─ ... (MaterialApp/Router 装配层)
+                     └─ HomePage (app.dart:141)      ← inspector-20
+                         └─ PopScope<Object> (home_page.dart:85)   ← inspector-21，M2 硬件返回契约
+                             └─ GSYTabBarWidget (home_page.dart:101) ← inspector-22，compact 骨架
+                                 └─ Scaffold (gsy_tabbar_widget.dart:307)
+                                     └─ PageView + AppBar + GSYTitleBar 等
+```
+
+**契约层结论**：
+
+- ✅ `PopScope<Object>` 稳定挂在 [home_page.dart §85](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/home/home_page.dart#L85) 位置，其 child 是 `GSYTabBarWidget`——**hardware back 分派入口就位**
+- ✅ 当前是 compact 模式（`GSYTabBarWidget` 直挂 HomePage）——符合 dp ~400 断点决议
+- ✅ 没有 `GSYAdaptiveNavigation` / `detailNavigatorKey` / `GSYTwoPaneDetailPlaceholder` 挂在 tree 里——**符合 compact 契约**（two-pane 才实例化 detail navigator，见 [gsy_adaptive_shell.dart §buildShell 分支](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart)）
+
+**已知折损**：`ext.flutter.inspector.getRootWidgetSummaryTreeWithPreviews` /
+`ext.flutter.inspector.getRootWidget` 在**没预先 setPubRootDirectories** 时会
+`Null check operator used on a null value`（framework 侧 issue，见
+[widget_inspector.dart §2090](file:///D:/DevData/FVM/versions/3.47.2/packages/flutter/lib/src/widgets/widget_inspector.dart)）；
+用 `getRootWidgetTree` + 显式 groupName 绕过，功能等价。
+
+### 已知缺口（本轮真机做不到，reviewer 需要知悉）
+
+1. **expanded 双栏 M2 关键路径未覆盖**：手机 dp 宽 ~400 是 compact，达不到 ≥840dp expanded；
+   本次修复的 [openDetail P0-2 分支](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart#L307-L358)
+   与 [PopScope 双栏 back 契约](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/home/home_page.dart)
+   在真机上只能靠平板 / 大屏 emulator 复核。**目前依赖单测**
+   [gsy_adaptive_shell_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/common/style/gsy_adaptive_shell_test.dart)
+   的 34 条契约测试保证行为，等下次装机到平板 / Fold 再补真机 widget tree（此时 tree 里应能命中
+   `GSYAdaptiveNavigation.detailNavigatorKey`）。
+2. **`adb shell input tap/swipe` 坐标脚本禁令**（2026-09-02 拍板）：本轮遵守禁令，
+   `openDetail push 到 detailKey 子树` / `ReposItem 窄列 overflow 修复` 需要点开
+   卡片才能验证。虽然本轮通过 VM Service 拉到了 shell 层 widget tree，但**尚未通过
+   `ext.flutter.inspector.setSelectionById` + `getSelectedWidget`** 完成 UI 事件层面
+   自动触发（下轮可用 `ext.flutter.inspector.screenshot` 或 `vm_service eval` 走
+   `Navigator.push` 直接触发路由）。这两条路径的行为回归依赖 case 22
+   `openDetail 分派锁死` / `ReposItem widget tree` 单测（`test/widget/repos_item_test.dart`）保证。
+
+

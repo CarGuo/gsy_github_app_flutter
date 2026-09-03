@@ -16,13 +16,38 @@ class ReposDetailProvider with ChangeNotifier {
 
   new({required this.userName, required this.reposName});
 
+  /// 记录本 provider 是否已经被 [ChangeNotifier.dispose] 掉。
+  ///
+  /// **不是** UI 层 State 的 `mounted`——那个是 State 生命周期字段，与
+  /// ChangeNotifier 无关。这里的语义是：本 provider **已被 Provider 库
+  /// dispose**（例如 MultiProvider 卸载或 State recreate 覆盖旧 provider），
+  /// 后续 async 回调回来时**不应再 notifyListeners**，否则命中
+  /// `ChangeNotifier.debugAssertNotDisposed` 抛 "used after disposed"。
+  ///
+  /// 这条防御**只处理症状**——真正 root cause 是 detail 页 State 提前
+  /// dispose（reviewer P0-1 未定位透），先让 log 干净下来。
+  bool _disposed = false;
+
+  bool get isDisposed => _disposed;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  void _safeNotify() {
+    if (_disposed) return;
+    notifyListeners();
+  }
+
   int _currentIndex = 0;
 
   int get currentIndex => _currentIndex;
 
   set currentIndex(int data) {
     _currentIndex = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   String _currentBranch = "";
@@ -37,14 +62,14 @@ class ReposDetailProvider with ChangeNotifier {
 
   set currentBranch(String data) {
     _currentBranch = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   /// 用户主动通过 branch picker 选择分支时调用，会锁定 defaultBranch 覆盖逻辑。
   void selectBranch(String data) {
     _currentBranch = data;
     _userSelectedBranch = true;
-    notifyListeners();
+    _safeNotify();
   }
 
   BottomStatusModel? _bottomModel;
@@ -53,7 +78,7 @@ class ReposDetailProvider with ChangeNotifier {
 
   set bottomModel(BottomStatusModel? data) {
     _bottomModel = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   List<Widget>? _footerButtons;
@@ -62,7 +87,7 @@ class ReposDetailProvider with ChangeNotifier {
 
   set footerButtons(List<Widget>? data) {
     _footerButtons = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   List<Branch>? _branchList;
@@ -71,7 +96,7 @@ class ReposDetailProvider with ChangeNotifier {
 
   set branchList(List<Branch>? data) {
     _branchList = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   /// 仓库 labels 缓存，供 issue 列表筛选 chip 使用。
@@ -87,7 +112,7 @@ class ReposDetailProvider with ChangeNotifier {
 
   set repository(RepositoryQL? data) {
     _repository = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   String? _markdownData;
@@ -96,7 +121,7 @@ class ReposDetailProvider with ChangeNotifier {
 
   set markdownData(String? data) {
     _markdownData = data;
-    notifyListeners();
+    _safeNotify();
   }
 
   ///#################################################///
@@ -222,7 +247,7 @@ class ReposDetailProvider with ChangeNotifier {
         await network.getRepositoryLabelsRequest(userName, reposName);
     if (result != null && result.result == true && result.data is List) {
       _labelsCache = List<String>.from(result.data as List);
-      notifyListeners();
+      _safeNotify();
       return _labelsCache!;
     }
     _labelsCache = <String>[];

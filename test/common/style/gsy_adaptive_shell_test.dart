@@ -651,6 +651,203 @@ void main() {
       expect(find.byKey(rootKey), findsOneWidget);
     });
 
+    testWidgets(
+        'openDetail：canShowTwoPane=true 但 detailNavigator 未挂载 → debug 通过 FlutterError.reportError 记账（reviewer 2026-09-03 P0-2）',
+        (tester) async {
+      // 意图：VG1 补齐——历史实现在此分支静默走 Navigator.of(context).push，
+      // 会把 detail 挂到根 Navigator 覆盖整个 master 列。P0-2 修复后 debug
+      // 必须通过 `assert(() { FlutterError.reportError(...); return true; }())`
+      // 惯用法记账，让新引入这条路径的 caller 立刻在开发期暴露；同时不中断
+      // 执行流，也不静默走 root push——直接返回 `Future<T?>.value(null)`，
+      // 由 caller 侧的 `addPostFrameCallback` 承担重试语义。
+      late BuildContext masterCtx;
+      await tester.pumpWidget(MediaQuery(
+        data: const MediaQueryData(size: Size(1400, 900)),
+        child: MaterialApp(
+          home: Scaffold(
+            body: Builder(builder: (ctx) {
+              masterCtx = ctx;
+              return const SizedBox.expand();
+            }),
+          ),
+        ),
+      ));
+      await tester.pump();
+
+      // 前置：canShowTwoPane=true 且 detailNavigatorKey.currentState 为 null
+      // （测试骨架故意不挂 detail Navigator，模拟"shell 首帧未 layout"竞态）。
+      expect(GSYAdaptiveNavigation.instance.canShowTwoPane(masterCtx), isTrue);
+      expect(
+        GSYAdaptiveNavigation.instance.detailNavigatorKey.currentState,
+        isNull,
+      );
+
+      // 调用 openDetail：debug 下会通过 FlutterError.reportError 记账，
+      // 但**不会**同步抛（区别于 `assert(false)`），保证 caller 拿到有效
+      // Future 且立刻完成为 null。
+      final future = GSYAdaptiveNavigation.instance.openDetail<Object?>(
+        masterCtx,
+        const SizedBox.shrink(),
+        routeName: 'p0-2-report',
+      );
+
+      // pending exception 需要在 pumpAndSettle 前先取出，否则 binding 会
+      // 在下一次 pump 时重新抛出，导致 case 挂在 pump 上。
+      final reported = tester.takeException();
+      expect(reported, isA<StateError>(),
+          reason: 'P0-2 debug 契约：必须通过 FlutterError.reportError 记账，且是 StateError');
+      expect(
+        (reported as StateError).message,
+        contains('detailNavigatorKey 未挂载'),
+      );
+
+      // Future 应立刻完成为 null（不 hang，也不静默走根 Navigator）。
+      expect(await future, isNull);
+    });
+
+    testWidgets(
+        'openDetail：caller 用 addPostFrameCallback 延后重试 → push 命中 detailKey 子树（reviewer 2026-09-03 P0-2）',
+        (tester) async {
+      // 意图：验证 P0-2 修复的"责任上移"策略——delegate 层立刻返回 null，
+      // 但 caller 侧（deep-link / initUserInfo）遵守文档要求，在
+      // `addPostFrameCallback` 里等 shell 装配完再调 openDetail，
+      // 就能命中 detailNavigator 并 push 到 detailKey 子树。
+      //
+      // 这条 case 覆盖生产链路的正确姿势：第一次 openDetail 在 shell 未
+      // 挂载时被"记账 + 丢弃"，caller 用 postFrame 延后到 shell 装配完
+      // 再调一次；第二次 push 应命中 detailKey，不覆盖 master 列。
+      final detailKey = GSYAdaptiveNavigation.instance.detailNavigatorKey;
+      const markerKey = Key('gsy-p0-2-retry-marker');
+      late BuildContext masterCtx;
+      // showDetailPane 通过 setState 从 false 翻到 true，模拟"shell 首帧
+      // 尚未挂 detailPane、下一帧才挂上"的真实竞态。
+      final showDetailPane = ValueNotifier<bool>(false);
+      addTearDown(showDetailPane.dispose);
+
+      await tester.pumpWidget(MediaQuery(
+        data: const MediaQueryData(size: Size(1400, 900)),
+        child: MaterialApp(
+          home: Scaffold(
+            body: ValueListenableBuilder<bool>(
+              valueListenable: showDetailPane,
+              builder: (_, mounted, __) => Row(
+                children: [
+                  Expanded(
+                    flex: 42,
+                    child: Builder(builder: (ctx) {
+                      masterCtx = ctx;
+                      return const SizedBox.expand();
+                    }),
+                  ),
+                  Expanded(
+                    flex: 58,
+                    child: mounted
+                        ? Navigator(
+                            key: detailKey,
+                            onGenerateRoute: (settings) => MaterialPageRoute(
+                              settings: settings,
+                              builder: (_) => const SizedBox.expand(),
+                            ),
+                          )
+                        : const SizedBox.expand(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ));
+      await tester.pump();
+
+      // 前置：detailNavigator 未挂载。
+      expect(detailKey.currentState, isNull);
+
+      // 第一次 openDetail：模拟"caller 在 shell 首帧就试图 push"的错误姿势，
+      // 应被记账 + 丢弃，返回 null future。
+      final firstFuture = GSYAdaptiveNavigation.instance.openDetail<Object?>(
+        masterCtx,
+        Container(key: markerKey),
+        routeName: 'p0-2-retry-first',
+      );
+      final firstReport = tester.takeException();
+      expect(firstReport, isA<StateError>(),
+          reason: 'P0-2 debug 契约：第一次 openDetail 必须 report StateError');
+      expect(await firstFuture, isNull,
+          reason: 'P0-2 契约：navState==null 时立刻返回 null future');
+
+      // 现在把 detailPane 挂上，模拟 shell 装配完成。
+      showDetailPane.value = true;
+      await tester.pumpAndSettle();
+      expect(detailKey.currentState, isNotNull,
+          reason: 'detailPane 挂上后 detailNavigator.currentState 必须可用');
+
+      // 第二次 openDetail：模拟 caller 遵守契约，在 postFrame 后重试。
+      // 这次应命中 detailKey 子树。
+      final secondFuture = GSYAdaptiveNavigation.instance.openDetail(
+        masterCtx,
+        Container(key: markerKey),
+        routeName: 'p0-2-retry-second',
+      );
+      await tester.pumpAndSettle();
+      expect(secondFuture, isNotNull);
+
+      // 关键契约：marker 出现在 detailKey 子树下，且**不**出现在根
+      // Navigator 覆盖 master 列的位置。
+      expect(find.byKey(markerKey), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byWidget(detailKey.currentWidget!),
+          matching: find.byKey(markerKey),
+        ),
+        findsOneWidget,
+        reason:
+            'P0-2 契约：canShowTwoPane=true 时 openDetail 必须 push 到 detailKey，'
+            '不允许静默降级到 Navigator.of(context)（会覆盖 master 列）',
+      );
+    });
+
+    testWidgets(
+        'openDetail：canShowTwoPane=true 但 detailNavigator 缺席 → push 丢弃 + 记账，不覆盖 master（reviewer 2026-09-03 P0-2）',
+        (tester) async {
+      // 意图：验证 P0-2 修复的"navState==null"分支——绝不静默走
+      // Navigator.of(context).push 覆盖 master 列，而是立刻返回 null future
+      // + debug 报错，把责任推给 caller 侧的 postFrame 延后。
+      const markerKey = Key('gsy-p0-2-give-up-marker');
+      late BuildContext masterCtx;
+      // 全程不挂 detail Navigator，模拟"shell 装配 bug / detailPane 一直没上"。
+      await tester.pumpWidget(MediaQuery(
+        data: const MediaQueryData(size: Size(1400, 900)),
+        child: MaterialApp(
+          home: Scaffold(
+            body: Builder(builder: (ctx) {
+              masterCtx = ctx;
+              return const SizedBox.expand();
+            }),
+          ),
+        ),
+      ));
+      await tester.pump();
+
+      final future = GSYAdaptiveNavigation.instance.openDetail<Object?>(
+        masterCtx,
+        Container(key: markerKey),
+        routeName: 'p0-2-give-up',
+      );
+
+      // 消耗 debug report 的 StateError；必须在下次 pump 前取，
+      // 否则 binding 会 rethrow。
+      final reported = tester.takeException();
+      expect(reported, isA<StateError>(),
+          reason: 'P0-2 debug 契约：canShowTwoPane=true 但 navState==null 时必须 report StateError');
+
+      // 契约：marker 绝对**不能**出现在 widget 树里——不能被静默 push 到
+      // 根 Navigator 覆盖 master 列，也不能挂到别处。
+      expect(find.byKey(markerKey), findsNothing,
+          reason: 'P0-2 契约：navState==null 时必须丢弃 push，禁止覆盖 master 列');
+      // future 应立刻完成为 null（不 hang）。
+      expect(await future, isNull);
+    });
+
     testWidgets('resetDelegateForTest 会重建 detailNavigatorKey，避免多测试共享同一 key',
         (tester) async {
       final before = GSYAdaptiveNavigation.instance.detailNavigatorKey;

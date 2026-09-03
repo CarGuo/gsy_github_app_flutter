@@ -45,6 +45,23 @@ class GSYTabBarWidget extends ConsumerStatefulWidget {
   /// Material NavigationRail / Cupertino / 第三方 adaptive 库的差异。
   final List<GSYAdaptiveDestination>? railDestinations;
 
+  /// 只在**shell 顶层 host**（HomePage 那个 tabbar）传 true。
+  ///
+  /// 语义：这个 tabbar dispose 时，把 detail 内嵌 Navigator 栈清空，用于
+  /// 防御 logout / relogin 快速切换场景下 `GlobalKey<NavigatorState>` reparent
+  /// 到新树时可能残留的 detail 页栈。
+  ///
+  /// **默认 false** — 因为 [GSYTabBarWidget] 也被用在 detail 页内部（例如
+  /// [RepositoryDetailPage] 的 Info/Issue/Commit/File tab）。这类内嵌 tabbar
+  /// 的 State 会因 `ValueKey(hasDiscussionsEnabled)` 变化被销毁重建；如果
+  /// dispose 里无条件 popDetailToRoot，就会把宿主 detail 页自己从右列栈里
+  /// 弹掉（真实事故：详情页首次到货 provider 更新触发 tab 数 4→5 → key 变 →
+  /// State dispose → detail 页闪现即消失）。
+  ///
+  /// 详见 [debug-repos-detail-self-pop.md](file:///d:/workspace/project/gsy_github_app_flutter/debug-repos-detail-self-pop.md)
+  /// 记录的复现与 root cause。
+  final bool clearDetailStackOnDispose;
+
   const new({
     super.key,
     this.type = TabType.top,
@@ -63,6 +80,7 @@ class GSYTabBarWidget extends ConsumerStatefulWidget {
     this.footerButtons,
     this.onPageChanged,
     this.railDestinations,
+    this.clearDetailStackOnDispose = false,
   });
 
   @override
@@ -89,12 +107,22 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // 备注（reviewer N4，2026-09-02）：dispose 时 detailNavigatorKey 通常已
-    // 随 shell 一起 unmount，`currentState == null`，popDetailToRoot 会走
-    // 空栈 no-op 分支——本行**不是**为了就地清栈，而是防御 logout/relogin
-    // 快速切换场景下 GlobalKey reparent 到新树时可能残留的栈。detail 强制
-    // 全屏偏好属于用户级别持久化，与 shell 生命周期无关，此处不动。
-    GSYAdaptiveNavigation.instance.popDetailToRoot();
+    // 说明（reviewer N4，2026-09-02 → 修订 2026-09-03）：
+    // 这里的初衷是防御 logout/relogin 快速切换场景下 GlobalKey reparent
+    // 到新树时可能残留的 detail 栈；但 [GSYTabBarWidget] **不仅**被用作
+    // shell 顶层 host（HomePage），也被 [RepositoryDetailPage] 用作 detail
+    // 内嵌 tabbar，且后者会因 `ValueKey<bool>(hasDiscussionsEnabled)` 在
+    // provider 首次到货时被销毁重建。如果这里无条件 popDetailToRoot，
+    // 就会把宿主 detail 页自己弹出栈 —— 表现为"tap 动态里的仓库 → 详情闪现
+    // 后立即被自己弹回"。事故复盘见
+    // [debug-repos-detail-self-pop.md](file:///d:/workspace/project/gsy_github_app_flutter/debug-repos-detail-self-pop.md)。
+    //
+    // 修复：只有显式声明 [GSYTabBarWidget.clearDetailStackOnDispose]==true
+    // 的顶层 host 才在 dispose 时清 detail 栈。detail 内嵌的 tabbar 默认
+    // false，dispose 只做本地资源释放。
+    if (widget.clearDetailStackOnDispose) {
+      GSYAdaptiveNavigation.instance.popDetailToRoot();
+    }
     _tabController!.dispose();
     super.dispose();
   }
@@ -116,7 +144,8 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
       // 用 canShowTwoPane 而不是 shouldUseRail 是刻意：force 全屏开关
       // 打开的 expanded 也应该视为"没在展示双栏"，避免用户切换开关
       // 时 detail 栈残留。
-      if (!GSYAdaptiveNavigation.instance.canShowTwoPane(context)) {
+      final bool two = GSYAdaptiveNavigation.instance.canShowTwoPane(context);
+      if (!two) {
         GSYAdaptiveNavigation.instance.popDetailToRoot();
       }
     });

@@ -101,6 +101,10 @@ class _HomePageState extends State<HomePage> {
       child: GSYTabBarWidget(
         drawer: const HomeDrawer(),
         type: TabType.bottom,
+        // shell 顶层 host：dispose 时清 detail 栈，防御 logout / relogin
+        // 快速切换场景下 GlobalKey reparent 到新树可能残留的栈。
+        // 语义与副作用详见 [GSYTabBarWidget.clearDetailStackOnDispose]。
+        clearDetailStackOnDispose: true,
         tabItems: tabs,
         tabViews: [
           DynamicPage(key: dynamicKey),

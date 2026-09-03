@@ -79,7 +79,10 @@ class NavigatorUtils {
 
   ///个人中心
   static goPerson(BuildContext context, String? userName) {
-    NavigatorRouter(context, PersonPage(userName));
+    // P2 §2 Master-Detail：user profile 属于 detail 语义（列表 avatar tap 进来），
+    // expanded 下 push 到右列，避免 root 覆盖 shell。
+    _openDetailOrRouter(context, PersonPage(userName),
+        routeName: 'person/$userName');
   }
 
   ///请求数据调试页面
@@ -100,7 +103,8 @@ class NavigatorUtils {
     // 全都通过这一个入口跳仓库详情，因此在这里做一次集中改造覆盖率最高，
     // 不需要在 15+ 处 caller 里各自判断 canShowTwoPane。
     final adaptiveNav = GSYAdaptiveNavigation.instance;
-    if (adaptiveNav.canShowTwoPane(context)) {
+    final bool two = adaptiveNav.canShowTwoPane(context);
+    if (two) {
       return adaptiveNav.openDetail(
         context,
         pageContainer(
@@ -139,11 +143,21 @@ class NavigatorUtils {
 
   ///荣耀列表
   static Future goHonorListPage(BuildContext context, List? list) {
+    // P2 §2 Master-Detail：荣耀榜属于 detail 语义（从 person 页 stats 条 tap 进来），
+    // expanded 下走右列内嵌 Navigator，避免用 root push 覆盖 shell。
+    final adaptiveNav = GSYAdaptiveNavigation.instance;
+    final Widget page = HonorListPage(list);
+    if (adaptiveNav.canShowTwoPane(context)) {
+      return adaptiveNav.openDetail(
+        context,
+        pageContainer(page, context),
+        routeName: 'honor-list',
+      );
+    }
     return Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            HonorListPage(list),
+        pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           double begin = 0;
           double end = 1;
@@ -169,14 +183,12 @@ class NavigatorUtils {
   ///仓库版本列表
   static Future goReleasePage(BuildContext context, String? userName,
       String? reposName, String releaseUrl, String tagUrl) {
-    return NavigatorRouter(
-        context,
-        ReleasePage(
-          userName,
-          reposName,
-          releaseUrl,
-          tagUrl,
-        ));
+    // P2 §2 Master-Detail：release 列表是仓库详情内的子 detail，与 goReposDetail
+    // 同源；expanded 下应贴到右列。notify_page `.then((_) => _forceRefresh())`
+    // 依赖 pop 后 Future 完成，openDetail 保持等价语义。
+    final Widget page = ReleasePage(userName, reposName, releaseUrl, tagUrl);
+    return _openDetailOrRouter(context, page,
+        routeName: 'release/$userName/$reposName');
   }
 
   ///issue详情
@@ -214,7 +226,8 @@ class NavigatorUtils {
     int number, {
     bool needRightLocalIcon = false,
   }) {
-    return NavigatorRouter(
+    // P2 §2 Master-Detail：discussion 与 issue 同源，expanded 下走右列。
+    return _openDetailOrRouter(
       context,
       DiscussionDetailPage(
         owner,
@@ -222,6 +235,7 @@ class NavigatorUtils {
         number,
         needHomeIcon: needRightLocalIcon,
       ),
+      routeName: 'discussion/$owner/$reposName/$number',
     );
   }
 
@@ -229,25 +243,33 @@ class NavigatorUtils {
   static gotoCommonList(BuildContext context, String? title, String showType,
       CommonListDataType dataType,
       {String? userName, String? reposName}) {
-    NavigatorRouter(
-        context,
-        CommonListPage(
-          title,
-          showType,
-          dataType,
-          userName: userName,
-          reposName: reposName,
-        ));
+    // P2 §2 Master-Detail：通用列表 (contributors / stargazers / watchers /
+    // forks / branches …) 属于仓库详情下的子 detail，expanded 下走右列。
+    _openDetailOrRouter(
+      context,
+      CommonListPage(
+        title,
+        showType,
+        dataType,
+        userName: userName,
+        reposName: reposName,
+      ),
+      routeName: 'common-list/$showType/$userName/$reposName',
+    );
   }
 
   ///仓库详情通知
   static Future goNotifyPage(BuildContext context) {
-    return NavigatorRouter(context, const NotifyPage());
+    // P2 §2 Master-Detail：notify 属于 drawer 打开的详情面板，expanded 下走右列。
+    return _openDetailOrRouter(context, const NotifyPage(),
+        routeName: 'notify');
   }
 
   ///用户趋势
   static Future goTrendUserPage(BuildContext context) {
-    return NavigatorRouter(context, const TrendUserPage());
+    // P2 §2 Master-Detail：trend user 是 drawer / home 入口打开的详情，expanded 下走右列。
+    return _openDetailOrRouter(context, const TrendUserPage(),
+        routeName: 'trend-user');
   }
 
   ///搜索
@@ -280,21 +302,32 @@ class NavigatorUtils {
   ///提交详情
   static Future goPushDetailPage(BuildContext context, String? userName,
       String? reposName, String? sha, bool needHomeIcon) {
-    return NavigatorRouter(
-        context,
-        PushDetailPage(
-          sha,
-          userName,
-          reposName,
-          needHomeIcon: needHomeIcon,
-        ));
+    // P2 §2 Master-Detail：commit 详情属于仓库详情下的子 detail
+    // （dynamic PushEvent tap / notify tap / release compare tap），
+    // expanded 下走右列。这是本轮修复的核心：event tap 后 push loading
+    // dismiss → goPushDetailPage 之前会走 root Navigator 盖 shell，
+    // 观感是"loading 关掉后新页面从底部弹出并覆盖整个双栏"。
+    return _openDetailOrRouter(
+      context,
+      PushDetailPage(
+        sha,
+        userName,
+        reposName,
+        needHomeIcon: needHomeIcon,
+      ),
+      routeName: 'push/$userName/$reposName/$sha',
+    );
   }
 
   ///PR 变更文件页
   static Future goPullRequestFiles(BuildContext context, String userName,
       String reposName, int number) {
-    return NavigatorRouter(
-        context, PullRequestFilesPage(userName, reposName, number));
+    // P2 §2 Master-Detail：PR files 属于 PR 详情下的子 detail，expanded 下走右列。
+    return _openDetailOrRouter(
+      context,
+      PullRequestFilesPage(userName, reposName, number),
+      routeName: 'pr-files/$userName/$reposName/$number',
+    );
   }
 
   ///全屏Web页面
@@ -317,18 +350,22 @@ class NavigatorUtils {
       String? branch,
       String? lang,
       String? htmlUrl}) {
-    NavigatorRouter(
-        context,
-        CodeDetailPageWeb(
-          title: title,
-          userName: userName,
-          reposName: reposName,
-          path: path,
-          data: data,
-          lang: lang,
-          branch: branch,
-          htmlUrl: htmlUrl,
-        ));
+    // P2 §2 Master-Detail：文件代码 web 详情属于仓库详情下的子 detail，
+    // expanded 下走右列内嵌 Navigator，避免把整块 shell 盖住。
+    _openDetailOrRouter(
+      context,
+      CodeDetailPageWeb(
+        title: title,
+        userName: userName,
+        reposName: reposName,
+        path: path,
+        data: data,
+        lang: lang,
+        branch: branch,
+        htmlUrl: htmlUrl,
+      ),
+      routeName: 'code-detail/$userName/$reposName/$path',
+    );
   }
 
   ///根据平台跳转文件代码详情Web
@@ -355,7 +392,10 @@ class NavigatorUtils {
 
   ///用户配置
   static gotoUserProfileInfo(BuildContext context) {
-    NavigatorRouter(context, const UserProfileInfo());
+    // P2 §2 Master-Detail：user profile edit 属于用户详情的子 detail，
+    // expanded 下走右列。
+    _openDetailOrRouter(context, const UserProfileInfo(),
+        routeName: 'user-profile-info');
   }
 
   ///公共打开方式
@@ -364,6 +404,49 @@ class NavigatorUtils {
         context,
         CupertinoPageRoute(
             builder: (context) => pageContainer(widget, context)));
+  }
+
+  /// P2 §2 Master-Detail 集中分派入口。
+  ///
+  /// 目的：把"expanded 时 push 到右列 detailNavigator、compact/medium 时走
+  /// 传统全屏 CupertinoPageRoute"这条判断，从 15+ 个 caller 里回收到一处。
+  /// 这样：
+  /// - 新加 detail 页时只用调 `_openDetailOrRouter`，不用每个 caller 自己 `if
+  ///   canShowTwoPane`；
+  /// - 判定口径统一走 [GSYAdaptiveNavigation.instance.canShowTwoPane]（内含
+  ///   `forceFullScreenDetail` 用户偏好），避免漂移；
+  /// - 返回 Future 的语义与 `NavigatorRouter` 一致（detail pop 才完成），保住
+  ///   `.then((_) => _forceRefresh())` 一类 caller 姿势。
+  ///
+  /// 只对**真正的 detail 页**使用：webview / dialog / photoview / 全屏预览
+  /// 类不能塞进右列内嵌 Navigator（不希望 rail + master 保留），仍走
+  /// [NavigatorRouter]。
+  static Future<T?> _openDetailOrRouter<T extends Object?>(
+    BuildContext context,
+    Widget page, {
+    required String routeName,
+  }) {
+    // caller 通常拼 `'release/$userName/$reposName'`，其中一些参数在 Dart
+    // 类型层是 `String?`。null 会被 `$` 插值成字面量字符串 `'null'`，
+    // 写成 route settings.name 会得到 `'release/null/null'` 这种脏 key，
+    // 反过来污染 talker / observer / 埋点。这里做一次基线兜底，把 `/null`
+    // 段替换成 `/-`，caller 无需改签名（reviewer N3，2026-09-03）。
+    final sanitizedRouteName = routeName.replaceAll('/null', '/-');
+    final adaptiveNav = GSYAdaptiveNavigation.instance;
+    if (adaptiveNav.canShowTwoPane(context)) {
+      return adaptiveNav.openDetail<T>(
+        context,
+        pageContainer(page, context),
+        routeName: sanitizedRouteName,
+      );
+    }
+    return Navigator.push<T>(
+      context,
+      CupertinoPageRoute<T>(
+        builder: (context) => pageContainer(page, context),
+        settings: RouteSettings(name: sanitizedRouteName),
+      ),
+    );
   }
 
   ///Page页面的容器，做一次通用自定义

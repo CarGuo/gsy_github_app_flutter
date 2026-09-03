@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_responsive.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
@@ -312,15 +313,55 @@ class MaterialAdaptiveNavigationDelegate extends GSYAdaptiveNavigationDelegate {
       builder: (_) => detail,
     );
 
-    if (canShowTwoPane(context)) {
+    final bool two = canShowTwoPane(context);
+    if (two) {
       final navState =
           GSYAdaptiveNavigation.instance.detailNavigatorKey.currentState;
-      // shell 侧尚未挂载 detailPane 时兜底走原来的全屏 push，避免用户 tap
-      // 后什么都没有发生。理论上只可能在 shell 首帧还没 layout 时短暂命中。
-      if (navState == null) {
-        return Navigator.of(context).push<T>(route);
+      if (navState != null) {
+        return navState.push<T>(route);
       }
-      return navState.push<T>(route);
+      // canShowTwoPane==true 但 detailNavigator 尚未挂载：只可能是 shell
+      // 首帧还没 layout 就有 caller 触发 openDetail（例如启动路由里的
+      // deep-link push）。历史实现走 `Navigator.of(context).push` 兜底，
+      // 但 caller 传的 context 位于 master 侧，`Navigator.of(context)`
+      // 会把 detail push 到**根 Navigator**，直接把 master 列覆盖满，
+      // 违反 P2 §2 的双栏契约（reviewer 2026-09-03 P0-2）。
+      //
+      // 修复策略：
+      // - 立刻返回 `Future<T?>.value(null)`：caller 拿到的 Future 有效，
+      //   不会静默走全屏 push 覆盖 master 列；
+      // - debug 用 `assert(() { reportError; return true; }())` 惯用法
+      //   把这条竞态 report 到 FlutterError，让新引入这条路径的调用点
+      //   立刻在开发期暴露；release AOT 会把整个 assert 表达式移除；
+      // - **release 侧**用 talker.warning 兜住可观测性（reviewer S1，
+      //   2026-09-03）：本文件里的 `logger.dart::talker` 是全局单例，
+      //   `useHistory=true, maxHistoryItems=100`，release 也会写进
+      //   talker 历史，让线上排查"tap detail 无反应但 Future 已 complete"
+      //   有据可查；不会在 caller 侧引入行为漂移；
+      // - **修复责任上移到 caller**：deep-link / initUserInfo 里触发
+      //   openDetail 前先 `WidgetsBinding.instance.addPostFrameCallback`
+      //   等 shell 装配完，避免这条竞态；把 retry 塞在 delegate 里会引入
+      //   `postFrame -> talker -> zone rethrow` 的隐式死锁面，得不偿失。
+      assert(() {
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: StateError(
+            'openDetail: canShowTwoPane=true 但 detailNavigatorKey 未挂载。'
+            'shell 首帧竞态或 deep-link 起飞过早，请把该 push 延后到 '
+            'WidgetsBinding.instance.addPostFrameCallback 内。'
+            'route=${route.settings.name}',
+          ),
+          library: 'gsy adaptive shell',
+          context: ErrorDescription(
+              'while openDetail() attempting push to detailNavigator'),
+        ));
+        return true;
+      }());
+      talker.warning(
+        'openDetail dropped: canShowTwoPane=true but detailNavigatorKey '
+        'not mounted. route=${route.settings.name}. '
+        'Caller should defer push into addPostFrameCallback.',
+      );
+      return Future<T?>.value(null);
     }
     return Navigator.of(context).push<T>(route);
   }
