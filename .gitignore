@@ -67,13 +67,39 @@ tool/dbg/*.jpg
 tool/dbg/*.txt
 tool/dbg/*.log
 tool/dbg/*.json
+tool/dbg/*.xml
+tool/dbg/*.html
+tool/dbg/*.md
+tool/dbg/*.py
 tool/dbg/**/*.png
 tool/dbg/**/*.jpg
 tool/dbg/**/*.txt
 tool/dbg/**/*.log
 tool/dbg/**/*.json
+tool/dbg/**/*.xml
+tool/dbg/**/*.html
+tool/dbg/**/*.md
+tool/dbg/**/*.py
 
 # 冒烟证据：脚本每次跑都会往 tool/ai/smoke/evidence/<yyyymmdd_hhmm>/ 落 5 张
 # 截图 + logcat，属于产物类不进仓库；脚本本身照常提交
 tool/ai/smoke/evidence/
+# 冒烟脚本 ad-hoc 输出（P2 期开始把散图暂放 tool/ai/smoke/artifacts/ 及根目录，
+# 需要跟 evidence/ 一样只保留脚本 + 说明文档，不进仓库产物）
+tool/ai/smoke/artifacts/
+tool/ai/smoke/*.png
+tool/ai/smoke/*.jpg
+tool/ai/smoke/*.xml
+tool/ai/smoke/*.txt
+tool/ai/smoke/*.log
 .t-env.txt
+
+# 本地 reviewer subagent 中间产物（`git diff > .review_*.diff` 之类）
+.review_*.diff
+.review_*.txt
+
+# IDE 工作区（Trae / Cursor）
+.trae/
+
+# 单次调试档：`debug-<slug>.md` 是 author 本地记录，可选转成 `docs/` 后再进仓库
+debug-*.md
