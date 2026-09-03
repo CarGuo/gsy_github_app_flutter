@@ -267,10 +267,18 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
 /// 1. 只要当前 `schedulerPhase == idle`，直接同步 `Navigator.push` 完全安全：
 ///    push 触发的 `setState` 会正常 `scheduleFrame`，下一帧构建 → 正常渲染。
 /// 2. 只要当前 `schedulerPhase != idle`，说明**当前一定有一帧在跑**，Flutter
-///    保证会 `flushPostFrameCallbacks`，所以 `addPostFrameCallback` 里的
-///    动作一定会在**当前帧末尾**跑到，不会 idle 挂死（reviewer 指出的
+///    保证在帧末尾 `flushPostFrameCallbacks`，所以 `addPostFrameCallback` 里
+///    的动作**一般会在当前帧末尾**跑到，不会 idle 挂死（reviewer 指出的
 ///    `addPostFrameCallback` 不自动 `scheduleFrame` 的坑在这里被规避掉，
 ///    因为我们只有在"已经在帧里"才走 postFrame 分支）。
+///
+///    边界诚实说明：当前帧已经进入 `SchedulerPhase.postFrameCallbacks` 阶段时，
+///    `handleDrawFrame` 已经把 `_postFrameCallbacks` 复制到本地临时 list 并
+///    清空原列表后再遍历，我们此时新增的回调会落到**已清空的原列表**，本帧
+///    不会 flush，得等下一次 `scheduleFrame` 触发的帧末才跑。好在
+///    `Navigator.push` 之外的常规用户交互（滚动、点击、setState、动画 tick）
+///    都会顺手 `scheduleFrame`，实际不会挂死；概率极低但不为 0，因此本注释
+///    不再声称"一定在当前帧末尾跑到"。
 ///
 /// push 侧异常处理：
 /// - 用 `Completer.completeError` 让异常真正沿 `Future` 冒到 evaluate 侧，
