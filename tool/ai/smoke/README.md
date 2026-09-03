@@ -152,6 +152,19 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
   `tool/ai/smoke/evidence/` 忽略，不入 git。
 - 建议按任务号建子目录（例：`evidence/c1/`、`evidence/d1_selftest/`），
   在完成汇报里把子目录**绝对路径**贴出来，reviewer 就能定位到当次证据。
+- **PR / 完成汇报必须内联贴摘要**（不能只写"证据在 evidence/xxx/"就交差）。
+  evidence 目录本身**不入 git**，reviewer 拉取 PR 时看不到里面的东西——
+  所以汇报正文里必须**手动摘录**足够的关键片段，reviewer 才能不 checkout
+  就完成 review。摘要至少覆盖：
+  - **`get_runtime_errors` 前后对比**：改动前基线 + 关键路径跑完之后各拉一次，
+    贴 `errorsSinceLastRequest.length` 和相关 error 的 `renderedErrorText`
+    首 3 行（如无新增就写 `errorsSinceLastRequest=[]`）；
+  - **widget_inspector 命中项**：命中的 widget 类型 / 关键 `textPreview`
+    字符串（例 `Copilot 提交了评审意见`），至少给出行内引号完整包住的一行；
+  - **截图绝对路径**：`/Users/xxx/tool/ai/smoke/evidence/<task>/xxx.png` 全路径，
+    reviewer 需要能直接 `open` 到（哪怕 evidence 目录 gitignore 了，只要作者
+    本地留着，reviewer 复核时可以让作者贴出来）；
+  - **无法覆盖的分支列表**：显式列成 bullet，不要糊成"通过"。
 
 ## 反例（禁止）
 
