@@ -154,9 +154,11 @@ void main() {
       });
 
       await tester.pump(const Duration(milliseconds: 16));
-      expect(phaseInsideCallback, isNot(SchedulerPhase.idle),
-          reason: '前置：frameCallback 内部必须处于非 idle 阶段（transientCallbacks），'
-              '这样 smokePostFrame 才会走 postFrame 分支而不是 idle 直跑');
+      expect(phaseInsideCallback, SchedulerPhase.transientCallbacks,
+          reason: '前置：scheduleFrameCallback 内部必须处于 transientCallbacks，'
+              '这样 smokePostFrame 才会走 postFrame 分支而不是 idle 直跑；'
+              '同时把 phase 显式钉死，避免 flutter_test 内部时机调整后测的其实'
+              '是另一条代码路径而单测无告警');
 
       await tester.pump(const Duration(milliseconds: 16));
 

@@ -162,8 +162,9 @@
   `_smokePostFrame` 定性成"根因修复"，实际上 `evaluate` 是走 isolate 事件循环
   排队执行，`_smokePostFrame` 只是防御性保底；该编造在 `ed7077e` / `8106529`
   连续订正，并在
-  [tool/ai/smoke/README.md 历史勘误](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md#L174-L201)
-  留档。原则：**写不确定的时序 / 语义细节前先查一次官方 spec，不能"根据经验"猜**。
+  [tool/ai/smoke/README.md `## 历史勘误（errata）`](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
+  章节留档（用章节名定位，避免行号漂移）。原则：**写不确定的时序 / 语义细节
+  前先查一次官方 spec，不能"根据经验"猜**。
 
 ## 当前已知约束
 

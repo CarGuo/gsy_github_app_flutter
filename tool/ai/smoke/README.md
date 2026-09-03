@@ -161,9 +161,11 @@ adb install -r build/app/outputs/flutter-apk/app-release.apk
     首 3 行（如无新增就写 `errorsSinceLastRequest=[]`）；
   - **widget_inspector 命中项**：命中的 widget 类型 / 关键 `textPreview`
     字符串（例 `Copilot 提交了评审意见`），至少给出行内引号完整包住的一行；
-  - **截图绝对路径**：`/Users/xxx/tool/ai/smoke/evidence/<task>/xxx.png` 全路径，
-    reviewer 需要能直接 `open` 到（哪怕 evidence 目录 gitignore 了，只要作者
-    本地留着，reviewer 复核时可以让作者贴出来）；
+  - **截图**：**必须以 PR/issue 附件或 Markdown 内联图片形式贴出来**——
+    只写本地绝对路径 reviewer 打不开（evidence gitignore 了，reviewer 本地没这文件）。
+    绝对路径只作为**作者自留档索引**，PR 正文里必须有 reviewer 能直接看的图。
+    如果用 iOS / Android 平台的分享上传（Slack / 飞书 / 邮件附件）也可以，
+    只要 reviewer 不 checkout 就能拿到图；
   - **无法覆盖的分支列表**：显式列成 bullet，不要糊成"通过"。
 
 ## 反例（禁止）

@@ -49,6 +49,14 @@
   已守约：**这个分支是可用工具能复现的，不是死代码**。
 - 覆盖代价 = 6 个 case 中的 2 个。ROI 上完全成立。
 
+> ⚠️ **已知覆盖缺口**：单测目前只覆盖 `transientCallbacks` 阶段调用；
+> `SchedulerPhase.postFrameCallbacks` 阶段调用（即 `lib/app.dart`
+> smokePostFrame dartdoc 里明说的"回调落到下一帧才 flush"这条边界瑕疵）
+> **理论存在但当前单测未覆盖**。之所以先不补：真机上 evaluate 排到 isolate
+> 正处于 postFrameCallbacks 阶段的概率相当于两个独立事件的时间窗对齐，
+> 属于极端边缘 case；等真的观察到再补 `addPostFrameCallback` 内嵌
+> `smokePostFrame` 的用例即可。
+
 ### 3. 砍掉的收益远小于风险
 
 | 维度 | 保留 post-frame 分支 | 砍掉 post-frame 分支 |
@@ -87,6 +95,8 @@
 - 代码：[lib/app.dart smokePostFrame](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/app.dart#L299-L352)
 - 单测：[test/app/smoke_post_frame_test.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/test/app/smoke_post_frame_test.dart)
 - 历史 commit：`224a0d8` → `ed7077e` → `8106529` → `661bfa7`
-  （见 [tool/ai/smoke/README.md 历史勘误](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md#L174-L201)）
+  （见 [tool/ai/smoke/README.md `## 历史勘误（errata）`](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md)
+  章节，用章节名定位，避免行号漂移）
 - AGENTS 规则：
-  [禁止在文档 / commit / code comment 里编造 VM Service 时序细节](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/AGENTS.md#L156-L166)
+  [禁止在文档 / commit / code comment 里编造 VM Service 时序细节](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/AGENTS.md)
+  （见 AGENTS.md `### 禁止行为` 章节末条）
