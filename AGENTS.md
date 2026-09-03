@@ -153,6 +153,17 @@
   CarSmallGuo 的 gho\_ token 从设备上被清空，reviewer 侧无法直接复核，属于
   **author 责任事故**。此后但凡装机脚本 / 命令里出现 `flutter install`，
   reviewer 一律直接打回。
+- ❌ **在文档 / commit message / code comment 里编造 VM Service / mcp_dart
+  时序细节**（2026-09-03 拍板）：不许写"evaluate 会同步塞进 build/layout/paint
+  半程"、"addPostFrameCallback 一定在当前帧末尾跑到"这类未在
+  [Dart VM Service Protocol](https://github.com/dart-lang/sdk/blob/main/runtime/vm/service/service.md)
+  或 [api.flutter.dev](https://api.flutter.dev/) 官方文档里出现的因果。
+  历史教训：commit `224a0d8` body 编造 `evaluate` 同步注入回调栈，把
+  `_smokePostFrame` 定性成"根因修复"，实际上 `evaluate` 是走 isolate 事件循环
+  排队执行，`_smokePostFrame` 只是防御性保底；该编造在 `ed7077e` / `8106529`
+  连续订正，并在
+  [tool/ai/smoke/README.md 历史勘误](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/tool/ai/smoke/README.md#L174-L201)
+  留档。原则：**写不确定的时序 / 语义细节前先查一次官方 spec，不能"根据经验"猜**。
 
 ## 当前已知约束
 
