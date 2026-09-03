@@ -1,0 +1,7 @@
+# AndroidManifest 与 Gradle 构建脚本必须 LF：AGP/aapt2 对行尾不敏感，但 IDE
+# / core.autocrlf 会在 Windows 上把这些文件反复翻成 CRLF，导致 diff 变噪音、
+# blame 全被覆盖。锁 LF 让 Windows 用户 checkout 时也是 LF，diff 干净。
+*.xml text eol=lf
+*.gradle text eol=lf
+*.dart text eol=lf
+*.md text eol=lf
