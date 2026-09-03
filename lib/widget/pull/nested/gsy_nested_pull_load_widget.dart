@@ -38,6 +38,10 @@ class GSYNestedPullLoadWidget extends StatefulWidget {
 }
 
 class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
+  // 由外层 LayoutBuilder 记录的当前可用高度，供空态铺满整屏；
+  // 旋转 / 分屏 / 折叠屏 posture 切换时 LayoutBuilder 会重建，自动跟着更新。
+  double _availableHeight = 0;
+
   @override
   void initState() {
     super.initState();
@@ -90,43 +94,54 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollViewRefreshIndicator(
-      ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
-      key: widget.refreshKey,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 拿容器真实约束，避免直接读 MediaQuery.height 再硬减一个魔法常量：
+        // 那种写法在小屏 / 横屏 / 分屏 / 折叠屏折叠态下都会算错。
+        _availableHeight = constraints.hasBoundedHeight
+            ? constraints.maxHeight
+            : MediaQuery.sizeOf(context).height;
+        return NestedScrollViewRefreshIndicator(
+          ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
+          key: widget.refreshKey,
 
-      ///下拉刷新触发，返回的是一个Future
-      onRefresh: widget.onRefresh ?? () async {},
-      child: NestedScrollView(
-        ///滑动监听
-        controller: widget.scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        headerSliverBuilder: widget.headerSliverBuilder!,
-        body: NotificationListener(
-          onNotification: (ScrollNotification p) {
-            if (p.metrics.pixels >= p.metrics.maxScrollExtent) {
-              if (widget.control.needLoadMore.value) {
-                widget.onLoadMore?.call();
-              }
-            }
-            return false;
-          },
-          child: ListView.builder(
-            itemBuilder: (_, index) {
-              return _getItem(index);
-            },
+          ///下拉刷新触发，返回的是一个Future
+          onRefresh: widget.onRefresh ?? () async {},
+          child: NestedScrollView(
+            ///滑动监听
+            controller: widget.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            headerSliverBuilder: widget.headerSliverBuilder!,
+            body: NotificationListener(
+              onNotification: (ScrollNotification p) {
+                if (p.metrics.pixels >= p.metrics.maxScrollExtent) {
+                  if (widget.control.needLoadMore.value) {
+                    widget.onLoadMore?.call();
+                  }
+                }
+                return false;
+              },
+              child: ListView.builder(
+                itemBuilder: (_, index) {
+                  return _getItem(index);
+                },
 
-            ///根据状态返回数量
-            itemCount: _getListCount(),
+                ///根据状态返回数量
+                itemCount: _getListCount(),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   ///空页面
   Widget _buildEmpty() {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height - 100,
+      height: _availableHeight > 0
+          ? _availableHeight
+          : MediaQuery.sizeOf(context).height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

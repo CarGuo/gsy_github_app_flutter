@@ -841,5 +841,9 @@
   },
   "pr_files_review_outdated": "This comment is outdated",
   "pr_files_review_thread_resolved": "Resolved",
-  "pr_files_review_thread_unresolved": "Unresolved"
+  "pr_files_review_thread_unresolved": "Unresolved",
+  "two_pane_detail_empty_title": "Pick something on the left",
+  "two_pane_detail_empty_hint": "Detail for the selected item will appear here",
+  "home_force_full_screen_detail_title": "Force full-screen detail",
+  "home_force_full_screen_detail_subtitle": "Always open detail full-screen on large windows, disables two-pane"
 }

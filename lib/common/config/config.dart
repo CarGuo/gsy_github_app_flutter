@@ -20,6 +20,12 @@ class Config {
   static const LOCALE = "locale";
   static const VIBRATION_ENABLE = "vibration-enable";
 
+  /// 大屏用户偏好：强制走全屏 detail（关闭 Master-Detail 双栏）。
+  ///
+  /// bool 序列化为 "true" / "false"（对齐 [VIBRATION_ENABLE] 的字符串编码
+  /// 约定），未写入时按默认 false（走双栏）。
+  static const FORCE_FULL_SCREEN_DETAIL = "force-full-screen-detail";
+
   /// 搜索历史（JSON 编码的 `List<String>`）
   static const SEARCH_HISTORY_KEY = "search-history";
 

@@ -5,6 +5,7 @@ import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -340,9 +341,9 @@ class UserHeaderBottom extends StatelessWidget {
               BorderRadius.only(bottomLeft: radius, bottomRight: radius)),
       child: Container(
         alignment: Alignment.center,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
+        child: GSYAdaptiveNavigation.instance.wrapUserStatsBar(
+          context: context,
+          items: [
             _getBottomItem(
               context.l10n.user_tab_repos,
               repositoryCount(userInfo, authenticatedUser),
@@ -355,11 +356,6 @@ class UserHeaderBottom extends StatelessWidget {
                     userName: userInfo.login);
               },
             ),
-            Container(
-                width: 0.3,
-                height: 40.0,
-                alignment: Alignment.center,
-                color: GSYColors.subLightTextColor),
             _getBottomItem(
               context.l10n.user_tab_fans,
               userInfo.followers,
@@ -369,11 +365,6 @@ class UserHeaderBottom extends StatelessWidget {
                     userName: userInfo.login);
               },
             ),
-            Container(
-                width: 0.3,
-                height: 40.0,
-                alignment: Alignment.center,
-                color: GSYColors.subLightTextColor),
             _getBottomItem(
               context.l10n.user_tab_focus,
               userInfo.following,
@@ -383,11 +374,6 @@ class UserHeaderBottom extends StatelessWidget {
                     userName: userInfo.login);
               },
             ),
-            Container(
-                width: 0.3,
-                height: 40.0,
-                alignment: Alignment.center,
-                color: GSYColors.subLightTextColor),
             _getBottomItem(
               context.l10n.user_tab_star,
               userInfo.starred,
@@ -397,11 +383,6 @@ class UserHeaderBottom extends StatelessWidget {
                     userName: userInfo.login);
               },
             ),
-            Container(
-                width: 0.3,
-                height: 40.0,
-                alignment: Alignment.center,
-                color: GSYColors.subLightTextColor),
             Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
               var data = ref.watch(
@@ -427,12 +408,6 @@ class UserHeaderBottom extends StatelessWidget {
                 },
               );
             })
-            // _getBottomItem(context.l10n.user_tab_honor,
-            //     honorModel?.beStaredCount, () {
-            //   if (honorModel?.honorList != null) {
-            //     NavigatorUtils.goHonorListPage(context, honorModel?.honorList);
-            //   }
-            // }),
           ],
         ),
       ),

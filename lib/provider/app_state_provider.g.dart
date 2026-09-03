@@ -61,6 +61,102 @@ abstract class _$AppVibrationState extends $Notifier<bool> {
   }
 }
 
+/// 大屏用户偏好：强制走全屏 detail（关闭 Master-Detail 双栏）。
+///
+/// - 存储：[Config.FORCE_FULL_SCREEN_DETAIL] 走 [LocalStorage]（SharedPreferences）
+///   以 "true" / "false" 字符串保存，模式与 [AppVibrationState] 一致。
+/// - 启动回填：`UserRepository.initUserInfo` 里读一次 SharedPreferences 并
+///   调用 `change(..., save: false)` 塞到 provider；
+/// - 镜像到 delegate：每次 `change()` 都同步调用
+///   `GSYAdaptiveNavigation.instance.setForceFullScreenDetail(...)`，让
+///   非 Riverpod 消费点（`event_utils.dart` / delegate 内部 canShowTwoPane）
+///   也能读到最新值 —— 而不是让 delegate 反向依赖 Riverpod ref。
+
+@ProviderFor(AppForceFullScreenDetailState)
+final appForceFullScreenDetailStateProvider =
+    AppForceFullScreenDetailStateProvider._();
+
+/// 大屏用户偏好：强制走全屏 detail（关闭 Master-Detail 双栏）。
+///
+/// - 存储：[Config.FORCE_FULL_SCREEN_DETAIL] 走 [LocalStorage]（SharedPreferences）
+///   以 "true" / "false" 字符串保存，模式与 [AppVibrationState] 一致。
+/// - 启动回填：`UserRepository.initUserInfo` 里读一次 SharedPreferences 并
+///   调用 `change(..., save: false)` 塞到 provider；
+/// - 镜像到 delegate：每次 `change()` 都同步调用
+///   `GSYAdaptiveNavigation.instance.setForceFullScreenDetail(...)`，让
+///   非 Riverpod 消费点（`event_utils.dart` / delegate 内部 canShowTwoPane）
+///   也能读到最新值 —— 而不是让 delegate 反向依赖 Riverpod ref。
+final class AppForceFullScreenDetailStateProvider
+    extends $NotifierProvider<AppForceFullScreenDetailState, bool> {
+  /// 大屏用户偏好：强制走全屏 detail（关闭 Master-Detail 双栏）。
+  ///
+  /// - 存储：[Config.FORCE_FULL_SCREEN_DETAIL] 走 [LocalStorage]（SharedPreferences）
+  ///   以 "true" / "false" 字符串保存，模式与 [AppVibrationState] 一致。
+  /// - 启动回填：`UserRepository.initUserInfo` 里读一次 SharedPreferences 并
+  ///   调用 `change(..., save: false)` 塞到 provider；
+  /// - 镜像到 delegate：每次 `change()` 都同步调用
+  ///   `GSYAdaptiveNavigation.instance.setForceFullScreenDetail(...)`，让
+  ///   非 Riverpod 消费点（`event_utils.dart` / delegate 内部 canShowTwoPane）
+  ///   也能读到最新值 —— 而不是让 delegate 反向依赖 Riverpod ref。
+  AppForceFullScreenDetailStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appForceFullScreenDetailStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appForceFullScreenDetailStateHash();
+
+  @$internal
+  @override
+  AppForceFullScreenDetailState create() => AppForceFullScreenDetailState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$appForceFullScreenDetailStateHash() =>
+    r'c954809de914b1588fbf498a73721e894cfa8bf4';
+
+/// 大屏用户偏好：强制走全屏 detail（关闭 Master-Detail 双栏）。
+///
+/// - 存储：[Config.FORCE_FULL_SCREEN_DETAIL] 走 [LocalStorage]（SharedPreferences）
+///   以 "true" / "false" 字符串保存，模式与 [AppVibrationState] 一致。
+/// - 启动回填：`UserRepository.initUserInfo` 里读一次 SharedPreferences 并
+///   调用 `change(..., save: false)` 塞到 provider；
+/// - 镜像到 delegate：每次 `change()` 都同步调用
+///   `GSYAdaptiveNavigation.instance.setForceFullScreenDetail(...)`，让
+///   非 Riverpod 消费点（`event_utils.dart` / delegate 内部 canShowTwoPane）
+///   也能读到最新值 —— 而不是让 delegate 反向依赖 Riverpod ref。
+
+abstract class _$AppForceFullScreenDetailState extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
 /// 控制 App 灰度效果
 
 @ProviderFor(AppGrepState)

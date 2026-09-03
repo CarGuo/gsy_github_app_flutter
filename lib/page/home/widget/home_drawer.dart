@@ -209,6 +209,41 @@ class HomeDrawer extends StatelessWidget {
                                     .changeVibration(value);
                               },
                             ),
+                            // P2 §2 Master-Detail：把"大屏是否强制走全屏 detail"
+                            // 作为用户级偏好，紧跟 vibration 摆位。开关翻转直接
+                            // 调 provider.change() → 内部同步 SharedPreferences +
+                            // GSYAdaptiveNavigation.setForceFullScreenDetail，
+                            // 下一次 openDetail 立刻按新值决策，不需要重启。
+                            //
+                            // 单独 watch 一个 provider 而不是塞进外层 Consumer 是
+                            // 刻意的：与 vibrationEnable 在同一 provider tree 里
+                            // 单独 build，避免主题变更时把开关 rebuild 得跟着抖。
+                            Consumer(
+                              builder: (context, ref, _) {
+                                final forceFull = ref.watch(
+                                    appForceFullScreenDetailStateProvider);
+                                return SwitchListTile(
+                                  value: forceFull,
+                                  title: Text(
+                                    context.l10n
+                                        .home_force_full_screen_detail_title,
+                                    style: GSYConstant.normalText,
+                                  ),
+                                  subtitle: Text(
+                                    context.l10n
+                                        .home_force_full_screen_detail_subtitle,
+                                    style: GSYConstant.smallSubText,
+                                  ),
+                                  onChanged: (value) {
+                                    ref
+                                        .read(
+                                            appForceFullScreenDetailStateProvider
+                                                .notifier)
+                                        .change(value);
+                                  },
+                                );
+                              },
+                            ),
                             ListTile(
                               title: Text(
                                 context.l10n.home_change_grey,

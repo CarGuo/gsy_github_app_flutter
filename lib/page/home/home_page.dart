@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/dynamic/dynamic_page.dart';
@@ -62,10 +63,39 @@ class _HomePageState extends State<HomePage> {
       _renderTab(GSYICons.MAIN_MY, context.l10n.home_my),
     ];
 
+    // rail 入口用 GSY 抽象的 GSYAdaptiveDestination，具体渲染成
+    // Material NavigationRail / 第三方 adaptive shell / Cupertino 侧栏由
+    // GSYAdaptiveNavigation 注入的 delegate 决定，页面本身不感知。
+    final List<GSYAdaptiveDestination> railDestinations = [
+      GSYAdaptiveDestination(
+        icon: GSYICons.MAIN_DT,
+        label: context.l10n.home_dynamic,
+      ),
+      GSYAdaptiveDestination(
+        icon: GSYICons.MAIN_QS,
+        label: context.l10n.home_trend,
+      ),
+      GSYAdaptiveDestination(
+        icon: GSYICons.MAIN_MY,
+        label: context.l10n.home_my,
+      ),
+    ];
+
     ///增加返回按键监听
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
+        // P2 §2 修复（2026-09-03）：双栏 Master-Detail 模式下若 detail 栈里有
+        // push 出去的页面（如 RepositoryDetailPage），系统 back 应先弹一层
+        // detail，退回 GSYTwoPaneDetailPlaceholder，而不是直接把 HomePage 送到
+        // 桌面。单栏 / compact 下 detailNavigatorKey 未挂载或栈为空，
+        // canPop 会返回 false，走原本的 _dialogExitApp 行为，兼容既有体验。
+        final detailNav =
+            GSYAdaptiveNavigation.instance.detailNavigatorKey.currentState;
+        if (detailNav != null && detailNav.canPop()) {
+          detailNav.pop();
+          return;
+        }
         _dialogExitApp(context);
       },
       child: GSYTabBarWidget(
@@ -77,6 +107,7 @@ class _HomePageState extends State<HomePage> {
           TrendPage(key: trendKey),
           MyPage(key: myKey),
         ],
+        railDestinations: railDestinations,
         onDoublePress: (index) {
           switch (index) {
             case 0:

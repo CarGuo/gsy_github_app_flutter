@@ -1440,4 +1440,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get pr_files_review_thread_unresolved => '미해결';
+
+  @override
+  String get two_pane_detail_empty_title => '왼쪽에서 항목을 선택하세요';
+
+  @override
+  String get two_pane_detail_empty_hint => '선택한 항목의 상세 내용이 여기에 표시됩니다';
+
+  @override
+  String get home_force_full_screen_detail_title => '상세를 항상 전체 화면으로';
+
+  @override
+  String get home_force_full_screen_detail_subtitle =>
+      '큰 화면에서도 상세를 전체 화면으로 열고, 이중 창을 사용하지 않습니다';
 }

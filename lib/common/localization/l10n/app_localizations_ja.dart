@@ -1440,4 +1440,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get pr_files_review_thread_unresolved => '未解決';
+
+  @override
+  String get two_pane_detail_empty_title => '左のリストから項目を選択';
+
+  @override
+  String get two_pane_detail_empty_hint => '選択した項目の詳細がここに表示されます';
+
+  @override
+  String get home_force_full_screen_detail_title => '詳細を常に全画面で開く';
+
+  @override
+  String get home_force_full_screen_detail_subtitle =>
+      '大画面でも詳細を全画面で表示し、二列表示を無効化します';
 }

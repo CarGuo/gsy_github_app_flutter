@@ -189,6 +189,18 @@ class UserRepository {
         .read(appVibrationStateProvider.notifier)
         .changeVibration(enable, save: false);
 
+    ///强制全屏 detail（P2 §2 大屏 Master-Detail 用户偏好）
+    /// - 默认为 false（走双栏）
+    /// - 只有明确存过 "true" 才启用，避免历史用户未设置时被误命中
+    /// - save: false 防止启动回填这次又把值写一次 SharedPreferences，
+    ///   造成 "空 → true → 保存 → 下次读到 true" 的假状态
+    String? forceFullScreenDetail =
+        await LocalStorage.get(Config.FORCE_FULL_SCREEN_DETAIL);
+    ref.read(appForceFullScreenDetailStateProvider.notifier).change(
+          forceFullScreenDetail == "true",
+          save: false,
+        );
+
     return DataResult(res.data, (res.result && (token != null)));
   }
 

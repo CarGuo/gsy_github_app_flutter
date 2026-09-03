@@ -76,9 +76,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations(DeviceOrientation.values);
     super.dispose();
   }
 
@@ -122,9 +120,7 @@ class _CodeDetailPageState extends State<CodeDetailPageWeb> {
           setState(() {
             if (isLand) {
               isLand = !isLand;
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-              ]);
+              SystemChrome.setPreferredOrientations(DeviceOrientation.values);
             } else {
               isLand = !isLand;
               SystemChrome.setPreferredOrientations([

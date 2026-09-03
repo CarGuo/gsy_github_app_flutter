@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -30,6 +31,34 @@ class AppVibrationState extends _$AppVibrationState {
     state = enable;
     if (save) {
       LocalStorage.save(Config.VIBRATION_ENABLE, enable.toString());
+    }
+  }
+}
+
+/// 大屏用户偏好：强制走全屏 detail（关闭 Master-Detail 双栏）。
+///
+/// - 存储：[Config.FORCE_FULL_SCREEN_DETAIL] 走 [LocalStorage]（SharedPreferences）
+///   以 "true" / "false" 字符串保存，模式与 [AppVibrationState] 一致。
+/// - 启动回填：`UserRepository.initUserInfo` 里读一次 SharedPreferences 并
+///   调用 `change(..., save: false)` 塞到 provider；
+/// - 镜像到 delegate：每次 `change()` 都同步调用
+///   `GSYAdaptiveNavigation.instance.setForceFullScreenDetail(...)`，让
+///   非 Riverpod 消费点（`event_utils.dart` / delegate 内部 canShowTwoPane）
+///   也能读到最新值 —— 而不是让 delegate 反向依赖 Riverpod ref。
+@riverpod
+class AppForceFullScreenDetailState extends _$AppForceFullScreenDetailState {
+  @override
+  bool build() {
+    ref.keepAlive();
+    return false;
+  }
+
+  void change(bool enable, {bool save = true}) {
+    state = enable;
+    GSYAdaptiveNavigation.instance.setForceFullScreenDetail(enable);
+    if (save) {
+      LocalStorage.save(
+          Config.FORCE_FULL_SCREEN_DETAIL, enable.toString());
     }
   }
 }

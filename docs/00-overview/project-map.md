@@ -33,12 +33,14 @@
 - `lib/common/net/`：API 客户端、拦截器、GraphQL、数据转换
 - `lib/common/repositories/`：功能层数据访问边界
 - `lib/common/localization/`：本地化扩展、ARB、生成代码
+- `lib/common/style/`：主题、图标、断点与自适应骨架抽象（[gsy_responsive.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_responsive.dart) 断点/hinge、[gsy_adaptive_shell.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart) Rail delegate）
 - `lib/db/`：本地数据库 provider 和 SQL 辅助
 - `lib/env/`：环境配置及其生成文件
 - `lib/model/`：数据模型和序列化生成文件
 - `lib/page/`：页面功能目录，如 `repos`、`issue`、`trend`、`notify`、`user`
 - `lib/provider/`：Provider/Riverpod 相关共享状态
 - `lib/redux/`：Redux state、reducer、middleware
+- `lib/widget/`：跨页面共享 UI 组件（含 [gsy_tabbar_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/gsy_tabbar_widget.dart)：compact 走 [GSYTab.TabBar](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/gsy_tabs.dart) / medium+expanded 走 Rail 的双骨架切换实际使用方）
 - `static/`：静态资源
 - `.github/workflows/`：GitHub Actions 配置
 
@@ -48,6 +50,7 @@
 - 同时使用 REST 和 GraphQL
 - 生成代码是日常开发流程的一部分
 - 根 README 主要承担项目介绍和运行说明，不足以替代工程地图
+- 大屏 / 横屏 / 折叠屏走**独立的自适应布局层**（[gsy_adaptive_shell.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart) + [gsy_responsive.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_responsive.dart)），页面代码不再直接依赖 `NavigationRail` / `MediaQuery.width`；决策记录见 [ADR-0005](file:///d:/workspace/project/gsy_github_app_flutter/docs/06-decisions/ADR-0005-大屏与折叠屏自适应导航抽象.md)
 
 ## AI 最容易犯错的地方
 

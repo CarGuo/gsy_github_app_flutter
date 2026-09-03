@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/repositories/user_repository.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/model/user_org.dart';
@@ -120,7 +121,14 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
     /// 上界；固定值免去 TextPainter 预测量与 delegate rebuild 抖动。
     /// 若未来往 header 里再加行或放开 bio 行数，同步再往上抬这个数字。
     double headerSize = 245;
-    double bottomSize = 70;
+
+    /// stats 条高度交由 [GSYAdaptiveNavigation] 决策：
+    /// - compact / expanded 单行 5 列 → 70
+    /// - medium 双行 3+2 → 130
+    /// 硬编码高度会与 delegate 的排布骨架脱钩，[wrapUserStatsBar] 一旦返回双行
+    /// 布局，SliverPersistentHeader 仍按 70 裁剪就会切掉下半截。
+    double bottomSize =
+        GSYAdaptiveNavigation.instance.userStatsBarHeight(context);
     double chartSize =
         (userInfo.login != null && userInfo.type == "Organization") ? 70 : 215;
 

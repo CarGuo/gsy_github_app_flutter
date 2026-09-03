@@ -201,3 +201,42 @@
 （2026-09-02 起 adb 坐标 `.sh` 全部废弃，改为 `mcp_dart widget_inspector` +
 `get_runtime_errors` + 平台原生截图工具）。
 
+## 大屏 / 横屏 / 折叠屏自适应导航
+
+适用改动：
+
+- [lib/common/style/gsy_responsive.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_responsive.dart)（断点 / hinge / narrowHeight）
+- [lib/common/style/gsy_adaptive_shell.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart)（`GSYAdaptiveDestination` / `GSYAdaptiveNavigationDelegate` / `GSYAdaptiveNavigation` 单例）
+- [lib/widget/gsy_tabbar_widget.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/gsy_tabbar_widget.dart)（compact 走 `GSYTab.TabBar` / medium+expanded 走 Rail 的双骨架实际使用方）
+- [lib/page/home/home_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/home/home_page.dart)（`tabItems` + `railDestinations` 双声明）
+- 任何改到主 tab 结构、断点阈值、Rail 视觉的 PR
+
+基础用例（真机 Pixel 系或 720dp+ 折叠展开态）：
+
+1. 竖屏启动 → 首页展示底部导航条（compact 断点，实际渲染器是自定义 [GSYTab.TabBar](file:///d:/workspace/project/gsy_github_app_flutter/lib/widget/gsy_tabs.dart)，不是 Material `BottomNavigationBar`）
+2. 旋转到横屏 / resize 到 ≥600dp → 首页左侧出现 `NavigationRail`，PageView 内容随选中 rail 项切换
+3. Rail 上依次选中 3 个 destination，PageView 页面正确刷新（动态 / 趋势 / 我的）
+4. 从横屏旋回竖屏 → Rail 消失，`GSYTab.TabBar` 复位，当前选中态保留
+5. 极窄横屏（如 Pixel 5 landscape 360×720）Rail 图标不溢出，可垂直滚动
+6. 抽象层单测：`flutter test test/common/style/gsy_adaptive_shell_test.dart` 与 `flutter test test/common/style/gsy_responsive_test.dart` 全绿
+
+已归档证据：
+
+- [tool/dbg/adaptive_p0_rotate/](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p0_rotate)：P0 阶段旋转不错位截图（[01_portrait_home.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p0_rotate/01_portrait_home.png) → [04_landscape_repo.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p0_rotate/04_landscape_repo.png)）
+- [tool/dbg/adaptive_p1_rail/](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p1_rail)：P1 首版 Rail 落地证据（竖屏 / 横屏动态 / 横屏趋势 / 横屏我的 / 回竖屏共 5 张）
+- [tool/dbg/adaptive_p1_iso/](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p1_iso)：**P1 抽象隔离改造后**回归截图，用于确认引入 delegate 后 Rail/Tab 行为与 `adaptive_p1_rail` 一致（[01_portrait_tabs.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p1_iso/01_portrait_tabs.png) 竖屏 Tab / [02_landscape_rail.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p1_iso/02_landscape_rail.png) 横屏 Rail 首屏 / [03_landscape_rail_trend.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p1_iso/03_landscape_rail_trend.png) 切趋势 / [04_landscape_rail_my.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/adaptive_p1_iso/04_landscape_rail_my.png) 切我的）
+
+已知缺口（下轮改动前请先扫）：
+
+- **MyPage 顶部 5 列 stats 横屏溢出**：在 720dp 横屏下 MyPage 顶部 followers/following/... 5 列会撑出右边界。当前 P1 为了不阻塞抽象隔离，把 tabView 全局宽度限制回退了，MyPage 卡片自身的分栏推迟到 P2 单独治理。回归时如果 `04_landscape_rail_my.png` 右侧仍有溢出，属于**已知缺口**，不算 P1 回归失败。
+- **≥840dp 平板 / Chromebook 真机**：目前只在 emulator resize 到 1200×800 走过，没有实机；下轮 P2 前需要在实体平板上再跑一遍。
+- **rail 高亮对比度**：部分主题色（尤其 dark theme + 深色主色）下 rail selected 与 unselected 视觉可辨识度偏弱，需要美术侧介入前不做代码改动。
+
+修改抽象层时的强制流程：
+
+1. 先改 [gsy_adaptive_shell_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/common/style/gsy_adaptive_shell_test.dart)（契约测试），再改实现
+2. 每次装机走 `adb install -r`，**禁止** `flutter install`（会清 `TOKEN_KEY`）
+3. 截图必须放到 `tool/dbg/adaptive_*/` 或 `tool/dbg/<feature>_<date>/`，**绝对路径**写进完成汇报
+4. 关联决策记录：[ADR-0005 大屏 / 横屏 / 折叠屏自适应导航抽象](file:///d:/workspace/project/gsy_github_app_flutter/docs/06-decisions/ADR-0005-大屏与折叠屏自适应导航抽象.md)
+5. 关联路线图：[roadmap §四点五](file:///d:/workspace/project/gsy_github_app_flutter/docs/00-overview/roadmap.md)
+

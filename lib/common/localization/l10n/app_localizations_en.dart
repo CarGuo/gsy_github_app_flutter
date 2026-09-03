@@ -1468,4 +1468,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pr_files_review_thread_unresolved => 'Unresolved';
+
+  @override
+  String get two_pane_detail_empty_title => 'Pick something on the left';
+
+  @override
+  String get two_pane_detail_empty_hint =>
+      'Detail for the selected item will appear here';
+
+  @override
+  String get home_force_full_screen_detail_title => 'Force full-screen detail';
+
+  @override
+  String get home_force_full_screen_detail_subtitle =>
+      'Always open detail full-screen on large windows, disables two-pane';
 }

@@ -2565,6 +2565,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unresolved'**
   String get pr_files_review_thread_unresolved;
+
+  /// No description provided for @two_pane_detail_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick something on the left'**
+  String get two_pane_detail_empty_title;
+
+  /// No description provided for @two_pane_detail_empty_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail for the selected item will appear here'**
+  String get two_pane_detail_empty_hint;
+
+  /// No description provided for @home_force_full_screen_detail_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Force full-screen detail'**
+  String get home_force_full_screen_detail_title;
+
+  /// No description provided for @home_force_full_screen_detail_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Always open detail full-screen on large windows, disables two-pane'**
+  String get home_force_full_screen_detail_subtitle;
 }
 
 class _AppLocalizationsDelegate

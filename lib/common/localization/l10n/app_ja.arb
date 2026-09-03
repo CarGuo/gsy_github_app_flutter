@@ -503,5 +503,9 @@
   },
   "pr_files_review_outdated": "このコメントは古くなっています",
   "pr_files_review_thread_resolved": "解決済み",
-  "pr_files_review_thread_unresolved": "未解決"
+  "pr_files_review_thread_unresolved": "未解決",
+  "two_pane_detail_empty_title": "左のリストから項目を選択",
+  "two_pane_detail_empty_hint": "選択した項目の詳細がここに表示されます",
+  "home_force_full_screen_detail_title": "詳細を常に全画面で開く",
+  "home_force_full_screen_detail_subtitle": "大画面でも詳細を全画面で表示し、二列表示を無効化します"
 }

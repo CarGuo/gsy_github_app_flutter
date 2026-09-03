@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
 import 'package:gsy_github_app_flutter/page/common_list_page.dart';
@@ -89,6 +90,26 @@ class NavigatorUtils {
   ///仓库详情
   static Future goReposDetail(
       BuildContext context, String? userName, String? reposName) {
+    // P2 §2 Master-Detail：
+    // - 双栏（canShowTwoPane）时把仓库详情 push 到右列的 detailNavigator，
+    //   保持左列 master 列表可见，符合大屏 M3 Master-Detail 规范；
+    // - 单栏（compact / medium / 用户 forceFullScreenDetail）时行为完全等价
+    //   于原来的 SizeRoute 转场，不影响窄屏视觉体感。
+    //
+    // 消费点（trend / event_utils / notify / person / repos_header_item / …）
+    // 全都通过这一个入口跳仓库详情，因此在这里做一次集中改造覆盖率最高，
+    // 不需要在 15+ 处 caller 里各自判断 canShowTwoPane。
+    final adaptiveNav = GSYAdaptiveNavigation.instance;
+    if (adaptiveNav.canShowTwoPane(context)) {
+      return adaptiveNav.openDetail(
+        context,
+        pageContainer(
+          RepositoryDetailPage(userName!, reposName!),
+          context,
+        ),
+        routeName: 'repos/$userName/$reposName',
+      );
+    }
     ///利用 SizeRoute 动画大小打开
     return Navigator.push(
         context,
@@ -162,14 +183,25 @@ class NavigatorUtils {
   static Future goIssueDetail(
       BuildContext context, String? userName, String? reposName, String num,
       {bool needRightLocalIcon = false}) {
-    return NavigatorRouter(
+    // P2 §2 Master-Detail：见 [goReposDetail] 注释，issue 走的路径相同。
+    // notify_page 里 `goIssueDetail(...).then((_) => _forceRefresh())` 依赖
+    // 返回的 Future 在 detail pop 后完成，openDetail 的返回值语义与
+    // `Navigator.push` 保持一致，因此改造后 caller 行为不变。
+    final adaptiveNav = GSYAdaptiveNavigation.instance;
+    final Widget page = IssueDetailPage(
+      userName,
+      reposName,
+      num,
+      needHomeIcon: needRightLocalIcon,
+    );
+    if (adaptiveNav.canShowTwoPane(context)) {
+      return adaptiveNav.openDetail(
         context,
-        IssueDetailPage(
-          userName,
-          reposName,
-          num,
-          needHomeIcon: needRightLocalIcon,
-        ));
+        pageContainer(page, context),
+        routeName: 'issue/$userName/$reposName/$num',
+      );
+    }
+    return NavigatorRouter(context, page);
   }
 
   /// GitHub Discussion 详情（roadmap §3.1 骨架阶段）

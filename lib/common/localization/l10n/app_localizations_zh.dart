@@ -1438,4 +1438,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get pr_files_review_thread_unresolved => '未解决';
+
+  @override
+  String get two_pane_detail_empty_title => '选择左侧任意项';
+
+  @override
+  String get two_pane_detail_empty_hint => '选中的详情将在此处展开';
+
+  @override
+  String get home_force_full_screen_detail_title => '强制全屏详情';
+
+  @override
+  String get home_force_full_screen_detail_subtitle => '大屏下始终以全屏方式打开详情，关闭双栏';
 }

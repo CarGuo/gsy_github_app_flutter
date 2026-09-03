@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animations/animations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,32 @@ class TrendPageState extends ConsumerState<TrendPage>
   ///绘制tiem
   _renderItem(e) {
     ReposViewModel reposViewModel = ReposViewModel.fromTrendMap(e);
+    // P2 §2 Master-Detail：
+    // - 单栏（compact / medium / expanded 但用户关掉双栏）时保留原有的
+    //   OpenContainer 转场动画，视觉与体感与旧版一致；
+    // - 双栏（expanded 且 delegate 允许）时改走 GSYAdaptiveNavigation.openDetail
+    //   把 RepositoryDetailPage push 到右列的 detailNavigator，避免整屏
+    //   push 后把 master 直接盖住。
+    //   OpenContainer 天生是"整屏放大"的 Hero 语义，硬塞进右列会出现
+    //   动画尺寸错乱（起点在左列 item，终点在整屏），所以双栏分支不复用
+    //   OpenContainer 而是回归普通 tap → push。
+    final adaptiveNav = GSYAdaptiveNavigation.instance;
+    if (adaptiveNav.canShowTwoPane(context)) {
+      return InkWell(
+        onTap: () {
+          adaptiveNav.openDetail(
+            context,
+            NavigatorUtils.pageContainer(
+              RepositoryDetailPage(
+                  reposViewModel.ownerName!, reposViewModel.repositoryName!),
+              context,
+            ),
+            routeName: 'repos/${reposViewModel.ownerName}/${reposViewModel.repositoryName}',
+          );
+        },
+        child: ReposItem(reposViewModel, onPressed: null),
+      );
+    }
     return OpenContainer(
       closedColor: Colors.transparent,
       closedElevation: 0,
@@ -234,32 +261,37 @@ class TrendPageState extends ConsumerState<TrendPage>
 
   ///空页面
   Widget _buildEmpty() {
-    var mediaQueryData = MediaQueryData.fromView(View.of(context));
-    var statusBar = mediaQueryData.padding.top;
-    var bottomArea = mediaQueryData.padding.bottom;
-    var height = MediaQuery.sizeOf(context).height -
-        statusBar -
-        bottomArea -
-        kBottomNavigationBarHeight -
-        kToolbarHeight;
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: height,
-        width: MediaQuery.sizeOf(context).width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-              onPressed: () {},
-              child: const Image(
-                  image: AssetImage(GSYICons.DEFAULT_USER_ICON),
-                  width: 70.0,
-                  height: 70.0),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 用 NestedScrollView body 提供的真实约束，而不是拿全屏高度硬减 statusBar +
+        // kBottomNavigationBarHeight + kToolbarHeight。原写法在横屏 / 分屏 / 折叠屏
+        // 折叠态下都会算错高度，甚至撑破 body 引发 overflow。
+        final double height = constraints.hasBoundedHeight
+            ? constraints.maxHeight
+            : MediaQuery.sizeOf(context).height;
+        final double width = constraints.hasBoundedWidth
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
+        return SingleChildScrollView(
+          child: SizedBox(
+            height: height,
+            width: width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {},
+                  child: const Image(
+                      image: AssetImage(GSYICons.DEFAULT_USER_ICON),
+                      width: 70.0,
+                      height: 70.0),
+                ),
+                Text(context.l10n.app_empty, style: GSYConstant.normalText),
+              ],
             ),
-            Text(context.l10n.app_empty, style: GSYConstant.normalText),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

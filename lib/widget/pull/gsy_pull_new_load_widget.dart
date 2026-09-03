@@ -1,6 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
     as IOS;
 import 'package:flutter/material.dart';
@@ -57,6 +58,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
   bool isRefreshing = false;
 
   bool isLoadMoring = false;
+
+  // 由外层 LayoutBuilder 记录的当前可用高度，供空态铺满整屏；
+  // 旋转 / 分屏 / 折叠屏 posture 切换时 LayoutBuilder 会重建，自动跟着更新。
+  double _availableHeight = 0;
 
   @override
   ValueNotifier<bool> isActive = ValueNotifier<bool>(true);
@@ -131,7 +136,10 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
       return _buildEmpty();
     } else {
       ///回调外部正常渲染Item，如果这里有需要，可以直接返回相对位置的index
-      return widget.itemBuilder(context, index);
+      return GSYAdaptiveNavigation.instance.wrapListChild(
+        context: context,
+        child: widget.itemBuilder(context, index),
+      );
     }
   }
 
@@ -188,73 +196,85 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userIos) {
-      ///用ios模式的下拉刷新
-      return NotificationListener(
-        onNotification: (ScrollNotification notification) {
-          ///通知 CupertinoSliverRefreshControl 当前的拖拽状态
-          sliverRefreshKey.currentState!.notifyScrollNotification(notification);
-          return false;
-        },
-        child: CustomScrollView(
-          controller: _scrollController,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 拿容器真实约束，避免直接读 MediaQuery.height 再硬减一个魔法常量：
+        // 那种写法在小屏 / 横屏 / 分屏 / 折叠屏折叠态下都会算错。
+        _availableHeight = constraints.hasBoundedHeight
+            ? constraints.maxHeight
+            : MediaQuery.sizeOf(context).height;
+        if (widget.userIos) {
+          ///用ios模式的下拉刷新
+          return NotificationListener(
+            onNotification: (ScrollNotification notification) {
+              ///通知 CupertinoSliverRefreshControl 当前的拖拽状态
+              sliverRefreshKey.currentState!
+                  .notifyScrollNotification(notification);
+              return false;
+            },
+            child: CustomScrollView(
+              controller: _scrollController,
 
-          ///回弹效果
-          physics: const CustomBouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-              refreshHeight: iosRefreshHeight),
-          slivers: <Widget>[
-            ///控制显示刷新的 CupertinoSliverRefreshControl
-            IOS.CupertinoSliverRefreshControl(
-              key: sliverRefreshKey,
-              refreshIndicatorExtent: iosRefreshIndicatorExtent,
-              refreshTriggerPullDistance: iosRefreshHeight,
-              onRefresh: handleRefresh,
-              builder: buildSimpleRefreshIndicator,
-            ),
-            SliverSafeArea(
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return _getItem(index);
-                  },
-                  childCount: _getListCount(),
+              ///回弹效果
+              physics: const CustomBouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                  refreshHeight: iosRefreshHeight),
+              slivers: <Widget>[
+                ///控制显示刷新的 CupertinoSliverRefreshControl
+                IOS.CupertinoSliverRefreshControl(
+                  key: sliverRefreshKey,
+                  refreshIndicatorExtent: iosRefreshIndicatorExtent,
+                  refreshTriggerPullDistance: iosRefreshHeight,
+                  onRefresh: handleRefresh,
+                  builder: buildSimpleRefreshIndicator,
                 ),
-              ),
+                SliverSafeArea(
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return _getItem(index);
+                      },
+                      childCount: _getListCount(),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
-    }
+          );
+        }
 
-    return RefreshIndicator(
-      ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
-      key: widget.refreshKey,
+        return RefreshIndicator(
+          ///GlobalKey，用户外部获取RefreshIndicator的State，做显示刷新
+          key: widget.refreshKey,
 
-      ///下拉刷新触发，返回的是一个Future
-      onRefresh: handleRefresh,
-      child: ListView.builder(
-        ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
-        physics: const AlwaysScrollableScrollPhysics(),
+          ///下拉刷新触发，返回的是一个Future
+          onRefresh: handleRefresh,
+          child: ListView.builder(
+            ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
+            physics: const AlwaysScrollableScrollPhysics(),
 
-        ///根据状态返回子孔健
-        itemBuilder: (context, index) {
-          return _getItem(index);
-        },
+            ///根据状态返回子孔健
+            itemBuilder: (context, index) {
+              return _getItem(index);
+            },
 
-        ///根据状态返回数量
-        itemCount: _getListCount(),
+            ///根据状态返回数量
+            itemCount: _getListCount(),
 
-        ///滑动监听
-        controller: _scrollController,
-      ),
+            ///滑动监听
+            controller: _scrollController,
+          ),
+        );
+      },
     );
   }
 
   ///空页面
   Widget _buildEmpty() {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height - 100,
+      height: _availableHeight > 0
+          ? _availableHeight
+          : MediaQuery.sizeOf(context).height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
