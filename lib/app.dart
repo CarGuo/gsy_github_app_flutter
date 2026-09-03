@@ -286,7 +286,18 @@ mixin HttpErrorListener on State<FlutterReduxApp> {
 ///   "evaluate 无异常但页面没跳"的假阳性；
 /// - 同时用 `FlutterError.reportError` 把异常汇报给全局错误通道，`mcp_dart
 ///   get_runtime_errors` 能直接捞到，reviewer 冒烟流水不用额外抓栈。
-Future<T?> _smokePostFrame<T>(
+///
+/// 可见性说明：
+/// - 加 `@visibleForTesting`：让 [test/app/smoke_post_frame_test.dart](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/test/app/smoke_post_frame_test.dart)
+///   能直接调这个函数注入 sync throw / async reject / post-frame 分支，
+///   而非绕道 [gsySmokeGoIssueDetail] 拖入真业务栈；
+/// - 同 library 内部的 `gsySmokeGoIssueDetail` / `gsySmokeGoReposDetail` /
+///   `gsySmokeGoDiscussionDetail` / `gsySmokeGoPerson` 继续照常调用，
+///   `@visibleForTesting` 只对**跨 library 的非 test/ 目录调用**产生 lint 警告；
+/// - 生产运行时行为与之前完全一致（release 里这函数根本进不来，
+///   4 个 `gsySmokeGoXxx` 都有 `kDebugMode` 早退门）。
+@visibleForTesting
+Future<T?> smokePostFrame<T>(
   String tag,
   Future<T?> Function(BuildContext context) action,
 ) {
@@ -358,7 +369,7 @@ Future<Object?> gsySmokeGoIssueDetail(
     );
     return Future.value(null);
   }
-  return _smokePostFrame<Object?>(
+  return smokePostFrame<Object?>(
     'gsySmokeGoIssueDetail',
     (ctx) => NavigatorUtils.goIssueDetail(ctx, owner, repo, issueNumber),
   );
@@ -374,7 +385,7 @@ Future<Object?> gsySmokeGoReposDetail(String owner, String repo) {
     );
     return Future.value(null);
   }
-  return _smokePostFrame<Object?>(
+  return smokePostFrame<Object?>(
     'gsySmokeGoReposDetail',
     (ctx) => NavigatorUtils.goReposDetail(ctx, owner, repo),
   );
@@ -395,7 +406,7 @@ Future<Object?> gsySmokeGoDiscussionDetail(
     );
     return Future.value(null);
   }
-  return _smokePostFrame<Object?>(
+  return smokePostFrame<Object?>(
     'gsySmokeGoDiscussionDetail',
     (ctx) => NavigatorUtils.goDiscussionDetail(ctx, owner, repo, number),
   );
@@ -411,7 +422,7 @@ void gsySmokeGoPerson(String userName) {
     );
     return;
   }
-  _smokePostFrame<void>('gsySmokeGoPerson', (ctx) async {
+  smokePostFrame<void>('gsySmokeGoPerson', (ctx) async {
     NavigatorUtils.goPerson(ctx, userName);
   });
 }
