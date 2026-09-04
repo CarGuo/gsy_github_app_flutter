@@ -49,8 +49,10 @@ flutter build apk --release --target-platform=android-arm64 --no-shrink
 
 ## 当前本地验证策略
 
-仓库目前没有提交进来的自动化测试目录，因此本地验证以静态检查、构建和手工冒烟为主：
+仓库已有 `test/` 与 `patrol_test/` 双自动化测试目录，本地验证走"静态检查 + 单测 + Patrol 集成 + 手工冒烟"的组合：
 
-- 跑 `flutter analyze`
-- 对构建相关改动跑 APK 构建
-- 在模拟器或真机上手工验证改动功能
+- 静态：`flutter analyze`
+- 单测：`fvm flutter test`（全量约 353 case）
+- 集成：Patrol 场景见 [patrol-regression.md](file:///d:/workspace/project/gsy_github_app_flutter/docs/04-quality/patrol-regression.md)
+- 构建：对构建相关改动跑 APK 构建
+- 冒烟：真机 / 模拟器上手工验证改动功能，走 `mcp_dart` 抓 widget tree + runtime errors 作为主证据

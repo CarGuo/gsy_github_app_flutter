@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
@@ -394,6 +395,9 @@ class GSYAdaptiveNavigation {
   void resetDelegateForTest() {
     _delegate = MaterialAdaptiveNavigationDelegate();
     _detailNavigatorKey = GlobalKey<NavigatorState>();
+    _shellDetailStack.clear();
+    _rootNavigatorKey = null;
+    _migrating = false;
   }
 
   /// Master-Detail 右列内嵌 Navigator 的 GlobalKey。
@@ -413,15 +417,143 @@ class GSYAdaptiveNavigation {
 
   GlobalKey<NavigatorState> get detailNavigatorKey => _detailNavigatorKey;
 
+  /// Root Navigator 引用。由 app.dart 在 [MaterialApp.navigatorKey] 挂载后
+  /// 通过 [attachRootNavigator] 注入。断点迁移时需要在源/目标两个 Navigator
+  /// 之间 pop/push shellDetail 路由，本字段是"root 侧 Navigator"的稳定 handle。
+  ///
+  /// 值来源约束：只允许 app.dart 在启动装配阶段调用一次
+  /// [attachRootNavigator]；框架层不主动读 MaterialApp.navigatorKey 避免与
+  /// build 顺序耦合。
+  GlobalKey<NavigatorState>? _rootNavigatorKey;
+
+  GlobalKey<NavigatorState>? get rootNavigatorKey => _rootNavigatorKey;
+
+  /// 由 app 装配阶段注入 root Navigator key，仅接受一次。
+  void attachRootNavigator(GlobalKey<NavigatorState> key) {
+    _rootNavigatorKey = key;
+  }
+
+  /// shellDetail 路由记账栈。
+  ///
+  /// 每次 [openDetail] push 都追加一个 entry（含 routeName + WidgetBuilder），
+  /// pop 时通过 [_ShellDetailRouteObserver] 同步移除。
+  /// 断点迁移（[migrateShellDetailStack]）依赖它把源侧 pop 完的 route 用
+  /// builder 在目标侧重放，保证跨断点业务参数不丢。
+  final List<GSYShellDetailEntry> _shellDetailStack = <GSYShellDetailEntry>[];
+
+  /// 只暴露只读快照（routeName 列表），避免调用点越权修改内部记账；
+  /// 契约测试与真机诊断可以按序读取当前 shellDetail 栈顶。
+  List<String> get debugShellDetailRouteNames =>
+      List.unmodifiable(_shellDetailStack.map((e) => e.routeName));
+
+  /// 迁移中标志。true 时禁止 [_ShellDetailRouteObserver] 把迁移过程中的
+  /// `didPop` / `didPush` 计入用户栈（否则会把"迁移用的 pop"当成"用户返回"
+  /// 从 entry 栈里抹掉）。
+  bool _migrating = false;
+
   /// 把 detail 内嵌栈弹到根（用于分档切回单栏时避免栈渗漏）。
   ///
   /// 无栈或 key 未挂载时静默返回，caller 不需要判空。
+  /// 注意：此方法**只 pop 当前挂载的 detail Navigator**，不清理 root Navigator
+  /// 上遗留的 shellDetail 路由 —— compact 分档下 shellDetail 也 push 到 root，
+  /// 用户 tap tab 切换语义希望"当前 detail 关掉"，但不能把 root 栈其它 route
+  /// （比如 LoginPage / GSYWebView）也 pop 掉。
   void popDetailToRoot() {
     final navState = _detailNavigatorKey.currentState;
     if (navState == null) return;
     while (navState.canPop()) {
       navState.pop();
     }
+    _shellDetailStack.clear();
+  }
+
+  /// 断点跨越时的路由迁移入口。
+  ///
+  /// 由 [GSYTabBarWidget.didChangeMetrics] 检测到 `canShowTwoPane` 翻转后
+  /// 调用；根据当前 `canShowTwoPane` 结论把 shellDetail 记账栈里的 entries
+  /// 全部搬到目标 Navigator：
+  /// - `toTwoPane=true`：把 root 栈上的 shellDetail routes 依次 pop → 用
+  ///   entry 的 builder 在 detail Navigator 上重放；
+  /// - `toTwoPane=false`：把 detail Navigator 上的 shellDetail routes 依次
+  ///   pop → 用 entry 的 builder 在 root Navigator 上重放。
+  ///
+  /// 迁移过程中 [_migrating] = true，防止 [_ShellDetailRouteObserver] 把
+  /// 迁移的 pop/push 当作用户操作把 entry 栈错乱。
+  Future<void> migrateShellDetailStack({required bool toTwoPane}) async {
+    if (_shellDetailStack.isEmpty) return;
+    final rootNav = _rootNavigatorKey?.currentState;
+    final detailNav = _detailNavigatorKey.currentState;
+    if (rootNav == null) {
+      talker.warning(
+        'migrateShellDetailStack: rootNavigatorKey 未 attach，跳过迁移。'
+        '请在 app 装配阶段调用 GSYAdaptiveNavigation.instance.attachRootNavigator。',
+      );
+      return;
+    }
+    if (toTwoPane && detailNav == null) {
+      talker.warning(
+        'migrateShellDetailStack: 目标 detail Navigator 未挂载，跳过迁移。',
+      );
+      return;
+    }
+
+    final entries = List<GSYShellDetailEntry>.from(_shellDetailStack);
+    _migrating = true;
+    try {
+      // 1. 从源 Navigator 弹掉所有 shellDetail routes（自栈顶向下）。
+      //
+      // 反向迁移（expanded→compact）时源是 detailNav，但**这时 shell 已经
+      // rebuild**（[GSYTabBarWidget.build] 里 expanded 分支的 Row 已不再
+      // 装配右列 Navigator），`_detailNavigatorKey.currentState` 已经变成
+      // null；对应的 detail Navigator element 已被 dispose，栈里的 routes
+      // 也随之释放，**不需要也不能再 pop**（`detailNav!` 会 NPE）。
+      //
+      // 事故复盘（2026-09-04）：初版写成 `source = toTwoPane ? rootNav :
+      // detailNav!`，expanded→compact 触发 didChangeMetrics 时 detail
+      // Navigator 已 unmount，`detailNav!` 直接抛 "Null check operator used
+      // on a null value" @ line 504，导致迁移中断、Search 页丢失。
+      // 修复：source 允许为 null，null 时视作"源已释放，直接跳到 target
+      // 重放"即可。
+      final NavigatorState? source = toTwoPane ? rootNav : detailNav;
+      if (source != null) {
+        for (var i = entries.length - 1; i >= 0; i--) {
+          if (source.canPop()) {
+            source.pop();
+          }
+        }
+      }
+      // 2. 在目标 Navigator 用 builder 依次 push（栈底→栈顶顺序）
+      final NavigatorState target = toTwoPane ? detailNav! : rootNav;
+      _shellDetailStack.clear();
+      for (final entry in entries) {
+        final route = _buildShellDetailRoute(entry, toTwoPane: toTwoPane);
+        _shellDetailStack.add(entry);
+        // ignore: unawaited_futures
+        target.push(route);
+      }
+    } finally {
+      _migrating = false;
+    }
+  }
+
+  Route<Object?> _buildShellDetailRoute(
+    GSYShellDetailEntry entry, {
+    required bool toTwoPane,
+  }) {
+    // 目标 Navigator 是 detail（toTwoPane=true）→ MaterialPageRoute（右列滑入）；
+    // 目标 Navigator 是 root（toTwoPane=false）→ CupertinoPageRoute（与 compact
+    // 常规 push 观感一致）。
+    final settings = RouteSettings(name: entry.routeName);
+    if (toTwoPane) {
+      return MaterialPageRoute<Object?>(
+        settings: settings,
+        builder: entry.builder,
+      );
+    }
+    return CupertinoPageRoute<Object?>(
+      settings: settings,
+      builder: entry.builder,
+    );
   }
 
   bool shouldUseRail(BuildContext context) => _delegate.shouldUseRail(context);
@@ -468,10 +600,97 @@ class GSYAdaptiveNavigation {
   }) =>
       _delegate.openDetail<T>(context, detail, routeName: routeName);
 
+  /// 记录一条 shellDetail entry（供 [NavigatorUtils._openDetailOrRouter] 调用）。
+  ///
+  /// 与 [openDetail] 分离是刻意：openDetail 直接接受已构造的 Widget（历史签名，
+  /// 兼容第三方 delegate 不认识 builder 的场景），而断点迁移需要 builder。
+  /// 由 caller 侧同时把 builder 和 push 结果登记进来，观察者负责在 pop 时
+  /// 从栈里移除。
+  void trackShellDetailEntry(GSYShellDetailEntry entry) {
+    _shellDetailStack.add(entry);
+  }
+
+  /// 从记账栈里移除最新一条（供 [_ShellDetailRouteObserver.didPop] 使用）。
+  void _popShellDetailEntry(String? routeName) {
+    if (_migrating) return;
+    if (_shellDetailStack.isEmpty) return;
+    // 通常 pop 的就是栈顶，routeName 可用作诊断/防御。
+    if (routeName == null || _shellDetailStack.last.routeName == routeName) {
+      _shellDetailStack.removeLast();
+      return;
+    }
+    // 出现顺序错乱（例如 route 通过 pushReplacement 更替），退化为按名字找
+    for (var i = _shellDetailStack.length - 1; i >= 0; i--) {
+      if (_shellDetailStack[i].routeName == routeName) {
+        _shellDetailStack.removeAt(i);
+        return;
+      }
+    }
+  }
+
+  /// 工厂方法：为每个需要 observe 的 Navigator 创建一个**独立**的
+  /// [NavigatorObserver] 实例。
+  ///
+  /// **不能返回单例**。Flutter framework 在 [NavigatorState.initState] 里
+  /// 走 `_effectiveObservers.forEach((o) { assert(o.navigator == null); ... })`
+  /// —— 同一个 [NavigatorObserver] 实例**只允许绑定到一个** [NavigatorState]。
+  /// 如果把同一个 observer 同时挂到 [MaterialApp.navigatorObservers]（root）
+  /// 与 shell 内嵌 detail Navigator 的 `observers`，第二个 Navigator 初始化
+  /// 时会命中 assert，debug build 直接 throw、release build 行为未定义
+  /// （实测表现为 detail Navigator 挂载异常，master 侧的 `Navigator.push`
+  /// 拿到的是坏掉的 NavigatorState，导致 "tap item 无反应"）。
+  ///
+  /// 事故复盘（2026-09-04）：初版把 `shellDetailObserver` 写成
+  /// `late final NavigatorObserver = _ShellDetailRouteObserver(this)` 单例，
+  /// 同时挂在 app.dart 与 gsy_tabbar_widget.dart，导致动态列表点击失效。
+  /// 改成工厂方法后每处 Navigator 各持一个实例，事件通过共享的 `_owner`
+  /// （= `this`）forward 到同一个 [_shellDetailStack]，记账语义不变。
+  NavigatorObserver createShellDetailObserver() =>
+      _ShellDetailRouteObserver(this);
+
   bool get forceFullScreenDetail => _delegate.forceFullScreenDetail;
 
   void setForceFullScreenDetail(bool value) =>
       _delegate.setForceFullScreenDetail(value);
+}
+
+/// shellDetail 记账 entry。
+///
+/// [routeName]：与 route settings.name 对齐，用于诊断 + pop 顺序防御。
+/// [builder]：跨断点迁移时在目标 Navigator 上重放的构造闭包；由 caller 侧
+/// （[NavigatorUtils]）传入，天然捕获业务参数（userName / reposName /
+/// centerPosition / ...），因此重放后业务上下文保住。
+///
+/// 类型公开是刻意：[NavigatorUtils] 在 push 之前需要构造 entry，虚构一个
+/// 私有类型 + factory 函数并没有隔离价值，还额外一层拆包。字段全 final，
+/// 消费方持有引用也没有让 GSYAdaptiveNavigation 状态被外部改的风险。
+@immutable
+class GSYShellDetailEntry {
+  final String routeName;
+  final WidgetBuilder builder;
+
+  const new({required this.routeName, required this.builder});
+}
+
+/// 观察 shellDetail 记账栈的 [NavigatorObserver]。
+///
+/// 仅关心带 [GSYShellDetailEntry.routeName] 前缀的 route（其余 route 让走）。
+/// 迁移期间通过 [GSYAdaptiveNavigation._migrating] 门控，避免把"迁移用的
+/// pop / push"错误计入。
+class _ShellDetailRouteObserver extends NavigatorObserver {
+  final GSYAdaptiveNavigation _owner;
+
+  _ShellDetailRouteObserver(this._owner);
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _owner._popShellDetailEntry(route.settings.name);
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _owner._popShellDetailEntry(route.settings.name);
+  }
 }
 
 /// 双栏 detail 未选中时的占位 widget。

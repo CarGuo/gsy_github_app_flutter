@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
@@ -88,7 +89,16 @@ class _GSYNestedPullLoadWidgetState extends State<GSYNestedPullLoadWidget> {
       return _buildEmpty();
     } else {
       ///回调外部正常渲染Item，如果这里有需要，可以直接返回相对位置的index
-      return widget.itemBuilder(context, index);
+      ///
+      /// P2 §1 契约扩展（ADR-0005 §"演进/wrapListChild"）：与
+      /// [GSYPullLoadWidget._getItem] 保持同款收口，Info / Issue 两个 tab 走
+      /// 嵌套滚动 shell 时也统一在这一层套 wrapListChild，让 medium / expanded
+      /// 断点下 item 自动限宽到 [GSYBreakpoints.cardMaxWidth]。空态与
+      /// progressIndicator 保持不包，避免 loading 被挤到 720dp 里再居中。
+      return GSYAdaptiveNavigation.instance.wrapListChild(
+        context: context,
+        child: widget.itemBuilder(context, index),
+      );
     }
   }
 

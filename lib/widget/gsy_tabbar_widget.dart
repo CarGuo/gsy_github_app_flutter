@@ -47,19 +47,29 @@ class GSYTabBarWidget extends ConsumerStatefulWidget {
 
   /// 只在**shell 顶层 host**（HomePage 那个 tabbar）传 true。
   ///
-  /// 语义：这个 tabbar dispose 时，把 detail 内嵌 Navigator 栈清空，用于
-  /// 防御 logout / relogin 快速切换场景下 `GlobalKey<NavigatorState>` reparent
-  /// 到新树时可能残留的 detail 页栈。
+  /// 语义：这个 tabbar **切 tab 时**（`_navigationTapClick` /
+  /// `_navigationPageChanged`）以及 **dispose 时**（[dispose]），把 detail
+  /// 内嵌 Navigator 栈清空，用于：
+  /// - **切 tab 语义收敛**：Trend 打开仓库 A → 切 Dynamic tab 时右列不应残留
+  ///   A 仓库详情（跨 master tab 语义错位）。
+  /// - **logout / relogin 防御**：dispose 时清一次，防 `GlobalKey<NavigatorState>`
+  ///   reparent 到新树时残留 detail 页栈。
   ///
   /// **默认 false** — 因为 [GSYTabBarWidget] 也被用在 detail 页内部（例如
-  /// [RepositoryDetailPage] 的 Info/Issue/Commit/File tab）。这类内嵌 tabbar
-  /// 的 State 会因 `ValueKey(hasDiscussionsEnabled)` 变化被销毁重建；如果
-  /// dispose 里无条件 popDetailToRoot，就会把宿主 detail 页自己从右列栈里
-  /// 弹掉（真实事故：详情页首次到货 provider 更新触发 tab 数 4→5 → key 变 →
-  /// State dispose → detail 页闪现即消失）。
+  /// [RepositoryDetailPage] 的 Info/README/Issue/Files tab）。这类内嵌 tabbar：
+  /// - dispose 事故：State 会因 `ValueKey(hasDiscussionsEnabled)` 变化被销毁重建；
+  ///   如果 dispose 里无条件 popDetailToRoot，就会把宿主 detail 页自己从右列栈
+  ///   里弹掉（真实事故：详情页首次到货 provider 更新触发 tab 数 4→5 → key 变 →
+  ///   State dispose → detail 页闪现即消失）。
+  /// - **tap / pageChange 事故（2026-09-04）**：expanded 双栏下打开仓库详情后，
+  ///   用户 tap 内嵌 tab bar 上任一 tab 会走到 `_navigationTapClick` →
+  ///   `popDetailToRoot()` → 把宿主 `RepositoryDetailPage` 自己从
+  ///   `detailNavigatorKey` 栈里弹掉，右列回到 empty state。dispose 路径当初
+  ///   已收敛，但 tap / pageChange 两条路径漏了对称门控。修法：三个路径统一
+  ///   用同一个 flag 门控，flag=false 的内嵌 tabbar 完全不触碰 detail 栈。
   ///
   /// 详见 [debug-repos-detail-self-pop.md](file:///d:/workspace/project/gsy_github_app_flutter/debug-repos-detail-self-pop.md)
-  /// 记录的复现与 root cause。
+  /// 记录的两轮事故复盘与 root cause。
   final bool clearDetailStackOnDispose;
 
   const new({
@@ -94,6 +104,28 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
   TabController? _tabController;
 
   int _index = 0;
+
+  /// 上一次 [didChangeMetrics] 时的 canShowTwoPane 结论。
+  ///
+  /// 用来给"断点跨越"下定义：只有当次 metrics 变化让 canShowTwoPane 翻转
+  /// （compact↔expanded）时才触发 [GSYAdaptiveNavigation.migrateShellDetailStack]；
+  /// 其他细粒度 metrics 变化（键盘弹出 / statusBar 高度变化 / textScale）
+  /// 不会误触发迁移，避免用户在同分档下反复 metrics 事件里被"迁一次栈"
+  /// 抹掉 detail 页内部状态。
+  ///
+  /// 首帧未初始化时为 null；[didChangeDependencies] 里赋初值。
+  bool? _lastTwoPane;
+
+  /// route-topology v0.2.2：detail Navigator 侧的 shellDetail 观察者。
+  ///
+  /// **每个 tabbar State 持独立实例**：Flutter [NavigatorState.initState]
+  /// 通过 assert 约束"一个 NavigatorObserver 一次只能绑一个 Navigator"，
+  /// 因此不能与 [MaterialApp.navigatorObservers] 里的 root observer 共用；
+  /// 也不能每次 build 里 `new`（observers list identity 变化会触发 Navigator
+  /// 走 detach/attach 分支）。放 State 字段里，生命周期与 detail Navigator
+  /// GlobalKey 对齐。
+  final NavigatorObserver _detailShellDetailObserver =
+      GSYAdaptiveNavigation.instance.createShellDetailObserver();
 
   @override
   void initState() {
@@ -136,19 +168,47 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || !_pageController.hasClients) return;
       _pageController.jumpToPage(_index);
-      // 分档从 expanded 掉回 medium/compact 时，用户在双栏 detail 栈里
-      // push 的一堆页面会被 shell 卸掉右列 —— 此时那些 route 挂在游离
-      // 的 GlobalKey<NavigatorState> 上不会自动销毁，等下次再切回 expanded
-      // 时会诡异地"复活"上一次的 detail。做法：只要当前 context 已经
-      // 不满足 canShowTwoPane，就把 detail 栈弹到根。
-      // 用 canShowTwoPane 而不是 shouldUseRail 是刻意：force 全屏开关
-      // 打开的 expanded 也应该视为"没在展示双栏"，避免用户切换开关
-      // 时 detail 栈残留。
-      final bool two = GSYAdaptiveNavigation.instance.canShowTwoPane(context);
-      if (!two) {
-        GSYAdaptiveNavigation.instance.popDetailToRoot();
-      }
+      // route-topology v0.2.2：断点跨越（canShowTwoPane 翻转）时，把 shellDetail
+      // 记账栈里的所有 entry 迁移到目标 Navigator，而不是直接 popDetailToRoot()
+      // 把用户当前的 detail 抹掉。
+      // 事故复盘（2026-09-04）：
+      //  - bug a：用户在 compact 打开搜索（push 到 root Navigator）→ 拉宽到
+      //    expanded → 旧实现里 detail Navigator 挂载但为空，root 栈顶 Search
+      //    盖在整块 shell 之上 → 视觉是"Search 铺满整个屏幕"。
+      //  - bug b：用户在 expanded 打开搜索（push 到 detail Navigator）→ 折窄到
+      //    compact → 旧实现里 canShowTwoPane==false 触发 popDetailToRoot()，把
+      //    detail 栈上的 Search pop 掉 → 视觉是"折一下屏搜索没了"。
+      // 修复：只有顶层 shell（[clearDetailStackOnDispose]==true 的 HomePage
+      // 那个 tabbar）负责触发跨断点迁移；detail 内嵌 tabbar 不感知全局路由拓扑。
+      if (!widget.clearDetailStackOnDispose) return;
+      final bool toTwoPane =
+          GSYAdaptiveNavigation.instance.canShowTwoPane(context);
+      // 仅在真正翻转时触发迁移。didChangeMetrics 在很多细粒度事件里都会
+      // 被触发（键盘弹出 / statusBar 高度变化 / textScale），如果每次都
+      // migrate，会把用户当前 detail 页的 State 反复重建，肉眼看着像"点
+      // 一次键盘就跳一下"。此处仅比对 canShowTwoPane 结论：翻转 → 迁移，
+      // 不翻转 → no-op。
+      if (_lastTwoPane == toTwoPane) return;
+      _lastTwoPane = toTwoPane;
+      // migrateShellDetailStack 是 async；这里不等 result（unawaited）。
+      // 若 rootNavigatorKey 未 attach 或目标 Navigator 未挂载，内部会
+      // talker.warning 后 no-op（见其内部实现），不会抛异常。
+      // ignore: unawaited_futures
+      GSYAdaptiveNavigation.instance
+          .migrateShellDetailStack(toTwoPane: toTwoPane);
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 顶层 shell 首次拿到 MediaQuery 时种下初始 canShowTwoPane 值，避免
+    // 首帧 didChangeMetrics 误判为"从 null 翻转到 <当前值>"触发不必要
+    // 的迁移。只在 clearDetailStackOnDispose==true 的顶层 tabbar 生效。
+    if (widget.clearDetailStackOnDispose) {
+      _lastTwoPane ??=
+          GSYAdaptiveNavigation.instance.canShowTwoPane(context);
+    }
   }
 
   _navigationPageChanged(index) {
@@ -163,7 +223,18 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     // 避免"Trend 打开仓库 A → 切 Dynamic tab，右列仍显示 A 仓库详情"这种
     // 跨 tab 语义错位。popDetailToRoot 在单栏下（detailNavigatorKey 未挂载）
     // 是 no-op，因此 compact / medium 路径不受影响。
-    GSYAdaptiveNavigation.instance.popDetailToRoot();
+    //
+    // 门控订正（reviewer 2026-09-04，配合本次自 pop 事故）：dispose 路径已经
+    // 在 08d73be 收敛到 [clearDetailStackOnDispose]，但 tap/pageChange 两条
+    // 路径当时漏了对称门控。事故复盘：expanded 双栏下打开仓库详情后，用户
+    // tap 内嵌 tab bar 会走到这里 → 无条件 popDetailToRoot() → 把宿主
+    // RepositoryDetailPage 自己从 detailNavigatorKey 栈里弹掉，右列回到
+    // empty state。修法与 dispose 路径完全对称：只有显式声明为 shell 顶层
+    // host（[clearDetailStackOnDispose]==true）的 tabbar 才在切 tab 时清栈；
+    // detail 内嵌 tabbar 默认 false，只做 PageView 页面切换，不触碰 detail 栈。
+    if (widget.clearDetailStackOnDispose) {
+      GSYAdaptiveNavigation.instance.popDetailToRoot();
+    }
     widget.onPageChanged?.call(index);
   }
 
@@ -188,7 +259,13 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     // `if (_index == index) return;` 前置守卫拦下（tap 分支已先行更新 _index），
     // 因此本 tap 路径的 popDetailToRoot 只在这里生效一次，无二次触发。
     // 同样在单栏下是 no-op。
-    GSYAdaptiveNavigation.instance.popDetailToRoot();
+    //
+    // 门控订正（reviewer 2026-09-04）：见 [_navigationPageChanged] 同名说明。
+    // detail 内嵌 tabbar（默认 [clearDetailStackOnDispose]==false）tap 切
+    // Info/README/Issue/Files 不再触发 popDetailToRoot，避免把宿主自己弹掉。
+    if (widget.clearDetailStackOnDispose) {
+      GSYAdaptiveNavigation.instance.popDetailToRoot();
+    }
     widget.onPageChanged?.call(index);
 
     ///不想要动画
@@ -296,6 +373,13 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
                   child: ClipRect(
                     child: Navigator(
                       key: adaptiveNav.detailNavigatorKey,
+                      // route-topology v0.2.2：detail Navigator 挂**独立**的
+                      // shellDetail observer 实例，让"detail 侧 pop"能同步
+                      // shell 记账栈；不能复用 root 侧那份，Flutter framework
+                      // 在 NavigatorState.initState 里 assert 一个 observer
+                      // 只能绑一个 Navigator（详见 [GSYAdaptiveNavigation
+                      // .createShellDetailObserver] 注释）。
+                      observers: [_detailShellDetailObserver],
                       onGenerateRoute: (settings) => MaterialPageRoute(
                         settings: settings,
                         builder: (_) => const GSYTwoPaneDetailPlaceholder(),

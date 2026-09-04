@@ -117,6 +117,7 @@
 - 新增布局骨架（例如 P2 的 Master-Detail、P3 的折叠屏 hinge 感知）**只允许**扩展 delegate 契约，不允许在页面里自造条件分支
 - 想换 `flutter_adaptive_scaffold` 社区继任者 / 自研 Cupertino 侧栏 / 桌面端骨架：写一个新的 `GSYAdaptiveNavigationDelegate` 实现，在应用启动早期 `GSYAdaptiveNavigation.instance.setDelegate(...)` 注入，页面代码不改
 - 决策依据与替换方案对比见 [ADR-0005 大屏 / 横屏 / 折叠屏自适应导航抽象](file:///d:/workspace/project/gsy_github_app_flutter/docs/06-decisions/ADR-0005-大屏与折叠屏自适应导航抽象.md)
+- Master-Detail 落地后"页面归哪一层 Navigator / 何时走 detailNavigator / 何时走根栈"的显式规范见 [route-topology.md](file:///d:/workspace/project/gsy_github_app_flutter/docs/01-architecture/route-topology.md)（RFC，2026-09-04 起草，收敛 Search / Notify / TrendUser 归属 + caller 打标准则）
 
 ## 生成代码约束
 

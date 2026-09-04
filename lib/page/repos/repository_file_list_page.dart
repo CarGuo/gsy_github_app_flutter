@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_responsive.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -71,8 +73,14 @@ class RepositoryDetailFileListPageState
   }
 
   ///渲染头部列表
+  ///
+  /// P0-2（ADR-0005 §"演进/wrapListChild"）：面包屑属于水平滚动的 breadcrumb bar，
+  /// 与列表 item 不同不能走 wrapListChild（breadcrumb 需要横滚，item 是竖排卡片）；
+  /// 改成 medium / expanded 断点下用 [Center] + [ConstrainedBox] 限到
+  /// [GSYBreakpoints.cardMaxWidth]，与列表卡片视觉宽度一致，避免"卡片 720dp / 面包屑
+  /// 拉满 1600dp"的错位视觉。
   _renderHeader() {
-    return Container(
+    final Widget bar = Container(
       margin: const EdgeInsets.only(left: 3.0, right: 3.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -88,6 +96,15 @@ class RepositoryDetailFileListPageState
           );
         },
         itemCount: headerList.length,
+      ),
+    );
+    if (context.isCompactWindow) {
+      return bar;
+    }
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: GSYBreakpoints.cardMaxWidth),
+        child: bar,
       ),
     );
   }
@@ -222,7 +239,12 @@ class RepositoryDetailFileListPageState
           refreshOnStart: true,
           onRefresh: requestRefresh,
           child: ListView.builder(
-            itemBuilder: (_, int index) => _renderEventItem(index),
+            /// P0-2（ADR-0005 §"演进/wrapListChild"）：File tab 直连 [ListView.builder]，
+            /// 未走 GSYPullLoadWidget/GSYNestedPullLoadWidget 收口，所以在 item 出口
+            /// 显式接入 wrapListChild，与共享组件的自适应约束保持同一口径。
+            /// ADR-0005 §"消费方约束"里对本页作为直连消费点做了显式豁免登记。
+            itemBuilder: (_, int index) => GSYAdaptiveNavigation.instance
+                .wrapListChild(context: context, child: _renderEventItem(index)),
             itemCount: dataList.length,
           ),
         ),

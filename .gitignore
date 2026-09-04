@@ -80,6 +80,9 @@ tool/dbg/**/*.xml
 tool/dbg/**/*.html
 tool/dbg/**/*.md
 tool/dbg/**/*.py
+# 一次性 dart 排查脚本（例如依赖升级期抓 widget tree 的 dump 脚本），
+# 与 tool/dbg/ 其它产物同类，不进仓库
+tool/dbg/**/*.dart
 
 # 冒烟证据：脚本每次跑都会往 tool/ai/smoke/evidence/<yyyymmdd_hhmm>/ 落 5 张
 # 截图 + logcat，属于产物类不进仓库；脚本本身照常提交
@@ -92,6 +95,9 @@ tool/ai/smoke/*.jpg
 tool/ai/smoke/*.xml
 tool/ai/smoke/*.txt
 tool/ai/smoke/*.log
+# mcp_dart / vm_service 会话中间产物（isolate / vm dump 之类的 json），
+# 与 evidence/ 同类，只保留脚本 + 说明文档
+tool/ai/smoke/logs/
 .t-env.txt
 
 # 本地 reviewer subagent 中间产物（`git diff > .review_*.diff` 之类）

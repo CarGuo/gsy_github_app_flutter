@@ -23,7 +23,7 @@
 1. 首次进入时先读数据库或本地缓存链路
 2. 再触发刷新
 3. 页面恢复到前台时，如果已有数据则再次触发刷新
-4. 列表项点击后通过 `EventUtils` 分发跳转
+4. 列表项点击后通过 `EventUtils.ActionUtils`（[event_utils.dart#L523](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L523)，类是 [EventUtils](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L40)，`ActionUtils` 是它的静态方法）分发跳转；同类工具还有 `EventUtils.getActionAndDes` 用于把 event 翻译成本地化文案
 
 ## 状态管理
 
@@ -41,4 +41,4 @@
 
 - 列表行为问题优先看 `dynamic_page.dart`
 - 数据加载与分页问题看 `dynamic_bloc.dart`
-- 事件跳转问题看 `EventUtils`
+- 事件跳转问题看 [EventUtils](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L40)（`ActionUtils` / `getActionAndDes` / `translateNotifyReason` 三个静态方法都是词典化翻译入口）

@@ -10,7 +10,7 @@
 - 不确定该不该做的功能，放"待定义边界"一节，别直接塞进 TODO
 - 只写"当前还差什么"，不写完整历史；历史看 git log 和 ADR
 
-最后一次盘点：2026-09-01（下午，本轮工具链升级 + iOS SPM 主路径落地）。
+最后一次盘点：2026-09-03（P0/P1/P2 大屏与折叠屏自适应导航 + Master-Detail 双栏落地 + P0/P1 blocking issue 收口，见 §四点五）。
 
 ---
 
@@ -197,7 +197,11 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 [tool/dbg/smoke_08_issue_detail_scroll2.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/smoke_08_issue_detail_scroll2.png)
 （`Pull request overview` 卡片左侧紫色 3px 色带 + 圆角边框，无断言）。
 
-### 2.6 build_runner 环境级技术债（riverpod_generator 3.0.3）—— 已诊断到位
+### 2.6 build_runner 环境级技术债（riverpod_generator 3.0.3）—— ✅ 2026-09-03 已收尾
+
+**收尾方式**：2026-09-02 起把 `flutter_riverpod / riverpod_annotation / riverpod_generator` 三者一起从 3.0.3 迁到 4.x（当前 [pubspec.yaml](file:///d:/workspace/project/gsy_github_app_flutter/pubspec.yaml#L112-L119) 已锁 `flutter_riverpod: 3.4.2 / riverpod_annotation: 4.0.6 / riverpod_generator: 4.0.8`）。`AnalyzerBuffer._upsertImport` 对 re-exported 类型的 URI 假设错误在 4.0.x 里已修，`dart run build_runner build --delete-conflicting-outputs` 现在能干净跑通 3 个 async provider 的 .g.dart 生成。
+
+**下方"根因诊断（3.0.3 阶段）"章节保留为历史勘误**，供未来撞到类似 URI mismatch 的问题时对照。
 
 `dart run build_runner build` 时，`riverpod_generator` 阶段对以下三个 async provider 稳定报错：
 
@@ -252,7 +256,9 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 - 只有真要动 `@riverpod` 源文件语义（改返回类型 / 加参数）时才需要单独任务处理这个环境问题，否则**默认容忍**。
 
 
-### 2.7 CI Flutter 版本升级 3.41.6 → 3.44.1（本轮修复 GitHub Actions 红）
+### 2.7 CI Flutter 版本升级 3.41.6 → 3.44.1 → 3.47.2（本节保留为历史勘误）
+
+**当前基线（2026-09-03 复核）**：`.fvmrc` 与 [local-setup.md](file:///d:/workspace/project/gsy_github_app_flutter/docs/03-runbooks/local-setup.md#L5) 已经统一锁死 **Flutter 3.47.2 stable / Dart 3.13.x**，`.github/workflows/ci.yml` 读 `.fvmrc` 作为唯一版本契约源。本节下方的 3.41.6 → 3.44.1 迁移过程仅保留作为**历史勘误**，展示"本地 3.44.x / CI 3.41.6 SDK 漂移"这条 pattern 是如何被 `subosito/flutter-action@v2` + `flutter-version-file: .fvmrc` 一劳永逸掐掉的。**新读者不用再对着 3.44.1 这个数字调 CI**。
 
 **背景**：CI 一直在 build 阶段挂，日志显示
 `lib/widget/pull/nested/nested_refresh.dart:526:15: Error: No named parameter with the name 'alignment'`。
@@ -272,9 +278,15 @@ GitHub Actions 已在 build job 里加 `flutter test` 一步（`Run unit / widge
 - [README.md](file:///d:/workspace/project/gsy_github_app_flutter/README.md) / [README_EN.md](file:///d:/workspace/project/gsy_github_app_flutter/README_EN.md)：编译运行流程处 "Flutter SDK 3.38" → **3.44.1**，附 FVM 用法
 - [docs/03-runbooks/local-setup.md](file:///d:/workspace/project/gsy_github_app_flutter/docs/03-runbooks/local-setup.md)：基线要求段写死 3.44.1 + `.fvmrc` + FVM
 
-**遗留**：Flutter 3.44 有 Material/Cupertino 拆包 deprecation warning（`package:flutter/material.dart` 仍可用，只出 warning）；
-当前 CI 不带 `--fatal-warnings`，不阻塞，等后续再迁移。**riverpod_generator 3.0.3 URI mismatch（§2.6）
-是完全独立的问题**，不随本次 CI 升级解决，仍需按 §2.6 建议独立跨版本升级任务处理。
+**遗留（2026-09-04 复核）**：本节起草时说 "Flutter 3.44 有 Material/Cupertino 拆包 deprecation warning"，
+这是 3.44.x 早期短暂出现过的过渡态，`package:flutter/material.dart` 仍可用只出 warning。
+**升到 3.47.2 stable 后已消失**：本轮 `fvm flutter analyze` 全量结果只剩两条与本节无关的老 issue——
+1 个 pre-existing `analysis_options_deprecated_plugins` warning（[analysis_options.yaml:14](file:///d:/workspace/project/gsy_github_app_flutter/analysis_options.yaml#L14)
+里 `plugins: - custom_lint` 这种 legacy 声明，属于 analyzer 侧待迁移，与 Flutter SDK 拆包无关），
+以及 1 个 [user_redux.dart:66](file:///d:/workspace/project/gsy_github_app_flutter/lib/redux/user_redux.dart#L66-L67)
+的 `void_checks` info（rxdart 0.28.0 把 `debounce` window 回调返回类型收紧为 `Stream<void>` 后的隐式转换）。
+**读者不用再对着"Material/Cupertino 拆包"这条老 warning 调 CI**。**§2.6 `riverpod_generator 3.0.3`
+URI mismatch 已于 2026-09-03 收尾**（见 §2.6 标题上的 ✅），与本节 CI SDK 漂移是两条独立叙事，不再联动。
 
 
 ---

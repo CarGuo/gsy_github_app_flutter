@@ -1,19 +1,18 @@
 # 测试策略
 
-## 当前现状
+## 当前现状（2026-09-03 更新）
 
-- 仓库目前没有提交进来的 `test/` 目录
-- [pubspec.yaml](/D:/workspace/project/gsy_github_app_flutter/pubspec.yaml) 中 `flutter_test` 仍是注释状态
-- 质量保障目前主要依赖手工验证和 CI 构建成功
-
-这意味着当前工程对 AI 改动并不友好，因为“改完是否正确”缺少快速反馈。
+- 仓库已有 `test/` 目录：`test/utils/`、`test/model/`、`test/page/`、`test/widget/`、`test/common/style/` 等，`fvm flutter test` 全量 353 case 绿
+- 集成测试脚手架 `patrol_test/`（`patrol ^4.7.0`）已在跑，回归入口见 [patrol-regression.md](file:///d:/workspace/project/gsy_github_app_flutter/docs/04-quality/patrol-regression.md)
+- [pubspec.yaml](file:///d:/workspace/project/gsy_github_app_flutter/pubspec.yaml#L132-L133) `dev_dependencies.flutter_test` 已正常声明（不再是注释状态）
+- 质量保障组合：单测 + Patrol 集成 + 手工冒烟 + CI 构建 + `mcp_dart` 真机 widget tree / runtime errors
 
 ## 近期目标
 
-不要等完整测试体系一次性到位。
-先建立一个最小可用的工程验证 harness，让 agent 和人都能知道改动是否越界。
+在既有单测 + Patrol 基线上按功能域**扩容测试覆盖率**（不再是"从零建 harness"）。
+新写测试的原则：优先覆盖模型序列化、状态流转、事件识别、GraphQL 分页边界这类"改一处影响一片"的高频回归点。
 
-## 近期最小基线
+## 当前基线
 
 1. 静态检查
    - `flutter analyze`

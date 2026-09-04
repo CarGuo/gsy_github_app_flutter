@@ -4,7 +4,7 @@
 关键决策、验证锚点和已知缺口，方便未来任何 contributor（人或 agent）复核或推动下一步。
 
 - 最后一次操作时间：2026-09-01（下午：iOS Token Login + 主页 Dynamic 冒烟证据补齐；晚间：sqflite 2.4.3 + patrol ^4.7.0 升级后 pod-only 从 5 降到 4；深夜：Plus 三兄弟 + share_plus + fluttertoast + talker_flutter + path_provider 联合大扫除，pod-only 从 4 降到 1；**凌晨追加：`rive 0.13.13 → 0.14.11`（`rive_common` 被 `rive_native` 完全取代且 rive_native 原生 SPM）+ `path_provider_foundation 2.5.1 → 2.6.0`（FFI 化，从 SPM 名单退出但不再需要 pod），pod-only 从 1 降到 0，第三方插件 100% 走 SPM，`Podfile.lock` 只剩 Flutter framework**）
-- 操作时 Flutter 版本：3.48.0-0.3.pre master（Dart 3.14.0）
+- 操作时 Flutter 版本：3.48.0-0.3.pre master channel（Dart 3.14.0）——仅当轮实验用，仓库常态锁的是 stable 3.47.2（`.fvmrc`）；后续复核建议直接在 stable 上重跑一次 `flutter build ios --simulator --no-codesign`
 - 官方参考：<https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers>
 
 ## 为什么现在必须做
@@ -138,7 +138,7 @@ DEPENDENCIES:
 里挂着 13 个 SPM 插件。这些插件的版本升级要看**两个约束**同时满足：
 
 1. **SPM 支持起始版本**（有的插件是 beta 才引入 SPM，回 stable 就退回 CocoaPods）
-2. **本仓库其他 dart 依赖的版本兼容性**（例如 webview_flutter 4.10 和 flutter_inappwebview 6.2 有兼容坑）
+2. **本仓库其他 dart 依赖的版本兼容性**（例如 `webview_flutter 4.14.1` 与 `flutter_inappwebview 6.2.0-beta.3` 在同进程内共存的兼容性历史上出过 WKWebView 争夺 issue，2026-09-04 升 `webview_flutter 4.10.0 → 4.14.1` 前先看 pubspec 注释与真机冒烟结论，见 [pubspec.yaml#L58-L63](file:///d:/workspace/project/gsy_github_app_flutter/pubspec.yaml#L58-L63) 和 [smoke-matrix.md §依赖升级冒烟（2026-09-04）](file:///d:/workspace/project/gsy_github_app_flutter/docs/04-quality/smoke-matrix.md#L368)）
 
 **当前锁定情况**：
 
@@ -157,7 +157,7 @@ DEPENDENCIES:
 | `shared_preferences_foundation` | 2.5.7 | 已 latest | 保持 | dart 侧 shared_preferences 上一轮 2.5.4→2.5.5 打通验证 |
 | `sqflite_darwin` | 2.4.3+1 | 已 latest | 2026-09-01 晚间升 | sqflite 2.4.0 起改成 federated plugin |
 | `url_launcher_ios` | 6.4.2 | 已 latest | 保持 | 主插件 `url_launcher 6.3.2` 也是当前 latest |
-| `webview_flutter_wkwebview` | 3.26.1 | 已 latest | 保持 | `webview_flutter 4.10.0` 和 `flutter_inappwebview 6.2` 有兼容坑（pubspec 注释明示） |
+| `webview_flutter_wkwebview` | 3.26.1 | 已 latest | 保持 | 主插件 `webview_flutter` 2026-09-04 已升 4.10.0 → 4.14.1（见 pubspec 注释与 [smoke-matrix.md §依赖升级冒烟（2026-09-04）](file:///d:/workspace/project/gsy_github_app_flutter/docs/04-quality/smoke-matrix.md#L368)），与 `flutter_inappwebview 6.2.0-beta.3` 共存路径需真机冒烟复核 |
 
 **本轮实际推进**（2026-09-01 深夜）：
 
@@ -166,7 +166,7 @@ DEPENDENCIES:
 3. `package_info_plus: 8.0.2 → 10.2.1`——首个带 SPM 的版本是 8.1.0，直接跳最新
 4. `share_plus: 12.0.1 → 13.3.0`——13.0.0 因 win32 6.0.0 需要主升级；dart 侧无改动
 5. `fluttertoast: 9.1.0 → 10.0.0`——只提升 SDK 最低要求
-6. `path_provider: 2.1.4 → 2.1.6`——被 `talker_flutter 5.1.19+` 拉动；`path_provider_foundation` 仍锁 2.5.1（SPM 主路径）
+6. `path_provider: 2.1.4 → 2.1.6`——被 `talker_flutter 5.1.19+` 拉动；`path_provider_foundation` 本节 §"本轮凌晨追加推进" 已升到 **2.6.0 走纯 FFI**（`objective_c` 通道），从 SPM 名单退出（见下文 #9）
 7. `talker_flutter: 5.1.9 → 5.1.20` + `talker_dio_logger: 5.1.9 → 5.1.20`——被 `share_plus 13.3.0` 拉动（`talker_flutter 5.1.20` 允许 `share_plus ^13.2.0`）
 
 **本轮凌晨追加推进**（2026-09-01 凌晨，把 pod-only 从 1 打到 0）：

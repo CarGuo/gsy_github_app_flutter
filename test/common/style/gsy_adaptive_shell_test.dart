@@ -872,6 +872,11 @@ void main() {
     // GSYTwoPaneDetailPlaceholder 用了 context.l10n，MaterialApp 必须挂
     // AppLocalizations delegate 才能构造成功。这里把两条测试用到的
     // MaterialApp 参数封装到一起，避免 case 内被淹没。
+    //
+    // clearDetailStackOnDispose=true：这些 case 是"shell 顶层 host"契约测试，
+    // 与 [HomePage] 的用法对齐（HomePage 那个 tabbar 在 08d73be / 2026-09-04
+    // 附录 A 两轮修复后都传 true）。tap/pageChange/dispose 三条路径的
+    // popDetailToRoot 都受该 flag 门控 —— shell 顶层清栈 vs detail 内嵌不清栈。
     Widget mountShell({
       required Size size,
       required List<Widget> tabItems,
@@ -892,6 +897,7 @@ void main() {
               railDestinations: railDestinations,
               onPageChanged: onPageChanged,
               title: const Text('shell-test'),
+              clearDetailStackOnDispose: true,
             ),
           ),
         ),

@@ -363,6 +363,59 @@
    `ext.flutter.inspector.setSelectionById` + `getSelectedWidget`** 完成 UI 事件层面
    自动触发（下轮可用 `ext.flutter.inspector.screenshot` 或 `vm_service eval` 走
    `Navigator.push` 直接触发路由）。这两条路径的行为回归依赖 case 22
-   `openDetail 分派锁死` / `ReposItem widget tree` 单测（`test/widget/repos_item_test.dart`）保证。
+   `openDetail 分派锁死` / `ReposItem widget tree` 单测（[test/page/repos/repos_item_test.dart](file:///d:/workspace/project/gsy_github_app_flutter/test/page/repos/repos_item_test.dart)）保证。
+
+## 依赖升级冒烟（2026-09-04）
+
+**升级项**：`webview_flutter 4.10.0 → 4.14.1` · `dio 5.9.0 → 5.11.0` ·
+`flutter_svg 2.1.0 → 2.3.0` · `rxdart 0.27.1 → 0.28.0` ·
+`built_value 8.12.0 → 8.12.6` · `built_value_generator 8.12.7 → 8.13.0`。
+
+**静态验证**：
+
+- `fvm flutter pub get`：resolver 无冲突，6 个 direct dep 完成锁定
+- `fvm flutter analyze`：0 error / 0 warning（保留 1 个 pre-existing `analysis_options_deprecated_plugins` warning 与 1 个 rxdart 0.28.0 收紧类型后 `user_redux.dart:66` 的 `void_checks` info，均与本轮升级契约无关）
+- `fvm flutter test`：**353 个测试全部通过**（含 widget test / repos_item_test / gsy_adaptive_shell_test 等 P0/P1/P2 契约锁）
+
+**运行时冒烟**：
+
+- 设备：Android emulator `emulator-5554`（API 36，Android 16，x86_64）
+- Dart VM Service：`http://127.0.0.1:8692/c9pDDXxC-lY=/`（WS `.../ws`）
+- 采集脚本：[dump_widget_tree.dart](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/deps_upgrade_20260904/dump_widget_tree.dart)（直连 VM Service JSON-RPC，与 mcp_dart 走同一份 spec）
+- runtime errors：`flutter run --debug` stdout 全程 0 条 `Exception` / `FlutterError` / `═════` red screen（filter 空匹配）
+- 首屏路径：Dynamic tab 首帧 events 完整渲染，dio 请求 `GET /users/CarSmallGuo/received_events` 与 `GET /repos/CarGuo/gsy_github_app_flutter/releases` 均正常返回 200（说明 **dio 5.11.0 网络栈 + interceptor + rxdart 0.28.0 driven epic middleware** 全链路健康）
+
+**产物**：
+
+| 文件 | 大小 | 用途 |
+|---|---|---|
+| [widget_tree.json](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/deps_upgrade_20260904/widget_tree.json) | 854 KB | 全量 widget tree，`isSummaryTree=true` |
+| [vm_info.json](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/deps_upgrade_20260904/vm_info.json) | 1.7 KB | `getVM` 结果，1 个 isolate 3673487371632247 |
+| [flutter_views.json](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/deps_upgrade_20260904/flutter_views.json) | 419 B | `_flutter.listViews` 结果，1 个 FlutterView |
+| [01_home_boot.png](file:///d:/workspace/project/gsy_github_app_flutter/tool/dbg/deps_upgrade_20260904/01_home_boot.png) | 246 KB | 冷启动后首页 Dynamic tab expanded 双栏截图（emulator 是 landscape，dp 宽 > 840，命中 expanded 分支 + master-detail 占位） |
+
+**契约层命中**（widget_tree.json grep）：
+
+```
+FlutterReduxApp (main.dart:26)                     ← Redux 根装配存活
+ └─ UncontrolledProviderScope                      ← Riverpod scope 存活
+     └─ ... Consumer/StoreProvider/StreamBuilder ...
+         └─ MaterialApp
+             └─ HomePage (app.dart)
+                 └─ PopScope<Object>               ← M2 hardware back 契约存活
+                     └─ GSYTabBarWidget
+                         └─ Scaffold → SafeArea → Row
+                             └─ NavigationRail     ← expanded rail 命中（截图佐证）
+                             └─ SingleChildScrollView + LayoutBuilder ← rail 布局链路 OK
+```
+
+**结论**：Redux + Riverpod + Provider + Signals 四态并存的根装配、dio 网络栈、rxdart driven epic middleware、大屏 rail 双栏布局在本次升级后**全部无回归**。
+
+**已知缺口**：
+
+1. WebView 主路径未覆盖：本轮 fixture 账号已登录，未主动触发 OAuth WebView 页面；`webview_flutter 4.14.1` 的登录页 / GitHub OAuth 授权路径下轮登录相关改动时需在真机再走一遍
+2. inappwebview markdown 图片渲染路径未覆盖：需进入具体 repo detail 的 README tab 才能命中；本轮遵守 `adb shell input tap/swipe` 禁令未通过坐标脚本触发，下轮可用 `vm_service eval` 走 `Navigator.push('/reposDetail')` 补齐
+3. SVG 渲染（`flutter_svg 2.3.0`）本轮命中路径有限，`SvgPicture.asset` 主要挂在 empty state 与 login 页；下轮走登出后 login 页可完整覆盖
+
 
 

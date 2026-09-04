@@ -10,6 +10,7 @@ import 'package:gsy_github_app_flutter/common/event/index.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
@@ -63,6 +64,15 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
 
   NavigatorObserver navigatorObserver = NavigatorObserver();
 
+  /// route-topology v0.2.2：root Navigator 侧的 shellDetail 观察者。
+  ///
+  /// **必须是 State 私有实例**：`NavigatorObserver` 单例被 Flutter framework
+  /// 通过 [NavigatorState.initState] 里的 assert 约束"一次只绑一个 Navigator"
+  /// （见 [GSYAdaptiveNavigation.createShellDetailObserver] 顶端注释）；
+  /// 因此 root 侧和 detail 侧必须各持一份。
+  final NavigatorObserver _rootShellDetailObserver =
+      GSYAdaptiveNavigation.instance.createShellDetailObserver();
+
   // Helper method to check if the locale is supported
   Locale _checkSupportedLocale(Locale locale) {
     // Define the supported locales
@@ -82,6 +92,10 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   @override
   void initState() {
     super.initState();
+    // route-topology v0.2.2：把 root Navigator key 注入到 shell 单例，
+    // 让 [GSYAdaptiveNavigation.migrateShellDetailStack] 在断点跨越时可以
+    // pop/push root Navigator 的 shellDetail 路由，实现"折叠展开时保栈"。
+    GSYAdaptiveNavigation.instance.attachRootNavigator(navKey);
     Future.delayed(const Duration(seconds: 0), () {
       /// 通过 with NavigatorObserver ，在这里可以获取可以往上获取到
       /// MaterialApp 和 StoreProvider 的 context
@@ -120,7 +134,16 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                   supportedLocales: [effectiveLocale],
                   locale: effectiveLocale,
                   theme: themeData,
-                  navigatorObservers: [navigatorObserver],
+                  navigatorObservers: [
+                    navigatorObserver,
+                    // route-topology v0.2.2：观察根 Navigator 上 shellDetail
+                    // 路由的 pop，同步 [GSYAdaptiveNavigation._shellDetailStack]
+                    // 记账栈；断点跨越时用 stack 里的 builder 迁到目标 Navigator。
+                    // 内嵌 detail Navigator 也需要挂**独立的** observer 实例
+                    // （见 [GSYTabBarWidget.build]），事件都 forward 到同一个
+                    // owner，记账语义一致。
+                    _rootShellDetailObserver,
+                  ],
 
                   ///命名式路由
                   /// "/" 和 MaterialApp 的 home 参数一个效果
@@ -409,6 +432,26 @@ Future<Object?> gsySmokeGoDiscussionDetail(
   return smokePostFrame<Object?>(
     'gsySmokeGoDiscussionDetail',
     (ctx) => NavigatorUtils.goDiscussionDetail(ctx, owner, repo, number),
+  );
+}
+
+/// smoke 入口：打开搜索页（route-topology v0.2 后 shellDetail 语义）。
+///
+/// [centerPosition] 是 SearchPage 弧形动画的原点；smoke 场景没有真实点击点，
+/// 传 [Offset.zero] 或屏幕中心都可以——`CRAnimation` 仅在 compact 分档下生效，
+/// medium/expanded 会直接返回 Scaffold，不会用到该 offset。
+///
+/// 只在 debug 构建生效，release 早退并打日志。
+Future<Object?> gsySmokeGoSearch({Offset centerPosition = Offset.zero}) {
+  if (!kDebugMode) {
+    debugPrint(
+      '[smoke] gsySmokeGoSearch ignored in release build',
+    );
+    return Future.value(null);
+  }
+  return smokePostFrame<Object?>(
+    'gsySmokeGoSearch',
+    (ctx) => NavigatorUtils.goSearchPage(ctx, centerPosition),
   );
 }
 

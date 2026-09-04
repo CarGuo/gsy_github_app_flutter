@@ -13,6 +13,7 @@
 6. `04-quality/test-strategy.md`
 7. `04-quality/smoke-matrix.md`
 8. `05-ai/agent-guide.md`
+9. `06-decisions/`（长期决策，按 ADR 编号从旧到新读）
 
 ## 目录说明
 
@@ -30,7 +31,9 @@
 - 状态管理边界：`01-architecture/state-management-matrix.md`
 - 当前现状与待办清单：`00-overview/roadmap.md`
 - 手工回归入口：`04-quality/smoke-matrix.md`
-- 长期规则：`06-decisions/ADR-0001-状态管理收敛策略.md`
+- 长期规则：
+  - `06-decisions/ADR-0001-状态管理收敛策略.md`
+  - `06-decisions/ADR-0005-大屏与折叠屏自适应导航抽象.md`
 - 任务模板入口：`05-ai/task-playbooks/`
 - 功能模板入口：`05-ai/feature-playbooks/`
 - AI 协作导航：`CONTRIBUTING_AI.md`

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/repositories/search_history_repository.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_responsive.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/code_search_item.dart';
@@ -225,122 +226,160 @@ class _SearchPageState extends State<SearchPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
+    final isCompact = context.isCompactWindow;
+    final scaffold = _buildScaffold(context, isCompact: isCompact);
+    if (!isCompact) {
+      // route-topology.md §3.1 分档 1：medium / expanded 下 Search 落在右列
+      // detailNavigator 或全屏 push（forceFullScreenDetail 时），此时用宽屏
+      // 对角线远大于 `MediaQuery.height`，若继续走 [CRAnimation] 的
+      // `minR = height - 8` 会露出弧外底色（截图里的那道弧）。这里显式弱化
+      // 为无入场装饰的 Scaffold，配合 CupertinoPageRoute 自身的从右侧滑入
+      // 转场，与 M3 large-screen 惯例一致；也顺带避免 endAnima 底色在大屏
+      // 露出（大屏不再走 controller.forward → endAnima 永远 false）。
+      return scaffold;
+    }
+    // 断点跨越（expanded → compact）迁移重放时，CRAnimation 的圆心
+    // widget.centerPosition 仍为 expanded 分档下的原点，且 endAnima 已经 true，
+    // 若继续套 ClipPath 会用 compact 分档的 height 半径 + expanded 分档的圆心，
+    // 出现"月牙形"渲染残缺。判定 controller 已完成时直接跳过 clip 装配，
+    // 只保留 endAnima 底色，语义上"入场动画早跑完"，观感与直接进入一致。
+    if (endAnima || controller.isCompleted) {
+      return Container(
+        color: Theme.of(context).primaryColor,
+        child: scaffold,
+      );
+    }
     return Container(
-      ///填充剩下半圆颜色
+      ///填充剩下半圆颜色（compact 分档 CRAnimation 独占）
       color: endAnima ? Theme.of(context).primaryColor : Colors.transparent,
       child: CRAnimation(
         minR: MediaQuery.sizeOf(context).height - 8,
         maxR: 0,
         offset: widget.centerPosition,
         animation: animation as Animation<double>?,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          ///右侧 Drawer
-          endDrawer: GSYSearchDrawer(
-            (String? type) {
-              ///排序类型
-              searchBLoC.type = type;
-              Navigator.pop(context);
-              _resolveSelectIndex();
+        child: scaffold,
+      ),
+    );
+  }
+
+  /// 抽出 Scaffold 骨架以便 compact / expanded 两条路径共用。
+  ///
+  /// [isCompact] 决定 back 按钮是否需要走 `controller.reverse()`：
+  /// - compact：需要，弧形入场动画反向收回再 pop；
+  /// - 非 compact：直接 `Navigator.maybePop`，因为大屏根本没走 CRAnimation，
+  ///   反向 controller 只会在不可见的 clip 层空转，属于无效但无害的调用；
+  ///   仍然显式跳过是为了 pop 观感立刻响应，避免用户"back 按下 → 卡 300ms"。
+  Widget _buildScaffold(BuildContext context, {required bool isCompact}) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      ///右侧 Drawer
+      endDrawer: GSYSearchDrawer(
+        (String? type) {
+          ///排序类型
+          searchBLoC.type = type;
+          Navigator.pop(context);
+          _resolveSelectIndex();
+        },
+        (String? sort) {
+          ///排序状态
+          searchBLoC.sort = sort;
+          Navigator.pop(context);
+          _resolveSelectIndex();
+        },
+        (String? language) {
+          ///过滤语言
+          searchBLoC.language = language;
+          Navigator.pop(context);
+          _resolveSelectIndex();
+        },
+        selectIndex: searchBLoC.selectIndex,
+      ),
+      appBar: AppBar(
+          leading: IconButton(
+            highlightColor: Colors.transparent,
+            icon: const BackButtonIcon(),
+            onPressed: () {
+              if (!isCompact) {
+                Navigator.maybePop(context);
+                return;
+              }
+              setState(() {
+                endAnima = false;
+              });
+              controller.reverse().then((_) {
+                Navigator.maybePop(context);
+              });
             },
-            (String? sort) {
-              ///排序状态
-              searchBLoC.sort = sort;
-              Navigator.pop(context);
-              _resolveSelectIndex();
-            },
-            (String? language) {
-              ///过滤语言
-              searchBLoC.language = language;
-              Navigator.pop(context);
-              _resolveSelectIndex();
-            },
-            selectIndex: searchBLoC.selectIndex,
           ),
-          appBar: AppBar(
-              leading: IconButton(
-                highlightColor: Colors.transparent,
-                icon: const BackButtonIcon(),
-                onPressed: () {
-                  setState(() {
-                    endAnima = false;
-                  });
-                  controller.reverse().then((_) {
-                    Navigator.maybePop(context);
-                  });
-                },
-              ),
-              title: Text(context.l10n.search_title),
-              bottom: SearchBottom(
-                  textEditingController: searchBLoC.textEditingController,
-                  onSubmitted: (_) {
-                    _search();
-                  },
-                  onSubmitPressed: () {
-                    _search();
-                  },
-                  selectItemChanged: (selectIndex) {
-                    // 无论有没有搜索词、正不正在加载，tab 切换本身必须先落到
-                    // searchBLoC.selectIndex，否则用户"先切 tab 再输入"的自然
-                    // 顺序会造成 UI 高亮和实际请求类型不一致（Issue tab 亮着
-                    // 但实际发的是 repo 请求）。
-                    final changed = searchBLoC.selectIndex != selectIndex;
-                    searchBLoC.selectIndex = selectIndex;
-                    // 抽屉是按 selectIndex 动态显示分段（隐藏 Code sort、隐藏
-                    // User language），tab 一变必须触发 rebuild，否则抽屉里
-                    // 拿到的还是旧 selectIndex，隐藏逻辑就错位了。
-                    if (mounted) setState(() {});
-                    // 没搜索词的话不需要发请求，等用户输入完再搜。
-                    if (searchBLoC.searchText == null ||
-                        searchBLoC.searchText?.trim().isEmpty == true) {
-                      return;
-                    }
-                    // issue #942：快速切换 tab 会导致
-                    // "type 'User' is not a subtype of type 'CodeSearchItem'"。
-                    // 根因是原来这里 `if (isLoading) return;` 短路——上一次请求
-                    // 还没结束时，selectIndex 已经变为新 tab（如 Code），但
-                    // dataList 里还留着上一次 tab 的旧类型数据（如 User），
-                    // _renderItem 就会用新 selectIndex 强 cast 旧类型崩溃。
-                    // 修法：只要 tab 实际发生变化，就无条件 clearData +
-                    // showRefreshLoading，把 dataList 立刻抹掉，避免混合类型。
-                    if (changed) {
-                      _resolveSelectIndex();
-                      return;
-                    }
-                    if (isLoading) {
-                      return;
-                    }
-                    _resolveSelectIndex();
-                  })),
-          body: Stack(
-            children: [
-              GSYPullLoadWidget(
-                pullLoadWidgetControl,
-                (BuildContext context, int index) => _renderItem(index),
-                handleRefresh,
-                onLoadMore,
-                refreshKey: refreshIndicatorKey,
-              ),
-              // 输入框空 & 数据列表空 时才显示搜索历史面板。
-              // 一开始就有搜索结果或用户已在输入 → 直接透传给 GSYPullLoadWidget。
-              if (pullLoadWidgetControl.dataList.isEmpty &&
-                  (searchBLoC.searchText?.trim().isEmpty ?? true))
-                Positioned.fill(
-                  child: IgnorePointer(
-                    ignoring: false,
-                    child: Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: _SearchHistoryPanel(
-                        history: _history,
-                        onTap: _onHistoryTap,
-                        onClear: _onHistoryClear,
-                      ),
-                    ),
+          title: Text(context.l10n.search_title),
+          bottom: SearchBottom(
+              textEditingController: searchBLoC.textEditingController,
+              onSubmitted: (_) {
+                _search();
+              },
+              onSubmitPressed: () {
+                _search();
+              },
+              selectItemChanged: (selectIndex) {
+                // 无论有没有搜索词、正不正在加载，tab 切换本身必须先落到
+                // searchBLoC.selectIndex，否则用户"先切 tab 再输入"的自然
+                // 顺序会造成 UI 高亮和实际请求类型不一致（Issue tab 亮着
+                // 但实际发的是 repo 请求）。
+                final changed = searchBLoC.selectIndex != selectIndex;
+                searchBLoC.selectIndex = selectIndex;
+                // 抽屉是按 selectIndex 动态显示分段（隐藏 Code sort、隐藏
+                // User language），tab 一变必须触发 rebuild，否则抽屉里
+                // 拿到的还是旧 selectIndex，隐藏逻辑就错位了。
+                if (mounted) setState(() {});
+                // 没搜索词的话不需要发请求，等用户输入完再搜。
+                if (searchBLoC.searchText == null ||
+                    searchBLoC.searchText?.trim().isEmpty == true) {
+                  return;
+                }
+                // issue #942：快速切换 tab 会导致
+                // "type 'User' is not a subtype of type 'CodeSearchItem'"。
+                // 根因是原来这里 `if (isLoading) return;` 短路——上一次请求
+                // 还没结束时，selectIndex 已经变为新 tab（如 Code），但
+                // dataList 里还留着上一次 tab 的旧类型数据（如 User），
+                // _renderItem 就会用新 selectIndex 强 cast 旧类型崩溃。
+                // 修法：只要 tab 实际发生变化，就无条件 clearData +
+                // showRefreshLoading，把 dataList 立刻抹掉，避免混合类型。
+                if (changed) {
+                  _resolveSelectIndex();
+                  return;
+                }
+                if (isLoading) {
+                  return;
+                }
+                _resolveSelectIndex();
+              })),
+      body: Stack(
+        children: [
+          GSYPullLoadWidget(
+            pullLoadWidgetControl,
+            (BuildContext context, int index) => _renderItem(index),
+            handleRefresh,
+            onLoadMore,
+            refreshKey: refreshIndicatorKey,
+          ),
+          // 输入框空 & 数据列表空 时才显示搜索历史面板。
+          // 一开始就有搜索结果或用户已在输入 → 直接透传给 GSYPullLoadWidget。
+          if (pullLoadWidgetControl.dataList.isEmpty &&
+              (searchBLoC.searchText?.trim().isEmpty ?? true))
+            Positioned.fill(
+              child: IgnorePointer(
+                ignoring: false,
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: _SearchHistoryPanel(
+                    history: _history,
+                    onTap: _onHistoryTap,
+                    onClear: _onHistoryClear,
                   ),
                 ),
-            ],
-          ),
-        ),
+              ),
+            ),
+        ],
       ),
     );
   }
