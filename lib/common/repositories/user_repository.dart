@@ -733,10 +733,29 @@ class UserRepository {
 
   static searchTrendUserRequest(String location, {String? cursor}) async {
     var result = await getTrendUser(location, cursor: cursor);
-    if (result != null && result.data != null) {
+    // 诊断挂账：China User Trend 页面出现"转场结束停在空白"时，root cause
+    // 有三种典型分支需要区分——(a) GraphQL 返回 errors（rate-limit / query
+    // 复杂度）导致 result.data 为 null；(b) search.user 数组为空（location
+    // query 语义变化）；(c) result 本身为 null（网络层直接挂）。这里把三种
+    // 分支都记账到 talker，方便 debug_data_page 侧和真机 stdout 定位。
+    if (result == null) {
+      talker.warning(
+          'searchTrendUserRequest location=$location cursor=$cursor: '
+          'result is null（网络层直接返回 null，检查 token / 代理 / dio 拦截器）');
+      return DataResult(null, false);
+    }
+    if (result.hasException) {
+      talker.warning(
+          'searchTrendUserRequest location=$location cursor=$cursor: '
+          'GraphQL exception=${result.exception}');
+    }
+    if (result.data != null) {
       var endCursor = result.data!["search"]["pageInfo"]["endCursor"];
       var dataList = result.data!["search"]["user"];
       if (dataList == null || dataList.length == 0) {
+        talker.warning(
+            'searchTrendUserRequest location=$location cursor=$cursor: '
+            'search.user 为空（GraphQL 语义可能变了 or 数据真的空）');
         return DataResult(null, false);
       }
       List<SearchUserQL> dataResult = [];
@@ -746,6 +765,9 @@ class UserRepository {
       });
       return DataResult((dataResult, endCursor), true);
     } else {
+      talker.warning(
+          'searchTrendUserRequest location=$location cursor=$cursor: '
+          'result.data is null（多半是 GraphQL errors 被兜底，看上面 exception 行）');
       return DataResult(null, false);
     }
   }

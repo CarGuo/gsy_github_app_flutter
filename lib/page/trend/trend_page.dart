@@ -340,6 +340,14 @@ class TrendPageState extends ConsumerState<TrendPage>
 
   trendUserButton() {
     const double size = 56.0;
+    // route-topology §3.1：China User Trend 属于 shellDetail 语义。
+    // - compact 分档：保留 [OpenContainer] 的 fade hero 转场（观感一致，
+    //   FAB 圆形 → 全屏 modal），走 root Navigator。
+    // - expanded / medium 双栏分档（canShowTwoPane=true）：绕过 OpenContainer
+    //   默认的全屏 open，改成手势拦截后直接调
+    //   [NavigatorUtils.goTrendUserPage] 分流到右列 detail Navigator，
+    //   避免展开态还全屏铺满、丢失左列 master 的自打脸；跨断点保栈也走
+    //   同一条 [_openDetailOrRouter] 记账通道。
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
@@ -353,10 +361,25 @@ class TrendPageState extends ConsumerState<TrendPage>
       ),
       closedColor: Theme.of(context).primaryColor,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
-        return SizedBox(
+        final Widget icon = SizedBox(
           width: size,
           height: size,
           child: Lottie.asset("static/file/user.json", fit: BoxFit.cover),
+        );
+        // OpenContainer 的 closedBuilder 默认由 animations 包在其内部
+        // 挂一层可点击层触发 openContainer；这里在外层包一个
+        // opaque GestureDetector 优先命中：canShowTwoPane 时改走
+        // shellDetail 分流入口，否则回退到默认 openContainer 行为。
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            if (GSYAdaptiveNavigation.instance.canShowTwoPane(context)) {
+              NavigatorUtils.goTrendUserPage(context);
+              return;
+            }
+            openContainer();
+          },
+          child: icon,
         );
       },
     );
