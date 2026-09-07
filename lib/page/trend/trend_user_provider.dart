@@ -38,16 +38,16 @@ Future<(List<SearchUserQL>, String)?> searchTrendUserRequest(
   var result =
       await UserRepository.searchTrendUserRequest("China", cursor: cursor);
   if (result.data != null) {
-    var value = result.data;
+    final tuple = result.data as (List<SearchUserQL>, String);
     if (isRefresh) {
-      trendRef.setList(value.$1);
+      trendRef.setList(tuple.$1);
     } else {
-      trendRef.addList(value.$1);
+      trendRef.addList(tuple.$1);
     }
     // 这里 refresh 会导致数据在更新后又被清空
     //var _ = ref.refresh(trendCNUserListProvider.notifier);
     //如果是 ref.invalidate ，则是标记过时，下次读取时触发，延迟更新
-    return result.value;
+    return tuple;
   }
   return null;
 }

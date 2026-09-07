@@ -101,8 +101,13 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       onReactionToggle: (content, isAdd) =>
           _onCommentReactionToggle(issue, content, isAdd),
       onPressed: () {
-        NavigatorUtils.showGSYDialog(
+        // P2 §2 dialog 分档：comment 长按操作面板 —— 编辑/删除/复制。
+        // 永远是 dialog；expanded 分档下 `useRootNavigator: false`（由
+        // showAdaptiveGSYDialog 内部处理）让 dialog 只盖当前 issue detail
+        // pane，不覆盖左列主页。
+        NavigatorUtils.showAdaptiveGSYDialog(
             context: context,
+            routeName: 'dialog-issue-comment-actions',
             builder: (BuildContext context) {
               return Center(
                 child: Container(

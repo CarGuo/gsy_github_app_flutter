@@ -56,30 +56,50 @@ class _TrendUserPageState extends ConsumerState<TrendUserPage> {
   @override
   Widget build(BuildContext context) {
     var dataList = ref.watch(trendCNUserListProvider);
-    // 空状态兜底：数据加载完成（_hasLoadedOnce = true）但 provider 仍为空，
-    // 说明本次拉取 GraphQL 返回空（rate-limit / query 语义变化 / 网络挂），
-    // 展示占位文案 + 下拉刷新提示，避免用户看到"纯白页面"以为 app 挂了。
-    // 具体 root cause 通过 [UserRepository.searchTrendUserRequest] 里
-    // 的 talker.warning 分支日志定位。
-    final Widget body = dataList.isEmpty && _hasLoadedOnce
-        ? ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            children: [
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.5,
-                child: Center(
-                  child: Text(
-                    context.l10n.app_empty,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
+    // 页面 body 三档：
+    // 1. 首次 refresh 还没结束（_hasLoadedOnce = false 且 dataList 空）：
+    //    显示居中 CircularProgressIndicator。EasyRefresh 的
+    //    refreshOnStart 触发时 MaterialHeader 并不会露头，如果 body 只放
+    //    itemCount=0 的 ListView.builder，用户看到的就是**纯白页**——
+    //    这正是 "页面转完页面空白" 的观感 root cause。
+    // 2. 拉取完成但 provider 仍空（_hasLoadedOnce = true 且 dataList 空）：
+    //    显示 app_empty 文案，告诉用户是"真的没数据"而不是 app 卡死；
+    //    具体 GraphQL root cause 通过
+    //    [UserRepository.searchTrendUserRequest] 的 talker.warning 分支
+    //    日志在真机 stdout 定位（rate-limit / query 语义 / 网络挂三选一）。
+    // 3. 拉到数据：正常 ListView.builder。
+    final Widget body;
+    if (dataList.isEmpty && !_hasLoadedOnce) {
+      body = ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.5,
+            child: const Center(child: CircularProgressIndicator()),
+          ),
+        ],
+      );
+    } else if (dataList.isEmpty) {
+      body = ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.5,
+            child: Center(
+              child: Text(
+                context.l10n.app_empty,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-            ],
-          )
-        : ListView.builder(
-            itemBuilder: (_, int index) => _renderItem(dataList[index], index),
-            itemCount: dataList.length,
-          );
+            ),
+          ),
+        ],
+      );
+    } else {
+      body = ListView.builder(
+        itemBuilder: (_, int index) => _renderItem(dataList[index], index),
+        itemCount: dataList.length,
+      );
+    }
     return Scaffold(
         appBar: AppBar(
             title: Text(

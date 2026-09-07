@@ -165,8 +165,14 @@ class _SearchPageState extends State<SearchPage>
   }
 
   Future<void> _onHistoryClear() async {
-    final confirmed = await showDialog<bool>(
+    // P2 §2 dialog 分档：搜索历史清空确认，永远是 dialog。
+    // expanded 分档下 `useRootNavigator: false`（由 showAdaptiveGSYDialog 内
+    // 部处理）让 AlertDialog 只盖当前 pane。因需要传回 bool 结果，用
+    // showAdaptiveGSYDialog<bool>，pop(true/false) 会通过底层 route.completer
+    // 返回。
+    final confirmed = await NavigatorUtils.showAdaptiveGSYDialog<bool>(
       context: context,
+      routeName: 'dialog-search-history-clear',
       builder: (ctx) => AlertDialog(
         content: Text(ctx.l10n.search_history_clear_confirm),
         actions: [

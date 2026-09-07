@@ -390,8 +390,13 @@ class CommonUtils {
     bool needTitle = true,
     String? hintText,
   }) {
-    return NavigatorUtils.showGSYDialog(
+    // P2 §2 dialog 分档：**永远是 dialog**，只在 expanded 分档下通过
+    // `useRootNavigator: false` 让 dialog 落在 caller 最近的 Navigator subtree
+    // 上（例如从 repo detail 页发起时 dialog 只盖右侧 pane）。IssueEditDialog
+    // 自带标题栏和取消/确定按钮，无需再叠 AppBar。
+    return NavigatorUtils.showAdaptiveGSYDialog(
         context: context,
+        routeName: 'dialog-edit-form',
         builder: (BuildContext context) {
           return Center(
             child: IssueEditDialog(

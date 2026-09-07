@@ -20,6 +20,7 @@ Future<GraphQLClient> _client(token) async {
   return GraphQLClient(
     cache: GraphQLCache(store: store),
     link: link,
+    queryRequestTimeout: const Duration(seconds: 30),
   );
 }
 

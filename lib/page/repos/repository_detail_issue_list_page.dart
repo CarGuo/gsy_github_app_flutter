@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
@@ -323,13 +324,21 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
     String tempDirection = _direction;
     final Set<String> tempLabels = Set<String>.from(_selectedLabels);
 
+    // P2 §2 分档 bottom sheet：issue filter 本质就是 modal bottom sheet，两档
+    // 都保持底部抽屉观感。仅需要用 `useRootNavigator: !expanded` 让 expanded
+    // 分档下 sheet 只盖右侧 pane（不覆盖左列主页），而不是把它升格成 detail
+    // 页 —— 这与 showAdaptiveGSYDialog 里"永远是 dialog"的规约同源。
+    final expanded =
+        GSYAdaptiveNavigation.instance.canShowTwoPane(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useRootNavigator: !expanded,
       backgroundColor: GSYColors.mainBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
+      routeSettings: const RouteSettings(name: 'dialog-issue-filter'),
       builder: (sheetContext) {
         return StatefulBuilder(
           builder: (ctx, setSheetState) {

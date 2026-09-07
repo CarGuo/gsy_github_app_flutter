@@ -480,4 +480,62 @@ class NavigatorUtils {
               ));
         });
   }
+
+  /// 分档 dialog：**永远是 dialog**，不升格成路由页。
+  ///
+  /// 行为差异仅一处：
+  /// - `expanded` 分档（[GSYAdaptiveNavigation.canShowTwoPane] 为 true）走
+  ///   `showDialog(useRootNavigator: false)`，dialog 就地盖在 caller `context`
+  ///   最近的 Navigator 上（一般是右列 detail Navigator 或 rail 所在 shell 根）；
+  /// - `compact` / `medium` / `forceFullScreenDetail` 分档 `useRootNavigator: true`，
+  ///   保持旧行为（root Navigator，视觉零回归）。
+  ///
+  /// 参数：
+  /// - [routeName]：必填，kebab-case，需以 `dialog-` 前缀开头。此值仅作为
+  ///   `RouteSettings.name` 传给 dialog route，用于 observer / talker 日志辨识。
+  /// - [builder]：dialog 内容。
+  /// - [barrierDismissible]：透传到 [showDialog]。
+  ///
+  /// 只处理**真正的 dialog** 场景（AlertDialog / 卡片式 dialog 等）。**bottom
+  /// sheet 场景不走本方法**，因为 bottom sheet 有自己的 `showModalBottomSheet`
+  /// 展示器，caller 应直接调用并显式传 `useRootNavigator: !expanded`（示例见
+  /// [repository_detail_issue_list_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/repos/repository_detail_issue_list_page.dart)
+  /// 的 issue filter）。
+  ///
+  /// 历史（2026-09-07 拍板订正）：本方法早期把 expanded 分档"升格为 detail pane
+  /// 完整页面"，通过 `_AdaptiveDialogPage`(Scaffold+AppBar) push 到详情 Navigator。
+  /// 该方案违反 dialog 语义，且 [IssueEditDialog](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/issue/issue_edit_dIalog.dart)
+  /// 之类 dialog-barrier 场景硬编码内容会在 pane 里 overflow（截图证据见提交
+  /// message）。现在退回到"永远是 dialog + `useRootNavigator: false`"这条平台
+  /// 自带的正确解法。同期把 `compactPresenter` 参数一并删除：bottom sheet 场景
+  /// 由 caller 自己 `showModalBottomSheet(useRootNavigator: !expanded)`，不再
+  /// 走本 dispatcher。
+  static Future<T?> showAdaptiveGSYDialog<T extends Object?>({
+    required BuildContext context,
+    required String routeName,
+    required WidgetBuilder builder,
+    bool barrierDismissible = true,
+  }) {
+    assert(routeName.startsWith('dialog-'),
+        'showAdaptiveGSYDialog routeName 必须以 dialog- 前缀开头，实际=$routeName');
+    final expanded =
+        GSYAdaptiveNavigation.instance.canShowTwoPane(context);
+    return showDialog<T>(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      useRootNavigator: !expanded,
+      routeSettings: RouteSettings(name: routeName),
+      builder: (dialogCtx) {
+        return MediaQuery(
+          data: MediaQueryData.fromView(
+                  WidgetsBinding.instance.platformDispatcher.views.first)
+              .copyWith(textScaler: TextScaler.noScaling),
+          child: NeverOverScrollIndicator(
+            needOverload: false,
+            child: SafeArea(child: builder(dialogCtx)),
+          ),
+        );
+      },
+    );
+  }
 }

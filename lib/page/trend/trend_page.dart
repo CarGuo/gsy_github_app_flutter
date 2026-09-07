@@ -348,7 +348,17 @@ class TrendPageState extends ConsumerState<TrendPage>
     //   [NavigatorUtils.goTrendUserPage] 分流到右列 detail Navigator，
     //   避免展开态还全屏铺满、丢失左列 master 的自打脸；跨断点保栈也走
     //   同一条 [_openDetailOrRouter] 记账通道。
+    //
+    // 关键：animations 2.1.1 的 [OpenContainer] 内部在
+    // pub_cache/animations-2.1.1/lib/src/open_container.dart#L324-L325
+    // 用一层 GestureDetector(onTap: tappable ? openContainer : null) 直接
+    // 包住 closedBuilder；祖先 GestureDetector 会先于子树命中 tap，导致
+    // 上一版把 GestureDetector 塞进 closedBuilder 内部完全不生效——事件
+    // 被外层吃掉直接走全屏 open。这里显式 tappable: false 关掉内层拦截，
+    // 交由 closedBuilder 里我自己的 GestureDetector 分档决定：双栏走
+    // shellDetail 分流，单栏才手动调 openContainer() 继续用 hero 转场。
     return OpenContainer(
+      tappable: false,
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
         return NavigatorUtils.pageContainer(const TrendUserPage(), context);
@@ -366,10 +376,6 @@ class TrendPageState extends ConsumerState<TrendPage>
           height: size,
           child: Lottie.asset("static/file/user.json", fit: BoxFit.cover),
         );
-        // OpenContainer 的 closedBuilder 默认由 animations 包在其内部
-        // 挂一层可点击层触发 openContainer；这里在外层包一个
-        // opaque GestureDetector 优先命中：canShowTwoPane 时改走
-        // shellDetail 分流入口，否则回退到默认 openContainer 行为。
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
