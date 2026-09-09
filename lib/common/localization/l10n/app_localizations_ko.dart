@@ -347,6 +347,33 @@ class AppLocalizationsKo extends AppLocalizations {
   String get discussion_list_disabled => '이 저장소에서는 토론이 활성화되어 있지 않습니다.';
 
   @override
+  String get discussion_create => '새 토론';
+
+  @override
+  String get discussion_body_tip => '토론 본문을 입력하세요 (Markdown 지원)';
+
+  @override
+  String get discussion_category => '카테고리 선택';
+
+  @override
+  String get discussion_create_failed => '토론 생성에 실패했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get discussion_create_no_category => '이 저장소에는 사용 가능한 토론 카테고리가 없습니다.';
+
+  @override
+  String get discussion_create_success => '토론이 생성되었습니다';
+
+  @override
+  String get discussion_reply => '답글';
+
+  @override
+  String get discussion_reply_hint => '답글을 입력하세요 (Markdown 지원)';
+
+  @override
+  String get discussion_reply_failed => '답글 등록에 실패했습니다. 나중에 다시 시도해 주세요.';
+
+  @override
   String get discussion_answered_badge => '답변 완료';
 
   @override

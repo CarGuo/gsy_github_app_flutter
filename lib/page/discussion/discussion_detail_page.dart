@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart' as gql;
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -103,6 +104,10 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
           widget.owner, widget.reposName, widget.number);
       if (!mounted) return;
       if (res == null || res.hasException) {
+        talker.warning(
+            'DiscussionDetail _load exception owner=${widget.owner} '
+            'repo=${widget.reposName} number=${widget.number}: '
+            '${res?.exception}');
         setState(() {
           _loading = false;
           _errorText = res?.exception?.toString() ?? 'null result';
@@ -123,8 +128,13 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
           ..clear()
           ..addAll(_extractCommentReactions(_commentsPage.nodes));
       });
-    } catch (e) {
+    } catch (e, s) {
       if (!mounted) return;
+      talker.warning(
+          'DiscussionDetail _load caught owner=${widget.owner} '
+          'repo=${widget.reposName} number=${widget.number}: $e',
+          e,
+          s);
       setState(() {
         _loading = false;
         _errorText = e.toString();
@@ -150,6 +160,10 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
           after: cursor);
       if (!mounted) return;
       if (res == null || res.hasException) {
+        talker.warning(
+            'DiscussionDetail _loadMore exception owner=${widget.owner} '
+            'repo=${widget.reposName} number=${widget.number} '
+            'after=$cursor: ${res?.exception}');
         setState(() {
           _loadingMore = false;
           _loadMoreError = res?.exception?.toString() ?? 'null result';
@@ -166,8 +180,14 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
         _commentsPage = mergeCommentsPage(_commentsPage, nextPage);
         _commentReactions.addAll(_extractCommentReactions(nextPage.nodes));
       });
-    } catch (e) {
+    } catch (e, s) {
       if (!mounted) return;
+      talker.warning(
+          'DiscussionDetail _loadMore caught owner=${widget.owner} '
+          'repo=${widget.reposName} number=${widget.number} '
+          'after=$cursor: $e',
+          e,
+          s);
       setState(() {
         _loadingMore = false;
         _loadMoreError = e.toString();
@@ -998,6 +1018,10 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
           : await gql.removeReactionFromSubject(subjectId, content);
       if (!mounted) return;
       if (res == null || res.hasException) {
+        talker.warning(
+            'DiscussionDetail toggleReaction exception '
+            'subjectId=$subjectId content=$content add=$add: '
+            '${res?.exception}');
         setState(() {
           _writeReactionsForSubject(subjectId, before, isBody: isBody);
           _reactionInflight.remove(subjectId);
@@ -1020,8 +1044,13 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
             isBody: isBody);
         _reactionInflight.remove(subjectId);
       });
-    } catch (e) {
+    } catch (e, s) {
       if (!mounted) return;
+      talker.warning(
+          'DiscussionDetail toggleReaction caught subjectId=$subjectId '
+          'content=$content add=$add: $e',
+          e,
+          s);
       setState(() {
         _writeReactionsForSubject(subjectId, before, isBody: isBody);
         _reactionInflight.remove(subjectId);
@@ -1296,7 +1325,162 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
           needRightLocalIcon: widget.needHomeIcon,
         ),
       ),
+      persistentFooterButtons: _buildFooterButtons(),
       body: _buildBody(),
     );
+  }
+
+  /// 底部操作区：当前只挂"回复"按钮（对齐 issue_detail 的 `_getBottomWidget`
+  /// 里回复入口的视觉位置）。
+  ///
+  /// - 仅在 discussion 加载成功后出现；loading / error / not-found 态返回空
+  /// - locked discussion 在 GitHub 侧禁止新评论，这里一并隐藏回复入口，与
+  ///   web 行为对齐（锁定的 discussion 底部没有评论框）
+  List<Widget> _buildFooterButtons() {
+    if (_loading || _errorText != null || _discussion == null) {
+      return const <Widget>[];
+    }
+    final bool locked = (_discussion!['locked'] as bool?) ?? false;
+    if (locked) return const <Widget>[];
+    return <Widget>[
+      TextButton(
+        onPressed: _replyDiscussion,
+        child: Text(context.l10n.discussion_reply,
+            style: GSYConstant.smallText),
+      ),
+    ];
+  }
+
+  /// 回复 discussion（追加一级评论，非二级 reply）。
+  ///
+  /// 底部按钮 → [CommonUtils.showEditDialog]（`needTitle:false`，只输正文）→
+  /// [gql.addDiscussionComment]。
+  ///
+  /// 两个双栏（expanded）适配要点（reviewer 2026-09-08 拦下的 blocker/major）：
+  /// 1. **必须传 [TextEditingController]**：[IssueEditDialog] 的 Markdown 快捷
+  ///    输入条（H1/Bold/Link…）内部对 `valueController!` 强解，不传一点就抛
+  ///    空指针。issue 流程一直传，这里补齐；对话框关闭后 dispose。
+  /// 2. **loading 与 edit dialog 落在不同 Navigator**：loading 走
+  ///    [CommonUtils.showLoadingDialog] → `showDialog(useRootNavigator:true)`
+  ///    在 root navigator；edit dialog 走 adaptive 通道，expanded 下
+  ///    `useRootNavigator:false` 落在本页所在的嵌套 detail navigator。因此
+  ///    关闭时不能混用 `Navigator.pop(context)`——见 [_submitReply]。
+  ///
+  /// discussion 的 GraphQL node id 直接取 [_discussion] 的 `id` 字段——
+  /// [readDiscussion] 已返回，reaction 逻辑也复用同一个 id。
+  void _replyDiscussion() {
+    final String? discussionId = _discussion?['id'] as String?;
+    if (discussionId == null || discussionId.isEmpty) {
+      _showSnack(context.l10n.discussion_reply_failed);
+      return;
+    }
+    String content = '';
+    final valueController = TextEditingController();
+    CommonUtils.showEditDialog(
+      context,
+      context.l10n.discussion_reply,
+      null,
+      (v) => content = v,
+      () => _submitReply(discussionId, content),
+      needTitle: false,
+      valueController: valueController,
+      hintText: context.l10n.discussion_reply_hint,
+    ).whenComplete(() {
+      // 对话框关闭（提交 / 取消）后回收 controller，避免每次回复泄漏一个
+      // TextEditingController。控件已 unmount，dispose 不影响在途文本。
+      valueController.dispose();
+    });
+  }
+
+  Future<void> _submitReply(String discussionId, String content) async {
+    if (content.trim().isEmpty) {
+      _showSnack(context.l10n.issue_edit_issue_content_not_be_null);
+      return;
+    }
+    // 在 await 之前先抓两个 Navigator 句柄：loading 在 root navigator，
+    // edit dialog 在本页最近的 Navigator（expanded 下是嵌套 detail navigator，
+    // compact 下与 root 同一个——两种形态下这两句都各自弹对路由）。
+    // 不能用 `Navigator.pop(context)`：它只够得到本页最近的 Navigator，在
+    // expanded 下弹不到 root 上的 loading，会留下转圈遮罩卡死整页。
+    final NavigatorState rootNav = Navigator.of(context, rootNavigator: true);
+    final NavigatorState localNav = Navigator.of(context);
+    CommonUtils.showLoadingDialog(context);
+    try {
+      final QueryResult? res = await gql.addDiscussionComment(
+        discussionId: discussionId,
+        body: content.trim(),
+      );
+      if (!mounted) {
+        // loading 在 root navigator 上，不随本页路由销毁；页面已退出也要把它
+        // pop 掉，否则 PopScope(canPop:false) 的转圈遮罩会永久挡住整个 app。
+        if (rootNav.mounted) rootNav.pop();
+        return;
+      }
+      if (res == null || res.hasException) {
+        talker.warning(
+            'DiscussionDetail reply exception owner=${widget.owner} '
+            'repo=${widget.reposName} number=${widget.number}: '
+            '${res?.exception}');
+        rootNav.pop(); // 只关 loading；edit dialog 留在嵌套 navigator 上，保留用户输入可改完重试
+        _showSnack(context.l10n.discussion_reply_failed);
+        return;
+      }
+      // 成功：乐观把新评论追加到列表尾部（mutation 已回带 id/bodyHTML/author/
+      // createdAt），不整页 _load() 重载——避免把已分页的评论和滚动位置重置。
+      final Map<String, dynamic>? mutationRoot =
+          res.data?['addDiscussionComment'] as Map<String, dynamic>?;
+      final Map<String, dynamic>? newComment =
+          mutationRoot?['comment'] as Map<String, dynamic>?;
+      rootNav.pop(); // 关 loading（root）
+      localNav.pop(); // 关 edit dialog（本页最近 navigator）
+      // 乐观追加只在"评论已全部加载完"（hasNextPage=false）时安全：此时新评论
+      // 确实是最后一条。若还有下一页，本地 append 后 endCursor 仍指向旧的第
+      // 30 条，下次 _loadMore 会把刚创建的评论从服务端再拉一遍，而
+      // mergeCommentsPage 明确不去重 → 同一条评论出现两次。这种情况退化为
+      // 整页 _load() 重拉，拿到与服务端一致的分页状态。
+      if (newComment != null && !_commentsPage.hasNextPage) {
+        setState(() {
+          _commentsPage = DiscussionCommentsPage(
+            nodes: <Map<String, dynamic>>[
+              ..._commentsPage.nodes,
+              Map<String, dynamic>.from(newComment),
+            ],
+            hasNextPage: _commentsPage.hasNextPage,
+            endCursor: _commentsPage.endCursor,
+            totalCount: _commentsPage.totalCount + 1,
+          );
+          // 头部 "N comments" chip 取的是 _discussion.comments.totalCount
+          // （不是 _commentsPage.totalCount），乐观追加时同步 +1，否则会出现
+          // "列表已显示新评论、header 仍 0 comments" 的短暂不一致。
+          final commentsMeta = _discussion?['comments'];
+          if (commentsMeta is Map) {
+            commentsMeta['totalCount'] =
+                (commentsMeta['totalCount'] as int? ?? 0) + 1;
+          }
+          final cid = newComment['id'];
+          if (cid is String && cid.isNotEmpty) {
+            _commentReactions[cid] =
+                pickReactionGroups(newComment['reactionGroups']);
+          }
+        });
+      } else {
+        // mutation 没回 comment（理论不发生），或评论未拉全（hasNextPage=true，
+        // 乐观 append 会导致 loadMore 重复）——退化为整页重拉兜底
+        _load();
+      }
+    } catch (e, s) {
+      if (!mounted) {
+        // 同成功路径：root 上的 loading 不随页面销毁，必须显式 pop
+        if (rootNav.mounted) rootNav.pop();
+        return;
+      }
+      talker.warning(
+          'DiscussionDetail reply caught owner=${widget.owner} '
+          'repo=${widget.reposName} number=${widget.number}: $e',
+          e,
+          s);
+      rootNav.pop(); // 关 loading，保留 edit dialog
+      _showSnack(context.l10n.discussion_reply_failed);
+    }
   }
 }

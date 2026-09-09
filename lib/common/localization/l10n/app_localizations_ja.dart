@@ -348,6 +348,34 @@ class AppLocalizationsJa extends AppLocalizations {
   String get discussion_list_disabled => 'このリポジトリではディスカッションが有効になっていません。';
 
   @override
+  String get discussion_create => 'ディスカッションを作成';
+
+  @override
+  String get discussion_body_tip => '本文を入力してください（Markdown 対応）';
+
+  @override
+  String get discussion_category => 'カテゴリーを選択';
+
+  @override
+  String get discussion_create_failed => 'ディスカッションの作成に失敗しました。もう一度お試しください。';
+
+  @override
+  String get discussion_create_no_category =>
+      'このリポジトリには利用可能なディスカッションカテゴリーがありません。';
+
+  @override
+  String get discussion_create_success => 'ディスカッションを作成しました';
+
+  @override
+  String get discussion_reply => '返信';
+
+  @override
+  String get discussion_reply_hint => '返信を入力（Markdown 対応）';
+
+  @override
+  String get discussion_reply_failed => '返信の投稿に失敗しました。しばらくしてからもう一度お試しください。';
+
+  @override
   String get discussion_answered_badge => '回答済み';
 
   @override

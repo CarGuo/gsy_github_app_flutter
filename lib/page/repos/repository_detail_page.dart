@@ -52,11 +52,23 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
   GlobalKey<RepositoryDetailIssuePageState> issueListKey =
       GlobalKey<RepositoryDetailIssuePageState>();
 
+  /// discussion 列表页的 GlobalKey，用于顶层 FAB 分派新建 discussion 动作。
+  /// 顶层 FAB 只有一个（避免与 issue FAB 视觉重叠成大黑圆），根据当前 tab
+  /// 命中的 index 通过这个 key 调 `startCreateDiscussion()`。
+  GlobalKey<DiscussionListPageState> discussionListKey =
+      GlobalKey<DiscussionListPageState>();
+
   ///动画控制器，用于底部发布 issue 按键动画
   late AnimationController animationController;
 
   ///仓库的详情数据实体
   late ReposDetailProvider reposDetailProvider;
+
+  /// 上一次 build 计算出的 showDiscussion。用于检测 4→5 tab 翻转：翻转时
+  /// [GSYTabBarWidget] 被 ValueKey 重建并回到第 0 页，但 provider.currentIndex
+  /// 仍是翻转前的值（且不会触发 onPageChanged），导致 [_buildFab] 按过期 index
+  /// 在错误的 tab 上显示 FAB。翻转时把它归零与新 TabController 对齐。
+  bool? _lastShowDiscussion;
 
   ///渲染 Tab 的 Item
   ///
@@ -96,7 +108,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       ReposDetailInfoPage(key: infoListKey),
       RepositoryDetailReadmePage(key: readmeKey),
       RepositoryDetailIssuePage(key: issueListKey),
-      if (showDiscussion) const DiscussionListPage(),
+      if (showDiscussion) DiscussionListPage(key: discussionListKey),
       RepositoryDetailFileListPage(key: fileListKey),
     ];
   }
@@ -198,6 +210,56 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         valueController: TextEditingController());
   }
 
+  /// Tab 索引常量（与 [_renderTabItem] / [_buildTabViews] 里的顺序保持一致）。
+  /// 顺序：`Info(0) → Readme(1) → Issue(2) → (Discussion(3)) → File(3 或 4)`。
+  /// discussion tab 的 index 依赖 `showDiscussion`——当且仅当 showDiscussion=true
+  /// 时才存在于第 3 位。这里只声明本文件当前分派逻辑真正读到的两个 index，避免
+  /// 冗余常量触发 `unused_field` 静态告警。
+  static const int _kIssueTabIndex = 2;
+  static const int _kDiscussionTabIndex = 3;
+
+  /// 根据当前 tab 与仓库能力决定 FAB 的行为，并把外观（`primaryColor + Icons.add`）
+  /// 和入场动画保留原状。返回 null 时 [Scaffold] 不渲染 FAB。
+  Widget? _buildFab(
+      BuildContext context, ReposDetailProvider provider, bool showDiscussion) {
+    final int index = provider.currentIndex;
+    final bool isIssueTab = index == _kIssueTabIndex;
+    final bool isDiscussionTab =
+        showDiscussion && index == _kDiscussionTabIndex;
+    if (!isIssueTab && !isDiscussionTab) {
+      // Info / Readme / File tab 不再显示 FAB（原实现全 tab 常驻一个 issue FAB
+      // 是"能力在 issue tab 之外没用武之地"的祖传行为，本轮顺手收敛）
+      return null;
+    }
+    return ScaleTransition(
+      scale: CurvedAnimation(
+          parent: animationController, curve: Curves.decelerate),
+      child: FloatingActionButton(
+        onPressed: () {
+          if (isDiscussionTab) {
+            // 通过 GlobalKey 触发 DiscussionListPage 内部的创建流程。
+            // discussion tab 只在 `hasDiscussionsEnabled == true` 时才装配，
+            // 所以这里不再重复判 enabled；currentState 可能为 null（还没首帧）——
+            // 用 ?. 安全调，null 时静默返回，用户再点即可。
+            discussionListKey.currentState?.startCreateDiscussion();
+            return;
+          }
+          // issue tab
+          if (provider.repository?.hasIssuesEnabled == false) {
+            showToast(context.l10n.repos_no_support_issue);
+            return;
+          }
+          _createIssue(provider);
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        tooltip: isDiscussionTab
+            ? context.l10n.discussion_create
+            : context.l10n.issue_edit_issue,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -243,6 +305,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         // provider 加载完毕后触发 Consumer 重建，若目标仓库开启了 discussions 会自动多出该 tab。
         // 参见 fixture 契约（roadmap §3.1）：CarGuo 全部仓库 false，666ghj/BettaFish true。
         final showDiscussion = provider.repository?.hasDiscussionsEnabled == true;
+        // 4→5 tab 翻转检测：showDiscussion 变化时 GSYTabBarWidget 会被 ValueKey
+        // 重建并回到第 0 页，但 provider.currentIndex 仍是翻转前的值（且不会触发
+        // onPageChanged），_buildFab 会按过期 index 在错误的 tab 上显示 FAB
+        // （reviewer 2026-09-09）。翻转时把它归零，与新 TabController 的初始页对齐。
+        // 用 post-frame 避免在 build 里直接 notifyListeners。
+        if (_lastShowDiscussion != null &&
+            _lastShowDiscussion != showDiscussion &&
+            provider.currentIndex != 0) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) provider.currentIndex = 0;
+          });
+        }
+        _lastShowDiscussion = showDiscussion;
         return GSYTabBarWidget(
           // ValueKey(showDiscussion)：`GSYTabBarWidget` 内部 `_tabController`
           // 只在 `initState` 根据 `tabItems.length` 创建，没有 `didUpdateWidget`
@@ -269,23 +344,20 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
             reposDetailProvider.currentIndex = index;
           },
 
-          ///悬浮按键，增加出现动画
-          floatingActionButton: ScaleTransition(
-            //scale: CurvedAnimation(parent: animationController, curve: Curves.bounceInOut),
-            scale: CurvedAnimation(
-                parent: animationController, curve: Curves.decelerate),
-            child: FloatingActionButton(
-              onPressed: () {
-                if (provider.repository?.hasIssuesEnabled == false) {
-                  showToast(context.l10n.repos_no_support_issue);
-                  return;
-                }
-                _createIssue(provider);
-              },
-              backgroundColor: Theme.of(context).primaryColor,
-              child: const Icon(Icons.add),
-            ),
-          ),
+          ///悬浮按键，增加出现动画。
+          ///
+          /// 根据当前 tab 命中的 index 决定行为与是否显示：
+          /// - `Issue tab`（`kIssueTabIndex`）：新建 issue（保留原有行为，
+          ///   仓库不启用 issue 时 toast 拦下）
+          /// - `Discussion tab`（`kDiscussionTabIndex`，仅在 showDiscussion==true 时存在）：
+          ///   通过 [discussionListKey] 触发 `startCreateDiscussion`
+          /// - 其他 tab（Info / Readme / File）：不显示 FAB。
+          ///
+          /// 历史坑：旧实现在所有 tab 都常驻一个 issue FAB，同时 [DiscussionListPage]
+          /// 内部也挂了一个新建 discussion FAB。两个 FAB 都用 `endDocked +
+          /// primaryColor + Icons.add`，切到 discussion tab 时视觉上重叠成一个
+          /// 大黑圆（对应用户截图的 bug）。现在统一到父页一个 FAB 分派。
+          floatingActionButton: _buildFab(context, provider, showDiscussion),
 
           ///悬浮按键位置
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

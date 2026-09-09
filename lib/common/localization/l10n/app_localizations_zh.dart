@@ -347,6 +347,33 @@ class AppLocalizationsZh extends AppLocalizations {
   String get discussion_list_disabled => '该仓库未启用讨论功能';
 
   @override
+  String get discussion_create => '新建讨论';
+
+  @override
+  String get discussion_body_tip => '请输入讨论正文（支持 Markdown）';
+
+  @override
+  String get discussion_category => '选择讨论分类';
+
+  @override
+  String get discussion_create_failed => '新建讨论失败，请稍后重试';
+
+  @override
+  String get discussion_create_no_category => '该仓库暂无可用的讨论分类';
+
+  @override
+  String get discussion_create_success => '讨论已创建';
+
+  @override
+  String get discussion_reply => '回复讨论';
+
+  @override
+  String get discussion_reply_hint => '写下你的回复（支持 Markdown）';
+
+  @override
+  String get discussion_reply_failed => '回复失败，请稍后重试';
+
+  @override
   String get discussion_answered_badge => '已解答';
 
   @override

@@ -368,6 +368,37 @@ class AppLocalizationsEn extends AppLocalizations {
       'Discussions are not enabled for this repository.';
 
   @override
+  String get discussion_create => 'New discussion';
+
+  @override
+  String get discussion_body_tip =>
+      'Write your discussion body (Markdown supported)';
+
+  @override
+  String get discussion_category => 'Choose a category';
+
+  @override
+  String get discussion_create_failed =>
+      'Failed to create discussion, please try again.';
+
+  @override
+  String get discussion_create_no_category =>
+      'This repository has no discussion categories available.';
+
+  @override
+  String get discussion_create_success => 'Discussion created';
+
+  @override
+  String get discussion_reply => 'Reply';
+
+  @override
+  String get discussion_reply_hint => 'Write your reply (Markdown supported)';
+
+  @override
+  String get discussion_reply_failed =>
+      'Failed to post reply, please try again.';
+
+  @override
   String get discussion_answered_badge => 'Answered';
 
   @override

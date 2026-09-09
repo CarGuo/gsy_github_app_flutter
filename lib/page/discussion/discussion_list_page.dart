@@ -4,7 +4,11 @@ import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/client.dart' as gql;
 import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
+import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/toast.dart';
+import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/common/utils/emoji_shortcode_map.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/page/discussion/widget/discussion_item.dart';
 import 'package:gsy_github_app_flutter/page/repos/provider/repos_detail_provider.dart';
@@ -37,6 +41,17 @@ class DiscussionListPageState extends State<DiscussionListPage>
 
   /// GraphQL 侧标记，避免上拉到没有更多时还继续发请求
   bool _hasNextPage = true;
+
+  /// 仓库 GraphQL node id（形如 `R_kw...`），是 [createDiscussion] mutation 的
+  /// 必填参数。[RepositoryQL] 目前没存这个字段，惰性从
+  /// [gql.getRepoDiscussionCategories] 的返回里取一次并缓存到本 State。
+  String? _repositoryNodeId;
+
+  /// 仓库当前可用的 discussion category 列表，惰性加载。
+  /// 每个元素形如 `{id, name, emoji, description, isAnswerable}`。
+  /// null 表示还没拉过；`const []` 表示已拉过但仓库确实没启用 discussion / 没配置
+  /// category（后者理论上不发生，GitHub 默认 6 个 category）。
+  List<Map<String, dynamic>>? _categories;
 
   @override
   bool get isRefreshFirst => true;
@@ -111,7 +126,9 @@ class DiscussionListPageState extends State<DiscussionListPage>
       final QueryResult? res =
           await gql.getRepositoryDiscussions(owner, name, after: after);
       if (res == null || res.hasException) {
-        printLog('DiscussionListPage fetch error: ${res?.exception}');
+        talker.warning(
+            'DiscussionListPage fetch error owner=$owner repo=$name after=$after '
+            'exception=${res?.exception}');
         return DataResult(<Map<String, dynamic>>[], false);
       }
       final Map<String, dynamic>? repo =
@@ -134,8 +151,12 @@ class DiscussionListPageState extends State<DiscussionListPage>
           .map((n) => Map<String, dynamic>.from(n))
           .toList(growable: false);
       return DataResult(mapped, true);
-    } catch (e) {
-      printLog('DiscussionListPage fetch exception: $e');
+    } catch (e, s) {
+      talker.warning(
+          'DiscussionListPage fetch exception owner=$owner repo=$name '
+          'after=$after isRefresh=$isRefresh: $e',
+          e,
+          s);
       return DataResult(<Map<String, dynamic>>[], false);
     }
   }
@@ -194,6 +215,14 @@ class DiscussionListPageState extends State<DiscussionListPage>
       );
     }
 
+    // 注意：这里**不**再挂内部 `floatingActionButton`。
+    // 历史坑：曾经在这里挂过一个"新建 discussion" FAB，但父页
+    // [RepositoryDetailPage] 的 Scaffold 已经在 `endDocked` 位置挂了一个"新建
+    // issue" FAB（都是 endDocked + primaryColor + Icons.add），两者会**视觉重叠**
+    // 成一个大黑圆，Material 规范里同一 `Scaffold` 树上不允许出现两个 FAB。
+    // 现在改由父页根据 `provider.currentIndex` 命中的 tab 分派：
+    // Issue tab → 原有 `_createIssue`；Discussion tab → 通过 GlobalKey 调本 State
+    // 暴露出去的 [startCreateDiscussion]。
     return Scaffold(
       backgroundColor: GSYColors.mainBackgroundColor,
       body: GSYPullLoadWidget(
@@ -204,5 +233,292 @@ class DiscussionListPageState extends State<DiscussionListPage>
         refreshKey: refreshIndicatorKey,
       ),
     );
+  }
+
+  /// 外部（父页 [RepositoryDetailPage]）通过 [GlobalKey] 触发的"新建 discussion"
+  /// 入口。逻辑与原本内部 FAB 的 `onPressed` 完全一致——只是把访问方式从
+  /// "自持 FAB" 改成 "父页 FAB 分派"，以解决两个 FAB 视觉重叠。
+  Future<void> startCreateDiscussion() => _startCreateDiscussion(context);
+
+  /// 触发"新建 discussion"完整流程：
+  ///
+  /// 1. 惰性加载仓库 category 列表 + 仓库 node id（[createDiscussion] mutation 强
+  ///    要求 `repositoryId` + `categoryId`；两者都从
+  ///    [gql.getRepoDiscussionCategories] 一次拿）
+  /// 2. 弹分类选择底表让用户选一个 category（GitHub Web 也是先选分类再进入
+  ///    title/body 输入页，语义对齐）
+  /// 3. 弹通用 [showEditDialog]（复用 issue 的输入框视觉）让用户填 title/body
+  /// 4. 提交 mutation，成功后 pop 并触发 [showRefreshLoading] 刷新列表让新条目
+  ///    从服务器回来（不做乐观本地插入，避免服务端排序 / trailing linebreak 归
+  ///    一化差异导致的抖动）
+  ///
+  /// 任一步骤失败或用户取消都直接返回，不留半成品 state。
+  /// 权限说明：见 [AGENTS.md](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L193-L215)
+  /// §允许 / 禁止的写操作清单——本入口对应"用户对**有权限**仓库发 discussion"
+  /// 这一产品能力；AI/开发者做冒烟时禁止指向 `CarGuo/*` 主仓。
+  Future<void> _startCreateDiscussion(BuildContext context) async {
+    final provider = context.read<ReposDetailProvider>();
+    // 仓库若未启用 discussion（理论上被 tab 层拦住，但同 build 里的兜底一致再判一次）
+    if (provider.repository?.hasDiscussionsEnabled == false) {
+      showToast(context.l10n.discussion_list_disabled);
+      return;
+    }
+
+    final categories = await _ensureCategoriesLoaded(context);
+    if (categories == null) {
+      // _ensureCategoriesLoaded 内部已经 toast + talker.warning 过，这里静默返回
+      return;
+    }
+    if (categories.isEmpty) {
+      // 空分类会被缓存，后续每次点 FAB 都走到这里；必须每次都给反馈，否则只有
+      // 第一次（fetch 路径）弹 toast、之后按钮看起来"死了"（reviewer 2026-09-09）。
+      if (mounted) showToast(context.l10n.discussion_create_no_category);
+      return;
+    }
+
+    if (!mounted) return;
+    final Map<String, dynamic>? chosen =
+        await _showCategoryPicker(context, categories);
+    if (chosen == null) return; // 用户取消
+    final categoryId = chosen['id'] as String?;
+    final categoryName = chosen['name'] as String?;
+    final repositoryId = _repositoryNodeId;
+    if (categoryId == null || repositoryId == null) {
+      talker.warning(
+          'DiscussionListPage create precondition missing categoryId=$categoryId '
+          'repositoryId=$repositoryId owner=${provider.userName} repo=${provider.reposName}');
+      showToast(context.l10n.discussion_create_failed);
+      return;
+    }
+
+    if (!mounted) return;
+    // 复用 issue 的 dialog；hintText 走 discussion 语义
+    String title = '';
+    String body = '';
+    // 正文必须给 controller：[IssueEditDialog] 的 Markdown 快捷输入条对
+    // valueController! 强解，不传一点工具栏就抛空指针（reviewer 2026-09-08）。
+    final valueController = TextEditingController();
+    // dialogTitle 里带上 category 名，让用户明确"在哪个分类下发"
+    final dialogTitle = categoryName == null || categoryName.isEmpty
+        ? context.l10n.discussion_create
+        : '${context.l10n.discussion_create} · $categoryName';
+    await CommonUtils.showEditDialog(
+      context,
+      dialogTitle,
+      (v) => title = v,
+      (v) => body = v,
+      () => _submitCreateDiscussion(
+        context,
+        repositoryId: repositoryId,
+        categoryId: categoryId,
+        title: title,
+        body: body,
+      ),
+      needTitle: true,
+      valueController: valueController,
+      hintText: context.l10n.discussion_body_tip,
+    ).whenComplete(valueController.dispose);
+  }
+
+  /// 从 GraphQL 拉一次 category 列表 + repository.id，缓存到 State。已缓存则直接返回。
+  ///
+  /// 失败路径：`res == null` / `hasException` / repository 为空 / discussionCategories
+  /// 为空——任意一个都视为不可创建，toast 提示 + `talker.warning`，返回 null。
+  /// 与 [_fetchPage] 一样只走 [talker.warning]（非 error），避免污染 error 面板；
+  /// 但 message 里带上足够上下文（owner/repo/exception）便于 reviewer 复核。
+  Future<List<Map<String, dynamic>>?> _ensureCategoriesLoaded(
+      BuildContext context) async {
+    if (_categories != null && _repositoryNodeId != null) {
+      return _categories;
+    }
+    final provider = context.read<ReposDetailProvider>();
+    final owner = provider.userName;
+    final name = provider.reposName;
+    try {
+      final QueryResult? res =
+          await gql.getRepoDiscussionCategories(owner, name);
+      if (res == null || res.hasException) {
+        talker.warning(
+            'DiscussionListPage load categories error owner=$owner repo=$name '
+            'exception=${res?.exception}');
+        if (mounted) showToast(context.l10n.discussion_create_failed);
+        return null;
+      }
+      final repo = res.data?['repository'] as Map<String, dynamic>?;
+      if (repo == null) {
+        talker.warning(
+            'DiscussionListPage load categories: null repository owner=$owner repo=$name');
+        if (mounted) showToast(context.l10n.discussion_create_failed);
+        return null;
+      }
+      _repositoryNodeId = repo['id'] as String?;
+      final cats = repo['discussionCategories'] as Map<String, dynamic>?;
+      final nodes = (cats?['nodes'] as List<dynamic>?) ?? const <dynamic>[];
+      _categories = nodes
+          .whereType<Map<String, dynamic>>()
+          .map((n) => Map<String, dynamic>.from(n))
+          .toList(growable: false);
+      if (_categories!.isEmpty) {
+        // 只记日志不 toast：空分类的用户反馈统一在 [_startCreateDiscussion]
+        // 触发点弹（否则缓存命中时这里不会走到，用户点了没反应）。
+        talker.warning(
+            'DiscussionListPage load categories: empty owner=$owner repo=$name');
+      }
+      return _categories;
+    } catch (e, s) {
+      talker.warning(
+          'DiscussionListPage load categories exception owner=$owner repo=$name: $e',
+          e,
+          s);
+      if (mounted) showToast(context.l10n.discussion_create_failed);
+      return null;
+    }
+  }
+
+  /// 分类选择底表：一个 modal bottom sheet，列出所有可用 category。
+  ///
+  /// 用 bottom sheet 而不是 popup dialog：GitHub Web 用整页选，Flutter 端保守
+  /// 一点用 bottom sheet 与既有 comment 输入 / issue filter 视觉族群一致，避免
+  /// 引入新的 dialog 变种。
+  Future<Map<String, dynamic>?> _showCategoryPicker(
+      BuildContext context, List<Map<String, dynamic>> categories) {
+    // 与 issue 列表页过滤底表同一约定（repository_detail_issue_list_page.dart）：
+    // expanded 双栏下底表应贴到右列 detail navigator，不能盖满整屏 root。
+    final expanded = GSYAdaptiveNavigation.instance.canShowTwoPane(context);
+    return showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      useRootNavigator: !expanded,
+      backgroundColor: GSYColors.mainBackgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+                  child: Text(
+                    context.l10n.discussion_category,
+                    style: GSYConstant.normalTextBold,
+                  ),
+                ),
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: categories.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (BuildContext itemContext, int index) {
+                      final c = categories[index];
+                      // GraphQL 返回的 category.emoji 是 :mega: / :bulb: 这类
+                      // shortcode，必须走 resolveEmojiShortcode 转 unicode
+                      // （与 discussion_item.dart 的列表项一致）；否则底表里
+                      // 直接显示 ":mega: Announcements" 原文。未命中 fallback 原文。
+                      final rawEmoji = c['emoji'] as String?;
+                      final emoji = (rawEmoji == null || rawEmoji.isEmpty)
+                          ? null
+                          : resolveEmojiShortcode(rawEmoji);
+                      final name = (c['name'] as String?) ?? '';
+                      final desc = (c['description'] as String?) ?? '';
+                      return ListTile(
+                        leading: (emoji == null || emoji.isEmpty)
+                            ? null
+                            : Text(
+                                emoji,
+                                style: const TextStyle(fontSize: 22),
+                              ),
+                        title: Text(name, style: GSYConstant.normalText),
+                        subtitle: desc.isEmpty
+                            ? null
+                            : Text(desc, style: GSYConstant.smallSubText),
+                        onTap: () => Navigator.of(sheetContext).pop(c),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// 走 [gql.createDiscussion] 提交 mutation。
+  ///
+  /// - title / body 空校验直接 toast 返回，不发网络（GitHub 服务端会 400，我们
+  ///   本地先拦一层给出更贴合语境的提示）
+  /// - 成功：先 pop loading + pop dialog，再触发 [showRefreshLoading] 让列表从
+  ///   服务器重拉，保持排序一致
+  /// - 失败：只 pop loading（保留 dialog 让用户改文案 retry），toast 报错
+  Future<void> _submitCreateDiscussion(
+    BuildContext context, {
+    required String repositoryId,
+    required String categoryId,
+    required String title,
+    required String body,
+  }) async {
+    final owner = context.read<ReposDetailProvider>().userName;
+    final repo = context.read<ReposDetailProvider>().reposName;
+    if (title.trim().isEmpty) {
+      showToast(context.l10n.issue_edit_issue_title_not_be_null);
+      return;
+    }
+    if (body.trim().isEmpty) {
+      showToast(context.l10n.issue_edit_issue_content_not_be_null);
+      return;
+    }
+    // 双栏（expanded）下 loading 在 root navigator、edit dialog 在本页所在的
+    // 嵌套 detail navigator；await 前先抓两个 Navigator 句柄，关闭时各弹各的，
+    // 不能用 Navigator.pop(context) 一刀切（会弹不到 root loading 而卡死）。
+    final NavigatorState rootNav = Navigator.of(context, rootNavigator: true);
+    final NavigatorState localNav = Navigator.of(context);
+    CommonUtils.showLoadingDialog(context);
+    try {
+      final QueryResult? res = await gql.createDiscussion(
+        repositoryId: repositoryId,
+        categoryId: categoryId,
+        title: title.trim(),
+        body: body.trim(),
+      );
+      if (!mounted) {
+        // loading 在 root navigator 上，不随本页路由销毁；页面已退出也要 pop，
+        // 否则 PopScope(canPop:false) 的转圈遮罩永久挡住整个 app。
+        if (rootNav.mounted) rootNav.pop();
+        return;
+      }
+      if (res == null || res.hasException) {
+        talker.warning(
+            'DiscussionListPage create error owner=$owner repo=$repo '
+            'categoryId=$categoryId exception=${res?.exception}');
+        rootNav.pop(); // 只关 loading；edit dialog 保留在嵌套 navigator 上让用户改完重试
+        showToast(context.l10n.discussion_create_failed);
+        return;
+      }
+      rootNav.pop(); // 关 loading（root）
+      localNav.pop(); // 关 edit dialog（本页最近 navigator）
+      showToast(context.l10n.discussion_create_success);
+      // 让列表从服务器重拉第一页。**不**在这里提前把 _endCursor/_hasNextPage
+      // 置空：_fetchPage 成功分支会用新首页的 pageInfo 覆盖游标；若刷新失败，
+      // 保留旧游标，loadMore 仍可用（提前置空会在刷新失败后永久翻不了页）。
+      showRefreshLoading();
+    } catch (e, s) {
+      talker.warning(
+          'DiscussionListPage create exception owner=$owner repo=$repo '
+          'categoryId=$categoryId: $e',
+          e,
+          s);
+      // loading 在 root navigator 上，不随本页路由销毁；无论本 State 是否
+      // 还活着都要把它 pop 掉，否则 PopScope(canPop:false) 的转圈遮罩永久
+      // 挡住整个 app。toast 只在页面还在时给（页面退出时用户看不到）。
+      if (rootNav.mounted) rootNav.pop();
+      if (mounted) {
+        showToast(context.l10n.discussion_create_failed);
+      }
+    }
   }
 }

@@ -280,3 +280,89 @@ mutation removeReactionFromSubject($subjectId: ID!, $content: ReactionContent!) 
   }
 }
 ''';
+
+/// 查询指定仓库当前可用的 discussion category 列表。
+///
+/// - `createDiscussion` mutation 强制要求 `categoryId`，服务端不接受 `null`
+///   （见 https://docs.github.com/en/graphql/reference/mutations#creatediscussion）
+/// - GitHub Web 的 "New discussion" 页也是先让用户在几个 category 里选一个
+///   （Announcements / General / Ideas / Q&A / ...），本查询就是给 UI 侧提供
+///   这份选项数据
+/// - 只取"卡片选择器"必要字段：id / name / emoji / description /
+///   isAnswerable（Q&A 类目为 true，方便未来 UI 上给"提问"的 tab 打标）
+/// - `first: 20`：GitHub 目前一个仓库的 discussion category 总数不多（默认
+///   6-8 个），20 已经能一次拉全，无需分页
+const String readRepoDiscussionCategories = r'''
+query getRepoDiscussionCategories($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    id
+    nameWithOwner
+    hasDiscussionsEnabled
+    discussionCategories(first: 20) {
+      totalCount
+      nodes {
+        id
+        name
+        emoji
+        description
+        isAnswerable
+      }
+    }
+  }
+}
+''';
+
+/// 在指定仓库下新建一个 discussion。
+///
+/// - 严格对齐 GraphQL schema `CreateDiscussionInput`：`repositoryId`、
+///   `categoryId`、`title`、`body` 四个字段全部必填（body 可为空字符串但字段
+///   不能省，服务端会报 `Argument 'body' on InputObject 'CreateDiscussionInput'
+///   is required`）
+/// - 权限：token 需要 `repo` scope（或 fine-grained token 的
+///   "Discussions: Read and write"）；对目标仓库要有 write 或 triage 权限
+/// - 允许口径：见 [AGENTS.md](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L193-L215)
+///   §允许 / 禁止的写操作清单（2026-09-08 订正）——这条 mutation 对应"用户
+///   对**有权限**的仓库发 discussion"这一 GSY 产品能力；**AI/开发者做冒烟测试
+///   时不允许指向 `CarGuo/*` 主仓或第三方非授权仓库**，必须挑自己名下的测试仓库
+/// - 返回体只回 discussion.id / number / url / title / createdAt，UI 侧收到后
+///   可以直接把新 discussion 塞到列表头部乐观刷新，或者跳转到详情页
+const String mutationCreateDiscussion = r'''
+mutation createDiscussion($repositoryId: ID!, $categoryId: ID!, $title: String!, $body: String!) {
+  createDiscussion(input: {repositoryId: $repositoryId, categoryId: $categoryId, title: $title, body: $body}) {
+    discussion {
+      id
+      number
+      url
+      title
+      createdAt
+    }
+  }
+}
+''';
+
+/// 给一条 discussion 追加一级评论（回复主贴，不是 reply 二级）。
+///
+/// - 对应 GraphQL schema `AddDiscussionCommentInput`：`discussionId` + `body`
+///   两字段必填；如需二级 reply，需要额外传 `replyToId`，本轮不做
+/// - 权限：与 [mutationCreateDiscussion] 相同：token `repo` scope + 目标仓库
+///   read 以上权限（评论 discussion 不需要 write）
+/// - 允许口径：AGENTS.md §允许 / 禁止的写操作清单里"Issue / PR / Discussion
+///   下发评论"这条早已允许（不是本轮新加）
+/// - 返回体带最新的 comment id/body/createdAt，UI 侧成功后可就地插入到
+///   `_commentsPage.nodes` 尾部或触发 `_load()` 重拉
+const String mutationAddDiscussionComment = r'''
+mutation addDiscussionComment($discussionId: ID!, $body: String!) {
+  addDiscussionComment(input: {discussionId: $discussionId, body: $body}) {
+    comment {
+      id
+      bodyHTML
+      createdAt
+      author {
+        login
+        avatarUrl
+        __typename
+      }
+    }
+  }
+}
+''';

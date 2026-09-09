@@ -120,9 +120,23 @@ class ReposRepository {
 
     next() async {
       var result = await getRepository(userName, reposName);
-      if (result != null && result.data != null) {
+      if (result == null) {
+        talker.warning(
+            'getRepositoryDetailRequest owner=$userName repo=$reposName: '
+            'result is null（网络层直接返回 null，检查 token / 代理 / dio 拦截器）');
+        return DataResult(null, false);
+      }
+      if (result.hasException) {
+        talker.warning(
+            'getRepositoryDetailRequest owner=$userName repo=$reposName: '
+            'GraphQL exception=${result.exception}');
+      }
+      if (result.data != null) {
         var data = result.data!["repository"];
         if (data == null) {
+          talker.warning(
+              'getRepositoryDetailRequest owner=$userName repo=$reposName: '
+              'repository 字段为空（多半是仓库不存在 / 私有 / GraphQL errors 被兜底）');
           return DataResult(null, false);
         }
         var repositoryQL = RepositoryQL.fromMap(data);
@@ -132,6 +146,9 @@ class ReposRepository {
         saveHistoryRequest(fullName, DateTime.now(), json.encode(data));
         return DataResult(repositoryQL, true);
       } else {
+        talker.warning(
+            'getRepositoryDetailRequest owner=$userName repo=$reposName: '
+            'result.data is null（多半是 GraphQL errors 被兜底 or 30s 超时，看上面 exception 行）');
         return DataResult(null, false);
       }
     }

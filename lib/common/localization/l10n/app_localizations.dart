@@ -738,6 +738,60 @@ abstract class AppLocalizations {
   /// **'Discussions are not enabled for this repository.'**
   String get discussion_list_disabled;
 
+  /// No description provided for @discussion_create.
+  ///
+  /// In en, this message translates to:
+  /// **'New discussion'**
+  String get discussion_create;
+
+  /// No description provided for @discussion_body_tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your discussion body (Markdown supported)'**
+  String get discussion_body_tip;
+
+  /// No description provided for @discussion_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a category'**
+  String get discussion_category;
+
+  /// No description provided for @discussion_create_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create discussion, please try again.'**
+  String get discussion_create_failed;
+
+  /// No description provided for @discussion_create_no_category.
+  ///
+  /// In en, this message translates to:
+  /// **'This repository has no discussion categories available.'**
+  String get discussion_create_no_category;
+
+  /// No description provided for @discussion_create_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion created'**
+  String get discussion_create_success;
+
+  /// No description provided for @discussion_reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get discussion_reply;
+
+  /// No description provided for @discussion_reply_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your reply (Markdown supported)'**
+  String get discussion_reply_hint;
+
+  /// No description provided for @discussion_reply_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to post reply, please try again.'**
+  String get discussion_reply_failed;
+
   /// No description provided for @discussion_answered_badge.
   ///
   /// In en, this message translates to:

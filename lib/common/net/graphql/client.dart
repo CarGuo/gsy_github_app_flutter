@@ -192,6 +192,71 @@ Future<QueryResult>? removeReactionFromSubject(
   return await _innerClient!.mutate(options);
 }
 
+/// 读取指定仓库当前可用的 discussion category 列表。
+///
+/// - 给"新建 discussion"对话框的 category 选择器提供数据源；
+///   `createDiscussion` mutation 强制要求 categoryId，UI 必须先拉这份列表
+/// - 走 [FetchPolicy.noCache]：不同仓库 category 差异大，缓存串扰会让
+///   "我在 A 仓库看到 Q&A、在 B 仓库看不到"这种问题变得难排
+Future<QueryResult>? getRepoDiscussionCategories(
+    String owner, String name) async {
+  final QueryOptions options = QueryOptions(
+      document: gql(readRepoDiscussionCategories),
+      variables: <String, dynamic>{
+        'owner': owner,
+        'name': name,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.query(options);
+}
+
+/// 在指定仓库下新建一条 discussion。
+///
+/// - 允许口径：见 [AGENTS.md](file:///d:/workspace/project/gsy_github_app_flutter/AGENTS.md#L193-L215)
+///   §允许 / 禁止的写操作清单（2026-09-08 订正）
+/// - 参数与 [mutationCreateDiscussion] 严格对齐，四项皆必填；`body` 可为空
+///   字符串但不能省
+/// - 走 [FetchPolicy.noCache]：mutation 结果不应污染 [getRepositoryDiscussions]
+///   查询缓存，UI 侧成功后就地把新条目 unshift 到列表头或触发一次刷新
+Future<QueryResult>? createDiscussion({
+  required String repositoryId,
+  required String categoryId,
+  required String title,
+  required String body,
+}) async {
+  final MutationOptions options = MutationOptions(
+      document: gql(mutationCreateDiscussion),
+      variables: <String, dynamic>{
+        'repositoryId': repositoryId,
+        'categoryId': categoryId,
+        'title': title,
+        'body': body,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.mutate(options);
+}
+
+/// 给一条 discussion 追加一级评论（回复主贴，非 reply）。
+///
+/// - 允许口径：AGENTS.md §允许 / 禁止的写操作清单 "Issue / PR / Discussion 下发
+///   评论"，一直允许
+/// - `discussionId` 是 GraphQL node id（形如 `D_kw...`），由上层从 discussion
+///   详情页透传
+/// - 走 [FetchPolicy.noCache]：与其它 discussion mutation 保持一致
+Future<QueryResult>? addDiscussionComment({
+  required String discussionId,
+  required String body,
+}) async {
+  final MutationOptions options = MutationOptions(
+      document: gql(mutationAddDiscussionComment),
+      variables: <String, dynamic>{
+        'discussionId': discussionId,
+        'body': body,
+      },
+      fetchPolicy: FetchPolicy.noCache);
+  return await _innerClient!.mutate(options);
+}
+
 /// 读取指定用户 / 组织的 Pinned Repositories（最多 6 个，仅仓库类型）
 ///
 /// - 用于 profile 页新增 pinned 卡片区域

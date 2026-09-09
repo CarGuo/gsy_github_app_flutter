@@ -172,37 +172,46 @@
 - CI 使用 GitHub Actions，当前偏重构建成功
 - 项目同时使用 Redux、Riverpod、Provider、Signals
 - OAuth 登录相关流程依赖本地 `ignoreConfig.dart`
-- **GSY 是 GitHub 的只读 + 评论客户端**，不承担写 PR / 提交 review / 建仓库这类"作者行为"。冒烟或回归时**禁止通过 gh cli 或 GitHub API 新建仓库、造 PR 或提交 review**去伪造证据，一律用既有仓库里的真实数据
+- **GSY 是 GitHub 的轻量作者 + 阅读客户端**：产品语义上是"看仓库 / 读 issue-PR-discussion"为主，
+  但**允许用户在自己或已授权的仓库里做已实现的写操作**（发 issue、发 discussion、发评论、reaction、star/watch、resolve review thread 等，见下文清单）。
+  历史上曾把口径写成"只读 + 评论客户端"是根据"AI 冒烟阶段"的观察反推的口径，
+  与代码里既有的 [IssueRepository.createIssueRequest](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/repositories/issue_repository.dart#L428-L440)
+  等入口不符，2026-09-08 拍板订正。
 
 ### 允许 / 禁止的写操作清单
 
-> 状态：作者已于 2026-07-06 拍板转正，正式约束。修改需在 PR 描述里显式提出并同步 `docs/00-overview/roadmap.md §4.1`。
+> 状态：作者已于 2026-07-06 首次拍板，2026-09-08 二次订正（把"针对能力"改成"针对目标"）。修改需在 PR 描述里显式提出并同步 `docs/00-overview/roadmap.md §4.1`。
 
-**允许（已在做且不打算收回）**：
+**判断口径（2026-09-08 订正，读清单前先看这段）**：
+
+- **写操作是否允许，判断的是"针对谁 / 为了什么"，不是"是不是 write endpoint"**：
+  - GSY 提供的产品能力（发 issue / 发 discussion / 发评论 / reaction / star / watch / mark thread resolved 等）→ **允许用户对任意有权限的仓库做**，这是 app 的正常使用；
+  - **AI / 开发者做冒烟或回归测试** → **不允许往 `CarGuo/*` 主仓或任何不属于自己 / 未经明确授权的第三方仓库塞测试数据**；允许在 AI / 开发者本人名下的测试仓库、fork、sandbox 里造数据，但**必须在 fixture 表里登记该仓库**以便 reviewer 复核。
+- 仓库运维类（改分支保护 / webhook / rerun workflow / Projects V2 卡片状态等）与 GSY 的产品定位无关，**始终禁止**，不因主体而放松。
+- 若未来需要新增一条允许项（新的产品能力），需要在 PR 描述里显式提出，并同步更新本清单与 roadmap §4.1。
+
+**允许（GSY 已实现或即将实现的产品能力，用户对**有权限**的仓库都可以做）**：
 
 - Issue / Comment 上加/取消 reaction
 - Issue / PR / Discussion 下发评论
+- **新建 issue**（[IssueRepository.createIssueRequest](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/repositories/issue_repository.dart#L428-L440) 早就在做，`_createIssue` 按钮在仓库详情页右下角）
+- **新建 discussion**（2026-09-08 新增，见 [discussion_list_page.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/page/discussion/discussion_list_page.dart) 里的 FAB + `createDiscussion` mutation）
 - Notify 标记已读 / 标记 done / unsubscribe
 - 关注 / 取消关注仓库（star / watch 切换）
 - **PR review thread mark as resolved / unresolved（2026-07-06 新加）**：仅操作层，不做"未 resolved thread 计数"这类仪表盘
 - **编辑自己发的 issue body / comment 内容（2026-07-06 新加）**：服务端会按作者身份校验，不会误伤他人；范围**限编辑**，不含删除
 
-**明确禁止（越界的作者行为）**：
+**明确禁止（越界的作者行为 / 仓库运维行为）**：
 
-- 新建仓库 / fork 仓库
-- 新建 issue / PR / discussion
+- **AI / 开发者为了造冒烟数据往主仓 `CarGuo/*` 或任何第三方非本人授权的仓库写入**（issue / PR / discussion / comment 都算），2026-09-08 订正口径：这里禁止的是"造数据的目的和目标"，不是"能力"
+- 新建仓库 / fork 仓库（fork 视图目前只做**读**，动作没做）
+- **新建 PR**（暂未做，且合入前会引入较高审查开销，本轮暂不打开）
 - 提交 / dismiss review
 - 合并 PR / close issue / lock conversation
 - 修改仓库设置 / 分支保护 / webhook / secret
-- 通过 gh cli 或 GitHub API 制造冒烟数据
 - **GitHub Actions workflow rerun / cancel（2026-07-06 拍板归入禁止）**：属于仓库运维行为，GSY 不介入；用户如需 rerun 请去 GitHub 官网或官方 app
 - **Projects V2 卡片移动 / 状态字段编辑（2026-07-06 拍板归入禁止）**：等同协作作者视角编辑，与只读 + 评论定位冲突；连 Projects V2 阅读也一并搁置
 - **删除自己发的 issue / comment**：即使 API 支持，也不做——避免"误删无法恢复"的用户投诉面
-
-**判断口径**：
-
-- 判断依据是"是否让 GSY 用户在 GitHub 上产生新数据 / 修改他人内容 / 触发仓库运维"，不是"API 是不是 write endpoint"
-- 若未来需要新增一条允许项，需要在 PR 描述里显式提出，并同步更新本清单与 roadmap §4.1
 
 
 ## 真机验证专用 fixture（写死，不允许随手换）
@@ -223,7 +232,7 @@
 
 **探针复核方式**：所有 `✅` 项都用 CarSmallGuo 的 gho\_ token 在 `2026-07-06` 实测过；每半年可用 [docs/00-overview/roadmap.md §3.5 探针结果快照](file:///d:/workspace/project/gsy_github_app_flutter/docs/00-overview/roadmap.md) 那批命令重跑一次防止过时。
 
-**Fixture 优先级**：主仓 [CarGuo/gsy_github_app_flutter](https://github.com/CarGuo/gsy_github_app_flutter) > CarGuo 其他仓库 > CarSmallGuo 数据 > 外部真实仓库（`flutter/flutter` / `defunkt` 等，**必须标注为"外部妥协项"**）。**禁止造数据**同 §允许 / 禁止的写操作清单。
+**Fixture 优先级**：主仓 [CarGuo/gsy_github_app_flutter](https://github.com/CarGuo/gsy_github_app_flutter) > CarGuo 其他仓库 > CarSmallGuo 数据 > AI/开发者自有测试仓库（**必须登记**，见下文 Discussion 行示例） > 外部真实仓库（`flutter/flutter` / `defunkt` 等，**必须标注为"外部妥协项"**）。**禁止往主仓或第三方非授权仓库造冒烟数据**（口径见 §允许 / 禁止的写操作清单 2026-09-08 订正）。
 
 | 功能域 | 首选 fixture | 备注 |
 |---|---|---|
@@ -232,6 +241,7 @@
 | Issue assignee 挂件 | 主仓 `#938`（assignees=`CarGuo,Copilot`） | 主仓 issue 只有 #938 有 assignee，其余是 (none) |
 | Issue 长 timeline / 分页 | 主仓 [`#13`](https://github.com/CarGuo/gsy_github_app_flutter/issues/13) | README 明示"所有运行问题请点这里" |
 | Issue comment reactions | 主仓 [`#643`](https://github.com/CarGuo/gsy_github_app_flutter/issues/643) | README 里的"登录失败"高流量 issue |
+| **Discussion 创建 / 回复冒烟（2026-09-08 新加）** | ✅ 已登记：[`CarSmallGuo/gsy-smoke-2026q3`](https://github.com/CarSmallGuo/gsy-smoke-2026q3)（fixture 账号自有，创建时 `has_discussions=true`），首条 [`#1 Smoke test 2026-09-09`](https://github.com/CarSmallGuo/gsy-smoke-2026q3/discussion/1)（category=General，含 1 条真机回复 "reply smoke"） | 2026-09-09 真机走通 create + comment 端到端（expanded 双栏），证据见 `tool/ai/smoke/evidence/2026090{8,9}-discussion-*.png`。禁止用主仓 `CarGuo/gsy_github_app_flutter` 承接；造数据只允许在该自有测试仓库；用完不删（AGENTS.md 禁止删除自己发的内容） |
 | Release 详情 / reactions | 主仓 `releases`（`8.0.0` 已在真机日志出现） | 本轮真机 `versionName 8.0.0` |
 | Compare 视图 | 主仓 `423c762...bf557aa`（本轮实际 commit） | |
 | Contributors / Stargazers / Watchers | 主仓（★15461） | |

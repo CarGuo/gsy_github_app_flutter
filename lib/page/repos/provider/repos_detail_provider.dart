@@ -169,16 +169,7 @@ class ReposDetailProvider with ChangeNotifier {
       List<Widget> Function(ReposDetailProvider p) getBottomWidget) async {
     var result = await network.getRepositoryDetailRequest(
         userName, reposName, currentBranch);
-    if (!_userSelectedBranch &&
-        result.data.defaultBranch != null &&
-        result.data.defaultBranch.length > 0) {
-      currentBranch = result.data.defaultBranch;
-    }
-    repository = result.data;
-    getReposStatus(getBottomWidget);
-
-    if (result.next != null) {
-      result = await result.next?.call();
+    if (result.result && result.data != null) {
       if (!_userSelectedBranch &&
           result.data.defaultBranch != null &&
           result.data.defaultBranch.length > 0) {
@@ -186,6 +177,19 @@ class ReposDetailProvider with ChangeNotifier {
       }
       repository = result.data;
       getReposStatus(getBottomWidget);
+    }
+
+    if (result.next != null) {
+      result = await result.next?.call();
+      if (result.result && result.data != null) {
+        if (!_userSelectedBranch &&
+            result.data.defaultBranch != null &&
+            result.data.defaultBranch.length > 0) {
+          currentBranch = result.data.defaultBranch;
+        }
+        repository = result.data;
+        getReposStatus(getBottomWidget);
+      }
     }
   }
 
