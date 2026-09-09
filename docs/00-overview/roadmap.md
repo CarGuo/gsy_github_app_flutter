@@ -76,11 +76,11 @@
 `_translateAction` 里还没收编的 action（走 default 分支透传英文 + 遥测）：
 
 - ~~`auto_merge_enabled` / `auto_merge_disabled`（PR 自动合并，越来越常见）~~ ✅ 本轮已收（4 语言 arb + 2 单测）
-- `marked_as_duplicate` / `unmarked_as_duplicate`（issue 去重）
-- `dequeued` / `enqueued`（merge queue，GitHub 2025 后主推）
-- `deployed` / `deployment_status`
+- ~~`marked_as_duplicate` / `unmarked_as_duplicate`（issue 去重）~~ ✅ 已收（4 语言 arb + 单测覆盖）
+- ~~`dequeued` / `enqueued`（merge queue，GitHub 2025 后主推）~~ ✅ 已收（4 语言 arb + 单测覆盖）
+- ~~`deployed` / `deployment_status`~~ ✅ 2026-09-09 本轮补齐 `deployment_status` 最后一条（`deployed` 之前已在）；4 语言 arb + `event_utils_test.dart` +1 case 全绿
 
-修改点：[_translateAction](file:///Users/guoshuyu/workspace/flutter-work/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L172-L231) 加 case + 4 语言 arb 加 key。
+修改点：[_translateAction](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/event_utils.dart#L129-L252) 加 case + 4 语言 arb 加 key。**§2.1 quick win 至此归零。**
 
 ### 2.2 DiscussionEvent 真机截图缺口 —— 已用代理证据关闭 + 附带发现新 bug
 

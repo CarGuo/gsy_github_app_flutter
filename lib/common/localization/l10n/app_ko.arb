@@ -475,6 +475,7 @@
   "event_action_enqueued": "병합 큐에 추가",
   "event_action_dequeued": "병합 큐에서 제거",
   "event_action_deployed": "배포됨",
+  "event_action_deployment_status": "배포 상태 변경",
   "event_action_updated": "업데이트",
   "event_action_withdrawn": "철회",
   "event_action_performed": "수행",

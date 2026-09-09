@@ -800,6 +800,7 @@
   "event_action_enqueued": "queued for merge",
   "event_action_dequeued": "dequeued from merge",
   "event_action_deployed": "deployed",
+  "event_action_deployment_status": "deployment status changed",
   "event_action_updated": "updated",
   "event_action_withdrawn": "withdrew",
   "event_action_performed": "performed",

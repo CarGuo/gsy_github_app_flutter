@@ -475,6 +475,7 @@
   "event_action_enqueued": "マージキューに追加",
   "event_action_dequeued": "マージキューから削除",
   "event_action_deployed": "デプロイ済み",
+  "event_action_deployment_status": "デプロイ状態変更",
   "event_action_updated": "更新",
   "event_action_withdrawn": "撤回",
   "event_action_performed": "実行",

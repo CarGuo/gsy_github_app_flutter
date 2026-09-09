@@ -2514,6 +2514,12 @@ abstract class AppLocalizations {
   /// **'deployed'**
   String get event_action_deployed;
 
+  /// No description provided for @event_action_deployment_status.
+  ///
+  /// In en, this message translates to:
+  /// **'deployment status changed'**
+  String get event_action_deployment_status;
+
   /// No description provided for @event_action_updated.
   ///
   /// In en, this message translates to:

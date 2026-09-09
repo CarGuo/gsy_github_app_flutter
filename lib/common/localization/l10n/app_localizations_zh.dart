@@ -1402,6 +1402,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get event_action_deployed => '已部署';
 
   @override
+  String get event_action_deployment_status => '部署状态变化';
+
+  @override
   String get event_action_updated => '更新';
 
   @override

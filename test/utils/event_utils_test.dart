@@ -549,6 +549,37 @@ void main() {
         reason: 'deployed 必须走 event_action_deployed 词典');
   });
 
+  testWidgets(
+      'DeploymentStatusEvent + deployment_status → 词典化"部署状态变化"',
+      (tester) async {
+    // DeploymentStatusEvent 目前也走 UnknownEvent 通用兜底，payload.action
+    // 的原生取值就是 'deployment_status'，被 _translateAction 词典化后不能
+    // 再把英文 'deployment_status' 透传到 UI；否则默认分支会把它记进未知
+    // action 遥测里，说明词典没覆盖。
+    final ee = Event.fromJson(_m({
+      'id': 'x',
+      'type': 'DeploymentStatusEvent',
+      'actor': {'login': 'alice'},
+      'repo': {'name': 'CarGuo/gsy'},
+      'org': null,
+      'public': true,
+      'created_at': '2026-01-01T00:00:00Z',
+      'payload': {
+        'action': 'deployment_status',
+      }
+    }));
+
+    late ({String? actionStr, String? des}) got;
+    await tester.pumpWidget(_harness((ctx) {
+      got = EventUtils.getActionAndDes(ctx, ee);
+    }));
+
+    final combined = '${got.actionStr ?? ''}|${got.des ?? ''}';
+    expect(combined, isNot(contains('deployment_status')),
+        reason:
+            'deployment_status 必须走 event_action_deployment_status 词典，不得回落默认分支');
+  });
+
   // B/3: SecurityAdvisoryEvent 收编（含 4 个 action 词条 + severity 四档 +
   // 无 ghsa_id 兜底 + repo=null 不崩）。原来这个事件走 default 兜底，
   // 会在 loggedUnknownEventTypes 里登记，本次改到走独立整句。

@@ -239,6 +239,8 @@ class EventUtils {
         return l.event_action_dequeued;
       case 'deployed':
         return l.event_action_deployed;
+      case 'deployment_status':
+        return l.event_action_deployment_status;
       case 'updated':
         return l.event_action_updated;
       case 'withdrawn':

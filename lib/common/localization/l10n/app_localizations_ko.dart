@@ -1404,6 +1404,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get event_action_deployed => '배포됨';
 
   @override
+  String get event_action_deployment_status => '배포 상태 변경';
+
+  @override
   String get event_action_updated => '업데이트';
 
   @override

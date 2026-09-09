@@ -1405,6 +1405,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get event_action_deployed => 'デプロイ済み';
 
   @override
+  String get event_action_deployment_status => 'デプロイ状態変更';
+
+  @override
   String get event_action_updated => '更新';
 
   @override

@@ -1436,6 +1436,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get event_action_deployed => 'deployed';
 
   @override
+  String get event_action_deployment_status => 'deployment status changed';
+
+  @override
   String get event_action_updated => 'updated';
 
   @override
