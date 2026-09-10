@@ -126,6 +126,23 @@
 | UI 渲染 / 文案 / 事件行 | 至少 1 张真机截图 + `mcp_dart` `widget_inspector get_widget_tree` 命中目标 widget 或 `textPreview` + `get_runtime_errors` 无异常 |
 | 关键路径（登录 / 网络栈 / 根装配 / 状态边界） | 主路径截图 + widget tree 命中 + `get_runtime_errors` 无异常 + 至少 1 个失败/边界分支的证据 |
 
+### 折叠 + 非折叠双姿态强制（2026-09-09 拍板）
+
+**只要改动会经过 [gsy_adaptive_shell.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/style/gsy_adaptive_shell.dart) / [navigator_utils.dart](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart) 的分栏分支（包括但不限于任何列表 → 详情、右列 detail navigator、`wrapListChild`、`canShowTwoPane` 门控、弹窗路由），冒烟证据必须覆盖两档硬件姿态，缺一档视为汇报不完整**：
+
+| 姿态 | 硬件切换命令 | 期望 layout | 必须留的证据 |
+|---|---|---|---|
+| **CLOSED（折叠）单栏 compact** | `adb -s <serial> emu fold` | `canShowTwoPane == false`，`Navigator.push` 到主 Navigator | 1 张截图 + widget tree 命中 + `get_runtime_errors` |
+| **OPENED（展开）双栏 expanded** | `adb -s <serial> emu unfold` | `canShowTwoPane == true`，走 `detailNavigatorKey` 到右列 | 1 张截图 + widget tree 命中 + `get_runtime_errors` |
+
+规则细则：
+
+- **必须走 `adb emu fold` / `adb emu unfold` 硬件姿态**（Android SDK platform-tools 内置 [Emulator Console](https://developer.android.com/studio/run/emulator-console) 命令），不允许用 `wm size` / `wm density` / `mediaQuery.override` 等伪造分档手段。
+- 每次跑完必须 `adb -s <serial> emu unfold` **把设备复位回展开姿态**（default identifier=2 OPENED），否则下一位 author 会拿到一台以为是"标准 Pixel Fold"的折叠设备做基线，属于 author 责任事故。
+- 姿态切换后必须重新拉一次 `widget_inspector get_widget_tree`，确认 `Row` 承载的双 Navigator 结构（expanded）或单 Navigator（compact）与预期一致，才能开始记录 pt.x 证据。
+- **例外**：纯模型 / 纯工具函数（分级表第 1 行）改动不涉及分栏路径的，可豁免双姿态；豁免必须在完成汇报里显式声明"改动路径不经过 adaptive shell"。
+- 历史教训：2026-09-09 Wave 1 首次冒烟只做了 CLOSED 单栏一档就报进度，被作者当场纠正。此后凡是提交带 UI 冒烟证据的 PR，两姿态截图 + widget tree + `get_runtime_errors` 必须齐备。
+
 ### 完成汇报三段式（必填）
 
 **看代码**：改了哪些文件、哪些函数、为什么这么改。
