@@ -110,30 +110,20 @@ class UserHeaderItem extends StatelessWidget {
   }
 
   _renderImg(BuildContext context) {
-    return RawMaterialButton(
+    // 2026-09-28：头部使用统一的头像加载/失败状态与固定尺寸契约。
+    return GSYUserIconWidget(
+      image: userInfo.avatar_url?.isNotEmpty == true
+          ? userInfo.avatar_url
+          : null,
+      width: 80,
+      height: 80,
+      padding: EdgeInsets.zero,
         onPressed: () {
-          if (userInfo.avatar_url != null) {
+        if (userInfo.avatar_url?.isNotEmpty == true) {
             NavigatorUtils.gotoPhotoViewPage(context, userInfo.avatar_url);
           }
         },
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: const EdgeInsets.all(0.0),
-        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: ClipOval(
-            child: FadeInImage.assetNetwork(
-          placeholder: GSYICons.DEFAULT_USER_ICON,
-          key: (userInfo.avatar_url != null && userInfo.avatar_url!.isNotEmpty)
-              ? ValueKey(userInfo.avatar_url)
-              : null,
-          //预览图
-          fit: BoxFit.fitWidth,
-          image: (userInfo.avatar_url != null &&
-                  userInfo.avatar_url!.isNotEmpty)
-              ? userInfo.avatar_url!
-              : "https://github.com/CarGuo/gsy_github_app_flutter/blob/master/logo.png?raw=true",
-          width: 80.0,
-          height: 80.0,
-        )));
+    );
   }
 
   _renderUserInfo(BuildContext context) {

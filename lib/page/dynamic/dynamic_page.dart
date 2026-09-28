@@ -166,27 +166,22 @@ class DynamicPageState extends State<DynamicPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-    var content = GSYPullLoadWidget(
-      dynamicBloc.pullLoadWidgetControl,
-      (BuildContext context, int index) {
-        /// itemBuilder 会对每个可见 index 各调一次。
-        /// 走 [EventGroupIndex.of]：同一 dataList 引用 + 同一 length 时命中
-        /// [Expando] 缓存，一帧只扫一次；loadMore 后 length 变、cache miss，
-        /// 重扫代价仍是 O(N)。这里没有把 groupIndex 提到父级 build，是为了
-        /// 不额外挂 [GSYPullLoadWidgetControl] 的 listener——加载更多 /
-        /// 刷新已经会让 [GSYPullLoadWidget] 内部 rebuild，itemBuilder 会重跑，
-        /// 从而拿到最新的 dataList。
-        final List data = dynamicBloc.dataList;
+    // 2026-09-28：数据通知刷新分组，索引属于这次列表构建；滚动建行不重扫。
+    final content = ListenableBuilder(
+      listenable: dynamicBloc.pullLoadWidgetControl,
+      builder: (context, _) {
+        final data = List<dynamic>.of(dynamicBloc.dataList);
         final groupIndex = EventGroupIndex.of(data);
-        return _renderItemWithGroup(index, groupIndex, data);
+        return GSYPullLoadWidget(
+          dynamicBloc.pullLoadWidgetControl,
+          (context, index) => _renderItemWithGroup(index, groupIndex, data),
+          requestRefresh,
+          requestLoadMore,
+          refreshKey: refreshIndicatorKey,
+          scrollController: scrollController,
+          userIos: true,
+        );
       },
-      requestRefresh,
-      requestLoadMore,
-      refreshKey: refreshIndicatorKey,
-      scrollController: scrollController,
-
-      ///使用ios模式的下拉刷新
-      userIos: true,
     );
     return IgnorePointer(
       ignoring: _ignoring,

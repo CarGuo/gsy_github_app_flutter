@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
 /// 头像Icon
@@ -60,6 +61,17 @@ class GSYUserIconWidget extends StatelessWidget {
           GSYICons.DEFAULT_USER_ICON,
         ),
         image: NetworkImage(url),
+        // 2026-09-28：网络头像失败是明确的图片状态，不能让 ErrorWidget 的
+        // 异常文本挤破用户信息布局。保留结构化错误，使用原有本地头像资产。
+        imageErrorBuilder: (context, error, stackTrace) {
+          printError('Avatar image load failed', error, stackTrace);
+          return Image.asset(
+            GSYICons.DEFAULT_USER_ICON,
+            width: width,
+            height: height,
+            fit: BoxFit.fitWidth,
+          );
+        },
         //预览图
         fit: BoxFit.fitWidth,
         width: width,
