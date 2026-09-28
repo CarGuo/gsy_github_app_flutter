@@ -555,23 +555,23 @@ class EventUtils {
             headSha != null &&
             headSha.isNotEmpty &&
             beforeSha != headSha) {
-          CommonUtils.showLoadingDialog(context);
-          try {
-            var compareRes = await ReposRepository.getReposCompareRequest(
+          // 走统一加载入口：loading 恒挂 root navigator，由入口 finally 关闭。
+          // 原先 finally 用 Navigator.pop(context)，在 expanded 双栏右列会弹到嵌套
+          // detail navigator、漏关 root 上的遮罩。compare 失败不是致命错误，拿不到
+          // 数据就保留空列表，继续走下面的通用跳转分支。
+          var compareRes = await CommonUtils.runWithLoading(
+            context,
+            () => ReposRepository.getReposCompareRequest(
               owner,
               repositoryName,
               beforeSha!,
               headSha,
-            );
-            if (compareRes != null &&
-                compareRes.result &&
-                compareRes.data != null) {
-              compareCommits = compareRes.data.commits ?? [];
-            }
-          } finally {
-            if (context.mounted) {
-              Navigator.pop(context);
-            }
+            ),
+          );
+          if (compareRes != null &&
+              compareRes.result &&
+              compareRes.data != null) {
+            compareCommits = compareRes.data.commits ?? [];
           }
         }
         if (!context.mounted) {

@@ -146,14 +146,15 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             _renderBottomItem(
               provider.bottomModel!.starText,
               provider.bottomModel!.starIcon,
-              () {
-                CommonUtils.showLoadingDialog(context);
-                return provider.doRepositoryStarRequest().then((result) {
+              () async {
+                final result = await CommonUtils.runWithLoading(
+                  context,
+                  () => provider.doRepositoryStarRequest(),
+                );
+                if (result != null && result.result) {
+                  if (!mounted) return;
                   showRefreshLoading();
-                  var context = this.context;
-                  if (!context.mounted) return;
-                  Navigator.pop(context);
-                });
+                }
               },
             ),
 
@@ -161,22 +162,28 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
             _renderBottomItem(
               provider.bottomModel!.watchText,
               provider.bottomModel!.watchIcon,
-              () {
-                CommonUtils.showLoadingDialog(context);
-                return provider.doRepositoryWatchRequest().then((result) {
+              () async {
+                final result = await CommonUtils.runWithLoading(
+                  context,
+                  () => provider.doRepositoryWatchRequest(),
+                );
+                if (result != null && result.result) {
+                  if (!mounted) return;
                   showRefreshLoading();
-                  Navigator.pop(context);
-                });
+                }
               },
             ),
 
             ///fork
-            _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () {
-              CommonUtils.showLoadingDialog(context);
-              return provider.createForkRequest().then((result) {
+            _renderBottomItem("fork", GSYICons.REPOS_ITEM_FORK, () async {
+              final result = await CommonUtils.runWithLoading(
+                context,
+                () => provider.createForkRequest(),
+              );
+              if (result != null && result.result) {
+                if (!mounted) return;
                 showRefreshLoading();
-                Navigator.pop(context);
-              });
+              }
             }),
           ];
     return bottomWidget;

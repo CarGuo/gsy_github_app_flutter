@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
@@ -377,6 +378,50 @@ class CommonUtils {
                 ),
               ));
         });
+  }
+
+  /// 统一的「加载遮罩 + 异步任务」入口。
+  ///
+  /// 用法：`final res = await CommonUtils.runWithLoading(context, () => repo.xxx());`
+  ///
+  /// 解决的根本问题：历史代码到处是
+  /// `showLoadingDialog(); repo.xxx().then((r){ Navigator.pop(context); ... })`。
+  /// 一旦任务抛异常（断网 / 超时 / 平台通道错误等），关闭遮罩的 `pop` 永远执行
+  /// 不到，而遮罩是 `PopScope(canPop:false)`（按返回键也关不掉），整个 app 被一个
+  /// 转圈彻底卡死。把这套流程收敛到一处后，调用方在结构上就写不出「忘记关 loading」。
+  ///
+  /// 保证：
+  /// - 任务无论成功、业务失败、还是抛异常，loading 都在 finally 里**无条件**关闭；
+  /// - 异常被捕获并打印，不再静默穿透成永久转圈，同时回调 [onError] 让调用方提示；
+  /// - 关闭一律用弹框前抓下的 **root navigator**。loading 经 [showLoadingDialog] →
+  ///   `showDialog(useRootNavigator:true)` 挂在 root navigator 上；双栏 expanded 下
+  ///   若用 `Navigator.pop(context)` 只够得到嵌套 detail navigator、会漏关 loading，
+  ///   这里顺手修正。
+  ///
+  /// 返回任务结果；任务抛异常时返回 null（并已回调 [onError]）。
+  static Future<T?> runWithLoading<T>(
+    BuildContext context,
+    Future<T> Function() work, {
+    void Function(Object error, StackTrace stackTrace)? onError,
+  }) async {
+    final NavigatorState rootNav =
+        Navigator.of(context, rootNavigator: true);
+    // 不能 await showLoadingDialog：它返回 dialog 路由的 `popped` future，只有该
+    // 对话框被 pop 时才 complete。若在此 await，后续 work() 与 finally 里的 pop 都不会
+    // 执行，而 loading 又是 PopScope(canPop:false)，形成永久转圈的自死锁。这里只需触发
+    // 显示，无需等待它完成；关闭统一交给下方 finally。
+    showLoadingDialog(context);
+    try {
+      return await work();
+    } catch (e, s) {
+      printError('runWithLoading 任务异常', e, s);
+      onError?.call(e, s);
+      return null;
+    } finally {
+      if (rootNav.mounted) {
+        rootNav.pop();
+      }
+    }
   }
 
   static Future<void> showEditDialog(

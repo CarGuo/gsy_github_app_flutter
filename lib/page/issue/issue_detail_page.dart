@@ -281,6 +281,9 @@ class _IssueDetailPageState extends State<IssueDetailPage>
 
   ///数据转化显示
   _resolveHeaderInfo(res) {
+    // header 请求在途时用户可能已退出页面；setState 前必须挡下，否则抛
+    // "setState called after dispose"。两个 _getHeaderInfo 回调都汇聚到这里。
+    if (!mounted) return;
     Issue? issue = res.data;
     setState(() {
       // 保留已加载的 PR 详情，避免二次拉 header 时被 fromMap 清掉
@@ -525,19 +528,24 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       (contentValue) {
         contentData = contentValue;
       },
-      () {
+      () async {
         if (contentData == null || contentData!.trim().isEmpty) {
           showToast(context.l10n.issue_edit_issue_content_not_be_null);
           return;
         }
-        CommonUtils.showLoadingDialog(context);
-        //提交修改
-        IssueRepository.editCommentRequest(widget.userName, widget.reposName,
-            widget.issueNum, id, {"body": contentData}).then((result) {
+        final result = await CommonUtils.runWithLoading(context, () {
+          return IssueRepository.editCommentRequest(
+              widget.userName,
+              widget.reposName,
+              widget.issueNum,
+              id,
+              {"body": contentData});
+        });
+        if (result != null && result.result) {
+          if (!mounted) return;
           showRefreshLoading();
           Navigator.pop(context);
-          Navigator.pop(context);
-        });
+        }
       },
       valueController: issueInfoValueControl,
       needTitle: false,
@@ -545,16 +553,17 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   }
 
   ///删除回复
-  _deleteCommit(id) {
+  _deleteCommit(id) async {
     Navigator.pop(context);
-    CommonUtils.showLoadingDialog(context);
-    //提交修改
-    IssueRepository.deleteCommentRequest(
-            widget.userName, widget.reposName, widget.issueNum, id)
-        .then((result) {
-      Navigator.pop(context);
+    final result = await CommonUtils.runWithLoading(
+      context,
+      () => IssueRepository.deleteCommentRequest(
+          widget.userName, widget.reposName, widget.issueNum, id),
+    );
+    if (result != null && result.result) {
+      if (!mounted) return;
       showRefreshLoading();
-    });
+    }
   }
 
   ///编译 issue
@@ -573,7 +582,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       (contentValue) {
         content = contentValue;
       },
-      () {
+      () async {
         if (title == null || title!.trim().isEmpty) {
           showToast(context.l10n.issue_edit_issue_title_not_be_null);
           return;
@@ -582,14 +591,18 @@ class _IssueDetailPageState extends State<IssueDetailPage>
           showToast(context.l10n.issue_edit_issue_content_not_be_null);
           return;
         }
-        CommonUtils.showLoadingDialog(context);
-        //提交修改
-        IssueRepository.editIssueRequest(widget.userName, widget.reposName,
-            widget.issueNum, {"title": title, "body": content}).then((result) {
+        final result = await CommonUtils.runWithLoading(context, () {
+          return IssueRepository.editIssueRequest(
+              widget.userName,
+              widget.reposName,
+              widget.issueNum,
+              {"title": title, "body": content});
+        });
+        if (result != null && result.result) {
+          if (!mounted) return;
           _getHeaderInfo();
           Navigator.pop(context);
-          Navigator.pop(context);
-        });
+        }
       },
       titleController: issueInfoTitleControl,
       valueController: issueInfoValueControl,
@@ -610,20 +623,21 @@ class _IssueDetailPageState extends State<IssueDetailPage>
       (replyContent) {
         content = replyContent;
       },
-      () {
+      () async {
         if (content == null || content?.trim().isEmpty == true) {
           showToast(context.l10n.issue_edit_issue_content_not_be_null);
           return;
         }
-        CommonUtils.showLoadingDialog(context);
-        //提交评论
-        IssueRepository.addIssueCommentRequest(
-                widget.userName, widget.reposName, widget.issueNum, content)
-            .then((result) {
+        final result = await CommonUtils.runWithLoading(
+          context,
+          () => IssueRepository.addIssueCommentRequest(
+              widget.userName, widget.reposName, widget.issueNum, content),
+        );
+        if (result != null && result.result) {
+          if (!mounted) return;
           showRefreshLoading();
           Navigator.pop(context);
-          Navigator.pop(context);
-        });
+        }
       },
       needTitle: false,
       titleController: issueInfoTitleControl,
@@ -662,17 +676,20 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
                 TextButton(
-                    onPressed: () {
-                      CommonUtils.showLoadingDialog(context);
-                      IssueRepository.editIssueRequest(
-                          widget.userName, widget.reposName, widget.issueNum, {
-                        "state": (issueHeaderViewModel.state == "closed")
-                            ? 'open'
-                            : 'closed'
-                      }).then((result) {
+                    onPressed: () async {
+                      final result = await CommonUtils.runWithLoading(
+                        context,
+                        () => IssueRepository.editIssueRequest(widget.userName,
+                            widget.reposName, widget.issueNum, {
+                          "state": (issueHeaderViewModel.state == "closed")
+                              ? 'open'
+                              : 'closed'
+                        }),
+                      );
+                      if (result != null && result.result) {
+                        if (!mounted) return;
                         _getHeaderInfo();
-                        Navigator.pop(context);
-                      });
+                      }
                     },
                     child: Text(
                         (issueHeaderViewModel.state == 'closed')
@@ -684,17 +701,19 @@ class _IssueDetailPageState extends State<IssueDetailPage>
                     height: 30.0,
                     color: GSYColors.subLightTextColor),
                 TextButton(
-                    onPressed: () {
-                      CommonUtils.showLoadingDialog(context);
-                      IssueRepository.lockIssueRequest(
-                              widget.userName,
-                              widget.reposName,
-                              widget.issueNum,
-                              issueHeaderViewModel.locked)
-                          .then((result) {
+                    onPressed: () async {
+                      final result = await CommonUtils.runWithLoading(
+                        context,
+                        () => IssueRepository.lockIssueRequest(
+                            widget.userName,
+                            widget.reposName,
+                            widget.issueNum,
+                            issueHeaderViewModel.locked),
+                      );
+                      if (result != null && result.result) {
+                        if (!mounted) return;
                         _getHeaderInfo();
-                        Navigator.pop(context);
-                      });
+                      }
                     },
                     child: Text(
                         issueHeaderViewModel.locked!

@@ -600,12 +600,15 @@ class _NotifyPageState extends State<NotifyPage>
           context.l10n.notify_title,
           iconData: GSYICons.NOTIFY_ALL_READ,
           needRightLocalIcon: true,
-          onRightIconPressed: (_) {
-            CommonUtils.showLoadingDialog(context);
-            UserRepository.setAllNotificationAsReadRequest().then((res) {
-              Navigator.pop(context);
+          onRightIconPressed: (_) async {
+            final res = await CommonUtils.runWithLoading(
+              context,
+              () => UserRepository.setAllNotificationAsReadRequest(),
+            );
+            if (res != null && res.result) {
+              if (!mounted) return;
               _forceRefresh();
-            });
+            }
           },
         ),
         bottom: GSYSelectItemWidget(

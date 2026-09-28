@@ -60,18 +60,18 @@ class _UserProfileState extends State<UserProfileInfo> {
     String content = value ?? "";
     CommonUtils.showEditDialog(context, title, (title) {}, (res) {
       content = res;
-    }, () {
+    }, () async {
       if (content.isEmpty) {
         return;
       }
-      CommonUtils.showLoadingDialog(context);
-
-      UserRepository.updateUserRequest({key: content}, store).then((res) {
+      final res = await CommonUtils.runWithLoading(
+        context,
+        () => UserRepository.updateUserRequest({key: content}, store),
+      );
+      if (res != null && res.result) {
+        if (!mounted) return;
         Navigator.of(context).pop();
-        if (res != null && res.result) {
-          Navigator.of(context).pop();
-        }
-      });
+      }
     },
         titleController: TextEditingController(),
         valueController: TextEditingController(text: value),

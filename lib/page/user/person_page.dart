@@ -229,7 +229,7 @@ class PersonState extends BasePersonState<PersonPage> {
               minFontSize: 8,
               maxLines: 1,
             ),
-            onPressed: () {
+            onPressed: () async {
               ///非组织成员可以关注
               if (focus == '') {
                 return;
@@ -238,12 +238,14 @@ class PersonState extends BasePersonState<PersonPage> {
                 showToast(context.l10n.user_focus_no_support);
                 return;
               }
-              CommonUtils.showLoadingDialog(context);
-              UserRepository.doFollowRequest(widget.userName, focusStatus)
-                  .then((res) {
-                Navigator.pop(context);
+              await CommonUtils.runWithLoading(
+                context,
+                () => UserRepository.doFollowRequest(
+                    widget.userName, focusStatus),
+              );
+              if (mounted) {
                 _getFocusStatus();
-              });
+              }
             }),
         body: GSYNestedPullLoadWidget(
           pullLoadWidgetControl,

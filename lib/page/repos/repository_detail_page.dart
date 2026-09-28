@@ -183,7 +183,7 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
       title = titleValue;
     }, (contentValue) {
       content = contentValue;
-    }, () {
+    }, () async {
       if (title.trim().isEmpty) {
         showToast(context.l10n.issue_edit_issue_title_not_be_null);
         return;
@@ -192,18 +192,19 @@ class _RepositoryDetailPageState extends State<RepositoryDetailPage>
         showToast(context.l10n.issue_edit_issue_content_not_be_null);
         return;
       }
-      CommonUtils.showLoadingDialog(context);
-      //提交修改
-      provider
-          .createIssueRequest({"title": title, "body": content}).then((result) {
+      final result = await CommonUtils.runWithLoading(
+        context,
+        () => provider
+            .createIssueRequest({"title": title, "body": content}),
+      );
+      if (result != null && result.result) {
+        if (!mounted) return;
         if (issueListKey.currentState != null &&
             issueListKey.currentState!.mounted) {
           issueListKey.currentState!.showRefreshLoading();
         }
-
         Navigator.pop(context);
-        Navigator.pop(context);
-      });
+      }
     },
         needTitle: true,
         titleController: TextEditingController(),

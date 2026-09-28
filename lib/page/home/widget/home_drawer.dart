@@ -124,22 +124,27 @@ class HomeDrawer extends StatelessWidget {
                                   (res) {
                                     content = res;
                                   },
-                                  () {
+                                  () async {
                                     if (content.isEmpty) {
                                       return;
                                     }
-                                    CommonUtils.showLoadingDialog(context);
-                                    IssueRepository.createIssueRequest(
-                                      "CarGuo",
-                                      "gsy_github_app_flutter",
-                                      {
-                                        "title": context.l10n.home_reply,
-                                        "body": content,
-                                      },
-                                    ).then((result) {
+                                    final result =
+                                        await CommonUtils.runWithLoading(
+                                      context,
+                                      () =>
+                                          IssueRepository.createIssueRequest(
+                                        "CarGuo",
+                                        "gsy_github_app_flutter",
+                                        {
+                                          "title": context.l10n.home_reply,
+                                          "body": content,
+                                        },
+                                      ),
+                                    );
+                                    if (result != null && result.result) {
+                                      if (!context.mounted) return;
                                       Navigator.pop(context);
-                                      Navigator.pop(context);
-                                    });
+                                    }
                                   },
                                   titleController: TextEditingController(),
                                   valueController: TextEditingController(),
