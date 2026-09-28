@@ -63,15 +63,15 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
   }
 
   ///渲染时间Item或者提交Item
-  _renderEventItem(index) {
+  _renderEventItem(int index, List<dynamic> data, EventGroupIndex groupIndex) {
     var provider = context.read<ReposDetailProvider>();
-    var item = pullLoadWidgetControl.dataList[index];
+    var item = data[index];
     if (selectIndex == 1 && item is RepoCommit) {
       ///提交
       return GSYEventItem(
         EventViewModel.fromCommitMap(item),
         onPressed: () {
-          RepoCommit model = pullLoadWidgetControl.dataList[index];
+          RepoCommit model = data[index];
           NavigatorUtils.goPushDetailPage(
             context,
             provider.userName,
@@ -88,10 +88,7 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
       /// [EventGroupIndex.of] 判断当前 index 是不是某个 span 的 head，
       /// 是的话就渲染 [GSYEventGroupItem]；被 head 吞掉的后续 index 返回
       /// [SizedBox.shrink]。这样 [_getListCount] 语义不变，加载更多兼容。
-      /// [EventGroupIndex.of] 内部走 [Expando] 缓存，同一 dataList 引用 +
-      /// 同一 length 时不重复扫描，避免长列表下的 O(N²) 退化。
-      final List data = pullLoadWidgetControl.dataList;
-      final groupIndex = EventGroupIndex.of(data);
+      // 索引由父列表构建一次，避免对同长度刷新复用旧事件。
       final span = groupIndex.headSpanAt(index);
       if (span != null) {
         return GSYEventGroupItem(
@@ -103,11 +100,11 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
         return const SizedBox.shrink();
       }
       return GSYEventItem(
-        EventViewModel.fromEventMap(context, pullLoadWidgetControl.dataList[index]),
+        EventViewModel.fromEventMap(context, data[index]),
         onPressed: () {
           EventUtils.ActionUtils(
             context,
-            pullLoadWidgetControl.dataList[index],
+            data[index],
             "${provider.userName}/${provider.reposName}",
           );
         },
@@ -234,9 +231,13 @@ class ReposDetailInfoPageState extends State<ReposDetailInfoPage>
     ///展示 select
     context.select<ReposDetailProvider, RepositoryQL?>((p) => p.repository);
 
+    // 2026-09-28：与本次渲染的数据快照共享索引，itemBuilder 不做全表扫描。
+    final data = List<dynamic>.of(pullLoadWidgetControl.dataList);
+    final groupIndex = EventGroupIndex.of(data);
     return GSYNestedPullLoadWidget(
       pullLoadWidgetControl,
-      (BuildContext context, int index) => _renderEventItem(index),
+      (BuildContext context, int index) =>
+          _renderEventItem(index, data, groupIndex),
       handleRefresh,
       onLoadMore,
       refreshKey: refreshIKey,
