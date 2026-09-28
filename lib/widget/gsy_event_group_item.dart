@@ -63,8 +63,8 @@ class EventGroupSpan {
 /// - 连续段长度 < [_kMinGroupSize] 时视为普通 event，走原来的 [GSYEventItem]。
 ///
 /// 返回的 map: key = 原始 list index，value = 该 index 所属 group 的 span。
-/// 只有 span 的 startIndex 会被 map 命中；startIndex+1..endIndex 通过 [isConsumedGroupIndex]
-/// 单独判定，避免重复渲染。
+/// 只有 span 的 startIndex 会被 map 命中；startIndex+1..endIndex 由
+/// [EventGroupIndex.isConsumed] 单独判定，避免重复渲染。
 Map<int, EventGroupSpan> buildEventGroupSpans(List<dynamic> dataList) {
   final Map<int, EventGroupSpan> spans = <int, EventGroupSpan>{};
   int i = 0;
@@ -101,22 +101,6 @@ Map<int, EventGroupSpan> buildEventGroupSpans(List<dynamic> dataList) {
     i = j;
   }
   return spans;
-}
-
-/// 判断某个原始 index 是不是被 group 的 startIndex 覆盖掉了（应渲染为空占位）。
-/// 用 [buildEventGroupSpans] 的结果反查：
-/// 只要存在 span 使 startIndex < index <= endIndex，就返回 true。
-///
-/// 注意：这是 O(spans.length) 线性扫。itemBuilder 会对每一个 index 都调一次，
-/// 长列表下等于 O(N × spans) 每帧。渲染路径请优先用 [EventGroupIndex]，
-/// 那份是 O(1) hash-set 查询；父列表每次构建只生成一次索引。
-bool isConsumedGroupIndex(int index, Map<int, EventGroupSpan> spans) {
-  for (final span in spans.values) {
-    if (index > span.startIndex && index <= span.endIndex) {
-      return true;
-    }
-  }
-  return false;
 }
 
 /// 当前列表构建使用的分组索引。

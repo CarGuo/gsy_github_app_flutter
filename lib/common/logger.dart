@@ -12,11 +12,18 @@ final talker = TalkerFlutter.init(
     /// Length of history that saving logs data
     maxHistoryItems: 100,
 
-    /// You can enable/disable console logs
+    /// Console output is owned by talker only; do not print again here.
     useConsoleLogs: true,
   ),
 );
 
+/// 统一日志入口。控制台输出只走 talker 一处，避免同一条信息打印两遍。
+///
+/// 按入参类型分流：
+/// - [Error] / [Exception] / [StackTrace]，或带 [StackTrace] 的场景描述：
+///   走 `talker.error`，任何模式都记录，便于按类型聚合排查。
+/// - 普通调试信息（不带堆栈）：仅 debug 模式通过 `talker.debug` 输出，
+///   release 不输出，与历史行为一致。
 printLog(Object msg, [StackTrace? stackTrace]) {
   if (msg is Error) {
     talker.error("Catch Running Error：", msg, stackTrace ?? msg.stackTrace);
@@ -26,12 +33,8 @@ printLog(Object msg, [StackTrace? stackTrace]) {
     talker.error("Catch Running Stack：", null, msg);
   } else if (stackTrace != null) {
     talker.error(msg, null, stackTrace);
-  }
-  if (kDebugMode) {
-    print(msg);
-    if (stackTrace != null) {
-      print(stackTrace);
-    }
+  } else if (kDebugMode) {
+    talker.debug(msg);
   }
 }
 
@@ -48,10 +51,4 @@ printLog(Object msg, [StackTrace? stackTrace]) {
 /// 兼容既有 [printLog]：非 catch 场景仍用 `printLog(msg)` / `printLog(msg, stack)`。
 printError(String context, Object error, [StackTrace? stackTrace]) {
   talker.error(context, error, stackTrace);
-  if (kDebugMode) {
-    print('$context: $error');
-    if (stackTrace != null) {
-      print(stackTrace);
-    }
-  }
 }
