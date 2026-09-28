@@ -28,7 +28,9 @@ import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 class PersonPage extends StatefulWidget {
   static const String sName = "person";
 
-  final String? userName;
+  /// 用户登录名是本页存在的前提，不允许为 null——构造契约由非空类型强制，
+  /// 调用方 [NavigatorUtils.goPerson] 在入口判空。
+  final String userName;
 
   const new(this.userName, {super.key});
 
@@ -158,7 +160,7 @@ class PersonState extends BasePersonState<PersonPage> {
 
   ///获取当前用户的关注状态
   _getFocusStatus() async {
-    var focusRes = await UserRepository.checkFollowRequest(widget.userName!);
+    var focusRes = await UserRepository.checkFollowRequest(widget.userName);
     if (isShow) {
       setState(() {
         focus = (focusRes != null && focusRes.result)
@@ -169,12 +171,19 @@ class PersonState extends BasePersonState<PersonPage> {
     }
   }
 
-  ///获取用户信息里的用户名
-  _getUserName() {
-    if (userInfo == null) {
-      return User.empty();
-    }
-    return userInfo!.login;
+  ///获取用户信息里的用户名。
+  ///
+  /// 首帧（用户资料尚未从网络/缓存返回）时 [userInfo] 仍是 [User.empty]，
+  /// login 为 null，此时退用页面入参 [widget.userName]——它是非空构造参数，
+  /// 本页存在的前提。
+  ///
+  /// 必须显式声明返回 String：历史上这里无返回类型（等价 dynamic），且 null
+  /// 分支误返回 User.empty() 对象、另一分支返回 String?，调用方
+  /// fetchHonorDataProvider(需要 String) 的静态检查被 dynamic 绕过，
+  /// 运行时 Riverpod 生成代码里 `argument as String` 才抛
+  /// "Null is not a subtype of String"。
+  String _getUserName() {
+    return userInfo?.login ?? widget.userName;
   }
 
   ///获取用户动态或者组织成员
@@ -230,7 +239,7 @@ class PersonState extends BasePersonState<PersonPage> {
                 return;
               }
               CommonUtils.showLoadingDialog(context);
-              UserRepository.doFollowRequest(widget.userName!, focusStatus)
+              UserRepository.doFollowRequest(widget.userName, focusStatus)
                   .then((res) {
                 Navigator.pop(context);
                 _getFocusStatus();

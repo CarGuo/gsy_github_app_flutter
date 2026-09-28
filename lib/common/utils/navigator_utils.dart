@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/model/common_list_datatype.dart';
 import 'package:gsy_github_app_flutter/page/code_detail_page_web.dart';
@@ -84,6 +85,12 @@ class NavigatorUtils {
 
   ///个人中心
   static goPerson(BuildContext context, String? userName) {
+    if (userName == null || userName.isEmpty) {
+      // GitHub 契约上账号 login 一定非空；走到这里说明上游数据缺失。
+      // 记录警告并中止跳转，而不是打开一个没有身份、必然请求失败的页面。
+      talker.warning("goPerson called with empty userName, skip navigation");
+      return;
+    }
     // P2 §2 Master-Detail：user profile 属于 detail 语义（列表 avatar tap 进来），
     // expanded 下 push 到右列，避免 root 覆盖 shell。
     _openDetailOrRouter(context,
