@@ -4,6 +4,7 @@ import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/common/repositories/repos_repository.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
+import 'package:gsy_github_app_flutter/model/event_payload.dart';
 import 'package:gsy_github_app_flutter/model/push_event_commit.dart';
 import 'package:gsy_github_app_flutter/model/repo_commit.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -284,27 +285,34 @@ class EventUtils {
     final AppLocalizations l = context.l10n;
     String? actionStr;
     String? des;
+    final EventPayload? payload = event.payload;
+    final String? repoName = event.repo?.name;
+    final String? actorLogin = event.actor?.login;
     switch (event.type) {
       case "CommitCommentEvent":
-        actionStr = l.event_dynamic_commit_comment(event.repo!.name!);
+        if (repoName != null) {
+          actionStr = l.event_dynamic_commit_comment(repoName);
+        }
         break;
       case "CreateEvent":
-        if (event.payload!.refType == "repository") {
-          actionStr = l.event_dynamic_create_repository(event.repo!.name!);
+        if (payload?.refType == "repository") {
+          if (repoName != null) {
+            actionStr = l.event_dynamic_create_repository(repoName);
+          }
         } else {
-          actionStr = l.event_dynamic_create_ref(
-            event.payload!.refType!,
-            event.payload!.ref!,
-            event.repo!.name!,
-          );
+          final String? refType = payload?.refType;
+          final String? ref = payload?.ref;
+          if (refType != null && ref != null && repoName != null) {
+            actionStr = l.event_dynamic_create_ref(refType, ref, repoName);
+          }
         }
         break;
       case "DeleteEvent":
-        actionStr = l.event_dynamic_delete_ref(
-          event.payload!.refType!,
-          event.payload!.ref!,
-          event.repo!.name!,
-        );
+        final String? refType = payload?.refType;
+        final String? ref = payload?.ref;
+        if (refType != null && ref != null && repoName != null) {
+          actionStr = l.event_dynamic_delete_ref(refType, ref, repoName);
+        }
         break;
       case "ForkEvent":
         // Fork event 的 repo/actor 字段在部分历史 payload 里可能缺失
@@ -321,7 +329,9 @@ class EventUtils {
         }
         break;
       case "GollumEvent":
-        actionStr = l.event_dynamic_gollum(event.actor!.login!);
+        if (actorLogin != null) {
+          actionStr = l.event_dynamic_gollum(actorLogin);
+        }
         break;
       case "InstallationEvent":
         actionStr = l.event_dynamic_installation(_translateAction(l, event.payload?.action));
@@ -330,29 +340,37 @@ class EventUtils {
         actionStr = l.event_dynamic_installation_repos(_translateAction(l, event.payload?.action));
         break;
       case "IssueCommentEvent":
-        actionStr = l.event_dynamic_issue_comment(
-          _translateAction(l, event.payload?.action),
-          event.payload!.issue!.number.toString(),
-          event.repo!.name!,
-        );
-        des = event.payload!.comment!.body;
+        final issue = payload?.issue;
+        if (issue != null && repoName != null) {
+          actionStr = l.event_dynamic_issue_comment(
+            _translateAction(l, payload?.action),
+            issue.number.toString(),
+            repoName,
+          );
+        }
+        des = payload?.comment?.body;
         break;
       case "IssuesEvent":
-        actionStr = l.event_dynamic_issue(
-          _translateAction(l, event.payload?.action),
-          event.payload!.issue!.number.toString(),
-          event.repo!.name!,
-        );
-        des = event.payload!.issue!.title;
+        final issue = payload?.issue;
+        if (issue != null && repoName != null) {
+          actionStr = l.event_dynamic_issue(
+            _translateAction(l, payload?.action),
+            issue.number.toString(),
+            repoName,
+          );
+        }
+        des = issue?.title;
         break;
       case "MarketplacePurchaseEvent":
         actionStr = l.event_dynamic_marketplace(_translateAction(l, event.payload?.action));
         break;
       case "MemberEvent":
-        actionStr = l.event_dynamic_member(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_member(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "OrgBlockEvent":
         actionStr = l.event_dynamic_org_block(_translateAction(l, event.payload?.action));
@@ -367,33 +385,43 @@ class EventUtils {
         actionStr = l.event_dynamic_project(_translateAction(l, event.payload?.action));
         break;
       case "PublicEvent":
-        actionStr = l.event_dynamic_public(event.repo!.name!);
+        if (repoName != null) {
+          actionStr = l.event_dynamic_public(repoName);
+        }
         break;
       case "PullRequestEvent":
-        actionStr = l.event_dynamic_pull_request(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_pull_request(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "PullRequestReviewEvent":
-        actionStr = l.event_dynamic_pull_request_review(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_pull_request_review(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "PullRequestReviewCommentEvent":
-        actionStr = l.event_dynamic_pull_request_review_comment(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_pull_request_review_comment(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "PullRequestReviewThreadEvent":
         // GitHub 官方补录事件：PR 里 review 讨论串被标记 resolved/unresolved。
         // action 值：resolved / unresolved（都走通用词典兜底 → 目前显示原文）
-        actionStr = l.event_dynamic_pull_request_review_thread(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_pull_request_review_thread(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "DiscussionEvent":
         // GitHub Discussions（issue/PR 之外的第三种讨论区）。webhook 已长期
@@ -401,17 +429,21 @@ class EventUtils {
         // "文档滞后于实现"。真实 payload 里 action 常见值：created / edited /
         // deleted / pinned / unpinned / locked / unlocked / transferred /
         // category_changed / answered / unanswered / labeled / unlabeled
-        actionStr = l.event_dynamic_discussion(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_discussion(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "DiscussionCommentEvent":
         // Discussion 里的评论，action 值：created / edited / deleted
-        actionStr = l.event_dynamic_discussion_comment(
-          _translateAction(l, event.payload?.action),
-          event.repo!.name!,
-        );
+        if (repoName != null) {
+          actionStr = l.event_dynamic_discussion_comment(
+            _translateAction(l, payload?.action),
+            repoName,
+          );
+        }
         break;
       case "SponsorshipEvent":
         // GitHub Sponsors 订阅生命周期，action 值：created / edited /
@@ -451,13 +483,13 @@ class EventUtils {
         }
         break;
       case "PushEvent":
-        if (event.payload != null && event.payload?.ref != null) {
-          String ref = event.payload!.ref!;
+        if (payload != null && payload.ref != null && repoName != null) {
+          String ref = payload.ref!;
           ref = ref.substring(ref.lastIndexOf("/") + 1);
-          actionStr = l.event_dynamic_push(ref, event.repo!.name!);
+          actionStr = l.event_dynamic_push(ref, repoName);
 
           String descSpan = "";
-          List<PushEventCommit> commits = event.payload?.commits ?? [];
+          List<PushEventCommit> commits = payload.commits ?? [];
           int count = commits.length;
           int maxLines = 4;
           int max = count > maxLines ? maxLines - 1 : count;
@@ -478,12 +510,12 @@ class EventUtils {
           }
           if (descSpan.trim().isNotEmpty) {
             des = descSpan;
-          } else if (event.payload?.description != null &&
-              event.payload!.description!.trim().isNotEmpty) {
-            des = event.payload!.description;
-          } else if (event.payload?.head != null &&
-              event.payload!.head!.trim().isNotEmpty) {
-            String head = _shortSha(event.payload!.head);
+          } else if (payload.description != null &&
+              payload.description!.trim().isNotEmpty) {
+            des = payload.description;
+          } else if (payload.head != null &&
+              payload.head!.trim().isNotEmpty) {
+            String head = _shortSha(payload.head);
             des = l.event_dynamic_push_head(head);
           } else {
             des = "";
@@ -493,24 +525,29 @@ class EventUtils {
         }
         break;
       case "ReleaseEvent":
-        actionStr = l.event_dynamic_release(
-          _translateAction(l, event.payload?.action),
-          event.payload!.release!.tagName!,
-          event.repo!.name!,
-        );
+        final String? tagName = payload?.release?.tagName;
+        if (tagName != null && repoName != null) {
+          actionStr = l.event_dynamic_release(
+            _translateAction(l, payload?.action),
+            tagName,
+            repoName,
+          );
+        }
         break;
       case "WatchEvent":
         // WatchEvent 目前 GitHub 只发 action=started（=点 star）。用独立整句
         // 而不是通用词典，避免英语侧读成 `started xxx` 不通顺
-        final rawAction = event.payload?.action;
-        if (rawAction == 'started' || rawAction == null || rawAction.isEmpty) {
-          actionStr = l.event_dynamic_watch_started(event.repo!.name!);
-        } else {
-          // 未来 GitHub 若扩了新 action，走通用词典兜底
-          actionStr = l.event_dynamic_watch(
-            _translateAction(l, rawAction),
-            event.repo!.name!,
-          );
+        final rawAction = payload?.action;
+        if (repoName != null) {
+          if (rawAction == 'started' || rawAction == null || rawAction.isEmpty) {
+            actionStr = l.event_dynamic_watch_started(repoName);
+          } else {
+            // 未来 GitHub 若扩了新 action，走通用词典兜底
+            actionStr = l.event_dynamic_watch(
+              _translateAction(l, rawAction),
+              repoName,
+            );
+          }
         }
         break;
       default:
@@ -527,21 +564,29 @@ class EventUtils {
     Event event,
     currentRepository,
   ) async {
-    if (event.repo == null) {
-      NavigatorUtils.goPerson(context, event.actor!.login);
+    final String? repoFullName = event.repo?.name;
+    if (repoFullName == null) {
+      final String? login = event.actor?.login;
+      if (login != null) {
+        NavigatorUtils.goPerson(context, login);
+      }
       return;
     }
-    var [owner, repositoryName] = event.repo!.name!.split("/");
+    var [owner, repositoryName] = repoFullName.split("/");
     String fullName = '$owner/$repositoryName';
     switch (event.type) {
       case 'ForkEvent':
-        String forkName = "${event.actor!.login!}/$repositoryName";
+        final String? actorLogin = event.actor?.login;
+        if (actorLogin == null) {
+          return;
+        }
+        String forkName = "$actorLogin/$repositoryName";
         if (forkName.toLowerCase() == currentRepository.toLowerCase()) {
           return;
         }
         NavigatorUtils.goReposDetail(
           context,
-          event.actor!.login!,
+          actorLogin,
           repositoryName,
         );
         break;

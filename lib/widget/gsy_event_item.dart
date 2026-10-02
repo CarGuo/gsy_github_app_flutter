@@ -61,7 +61,7 @@ class GSYEventItem extends StatelessWidget {
                     children: <Widget>[
                       userImage,
                       Expanded(
-                          child: Text(eventViewModel.actionUser!,
+                          child: Text(eventViewModel.actionUser ?? "",
                               style: GSYConstant.smallTextBold)),
                       Text(eventViewModel.actionTime,
                           style: GSYConstant.smallSubText),
@@ -87,9 +87,9 @@ class EventViewModel {
   String? actionTarget;
 
   new fromEventMap(BuildContext context, Event event) {
-    actionTime = CommonUtils.getNewsTimeStr(event.createdAt!);
-    actionUser = event.actor!.login;
-    actionUserPic = event.actor!.avatar_url;
+    actionTime = CommonUtils.getNewsTimeStr(event.createdAt ?? DateTime.now());
+    actionUser = event.actor?.login;
+    actionUserPic = event.actor?.avatar_url;
     var as = EventUtils.getActionAndDes(context, event);
     actionDes = as.des;
     actionTarget = as.actionStr;
