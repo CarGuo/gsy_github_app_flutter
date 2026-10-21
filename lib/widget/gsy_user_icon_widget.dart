@@ -60,11 +60,10 @@ class GSYUserIconWidget extends StatelessWidget {
         placeholder: const AssetImage(
           GSYICons.DEFAULT_USER_ICON,
         ),
-        image: NetworkImage(url),
+        image: _AvatarNetworkImage(NetworkImage(url)),
         // 2026-09-28：网络头像失败是明确的图片状态，不能让 ErrorWidget 的
         // 异常文本挤破用户信息布局。保留结构化错误，使用原有本地头像资产。
         imageErrorBuilder: (context, error, stackTrace) {
-          printError('Avatar image load failed', error, stackTrace);
           return Image.asset(
             GSYICons.DEFAULT_USER_ICON,
             width: width,
@@ -109,4 +108,37 @@ class GSYUserIconWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+/// 保持 NetworkImage 的缓存与解码行为，只观察头像实际创建的加载请求。
+final class _AvatarNetworkImage extends ImageProvider<NetworkImage> {
+  const new(this.image);
+
+  final NetworkImage image;
+
+  @override
+  Future<NetworkImage> obtainKey(ImageConfiguration configuration) =>
+      image.obtainKey(configuration);
+
+  @override
+  ImageStreamCompleter loadImage(
+    NetworkImage key,
+    ImageDecoderCallback decode,
+  ) {
+    final completer = image.loadImage(key, decode);
+    // 2026-10-21：errorBuilder 会在父级重建时重放同一失败状态，不能承担日志副作用。
+    // loadImage 仅在缓存缺失、真正创建请求时调用；SDK 的临时错误监听在首帧/首错
+    // 后自动移除，也不会延长 stream 生命周期。重建不重复记，真实重试仍会新建监听。
+    completer.addEphemeralErrorListener((error, stackTrace) {
+      printError('Avatar image load failed', error, stackTrace);
+    });
+    return completer;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is _AvatarNetworkImage && image == other.image;
+
+  @override
+  int get hashCode => image.hashCode;
 }
