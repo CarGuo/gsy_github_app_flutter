@@ -258,13 +258,13 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
     /// 如果这里再包一层 `ProviderScope()`，Riverpod 会给 PersonPage 子树生
     /// 一个独立的 [ProviderContainer]，导致 [UserPinnedSection] /
     /// [UserStatusSection] / [UserSponsorsSection] 里 `ref.watch(...)` 命中的
-    /// provider 实例，与 [PersonState._refreshPinned] / [_refreshStatus] /
-    /// [_refreshSponsors] 里 `globalContainer.invalidate(...)` 目标不是同一
+    /// provider 实例，与 PersonState 的资料加载周期中
+    /// `globalContainer.invalidate(...)` 目标不是同一
     /// 实例——下拉刷新时表面没报错，但 UI 侧其实没被通知重取。
     ///
     /// 若未来需要局部 override（例如测试或某个 scope 特化），改回
     /// `ProviderScope(overrides: [...], child: buildContainer(context))`
-    /// 即可；届时同步把 [_refreshXxx] 改为通过
+    /// 即可；届时同步把页面的 provider 失效改为通过
     /// `ProviderScope.containerOf(context, listen: false).invalidate(...)`
     /// 命中当前子树 container。
     return buildContainer(context);

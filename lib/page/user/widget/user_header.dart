@@ -375,6 +375,12 @@ class UserHeaderBottom extends StatelessWidget {
             ),
             Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              // 2026-10-21: 与其余 profile section 一样，资料有效后才订阅。
+              // 空资料首帧先 watch、资料发布前再失效，会重复请求同一份 Honor。
+              if (userInfo.login == null || userInfo.login!.isEmpty) {
+                return _getBottomItem(
+                    context.l10n.user_tab_honor, "---", () {});
+              }
               var data = ref.watch(
                   OnlyShareInstanceWidget.of<FetchHonorDataProvider>(context)!);
               return _getBottomItem(

@@ -73,6 +73,11 @@ class PersonState extends BasePersonState<PersonPage> {
     var userResult =
         await UserRepository.getUserInfo(widget.userName, needDb: true);
     if (userResult != null && userResult.result) {
+      // 2026-10-21: 一次资料加载只在发布首份有效资料前失效一次辅助数据。
+      // 首次挂载由 watch 发起请求；主动刷新/缓存重进使现有 provider 失效。
+      // 放在列表加载末尾会把本轮已经挂载的五类 provider 再请求一次；
+      // cache.next 只更新资料，不能为同一个加载周期重复失效。
+      _invalidateProfileData(userResult.data);
       _resolveUserInfo(userResult);
       if (userResult.next != null) {
         userResult.next().then((resNext) {
@@ -97,64 +102,23 @@ class PersonState extends BasePersonState<PersonPage> {
     ///获取当前用户的关注状态
     _getFocusStatus();
 
-    ///获取用户仓库前100个star统计数据
-    getHonor();
-
-    ///刷新 Pinned Repositories：pinned provider 是 autoDispose family，
-    ///这里主动 invalidate 让下一次 UserPinnedSection.build 重新拉取，
-    ///和 [getHonor] 通过 globalContainer.refresh 的思路一致。
-    _refreshPinned();
-
-    ///刷新 Status chip：与 pinned 同思路，autoDispose family 上手动 invalidate。
-    _refreshStatus();
-
-    ///刷新 Sponsors：与 pinned/status 同思路，autoDispose family 上手动 invalidate。
-    _refreshSponsors();
-
-    ///刷新 Contribution Calendar：与 pinned/status/sponsors 同思路，
-    ///autoDispose family 上手动 invalidate，下次 build 重拉近 12 个月热力图。
-    _refreshContributionCalendar();
     return;
   }
 
-  void _refreshPinned() {
-    final login = userInfo?.login;
+  void _invalidateProfileData(User profile) {
+    final login = profile.login;
     if (login == null || login.isEmpty) {
       return;
     }
+    // invalidate 不会创建尚未订阅的 family；首次挂载仍由各 section watch 加载。
+    globalContainer.invalidate(fetchHonorDataProvider(login));
     globalContainer.invalidate(fetchUserPinnedItemsProvider(login));
-  }
-
-  void _refreshStatus() {
-    final login = userInfo?.login;
-    if (login == null || login.isEmpty) {
-      return;
-    }
-    // organization 侧不挂载 UserStatusSection，也不必 invalidate
-    if (userInfo?.type == "Organization") {
+    globalContainer.invalidate(fetchUserSponsorsProvider(login));
+    // 与 section 的挂载规则一致：组织没有 status 与贡献日历。
+    if (profile.type == "Organization") {
       return;
     }
     globalContainer.invalidate(fetchUserStatusProvider(login));
-  }
-
-  void _refreshSponsors() {
-    final login = userInfo?.login;
-    if (login == null || login.isEmpty) {
-      return;
-    }
-    // Sponsors 对 User 与 Organization 都可能有值，不做 type 短路
-    globalContainer.invalidate(fetchUserSponsorsProvider(login));
-  }
-
-  void _refreshContributionCalendar() {
-    final login = userInfo?.login;
-    if (login == null || login.isEmpty) {
-      return;
-    }
-    // organization 不挂载贡献日历，短路避免多一次无效 GraphQL
-    if (userInfo?.type == "Organization") {
-      return;
-    }
     globalContainer.invalidate(fetchUserContributionCalendarProvider(login));
   }
 
