@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/event.dart';
@@ -311,7 +310,9 @@ class _GSYEventGroupItemState extends State<GSYEventGroupItem>
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  CommonUtils.getNewsTimeStr(event.createdAt!),
+                  // 2026-10-21：单条和分组共用展示模型的日期规则，避免分组
+                  // 绕过 EventViewModel 后对合法的缺日期事件触发空值断言。
+                  vm.actionTime,
                   style: GSYConstant.smallSubText,
                 ),
               ],
