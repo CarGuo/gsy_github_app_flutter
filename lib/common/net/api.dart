@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
+import 'package:gsy_github_app_flutter/common/telemetry/performance_telemetry.dart';
 
 import 'dart:collection';
 
@@ -23,6 +24,9 @@ class HttpManager {
 
   new _internal() {
     _dio = Dio(); // 使用默认配置
+    // 2026-10-23: observe headers at the adapter, before Dio consumes the body.
+    _dio.httpClientAdapter = GsyPerformanceTelemetry.instance
+        .wrapDioAdapter(_dio.httpClientAdapter);
     _tokenInterceptors = TokenInterceptors();
 
     _dio.interceptors.addAll([

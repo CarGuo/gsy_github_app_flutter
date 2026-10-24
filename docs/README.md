@@ -31,6 +31,7 @@
 - 状态管理边界：`01-architecture/state-management-matrix.md`
 - 当前现状与待办清单：`00-overview/roadmap.md`
 - 手工回归入口：`04-quality/smoke-matrix.md`
+- 线上性能监控接入与验收：`03-runbooks/performance-monitoring.md`
 - 长期规则：
   - `06-decisions/ADR-0001-状态管理收敛策略.md`
   - `06-decisions/ADR-0005-大屏与折叠屏自适应导航抽象.md`

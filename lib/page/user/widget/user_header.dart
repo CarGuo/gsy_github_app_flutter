@@ -133,7 +133,14 @@ class UserHeaderItem extends StatelessWidget {
         Row(
           children: <Widget>[
             ///用户名
-            Text(userInfo.login ?? "", style: GSYConstant.largeTextWhiteBold),
+            // 2026-10-24 / FPR-108: reserve the notification action's width
+            // and let the username use the remaining profile-column space.
+            Expanded(
+              child: Text(userInfo.login ?? "",
+                  style: GSYConstant.largeTextWhiteBold,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+            ),
             _getNotifyIcon(context, notifyColor),
           ],
         ),
@@ -189,7 +196,8 @@ class UserHeaderItem extends StatelessWidget {
             GSYColors.subLightTextColor,
             10.0,
             padding: 3.0,
-            textWidth: MediaQuery.sizeOf(context).width - 50,
+            // FPR-108: GSYIConText now follows this pane's actual constraints;
+            // a window-derived width overflows when the profile is in master.
           ),
         ));
   }

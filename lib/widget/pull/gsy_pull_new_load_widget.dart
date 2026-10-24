@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
-import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_refresh_sliver.dart'
     as IOS;
@@ -46,11 +47,15 @@ class GSYPullLoadWidget extends StatefulWidget {
 }
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
-
   final GlobalKey<IOS.CupertinoSliverRefreshControlState> sliverRefreshKey =
       GlobalKey<IOS.CupertinoSliverRefreshControlState>();
 
-  ScrollController? _scrollController;
+  late ScrollController _scrollController;
+  late bool _ownsScrollController;
+  late GSYPullLoadWidgetControl _control;
+  final Set<Timer> _pendingLoadChecks = {};
+  final Map<Timer, Completer<bool>> _loadWaiters = {};
+  int _controlGeneration = 0;
 
   bool isRefreshing = false;
 
@@ -62,31 +67,99 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   @override
   void initState() {
-    _scrollController = widget.scrollController ?? ScrollController();
-
-    ///增加滑动监听
-    _scrollController!.addListener(() {
-      ///判断当前滑动位置是不是到达底部，触发加载更多回调
-      if (_scrollController!.position.pixels ==
-          _scrollController!.position.maxScrollExtent) {
-        if (widget.control.needLoadMore) {
-          handleLoadMore();
-        }
-      }
-    });
-
-    widget.control.addListener(() {
-      setState(() {});
-      try {
-        Future.delayed(const Duration(seconds: 2), () {
-          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-          _scrollController!.notifyListeners();
-        });
-      } catch (e) {
-        printLog(e);
-      }
-    });
     super.initState();
+    _bindScrollController();
+    _control = widget.control;
+    _control.addListener(_onControlChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant GSYPullLoadWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.scrollController != widget.scrollController) {
+      _cancelLoadChecks();
+      _releaseScrollController();
+      _bindScrollController();
+    }
+    if (_control != widget.control) {
+      _cancelLoadChecks();
+      _endControlBinding();
+      _control.removeListener(_onControlChanged);
+      _control = widget.control;
+      _control.addListener(_onControlChanged);
+    }
+  }
+
+  void _bindScrollController() {
+    _ownsScrollController = widget.scrollController == null;
+    _scrollController = widget.scrollController ?? ScrollController();
+    _scrollController.addListener(_checkLoadMore);
+  }
+
+  void _releaseScrollController() {
+    _scrollController.removeListener(_checkLoadMore);
+    // 2026-10-24 / FPR-105: a parent-supplied controller is borrowed, not
+    // transferred. Only the fallback created by this State is ours to dispose.
+    if (_ownsScrollController) _scrollController.dispose();
+  }
+
+  void _onControlChanged() {
+    setState(() {});
+    // Keep each existing two-second recheck, but cancel it when its list ends.
+    late final Timer check;
+    check = Timer(const Duration(seconds: 2), () {
+      _pendingLoadChecks.remove(check);
+      _checkLoadMore();
+    });
+    _pendingLoadChecks.add(check);
+  }
+
+  void _checkLoadMore() {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    if (position.hasContentDimensions &&
+        position.pixels == position.maxScrollExtent &&
+        _control.needLoadMore) {
+      handleLoadMore();
+    }
+  }
+
+  void _cancelLoadChecks() {
+    for (final check in _pendingLoadChecks) {
+      check.cancel();
+    }
+    _pendingLoadChecks.clear();
+  }
+
+  Future<bool> _waitForLoadCheck() {
+    final completer = Completer<bool>();
+    late final Timer wait;
+    wait = Timer(const Duration(seconds: 1), () {
+      _loadWaiters.remove(wait);
+      completer.complete(true);
+    });
+    _loadWaiters[wait] = completer;
+    return completer.future;
+  }
+
+  void _endControlBinding() {
+    _controlGeneration++;
+    for (final entry in _loadWaiters.entries) {
+      entry.key.cancel();
+      entry.value.complete(false);
+    }
+    _loadWaiters.clear();
+    isRefreshing = false;
+    isLoadMoring = false;
+  }
+
+  @override
+  void dispose() {
+    _cancelLoadChecks();
+    _endControlBinding();
+    _control.removeListener(_onControlChanged);
+    _releaseScrollController();
+    super.dispose();
   }
 
   ///根据配置状态返回实际列表数量
@@ -137,55 +210,44 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
     }
   }
 
-  _lockToAwait() async {
-    ///if loading, lock to await
-    doDelayed() async {
-      await Future.delayed(const Duration(seconds: 1)).then((_) async {
-        if (widget.control.isLoading) {
-          return await doDelayed();
+  @protected
+  Future<void> handleRefresh() => _runLoad(refresh: true);
+
+  @protected
+  Future<void> handleLoadMore() => _runLoad(refresh: false);
+
+  Future<void> _runLoad({required bool refresh}) async {
+    if (refresh ? isRefreshing : isLoadMoring) return;
+    final control = _control;
+    final generation = _controlGeneration;
+    final callback = refresh ? widget.onRefresh : widget.onLoadMore;
+    if (refresh) {
+      isRefreshing = true;
+    } else {
+      isLoadMoring = true;
+    }
+    var ownsLoad = false;
+    try {
+      while (control.isLoading) {
+        if (!await _waitForLoadCheck()) return;
+        if (!mounted || generation != _controlGeneration) return;
+      }
+      if (!mounted || generation != _controlGeneration) return;
+      control.isLoading = true;
+      ownsLoad = true;
+      await callback?.call();
+    } finally {
+      // 2026-10-24 / FPR-105: a request belongs to the control captured before
+      // awaiting. A late completion must never unlock its replacement control.
+      if (ownsLoad) control.isLoading = false;
+      if (generation == _controlGeneration) {
+        if (refresh) {
+          isRefreshing = false;
         } else {
-          return null;
+          isLoadMoring = false;
         }
-      });
-    }
-
-    await doDelayed();
-  }
-
-  @protected
-  Future<void> handleRefresh() async {
-    if (widget.control.isLoading) {
-      if (isRefreshing) {
-        return;
       }
-
-      ///if loading, lock to await
-      await _lockToAwait();
     }
-    widget.control.isLoading = true;
-    isRefreshing = true;
-    await widget.onRefresh?.call();
-    isRefreshing = false;
-    widget.control.isLoading = false;
-    return;
-  }
-
-  @protected
-  Future<void> handleLoadMore() async {
-    if (widget.control.isLoading) {
-      if (isLoadMoring) {
-        return;
-      }
-
-      ///if loading, lock to await
-      await _lockToAwait();
-    }
-    isLoadMoring = true;
-    widget.control.isLoading = true;
-    await widget.onLoadMore?.call();
-    isLoadMoring = false;
-    widget.control.isLoading = false;
-    return;
   }
 
   @override

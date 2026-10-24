@@ -16,14 +16,11 @@ class SearchUserQL({
     if (langNode is Map) {
       final nodes = langNode['nodes'];
       if (nodes is List && nodes.isNotEmpty && nodes.first is Map) {
-        final languages = (nodes.first as Map)['languages'];
-        if (languages is Map) {
-          final langNodes = languages['nodes'];
-          if (langNodes is List &&
-              langNodes.isNotEmpty &&
-              langNodes.first is Map) {
-            lang = (langNodes.first as Map)['name'] as String?;
-          }
+        // 2026-10-24 / FPR-120: the selected repository supplies its own
+        // primary language; missing/null must not fall back to composition order.
+        final primaryLanguage = (nodes.first as Map)['primaryLanguage'];
+        if (primaryLanguage is Map) {
+          lang = primaryLanguage['name'] as String?;
         }
       }
     }

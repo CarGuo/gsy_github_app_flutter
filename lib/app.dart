@@ -11,6 +11,7 @@ import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/localization/l10n/app_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
+import 'package:gsy_github_app_flutter/common/telemetry/performance_telemetry.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/user.dart';
 import 'package:gsy_github_app_flutter/page/debug/debug_label.dart';
@@ -63,6 +64,9 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
   );
 
   NavigatorObserver navigatorObserver = NavigatorObserver();
+  // 2026-10-23: stable scene mapping belongs to central navigation composition.
+  final NavigatorObserver _performanceObserver =
+      GsyPerformanceTelemetry.instance.navigation.createRootObserver();
 
   /// route-topology v0.2.2：root Navigator 侧的 shellDetail 观察者。
   ///
@@ -136,6 +140,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
                   theme: themeData,
                   navigatorObservers: [
                     navigatorObserver,
+                    _performanceObserver,
                     // route-topology v0.2.2：观察根 Navigator 上 shellDetail
                     // 路由的 pop，同步 [GSYAdaptiveNavigation._shellDetailStack]
                     // 记账栈；断点跨越时用 stack 里的 builder 迁到目标 Navigator。

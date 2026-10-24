@@ -1357,9 +1357,8 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
   /// [gql.addDiscussionComment]。
   ///
   /// 两个双栏（expanded）适配要点（reviewer 2026-09-08 拦下的 blocker/major）：
-  /// 1. **必须传 [TextEditingController]**：[IssueEditDialog] 的 Markdown 快捷
-  ///    输入条（H1/Bold/Link…）内部对 `valueController!` 强解，不传一点就抛
-  ///    空指针。issue 流程一直传，这里补齐；对话框关闭后 dispose。
+  /// 1. 2026-10 FPR-117：临时 controller 由表单 State 持有到卸载；不能在
+  ///    showDialog 的结果 Future 完成时释放仍参与退出转场的输入框资源。
   /// 2. **loading 与 edit dialog 落在不同 Navigator**：loading 走
   ///    [CommonUtils.showLoadingDialog] → `showDialog(useRootNavigator:true)`
   ///    在 root navigator；edit dialog 走 adaptive 通道，expanded 下
@@ -1375,7 +1374,6 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
       return;
     }
     String content = '';
-    final valueController = TextEditingController();
     CommonUtils.showEditDialog(
       context,
       context.l10n.discussion_reply,
@@ -1383,13 +1381,8 @@ class _DiscussionDetailPageState extends State<DiscussionDetailPage> {
       (v) => content = v,
       () => _submitReply(discussionId, content),
       needTitle: false,
-      valueController: valueController,
       hintText: context.l10n.discussion_reply_hint,
-    ).whenComplete(() {
-      // 对话框关闭（提交 / 取消）后回收 controller，避免每次回复泄漏一个
-      // TextEditingController。控件已 unmount，dispose 不影响在途文本。
-      valueController.dispose();
-    });
+    );
   }
 
   Future<void> _submitReply(String discussionId, String content) async {

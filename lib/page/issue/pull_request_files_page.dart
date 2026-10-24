@@ -5,8 +5,7 @@ import 'package:gsy_github_app_flutter/common/repositories/issue_repository.dart
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
-import 'package:gsy_github_app_flutter/common/utils/comment_markdown.dart';
-import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
+import 'package:gsy_github_app_flutter/common/utils/diff_html_renderer.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/commitFile.dart';
 import 'package:gsy_github_app_flutter/model/pull_request_review_thread.dart';
@@ -23,7 +22,7 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 /// `/repos/:o/:r/pulls/:n/files` 与 commit files payload 是同一个 schema
 /// （filename/status/additions/deletions/patch/blob_url），
 /// 我们把响应体映射成 [CommitFile]，再交给 [PushCodeItem] 渲染 patch，
-/// 点击后走 `HtmlUtils.parseDiffSource` + `NavigatorUtils.gotoCodeDetailPlatform`
+/// 点击后走 [renderDiffHtml] + `NavigatorUtils.gotoCodeDetailPlatform`
 /// 打开 web view 高亮 diff。
 ///
 /// **行级 review comment 挂载（双通路）**：
@@ -35,7 +34,7 @@ import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 ///   长按走 resolveReviewThread mutation。用于**扫读 + 交互**。
 /// - **A/3 webview 内联**（webview 层）：点击文件卡片打开 diff webview 时，
 ///   评论按行号内联到对应 diff 行下方，实现"评论跟在源码行下方"的沉浸阅读。
-///   见 [_buildAddLineExtras] 与 [HtmlUtils.parseDiffSource] 的 `addLineExtras` 参数。
+///   [renderDiffHtml] 在后台完成按 head 行号分桶、Markdown 与完整 HTML 构造。
 ///
 /// 两条路径**并存不互斥**：折叠区管交互，webview 管沉浸；outdated 评论
 /// （line=null）只在 A/2 折叠区里以"该评论已过时"呈现，不进 webview 内联
@@ -80,6 +79,8 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
   /// 展开状态：filename -> 是否展开评论列表。默认全部收起，避免长 PR
   /// 一进来就把长评论全铺出来影响滚动性能。
   final Map<String, bool> _expanded = {};
+
+  bool _openingDiff = false;
 
   @override
   requestRefresh() async {
@@ -152,88 +153,68 @@ class _PullRequestFilesPageState extends State<PullRequestFilesPage>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PushCodeItem(vm, () {
-          // A/3：把 review comment 按 head 分支行号分组，喂给 parseDiffSource
-          // 让 webview 里 diff 行下方直接内联 comment。App 层折叠区（A/2）
-          // 保留不动，形成"扫读用折叠区 + 沉浸阅读用 webview 内联"双通路
-          final extras = _buildAddLineExtras(comments);
-          final html = HtmlUtils.generateCode2HTml(
-              HtmlUtils.parseDiffSource(vm.patch, false,
-                  addLineExtras: extras),
-              backgroundColor: GSYColors.webDraculaBackgroundColorString,
-              lang: '',
-              userBR: false);
-          NavigatorUtils.gotoCodeDetailPlatform(
-            context,
-            title: vm.name,
-            reposName: widget.reposName,
-            userName: widget.userName,
-            path: vm.patch,
-            data: html,
-            branch: '',
-          );
-        }),
+        PushCodeItem(vm, () => _openDiff(vm, comments)),
         if (comments.isNotEmpty) _buildCommentSection(context, file, comments),
       ],
     );
   }
 
-  /// A/3 + A/4：把当前文件的 review comment 折叠成 {addLine: html片段}。
-  ///
-  /// 关键点：
-  /// - key 采用 [PullReviewComment.line]（**新版本 blob 行号**，非
-  ///   [PullReviewComment.displayLine]）。原因见下方 outdated 规则
-  /// - 同一行可能有多条评论（review 多轮 / 多人），value 里拼接**多个**
-  ///   `<div class="gsy-review-comment">` 兄弟节点
-  /// - **A/4**：body 走 [renderCommentBodyToInlineHtml]（复用
-  ///   `package:markdown`），支持 fenced-code / inline-code / autolinks；
-  ///   fixture PR #938 的 ```suggestion 块能正确渲染。默认 escape 未白名单的
-  ///   裸 HTML（XSS 底线）。author 一律走 [_htmlEscape]（纯文本 escape）
-  /// - **outdated / removed-side 评论**（`line == null` 但 `originalLine != null`）
-  ///   **不进 webview 内联**：那种评论指向已被后续 push 冲掉的旧 blob 行号，
-  ///   若拿 `originalLine` 与 `curAddNumber`（新 blob 行号）比较会**位置错乱**
-  ///   （旧号可能在新 diff 里没同号或误命中不相关行）。这类 comment 完全
-  ///   降级到 A/2 折叠区（已用"该评论已过时"文案兜底）
-  static Map<int, String>? _buildAddLineExtras(List<PullReviewComment> comments) {
-    if (comments.isEmpty) return null;
-    final Map<int, StringBuffer> buckets = {};
-    for (final c in comments) {
-      // 严格要求 line 非 null：只对 head 侧有明确锚点的 comment 做内联。
-      // 这与 [_buildCommentTile] 用 displayLine 展示"已过时"是刻意分工的：
-      // 折叠区能容忍 outdated（展示文案即可），webview 内联不能容忍（会错位）
-      final int? line = c.line;
-      if (line == null) continue;
-      final buf = buckets.putIfAbsent(line, () => StringBuffer());
-      final String author = _htmlEscape(c.user?.login ?? '');
-      // A/4：body 走真正的 markdown 渲染（fenced-code / inline-code /
-      // autolinks），fixture PR #938 的 ```suggestion 块能正确显示
-      final String body = renderCommentBodyToInlineHtml(c.body);
-      // 内联样式而非全靠 class，防某些 webview 平台丢失 <style>（保险起见）
-      buf.write('<div class="gsy-review-comment" '
-          'style="background:#fff8e1;color:#222;border-left:3px solid #d97706;'
-          'padding:6px 10px;margin:2px 0;font-family:sans-serif;'
-          'font-size:12px;white-space:normal;">');
-      buf.write('<div style="font-weight:bold;color:#0366d6;'
-          'margin-bottom:4px;">@$author</div>');
-      buf.write('<div>$body</div>');
-      buf.write('</div>');
+  Future<void> _openDiff(
+    PushCodeItemViewModel file,
+    List<PullReviewComment> comments,
+  ) async {
+    // 2026-10-24 FPR-103: keep one opening intent while native compute prepares
+    // the HTML; snapshot navigation inputs before the asynchronous boundary.
+    if (_openingDiff) return;
+    _openingDiff = true;
+    final title = file.name;
+    final patch = file.patch;
+    final userName = widget.userName;
+    final reposName = widget.reposName;
+    final sourceRoutes = <Route<dynamic>>[];
+    ModalRoute<dynamic>? sourceRoute = ModalRoute.of(context);
+    // The detail Navigator's route can remain current under a root overlay.
+    // Its hosting routes must still represent the same visible opening intent.
+    while (sourceRoute != null && !sourceRoutes.contains(sourceRoute)) {
+      sourceRoutes.add(sourceRoute);
+      final navigator = sourceRoute.navigator;
+      sourceRoute = navigator == null ? null : ModalRoute.of(navigator.context);
     }
-    if (buckets.isEmpty) return null;
-    return buckets.map((k, v) => MapEntry(k, v.toString()));
-  }
-
-  /// 极简 HTML escape。覆盖 5 个 HTML 特殊字符（`& < > " '`）。
-  /// - 覆盖 `'` 是为了将来该函数被复用到属性上下文（如 `title='...'`）时
-  ///   也不留 XSS 缺口；当前 A/3 只把结果放在 text node 里，`'` 不必转义，
-  ///   但工具函数应默认按最保守语义处理
-  /// - 不引入 dart:convert / html 包，保持零依赖单一函数
-  static String _htmlEscape(String input) {
-    return input
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
+    try {
+      final html = await renderDiffHtml(
+        DiffHtmlRequest(
+          patch: patch,
+          comments: comments.map(
+            (comment) => DiffInlineComment(
+              line: comment.line,
+              author: comment.user?.login ?? '',
+              body: comment.body,
+            ),
+          ),
+        ),
+      );
+      if (!mounted || sourceRoutes.any((route) => !route.isCurrent)) return;
+      NavigatorUtils.gotoCodeDetailPlatform(
+        context,
+        title: title,
+        reposName: reposName,
+        userName: userName,
+        path: patch,
+        data: html,
+        branch: '',
+      );
+    } catch (error, stack) {
+      // Async onTap failures no longer pass through Flutter's synchronous
+      // gesture callback reporting; preserve that observable error channel.
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: stack,
+        library: 'diff rendering',
+        context: ErrorDescription('while preparing a pull request diff'),
+      ));
+    } finally {
+      _openingDiff = false;
+    }
   }
 
   Widget _buildCommentSection(BuildContext context, CommitFile file,

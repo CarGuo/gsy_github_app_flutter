@@ -95,11 +95,13 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
     return list;
   }
 
+  // 2026-10 FPR-113: preserve the section minimum while allowing localized
+  // titles to grow vertically at the available width and system text scale.
   _renderTitle(String title) {
     return Container(
       color: Theme.of(context).primaryColor,
       width: itemWidth + 50,
-      height: 50.0,
+      constraints: const BoxConstraints(minHeight: 50.0),
       child: Center(
         child: Text(
           title,
@@ -120,39 +122,38 @@ class _GSYSearchDrawerState extends State<GSYSearchDrawer> {
 
   _renderItem(FilterModel model, List<FilterModel> list, int index,
       SearchSelectItemChanged<String?>? select) {
-    return Stack(
-      children: <Widget>[
-        SizedBox(
-          height: 50.0,
-          child: SizedBox(
-            width: itemWidth,
+    // 2026-10 FPR-113: labels belong to the remaining row width, and their
+    // locale/text scale determines row height. The whole adaptive row remains
+    // one tap target; increasing a fixed width or clipping text loses content.
+    return SizedBox(
+      width: itemWidth,
+      child: Stack(
+        children: <Widget>[
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 50.0),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Center(
-                    child: Checkbox(
-                        value: model.select, onChanged: (value) {})),
-                Center(child: Text(model.displayName(context))),
+                Checkbox(value: model.select, onChanged: (value) {}),
+                Expanded(child: Text(model.displayName(context))),
               ],
             ),
           ),
-        ),
-        TextButton(
-          onPressed: () {
-            setState(() {
-              for (FilterModel model in list) {
-                model.select = false;
-              }
-              list[index].select = true;
-            });
-            select?.call(model.value);
-          },
-          child: Container(
-            width: itemWidth,
+          Positioned.fill(
+            child: TextButton(
+              onPressed: () {
+                setState(() {
+                  for (FilterModel model in list) {
+                    model.select = false;
+                  }
+                  list[index].select = true;
+                });
+                select?.call(model.value);
+              },
+              child: const SizedBox.shrink(),
+            ),
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 }

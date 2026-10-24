@@ -5,6 +5,16 @@ import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:photo_view/photo_view.dart';
 
+// 2026-10-24 / FPR-118: signed binary URLs are transport credentials, while
+// canonical repository URLs are the public copy/share/browser destination.
+@immutable
+class PhotoViewPageArguments {
+  const new({required this.imageUrl, this.canonicalUrl});
+
+  final String imageUrl;
+  final String? canonicalUrl;
+}
+
 /// 图片预览
 /// Created by guoshuyu
 /// Date: 2018-08-09
@@ -16,7 +26,20 @@ class PhotoViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? url = ModalRoute.of(context)!.settings.arguments as String?;
+    final routeArguments = ModalRoute.of(context)!.settings.arguments;
+    final String? url;
+    final String? canonicalUrl;
+    final bool showOptions;
+    if (routeArguments is PhotoViewPageArguments) {
+      url = routeArguments.imageUrl;
+      canonicalUrl = routeArguments.canonicalUrl;
+      showOptions = canonicalUrl != null && canonicalUrl.isNotEmpty;
+    } else {
+      // Legacy String/null routes retain their existing image and menu defaults.
+      url = routeArguments as String?;
+      canonicalUrl = url;
+      showOptions = true;
+    }
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.file_download),
@@ -37,8 +60,10 @@ class PhotoViewPage extends StatelessWidget {
           },
         ),
         appBar: AppBar(
-          title:
-              GSYTitleBar("", rightWidget: GSYCommonOptionWidget(url: url)),
+          title: GSYTitleBar("",
+              rightWidget: showOptions
+                  ? GSYCommonOptionWidget(url: canonicalUrl)
+                  : null),
         ),
         body: Container(
           color: Colors.black,

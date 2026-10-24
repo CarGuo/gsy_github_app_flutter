@@ -693,6 +693,14 @@ class _ShellDetailRouteObserver extends NavigatorObserver {
   }
 }
 
+/// 2026-10-23: identify the actual empty detail route independently of isFirst.
+/// Removing/replacing it must not turn a visible business route into an empty
+/// pane in telemetry. The shell supplies this type to its observer predicate.
+class GSYTwoPaneDetailPlaceholderRoute extends MaterialPageRoute<void> {
+  new({required super.settings})
+      : super(builder: (_) => const GSYTwoPaneDetailPlaceholder());
+}
+
 /// 双栏 detail 未选中时的占位 widget。
 ///
 /// 只在 shell 挂载了内嵌 Navigator 的初始 route 时使用；用户 tap master 里

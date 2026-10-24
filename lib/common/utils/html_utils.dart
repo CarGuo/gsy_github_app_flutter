@@ -2,6 +2,7 @@
 
 import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/utils/highlight_resources.g.dart';
 
 /// Created by guoshuyu
 /// on 2018/7/27.
@@ -108,7 +109,11 @@ class HtmlUtils {
       userBR = true}) {
     final bool isDark =
         backgroundColor == GSYColors.webDraculaBackgroundColorString;
-    final String hljsTheme = isDark ? 'atom-one-dark' : 'github';
+    // 2026-10-24 FPR-111: local, pinned 9.12.0 data resources keep the same
+    // languages/themes without parser-blocking CDN fetches on every document.
+    final String hljsStyle = isDark
+        ? HighlightResources.atomOneDarkCss
+        : HighlightResources.githubCss;
     final String textColor = isDark ? '#e5e7eb' : '#24292f';
     final String wrapCss = wrap
         ? 'word-wrap: break-word; white-space: pre-wrap;'
@@ -119,9 +124,11 @@ class HtmlUtils {
 <title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/$hljsTheme.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+<!-- highlight.js 9.12.0 license:
+${HighlightResources.license}-->
+<link rel="stylesheet" href="$hljsStyle">
+<script src="${HighlightResources.highlightJs}"></script>
+<script src="${HighlightResources.goJs}"></script>
 <script>hljs.configure({'useBR': ${userBR.toString()}});hljs.initHighlightingOnLoad();</script>
 <style>
 html, body { margin:0; padding:0; -webkit-text-size-adjust:100%; }
@@ -179,7 +186,9 @@ $mdHTML
       return "";
     }
     List<String> lines = diffSource.split("\n");
-    String source = "";
+    // 2026-10-24 FPR-103: append each diff row once instead of repeatedly
+    // copying the complete HTML prefix as the patch grows.
+    final source = StringBuffer();
     int addStartLine = -1;
     int removeStartLine = -1;
     int addLineNum = 0;
@@ -215,19 +224,19 @@ $mdHTML
       lineNumberStr = getDiffLineNumber(
           curRemoveNumber == -1 ? "" : ("$curRemoveNumber"),
           curAddNumber == -1 ? "" : ("$curAddNumber"));
-      source =
-          "$source<div $classStr>${wrap ? "" : lineNumberStr! + getBlank(1)}$line</div>";
+      source.write(
+          "<div $classStr>${wrap ? "" : lineNumberStr! + getBlank(1)}$line</div>");
       // A/3：若本行命中 review comment（按 head 分支行号 curAddNumber 匹配），
       // 追加内联评论片段。只匹配 +/context 行；removed 行 (-) 走 originalLine
       // 侧、GitHub 官方 UI 也少见针对已删除行的 comment，先不覆盖。
       if (addLineExtras != null && curAddNumber != -1) {
         final String? extra = addLineExtras[curAddNumber];
         if (extra != null && extra.isNotEmpty) {
-          source = "$source$extra";
+          source.write(extra);
         }
       }
     }
-    return source;
+    return source.toString();
   }
 
   static getRemoveStartLine(line) {

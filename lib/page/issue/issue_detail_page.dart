@@ -569,7 +569,7 @@ class _IssueDetailPageState extends State<IssueDetailPage>
   ///编译 issue
   _editIssue() {
     String? title = issueHeaderViewModel.issueComment;
-    String? content = issueHeaderViewModel.issueDesHtml;
+    String content = issueHeaderViewModel.issueBodyMarkdown;
     issueInfoTitleControl = TextEditingController(text: title);
     issueInfoValueControl = TextEditingController(text: content);
     //编译Issue Info
@@ -587,10 +587,8 @@ class _IssueDetailPageState extends State<IssueDetailPage>
           showToast(context.l10n.issue_edit_issue_title_not_be_null);
           return;
         }
-        if (content == null || content!.trim().isEmpty) {
-          showToast(context.l10n.issue_edit_issue_content_not_be_null);
-          return;
-        }
+        // 2026-10 FPR-116: Issue bodies may be empty. Submit the original text
+        // unchanged; comment/reply validation remains in their own edit paths.
         final result = await CommonUtils.runWithLoading(context, () {
           return IssueRepository.editIssueRequest(
               widget.userName,

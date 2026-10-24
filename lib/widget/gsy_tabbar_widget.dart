@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/common/telemetry/performance_telemetry.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabs.dart' as GSYTab;
 
@@ -126,6 +127,11 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
   /// GlobalKey 对齐。
   final NavigatorObserver _detailShellDetailObserver =
       GSYAdaptiveNavigation.instance.createShellDetailObserver();
+  // 2026-10-23: each actual Navigator has its own performance observer.
+  final NavigatorObserver _detailPerformanceObserver =
+      GsyPerformanceTelemetry.instance.navigation.createDetailObserver(
+    isPlaceholder: (route) => route is GSYTwoPaneDetailPlaceholderRoute,
+  );
 
   @override
   void initState() {
@@ -154,7 +160,11 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     // false，dispose 只做本地资源释放。
     if (widget.clearDetailStackOnDispose) {
       GSYAdaptiveNavigation.instance.popDetailToRoot();
+      GsyPerformanceTelemetry.instance.navigation.resetHome();
     }
+    // 2026-10-24 / FPR-106: PageView borrows this State-owned controller;
+    // it only disposes controllers that PageView itself creates.
+    _pageController.dispose();
     _tabController!.dispose();
     super.dispose();
   }
@@ -208,6 +218,7 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     if (widget.clearDetailStackOnDispose) {
       _lastTwoPane ??=
           GSYAdaptiveNavigation.instance.canShowTwoPane(context);
+      GsyPerformanceTelemetry.instance.navigation.selectHomeTab(_index);
     }
   }
 
@@ -234,6 +245,7 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     // detail 内嵌 tabbar 默认 false，只做 PageView 页面切换，不触碰 detail 栈。
     if (widget.clearDetailStackOnDispose) {
       GSYAdaptiveNavigation.instance.popDetailToRoot();
+      GsyPerformanceTelemetry.instance.navigation.selectHomeTab(index);
     }
     widget.onPageChanged?.call(index);
   }
@@ -265,6 +277,7 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
     // Info/README/Issue/Files 不再触发 popDetailToRoot，避免把宿主自己弹掉。
     if (widget.clearDetailStackOnDispose) {
       GSYAdaptiveNavigation.instance.popDetailToRoot();
+      GsyPerformanceTelemetry.instance.navigation.selectHomeTab(index);
     }
     widget.onPageChanged?.call(index);
 
@@ -373,18 +386,24 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
                 Expanded(
                   flex: 58,
                   child: ClipRect(
-                    child: Navigator(
-                      key: adaptiveNav.detailNavigatorKey,
-                      // route-topology v0.2.2：detail Navigator 挂**独立**的
-                      // shellDetail observer 实例，让"detail 侧 pop"能同步
-                      // shell 记账栈；不能复用 root 侧那份，Flutter framework
-                      // 在 NavigatorState.initState 里 assert 一个 observer
-                      // 只能绑一个 Navigator（详见 [GSYAdaptiveNavigation
-                      // .createShellDetailObserver] 注释）。
-                      observers: [_detailShellDetailObserver],
-                      onGenerateRoute: (settings) => MaterialPageRoute(
-                        settings: settings,
-                        builder: (_) => const GSYTwoPaneDetailPlaceholder(),
+                    child: _PerformanceDetailScope(
+                      observer: _detailPerformanceObserver,
+                      child: Navigator(
+                        key: adaptiveNav.detailNavigatorKey,
+                        // route-topology v0.2.2：detail Navigator 挂**独立**的
+                        // shellDetail observer 实例，让"detail 侧 pop"能同步
+                        // shell 记账栈；不能复用 root 侧那份，Flutter framework
+                        // 在 NavigatorState.initState 里 assert 一个 observer
+                        // 只能绑一个 Navigator（详见 [GSYAdaptiveNavigation
+                        // .createShellDetailObserver] 注释）。
+                        observers: [
+                          _detailShellDetailObserver,
+                          _detailPerformanceObserver,
+                        ],
+                        onGenerateRoute: (settings) =>
+                            GSYTwoPaneDetailPlaceholderRoute(
+                          settings: settings,
+                        ),
                       ),
                     ),
                   ),
@@ -441,6 +460,30 @@ class _GSYTabBarState extends ConsumerState<GSYTabBarWidget>
             ),
           ),
         ));
+  }
+}
+
+/// 2026-10-23: detaching a pane is a layout lifecycle event, not a route pop.
+/// Clear its scene when the adaptive shell removes this Navigator, including
+/// force-fullscreen preference changes that do not emit didChangeMetrics.
+class _PerformanceDetailScope extends StatefulWidget {
+  const new({required this.observer, required this.child});
+  final NavigatorObserver observer;
+  final Widget child;
+
+  @override
+  State<_PerformanceDetailScope> createState() =>
+      _PerformanceDetailScopeState();
+}
+
+class _PerformanceDetailScopeState extends State<_PerformanceDetailScope> {
+  @override
+  Widget build(BuildContext context) => widget.child;
+
+  @override
+  void dispose() {
+    GsyPerformanceTelemetry.instance.navigation.detailDetached(widget.observer);
+    super.dispose();
   }
 }
 

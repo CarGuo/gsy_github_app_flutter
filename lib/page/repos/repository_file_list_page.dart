@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_responsive.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/model/file_model.dart';
+import 'package:gsy_github_app_flutter/page/photoview_page.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -145,8 +146,25 @@ class RepositoryDetailFileListPageState
       String path =
           "${headerList.sublist(1, headerList.length).join("/")}/${fileItemViewModel.name!}";
       if (CommonUtils.isImageEnd(fileItemViewModel.name)) {
-        NavigatorUtils.gotoPhotoViewPage(
-            context, "${fileItemViewModel.htmlUrl!}?raw=true");
+        // 2026-10-24 / FPR-118: Contents supplies the binary download_url.
+        // Reconstructing it from html_url adds GitHub's web redirect chain.
+        final downloadUrl = fileItemViewModel.downloadUrl;
+        final uri = downloadUrl == null ? null : Uri.tryParse(downloadUrl);
+        if (fileItemViewModel.type != 'file' ||
+            downloadUrl == null ||
+            uri == null ||
+            !(uri.isScheme('https') || uri.isScheme('http')) ||
+            uri.host.isEmpty) {
+          showToast(context.l10n.option_web_launcher_error);
+          return;
+        }
+        NavigatorUtils.gotoPhotoViewResourcePage(
+          context,
+          PhotoViewPageArguments(
+            imageUrl: downloadUrl,
+            canonicalUrl: fileItemViewModel.htmlUrl,
+          ),
+        );
       } else {
         String? lang;
         var typeIndex = fileItemViewModel.name!.lastIndexOf(".");
@@ -257,6 +275,7 @@ class FileItemViewModel {
   String? type;
   String? name;
   String? htmlUrl;
+  String? downloadUrl;
 
   new();
 
@@ -264,5 +283,6 @@ class FileItemViewModel {
     name = map.name;
     type = map.type;
     htmlUrl = map.htmlUrl;
+    downloadUrl = map.downloadUrl;
   }
 }

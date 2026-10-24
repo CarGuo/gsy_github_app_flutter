@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/common/repositories/search_history_repository.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_responsive.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -41,6 +44,11 @@ class _SearchPageState extends State<SearchPage>
         SingleTickerProviderStateMixin {
   final SearchBLoC searchBLoC = SearchBLoC();
 
+  SearchRequest? _submittedRequest;
+  int _requestGeneration = 0;
+  Completer<void>? _refreshCompletion;
+  Object? _programmaticRefresh;
+
   late AnimationController controller;
   Animation? animation;
   bool endAnima = false;
@@ -53,11 +61,8 @@ class _SearchPageState extends State<SearchPage>
 
   ///绘制item
   ///
-  /// issue #942 双保险：即便 selectItemChanged 已经在切 tab 时
-  /// clearData 抹掉旧类型残留，仍有一种"网络请求 late 回填"的场景可能
-  /// 让 dataList 里混入非当前 tab 类型（例如 User tab 请求慢，回填时
-  /// selectIndex 已经切到 Code）。这里对每个分支加 `is` 类型守卫，
-  /// 遇到不匹配的元素直接渲染成空占位，绝不再走 `as` 强 cast。
+  /// Model guards remain a rendering boundary; request generations below own
+  /// response attribution and prevent old queries/types from entering the list.
   _renderItem(index) {
     var data = pullLoadWidgetControl.dataList[index];
     if (searchBLoC.selectIndex == 0) {
@@ -105,15 +110,71 @@ class _SearchPageState extends State<SearchPage>
     }
   }
 
-  ///切换tab
+  /// 2026-10 FPR-112: submit starts the request itself. RefreshIndicator.show
+  /// coalesces while refreshing, so it cannot own delivery of a new intent.
   _resolveSelectIndex() {
-    clearData();
-    showRefreshLoading();
+    final request = searchBLoC.snapshot(1);
+    unawaited(_beginRefresh(request));
+    if (request.query.trim().isEmpty) return;
+    final indicator = refreshIndicatorKey.currentState;
+    if (indicator == null) return;
+    final presentation = Object();
+    _programmaticRefresh = presentation;
+    unawaited(indicator.show().whenComplete(() {
+      if (identical(_programmaticRefresh, presentation)) {
+        _programmaticRefresh = null;
+      }
+    }));
   }
 
-  ///获取搜索数据
-  _getDataLogic() async {
-    return await searchBLoC.getDataLogic(page);
+  bool _ownsRequest(int generation) =>
+      mounted && generation == _requestGeneration;
+
+  Future<void> _beginRefresh(SearchRequest request) {
+    final generation = ++_requestGeneration;
+    _submittedRequest = request;
+    page = 1;
+    isLoading = true;
+    isRefreshing = true;
+    isLoadMoring = false;
+    // All superseded refreshes share the indicator session. Only the latest
+    // request may finish it; a slow old request cannot keep the spinner alive.
+    final completion = _refreshCompletion ??= Completer<void>();
+    setState(() {
+      pullLoadWidgetControl.dataList.clear();
+      pullLoadWidgetControl.needLoadMore.value = false;
+    });
+    unawaited(_runRefresh(request, generation, completion));
+    return completion.future;
+  }
+
+  Future<void> _runRefresh(
+    SearchRequest request,
+    int generation,
+    Completer<void> completion,
+  ) async {
+    try {
+      final result = await searchBLoC.getDataLogic(request);
+      if (!_ownsRequest(generation)) return;
+      resolveRefreshResult(result);
+      resolveDataResult(result);
+      final next = result?.next;
+      if (next != null) {
+        final DataResult? updated = await next();
+        if (!_ownsRequest(generation)) return;
+        resolveRefreshResult(updated);
+        resolveDataResult(updated);
+      }
+    } catch (error, stack) {
+      printError('Search refresh failed', error, stack);
+    } finally {
+      if (_ownsRequest(generation)) {
+        isLoading = false;
+        isRefreshing = false;
+        _refreshCompletion = null;
+        if (!completion.isCompleted) completion.complete();
+      }
+    }
   }
 
   @override
@@ -126,26 +187,50 @@ class _SearchPageState extends State<SearchPage>
   bool get isRefreshFirst => false;
 
   @override
-  requestLoadMore() async {
-    return await _getDataLogic();
+  Future<void> handleRefresh() {
+    // Programmatic show may call back after a fast response already finished.
+    // Acknowledge that presentation instead of issuing a duplicate request.
+    if (_programmaticRefresh != null) {
+      return _refreshCompletion?.future ?? Future<void>.value();
+    }
+    return _beginRefresh(searchBLoC.snapshot(1));
   }
 
   @override
-  requestRefresh() async {
-    return await _getDataLogic();
+  Future<void> onLoadMore() async {
+    final submitted = _submittedRequest;
+    if (submitted == null || isLoading ||
+        !pullLoadWidgetControl.needLoadMore.value) {
+      return;
+    }
+    final generation = _requestGeneration;
+    final request = submitted.forPage(page + 1);
+    isLoading = true;
+    isLoadMoring = true;
+    try {
+      final result = await searchBLoC.getDataLogic(request);
+      if (!_ownsRequest(generation)) return;
+      if (result != null && result.result) {
+        setState(() {
+          pullLoadWidgetControl.dataList.addAll(result.data as List);
+          page = request.page;
+        });
+      }
+      resolveDataResult(result);
+    } catch (error, stack) {
+      printError('Search pagination failed', error, stack);
+    } finally {
+      if (_ownsRequest(generation)) {
+        isLoading = false;
+        isLoadMoring = false;
+      }
+    }
   }
 
   _search() {
-    if (searchBLoC.searchText == null ||
-        searchBLoC.searchText?.trim().isEmpty == true) {
-      return;
-    }
-    if (isLoading) {
-      return;
-    }
     _resolveSelectIndex();
-    // 搜索请求完成后延后刷新历史 chip。请求路径见 [SearchBLoC.getDataLogic]，
-    // 那里只在 page==1 且成功时写库，所以这里 delay 500ms 拉最新数据即可。
+    // History persistence stays in SearchBLoC; this existing delayed reload is
+    // independent of request ownership and checks mounted in _loadHistory.
     Future.delayed(const Duration(milliseconds: 500), _loadHistory);
   }
 
@@ -224,6 +309,10 @@ class _SearchPageState extends State<SearchPage>
 
   @override
   void dispose() {
+    _requestGeneration++;
+    final completion = _refreshCompletion;
+    _refreshCompletion = null;
+    if (completion != null && !completion.isCompleted) completion.complete();
     searchBLoC.dispose();
     controller.dispose();
     super.dispose();
@@ -327,36 +416,9 @@ class _SearchPageState extends State<SearchPage>
                 _search();
               },
               selectItemChanged: (selectIndex) {
-                // 无论有没有搜索词、正不正在加载，tab 切换本身必须先落到
-                // searchBLoC.selectIndex，否则用户"先切 tab 再输入"的自然
-                // 顺序会造成 UI 高亮和实际请求类型不一致（Issue tab 亮着
-                // 但实际发的是 repo 请求）。
-                final changed = searchBLoC.selectIndex != selectIndex;
                 searchBLoC.selectIndex = selectIndex;
-                // 抽屉是按 selectIndex 动态显示分段（隐藏 Code sort、隐藏
-                // User language），tab 一变必须触发 rebuild，否则抽屉里
-                // 拿到的还是旧 selectIndex，隐藏逻辑就错位了。
-                if (mounted) setState(() {});
-                // 没搜索词的话不需要发请求，等用户输入完再搜。
-                if (searchBLoC.searchText == null ||
-                    searchBLoC.searchText?.trim().isEmpty == true) {
-                  return;
-                }
-                // issue #942：快速切换 tab 会导致
-                // "type 'User' is not a subtype of type 'CodeSearchItem'"。
-                // 根因是原来这里 `if (isLoading) return;` 短路——上一次请求
-                // 还没结束时，selectIndex 已经变为新 tab（如 Code），但
-                // dataList 里还留着上一次 tab 的旧类型数据（如 User），
-                // _renderItem 就会用新 selectIndex 强 cast 旧类型崩溃。
-                // 修法：只要 tab 实际发生变化，就无条件 clearData +
-                // showRefreshLoading，把 dataList 立刻抹掉，避免混合类型。
-                if (changed) {
-                  _resolveSelectIndex();
-                  return;
-                }
-                if (isLoading) {
-                  return;
-                }
+                // Tab/filter changes submit the current complete form even
+                // while another request is pending (also invalidates empty q).
                 _resolveSelectIndex();
               })),
       body: Stack(

@@ -80,7 +80,21 @@ class NavigatorUtils {
   /// 内部禁止调 [_openDetailOrRouter] / [goPerson] / [goReposDetail] / [goIssueDetail]
   /// 一类 shellDetail caller：本页不在 shell 树里，push 到 detailNavigator 会被自身盖住。
   static gotoPhotoViewPage(BuildContext context, String? url) {
-    Navigator.pushNamed(context, PhotoViewPage.sName, arguments: url);
+    _pushPhotoViewPage(context, url);
+  }
+
+  // 2026-10-24 / FPR-118: keep resource and public URLs distinct without
+  // changing the legacy String route-argument contract.
+  static gotoPhotoViewResourcePage(
+      BuildContext context, PhotoViewPageArguments arguments) {
+    _pushPhotoViewPage(context, arguments);
+  }
+
+  static _pushPhotoViewPage(BuildContext context, Object? arguments) {
+    // 2026-10-24 FPR-114: the named Photo route belongs to MaterialApp's root
+    // table. A detail caller's nearest Navigator only generates placeholders.
+    Navigator.of(context, rootNavigator: true)
+        .pushNamed(PhotoViewPage.sName, arguments: arguments);
   }
 
   ///个人中心
@@ -106,7 +120,7 @@ class NavigatorUtils {
   /// 内部禁止调 [_openDetailOrRouter] / [goPerson] / [goReposDetail] / [goIssueDetail]
   /// 一类 shellDetail caller：本页盖在 shell 上，右列 detail 不可见，用户会看到"点了没反应"。
   static goDebugDataPage(BuildContext context) {
-    return NavigatorRouter(context, const DebugDataPage());
+    return NavigatorRouter(context, const DebugDataPage(), routeName: 'debug');
   }
 
   ///仓库详情
@@ -303,7 +317,7 @@ class NavigatorUtils {
   /// 内部禁止调 [_openDetailOrRouter] / [goPerson] / [goReposDetail] / [goIssueDetail]
   /// 一类 shellDetail caller：本页盖在 shell 上，若再 push detail 到右列，用户不可见。
   static Future goGSYWebView(BuildContext context, String url, String? title) {
-    return NavigatorRouter(context, GSYWebView(url, title));
+    return NavigatorRouter(context, GSYWebView(url, title), routeName: 'web');
   }
 
   ///登陆Web页面
@@ -313,7 +327,7 @@ class NavigatorUtils {
   /// 内部禁止调 [_openDetailOrRouter] / shellDetail caller：登录时 shell 尚未装配，
   /// detailNavigatorKey 未挂载，push 会走 delegate 兜底 talker.warning 静默丢弃。
   static Future goLoginWebView(BuildContext context, String url, String title) {
-    return NavigatorRouter(context, LoginWebView(url, title));
+    return NavigatorRouter(context, LoginWebView(url, title), routeName: 'oauth');
   }
 
   ///文件代码详情Web
@@ -376,10 +390,14 @@ class NavigatorUtils {
   }
 
   ///公共打开方式
-  static NavigatorRouter(BuildContext context, Widget widget) {
-    return Navigator.push(
-        context,
+  static NavigatorRouter(BuildContext context, Widget widget,
+      {String? routeName}) {
+    // 2026-10-24 FPR-114: web/debug/OAuth share rootFullscreen ownership even
+    // when their source page is inside the shell's nested detail Navigator.
+    return Navigator.of(context, rootNavigator: true).push(
         CupertinoPageRoute(
+            // 2026-10-23: fullscreen routes use business categories, never URLs.
+            settings: RouteSettings(name: routeName),
             builder: (context) => pageContainer(widget, context)));
   }
 
@@ -533,10 +551,10 @@ class NavigatorUtils {
       useRootNavigator: !expanded,
       routeSettings: RouteSettings(name: routeName),
       builder: (dialogCtx) {
-        return MediaQuery(
-          data: MediaQueryData.fromView(
-                  WidgetsBinding.instance.platformDispatcher.views.first)
-              .copyWith(textScaler: TextScaler.noScaling),
+        // 2026-10 FPR-117: inherit the navigator's live metrics instead of a
+        // one-time view snapshot. A resized detail pane already consumed its
+        // keyboard inset; resetting it from the full view would subtract twice.
+        return MediaQuery.withNoTextScaling(
           child: NeverOverScrollIndicator(
             needOverload: false,
             child: SafeArea(child: builder(dialogCtx)),

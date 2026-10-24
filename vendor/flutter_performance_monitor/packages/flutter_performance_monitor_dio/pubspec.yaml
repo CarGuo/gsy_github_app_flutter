@@ -1,0 +1,15 @@
+name: flutter_performance_monitor_dio
+description: Dio transport adapter recording response-header timing without inspecting request data.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: '>=3.32.0'
+dependencies:
+  dio: '>=5.0.0 <6.0.0'
+  flutter_performance_monitor:
+    path: ../flutter_performance_monitor
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

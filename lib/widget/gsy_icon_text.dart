@@ -22,6 +22,7 @@ class GSYIConText extends StatelessWidget {
 
   final MainAxisSize mainAxisSize;
 
+  /// Requested text width; a bounded parent can allocate less space.
   final double textWidth;
 
   const new(
@@ -60,19 +61,27 @@ class GSYIConText extends StatelessWidget {
               maxLines: 1,
             ));
 
-    return Row(
-      mainAxisAlignment: mainAxisAlignment,
-      mainAxisSize: mainAxisSize,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          iconData,
-          size: iconSize,
-          color: iconColor,
-        ),
-        Padding(padding: EdgeInsets.all(padding)),
-        showText
-      ],
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      // 2026-10-24 / FPR-108: ellipsis needs the space left by the icon,
+      // not an unconstrained Row child. Counter rows also use this component
+      // without a horizontal bound, where adding flex would be invalid.
+      return Row(
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            iconData,
+            size: iconSize,
+            color: iconColor,
+          ),
+          Padding(padding: EdgeInsets.all(padding)),
+          if (constraints.hasBoundedWidth)
+            Flexible(child: showText)
+          else
+            showText,
+        ],
+      );
+    });
   }
 }

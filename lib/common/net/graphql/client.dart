@@ -4,10 +4,13 @@ import 'package:gsy_github_app_flutter/common/net/graphql/pull_request.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/repositories.dart';
 import 'package:gsy_github_app_flutter/common/net/graphql/users.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
+import 'package:gsy_github_app_flutter/common/telemetry/performance_telemetry.dart';
 
 Future<GraphQLClient> _client(token) async {
   final HttpLink httpLink = HttpLink(
     'https://api.github.com/graphql',
+    // 2026-10-23: GraphQL keeps its auth/cache path and shares headers semantics.
+    httpClient: GsyPerformanceTelemetry.instance.createHttpClient(),
   );
 
   final AuthLink authLink = AuthLink(

@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
+import 'package:gsy_github_app_flutter/common/logger.dart';
+import 'package:gsy_github_app_flutter/common/repositories/data_result.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -13,6 +17,42 @@ import 'package:gsy_github_app_flutter/page/search/widget/gsy_search_input_widge
 import 'package:gsy_github_app_flutter/page/issue/widget/issue_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_select_item_widget.dart';
 import 'package:provider/provider.dart';
+
+/// 2026-10-24 / FPR-119: refresh and pagination belong to the submitted
+/// repository/filter intent, including the cache result's later network next.
+@immutable
+class RepositoryIssueRequest {
+  new({
+    required this.userName,
+    required this.reposName,
+    required this.searchText,
+    required this.state,
+    required this.sort,
+    required this.direction,
+    required Iterable<String> labels,
+    required this.page,
+  }) : labels = List<String>.unmodifiable(labels);
+
+  final String userName;
+  final String reposName;
+  final String? searchText;
+  final String? state;
+  final String sort;
+  final String direction;
+  final List<String> labels;
+  final int page;
+
+  RepositoryIssueRequest forPage(int page) => RepositoryIssueRequest(
+    userName: userName,
+    reposName: reposName,
+    searchText: searchText,
+    state: state,
+    sort: sort,
+    direction: direction,
+    labels: labels,
+    page: page,
+  );
+}
 
 /// 仓库详情issue列表
 /// Created by guoshuyu
@@ -57,30 +97,60 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   ///滑动控制器
   final ScrollController scrollController = ScrollController();
 
+  RepositoryIssueRequest? _submittedRequest;
+  ReposDetailProvider? _submittedProvider;
+  int _requestGeneration = 0;
+  Completer<void>? _refreshCompletion;
+  Object? _programmaticRefresh;
+
+  @override
+  void initState() {
+    super.initState();
+    // The initial frame supplies the nested indicator/provider. Data loading
+    // below starts explicitly; the indicator animation never schedules I/O.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) showRefreshLoading();
+    });
+  }
+
   @override
   showRefreshLoading() {
-    Future.delayed(const Duration(seconds: 0), () {
-      refreshIKey.currentState?.show().then((e) {});
-      return true;
-    });
+    if (!mounted) return;
+    final provider = context.read<ReposDetailProvider>();
+    unawaited(_beginRefresh(_snapshot(provider), provider));
+    final indicator = refreshIKey.currentState;
+    if (indicator == null) return;
+    final presentation = Object();
+    _programmaticRefresh = presentation;
+    unawaited(
+      indicator.show().whenComplete(() {
+        if (identical(_programmaticRefresh, presentation)) {
+          _programmaticRefresh = null;
+        }
+      }),
+    );
   }
 
   ///绘制issue item
   _renderIssueItem(index, ReposDetailProvider provider) {
-    IssueItemViewModel issueItemViewModel =
-        IssueItemViewModel.fromMap(pullLoadWidgetControl.dataList[index]);
+    IssueItemViewModel issueItemViewModel = IssueItemViewModel.fromMap(
+      pullLoadWidgetControl.dataList[index],
+    );
     return IssueItem(
       issueItemViewModel,
       onPressed: () {
-        NavigatorUtils.goIssueDetail(context, provider.userName,
-            provider.reposName, issueItemViewModel.number);
+        NavigatorUtils.goIssueDetail(
+          context,
+          provider.userName,
+          provider.reposName,
+          issueItemViewModel.number,
+        );
       },
     );
   }
 
   ///切换显示状态
   _resolveSelectIndex() {
-    clearData();
     switch (selectIndex) {
       case 0:
         issueState = null;
@@ -93,32 +163,109 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
         break;
     }
 
-    ///回滚到最初位置
-    scrollController
-        .animateTo(0,
-            duration: const Duration(milliseconds: 100), curve: Curves.bounceIn)
-        .then((_) {
-      showRefreshLoading();
-    });
+    // 2026-10-24 / FPR-119: a new selection starts now, even while an older
+    // refresh/spinner is pending. Scroll animation is presentation only.
+    showRefreshLoading();
+    if (scrollController.hasClients) {
+      unawaited(
+        scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.bounceIn,
+        ),
+      );
+    }
   }
 
-  ///获取数据
-  _getDataLogic(String? searchString) async {
-    if (searchString == null || searchString.trim().isEmpty) {
-      final labelsParam =
-          _selectedLabels.isEmpty ? null : _selectedLabels.join(',');
-      return await context
-          .read<ReposDetailProvider>()
-          .getRepositoryIssueRequest(issueState,
-              sort: _sort,
-              direction: _direction,
-              labels: labelsParam,
-              page: page,
-              needDb: page <= 1);
+  RepositoryIssueRequest _snapshot(ReposDetailProvider provider) =>
+      RepositoryIssueRequest(
+        userName: provider.userName,
+        reposName: provider.reposName,
+        searchText: searchText,
+        state: issueState,
+        sort: _sort,
+        direction: _direction,
+        labels: _selectedLabels,
+        page: 1,
+      );
+
+  Future<DataResult?> _getDataLogic(
+    RepositoryIssueRequest request,
+    ReposDetailProvider provider,
+  ) async {
+    final query = request.searchText;
+    if (query == null || query.trim().isEmpty) {
+      return await provider.getRepositoryIssueRequest(
+        request.state,
+        sort: request.sort,
+        direction: request.direction,
+        labels: request.labels.isEmpty ? null : request.labels.join(','),
+        page: request.page,
+        needDb: request.page == 1,
+      );
     }
-    return await context
-        .read<ReposDetailProvider>()
-        .searchRepositoryRequest(searchString, issueState, page: page);
+    // Preserve the existing search API: query + state, rather than silently
+    // adding list-only sort/label semantics to issue search.
+    return await provider.searchRepositoryRequest(
+      query,
+      request.state,
+      page: request.page,
+    );
+  }
+
+  bool _ownsRequest(int generation) =>
+      mounted && generation == _requestGeneration;
+
+  Future<void> _beginRefresh(
+    RepositoryIssueRequest request,
+    ReposDetailProvider provider,
+  ) {
+    final generation = ++_requestGeneration;
+    _submittedRequest = request;
+    _submittedProvider = provider;
+    page = 1;
+    isLoading = true;
+    isRefreshing = true;
+    isLoadMoring = false;
+    // One indicator session follows the newest intent. An old All response
+    // may neither publish into Open nor keep Open's spinner waiting for All.
+    final completion = _refreshCompletion ??= Completer<void>();
+    setState(() {
+      pullLoadWidgetControl.dataList.clear();
+      pullLoadWidgetControl.needLoadMore.value = false;
+    });
+    unawaited(_runRefresh(request, provider, generation, completion));
+    return completion.future;
+  }
+
+  Future<void> _runRefresh(
+    RepositoryIssueRequest request,
+    ReposDetailProvider provider,
+    int generation,
+    Completer<void> completion,
+  ) async {
+    try {
+      final result = await _getDataLogic(request, provider);
+      if (!_ownsRequest(generation)) return;
+      resolveRefreshResult(result);
+      resolveDataResult(result);
+      final next = result?.next;
+      if (next != null) {
+        final DataResult? updated = await next();
+        if (!_ownsRequest(generation)) return;
+        resolveRefreshResult(updated);
+        resolveDataResult(updated);
+      }
+    } catch (error, stack) {
+      printError('Repository issue refresh failed', error, stack);
+    } finally {
+      if (_ownsRequest(generation)) {
+        isLoading = false;
+        isRefreshing = false;
+        _refreshCompletion = null;
+        if (!completion.isCompleted) completion.complete();
+      }
+    }
   }
 
   @override
@@ -128,16 +275,62 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
   bool get needHeader => false;
 
   @override
-  bool get isRefreshFirst => true;
+  bool get isRefreshFirst => false;
 
   @override
-  requestLoadMore() async {
-    return await _getDataLogic(searchText);
+  Future<void> handleRefresh() {
+    // show() may call back after a fast result has already completed. It only
+    // acknowledges that programmatic presentation, never duplicates the I/O.
+    if (_programmaticRefresh != null) {
+      return _refreshCompletion?.future ?? Future<void>.value();
+    }
+    final provider = context.read<ReposDetailProvider>();
+    return _beginRefresh(_snapshot(provider), provider);
   }
 
   @override
-  requestRefresh() async {
-    return await _getDataLogic(searchText);
+  Future<void> onLoadMore() async {
+    final request = _submittedRequest;
+    final provider = _submittedProvider;
+    if (request == null ||
+        provider == null ||
+        isLoading ||
+        !pullLoadWidgetControl.needLoadMore.value) {
+      return;
+    }
+    final generation = _requestGeneration;
+    final nextPage = request.forPage(page + 1);
+    isLoading = true;
+    isLoadMoring = true;
+    try {
+      final result = await _getDataLogic(nextPage, provider);
+      if (!_ownsRequest(generation)) return;
+      if (result != null && result.result) {
+        setState(() {
+          pullLoadWidgetControl.dataList.addAll(result.data as List);
+          page = nextPage.page;
+        });
+      }
+      resolveDataResult(result);
+    } catch (error, stack) {
+      printError('Repository issue pagination failed', error, stack);
+    } finally {
+      if (_ownsRequest(generation)) {
+        isLoading = false;
+        isLoadMoring = false;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _requestGeneration++;
+    _programmaticRefresh = null;
+    final completion = _refreshCompletion;
+    _refreshCompletion = null;
+    if (completion != null && !completion.isCompleted) completion.complete();
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -405,7 +598,6 @@ class RepositoryDetailIssuePageState extends State<RepositoryDetailIssuePage>
                               ..clear()
                               ..addAll(tempLabels);
                             Navigator.of(sheetContext).pop();
-                            clearData();
                             showRefreshLoading();
                           },
                           child: Text(context.l10n.repos_issue_filter_apply),

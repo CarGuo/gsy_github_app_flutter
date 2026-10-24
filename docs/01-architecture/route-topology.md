@@ -152,6 +152,16 @@ Root Navigator  ← MaterialApp.routes（[lib/app.dart](file:///d:/workspace/pro
 | **rootFullscreen** | `NavigatorRouter` | webview / login webview / debug data / photo view | ❌ **禁止** 内部再调 shellDetail 类；如需，必须先 pop 自己或改成 shellDetail |
 | **rootReplace** | `pushReplacementNamed` | goHome / goLogin | N/A（登录态切换，一次性替换根路由） |
 
+**2026-10-24 FPR-114 实现订正**：`rootFullscreen` 必须显式使用
+`Navigator.of(context, rootNavigator: true)`。静态 `Navigator.pushNamed(context, …)` /
+`Navigator.push(context, …)` 选择 caller 最近的 Navigator，并不会因为根 `MaterialApp.routes`
+注册了页面而向上寻找。此前 Photo 从右列头像/文件/图片链接打开时，名称被 detail Navigator
+的占位 `onGenerateRoute` 消费，Photo 根本没有建立；中央 `NavigatorRouter` 的
+web/debug/OAuth 则会在右列创建全屏语义页。现在两个中央入口都显式选根栈，保持 Photo
+URL arguments，以及 NavigatorRouter 的业务 routeName、pageContainer、push/pop Future；
+关闭后仍返回原来源页。
+这不改变 shellDetail、adaptive dialog 或 goHome/goLogin 的 rootReplace 实现。
+
 - **标记方式**：暂**不引入运行期枚举**（避免 Search 一次性问题让整个 NavigatorUtils 大改）。规范落到 doc comment：每个 `goXxx` 方法头部注释里写一行 `// RouteLevel: shellDetail | rootFullscreen | rootReplace`。
 - **Review 检查项**：新增/修改 caller 时，reviewer 必须核对：
   1. RouteLevel 标注是否与实际实现一致；
@@ -260,6 +270,9 @@ Reviewer 若在 §1 表上看到 ✅ 但在 §2/§3/§5 找不到对应处理，
 
 ## 8. 版本
 
+- 2026-10-24 FPR-114：落实 `gotoPhotoViewPage` 与中央 `NavigatorRouter` 的显式 rootFullscreen
+  所有权，修复 nested detail caller 的 Photo 占位误分发与通用 viewer 右列落栈；
+  保留 URL 参数、来源 State/路由与返回结果。
 - 2026-09-04 v0.1：初稿（RFC）。方向 A + 分档 1 + 分档 4，仅出规划、不动代码。
 - 2026-09-04 v0.2：作者两轮 "好的，按这个方案来" 后进入实施。落地：
   - [navigator_utils.dart goSearchPage](file:///d:/workspace/project/gsy_github_app_flutter/lib/common/utils/navigator_utils.dart) 从 `showGeneralDialog` 改为 `_openDetailOrRouter`（RouteLevel: shellDetail）；

@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/app.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
+import 'package:gsy_github_app_flutter/common/telemetry/performance_telemetry.dart';
 import 'package:gsy_github_app_flutter/env/config_wrapper.dart';
 import 'package:gsy_github_app_flutter/env/env_config.dart';
 import 'package:gsy_github_app_flutter/page/error_page.dart';
@@ -14,6 +15,8 @@ import 'env/dev.dart';
 void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    // 2026-10-23: telemetry activation cannot hold business startup hostage.
+    GsyPerformanceTelemetry.instance.start();
     await rive.RiveNative.init();
     ErrorWidget.builder = (FlutterErrorDetails details) {
       Zone.current.handleUncaughtError(details.exception, details.stack!);

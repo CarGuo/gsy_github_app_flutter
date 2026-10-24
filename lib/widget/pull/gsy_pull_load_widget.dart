@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
-import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_adaptive_shell.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 
@@ -31,6 +32,8 @@ class GSYPullLoadWidget extends StatefulWidget {
 
 class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
   final ScrollController _scrollController = ScrollController();
+  ValueNotifier<bool>? _needLoadMore;
+  final Set<Timer> _pendingLoadChecks = {};
 
   // 由外层 LayoutBuilder 记录的当前可用高度，供空态铺满整屏；
   // 旋转 / 分屏 / 折叠屏 posture 切换时 LayoutBuilder 会重建，自动跟着更新。
@@ -38,29 +41,61 @@ class _GSYPullLoadWidgetState extends State<GSYPullLoadWidget> {
 
   @override
   void initState() {
-    widget.control?.needLoadMore.addListener(() {
-      ///延迟两秒等待确认
-      try {
-        Future.delayed(const Duration(seconds: 2), () {
-          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-          _scrollController.notifyListeners();
-        });
-      } catch (e) {
-        printLog(e);
-      }
-    });
-
-    ///增加滑动监听
-    _scrollController.addListener(() {
-      ///判断当前滑动位置是不是到达底部，触发加载更多回调
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (widget.control?.needLoadMore.value == true) {
-          widget.onLoadMore?.call();
-        }
-      }
-    });
     super.initState();
+    _bindNeedLoadMore();
+    _scrollController.addListener(_checkLoadMore);
+  }
+
+  @override
+  void didUpdateWidget(covariant GSYPullLoadWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_needLoadMore != widget.control?.needLoadMore) {
+      _cancelLoadChecks();
+      _needLoadMore?.removeListener(_scheduleLoadCheck);
+      _bindNeedLoadMore();
+    }
+  }
+
+  void _bindNeedLoadMore() {
+    _needLoadMore = widget.control?.needLoadMore;
+    _needLoadMore?.addListener(_scheduleLoadCheck);
+  }
+
+  void _scheduleLoadCheck() {
+    // 2026-10-24 / FPR-105: preserve the existing delayed recheck, but own
+    // each task so a removed/rebound list cannot retain or call its old State.
+    late final Timer check;
+    check = Timer(const Duration(seconds: 2), () {
+      _pendingLoadChecks.remove(check);
+      _checkLoadMore();
+    });
+    _pendingLoadChecks.add(check);
+  }
+
+  void _checkLoadMore() {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    if (position.hasContentDimensions &&
+        position.pixels == position.maxScrollExtent &&
+        _needLoadMore?.value == true) {
+      widget.onLoadMore?.call();
+    }
+  }
+
+  void _cancelLoadChecks() {
+    for (final check in _pendingLoadChecks) {
+      check.cancel();
+    }
+    _pendingLoadChecks.clear();
+  }
+
+  @override
+  void dispose() {
+    _cancelLoadChecks();
+    _needLoadMore?.removeListener(_scheduleLoadCheck);
+    _scrollController.removeListener(_checkLoadMore);
+    _scrollController.dispose();
+    super.dispose();
   }
 
   ///根据配置状态返回实际列表数量

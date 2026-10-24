@@ -1,0 +1,40 @@
+{
+  "name": "highlight.js",
+  "version": "9.12.0",
+  "retrieved_at_utc": "2026-10-24T03:45:30.282097+00:00",
+  "cdn_release_commit": "d21e0a62084eb4b3a3b94d6dc45a10b3ed24906b",
+  "source_commit": "16ab6f3b5f9a432e6e8825807103b6bb5cefef15",
+  "license": "BSD-3-Clause",
+  "files": [
+    {
+      "path": "highlight.min.js",
+      "url": "https://raw.githubusercontent.com/highlightjs/cdn-release/d21e0a62084eb4b3a3b94d6dc45a10b3ed24906b/build/highlight.min.js",
+      "sha256": "fc17e22241e51e856285975ce9316e8fb3262744d6716b0c5e4783170862d33c",
+      "bytes": 46003
+    },
+    {
+      "path": "languages/go.min.js",
+      "url": "https://raw.githubusercontent.com/highlightjs/cdn-release/d21e0a62084eb4b3a3b94d6dc45a10b3ed24906b/build/languages/go.min.js",
+      "sha256": "2d5b967ce534ad614c089365d716f72b61d259fc6d2b820f6ea11eacfd4ff373",
+      "bytes": 732
+    },
+    {
+      "path": "styles/github.min.css",
+      "url": "https://raw.githubusercontent.com/highlightjs/cdn-release/d21e0a62084eb4b3a3b94d6dc45a10b3ed24906b/build/styles/github.min.css",
+      "sha256": "dd833a037a47e1014297d59b494f285c5e4de96ff6ca5bd6d28da0f99e9398b4",
+      "bytes": 872
+    },
+    {
+      "path": "styles/atom-one-dark.min.css",
+      "url": "https://raw.githubusercontent.com/highlightjs/cdn-release/d21e0a62084eb4b3a3b94d6dc45a10b3ed24906b/build/styles/atom-one-dark.min.css",
+      "sha256": "6a4c132d979cfd7005be0620547d53e7fdfaf65840d847ebdb6c7308d9759c7b",
+      "bytes": 794
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/highlightjs/highlight.js/16ab6f3b5f9a432e6e8825807103b6bb5cefef15/LICENSE",
+      "sha256": "bdb8f9bba7125549cb01d68d90050ac9604f5aa43f6fd63e070f6d7d095f8d74",
+      "bytes": 1498
+    }
+  ]
+}

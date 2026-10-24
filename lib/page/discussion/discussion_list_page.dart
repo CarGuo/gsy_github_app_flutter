@@ -295,9 +295,8 @@ class DiscussionListPageState extends State<DiscussionListPage>
     // 复用 issue 的 dialog；hintText 走 discussion 语义
     String title = '';
     String body = '';
-    // 正文必须给 controller：[IssueEditDialog] 的 Markdown 快捷输入条对
-    // valueController! 强解，不传一点工具栏就抛空指针（reviewer 2026-09-08）。
-    final valueController = TextEditingController();
+    // 2026-10 FPR-117: the form owns its temporary controllers through unmount;
+    // a showDialog result completes before the reverse transition has finished.
     // dialogTitle 里带上 category 名，让用户明确"在哪个分类下发"
     final dialogTitle = categoryName == null || categoryName.isEmpty
         ? context.l10n.discussion_create
@@ -315,9 +314,8 @@ class DiscussionListPageState extends State<DiscussionListPage>
         body: body,
       ),
       needTitle: true,
-      valueController: valueController,
       hintText: context.l10n.discussion_body_tip,
-    ).whenComplete(valueController.dispose);
+    );
   }
 
   /// 从 GraphQL 拉一次 category 列表 + repository.id，缓存到 State。已缓存则直接返回。

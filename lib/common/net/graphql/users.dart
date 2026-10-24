@@ -16,8 +16,9 @@
 /// - `bio`：Organization 无 → 用 `description`，Repository 层映射时统一到 `bio`
 /// - `followers`：Organization 无 → 组织的"关注度"用 `membersWithRole.totalCount`
 ///   近似（成员数），Repository 层映射到 `followers` 字段以复用 UI
-/// - `lang`：User 用 `repositories(first:1, ...)` 的主 language；Organization
-///   同样支持 `repositories`，一并取
+/// - `lang`：User / Organization 都取最高星标仓库的 `primaryLanguage`。
+///   2026-10-24 / FPR-120：语言组成连接的首项不能代表主语言；首屏与游标
+///   两份查询保持相同语义，不改变最高星标仓库的选择范围。
 ///
 /// 加 `__typename` 让 Repository 层用 `node['__typename']` 做严格判据，区分
 /// User / Organization 分支映射（比 `login == null` 兜底更清晰），并把
@@ -42,10 +43,8 @@ query getTrendUser($location: String!){
             lang: repositories(orderBy: {field: STARGAZERS, direction: DESC}, first:1) {
               nodes{
                 name
-                languages(first:1)  {
-                  nodes {
-                    name
-                  }
+                primaryLanguage {
+                  name
                 }
               }
             }
@@ -61,10 +60,8 @@ query getTrendUser($location: String!){
             lang: repositories(orderBy: {field: STARGAZERS, direction: DESC}, first:1) {
               nodes{
                 name
-                languages(first:1)  {
-                  nodes {
-                    name
-                  }
+                primaryLanguage {
+                  name
                 }
               }
             }
@@ -96,10 +93,8 @@ query getTrendUser($location: String!,  $after: String!){
             lang: repositories(orderBy: {field: STARGAZERS, direction: DESC}, first:1) {
               nodes{
                 name
-                languages(first:1)  {
-                  nodes {
-                    name
-                  }
+                primaryLanguage {
+                  name
                 }
               }
             }
@@ -115,10 +110,8 @@ query getTrendUser($location: String!,  $after: String!){
             lang: repositories(orderBy: {field: STARGAZERS, direction: DESC}, first:1) {
               nodes{
                 name
-                languages(first:1)  {
-                  nodes {
-                    name
-                  }
+                primaryLanguage {
+                  name
                 }
               }
             }

@@ -1,18 +1,15 @@
 // ignore_for_file: unnecessary_string_escapes
 
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gsy_github_app_flutter/common/logger.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/markdown_html_transformer.dart';
+import 'package:gsy_github_app_flutter/widget/markdown/markdown_network_image.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/safe_pre_builder.dart';
 import 'package:gsy_github_app_flutter/widget/markdown/syntax_high_lighter.dart';
 
@@ -398,39 +395,21 @@ Widget kDefaultImageBuilder(
     // 部分 CDN 会拒绝 Dart 默认 UA；对其它站点保留空 headers 走默认行为，
     // 避免误伤原本无需 UA 的第三方图床。
     final headers = _isGithubPrivateUserImage(uri) ? _kGithubImageHeaders : null;
-    return FutureBuilder<bool>(
-      future: _isUrlPointingToSvgDio(uri.toString()),
-      builder: (c, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data == true) {
-            return SvgPicture.network(
-              uri.toString(),
-              headers: headers,
-              // Add fallback dimensions
-              width: width ?? 24.0,
-              height: height ?? 24.0,
-              allowDrawingOutsideViewBox: false,
-              placeholderBuilder: (BuildContext context) => SizedBox(
-                child: Center(
-                  child: SpinKitRipple(color: Theme.of(context).primaryColor),
-                ),
-              ),
-            );
-          } else {
-            return Image.network(
-              uri.toString(),
-              width: width,
-              height: height,
-              headers: headers,
-              errorBuilder: (context, error, stackTrace) {
-                printLog('Image.network failed for $uri: $error');
-                return _networkImageErrorFallback(uri, width, height);
-              },
-            );
-          }
-        } else {
-          return const SizedBox();
-        }
+    return MarkdownNetworkImage(
+      uri: uri,
+      headers: headers,
+      width: width,
+      height: height,
+      // 2026-10 FPR-101: the local loader shares probe bytes with the codec;
+      // preserve the existing SVG size/placeholder and broken-image UI.
+      svgPlaceholderBuilder: (context) => SizedBox(
+        child: Center(
+          child: SpinKitRipple(color: Theme.of(context).primaryColor),
+        ),
+      ),
+      errorBuilder: (context, error, stack) {
+        printLog('Markdown image load failed: ${error.runtimeType}', stack);
+        return _networkImageErrorFallback(uri, width, height);
       },
     );
   } else if (uri.scheme == 'data') {
@@ -473,165 +452,4 @@ Widget _handleDataSchemeUri(
     return Text(uri.data!.contentAsString());
   }
   return const SizedBox();
-}
-
-/// 使用 Dio 检查给定 URL 指向的资源是否可能是 SVG。
-///
-/// 它优先尝试检查 Content-Type header (通过 HEAD 或 GET 请求)。
-/// 如果 Content-Type 不明确，它会下载响应体的一小部分并检查其内容
-/// 是否以 SVG 的 XML 标记开头。
-///
-/// [urlString]: 要检查的 URL 字符串。
-/// [timeout]: 整个检查过程的超时设置 (连接和接收)。
-///
-/// 返回 `Future<bool>`，如果资源被认为是 SVG，则为 true，否则为 false。
-Future<bool> _isUrlPointingToSvgDio(String urlString,
-    {Duration timeout = const Duration(seconds: 15)}) async {
-  Uri uri;
-  try {
-    uri = Uri.parse(urlString);
-    // Dio 通常处理 scheme，但基础验证有帮助
-    if (!uri.isAbsolute || !['http', 'https'].contains(uri.scheme)) {
-      throw const FormatException("URL 必须是绝对的 http 或 https URL");
-    }
-  } catch (e) {
-    printLog("无效的 URL 格式: $urlString - $e");
-    return false;
-  }
-
-  // 创建 Dio 实例
-  // 可以为 Dio 实例配置全局选项，或在每个请求中指定
-  final dio = Dio(BaseOptions(
-    connectTimeout: timeout, // 连接超时
-    receiveTimeout: timeout, // 接收数据超时
-    // 对 GitHub 系 CDN（含 private-user-images JWT）显式带 UA，
-    // 避免默认 Dart UA 被 CDN 拒（表现为 sniffing 阶段就 403）。
-    headers: _isGithubPrivateUserImage(uri) ? _kGithubImageHeaders : null,
-    // 不自动跟随重定向，如果需要检查原始响应头的话。
-    // 但通常我们关心最终资源，所以让它跟随重定向（默认行为）
-    // followRedirects: false,
-    // validateStatus: (status) {
-    //   // 接受所有状态码，以便我们可以在下面处理它们
-    //   return status != null && status < 500; // 例如，只处理非服务器错误
-    // },
-  ));
-
-  try {
-    // --- 1. 尝试 HEAD 请求获取 Headers (更高效) ---
-    try {
-      // 注意：并非所有服务器都正确支持或允许 HEAD 请求
-      final headResponse = await dio.head(urlString); // 超时由 Dio 配置处理
-
-      // Dio 默认只认为 2xx 是成功，这里 statusCode 检查可省略，除非自定义了 validateStatus
-      // if (headResponse.statusCode != null && headResponse.statusCode! >= 200 && headResponse.statusCode! < 300) {
-      final contentType = headResponse.headers
-          .value(Headers.contentTypeHeader); // 获取 Content-Type
-      printLog("HEAD Content-Type for $urlString: $contentType");
-      if (contentType != null &&
-          contentType.toLowerCase().contains('image/svg+xml')) {
-        return true; // 明确是 SVG
-      }
-      // 如果 Content-Type 不明确，我们仍需尝试 GET
-      // }
-    } on DioException catch (e) {
-      // HEAD 请求失败很常见 (例如 405 Method Not Allowed)，不应阻止尝试 GET
-      if (e.type == DioExceptionType.badResponse &&
-          e.response?.statusCode == 405) {
-        printLog(
-            "HEAD request received 405 (Method Not Allowed) for $urlString. Falling back to GET.");
-      } else {
-        printLog(
-            "HEAD request failed for $urlString: ${e.type} - ${e.message}. Falling back to GET.");
-      }
-      // 继续执行 GET 请求
-    }
-
-    // --- 2. 如果 HEAD 不可行或 Content-Type 不确定，使用 GET 请求 ---
-    final response = await dio.get(
-      urlString,
-      options: Options(
-        responseType: ResponseType.bytes, // **重要**: 获取原始字节用于嗅探
-      ),
-    );
-
-    // 再次检查状态码 (虽然 Dio 默认会为非 2xx 抛出异常，除非配置了 validateStatus)
-    if (response.statusCode != null &&
-        response.statusCode! >= 200 &&
-        response.statusCode! < 300) {
-      // 2.1 再次检查 GET 请求的 Content-Type Header
-      final contentType = response.headers.value(Headers.contentTypeHeader);
-      printLog("GET Content-Type for $urlString: $contentType");
-      if (contentType != null &&
-          contentType.toLowerCase().contains('image/svg+xml')) {
-        return true; // 明确是 SVG
-      }
-
-      // 2.2 Content-Type 不明确? 进行内容嗅探 (Content Sniffing)
-      if (response.data is List<int>) {
-        final bodyBytes = response.data as List<int>;
-        if (bodyBytes.isEmpty) {
-          printLog("Response body is empty for $urlString.");
-          return false; // 空内容不是 SVG
-        }
-
-        const bytesToCheck = 200; // 检查开头的字节数
-        final startBytes = bodyBytes.length > bytesToCheck
-            ? bodyBytes.sublist(0, bytesToCheck)
-            : bodyBytes;
-
-        try {
-          // 尝试用 UTF-8 解码开头部分
-          final bodyStart =
-              utf8.decode(startBytes, allowMalformed: true).trimLeft();
-
-          // 检查是否以 <svg 开头，或以 <?xml 开头且包含 <svg
-          if (bodyStart.startsWith('<svg') ||
-              (bodyStart.startsWith('<?xml') && bodyStart.contains('<svg'))) {
-            printLog("Content start matches SVG pattern for $urlString.");
-            return true; // 内容看起来像 SVG
-          } else {
-            // 打印开头一小段供调试（注意可能包含非打印字符）
-            printLog(
-                "Content start does not look like SVG for $urlString. Start (limited length): '${bodyStart.substring(0, bodyStart.length > 50 ? 50 : bodyStart.length)}'");
-          }
-        } catch (e) {
-          printLog(
-              "Error decoding or checking response body start for $urlString: $e");
-          // 解码错误可能意味着它不是基于文本的 SVG
-          return false;
-        }
-      } else {
-        // 这通常不应该发生，因为我们设置了 ResponseType.bytes
-        printLog(
-            "Unexpected response data type: ${response.data?.runtimeType} for $urlString");
-        return false;
-      }
-    } else {
-      // 如果自定义了 validateStatus，需要在这里处理非 2xx 状态码
-      printLog(
-          "GET request failed or returned non-2xx status: ${response.statusCode} for $urlString");
-      return false;
-    }
-  } on DioException catch (e) {
-    // 处理 Dio 的特定异常
-
-    printLog("DioException caught while checking URL $urlString:");
-    printLog("  Type: ${e.type}");
-    if (e.response != null) {
-      printLog("  Status Code: ${e.response?.statusCode}");
-      printLog("  Status Message: ${e.response?.statusMessage}");
-    }
-    if (e.message != null) {
-      printLog("  Message: ${e.message}");
-    }
-
-    return false;
-  } catch (e) {
-    // 捕获其他任何意外错误
-    printLog("Unexpected error checking URL $urlString: $e");
-    return false;
-  }
-
-  // 如果所有检查都未通过
-  return false;
 }

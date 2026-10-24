@@ -1,3 +1,5 @@
+// 2026-10-24 / FPR-120: composition order is not the repository's primary
+// language. The shared fragment applies this contract to the parent as well.
 const String readRepository = r'''
 query getRepositoryDetail($owner:String!, $name:String!){
   repository(name: $name, owner: $owner) {
@@ -45,11 +47,11 @@ fragment comparisonFields on Repository {
       totalCount,
     }
     isFork
+    primaryLanguage {
+      name
+    }
     languages(first:100) {
       totalSize,
-      nodes {
-        name,
-      }
     },
     createdAt,
     pushedAt,

@@ -38,6 +38,15 @@ dependency_overrides:
 #      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
 
 dependencies:
+  # 2026-10-23: committed release snapshot; provenance and SHA-256 live in
+  # vendor/flutter_performance_monitor/release.json, independent of sibling repos.
+  flutter_performance_monitor:
+    path: vendor/flutter_performance_monitor/packages/flutter_performance_monitor
+  flutter_performance_monitor_dio:
+    path: vendor/flutter_performance_monitor/packages/flutter_performance_monitor_dio
+  http: ^1.3.0
+  # 2026-10-23: stable bounded hardware cohorts hash the complete OS model.
+  crypto: 3.0.7
   flutter:
     sdk: flutter
   intl: any

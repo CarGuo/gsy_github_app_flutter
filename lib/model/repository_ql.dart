@@ -60,6 +60,10 @@ class RepositoryQL {
     if (map == null) {
       return null;
     }
+    // 2026-10-24 / FPR-120: legacy cache rows have no primaryLanguage key.
+    // Keep them unknown until the normal cache.next refresh; nodes[0] has no
+    // primary-language contract, including when the new field is explicitly null.
+    final primaryLanguage = map["primaryLanguage"] as Map?;
     Map? repositoryTopics = map["repositoryTopics"];
     if (repositoryTopics != null) {
       List topicList = repositoryTopics["nodes"];
@@ -85,11 +89,7 @@ class RepositoryQL {
       starCount: map["stargazers"]["totalCount"],
       isStared: map["viewerHasStarred"],
       isSubscription: map["viewerSubscription"],
-      language: (map["languages"] != null &&
-              map["languages"]["nodes"] != null &&
-              map["languages"]["nodes"].length > 0)
-          ? map["languages"]["nodes"][0]["name"]
-          : null,
+      language: primaryLanguage?["name"] as String?,
       size: map["languages"]["totalSize"],
       createdAt: map["createdAt"],
       pushAt: map["pushedAt"],
@@ -134,14 +134,12 @@ class RepositoryQL {
         "login": repositoryQL.ownerName,
         "avatarUrl": repositoryQL.ownerAvatarUrl,
       },
-      "languages": {
-        "nodes": [
-          {
-            "name": repositoryQL.language,
-          }
-        ],
-        "totalSize": repositoryQL.size,
-      },
+      // 2026-10-24 / FPR-120: encode the same primary-language boundary for
+      // this repository and the existing recursive parent serialization.
+      "primaryLanguage": repositoryQL.language == null
+          ? null
+          : {"name": repositoryQL.language},
+      "languages": {"totalSize": repositoryQL.size},
       "licenseInfo": {
         "name": repositoryQL.license,
       },

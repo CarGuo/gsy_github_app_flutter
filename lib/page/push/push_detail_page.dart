@@ -11,7 +11,7 @@ import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 import 'package:gsy_github_app_flutter/page/push/widget/push_coed_item.dart';
 import 'package:gsy_github_app_flutter/page/push/widget/push_header.dart';
-import 'package:gsy_github_app_flutter/common/utils/html_utils.dart';
+import 'package:gsy_github_app_flutter/common/utils/diff_html_renderer.dart';
 
 /// 提交信息详情页
 /// Created by guoshuyu
@@ -41,6 +41,8 @@ class _PushDetailPageState extends State<PushDetailPage>
   PushHeaderViewModel pushHeaderViewModel = PushHeaderViewModel();
 
   String? htmlUrl;
+
+  bool _openingDiff = false;
 
   @override
   Future<void> handleRefresh() async {
@@ -75,22 +77,48 @@ class _PushDetailPageState extends State<PushDetailPage>
     }
     PushCodeItemViewModel itemViewModel = PushCodeItemViewModel.fromMap(
         pullLoadWidgetControl.dataList[index - 1]);
-    return PushCodeItem(itemViewModel, () {
-      String html = HtmlUtils.generateCode2HTml(
-          HtmlUtils.parseDiffSource(itemViewModel.patch, false),
-          backgroundColor: GSYColors.webDraculaBackgroundColorString,
-          lang: '',
-          userBR: false);
+    return PushCodeItem(itemViewModel, () => _openDiff(itemViewModel));
+  }
+
+  Future<void> _openDiff(PushCodeItemViewModel file) async {
+    // 2026-10-24 FPR-103: one job owns this opening intent. Keep UI/context and
+    // navigation on the caller; only pure HTML preparation crosses isolates.
+    if (_openingDiff) return;
+    _openingDiff = true;
+    final title = file.name;
+    final patch = file.patch;
+    final userName = widget.userName;
+    final reposName = widget.reposName;
+    final sourceRoutes = <Route<dynamic>>[];
+    ModalRoute<dynamic>? sourceRoute = ModalRoute.of(context);
+    while (sourceRoute != null && !sourceRoutes.contains(sourceRoute)) {
+      sourceRoutes.add(sourceRoute);
+      final navigator = sourceRoute.navigator;
+      sourceRoute = navigator == null ? null : ModalRoute.of(navigator.context);
+    }
+    try {
+      final html = await renderDiffHtml(DiffHtmlRequest(patch: patch));
+      if (!mounted || sourceRoutes.any((route) => !route.isCurrent)) return;
       NavigatorUtils.gotoCodeDetailPlatform(
         context,
-        title: itemViewModel.name,
-        reposName: widget.reposName,
-        userName: widget.userName,
-        path: itemViewModel.patch,
+        title: title,
+        reposName: reposName,
+        userName: userName,
+        path: patch,
         data: html,
-        branch: "",
+        branch: '',
       );
-    });
+    } catch (error, stack) {
+      // 2026-10-24: async work must retain Flutter's gesture error reporting.
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: stack,
+        library: 'diff rendering',
+        context: ErrorDescription('while preparing a commit diff'),
+      ));
+    } finally {
+      _openingDiff = false;
+    }
   }
 
   _getDataLogic() async {

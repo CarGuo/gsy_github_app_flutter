@@ -463,6 +463,10 @@ class IssueHeaderViewModel {
   bool? locked = false;
   String? issueComment = "---";
   String? issueDesHtml = "---";
+
+  /// 2026-10 FPR-116: GitHub full media keeps editable Markdown in `body`;
+  /// `body_html` is for rendering. Preserve the source separately for editing.
+  String issueBodyMarkdown = '';
   String commentCount = "---";
   String? state = "---";
   String issueDes = "---";
@@ -494,6 +498,7 @@ class IssueHeaderViewModel {
     issueComment = issueMap.title;
     issueDesHtml =
         issueMap.bodyHtml ?? ((issueMap.body != null) ? issueMap.body : "");
+    issueBodyMarkdown = issueMap.body ?? '';
     commentCount = "${issueMap.commentNum}";
     state = issueMap.state;
     issueDes = issueMap.body != null ? ": \n${issueMap.body!}" : '';

@@ -242,7 +242,7 @@ packages:
     source: hosted
     version: "0.3.5+5"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       sha256: c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf
@@ -475,6 +475,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.6"
+  flutter_performance_monitor:
+    dependency: "direct main"
+    description:
+      path: "vendor/flutter_performance_monitor/packages/flutter_performance_monitor"
+      relative: true
+    source: path
+    version: "0.1.0"
+  flutter_performance_monitor_dio:
+    dependency: "direct main"
+    description:
+      path: "vendor/flutter_performance_monitor/packages/flutter_performance_monitor_dio"
+      relative: true
+    source: path
+    version: "0.1.0"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -670,7 +684,7 @@ packages:
     source: hosted
     version: "0.15.5"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"

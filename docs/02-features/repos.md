@@ -35,6 +35,24 @@
 2. 更新 `currentBranch`
 3. 主信息、文件列表、readme 分别触发刷新
 
+### 主语言与旧缓存（2026-10-24 / FPR-120）
+
+仓库详情与 parent 的主语言来自 GitHub GraphQL `primaryLanguage.name`；
+`languages.totalSize` 只保留代码总大小，不能从语言组成列表的首项推断主语言。
+[GitHub 官方字段说明](https://docs.github.com/en/graphql/reference/repos#repository)。
+Trend User 的 User / Organization、首屏 / 游标查询同样使用所选最高星标仓库的
+`primaryLanguage`，不把它解释为用户全部仓库的综合语言。
+
+详情 SQLite 与阅读历史保存原始 GraphQL JSON。旧记录没有 `primaryLanguage` key，
+以及新响应显式返回 `primaryLanguage: null`，都会得到未知语言；其它资料照常保留。
+详情沿既有 `DataResult.next` 取新数据并覆盖该仓库缓存与阅读历史；旧离线历史未重访前
+保持未知，不回退 `languages.nodes[0]`，不清库、重建历史或逐行批量联网迁移。
+既有 UI 的空语言表示继续生效，本次不新增页面文案或改变状态管理。
+
+`RepositoryQL.toMap` 同步编码 `primaryLanguage`、语言总大小和 parent 的相同边界。
+它仍有与本问题无关的既有计数/topics 键形不对称，不能据此宣称全对象
+`fromMap(toMap(model))` 已成立；当前编码边界是主语言、身份、总大小和 parent。
+
 ## 状态管理
 
 - 当前模块主要使用 Provider
