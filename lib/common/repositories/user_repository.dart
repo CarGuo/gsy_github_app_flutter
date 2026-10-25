@@ -392,7 +392,9 @@ class UserRepository {
       List<Model.Notification> list = [];
       var data = res.data;
       if (data == null || data.length == 0) {
-        return DataResult([], true);
+        // 2026-10-25 / FPR-121: keep the Notification list contract for empty
+        // results too; NotifyPage rejects List<dynamic> and would keep old rows.
+        return DataResult(list, true);
       }
       for (int i = 0; i < data.length; i++) {
         list.add(Model.Notification.fromJson(data[i]));
