@@ -191,25 +191,13 @@ abstract class BasePersonState<T extends StatefulWidget> extends State<T>
       ),
 
       ///提交图表
-      SliverPersistentHeader(
-        delegate: GSYSliverHeaderDelegate(
-            maxHeight: chartSize,
-            minHeight: chartSize,
-            changeSize: true,
-            vSyncs: this,
-            snapConfig: FloatingHeaderSnapConfiguration(
-              curve: Curves.bounceInOut,
-              duration: const Duration(milliseconds: 10),
-            ),
-            builder: (BuildContext context, double shrinkOffset,
-                bool overlapsContent) {
-              return SizedBox.expand(
-                child: SizedBox(
-                  height: chartSize,
-                  child: UserHeaderChart(userInfo),
-                ),
-              );
-            }),
+      /// 2026-10-25: 贡献图不悬停、不收缩，普通 sliver 保留原固定高度。
+      /// PersistentHeader 的滚动布局会重建与 offset 无关的全年日历。
+      SliverToBoxAdapter(
+        child: SizedBox(
+          height: chartSize,
+          child: UserHeaderChart(userInfo),
+        ),
       ),
 
       ///Status chip（贡献图之后、Pinned 之前）
